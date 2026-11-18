@@ -30,7 +30,7 @@ T = {
   "nav": ["Inside the app", "Plus", "Support", "Join the beta"],
   "foot": ["Support", "Privacy", "Terms", "Good to know","Features"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Coming soon on the App Store",
-  "home_title": "My Tiny Jungle: plant care that knows your home",
+  "home_title": "My Tiny Jungle: the plant care app that knows your home",
   "home_desc": "Not a watering timer. My Tiny Jungle works out each plant's care from your weather, room light, pot and soil, and your plants tell you in their own words.",
   "h1": "Your plants have <em>something</em> to say.",
   "lead": "My Tiny Jungle turns plant care into a chat. Tell it what you did in plain words, and your plants answer back with what they need next.",
@@ -115,7 +115,7 @@ T = {
   "nav": ["O app", "Plus", "Ajuda", "Quero testar"],
   "foot": ["Ajuda", "Privacidade", "Termos", "Bom saber","Recursos"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Em breve na App Store",
-  "home_title": "My Tiny Jungle: suas plantas cuidadas do jeito certo",
+  "home_title": "My Tiny Jungle: o app que cuida das suas plantas do jeito certo",
   "home_desc": "Chega de lembrete genérico. O My Tiny Jungle olha o clima, a luz de cada cômodo, o vaso e a terra pra te dizer do que cada planta precisa, na hora certa.",
   "h1": "Suas plantas têm <em>muito</em> a dizer.",
   "lead": "O My Tiny Jungle transforma o cuidado com as plantas num bate-papo. Conte o que você fez do seu jeito e elas respondem dizendo do que precisam agora.",
@@ -227,6 +227,7 @@ def page(L, path, title, desc, body):
 <link rel="preload" href="/fonts/Intern.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css?v={CSS_V}">
 </head><body>
+<script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script><script>(function(){{try{{if(/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent))return;var s=localStorage.getItem("lang"),p=location.pathname,pt=p==="/pt"||p.indexOf("/pt/")===0;var want=s||((navigator.languages&&navigator.languages[0])||navigator.language||"en").toLowerCase().indexOf("pt")===0?"pt":"en";if(s)want=s;if(want==="pt"&&!pt)location.replace("/pt"+(p==="/"?"/":p)+location.search+location.hash);else if(want==="en"&&pt)location.replace((p.replace(/^\/pt/,"")||"/")+location.search+location.hash)}}catch(e){{}}}})()</script>
 <script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <header class="nav"><div class="wrap navbar">
 <a class="brand" href="{p}/"><span class="bname" aria-label="My Tiny Jungle">{BRAND_NAME}</span></a>
@@ -278,7 +279,7 @@ def feature_pages(L):
         inner = (f'<div class="fhero"><img class="i3d" src="/icons/{ic}.png" alt="" width="88" height="88">{badge}</div>'
                  f'<p class="flead">{intro}</p><h2>{u["how"]}</h2><ul class="fhow">' + "".join(f"<li>{x}</li>" for x in how) + "</ul>"
                  f'<h2>{u["q"]}</h2><div class="faq">' + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in qs) + "</div>"
-                 f'<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a><a href="{p}/features/{nxt[1]}">{nxt[2]} →</a></div>')
+                 f'<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a><a href="{p}/features/{nxt[1]}">{nxt[2]} →</a></div>' + seo.faq_ld(qs))
         out[f"features/{slug}"] = doc(L, f"/features/{slug}", title, seo.meta_desc(intro, *(x if x.endswith(".") else x + "." for x in how)), inner, meta=False,
                                          seo_title=seo.FEATURE_TITLE[L].get(slug))
     grid = '<div class="fgrid">' + "".join(
@@ -298,6 +299,7 @@ def good_to_know(L):
         f'<h3 class="fq"><img class="i3d" src="/icons/{ic}.png" alt="" width="32" height="32"><a href="{p}/features/{slug}">{title}</a></h3>{det(qs)}'
         for ic, slug, title, short, (intro, how, qs) in _feat_rows(L))
     return doc(L, "/good-to-know", u["gk_title"], u["gk_desc"], inner, meta=False)
+    inner += seo.faq_ld([q for g, qs in GENERAL[L] for q in qs] + [q for *_, (i, h, qs) in _feat_rows(L) for q in qs])
 
 
 def build():

@@ -57,7 +57,7 @@ def og_image(L, path, title, desc, dist):
     """1200x630 share card per page and language, cached by content."""
     name = f"{L}-{path.strip('/').replace('/', '-') or 'home'}"
     out = dist / "og" / f"{name}.png"
-    key = hashlib.sha1(f"v4|{L}|{path}|{title}|{desc}".encode()).hexdigest()[:12]
+    key = hashlib.sha1(f"v5|{L}|{path}|{title}|{desc}".encode()).hexdigest()[:12]
     cached = CACHE / f"{name}-{key}.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     if not cached.exists():
@@ -107,8 +107,9 @@ def _render(L, path, title, desc, dest):
         d.text((x, y), ln, font=tf, fill=INK); y += int(size * 1.12)
     df = _font(28, 420)
     dl = _wrap(d, desc, df, maxw)
-    if len(dl) > 3:
-        dl = _wrap(d, re.split(r"(?<=[.!?])\s", desc)[0], df, maxw)
+    cap = 2 if len(lines) >= 3 else 3
+    if len(dl) > cap:
+        dl = dl[:cap]; dl[-1] = dl[-1].rstrip(",.;:") + "…"
     for ln in dl[:3]:
         d.text((x, y + 24), ln, font=df, fill=MUTED); y += 38
     foot = "Grátis no iPhone · mytinyjungle.com" if L == "pt" else "Free on iPhone · mytinyjungle.com"
@@ -138,6 +139,12 @@ def _app(L):
         ],
         "description": HOME_DESC.get(L, ""),
     }
+
+
+def faq_ld(qs):
+    strip = lambda x: H.unescape(re.sub(r"<[^>]+>", "", x)).strip()
+    return _ld({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": strip(q), "acceptedAnswer": {"@type": "Answer", "text": strip(a)}} for q, a in qs]})
 
 
 def jsonld(L, path, title, desc, canon, img):
@@ -178,7 +185,7 @@ def head(L, path, title, desc, canon, dist):
             f'<meta property="og:type" content="website"><meta property="og:site_name" content="{BRAND}">'
             f'<meta property="og:locale" content="{LOCALE[L]}"><meta property="og:locale:alternate" content="{LOCALE[other]}">'
             f'<meta property="og:image" content="{img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
-            f'<meta property="og:image:alt" content="{e(title)}">'
+            f'<meta property="og:image:alt" content="{e(title)}"><meta property="og:image:type" content="image/png"><meta name="twitter:image:alt" content="{e(title)}">'
             f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}">'
             f'<meta name="twitter:description" content="{e(desc)}"><meta name="twitter:image" content="{img}">'
             f'<meta name="application-name" content="{BRAND}"><meta name="apple-mobile-web-app-title" content="{BRAND}">'
@@ -198,9 +205,10 @@ def sitemap(langs):
         alts = "".join(f'<xhtml:link rel="alternate" hreflang="{langs[k]["lang"]}" href="{SITE}{langs[k]["prefix"]}{p}"/>' for k in langs)
         alts += f'<xhtml:link rel="alternate" hreflang="x-default" href="{SITE}{p}"/>'
         for k in langs:
-            rows.append(f"<url><loc>{SITE}{langs[k]['prefix']}{p}</loc><lastmod>{LASTMOD}</lastmod>{alts}</url>")
+            name = f"{k}-{p.strip('/').replace('/', '-') or 'home'}"
+            rows.append(f"<url><loc>{SITE}{langs[k]['prefix']}{p}</loc><lastmod>{LASTMOD}</lastmod>{alts}<image:image><image:loc>{SITE}/og/{name}.png</image:loc></image:image></url>")
     return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
-            'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "\n".join(rows) + "\n</urlset>\n")
+            'xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + "\n".join(rows) + "\n</urlset>\n")
 
 
 ROBOTS = f"""# {BRAND}: everyone welcome, search and AI assistants alike.

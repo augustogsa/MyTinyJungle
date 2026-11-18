@@ -190,3 +190,7 @@
   const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); v.classList.replace("wait", "go"); } }, { threshold: .3 });
   io.observe(v);
 })();
+document.addEventListener("click", function (e) {
+  var a = e.target.closest && e.target.closest("a.lang");
+  if (a) { try { localStorage.setItem("lang", a.getAttribute("hreflang").toLowerCase().indexOf("pt") === 0 ? "pt" : "en"); } catch (x) {} }
+});
