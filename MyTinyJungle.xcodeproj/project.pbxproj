@@ -219,8 +219,8 @@
 				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
 				GID_CLIENT_ID = "848765091400-cj4vl5j7pdctc9r4ahmn145b5icsa0ja.apps.googleusercontent.com";
 				GID_URL_SCHEME = "com.googleusercontent.apps.848765091400-cj4vl5j7pdctc9r4ahmn145b5icsa0ja";
-				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
+				GAD_APP_ID = "ca-app-pub-5572285766965735~4039327987";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Ads keep My Tiny Jungle free. Allowing this lets them be about things you might actually like, instead of random ones. Your plants and notes are never shared.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your rough area helps tune watering and feeding to your local climate and warns you about frost and heat for outdoor plants.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your plants and product labels.";
@@ -257,8 +257,8 @@
 				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
 				GID_CLIENT_ID = "848765091400-cj4vl5j7pdctc9r4ahmn145b5icsa0ja.apps.googleusercontent.com";
 				GID_URL_SCHEME = "com.googleusercontent.apps.848765091400-cj4vl5j7pdctc9r4ahmn145b5icsa0ja";
-				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
+				GAD_APP_ID = "ca-app-pub-5572285766965735~4039327987";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Ads keep My Tiny Jungle free. Allowing this lets them be about things you might actually like, instead of random ones. Your plants and notes are never shared.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your rough area helps tune watering and feeding to your local climate and warns you about frost and heat for outdoor plants.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your plants and product labels.";

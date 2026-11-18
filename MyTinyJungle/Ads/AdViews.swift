@@ -8,10 +8,13 @@ enum AdStyle { case card, row, tile }
 @MainActor @Observable
 final class AdPool {
     static let shared = AdPool()
-    private(set) var ads: [NativeAd] = []
+    /// Ready ads per placement (each placement has its own AdMob unit).
+    private(set) var ads: [String: [NativeAd]] = [:]
     private var bySlot: [String: Int] = [:]
-    private var fetchers: [NativeAdFetcher] = []
+    private var fetchers: [String: [NativeAdFetcher]] = [:]
     private var started = false
+    /// Grid tiles can repeat on screen, so that placement keeps two.
+    private func target(_ placement: String) -> Int { placement == "plants-grid" ? 2 : 1 }
 
     func start() {
         let m = AdsManager.shared
@@ -19,18 +22,28 @@ final class AdPool {
         m.prepare()
         guard m.ready, !started else { return }
         started = true
-        for _ in 0..<4 {
-            let f = NativeAdFetcher(); fetchers.append(f)
-            f.load { [weak self] ad in self?.ads.append(ad) }
+        for p in ["today", "plants-grid"] { fill(p) }
+    }
+
+    private func fill(_ placement: String) {
+        guard started, AdsManager.shared.shouldShowAds else { return }
+        let have = fetchers[placement, default: []].count
+        guard have < target(placement) else { return }
+        for _ in have..<target(placement) {
+            let f = NativeAdFetcher(); fetchers[placement, default: []].append(f)
+            f.load(unit: AdsConfig.nativeUnit(for: placement)) { [weak self] ad in self?.ads[placement, default: []].append(ad) }
         }
     }
 
     func ad(for slot: String) -> NativeAd? {
-        guard AdsManager.shared.shouldShowAds, !ads.isEmpty else { return nil }
-        if let i = bySlot[slot] { return ads[i % ads.count] }
-        let i = bySlot.count % ads.count
+        guard AdsManager.shared.shouldShowAds else { return nil }
+        let placement = AdsConfig.placement(for: slot)
+        let list = ads[placement] ?? []
+        guard !list.isEmpty else { Task { @MainActor in self.fill(placement) }; return nil }
+        if let i = bySlot[slot] { return list[i % list.count] }
+        let i = bySlot.count % list.count
         bySlot[slot] = i
-        return ads[i]
+        return list[i]
     }
 }
 
@@ -66,10 +79,10 @@ struct NativeAdCard: View {
 final class NativeAdFetcher: NSObject, NativeAdLoaderDelegate {
     private var loader: AdLoader?
     private var done: ((NativeAd) -> Void)?
-    func load(_ done: @escaping (NativeAd) -> Void) {
+    func load(unit: String, _ done: @escaping (NativeAd) -> Void) {
         guard loader == nil else { return }
         self.done = done
-        let l = AdLoader(adUnitID: AdsConfig.nativeUnit, rootViewController: AdsManager.rootController(), adTypes: [.native], options: nil)
+        let l = AdLoader(adUnitID: unit, rootViewController: AdsManager.rootController(), adTypes: [.native], options: nil)
         l.delegate = self
         loader = l
         l.load(AdsManager.shared.request())
