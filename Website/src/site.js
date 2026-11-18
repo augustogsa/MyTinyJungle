@@ -2,6 +2,18 @@
 (function () {
   var d = document, root = d.documentElement;
   root.classList.add("js");
+
+  // Lights: follow the room (system setting) until someone flips the switch.
+  var sw = d.querySelector(".lights"), mq = matchMedia("(prefers-color-scheme: dark)");
+  var isDark = function () { return root.dataset.theme ? root.dataset.theme === "dark" : mq.matches; };
+  var mark = function () { if (sw) sw.setAttribute("aria-pressed", isDark()); };
+  if (sw) sw.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.classList.add("switching"); root.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    mark(); setTimeout(function () { root.classList.remove("switching"); }, 1300);
+  });
+  mq.addEventListener && mq.addEventListener("change", mark); mark();
   var io = "IntersectionObserver" in window;
 
   // Living favicon: Erty waves in the browser tab.

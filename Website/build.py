@@ -26,7 +26,7 @@ ICON = {
 
 T = {
  "en": {
-  "lang": "en", "prefix": "", "other": "pt", "other_label": "PT",
+  "lang": "en", "prefix": "", "lights": "Turn the lights off or on", "other": "pt", "other_label": "PT",
   "nav": ["Inside the app", "Plus", "Support", "Join the beta"],
   "foot": ["Support", "Privacy", "Terms", "Good to know","Features"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Coming soon on the App Store",
@@ -111,7 +111,7 @@ T = {
   "updated": "Last updated", "plus_title": "Opening My Tiny Jungle", "plus_desc": "Choose your plan in the app.", "plus_intro": "If My Tiny Jungle is on this iPhone, it opens straight to your plan. Not installed yet? Get it free with TestFlight first, then tap the plan again.", "plus_btn": "Get My Tiny Jungle on TestFlight", "plus_tip": "On a computer? Open mytinyjungle.com on your iPhone to join.",
  },
  "pt": {
-  "lang": "pt-BR", "prefix": "/pt", "other": "en", "other_label": "EN",
+  "lang": "pt-BR", "prefix": "/pt", "lights": "Apagar ou acender as luzes", "other": "en", "other_label": "EN",
   "nav": ["O app", "Plus", "Ajuda", "Quero testar"],
   "foot": ["Ajuda", "Privacidade", "Termos", "Bom saber","Recursos"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Em breve na App Store",
@@ -227,10 +227,11 @@ def page(L, path, title, desc, body):
 <link rel="preload" href="/fonts/Intern.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css?v={CSS_V}">
 </head><body>
+<script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <header class="nav"><div class="wrap navbar">
 <a class="brand" href="{p}/"><span class="bname" aria-label="My Tiny Jungle">{BRAND_NAME}</span></a>
 <nav><a class="hide-s" href="{p}/#today">{n[0]}</a><a class="hide-s" href="{p}/#pricing">{n[1]}</a><a class="hide-s" href="{p}/support">{n[2]}</a>
-<a class="lang" href="{other}" hreflang="{T[t['other']]['lang']}">{t['other_label']}</a><a class="btn btn-s" href="https://testflight.apple.com/join/A8YUuUHj" rel="noopener">{n[3]}</a></nav>
+<button class="lights" type="button" aria-label="{t['lights']}" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/><path class="glow" d="M12 0v1M3.5 3.5l.8.8M20.5 3.5l-.8.8M0 11h1M23 11h-1"/></svg></button><a class="lang" href="{other}" hreflang="{T[t['other']]['lang']}">{t['other_label']}</a><a class="btn btn-s" href="https://testflight.apple.com/join/A8YUuUHj" rel="noopener">{n[3]}</a></nav>
 </div></header>
 <main>{body}</main>
 <footer><div class="wrap"><span>© 2026 SimpleAppsCo LLC <img class="fsep" src="/icons/sprout.png" alt="" width="20" height="20" loading="lazy"> {t['made']}</span>
