@@ -3,8 +3,8 @@ import SwiftUI
 /// First launch: hero, name, pets, hemisphere from region.
 struct OnboardingView: View {
     var onDone: () -> Void
-    @State private var step = 0
-    @State private var name = ""
+    @State private var step = 1
+    @State private var name = JungleSettings.shared.ownerName
     @State private var cats = false
     @State private var dogs = false
     @State private var kids = false

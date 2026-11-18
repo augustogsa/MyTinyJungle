@@ -1,13 +1,20 @@
 import SwiftUI
 import SwiftData
+import GoogleSignIn
 
 @main
 struct MyTinyJungleApp: App {
     let container: ModelContainer = {
         let schema = Schema([Plant.self, CareEvent.self, ChatMessage.self, OwnedProduct.self, Space.self, CareTask.self, Propagation.self])
         let inMemory = ProcessInfo.processInfo.arguments.contains("-uiTesting")
+        // iCloud backup: mirror to the private CloudKit database. Never for tests or demo data.
+        if CloudBackup.enabled && !inMemory && DemoSeeder.photoDir == nil,
+           let c = try? ModelContainer(for: schema, configurations: ModelConfiguration(cloudKitDatabase: .private(CloudBackup.containerID))) {
+            CloudBackup.activeThisLaunch = true
+            return c
+        }
         do {
-            return try ModelContainer(for: schema, configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory))
+            return try ModelContainer(for: schema, configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory, cloudKitDatabase: .none))
         } catch {
             fatalError("Store failed to open: \(error)")
         }
@@ -39,6 +46,8 @@ struct MyTinyJungleApp: App {
             RootView()
                 .tint(Jungle.forest)
                 .task { DemoSeeder.seedIfAsked(container.mainContext) }
+                .task { await AuthManager.shared.refresh(); await CloudBackup.shared.refresh() }
+                .onOpenURL { GIDSignIn.sharedInstance.handle($0) }
         }
         .modelContainer(container)
     }
@@ -48,7 +57,10 @@ struct RootView: View {
     @AppStorage("selectedTab") private var tab = 0
     @AppStorage("onboarded") private var onboarded = false
     var body: some View {
-        if !onboarded && DemoSeeder.photoDir == nil && !ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+        let skip = DemoSeeder.photoDir != nil || ProcessInfo.processInfo.arguments.contains("-uiTesting")
+        if !skip && !AuthManager.shared.signedIn {
+            SignInView()
+        } else if !skip && !onboarded {
             OnboardingView { onboarded = true }
         } else { tabs }
     }

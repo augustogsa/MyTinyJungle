@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		A10000000000000000000063 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000061 /* GoogleMobileAds */; };
 		A10000000000000000000064 /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000062 /* GoogleUserMessagingPlatform */; };
+		A10000000000000000000067 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000066 /* GoogleSignIn */; };
+		A10000000000000000000069 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000068 /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +34,7 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A10000000000000000000013 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000063, A10000000000000000000064); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000013 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000063, A10000000000000000000064, A10000000000000000000067, A10000000000000000000069); runOnlyForDeploymentPostprocessing = 0; };
 		A10000000000000000000023 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
@@ -75,6 +77,8 @@
 			packageProductDependencies = (
 				A10000000000000000000061 /* GoogleMobileAds */,
 				A10000000000000000000062 /* GoogleUserMessagingPlatform */,
+				A10000000000000000000066 /* GoogleSignIn */,
+				A10000000000000000000068 /* GoogleSignInSwift */,
 			);
 			productName = MyTinyJungle;
 			productReference = A10000000000000000000011;
@@ -124,6 +128,7 @@
 			packageReferences = (
 				A10000000000000000000059 /* swift-package-manager-google-mobile-ads */,
 				A10000000000000000000060 /* swift-package-manager-google-user-messaging-platform */,
+				A10000000000000000000065 /* GoogleSignIn-iOS */,
 			);
 			productRefGroup = A10000000000000000000003 /* Products */;
 			projectDirPath = "";
@@ -211,6 +216,9 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_FILE = Config/AdsInfo.plist;
+				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
+				GID_CLIENT_ID = "";
+				GID_URL_SCHEME = "";
 				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
@@ -245,6 +253,9 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_FILE = Config/AdsInfo.plist;
+				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
+				GID_CLIENT_ID = "";
+				GID_URL_SCHEME = "";
 				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
@@ -318,6 +329,11 @@
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git";
 			requirement = { kind = upToNextMajorVersion; minimumVersion = 3.1.0; };
 		};
+		A10000000000000000000065 /* GoogleSignIn-iOS */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = { kind = upToNextMajorVersion; minimumVersion = 9.0.0; };
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -330,6 +346,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A10000000000000000000060;
 			productName = GoogleUserMessagingPlatform;
+		};
+		A10000000000000000000066 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000065;
+			productName = GoogleSignIn;
+		};
+		A10000000000000000000068 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000065;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -250,18 +250,18 @@ struct TravelPlanView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                HStack(spacing: 14) {
-                    Icon3DView(.travel, size: 56)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("\(days) days away").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text(atRisk == 0 ? "Everyone copes with a deep water before you go." : "\(atRisk) plant\(atRisk == 1 ? "" : "s") need a sitter or self-watering.")
-                            .font(.subheadline).foregroundStyle(atRisk == 0 ? Jungle.accentText : Jungle.warmText)
-                    }
-                }
                 JungleGroup(title: "Dates") {
                     JungleRow(icon: .calendar, title: "Leaving") { DatePicker("", selection: $leave, in: Date()..., displayedComponents: .date).labelsHidden() }
                     JungleDivider()
                     JungleRow(icon: .calendarCheck, title: "Back") { DatePicker("", selection: $back, in: leave..., displayedComponents: .date).labelsHidden() }
+                }
+                HStack(spacing: 14) {
+                    Icon3DView(.travel, size: 56)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(days) days away").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                        Text(atRisk == 0 ? "Everyone copes with a deep water before you go." : "\(atRisk) plant\(atRisk == 1 ? "" : "s") \(atRisk == 1 ? "needs" : "need") a sitter or self-watering.")
+                            .font(.subheadline).foregroundStyle(atRisk == 0 ? Jungle.accentText : Jungle.warmText)
+                    }
                 }
                 JungleGroup(title: "Your plants") {
                     ForEach(plants) { p in

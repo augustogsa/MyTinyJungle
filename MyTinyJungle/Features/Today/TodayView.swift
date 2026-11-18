@@ -88,6 +88,7 @@ struct TodayView: View {
                     Button { showSettings = true } label: { Image(systemName: "gearshape") }.accessibilityLabel("Settings")
                 }
             }
+            .navigationDestination(for: TodayRoute.self, destination: route)
             .navigationDestination(for: UUID.self) { id in
                 if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
             }
@@ -144,22 +145,34 @@ struct TodayView: View {
         return all[(Calendar.current.ordinality(of: .day, in: .year, for: Date()) ?? 0) % all.count]
     }
 
+    @ViewBuilder private func route(_ r: TodayRoute) -> some View {
+        switch r {
+        case .watering: WateringListView()
+        case .health: JungleHealthView()
+        case .season: SeasonGuideView(plants: plants)
+        case .learn: GuidesView(plant: guidePlant)
+        }
+    }
+
     /// Health-app style summary cards. Every card opens something.
     private var summary: some View {
-        let next = Agenda.items(plants: plants, tasks: [], days: 30).first { $0.kind == .soilCheck || $0.kind == .water }
+        let waterItems = Agenda.items(plants: plants, tasks: [], days: 30).filter { $0.kind == .soilCheck || $0.kind == .water }
+        let next = waterItems.first
+        let sameDay = next.map { n in waterItems.filter { Calendar.current.isDate($0.date, inSameDayAs: n.date) }.compactMap(\.plant) } ?? []
         let moods = plants.map { CareEngine.mood(for: $0) }
         let score = (Double(moods.filter { $0 == .thriving }.count) + Double(moods.filter { $0 == .fine }.count) * 0.7) / Double(max(1, plants.count))
         let season = SeasonGuideView.current()
         return VStack(alignment: .leading, spacing: 10) {
             SectionTitle("Summary")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-                Button { if let p = next?.plant { path.append(p.id) } else { selectedTab = 2 } } label: {
+                Button { path.append(TodayRoute.watering) } label: {
                     SummaryCard(title: "Next watering", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
                         Text(next.map { relativeDay($0.date) } ?? "No plan").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text(next?.plant?.name ?? "Add a plant").font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
+                        Text(sameDay.count > 2 ? "\(sameDay[0].name), \(sameDay[1].name) +\(sameDay.count - 2)" : sameDay.isEmpty ? "Add a plant" : sameDay.map(\.name).joined(separator: ", "))
+                            .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
                     }
                 }
-                Button { selectedTab = 4 } label: {
+                Button { path.append(TodayRoute.health) } label: {
                     SummaryCard(title: "Health", symbol: "heart.fill", tint: Jungle.terracotta) {
                         HStack(alignment: .center, spacing: 10) {
                             Text("\(Int(score * 100))%").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
@@ -169,12 +182,12 @@ struct TodayView: View {
                         Text(score >= 0.9 ? "Thriving jungle" : "Some need care").font(.subheadline).foregroundStyle(Jungle.subtle)
                     }
                 }
-                Button { selectedTab = 2 } label: {
+                Button { path.append(TodayRoute.season) } label: {
                     SummaryCard(title: season.rawValue, symbol: season.symbol, tint: Color(red: 0.72, green: 0.56, blue: 0.2)) {
                         Text(seasonTip(season)).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text).lineLimit(3, reservesSpace: true)
                     }
                 }
-                Button { guide = guideOfDay } label: {
+                Button { path.append(TodayRoute.learn) } label: {
                     SummaryCard(title: "Learn", symbol: "book.fill", tint: Jungle.leaf) {
                         Text(guideOfDay.title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
                         Text("\(guideOfDay.minutes) min guide").font(.caption).foregroundStyle(Jungle.subtle)
@@ -493,5 +506,123 @@ struct CompactRequestRow: View {
             Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
         }
         .padding(12).contentShape(Rectangle())
+    }
+}
+
+enum TodayRoute: Hashable { case watering, health, season, learn }
+
+/// Everything that needs water or a soil check, grouped by day, with one-tap logging.
+struct WateringListView: View {
+    @Environment(\.modelContext) private var ctx
+    @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
+
+    var body: some View {
+        let items = Agenda.items(plants: plants, tasks: [], days: 14).filter { $0.kind == .soilCheck || $0.kind == .water }
+        let days = Dictionary(grouping: items) { Calendar.current.startOfDay(for: $0.date) }.sorted { $0.key < $1.key }
+        let today = days.first { Calendar.current.isDateInToday($0.key) }?.value.compactMap(\.plant) ?? []
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                if today.count > 1 {
+                    Button { withAnimation { JungleBrain.quick(.water, plants: today, in: ctx, announce: true) } } label: {
+                        Text("Water all \(today.count) due today").font(.headline).frame(maxWidth: .infinity).frame(height: 48)
+                    }
+                    .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
+                }
+                if days.isEmpty {
+                    JungleGroup { JungleRow(icon: .shieldCheck, title: "Nothing to water in the next two weeks") }
+                }
+                ForEach(days, id: \.key) { day, list in
+                    JungleGroup(title: dayTitle(day) + " · \(list.count)") {
+                        ForEach(Array(list.enumerated()), id: \.element.id) { i, item in
+                            if let p = item.plant {
+                                HStack(spacing: 12) {
+                                    NavigationLink(value: p.id) {
+                                        HStack(spacing: 12) {
+                                            PlantAvatar(data: p.photo, size: 40)
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                Text(p.name).foregroundStyle(Jungle.text)
+                                                Text(waterLine(p)).font(.caption).foregroundStyle(Jungle.subtle)
+                                            }
+                                            Spacer(minLength: 0)
+                                        }
+                                    }.buttonStyle(.plain)
+                                    Button { withAnimation { JungleBrain.quick(.water, plants: [p], in: ctx, announce: true) } } label: {
+                                        Icon3DView(.waterDrops, size: 22).frame(width: 40, height: 40).background(Jungle.mint, in: Circle())
+                                    }
+                                    .buttonStyle(.plain).accessibilityLabel("Log water for \(p.name)")
+                                }
+                                .padding(.vertical, 10)
+                                if i < list.count - 1 { Divider().padding(.leading, 52) }
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 16).padding(.vertical, 12)
+        }
+        .jungleBackdrop()
+        .navigationTitle("Watering")
+    }
+
+    private func dayTitle(_ d: Date) -> String {
+        let c = Calendar.current
+        if c.isDateInToday(d) { return "Today" }
+        if c.isDateInTomorrow(d) { return "Tomorrow" }
+        return d.formatted(.dateTime.weekday(.wide).day().month())
+    }
+    private func waterLine(_ p: Plant) -> String {
+        guard let w = p.lastEvent(.water)?.date else { return "Feel the soil first" }
+        let d = Int(CareEngine.days(from: w))
+        return "Last water \(d == 0 ? "today" : "\(d) days ago") · feel the soil first"
+    }
+}
+
+/// Every plant's mood, the ones that need you first, with the reason.
+struct JungleHealthView: View {
+    @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
+
+    var body: some View {
+        let sorted = plants.sorted { rank(CareEngine.mood(for: $0)) < rank(CareEngine.mood(for: $1)) }
+        let moods = plants.map { CareEngine.mood(for: $0) }
+        let score = (Double(moods.filter { $0 == .thriving }.count) + Double(moods.filter { $0 == .fine }.count) * 0.7) / Double(max(1, plants.count))
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                HStack(spacing: 16) {
+                    DayRing(progress: score, size: 64)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(Int(score * 100))% healthy").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                        Text("\(moods.filter { $0 == .thriving }.count) thriving · \(moods.filter { $0 == .fine }.count) fine · \(moods.filter { $0 == .needsYou }.count) need you")
+                            .font(.subheadline).foregroundStyle(Jungle.subtle)
+                    }
+                }
+                JungleGroup(title: "Your plants") {
+                    ForEach(Array(sorted.enumerated()), id: \.element.id) { i, p in
+                        NavigationLink(value: p.id) {
+                            HStack(spacing: 12) {
+                                PlantAvatar(data: p.photo, size: 40)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(p.name).foregroundStyle(Jungle.text)
+                                    Text(reason(p)).font(.caption).foregroundStyle(CareEngine.mood(for: p) == .needsYou ? Jungle.warmText : Jungle.subtle).lineLimit(2)
+                                }
+                                Spacer(minLength: 0)
+                                MoodPill(mood: CareEngine.mood(for: p))
+                            }
+                            .padding(.vertical, 10)
+                        }
+                        .buttonStyle(.plain)
+                        if i < sorted.count - 1 { Divider().padding(.leading, 52) }
+                    }
+                }
+            }
+            .padding(.horizontal, 16).padding(.vertical, 12)
+        }
+        .jungleBackdrop()
+        .navigationTitle("Health")
+    }
+
+    private func rank(_ m: CareEngine.Mood) -> Int { m == .needsYou ? 0 : m == .fine ? 1 : 2 }
+    private func reason(_ p: Plant) -> String {
+        if let r = CareEngine.requests(for: p).first { return PlantVoice.say(r, plant: p) }
+        return "No needs right now"
     }
 }
