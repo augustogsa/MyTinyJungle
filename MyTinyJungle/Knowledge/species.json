@@ -1790,7 +1790,7 @@
    "peperomia obtusifolia"
   ],
   "outdoor": false,
-  "wikidata": "Q98593816",
+  "wikidata": "Q7166271",
   "difficulty": 1,
   "tags": [
    "beginner",
@@ -8648,7 +8648,7 @@
    "strawberry plant"
   ],
   "outdoor": true,
-  "wikidata": "Q45824",
+  "wikidata": "Q13158",
   "difficulty": 2,
   "bloom": "Spring to summer",
   "tags": [
@@ -13553,7 +13553,7 @@
    "sea-urchin cactus"
   ],
   "outdoor": true,
-  "wikidata": "Q18389121",
+  "wikidata": "Q131726",
   "difficulty": 1,
   "bloom": "Summer",
   "tags": [
@@ -23519,7 +23519,7 @@
    "beginner",
    "flowering"
   ],
-  "wikidata": "Q115805944"
+  "wikidata": "Q139091"
  },
  {
   "id": "tillandsia-ionantha",
@@ -23566,7 +23566,7 @@
   "winterFactor": 1.3,
   "summerFactor": 0.85,
   "growth": "slow",
-  "repotYears": 0,
+  "repotYears": 9,
   "tip": "Soak weekly and dry fully.",
   "group": "airplant",
   "origin": "Mexico and Central America",
@@ -33644,7 +33644,7 @@
   "winterFactor": 1.35,
   "summerFactor": 0.85,
   "growth": "fast",
-  "repotYears": 0,
+  "repotYears": 9,
   "tip": "Invasive outdoors in warm regions: keep it in bowls.",
   "group": "tropical",
   "origin": "Tropics",
@@ -37665,5 +37665,7240 @@
    "bathroom"
   ],
   "wikidata": "Q138336"
+ },
+ {
+  "id": "brassica-oleracea-broccoli",
+  "scientific": "Brassica oleracea var. italica",
+  "en": "Broccoli",
+  "pt": "Brócolis",
+  "family": "Brassicaceae",
+  "waterStyle": "moist",
+  "dryMin": 2,
+  "dryMax": 4,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -5,
+  "tempMax": 25,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "medium",
+  "repotYears": 9,
+  "tip": "Cut the main head while buds are tight.",
+  "group": "vegetable",
+  "origin": "Mediterranean",
+  "habit": "Annual",
+  "about": "Tight green heads; side shoots keep coming after the first cut.",
+  "aliases": [
+   "brassica oleracea italica",
+   "broccoli",
+   "brocolis",
+   "brocolos",
+   "sprouting broccoli"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "edible"
+  ],
+  "wikidata": "Q47722"
+ },
+ {
+  "id": "cabbage",
+  "scientific": "Brassica oleracea var. capitata",
+  "en": "Cabbage",
+  "pt": "Repolho",
+  "family": "Brassicaceae",
+  "waterStyle": "moist",
+  "dryMin": 2,
+  "dryMax": 4,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -8,
+  "tempMax": 25,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "medium",
+  "repotYears": 9,
+  "tip": "Net against caterpillars.",
+  "group": "vegetable",
+  "origin": "Europe",
+  "habit": "Annual",
+  "about": "Firm heads for slaw, soups and kimchi.",
+  "aliases": [
+   "brassica oleracea capitata",
+   "cabbage",
+   "capitata",
+   "couve coração",
+   "repolho"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "edible"
+  ],
+  "wikidata": "Q35051"
+ },
+ {
+  "id": "cauliflower",
+  "scientific": "Brassica oleracea var. botrytis",
+  "en": "Cauliflower",
+  "pt": "Couve-flor",
+  "family": "Brassicaceae",
+  "waterStyle": "moist",
+  "dryMin": 2,
+  "dryMax": 4,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -3,
+  "tempMax": 25,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "medium",
+  "repotYears": 9,
+  "tip": "Fold leaves over the curd to keep it white.",
+  "group": "vegetable",
+  "origin": "Mediterranean",
+  "habit": "Annual",
+  "about": "White curds that need steady care.",
+  "aliases": [
+   "brassica oleracea botrytis",
+   "brassica oleracea cauliflower group",
+   "broccoli",
+   "cauliflower",
+   "cauliflower plant",
+   "couve flor"
+  ],
+  "outdoor": true,
+  "difficulty": 3,
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "edible"
+  ],
+  "wikidata": "Q7537"
+ },
+ {
+  "id": "couve",
+  "scientific": "Brassica oleracea var. acephala",
+  "en": "Collard greens",
+  "pt": "Couve-manteiga",
+  "family": "Brassicaceae",
+  "waterStyle": "moist",
+  "dryMin": 2,
+  "dryMax": 4,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -8,
+  "tempMax": 30,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Pick lower leaves, leave the top growing.",
+  "group": "vegetable",
+  "origin": "Mediterranean",
+  "habit": "Biennial",
+  "about": "Big tender leaves picked for months.",
+  "aliases": [
+   "collards",
+   "couve",
+   "couve manteiga"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q6445386"
+ },
+ {
+  "id": "leek",
+  "scientific": "Allium porrum",
+  "en": "Leek",
+  "pt": "Alho-poró",
+  "family": "Amaryllidaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -10,
+  "tempMax": 28,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "slow",
+  "repotYears": 9,
+  "tip": "Plant deep to blanch the stems.",
+  "group": "vegetable",
+  "origin": "Mediterranean",
+  "habit": "Biennial",
+  "about": "Mild onion flavour from long white stems.",
+  "aliases": [
+   "alho poro",
+   "garden leek",
+   "leek"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor",
+   "edible"
+  ],
+  "wikidata": "Q21870138"
+ },
+ {
+  "id": "celery",
+  "scientific": "Apium graveolens",
+  "en": "Celery",
+  "pt": "Salsão",
+  "family": "Apiaceae",
+  "waterStyle": "moist",
+  "dryMin": 1,
+  "dryMax": 3,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "medium",
+  "repotYears": 9,
+  "tip": "Never let it dry out, or it goes stringy.",
+  "group": "vegetable",
+  "origin": "Mediterranean",
+  "habit": "Biennial",
+  "about": "Crunchy stalks that need lots of water.",
+  "aliases": [
+   "aipo",
+   "apium graveolens",
+   "celery",
+   "salsa-do-monte",
+   "salsao",
+   "smallage",
+   "wild celery"
+  ],
+  "outdoor": true,
+  "difficulty": 3,
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "edible"
+  ],
+  "wikidata": "Q28298"
+ },
+ {
+  "id": "fennel",
+  "scientific": "Foeniculum vulgare",
+  "en": "Fennel",
+  "pt": "Erva-doce",
+  "family": "Apiaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -5,
+  "tempMax": 30,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "vegetable",
+  "feed": "balanced",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, sown little and often",
+   "Stem cuttings rooted in a glass of water"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Flowers forming, leaves turning bitter",
+    "cause": "Bolting from heat or age",
+    "fix": "Pinch flower buds early and harvest from the top."
+   },
+   {
+    "sign": "Wilting at midday",
+    "cause": "Hot sun on a small pot",
+    "fix": "Water in the morning and give afternoon shade."
+   }
+  ],
+  "repotNotes": "Short-lived; sow fresh pots through the season rather than repotting old ones.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Keep it away from dill and tomatoes.",
+  "group": "herb-soft",
+  "origin": "Mediterranean",
+  "habit": "Perennial",
+  "about": "Feathery aniseed leaves and seeds.",
+  "aliases": [
+   "anis-doce",
+   "erva doce",
+   "erva-doce",
+   "fennel",
+   "fiolho",
+   "funcho"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q43511"
+ },
+ {
+  "id": "okra",
+  "scientific": "Abelmoschus esculentus",
+  "en": "Okra",
+  "pt": "Quiabo",
+  "family": "Malvaceae",
+  "waterStyle": "half",
+  "dryMin": 3,
+  "dryMax": 6,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 15,
+  "tempMax": 38,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Pick pods at 7–10 cm, every other day.",
+  "group": "vegetable",
+  "origin": "Africa",
+  "habit": "Annual",
+  "about": "Hibiscus flowers then green pods.",
+  "aliases": [
+   "abelmoschus esculentus",
+   "gumbo",
+   "hibiscus esculentus",
+   "ladies fingers",
+   "ladies' finger",
+   "lady's finger",
+   "ladyfinger",
+   "ocra",
+   "okra",
+   "okra plant",
+   "quiabo"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q80531"
+ },
+ {
+  "id": "peanut",
+  "scientific": "Arachis hypogaea",
+  "en": "Peanut",
+  "pt": "Amendoim",
+  "family": "Fabaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 15,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "medium",
+  "repotYears": 9,
+  "tip": "Loose, sandy soil and a long warm season.",
+  "group": "vegetable",
+  "origin": "South America",
+  "habit": "Annual",
+  "about": "Flowers that push down into the soil to make nuts.",
+  "aliases": [
+   "alcagoita",
+   "alcagoitas",
+   "amendoim",
+   "amendoin",
+   "amendoins",
+   "arachis hypogaea",
+   "aráquide",
+   "cacauete",
+   "caranga",
+   "carango",
+   "earthnut",
+   "ginguba",
+   "goober",
+   "groundnut",
+   "peanut"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q37383"
+ },
+ {
+  "id": "watermelon",
+  "scientific": "Citrullus lanatus",
+  "en": "Watermelon",
+  "pt": "Melancia",
+  "family": "Cucurbitaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 15,
+  "tempMax": 38,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Mini varieties suit big pots.",
+  "group": "vegetable",
+  "origin": "Africa",
+  "habit": "Vine",
+  "about": "Sweet summer melons on sprawling vines.",
+  "aliases": [
+   "citrullus lanatus",
+   "melancia",
+   "watermelon"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q17507129"
+ },
+ {
+  "id": "melon",
+  "scientific": "Cucumis melo",
+  "en": "Melon",
+  "pt": "Melão",
+  "family": "Cucurbitaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 15,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Water less as fruit ripens for sweeter flesh.",
+  "group": "vegetable",
+  "origin": "Asia and Africa",
+  "habit": "Vine",
+  "about": "Sweet cantaloupes and honeydews.",
+  "aliases": [
+   "abdelavi",
+   "abdelawi",
+   "cantaloupe",
+   "cucumis melo",
+   "melao",
+   "melon",
+   "melon plant",
+   "musk melon",
+   "muskmelon",
+   "true melon"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q81602"
+ },
+ {
+  "id": "asparagus",
+  "scientific": "Asparagus officinalis",
+  "en": "Asparagus",
+  "pt": "Aspargo",
+  "family": "Asparagaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -30,
+  "tempMax": 30,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "slow",
+  "repotYears": 9,
+  "tip": "Don't harvest the first two years.",
+  "group": "vegetable",
+  "origin": "Europe and Asia",
+  "habit": "Perennial",
+  "about": "Spears every spring for 20 years.",
+  "aliases": [
+   "asparagus",
+   "asparagus officinalis",
+   "asparagus plant",
+   "aspargo",
+   "garden asparagus",
+   "sparrow grass",
+   "wild asparagus"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "tags": [
+   "outdoor",
+   "edible"
+  ],
+  "wikidata": "Q28367"
+ },
+ {
+  "id": "rhubarb",
+  "scientific": "Rheum rhabarbarum",
+  "en": "Rhubarb",
+  "pt": "Ruibarbo",
+  "family": "Polygonaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 6,
+  "light": "medium",
+  "humidityMin": 40,
+  "tempMin": -30,
+  "tempMax": 28,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Pull, don't cut, stalks.",
+  "group": "vegetable",
+  "origin": "Asia",
+  "habit": "Perennial",
+  "about": "Tart pink stalks for crumbles; leaves are toxic.",
+  "aliases": [
+   "garden rhubarb",
+   "rheum rhabarbarum",
+   "rhubarb",
+   "ruibarbo"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "lowLight",
+   "edible"
+  ],
+  "wikidata": "Q7535"
+ },
+ {
+  "id": "artichoke",
+  "scientific": "Cynara cardunculus var. scolymus",
+  "en": "Globe artichoke",
+  "pt": "Alcachofra",
+  "family": "Asteraceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -10,
+  "tempMax": 30,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Harvest buds before scales open.",
+  "group": "vegetable",
+  "origin": "Mediterranean",
+  "habit": "Perennial",
+  "about": "Silver leaves and edible flower buds.",
+  "aliases": [
+   "alcachofra",
+   "artichoke",
+   "cynara cardunculus scolymus"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q23043615"
+ },
+ {
+  "id": "cassava",
+  "scientific": "Manihot esculenta",
+  "en": "Cassava",
+  "pt": "Mandioca",
+  "family": "Euphorbiaceae",
+  "waterStyle": "dry",
+  "dryMin": 7,
+  "dryMax": 12,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 15,
+  "tempMax": 38,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Grows from stem cuttings.",
+  "group": "vegetable",
+  "origin": "South America",
+  "habit": "Shrub",
+  "about": "Starchy roots; must be cooked, never raw.",
+  "aliases": [
+   "aipim",
+   "bitter cassava",
+   "cassava",
+   "cassava plant",
+   "kiki-tsiim",
+   "macaxeira",
+   "mandioca",
+   "mandiocazeiro",
+   "mandioqueira",
+   "manihot esculenta",
+   "manihot utilissima",
+   "manioc",
+   "yuca"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "drought",
+   "edible"
+  ],
+  "wikidata": "Q83124"
+ },
+ {
+  "id": "taro",
+  "scientific": "Colocasia esculenta",
+  "en": "Taro",
+  "pt": "Inhame",
+  "family": "Araceae",
+  "waterStyle": "moist",
+  "dryMin": 1,
+  "dryMax": 3,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 15,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Loves wet soil.",
+  "group": "vegetable",
+  "origin": "Southeast Asia",
+  "habit": "Large herb",
+  "about": "Edible corms under big heart leaves; cook well.",
+  "aliases": [
+   "coco yam",
+   "colocasia esculenta",
+   "dasheen",
+   "godere",
+   "inhame",
+   "inhame dos açores",
+   "kalo",
+   "olhuala",
+   "taro",
+   "wild taro"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q227997"
+ },
+ {
+  "id": "yacon",
+  "scientific": "Smallanthus sonchifolius",
+  "en": "Yacón",
+  "pt": "Batata-yacon",
+  "family": "Asteraceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 30,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Lift tubers after the first frost.",
+  "group": "vegetable",
+  "origin": "Andes",
+  "habit": "Perennial",
+  "about": "Crisp sweet tubers like a juicy apple.",
+  "aliases": [
+   "batata yacon",
+   "polymnia sonchifolia",
+   "smallanthus sonchifolius",
+   "yacon",
+   "yacón"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q1075177"
+ },
+ {
+  "id": "chayote",
+  "scientific": "Sechium edule",
+  "en": "Chayote",
+  "pt": "Chuchu",
+  "family": "Cucurbitaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 5,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Plant a whole sprouting fruit.",
+  "group": "vegetable",
+  "origin": "Mexico",
+  "habit": "Vine",
+  "about": "A vigorous vine with mild green fruit.",
+  "aliases": [
+   "caiota",
+   "chayote",
+   "chuchu",
+   "machucho",
+   "pepinela"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Autumn",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q319611"
+ },
+ {
+  "id": "pak-choi-sp",
+  "scientific": "Brassica rapa subsp. chinensis",
+  "en": "Pak choi",
+  "pt": "Acelga-chinesa",
+  "family": "Brassicaceae",
+  "waterStyle": "moist",
+  "dryMin": 2,
+  "dryMax": 4,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 25,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Sow late summer to avoid bolting.",
+  "group": "vegetable",
+  "origin": "China",
+  "habit": "Annual",
+  "about": "Crunchy white stalks and soft leaves in weeks.",
+  "aliases": [
+   "bok choy",
+   "bok choy plant",
+   "brassica chinensis",
+   "brassica rapa pak choi group",
+   "pak choi",
+   "shanghai green"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q165178"
+ },
+ {
+  "id": "mustard-greens",
+  "scientific": "Brassica juncea",
+  "en": "Mustard greens",
+  "pt": "Mostarda",
+  "family": "Brassicaceae",
+  "waterStyle": "moist",
+  "dryMin": 2,
+  "dryMax": 4,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -5,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Cut-and-come-again.",
+  "group": "vegetable",
+  "origin": "Asia",
+  "habit": "Annual",
+  "about": "Peppery leaves, red or green.",
+  "aliases": [
+   "brassica juncea",
+   "brown mustard",
+   "chinese mustard",
+   "gai choy",
+   "india mustard",
+   "indian mustard",
+   "leaf mustard",
+   "mostarda",
+   "mostarda-chinesa",
+   "mostarda-da-índia",
+   "mostarda-oriental",
+   "mustard",
+   "mustard greens",
+   "oriental mustard"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q504781"
+ },
+ {
+  "id": "watercress",
+  "scientific": "Nasturtium officinale",
+  "en": "Watercress",
+  "pt": "Agrião",
+  "family": "Brassicaceae",
+  "waterStyle": "moist",
+  "dryMin": 1,
+  "dryMax": 1,
+  "light": "medium",
+  "humidityMin": 60,
+  "tempMin": 0,
+  "tempMax": 25,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Stand the pot in water, change it often.",
+  "group": "vegetable",
+  "origin": "Europe and Asia",
+  "habit": "Aquatic",
+  "about": "Peppery leaves that grow in running water or wet pots.",
+  "aliases": [
+   "agriao",
+   "agrião-da-água",
+   "nasturtium officinale",
+   "water-cress",
+   "watercress",
+   "yellowcress"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "lowLight",
+   "edible",
+   "bathroom"
+  ],
+  "wikidata": "Q150452"
+ },
+ {
+  "id": "sorrel",
+  "scientific": "Rumex acetosa",
+  "en": "Sorrel",
+  "pt": "Azedinha",
+  "family": "Polygonaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "medium",
+  "humidityMin": 40,
+  "tempMin": -20,
+  "tempMax": 28,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "vegetable",
+  "feed": "balanced",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, sown little and often",
+   "Stem cuttings rooted in a glass of water"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Flowers forming, leaves turning bitter",
+    "cause": "Bolting from heat or age",
+    "fix": "Pinch flower buds early and harvest from the top."
+   },
+   {
+    "sign": "Wilting at midday",
+    "cause": "Hot sun on a small pot",
+    "fix": "Water in the morning and give afternoon shade."
+   }
+  ],
+  "repotNotes": "Short-lived; sow fresh pots through the season rather than repotting old ones.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Pick young leaves; remove flower stalks.",
+  "group": "herb-soft",
+  "origin": "Europe",
+  "habit": "Perennial",
+  "about": "Lemony leaves for salads and sauces.",
+  "aliases": [
+   "azedinha",
+   "azedões",
+   "common sorrel",
+   "garden sorrel",
+   "sorrel"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "lowLight",
+   "edible"
+  ],
+  "wikidata": "Q26297"
+ },
+ {
+  "id": "lovage",
+  "scientific": "Levisticum officinale",
+  "en": "Lovage",
+  "pt": "Levístico",
+  "family": "Apiaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 6,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -25,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "vegetable",
+  "feed": "balanced",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, sown little and often",
+   "Stem cuttings rooted in a glass of water"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Flowers forming, leaves turning bitter",
+    "cause": "Bolting from heat or age",
+    "fix": "Pinch flower buds early and harvest from the top."
+   },
+   {
+    "sign": "Wilting at midday",
+    "cause": "Hot sun on a small pot",
+    "fix": "Water in the morning and give afternoon shade."
+   }
+  ],
+  "repotNotes": "Short-lived; sow fresh pots through the season rather than repotting old ones.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 2,
+  "tip": "One plant is plenty.",
+  "group": "herb-soft",
+  "origin": "Southwest Asia",
+  "habit": "Perennial",
+  "about": "Celery-flavoured leaves on a tall herb.",
+  "aliases": [
+   "garden lovage",
+   "levisticum officinale",
+   "lovage",
+   "wild celery"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q27615"
+ },
+ {
+  "id": "chervil",
+  "scientific": "Anthriscus cerefolium",
+  "en": "Chervil",
+  "pt": "Cerefólio",
+  "family": "Apiaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "medium",
+  "humidityMin": 40,
+  "tempMin": -5,
+  "tempMax": 25,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "vegetable",
+  "feed": "balanced",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, sown little and often",
+   "Stem cuttings rooted in a glass of water"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Flowers forming, leaves turning bitter",
+    "cause": "Bolting from heat or age",
+    "fix": "Pinch flower buds early and harvest from the top."
+   },
+   {
+    "sign": "Wilting at midday",
+    "cause": "Hot sun on a small pot",
+    "fix": "Water in the morning and give afternoon shade."
+   }
+  ],
+  "repotNotes": "Short-lived; sow fresh pots through the season rather than repotting old ones.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Prefers shade and coolness.",
+  "group": "herb-soft",
+  "origin": "Caucasus",
+  "habit": "Annual",
+  "about": "Delicate aniseed leaves for eggs and fish.",
+  "aliases": [
+   "cerefolho",
+   "cerefolio",
+   "chervil",
+   "french parsley",
+   "garden chervil"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "lowLight",
+   "edible"
+  ],
+  "wikidata": "Q218462"
+ },
+ {
+  "id": "bay-dwarf",
+  "scientific": "Laurus nobilis (standard)",
+  "en": "Bay tree standard",
+  "pt": "Louro em topiaria",
+  "family": "Lauraceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -5,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.35,
+  "aeration": 0.85,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "cactus",
+  "feed": "light",
+  "feedWeeks": 6,
+  "propagation": [
+   "Softwood cuttings in late spring",
+   "Semi-ripe cuttings in summer",
+   "Layering a low stem into the soil"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly"
+  ],
+  "problems": [
+   {
+    "sign": "Grey, brittle leaves from the base up",
+    "cause": "Roots too wet, often in winter",
+    "fix": "Water sparingly and give it the sunniest, airiest spot."
+   },
+   {
+    "sign": "Leggy, floppy stems",
+    "cause": "Not enough sun or no trimming",
+    "fix": "Full sun, and trim lightly after flowering, never into old bare wood."
+   }
+  ],
+  "repotNotes": "Gritty mix, terracotta pot, and plenty of sun. Repot in spring if root-bound.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.8,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Clip in summer; protect in hard frost.",
+  "group": "herb-med",
+  "origin": "Mediterranean",
+  "habit": "Topiary",
+  "about": "A lollipop bay tree for doorsteps and cooking.",
+  "aliases": [
+   "bay standard"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "edible"
+  ]
+ },
+ {
+  "id": "curry-leaf",
+  "scientific": "Murraya koenigii",
+  "en": "Curry leaf",
+  "pt": "Folha-de-curry",
+  "family": "Rutaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 5,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.35,
+  "aeration": 0.85,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "cactus",
+  "feed": "light",
+  "feedWeeks": 6,
+  "propagation": [
+   "Softwood cuttings in late spring",
+   "Semi-ripe cuttings in summer",
+   "Layering a low stem into the soil"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly"
+  ],
+  "problems": [
+   {
+    "sign": "Grey, brittle leaves from the base up",
+    "cause": "Roots too wet, often in winter",
+    "fix": "Water sparingly and give it the sunniest, airiest spot."
+   },
+   {
+    "sign": "Leggy, floppy stems",
+    "cause": "Not enough sun or no trimming",
+    "fix": "Full sun, and trim lightly after flowering, never into old bare wood."
+   }
+  ],
+  "repotNotes": "Gritty mix, terracotta pot, and plenty of sun. Repot in spring if root-bound.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Warm and bright; feed with citrus food.",
+  "group": "herb-med",
+  "origin": "India",
+  "habit": "Shrub",
+  "about": "Aromatic leaves for Indian cooking.",
+  "aliases": [
+   "caril",
+   "curry leaf",
+   "curryleaftree",
+   "kari"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q244731"
+ },
+ {
+  "id": "kaffir-lime",
+  "scientific": "Citrus hystrix",
+  "en": "Makrut lime",
+  "pt": "Limão-kaffir",
+  "family": "Rutaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 3,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.5,
+  "aeration": 0.75,
+  "phMin": 5.5,
+  "phMax": 6.5,
+  "mix": "citrus",
+  "feed": "citrus",
+  "feedWeeks": 3,
+  "propagation": [
+   "Semi-ripe cuttings in summer with warmth",
+   "Grafted plants fruit sooner than seedlings"
+  ],
+  "pests": [
+   "scale",
+   "mealybugs",
+   "spider-mites",
+   "aphids"
+  ],
+  "problems": [
+   {
+    "sign": "Yellow leaves with green veins",
+    "cause": "Iron or magnesium shortage, often from alkaline soil",
+    "fix": "Use a citrus feed with micronutrients and rainwater."
+   },
+   {
+    "sign": "Leaf drop in winter",
+    "cause": "Dark, warm room with dry air",
+    "fix": "Brightest spot, cooler (10–15 °C) and less water."
+   },
+   {
+    "sign": "Sticky leaves",
+    "cause": "Scale or aphids",
+    "fix": "Wipe off and keep checking under leaves."
+   }
+  ],
+  "repotNotes": "Every 2–3 years in spring, into a free-draining citrus mix. Top-dress in between.",
+  "winterFactor": 1.5,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Same care as other citrus.",
+  "group": "citrus",
+  "origin": "Southeast Asia",
+  "habit": "Shrub",
+  "about": "Double leaves essential for Thai curries.",
+  "aliases": [
+   "kaffir lime",
+   "makrut",
+   "makrut lime",
+   "mauritius papeda",
+   "porcupine orange",
+   "thai bai makrut",
+   "thai lime"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q465934"
+ },
+ {
+  "id": "lime",
+  "scientific": "Citrus × aurantiifolia",
+  "en": "Lime tree",
+  "pt": "Limoeiro-taiti",
+  "family": "Rutaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 3,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.5,
+  "aeration": 0.75,
+  "phMin": 5.5,
+  "phMax": 6.5,
+  "mix": "citrus",
+  "feed": "citrus",
+  "feedWeeks": 3,
+  "propagation": [
+   "Semi-ripe cuttings in summer with warmth",
+   "Grafted plants fruit sooner than seedlings"
+  ],
+  "pests": [
+   "scale",
+   "mealybugs",
+   "spider-mites",
+   "aphids"
+  ],
+  "problems": [
+   {
+    "sign": "Yellow leaves with green veins",
+    "cause": "Iron or magnesium shortage, often from alkaline soil",
+    "fix": "Use a citrus feed with micronutrients and rainwater."
+   },
+   {
+    "sign": "Leaf drop in winter",
+    "cause": "Dark, warm room with dry air",
+    "fix": "Brightest spot, cooler (10–15 °C) and less water."
+   },
+   {
+    "sign": "Sticky leaves",
+    "cause": "Scale or aphids",
+    "fix": "Wipe off and keep checking under leaves."
+   }
+  ],
+  "repotNotes": "Every 2–3 years in spring, into a free-draining citrus mix. Top-dress in between.",
+  "winterFactor": 1.5,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Very bright light, warm winters.",
+  "group": "citrus",
+  "origin": "Southeast Asia",
+  "habit": "Small tree",
+  "about": "Juicy green limes from a pot-sized tree.",
+  "aliases": [
+   "lime",
+   "limao taiti"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ]
+ },
+ {
+  "id": "mandarin",
+  "scientific": "Citrus reticulata",
+  "en": "Mandarin",
+  "pt": "Tangerina",
+  "family": "Rutaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -3,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.5,
+  "aeration": 0.75,
+  "phMin": 5.5,
+  "phMax": 6.5,
+  "mix": "citrus",
+  "feed": "citrus",
+  "feedWeeks": 3,
+  "propagation": [
+   "Semi-ripe cuttings in summer with warmth",
+   "Grafted plants fruit sooner than seedlings"
+  ],
+  "pests": [
+   "scale",
+   "mealybugs",
+   "spider-mites",
+   "aphids"
+  ],
+  "problems": [
+   {
+    "sign": "Yellow leaves with green veins",
+    "cause": "Iron or magnesium shortage, often from alkaline soil",
+    "fix": "Use a citrus feed with micronutrients and rainwater."
+   },
+   {
+    "sign": "Leaf drop in winter",
+    "cause": "Dark, warm room with dry air",
+    "fix": "Brightest spot, cooler (10–15 °C) and less water."
+   },
+   {
+    "sign": "Sticky leaves",
+    "cause": "Scale or aphids",
+    "fix": "Wipe off and keep checking under leaves."
+   }
+  ],
+  "repotNotes": "Every 2–3 years in spring, into a free-draining citrus mix. Top-dress in between.",
+  "winterFactor": 1.5,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Hardier than most citrus.",
+  "group": "citrus",
+  "origin": "China",
+  "habit": "Small tree",
+  "about": "Easy-peel sweet fruit in winter.",
+  "aliases": [
+   "bergamota",
+   "citrus nobilis",
+   "citrus reticulata",
+   "e oziel",
+   "mandarin",
+   "mandarin orange",
+   "mandarine",
+   "mexerica",
+   "mixirica",
+   "pocã",
+   "pokan",
+   "poncã",
+   "tangerina",
+   "tangerine"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q125337"
+ },
+ {
+  "id": "grapefruit",
+  "scientific": "Citrus × paradisi",
+  "en": "Grapefruit",
+  "pt": "Toranja",
+  "family": "Rutaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.5,
+  "aeration": 0.75,
+  "phMin": 5.5,
+  "phMax": 6.5,
+  "mix": "citrus",
+  "feed": "citrus",
+  "feedWeeks": 3,
+  "propagation": [
+   "Semi-ripe cuttings in summer with warmth",
+   "Grafted plants fruit sooner than seedlings"
+  ],
+  "pests": [
+   "scale",
+   "mealybugs",
+   "spider-mites",
+   "aphids"
+  ],
+  "problems": [
+   {
+    "sign": "Yellow leaves with green veins",
+    "cause": "Iron or magnesium shortage, often from alkaline soil",
+    "fix": "Use a citrus feed with micronutrients and rainwater."
+   },
+   {
+    "sign": "Leaf drop in winter",
+    "cause": "Dark, warm room with dry air",
+    "fix": "Brightest spot, cooler (10–15 °C) and less water."
+   },
+   {
+    "sign": "Sticky leaves",
+    "cause": "Scale or aphids",
+    "fix": "Wipe off and keep checking under leaves."
+   }
+  ],
+  "repotNotes": "Every 2–3 years in spring, into a free-draining citrus mix. Top-dress in between.",
+  "winterFactor": 1.5,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Grow outside in warm regions.",
+  "group": "citrus",
+  "origin": "Barbados",
+  "habit": "Tree",
+  "about": "Big tangy fruit; needs warmth to sweeten.",
+  "aliases": [
+   "grapefruit",
+   "toranja"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ]
+ },
+ {
+  "id": "finger-lime",
+  "scientific": "Citrus australasica",
+  "en": "Finger lime",
+  "pt": "Limão-caviar",
+  "family": "Rutaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -2,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.5,
+  "aeration": 0.75,
+  "phMin": 5.5,
+  "phMax": 6.5,
+  "mix": "citrus",
+  "feed": "citrus",
+  "feedWeeks": 3,
+  "propagation": [
+   "Semi-ripe cuttings in summer with warmth",
+   "Grafted plants fruit sooner than seedlings"
+  ],
+  "pests": [
+   "scale",
+   "mealybugs",
+   "spider-mites",
+   "aphids"
+  ],
+  "problems": [
+   {
+    "sign": "Yellow leaves with green veins",
+    "cause": "Iron or magnesium shortage, often from alkaline soil",
+    "fix": "Use a citrus feed with micronutrients and rainwater."
+   },
+   {
+    "sign": "Leaf drop in winter",
+    "cause": "Dark, warm room with dry air",
+    "fix": "Brightest spot, cooler (10–15 °C) and less water."
+   },
+   {
+    "sign": "Sticky leaves",
+    "cause": "Scale or aphids",
+    "fix": "Wipe off and keep checking under leaves."
+   }
+  ],
+  "repotNotes": "Every 2–3 years in spring, into a free-draining citrus mix. Top-dress in between.",
+  "winterFactor": 1.5,
+  "summerFactor": 0.75,
+  "growth": "slow",
+  "repotYears": 2,
+  "tip": "Thorny: gloves when pruning.",
+  "group": "citrus",
+  "origin": "Australia",
+  "habit": "Thorny shrub",
+  "about": "Fruit full of citrus 'caviar' pearls.",
+  "aliases": [
+   "australian finger lime",
+   "bush caviar",
+   "caviar lime",
+   "caviar-vegetal",
+   "citrus caviar",
+   "finger lime",
+   "finger lime tree",
+   "lima-dedo",
+   "limão-caviar"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q50837145"
+ },
+ {
+  "id": "loquat",
+  "scientific": "Eriobotrya japonica",
+  "en": "Loquat",
+  "pt": "Nêspera",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -10,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Flowers in winter; fruit needs a mild spring.",
+  "group": "shrub",
+  "origin": "China",
+  "habit": "Small tree",
+  "about": "Big leathery leaves and apricot-like spring fruit.",
+  "aliases": [
+   "ameixa-japonesa",
+   "chinese plum",
+   "eriobotrya japonica",
+   "japanese medlar",
+   "japanese plum",
+   "loquat",
+   "magnório",
+   "nespera",
+   "nespra",
+   "nêspera"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Winter",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q41505"
+ },
+ {
+  "id": "apple-columnar",
+  "scientific": "Malus domestica (columnar)",
+  "en": "Columnar apple",
+  "pt": "Macieira colunar",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -30,
+  "tempMax": 30,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Most need a pollination partner.",
+  "group": "shrub",
+  "origin": "Central Asia",
+  "habit": "Narrow tree",
+  "about": "Apples on a single narrow stem for pots.",
+  "aliases": [
+   "columnar apple",
+   "apple tree",
+   "macieira"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ]
+ },
+ {
+  "id": "pear",
+  "scientific": "Pyrus communis",
+  "en": "Pear tree",
+  "pt": "Pereira",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -30,
+  "tempMax": 30,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Pick slightly unripe and ripen indoors.",
+  "group": "shrub",
+  "origin": "Europe and Asia",
+  "habit": "Tree",
+  "about": "White blossom and juicy pears.",
+  "aliases": [
+   "common pear",
+   "european pear",
+   "pear",
+   "pereira",
+   "wild pear"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q146281"
+ },
+ {
+  "id": "cherry",
+  "scientific": "Prunus avium",
+  "en": "Sweet cherry",
+  "pt": "Cerejeira",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -25,
+  "tempMax": 30,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Net against birds.",
+  "group": "shrub",
+  "origin": "Europe and Asia",
+  "habit": "Tree",
+  "about": "Spring blossom and dark summer cherries.",
+  "aliases": [
+   "bird cherry",
+   "cerejeira",
+   "cherry",
+   "gean",
+   "sweet cherry",
+   "wild cherry"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q165137"
+ },
+ {
+  "id": "peach",
+  "scientific": "Prunus persica",
+  "en": "Peach tree",
+  "pt": "Pessegueiro",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -20,
+  "tempMax": 32,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Cover in late winter to stop leaf curl.",
+  "group": "shrub",
+  "origin": "China",
+  "habit": "Tree",
+  "about": "Pink blossom and sweet peaches; dwarf types for pots.",
+  "aliases": [
+   "peach",
+   "peach tree",
+   "peachtree",
+   "pessego",
+   "pêssego"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q13189"
+ },
+ {
+  "id": "plum",
+  "scientific": "Prunus domestica",
+  "en": "Plum tree",
+  "pt": "Ameixeira",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -25,
+  "tempMax": 30,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Prune only in summer to avoid disease.",
+  "group": "shrub",
+  "origin": "Europe and Asia",
+  "habit": "Tree",
+  "about": "Juicy plums in late summer.",
+  "aliases": [
+   "ameixa",
+   "european plum",
+   "plum",
+   "plum tree",
+   "prunus domestica"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q44120"
+ },
+ {
+  "id": "apricot",
+  "scientific": "Prunus armeniaca",
+  "en": "Apricot tree",
+  "pt": "Damasqueiro",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -20,
+  "tempMax": 32,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Protect early flowers from frost.",
+  "group": "shrub",
+  "origin": "Central Asia",
+  "habit": "Tree",
+  "about": "Early blossom and golden fruit.",
+  "aliases": [
+   "albricoque",
+   "alperce",
+   "apricot",
+   "apricot tree",
+   "damasco",
+   "prunus armeniaca"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q37453"
+ },
+ {
+  "id": "gooseberry",
+  "scientific": "Ribes uva-crispa",
+  "en": "Gooseberry",
+  "pt": "Groselha-espinhosa",
+  "family": "Grossulariaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "medium",
+  "humidityMin": 40,
+  "tempMin": -30,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Open the centre so air can flow.",
+  "group": "shrub",
+  "origin": "Europe",
+  "habit": "Spiny shrub",
+  "about": "Tart green or red berries.",
+  "aliases": [
+   "european gooseberry",
+   "gooseberry",
+   "ribes grossularia",
+   "ribes vulgare"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "lowLight",
+   "edible"
+  ],
+  "wikidata": "Q41503"
+ },
+ {
+  "id": "redcurrant",
+  "scientific": "Ribes rubrum",
+  "en": "Redcurrant",
+  "pt": "Groselha",
+  "family": "Grossulariaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "medium",
+  "humidityMin": 40,
+  "tempMin": -30,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Fruits in partial shade too.",
+  "group": "shrub",
+  "origin": "Europe",
+  "habit": "Shrub",
+  "about": "Shining strings of red berries.",
+  "aliases": [
+   "cultivated currant",
+   "groselha",
+   "red currant",
+   "redcurrant"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "lowLight",
+   "edible"
+  ],
+  "wikidata": "Q146661"
+ },
+ {
+  "id": "blackberry",
+  "scientific": "Rubus fruticosus",
+  "en": "Thornless blackberry",
+  "pt": "Amora-preta",
+  "family": "Rosaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -25,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 3,
+  "tip": "Cut fruited canes out after harvest.",
+  "group": "shrub",
+  "origin": "Europe",
+  "habit": "Canes",
+  "about": "Big glossy berries on thornless canes.",
+  "aliases": [
+   "amora",
+   "amoreira-silvestre",
+   "blackberry",
+   "bramble",
+   "rubus fructicosus",
+   "rubus fruticosus",
+   "shrubby blackberry"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q13541716"
+ },
+ {
+  "id": "goji",
+  "scientific": "Lycium barbarum",
+  "en": "Goji berry",
+  "pt": "Goji",
+  "family": "Solanaceae",
+  "waterStyle": "dry",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -25,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 3,
+  "tip": "Tolerates poor soil and wind.",
+  "group": "shrub",
+  "origin": "China",
+  "habit": "Shrub",
+  "about": "Red berries on arching stems.",
+  "aliases": [
+   "barbary matrimony vine",
+   "chinese boxthorn",
+   "chinese wolfberry",
+   "duke of argyll's tea plant",
+   "duke of argyll's tea tree",
+   "goji",
+   "goji berries",
+   "gǒuqǐ níngxià",
+   "himalayan goji",
+   "lycium barbarum",
+   "lycium chinense",
+   "matrimony vine",
+   "mede berry",
+   "wolfberry"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "drought",
+   "edible"
+  ],
+  "wikidata": "Q196332"
+ },
+ {
+  "id": "kiwi",
+  "scientific": "Actinidia deliciosa",
+  "en": "Kiwi vine",
+  "pt": "Kiwi",
+  "family": "Actinidiaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -15,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 3,
+  "tip": "A strong pergola is a must.",
+  "group": "shrub",
+  "origin": "China",
+  "habit": "Climber",
+  "about": "Furry fruit on a vigorous vine; needs male and female.",
+  "aliases": [
+   "chinese gooseberry",
+   "fuzzy kiwi",
+   "kiwi",
+   "kiwi fruit",
+   "kiwifruit"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible",
+   "trailing"
+  ],
+  "wikidata": "Q343300"
+ },
+ {
+  "id": "grape-table",
+  "scientific": "Vitis vinifera (table)",
+  "en": "Table grape",
+  "pt": "Videira",
+  "family": "Vitaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -20,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 3,
+  "tip": "Prune hard in winter.",
+  "group": "shrub",
+  "origin": "Mediterranean",
+  "habit": "Climber",
+  "about": "Sweet grapes on a sunny wall or pergola.",
+  "aliases": [
+   "grape",
+   "uva"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible",
+   "trailing"
+  ]
+ },
+ {
+  "id": "banana-dwarf",
+  "scientific": "Musa acuminata 'Dwarf Cavendish'",
+  "en": "Dwarf banana",
+  "pt": "Bananeira anã",
+  "family": "Musaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 6,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 12,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Big pot, warmth and feed weekly in summer.",
+  "group": "tropical",
+  "origin": "Southeast Asia",
+  "habit": "Large herb",
+  "about": "Banana paddles indoors; fruits in great light.",
+  "aliases": [
+   "dwarf banana",
+   "dwarf cavendish"
+  ],
+  "outdoor": false,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ]
+ },
+ {
+  "id": "papaya",
+  "scientific": "Carica papaya",
+  "en": "Papaya",
+  "pt": "Mamoeiro",
+  "family": "Caricaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 12,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Hates cold and wet roots.",
+  "group": "tropical",
+  "origin": "Central America",
+  "habit": "Soft tree",
+  "about": "Fast tree with sweet fruit along the trunk.",
+  "aliases": [
+   "ababaia",
+   "bepaia",
+   "carica papaya",
+   "mamao",
+   "mamoeiro",
+   "papaeira",
+   "papaia",
+   "papaieira",
+   "papaw",
+   "papaya",
+   "paw paw",
+   "pawpaw",
+   "pino-guaçu"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Most of the year",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q34887"
+ },
+ {
+  "id": "mango-dwarf",
+  "scientific": "Mangifera indica (dwarf)",
+  "en": "Dwarf mango",
+  "pt": "Mangueira anã",
+  "family": "Anacardiaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 10,
+  "tempMax": 38,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Sap irritates skin.",
+  "group": "tropical",
+  "origin": "South Asia",
+  "habit": "Small tree",
+  "about": "Glossy red new leaves and sweet fruit.",
+  "aliases": [
+   "dwarf mango"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ]
+ },
+ {
+  "id": "avocado-tree",
+  "scientific": "Persea americana (grafted)",
+  "en": "Avocado tree",
+  "pt": "Abacateiro",
+  "family": "Lauraceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Toxic to birds and pets' leaves.",
+  "group": "tropical",
+  "origin": "Mexico",
+  "habit": "Tree",
+  "about": "Grafted avocados fruit in a few years.",
+  "aliases": [
+   "avocado tree",
+   "abacate"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "edible"
+  ]
+ },
+ {
+  "id": "lychee",
+  "scientific": "Litchi chinensis",
+  "en": "Lychee",
+  "pt": "Lichia",
+  "family": "Sapindaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 2,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Needs a cool, dry winter to flower.",
+  "group": "tropical",
+  "origin": "China",
+  "habit": "Tree",
+  "about": "Glossy leaves and red bumpy fruit.",
+  "aliases": [
+   "lichi",
+   "lichia",
+   "litchi",
+   "lychee"
+  ],
+  "outdoor": true,
+  "difficulty": 3,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q13182"
+ },
+ {
+  "id": "pitanga",
+  "scientific": "Eugenia uniflora",
+  "en": "Surinam cherry",
+  "pt": "Pitangueira",
+  "family": "Myrtaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Fruits in pots within 2 years.",
+  "group": "shrub",
+  "origin": "Brazil",
+  "habit": "Shrub",
+  "about": "Ribbed red cherries, sweet-tart.",
+  "aliases": [
+   "brazilian cherry",
+   "cayenne cherry",
+   "cerisier carre",
+   "cerisier carré",
+   "pitanga",
+   "surinam cherry",
+   "suriname cherry"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q306504"
+ },
+ {
+  "id": "feijoa",
+  "scientific": "Acca sellowiana",
+  "en": "Feijoa",
+  "pt": "Goiaba-serrana",
+  "family": "Myrtaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -10,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Two plants crop better.",
+  "group": "shrub",
+  "origin": "Brazil and Uruguay",
+  "habit": "Shrub",
+  "about": "Edible red flower petals and perfumed green fruit.",
+  "aliases": [
+   "acca sellowiana",
+   "feijoa",
+   "goiaba ananás",
+   "goiaba serrana",
+   "goiaba-ananás",
+   "goiaba-serrana",
+   "guavasteen",
+   "orthostemon sellowianus",
+   "pineapple guava"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q499671"
+ },
+ {
+  "id": "moringa",
+  "scientific": "Moringa oleifera",
+  "en": "Moringa",
+  "pt": "Moringa",
+  "family": "Moringaceae",
+  "waterStyle": "dry",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 10,
+  "tempMax": 40,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Cut back to keep it bushy.",
+  "group": "shrub",
+  "origin": "India",
+  "habit": "Tree",
+  "about": "Fast tree with nutritious edible leaves.",
+  "aliases": [
+   "acácia branca",
+   "akásia branka",
+   "akásia-branka",
+   "drumstick",
+   "drumstick tree",
+   "horseradishtree",
+   "morangue",
+   "moringa",
+   "moringa moringa",
+   "moringa oleifeira",
+   "moringa oleifera",
+   "moringa pterygosperma",
+   "moringa tree"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "drought",
+   "edible"
+  ],
+  "wikidata": "Q234193"
+ },
+ {
+  "id": "ora-pro-nobis",
+  "scientific": "Pereskia aculeata",
+  "en": "Ora-pro-nóbis",
+  "pt": "Ora-pro-nóbis",
+  "family": "Cactaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 5,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 2,
+  "tip": "Prickly stems: gloves on.",
+  "group": "shrub",
+  "origin": "Tropical Americas",
+  "habit": "Climbing cactus",
+  "about": "A leafy cactus vine with protein-rich edible leaves.",
+  "aliases": [
+   "barbados gooseberry",
+   "barbados shrub",
+   "ora pro nobis",
+   "pereskia aculeata"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Autumn",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible",
+   "trailing"
+  ],
+  "wikidata": "Q134422"
+ },
+ {
+  "id": "taioba",
+  "scientific": "Xanthosoma taioba",
+  "en": "Taioba",
+  "pt": "Taioba",
+  "family": "Araceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "medium",
+  "humidityMin": 50,
+  "tempMin": 15,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 6.8,
+  "mix": "vegetable",
+  "feed": "bloom",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, started indoors and planted out after the last frost"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "spider-mites",
+   "slugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lower leaves yellowing",
+    "cause": "Hungry plant or uneven watering",
+    "fix": "Feed a potassium-rich food and water evenly."
+   },
+   {
+    "sign": "Flowers dropping without fruit",
+    "cause": "Heat, cold nights or dry roots",
+    "fix": "Steady watering; a gentle shake helps pollination."
+   }
+  ],
+  "repotNotes": "Grows fast: pot on into a large container (20 L or more) once nights stay mild.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.7,
+  "growth": "fast",
+  "repotYears": 9,
+  "tip": "Must be cooked; raw leaves irritate.",
+  "group": "vegetable",
+  "origin": "Brazil",
+  "habit": "Large herb",
+  "about": "Big edible leaves when well cooked.",
+  "aliases": [
+   "taioba"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "lowLight",
+   "edible"
+  ],
+  "wikidata": "Q28806520"
+ },
+ {
+  "id": "hibiscus-sabdariffa",
+  "scientific": "Hibiscus sabdariffa",
+  "en": "Roselle",
+  "pt": "Vinagreira",
+  "family": "Malvaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 15,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Harvest calyces after flowers drop.",
+  "group": "shrub",
+  "origin": "West Africa",
+  "habit": "Annual shrub",
+  "about": "Red calyces for tangy tea.",
+  "aliases": [
+   "caruru-azedo",
+   "hibiscus sabdariffa",
+   "hibiscus tea",
+   "roselle",
+   "vinagreira"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Autumn",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "edible"
+  ],
+  "wikidata": "Q319390"
+ },
+ {
+  "id": "stevia-plant",
+  "scientific": "Stevia rebaudiana",
+  "en": "Sweet leaf",
+  "pt": "Estévia",
+  "family": "Asteraceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 5,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.65,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "vegetable",
+  "feed": "balanced",
+  "feedWeeks": 2,
+  "propagation": [
+   "Seed, sown little and often",
+   "Stem cuttings rooted in a glass of water"
+  ],
+  "pests": [
+   "aphids",
+   "whitefly",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Flowers forming, leaves turning bitter",
+    "cause": "Bolting from heat or age",
+    "fix": "Pinch flower buds early and harvest from the top."
+   },
+   {
+    "sign": "Wilting at midday",
+    "cause": "Hot sun on a small pot",
+    "fix": "Water in the morning and give afternoon shade."
+   }
+  ],
+  "repotNotes": "Short-lived; sow fresh pots through the season rather than repotting old ones.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 1,
+  "tip": "Pinch flowers for sweeter leaves.",
+  "group": "herb-soft",
+  "origin": "Paraguay",
+  "habit": "Perennial",
+  "about": "Leaves 30 times sweeter than sugar.",
+  "aliases": [
+   "candyleaf",
+   "stevia rebaudiana",
+   "sugarleaf",
+   "sweetleaf"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Autumn",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "edible"
+  ],
+  "wikidata": "Q7213452"
+ },
+ {
+  "id": "saffron",
+  "scientific": "Crocus sativus",
+  "en": "Saffron crocus",
+  "pt": "Açafrão",
+  "family": "Iridaceae",
+  "waterStyle": "dry",
+  "dryMin": 10,
+  "dryMax": 18,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -15,
+  "tempMax": 32,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.5,
+  "aeration": 0.7,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Offsets (bulblets) lifted and replanted when the foliage dies back"
+  ],
+  "pests": [
+   "aphids",
+   "slugs",
+   "bulb-flies"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves but no flowers",
+    "cause": "Leaves cut too early last year, or bulbs crowded",
+    "fix": "Let foliage yellow before removing and divide clumps."
+   },
+   {
+    "sign": "Soft, rotting bulbs",
+    "cause": "Waterlogged ground",
+    "fix": "Plant in free-draining soil with grit underneath."
+   }
+  ],
+  "repotNotes": "Plant bulbs at two to three times their own depth. Let leaves die back naturally to feed next year's flowers.",
+  "winterFactor": 2.0,
+  "summerFactor": 1.0,
+  "growth": "medium",
+  "repotYears": 1,
+  "tip": "Plant in late summer; pick the threads on dry days.",
+  "group": "bulb",
+  "origin": "Southwest Asia",
+  "habit": "Corm",
+  "about": "Autumn crocus whose red threads are saffron.",
+  "aliases": [
+   "acafrao",
+   "autumn crocus",
+   "açafrão",
+   "saffron",
+   "saffron crocus",
+   "saffron flower"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Autumn",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "drought",
+   "edible"
+  ],
+  "wikidata": "Q15041677"
+ },
+ {
+  "id": "turmeric",
+  "scientific": "Curcuma longa",
+  "en": "Turmeric",
+  "pt": "Açafrão-da-terra",
+  "family": "Zingiberaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "bright",
+  "humidityMin": 60,
+  "tempMin": 15,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Dies back in winter: keep almost dry.",
+  "group": "tropical",
+  "origin": "South Asia",
+  "habit": "Rhizome",
+  "about": "Lush leaves and orange rhizomes.",
+  "aliases": [
+   "acafrao da terra",
+   "açafrão da terra",
+   "açafrão indiano",
+   "common turmeric",
+   "curcuma",
+   "curcuma longa",
+   "cúrcuma",
+   "indian saffron",
+   "medicinal plant",
+   "sacred turmeric",
+   "turmeric",
+   "turmeric plant"
+  ],
+  "outdoor": false,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "flowering",
+   "fastGrowing",
+   "edible",
+   "bathroom"
+  ],
+  "wikidata": "Q42562"
+ },
+ {
+  "id": "cardamom",
+  "scientific": "Elettaria cardamomum",
+  "en": "Cardamom",
+  "pt": "Cardamomo",
+  "family": "Zingiberaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "medium",
+  "humidityMin": 60,
+  "tempMin": 15,
+  "tempMax": 30,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "A good shade houseplant.",
+  "group": "tropical",
+  "origin": "India",
+  "habit": "Rhizome",
+  "about": "Fragrant leaves smell of cardamom when rubbed.",
+  "aliases": [
+   "cardamom",
+   "cardamomo",
+   "cardamomo-verdadeiro",
+   "elettaria cardamomum"
+  ],
+  "outdoor": false,
+  "difficulty": 2,
+  "tags": [
+   "petSafe",
+   "lowLight",
+   "edible",
+   "bathroom"
+  ],
+  "wikidata": "Q33466"
+ },
+ {
+  "id": "galangal",
+  "scientific": "Alpinia galanga",
+  "en": "Galangal",
+  "pt": "Galanga",
+  "family": "Zingiberaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "bright",
+  "humidityMin": 60,
+  "tempMin": 15,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Warm and moist.",
+  "group": "tropical",
+  "origin": "Southeast Asia",
+  "habit": "Rhizome",
+  "about": "Peppery rhizomes for Thai cooking.",
+  "aliases": [
+   "galangal",
+   "greater galangal"
+  ],
+  "outdoor": false,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "flowering",
+   "fastGrowing",
+   "edible",
+   "bathroom"
+  ],
+  "wikidata": "Q402971"
+ },
+ {
+  "id": "alpinia",
+  "scientific": "Alpinia zerumbet 'Variegata'",
+  "en": "Variegated shell ginger",
+  "pt": "Colônia",
+  "family": "Zingiberaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "bright",
+  "humidityMin": 55,
+  "tempMin": 10,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Lots of light for the stripes.",
+  "group": "tropical",
+  "origin": "East Asia",
+  "habit": "Clump",
+  "about": "Gold-striped leaves and pearly shell flowers.",
+  "aliases": [
+   "shell ginger",
+   "colonia"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "bathroom"
+  ]
+ },
+ {
+  "id": "costus",
+  "scientific": "Costus spiralis",
+  "en": "Spiral ginger",
+  "pt": "Cana-do-brejo",
+  "family": "Costaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "bright",
+  "humidityMin": 60,
+  "tempMin": 15,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Warm and moist.",
+  "group": "tropical",
+  "origin": "Tropical Americas",
+  "habit": "Spiralling cane",
+  "about": "Leaves arranged in a spiral staircase.",
+  "aliases": [
+   "cana do brejo",
+   "spiral ginger"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "bathroom"
+  ],
+  "wikidata": "Q15325563"
+ },
+ {
+  "id": "heliconia",
+  "scientific": "Heliconia psittacorum",
+  "en": "Parrot's flower",
+  "pt": "Helicônia",
+  "family": "Heliconiaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 60,
+  "tempMin": 15,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Lots of sun and water.",
+  "group": "tropical",
+  "origin": "Tropical Americas",
+  "habit": "Clump",
+  "about": "Bird-beak bracts in hot orange and red.",
+  "aliases": [
+   "heliconia",
+   "heliconia"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "fastGrowing"
+  ]
+ },
+ {
+  "id": "cordyline-red",
+  "scientific": "Cordyline fruticosa 'Red Sister'",
+  "en": "Red sister ti plant",
+  "pt": "Cordiline vermelha",
+  "family": "Asparagaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "bright",
+  "humidityMin": 50,
+  "tempMin": 13,
+  "tempMax": 32,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Bright light keeps colours rich.",
+  "group": "tropical",
+  "origin": "Cultivar",
+  "habit": "Cane",
+  "about": "Hot pink and burgundy leaves.",
+  "aliases": [
+   "red sister",
+   "ti plant"
+  ],
+  "outdoor": false,
+  "difficulty": 1,
+  "tags": [
+   "beginner"
+  ]
+ },
+ {
+  "id": "acalypha",
+  "scientific": "Acalypha hispida",
+  "en": "Chenille plant",
+  "pt": "Rabo-de-gato",
+  "family": "Euphorbiaceae",
+  "waterStyle": "moist",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "bright",
+  "humidityMin": 55,
+  "tempMin": 15,
+  "tempMax": 32,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Warm, humid and well fed.",
+  "group": "flowering",
+  "origin": "New Guinea",
+  "habit": "Shrub",
+  "about": "Fuzzy red catkins like chenille ropes.",
+  "aliases": [
+   "chenille plant",
+   "rabo de gato",
+   "red-hot cat's tail"
+  ],
+  "outdoor": false,
+  "difficulty": 2,
+  "bloom": "Most of the year",
+  "tags": [
+   "flowering",
+   "fastGrowing",
+   "bathroom"
+  ],
+  "wikidata": "Q163528"
+ },
+ {
+  "id": "pentas",
+  "scientific": "Pentas lanceolata",
+  "en": "Egyptian starflower",
+  "pt": "Pentas",
+  "family": "Rubiaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 10,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Deadhead to keep blooming.",
+  "group": "flowering",
+  "origin": "East Africa",
+  "habit": "Shrub",
+  "about": "Clusters of star flowers loved by butterflies.",
+  "aliases": [
+   "egyptian starcluster",
+   "pentas",
+   "star cluster"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing"
+  ],
+  "wikidata": "Q3336507"
+ },
+ {
+  "id": "ixora",
+  "scientific": "Ixora coccinea",
+  "en": "Jungle geranium",
+  "pt": "Ixora",
+  "family": "Rubiaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 15,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Acid feed keeps leaves green.",
+  "group": "flowering",
+  "origin": "India",
+  "habit": "Shrub",
+  "about": "Ball-shaped clusters of red or orange flowers.",
+  "aliases": [
+   "ixora",
+   "scarlet jungleflame"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering"
+  ],
+  "wikidata": "Q1856114"
+ },
+ {
+  "id": "allamanda",
+  "scientific": "Allamanda cathartica",
+  "en": "Golden trumpet",
+  "pt": "Alamanda",
+  "family": "Apocynaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 12,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 2,
+  "tip": "Sap is toxic; full sun.",
+  "group": "flowering",
+  "origin": "Brazil",
+  "habit": "Climber",
+  "about": "Big buttery yellow trumpets.",
+  "aliases": [
+   "alamanda",
+   "golden trumpet",
+   "orélia"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "trailing"
+  ],
+  "wikidata": "Q1345632"
+ },
+ {
+  "id": "thunbergia",
+  "scientific": "Thunbergia alata",
+  "en": "Black-eyed Susan vine",
+  "pt": "Amarelinha",
+  "family": "Acanthaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 10,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Easy from seed.",
+  "group": "flowering",
+  "origin": "East Africa",
+  "habit": "Climbing annual",
+  "about": "Orange flowers with dark eyes on a twining vine.",
+  "aliases": [
+   "amarelinha",
+   "black eyed susan vine",
+   "black-eyed susan vine",
+   "blackeyed susan vine",
+   "bunda-de-mulata",
+   "bunda-de-negro",
+   "carólia",
+   "cu-de-cachorro",
+   "erva cabrita",
+   "erva de cabrita",
+   "erva-cabrita",
+   "jasmim da itália",
+   "jasmim-sombra",
+   "olho preto"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "trailing"
+  ],
+  "wikidata": "Q161248"
+ },
+ {
+  "id": "ipomoea-purpurea",
+  "scientific": "Ipomoea purpurea",
+  "en": "Morning glory",
+  "pt": "Ipomeia",
+  "family": "Convolvulaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 8,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Seeds are toxic.",
+  "group": "flowering",
+  "origin": "Mexico",
+  "habit": "Climbing annual",
+  "about": "Trumpets that open each morning.",
+  "aliases": [
+   "ipomeia",
+   "morning glory",
+   "tall morning-glory"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "trailing"
+  ],
+  "wikidata": "Q1630964"
+ },
+ {
+  "id": "quisqualis",
+  "scientific": "Combretum indicum",
+  "en": "Rangoon creeper",
+  "pt": "Arbusto-milagroso",
+  "family": "Combretaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 10,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 2,
+  "tip": "Strong support.",
+  "group": "flowering",
+  "origin": "Southeast Asia",
+  "habit": "Climber",
+  "about": "Fragrant flowers that change from white to red.",
+  "aliases": [
+   "burma creeper",
+   "quisqualis indica",
+   "rangoon creeper"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "trailing"
+  ],
+  "wikidata": "Q1062389"
+ },
+ {
+  "id": "petrea",
+  "scientific": "Petrea volubilis",
+  "en": "Queen's wreath",
+  "pt": "Flor-de-são-miguel",
+  "family": "Verbenaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 5,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Flowers on new growth.",
+  "group": "flowering",
+  "origin": "Tropical Americas",
+  "habit": "Climber",
+  "about": "Long sprays of violet star flowers.",
+  "aliases": [
+   "petrea",
+   "queen's wreath",
+   "queen's-wreath"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "trailing"
+  ],
+  "wikidata": "Q6073575"
+ },
+ {
+  "id": "bauhinia",
+  "scientific": "Bauhinia variegata",
+  "en": "Orchid tree",
+  "pt": "Pata-de-vaca",
+  "family": "Fabaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 3,
+  "tip": "Full sun.",
+  "group": "shrub",
+  "origin": "South Asia",
+  "habit": "Tree",
+  "about": "Orchid-like flowers and two-lobed cow-hoof leaves.",
+  "aliases": [
+   "camel's foot tree",
+   "casco-de-vaca lilás",
+   "mountain ebony",
+   "orchid tree",
+   "pata de vaca",
+   "unha-de-vaca-lilás"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing"
+  ],
+  "wikidata": "Q840341"
+ },
+ {
+  "id": "jacaranda",
+  "scientific": "Jacaranda mimosifolia",
+  "en": "Jacaranda",
+  "pt": "Jacarandá",
+  "family": "Bignoniaceae",
+  "waterStyle": "half",
+  "dryMin": 7,
+  "dryMax": 12,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -3,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 3,
+  "tip": "Young trees are lovely foliage pot plants.",
+  "group": "shrub",
+  "origin": "Argentina and Bolivia",
+  "habit": "Tree",
+  "about": "Clouds of violet trumpets on fern-like leaves.",
+  "aliases": [
+   "black poui",
+   "jacaranda",
+   "jacaranda mimosaefolia",
+   "jacaranda mimosifolia",
+   "jacaranda ovalifolia"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing"
+  ],
+  "wikidata": "Q838818"
+ },
+ {
+  "id": "ipe",
+  "scientific": "Handroanthus chrysotrichus",
+  "en": "Golden trumpet tree",
+  "pt": "Ipê-amarelo",
+  "family": "Bignoniaceae",
+  "waterStyle": "half",
+  "dryMin": 7,
+  "dryMax": 12,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 0,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Flowers before leaves in late winter.",
+  "group": "shrub",
+  "origin": "Brazil",
+  "habit": "Tree",
+  "about": "Bare branches covered in yellow trumpets.",
+  "aliases": [
+   "golden trumpet tree",
+   "ipe",
+   "ipe amarelo",
+   "tabebuia chrysotricha"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Late winter",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering"
+  ],
+  "wikidata": "Q15548105"
+ },
+ {
+  "id": "brunfelsia",
+  "scientific": "Brunfelsia pauciflora",
+  "en": "Yesterday today tomorrow",
+  "pt": "Manacá-de-cheiro",
+  "family": "Solanaceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "bright",
+  "humidityMin": 50,
+  "tempMin": 10,
+  "tempMax": 30,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Toxic to dogs.",
+  "group": "flowering",
+  "origin": "Brazil",
+  "habit": "Shrub",
+  "about": "Scented flowers fading purple to lavender to white.",
+  "aliases": [
+   "manaca",
+   "yesterday today and tomorrow"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "outdoor",
+   "flowering"
+  ],
+  "wikidata": "Q149804"
+ },
+ {
+  "id": "gardenia-radicans",
+  "scientific": "Gardenia jasminoides 'Radicans'",
+  "en": "Dwarf gardenia",
+  "pt": "Gardênia anã",
+  "family": "Rubiaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 6,
+  "light": "bright",
+  "humidityMin": 55,
+  "tempMin": 10,
+  "tempMax": 28,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.7,
+  "aeration": 0.6,
+  "phMin": 4.5,
+  "phMax": 5.5,
+  "mix": "acid",
+  "feed": "acid",
+  "feedWeeks": 3,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Layering a low branch"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "vine-weevil",
+   "scale"
+  ],
+  "problems": [
+   {
+    "sign": "Yellow leaves with green veins",
+    "cause": "Soil not acidic enough",
+    "fix": "Rainwater, ericaceous feed and a sulphur-based acidifier."
+   },
+   {
+    "sign": "Flower buds dropping",
+    "cause": "Dry roots in late summer, when next year's buds form",
+    "fix": "Keep evenly moist from July to September."
+   }
+  ],
+  "repotNotes": "Ericaceous (lime-free) compost only. Water with rainwater where tap water is hard.",
+  "winterFactor": 1.2,
+  "summerFactor": 0.75,
+  "growth": "slow",
+  "repotYears": 2,
+  "tip": "Acidic soil and steady moisture.",
+  "group": "acid",
+  "origin": "Cultivar",
+  "habit": "Groundcover shrub",
+  "about": "Small leaves and very fragrant white flowers.",
+  "aliases": [
+   "dwarf gardenia"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "outdoor",
+   "flowering",
+   "bathroom"
+  ]
+ },
+ {
+  "id": "murraya",
+  "scientific": "Murraya paniculata",
+  "en": "Orange jasmine",
+  "pt": "Murta-de-cheiro",
+  "family": "Rutaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "bright",
+  "humidityMin": 45,
+  "tempMin": 5,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Lovely clipped hedge in warm climates.",
+  "group": "shrub",
+  "origin": "South Asia",
+  "habit": "Shrub",
+  "about": "Glossy leaves and orange-blossom scented flowers.",
+  "aliases": [
+   "murta",
+   "orange jasmine",
+   "orange jessamine"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Several times a year",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering"
+  ],
+  "wikidata": "Q238591"
+ },
+ {
+  "id": "stephanotis",
+  "scientific": "Stephanotis floribunda",
+  "en": "Madagascar jasmine",
+  "pt": "Jasmim-de-madagascar",
+  "family": "Apocynaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "bright",
+  "humidityMin": 55,
+  "tempMin": 13,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Don't move it once budded.",
+  "group": "flowering",
+  "origin": "Madagascar",
+  "habit": "Climber",
+  "about": "Waxy white wedding flowers with heavy scent.",
+  "aliases": [
+   "bridal wreath",
+   "madagascar jasmine"
+  ],
+  "outdoor": false,
+  "difficulty": 3,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "flowering",
+   "bathroom",
+   "trailing"
+  ],
+  "wikidata": "Q1786657"
+ },
+ {
+  "id": "jasminum-sambac",
+  "scientific": "Jasminum sambac",
+  "en": "Arabian jasmine",
+  "pt": "Jasmim-árabe",
+  "family": "Oleaceae",
+  "waterStyle": "half",
+  "dryMin": 5,
+  "dryMax": 8,
+  "light": "direct",
+  "humidityMin": 50,
+  "tempMin": 10,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 2,
+  "tip": "Full sun, regular feed.",
+  "group": "flowering",
+  "origin": "South Asia",
+  "habit": "Shrub",
+  "about": "Intensely scented white flowers for tea.",
+  "aliases": [
+   "arabian jasmine",
+   "mogra",
+   "sambac",
+   "sampaguita"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering"
+  ],
+  "wikidata": "Q1356614"
+ },
+ {
+  "id": "gerbera-pot",
+  "scientific": "Gerbera jamesonii (pot)",
+  "en": "Pot gerbera",
+  "pt": "Gérbera de vaso",
+  "family": "Asteraceae",
+  "waterStyle": "half",
+  "dryMin": 4,
+  "dryMax": 7,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 5,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 1,
+  "tip": "Water at the base; crowns rot easily.",
+  "group": "flowering",
+  "origin": "South Africa",
+  "habit": "Rosette",
+  "about": "Big cheerful daisies in every colour.",
+  "aliases": [
+   "pot gerbera"
+  ],
+  "outdoor": false,
+  "difficulty": 2,
+  "bloom": "Spring to autumn",
+  "tags": [
+   "petSafe",
+   "flowering"
+  ]
+ },
+ {
+  "id": "chrysanthemum-pot",
+  "scientific": "Chrysanthemum × morifolium (pot)",
+  "en": "Pot mum",
+  "pt": "Crisântemo de vaso",
+  "family": "Asteraceae",
+  "waterStyle": "half",
+  "dryMin": 3,
+  "dryMax": 6,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": -5,
+  "tempMax": 25,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 1,
+  "tip": "Keep moist and cool for long bloom.",
+  "group": "flowering",
+  "origin": "Hybrid",
+  "habit": "Mound",
+  "about": "Domes of autumn flowers.",
+  "aliases": [
+   "pot mum",
+   "mum"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Autumn",
+  "tags": [
+   "beginner",
+   "outdoor",
+   "flowering"
+  ]
+ },
+ {
+  "id": "cineraria",
+  "scientific": "Pericallis × hybrida",
+  "en": "Florist's cineraria",
+  "pt": "Cinerária",
+  "family": "Asteraceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "bright",
+  "humidityMin": 50,
+  "tempMin": 5,
+  "tempMax": 20,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Keep cool; enjoy for weeks then compost.",
+  "group": "flowering",
+  "origin": "Canary Islands",
+  "habit": "Mound",
+  "about": "Brilliant daisy domes in winter.",
+  "aliases": [
+   "cineraria"
+  ],
+  "outdoor": false,
+  "difficulty": 2,
+  "bloom": "Winter to spring",
+  "tags": [
+   "flowering",
+   "fastGrowing"
+  ]
+ },
+ {
+  "id": "calceolaria",
+  "scientific": "Calceolaria",
+  "en": "Pocketbook plant",
+  "pt": "Calceolária",
+  "family": "Calceolariaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "bright",
+  "humidityMin": 50,
+  "tempMin": 8,
+  "tempMax": 20,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Cool, bright and moist.",
+  "group": "flowering",
+  "origin": "South America",
+  "habit": "Mound",
+  "about": "Pouch-shaped speckled flowers.",
+  "aliases": [
+   "lady's purse",
+   "lady's slipper",
+   "pocketbook plant",
+   "pouch flower",
+   "slipper and pocketbook flower",
+   "slipper flower",
+   "slipperwort"
+  ],
+  "outdoor": false,
+  "difficulty": 2,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "flowering",
+   "fastGrowing"
+  ],
+  "wikidata": "Q1137428"
+ },
+ {
+  "id": "exacum",
+  "scientific": "Exacum affine",
+  "en": "Persian violet",
+  "pt": "Violeta-persa",
+  "family": "Gentianaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "bright",
+  "humidityMin": 50,
+  "tempMin": 15,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Short-lived; enjoy for a season.",
+  "group": "flowering",
+  "origin": "Socotra",
+  "habit": "Mound",
+  "about": "Tiny violet flowers with golden eyes, softly scented.",
+  "aliases": [
+   "persian violet"
+  ],
+  "outdoor": false,
+  "difficulty": 1,
+  "bloom": "Summer to autumn",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "flowering",
+   "fastGrowing"
+  ],
+  "wikidata": "Q5392219"
+ },
+ {
+  "id": "browallia",
+  "scientific": "Browallia speciosa",
+  "en": "Bush violet",
+  "pt": "Browállia",
+  "family": "Solanaceae",
+  "waterStyle": "moist",
+  "dryMin": 3,
+  "dryMax": 5,
+  "light": "medium",
+  "humidityMin": 50,
+  "tempMin": 12,
+  "tempMax": 28,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "universal",
+  "feed": "bloom",
+  "feedWeeks": 3,
+  "propagation": [
+   "Stem or leaf cuttings in spring and summer"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly",
+   "mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Lots of leaves, no flowers",
+    "cause": "Too little light or too much nitrogen",
+    "fix": "More light and a potassium-rich feed."
+   },
+   {
+    "sign": "Buds falling before opening",
+    "cause": "Dry roots, draughts or being moved",
+    "fix": "Steady watering and a fixed spot."
+   }
+  ],
+  "repotNotes": "After flowering, one size up in a light, free-draining mix.",
+  "winterFactor": 1.3,
+  "summerFactor": 0.8,
+  "growth": "fast",
+  "repotYears": 1,
+  "tip": "Pinch for bushiness.",
+  "group": "flowering",
+  "origin": "Tropical Americas",
+  "habit": "Annual",
+  "about": "Starry blue flowers for shade.",
+  "aliases": [
+   "amethyst flower",
+   "bush violet",
+   "sapphire flower"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "lowLight"
+  ],
+  "wikidata": "Q149763"
+ },
+ {
+  "id": "jatropha",
+  "scientific": "Jatropha podagrica",
+  "en": "Buddha belly",
+  "pt": "Batata-do-diabo",
+  "family": "Euphorbiaceae",
+  "waterStyle": "dry",
+  "dryMin": 8,
+  "dryMax": 14,
+  "light": "direct",
+  "humidityMin": 40,
+  "tempMin": 12,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.35,
+  "aeration": 0.85,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "cactus",
+  "feed": "light",
+  "feedWeeks": 8,
+  "propagation": [
+   "Single leaves laid on dry gritty mix until roots form",
+   "Stem cuttings left to callus for a few days, then potted dry",
+   "Offsets (pups) separated in spring"
+  ],
+  "pests": [
+   "mealybugs",
+   "scale",
+   "root-mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Soft, translucent, mushy leaves",
+    "cause": "Too much water",
+    "fix": "Stop watering, unpot and cut away soft roots, repot dry."
+   },
+   {
+    "sign": "Stretched, leaning stems with gaps",
+    "cause": "Not enough sun",
+    "fix": "Move to the sunniest window you have; behead and re-root leggy tops."
+   },
+   {
+    "sign": "Wrinkled, deflated leaves",
+    "cause": "Thirst after a long dry spell",
+    "fix": "Water deeply, then let it dry out fully again."
+   }
+  ],
+  "repotNotes": "Repot in spring into a shallow pot of gritty mix. Wait a week before the first drink.",
+  "winterFactor": 2.0,
+  "summerFactor": 0.9,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Very toxic seeds and sap.",
+  "group": "succulent",
+  "origin": "Central America",
+  "habit": "Caudiciform",
+  "about": "A swollen bottle trunk and coral flowers.",
+  "aliases": [
+   "bottleplant",
+   "bottleplant shrub",
+   "buddha belly",
+   "buddha belly plant",
+   "gout plant",
+   "goutystalk nettlespurge",
+   "guatemalan rhubarb"
+  ],
+  "outdoor": false,
+  "difficulty": 2,
+  "bloom": "Summer",
+  "tags": [
+   "flowering",
+   "drought"
+  ],
+  "wikidata": "Q5240151"
+ },
+ {
+  "id": "zamia",
+  "scientific": "Zamia furfuracea",
+  "en": "Cardboard palm",
+  "pt": "Zâmia",
+  "family": "Zamiaceae",
+  "waterStyle": "dry",
+  "dryMin": 8,
+  "dryMax": 14,
+  "light": "bright",
+  "humidityMin": 40,
+  "tempMin": 10,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.35,
+  "aeration": 0.85,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "cactus",
+  "feed": "light",
+  "feedWeeks": 8,
+  "propagation": [
+   "Single leaves laid on dry gritty mix until roots form",
+   "Stem cuttings left to callus for a few days, then potted dry",
+   "Offsets (pups) separated in spring"
+  ],
+  "pests": [
+   "mealybugs",
+   "scale",
+   "root-mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Soft, translucent, mushy leaves",
+    "cause": "Too much water",
+    "fix": "Stop watering, unpot and cut away soft roots, repot dry."
+   },
+   {
+    "sign": "Stretched, leaning stems with gaps",
+    "cause": "Not enough sun",
+    "fix": "Move to the sunniest window you have; behead and re-root leggy tops."
+   },
+   {
+    "sign": "Wrinkled, deflated leaves",
+    "cause": "Thirst after a long dry spell",
+    "fix": "Water deeply, then let it dry out fully again."
+   }
+  ],
+  "repotNotes": "Repot in spring into a shallow pot of gritty mix. Wait a week before the first drink.",
+  "winterFactor": 2.0,
+  "summerFactor": 0.9,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Extremely toxic to pets.",
+  "group": "succulent",
+  "origin": "Mexico",
+  "habit": "Cycad",
+  "about": "Stiff leathery leaflets like cardboard.",
+  "aliases": [
+   "cardboard palm",
+   "cardboard-palm",
+   "cycad",
+   "zamia"
+  ],
+  "outdoor": false,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "drought"
+  ],
+  "wikidata": "Q924592"
+ },
+ {
+  "id": "dioon",
+  "scientific": "Dioon edule",
+  "en": "Virgin's palm",
+  "pt": "Díon",
+  "family": "Zamiaceae",
+  "waterStyle": "dry",
+  "dryMin": 10,
+  "dryMax": 18,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -5,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.35,
+  "aeration": 0.85,
+  "phMin": 6.0,
+  "phMax": 7.0,
+  "mix": "cactus",
+  "feed": "light",
+  "feedWeeks": 8,
+  "propagation": [
+   "Single leaves laid on dry gritty mix until roots form",
+   "Stem cuttings left to callus for a few days, then potted dry",
+   "Offsets (pups) separated in spring"
+  ],
+  "pests": [
+   "mealybugs",
+   "scale",
+   "root-mealybugs"
+  ],
+  "problems": [
+   {
+    "sign": "Soft, translucent, mushy leaves",
+    "cause": "Too much water",
+    "fix": "Stop watering, unpot and cut away soft roots, repot dry."
+   },
+   {
+    "sign": "Stretched, leaning stems with gaps",
+    "cause": "Not enough sun",
+    "fix": "Move to the sunniest window you have; behead and re-root leggy tops."
+   },
+   {
+    "sign": "Wrinkled, deflated leaves",
+    "cause": "Thirst after a long dry spell",
+    "fix": "Water deeply, then let it dry out fully again."
+   }
+  ],
+  "repotNotes": "Repot in spring into a shallow pot of gritty mix. Wait a week before the first drink.",
+  "winterFactor": 2.0,
+  "summerFactor": 0.9,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Very toxic seeds.",
+  "group": "succulent",
+  "origin": "Mexico",
+  "habit": "Cycad",
+  "about": "A slow, prehistoric-looking cycad.",
+  "aliases": [
+   "chestnut dioon",
+   "cycad",
+   "virgin palm",
+   "virgins palm"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "tags": [
+   "outdoor",
+   "drought"
+  ],
+  "wikidata": "Q134518"
+ },
+ {
+  "id": "araucaria",
+  "scientific": "Araucaria heterophylla",
+  "en": "Norfolk Island pine",
+  "pt": "Pinheiro-de-norfolk",
+  "family": "Araucariaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "bright",
+  "humidityMin": 50,
+  "tempMin": 7,
+  "tempMax": 28,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.7,
+  "aeration": 0.5,
+  "phMin": 5.8,
+  "phMax": 6.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 6,
+  "propagation": [
+   "Stem or tip cuttings in spring",
+   "Air layering for woody stems"
+  ],
+  "pests": [
+   "spider-mites",
+   "mealybugs",
+   "scale",
+   "fungus-gnats"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves dropping after a move",
+    "cause": "Change of light or temperature",
+    "fix": "Give it a few weeks in one spot with steady care. It is settling in."
+   },
+   {
+    "sign": "Brown crispy edges",
+    "cause": "Dry air or uneven watering",
+    "fix": "Water deeply when due and group it with other plants."
+   },
+   {
+    "sign": "Pale, stretched growth",
+    "cause": "Too little light",
+    "fix": "A brighter spot, rotated weekly."
+   }
+  ],
+  "repotNotes": "One size up every couple of years, in fresh universal mix with extra perlite.",
+  "winterFactor": 1.35,
+  "summerFactor": 0.85,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Turn weekly so it grows straight.",
+  "group": "tropical",
+  "origin": "Norfolk Island",
+  "habit": "Conifer",
+  "about": "Soft tiered branches like a living Christmas tree.",
+  "aliases": [
+   "araucaria",
+   "araucaria excelsa",
+   "araucaria heterophylla",
+   "norfolk island araucaria",
+   "norfolk island pine",
+   "norfolk pine",
+   "star pine"
+  ],
+  "outdoor": false,
+  "difficulty": 1,
+  "tags": [
+   "petSafe",
+   "beginner"
+  ],
+  "wikidata": "Q161070"
+ },
+ {
+  "id": "podocarpus",
+  "scientific": "Podocarpus macrophyllus",
+  "en": "Buddhist pine",
+  "pt": "Podocarpo",
+  "family": "Podocarpaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "bright",
+  "humidityMin": 40,
+  "tempMin": -10,
+  "tempMax": 32,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Clips well; good indoor or outdoor.",
+  "group": "shrub",
+  "origin": "China and Japan",
+  "habit": "Conifer",
+  "about": "Narrow leathery leaves on an upright shrub.",
+  "aliases": [
+   "buddhist pine",
+   "fern pine",
+   "japanese yew",
+   "podocarpus macrophylla",
+   "yew pine",
+   "yew plum pine"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor"
+  ],
+  "wikidata": "Q165063"
+ },
+ {
+  "id": "eucalyptus-gunnii",
+  "scientific": "Eucalyptus gunnii",
+  "en": "Cider gum",
+  "pt": "Eucalipto",
+  "family": "Myrtaceae",
+  "waterStyle": "dry",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -12,
+  "tempMax": 35,
+  "toxicCats": true,
+  "toxicDogs": true,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 2,
+  "tip": "Cut back hard each spring to keep it bushy.",
+  "group": "shrub",
+  "origin": "Tasmania",
+  "habit": "Tree",
+  "about": "Round silver-blue leaves, lovely in vases.",
+  "aliases": [
+   "cider gum",
+   "eucalyptus",
+   "silver dollar"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "tags": [
+   "beginner",
+   "outdoor",
+   "fastGrowing",
+   "drought"
+  ],
+  "wikidata": "Q163788"
+ },
+ {
+  "id": "callistemon",
+  "scientific": "Callistemon citrinus",
+  "en": "Bottlebrush",
+  "pt": "Escova-de-garrafa",
+  "family": "Myrtaceae",
+  "waterStyle": "half",
+  "dryMin": 6,
+  "dryMax": 10,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -5,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Prune lightly after flowering.",
+  "group": "shrub",
+  "origin": "Australia",
+  "habit": "Shrub",
+  "about": "Red bottlebrush flowers loved by birds.",
+  "aliases": [
+   "bottlebrush",
+   "crimson bottlebrush",
+   "escova de garrafa"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring to summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering"
+  ],
+  "wikidata": "Q1028271"
+ },
+ {
+  "id": "grevillea",
+  "scientific": "Grevillea",
+  "en": "Grevillea",
+  "pt": "Grevílea",
+  "family": "Proteaceae",
+  "waterStyle": "dry",
+  "dryMin": 7,
+  "dryMax": 12,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -5,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "No phosphorus feed; acidic, poor soil.",
+  "group": "shrub",
+  "origin": "Australia",
+  "habit": "Shrub",
+  "about": "Spidery nectar-rich flowers.",
+  "aliases": [
+   "grevillea",
+   "grevílea",
+   "silky oak",
+   "silky-oak",
+   "spider flower",
+   "toothbrush plant"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Most of the year",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "drought"
+  ],
+  "wikidata": "Q1545761"
+ },
+ {
+  "id": "protea",
+  "scientific": "Protea cynaroides",
+  "en": "King protea",
+  "pt": "Protea-rei",
+  "family": "Proteaceae",
+  "waterStyle": "dry",
+  "dryMin": 7,
+  "dryMax": 12,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -3,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "slow",
+  "repotYears": 3,
+  "tip": "Acidic, sandy, low-nutrient soil, no phosphorus.",
+  "group": "shrub",
+  "origin": "South Africa",
+  "habit": "Shrub",
+  "about": "A giant crown-like flower.",
+  "aliases": [
+   "giant protea",
+   "king protea",
+   "king protea flower",
+   "mountain rose",
+   "protea"
+  ],
+  "outdoor": true,
+  "difficulty": 3,
+  "bloom": "Spring to summer",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "drought"
+  ],
+  "wikidata": "Q1930962"
+ },
+ {
+  "id": "leucadendron",
+  "scientific": "Leucadendron",
+  "en": "Conebush",
+  "pt": "Leucadendro",
+  "family": "Proteaceae",
+  "waterStyle": "dry",
+  "dryMin": 7,
+  "dryMax": 12,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -3,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Same lean soil as proteas.",
+  "group": "shrub",
+  "origin": "South Africa",
+  "habit": "Shrub",
+  "about": "Colourful bracts that last for months.",
+  "aliases": [
+   "conebush",
+   "conebushes",
+   "erva prata",
+   "erva-prata",
+   "ewe ojé",
+   "ewê diji",
+   "safari sunset"
+  ],
+  "outdoor": true,
+  "difficulty": 2,
+  "bloom": "Winter to spring",
+  "tags": [
+   "petSafe",
+   "outdoor",
+   "flowering",
+   "drought"
+  ],
+  "wikidata": "Q159466"
+ },
+ {
+  "id": "echium",
+  "scientific": "Echium candicans",
+  "en": "Pride of Madeira",
+  "pt": "Orgulho-da-madeira",
+  "family": "Boraginaceae",
+  "waterStyle": "dry",
+  "dryMin": 7,
+  "dryMax": 12,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -3,
+  "tempMax": 32,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "fast",
+  "repotYears": 3,
+  "tip": "Poor soil, full sun, coastal wind is fine.",
+  "group": "shrub",
+  "origin": "Madeira",
+  "habit": "Shrub",
+  "about": "Towering blue flower spikes full of bees.",
+  "aliases": [
+   "echium",
+   "pride of madeira"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Spring",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "fastGrowing",
+   "drought"
+  ],
+  "wikidata": "Q2709778"
+ },
+ {
+  "id": "cistus",
+  "scientific": "Cistus × purpureus",
+  "en": "Rock rose",
+  "pt": "Esteva",
+  "family": "Cistaceae",
+  "waterStyle": "dry",
+  "dryMin": 8,
+  "dryMax": 14,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -10,
+  "tempMax": 38,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.6,
+  "aeration": 0.6,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "universal",
+  "feed": "balanced",
+  "feedWeeks": 4,
+  "propagation": [
+   "Softwood cuttings in early summer",
+   "Hardwood cuttings in autumn"
+  ],
+  "pests": [
+   "aphids",
+   "scale",
+   "spider-mites"
+  ],
+  "problems": [
+   {
+    "sign": "Leaves scorched in summer",
+    "cause": "Hot sun on dry roots",
+    "fix": "Deep watering and a mulch over the soil."
+   },
+   {
+    "sign": "Few flowers",
+    "cause": "Pruned at the wrong time",
+    "fix": "Check whether it blooms on old or new wood before pruning."
+   }
+  ],
+  "repotNotes": "In containers, pot on every 2–3 years and top-dress yearly with fresh compost.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.75,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Drought proof; never prune into old wood.",
+  "group": "shrub",
+  "origin": "Mediterranean",
+  "habit": "Shrub",
+  "about": "Crinkled paper flowers, each lasting one day.",
+  "aliases": [
+   "rock rose",
+   "cistus"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Early summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "drought"
+  ]
+ },
+ {
+  "id": "santolina",
+  "scientific": "Santolina chamaecyparissus",
+  "en": "Cotton lavender",
+  "pt": "Santolina",
+  "family": "Asteraceae",
+  "waterStyle": "dry",
+  "dryMin": 8,
+  "dryMax": 14,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -15,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.35,
+  "aeration": 0.85,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "cactus",
+  "feed": "light",
+  "feedWeeks": 6,
+  "propagation": [
+   "Softwood cuttings in late spring",
+   "Semi-ripe cuttings in summer",
+   "Layering a low stem into the soil"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly"
+  ],
+  "problems": [
+   {
+    "sign": "Grey, brittle leaves from the base up",
+    "cause": "Roots too wet, often in winter",
+    "fix": "Water sparingly and give it the sunniest, airiest spot."
+   },
+   {
+    "sign": "Leggy, floppy stems",
+    "cause": "Not enough sun or no trimming",
+    "fix": "Full sun, and trim lightly after flowering, never into old bare wood."
+   }
+  ],
+  "repotNotes": "Gritty mix, terracotta pot, and plenty of sun. Repot in spring if root-bound.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Shear after flowering to stay compact.",
+  "group": "herb-med",
+  "origin": "Mediterranean",
+  "habit": "Mound",
+  "about": "Silver coral-like foliage and button flowers.",
+  "aliases": [
+   "algodón lavanda",
+   "cotton lavender",
+   "lavender cotton",
+   "santolina",
+   "santolina gris"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "drought"
+  ],
+  "wikidata": "Q1543811"
+ },
+ {
+  "id": "helichrysum-italicum",
+  "scientific": "Helichrysum italicum",
+  "en": "Curry plant",
+  "pt": "Erva-caril",
+  "family": "Asteraceae",
+  "waterStyle": "dry",
+  "dryMin": 8,
+  "dryMax": 14,
+  "light": "direct",
+  "humidityMin": 30,
+  "tempMin": -10,
+  "tempMax": 35,
+  "toxicCats": false,
+  "toxicDogs": false,
+  "retention": 0.35,
+  "aeration": 0.85,
+  "phMin": 6.0,
+  "phMax": 7.5,
+  "mix": "cactus",
+  "feed": "light",
+  "feedWeeks": 6,
+  "propagation": [
+   "Softwood cuttings in late spring",
+   "Semi-ripe cuttings in summer",
+   "Layering a low stem into the soil"
+  ],
+  "pests": [
+   "aphids",
+   "spider-mites",
+   "whitefly"
+  ],
+  "problems": [
+   {
+    "sign": "Grey, brittle leaves from the base up",
+    "cause": "Roots too wet, often in winter",
+    "fix": "Water sparingly and give it the sunniest, airiest spot."
+   },
+   {
+    "sign": "Leggy, floppy stems",
+    "cause": "Not enough sun or no trimming",
+    "fix": "Full sun, and trim lightly after flowering, never into old bare wood."
+   }
+  ],
+  "repotNotes": "Gritty mix, terracotta pot, and plenty of sun. Repot in spring if root-bound.",
+  "winterFactor": 1.6,
+  "summerFactor": 0.8,
+  "growth": "medium",
+  "repotYears": 3,
+  "tip": "Ornamental; scent rather than flavour.",
+  "group": "herb-med",
+  "origin": "Mediterranean",
+  "habit": "Mound",
+  "about": "Silver needles smelling strongly of curry.",
+  "aliases": [
+   "corsican helichrysum",
+   "curry plant",
+   "everlasting flower",
+   "immortelle",
+   "italian strawflower"
+  ],
+  "outdoor": true,
+  "difficulty": 1,
+  "bloom": "Summer",
+  "tags": [
+   "petSafe",
+   "beginner",
+   "outdoor",
+   "flowering",
+   "drought"
+  ],
+  "wikidata": "Q1587861"
  }
 ]
