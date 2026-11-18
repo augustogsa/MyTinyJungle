@@ -19,17 +19,7 @@ enum CareReminders {
         set { UserDefaults.standard.set(newValue, forKey: hourKey) }
     }
 
-    enum Action: String { case watered = "care.watered", wet = "care.wet", snooze = "care.snooze" }
-
-    static func registerCategories() {
-        let watered = UNNotificationAction(identifier: Action.watered.rawValue, title: "Watered", options: [], icon: .init(systemImageName: "drop.fill"))
-        let wet = UNNotificationAction(identifier: Action.wet.rawValue, title: "Soil still wet", options: [], icon: .init(systemImageName: "hand.point.down.fill"))
-        let snooze = UNNotificationAction(identifier: Action.snooze.rawValue, title: "Snooze to tomorrow", options: [], icon: .init(systemImageName: "moon.zzz.fill"))
-        UNUserNotificationCenter.current().setNotificationCategories([
-            UNNotificationCategory(identifier: category, actions: [watered, wet, snooze], intentIdentifiers: []),
-            UNNotificationCategory(identifier: categoryMany, actions: [watered, snooze], intentIdentifiers: []),
-        ])
-    }
+    static func registerCategories() { PlantNote.registerCategories() }
 
     @discardableResult
     static func requestPermission() async -> Bool {
@@ -67,7 +57,7 @@ enum CareReminders {
             }
             let planned = forecast.filter { cal.isDate($0.date, inSameDayAs: day) && !due.map(\.id).contains($0.plantID ?? UUID()) && $0.kind != .weather }
             guard !due.isEmpty || !planned.isEmpty else { continue }
-            let c = content(due: due, planned: planned, at: fire)
+            let c = (await content(due: due, planned: planned, at: fire)).mutableCopy() as! UNMutableNotificationContent
             c.badge = NSNumber(value: due.count)
             let trig = UNCalendarNotificationTrigger(dateMatching: cal.dateComponents([.year, .month, .day, .hour, .minute], from: fire), repeats: false)
             try? await center.add(UNNotificationRequest(identifier: "care-\(offset)", content: c, trigger: trig))
@@ -75,11 +65,8 @@ enum CareReminders {
 
         // Frost, heat or storms for plants outside: an evening heads-up, never in quiet hours.
         if CarePrefs.isOn(.weather), let alert = Climate.shared.alerts(for: plants, now: now).first {
-            let c = UNMutableNotificationContent()
-            c.title = alert.title
-            c.body = alert.detail
-            c.sound = .default
-            c.threadIdentifier = "weather"
+            let outside = plants.filter { alert.plantNames.contains($0.name) }
+            let c = await PlantNote.make(.weather, plants: outside.isEmpty ? plants.filter(\.isOutdoor) : outside, title: alert.title, body: alert.detail)
             let evening = cal.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
             let fire = CarePrefs.gentle(evening > now ? evening : now.addingTimeInterval(15 * 60))
             try? await center.add(UNNotificationRequest(identifier: "care-weather", content: c,
@@ -88,58 +75,38 @@ enum CareReminders {
 
         // A struggling plant gets its own soft nudge a few hours later if nothing changes.
         if CarePrefs.isOn(.water), let p = plants.first(where: { CareEngine.status(for: $0) == .struggling && !snoozed($0.id) }) {
-            let c = UNMutableNotificationContent()
-            c.title = "\(p.name) misses you"
-            c.body = "It's been a while since its last drink. Feel the soil, and if it's dry, a slow, deep sip will perk it right up."
-            c.sound = .default
-            c.categoryIdentifier = category
-            c.userInfo = ["plants": [p.id.uuidString]]
-            if let a = attachment(p) { c.attachments = [a] }
+            let c = await PlantNote.make(.struggling, plants: [p])
             let fire = CarePrefs.gentle(now.addingTimeInterval(4 * 3600))
             try? await center.add(UNNotificationRequest(identifier: "care-struggling", content: c,
                                                         trigger: UNTimeIntervalNotificationTrigger(timeInterval: fire.timeIntervalSince(now), repeats: false)))
         }
     }
 
-    /// Builds the one note of the day.
-    static func content(due: [Plant], planned: [ForecastItem], at fire: Date) -> UNMutableNotificationContent {
-        let c = UNMutableNotificationContent()
-        c.sound = .default
-        c.threadIdentifier = "care"
-        c.interruptionLevel = .passive
-        let ids = due.map(\.id.uuidString)
-        c.userInfo = ["plants": ids]
+    /// Builds the one note of the day: a single plant texts you, several share one warm note.
+    static func content(due: [Plant], planned: [ForecastItem], at fire: Date) async -> UNNotificationContent {
+        let extras = planned.prefix(due.isEmpty ? 3 : 2).map { $0.line + "." }
         if due.count == 1, let p = due.first {
-            c.title = "\(p.name) is thinking of you"
-            c.body = line(CareEngine.status(for: p, now: fire), name: p.name)
-            c.categoryIdentifier = category
-            if let a = attachment(p) { c.attachments = [a] }
-        } else if due.count > 1 {
-            let names = ListFormatter.localizedString(byJoining: due.prefix(3).map(\.name)) + (due.count > 3 ? " and \(due.count - 3) more" : "")
-            c.title = "\(due.count) plants would love a visit"
-            c.body = "\(names) are ready for a little love."
-            c.categoryIdentifier = categoryMany
-            if let a = attachment(due[0]) { c.attachments = [a] }
-        } else {
-            c.title = planned.count == 1 ? planned[0].plantName.isEmpty ? "A little plan for today" : "\(planned[0].plantName) has a little wish" : "A gentle plan for today"
-            c.interruptionLevel = .passive
+            let kind: PlantNote.Kind = CareEngine.status(for: p, now: fire) == .struggling ? .struggling
+                : CareEngine.requests(for: p, now: fire).contains { $0.kind == .water } ? .water : .soil
+            return await PlantNote.make(kind, plants: [p], body: ([PlantNote.voice(kind, plants: [p], now: fire)] + extras.prefix(1)).joined(separator: " "))
         }
-        let extras = planned.prefix(due.isEmpty ? 3 : 2).map(\.line)
-        if !extras.isEmpty {
-            c.body = ([c.body].filter { !$0.isEmpty } + extras.map { $0 + "." }).joined(separator: " ")
+        if due.count > 1 {
+            return await PlantNote.make(.many, plants: due, body: ([PlantNote.voice(.many, plants: due)] + extras.prefix(1)).joined(separator: " "))
         }
-        if due.isEmpty, let id = planned.first?.plantID { c.userInfo = ["plants": [id.uuidString], "planned": true] }
+        if planned.contains(where: { $0.kind == .travel }) {
+            return await PlantNote.make(.travel, plants: [], body: extras.joined(separator: " "))
+        }
+        let ids = Set(planned.compactMap(\.plantID))
+        let ctx = NotificationDelegate.shared.container?.mainContext
+        let ps = ((try? ctx?.fetch(FetchDescriptor<Plant>())) ?? []).filter { ids.contains($0.id) }
+        if ps.count == 1, planned.allSatisfy({ $0.kind == .feed }) { return await PlantNote.make(.feed, plants: ps) }
+        let c = (await PlantNote.make(.many, plants: ps, title: "A gentle plan for today", body: extras.joined(separator: " "))).mutableCopy() as! UNMutableNotificationContent
+        c.interruptionLevel = .passive
+        c.relevanceScore = 0.3
         return c
     }
 
-    /// The plant's photo as a thumbnail on the note.
-    static func attachment(_ p: Plant) -> UNNotificationAttachment? {
-        guard let data = p.photo, let img = UIImage(data: data),
-              let jpg = img.preparingThumbnail(of: CGSize(width: 600, height: 600 * img.size.height / max(img.size.width, 1)))?.jpegData(compressionQuality: 0.8) else { return nil }
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("plant-\(p.id)-\(UUID().uuidString.prefix(6)).jpg")
-        guard (try? jpg.write(to: url)) != nil else { return nil }
-        return try? UNNotificationAttachment(identifier: p.id.uuidString, url: url, options: nil)
-    }
+    static func attachment(_ p: Plant) -> UNNotificationAttachment? { PlantNote.attachment(p) }
 
     private static func line(_ s: PlantStatus, name: String) -> String {
         switch s {
@@ -151,25 +118,6 @@ enum CareReminders {
         }
     }
 
-    /// Handles a notification action, in the background, and logs real care.
-    @MainActor
-    static func handle(_ action: String, plantIDs: [String], ctx: ModelContext) async {
-        let ids = Set(plantIDs.compactMap(UUID.init))
-        let plants = ((try? ctx.fetch(FetchDescriptor<Plant>())) ?? []).filter { ids.contains($0.id) }
-        let now = Date()
-        switch Action(rawValue: action) {
-        case .watered:
-            for p in plants { JungleBrain.apply(.init(kind: .water, plantIDs: [p.id], date: now), to: p, in: ctx, now: now, source: "notification") }
-        case .wet:
-            for p in plants { JungleBrain.apply(.init(kind: .soilCheck, plantIDs: [p.id], date: now, soil: .wet), to: p, in: ctx, now: now, source: "notification") }
-        case .snooze:
-            let tomorrow = Calendar.current.startOfDay(for: now.addingTimeInterval(86_400)).addingTimeInterval(3600)
-            for p in plants { UserDefaults.standard.set(tomorrow, forKey: "snooze.\(p.id)") }
-        case nil: return
-        }
-        try? ctx.save()
-        await reschedule(ctx)
-    }
 }
 
 /// Receives notification actions, even when the app is not open.
@@ -182,15 +130,10 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        let ids = response.notification.request.content.userInfo["plants"] as? [String] ?? []
         let action = response.actionIdentifier
         await MainActor.run { UserDefaults.standard.set(action, forKey: "lastNotificationAction") }
         guard let container else { return }
-        if action == UNNotificationDefaultActionIdentifier {
-            await MainActor.run { UserDefaults.standard.set(0, forKey: "selectedTab") }
-            return
-        }
-        await CareReminders.handle(action, plantIDs: ids, ctx: container.mainContext)
+        await PlantNote.handle(response, ctx: container.mainContext)
     }
 }
 

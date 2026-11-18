@@ -66,6 +66,7 @@ struct RootView: View {
     @Environment(\.modelContext) private var ctx
     @AppStorage("selectedTab") private var tab = 0
     @AppStorage("onboarded") private var onboarded = false
+    @AppStorage("openPlantChat") private var openChat = ""
     var body: some View {
         let skip = DemoSeeder.photoDir != nil || ProcessInfo.processInfo.arguments.contains("-uiTesting")
         if !skip && !AuthManager.shared.signedIn {
@@ -76,6 +77,17 @@ struct RootView: View {
     }
     private var tabs: some View {
         tabView
+            .task {
+                guard ProcessInfo.processInfo.arguments.contains("-notifyDemo") else { return }
+                try? await Task.sleep(for: .seconds(2))
+                await PlantNote.demo(ctx)
+            }
+            // A tap on a plant's note opens its chat.
+            .sheet(isPresented: Binding(get: { !openChat.isEmpty }, set: { if !$0 { openChat = "" } })) {
+                if let p = (try? ctx.fetch(FetchDescriptor<Plant>()))?.first(where: { $0.id.uuidString == openChat }) {
+                    NavigationStack { PlantChatView(plant: p) }
+                }
+            }
             .onChange(of: phase) { _, p in
                 if p == .background { Task { await CareReminders.reschedule(ctx) } }
                 if p == .active { Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); ProactiveVoice.speak(ctx); await CareReminders.reschedule(ctx) } }
