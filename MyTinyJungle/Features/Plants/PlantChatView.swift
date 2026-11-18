@@ -13,7 +13,7 @@ struct PlantChatView: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 12) {
                     statusCard
                     ForEach(messages) { m in
                         MessageBubble(message: m, showAvatar: false) { send($0) }.id(m.id)
@@ -23,8 +23,10 @@ struct PlantChatView: View {
                 .padding(.horizontal, 16)
             }
             .scrollDismissesKeyboard(.interactively)
-            .onAppear { greetIfNeeded(); proxy.scrollTo("bottom") }
-            .onChange(of: messages.count) { withAnimation { proxy.scrollTo("bottom") } }
+            .defaultScrollAnchor(.bottom)
+            .defaultScrollAnchor(.bottom, for: .sizeChanges)
+            .onAppear { greetIfNeeded() }
+            .onChange(of: messages.count) { withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo("bottom", anchor: .bottom) } }
         }
         .safeAreaInset(edge: .bottom) {
             GlassComposer(placeholder: String(localized: "Message \(plant.name)…", comment: "Chat composer placeholder; arg plant name; max 30 chars"), onChip: { kind in

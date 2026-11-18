@@ -9,9 +9,8 @@ struct MessageBubble: View {
     var onSuggestion: (String) -> Void = { _ in }
 
     var body: some View {
-        VStack(alignment: message.fromUser ? .trailing : .leading, spacing: 6) {
+        VStack(alignment: message.fromUser ? .trailing : .leading, spacing: 8) {
             HStack(alignment: .bottom, spacing: 8) {
-                if message.fromUser { Spacer(minLength: 48) }
                 if !message.fromUser, showAvatar {
                     if let plant = speaker ?? message.plant { PlantAvatar(data: plant.photo, size: 28) }
                     else { Image(systemName: "leaf.circle.fill").font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.leaf).accessibilityHidden(true) }
@@ -21,14 +20,15 @@ struct MessageBubble: View {
                         Text(speaker.name).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                     }
                     if let data = message.photo, let img = UIImage(data: data) {
-                        Image(uiImage: img).resizable().scaledToFill()
-                            .frame(maxWidth: 220, maxHeight: 220)
+                        Color.clear.frame(width: 220, height: 220)
+                            .overlay { Image(uiImage: img).resizable().scaledToFill() }
                             .clipShape(RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
                     }
                     if !message.text.isEmpty {
                         Text(message.text)
                             .font(.body)
                             .foregroundStyle(Jungle.text)
+                            .fixedSize(horizontal: false, vertical: true)
                             .textSelection(.enabled)
                     }
                 }
@@ -36,21 +36,68 @@ struct MessageBubble: View {
                 .background(message.fromUser ? Jungle.userBubble : Jungle.surface,
                             in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
                 .overlay { if !message.fromUser { RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5) } }
-                if !message.fromUser { Spacer(minLength: 48) }
             }
+            .containerRelativeFrame(.horizontal, alignment: message.fromUser ? .trailing : .leading) { w, _ in w * 0.8 }
+            .frame(maxWidth: .infinity, alignment: message.fromUser ? .trailing : .leading)
             if !message.fromUser, !message.suggestions.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        ForEach(message.suggestions, id: \.self) { s in
-                            Button(s) { onSuggestion(s) }
-                                .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
-                        }
-                    }
-                    .padding(.leading, showAvatar ? 36 : 0)
-                }
+                SuggestionFlow(items: message.suggestions, onTap: onSuggestion)
+                    .frame(maxWidth: .infinity)
             }
         }
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
+    }
+}
+
+/// Reply suggestions: centered, wrapping, thumb-reachable.
+struct SuggestionFlow: View {
+    let items: [String]
+    var onTap: (String) -> Void
+    @State private var shown = false
+    var body: some View {
+        CenteredFlow(spacing: 8) {
+            ForEach(Array(items.enumerated()), id: \.element) { i, s in
+                Button(s) { onTap(s) }
+                    .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.regular)
+                    .opacity(shown ? 1 : 0)
+                    .offset(y: shown ? 0 : 6)
+                    .animation(.easeOut(duration: 0.3).delay(0.15 + Double(i) * 0.05), value: shown)
+            }
+        }
+        .onAppear { shown = true }
+    }
+}
+
+/// Wrapping layout that centers each line.
+struct CenteredFlow: Layout {
+    var spacing: CGFloat = 8
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let rows = rows(for: proposal.width ?? .infinity, subviews)
+        let h = rows.map(\.h).reduce(0, +) + spacing * CGFloat(max(0, rows.count - 1))
+        return CGSize(width: proposal.width ?? rows.map(\.w).max() ?? 0, height: h)
+    }
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var y = bounds.minY
+        for r in rows(for: bounds.width, subviews) {
+            var x = bounds.midX - r.w / 2
+            for i in r.idx {
+                let sz = subviews[i].sizeThatFits(.unspecified)
+                subviews[i].place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(sz))
+                x += sz.width + spacing
+            }
+            y += r.h + spacing
+        }
+    }
+    private func rows(for width: CGFloat, _ subviews: Subviews) -> [(idx: [Int], w: CGFloat, h: CGFloat)] {
+        var out: [(idx: [Int], w: CGFloat, h: CGFloat)] = []
+        var cur: [Int] = []; var w: CGFloat = 0; var h: CGFloat = 0
+        for (i, v) in subviews.enumerated() {
+            let sz = v.sizeThatFits(.unspecified)
+            let add = cur.isEmpty ? sz.width : w + spacing + sz.width
+            if add > width, !cur.isEmpty { out.append((cur, w, h)); cur = [i]; w = sz.width; h = sz.height }
+            else { cur.append(i); w = add; h = max(h, sz.height) }
+        }
+        if !cur.isEmpty { out.append((cur, w, h)) }
+        return out
     }
 }
 
@@ -152,42 +199,24 @@ struct GlassComposer: View {
     private var canSend: Bool { !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .center, spacing: 8) {
-                if !expanded { photoButton }
+        VStack(spacing: 6) {
+            if expanded && showChips {
+                ViewThatFits(in: .horizontal) {
+                    chipRow.frame(maxWidth: .infinity)
+                    ScrollView(.horizontal, showsIndicators: false) { chipRow.padding(.horizontal, 4) }
+                }
+                .transition(.opacity)
+            }
+            HStack(alignment: .bottom, spacing: 8) {
+                photoButton
                 TextField(placeholder, text: $text, axis: .vertical)
                     .lineLimit(1...6)
                     .focused($focused)
                     .submitLabel(.send)
                     .onSubmit(send)
-                    .padding(.horizontal, expanded ? 10 : 2)
-                    .padding(.vertical, expanded ? 8 : 0)
+                    .padding(.horizontal, 4).padding(.vertical, 10)
                     .frame(minHeight: 40)
-                if !expanded { sendButton }
-            }
-            if expanded {
-                HStack(spacing: 8) {
-                    photoButton
-                    if showChips {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 6) {
-                                ForEach(QuickChips.kinds, id: \.self) { kind in
-                                    Button { onChip(kind); focused = false } label: {
-                                        Label { Text(kind.chipTitle) } icon: { Icon3DView(Icon3D.care(kind), size: 18) }
-                                            .font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
-                                            .padding(.horizontal, 12).frame(height: 40)
-                                            .background(Jungle.text.opacity(0.06), in: Capsule())
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                            }
-                        }
-                        .clipShape(Capsule())
-                        .mask(LinearGradient(stops: [.init(color: .black, location: 0), .init(color: .black, location: 0.88), .init(color: .clear, location: 1)], startPoint: .leading, endPoint: .trailing))
-                    } else { Spacer() }
-                    sendButton
-                }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                sendButton
             }
         }
         .padding(6)
@@ -195,7 +224,7 @@ struct GlassComposer: View {
         .onTapGesture { focused = true }
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
         .padding(.horizontal, 12).padding(.bottom, 6)
-        .animation(.spring(duration: 0.35, bounce: 0.2), value: expanded)
+        .animation(.easeOut(duration: 0.2), value: expanded)
         .onChange(of: pick) { _, item in
             guard let item else { return }
             Task {
@@ -207,6 +236,20 @@ struct GlassComposer: View {
         }
     }
 
+    private var chipRow: some View {
+        HStack(spacing: 6) {
+            ForEach(QuickChips.kinds, id: \.self) { kind in
+                Button { onChip(kind); focused = false } label: {
+                    Label { Text(kind.chipTitle) } icon: { Icon3DView(Icon3D.care(kind), size: 18) }
+                        .font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
+                        .fixedSize()
+                        .padding(.horizontal, 12).frame(height: 36)
+                        .background(Jungle.text.opacity(0.06), in: Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
     private var photoButton: some View {
         PhotosPicker(selection: $pick, matching: .images) {
             Image(systemName: "camera").font(.system(size: 17, weight: .medium)).foregroundStyle(Jungle.text)

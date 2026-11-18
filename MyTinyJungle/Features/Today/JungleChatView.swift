@@ -12,14 +12,14 @@ struct JungleChatView: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: -10) {
                         ForEach(plants.prefix(5)) { p in
                             PlantAvatar(data: p.photo, size: 40).overlay(Circle().strokeBorder(Jungle.surface, lineWidth: 2))
                         }
                     }
                     .frame(maxWidth: .infinity).padding(.top, 8)
-                    Text(messages.isEmpty ? "Tell your plants what you did today, or ask them anything. They'll answer." : "Everyone's listening." as LocalizedStringKey)
+                    Text("Tell your plants what you did today, or ask them anything. They'll answer.")
                         .font(.subheadline).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity).padding(.bottom, 6)
                     ForEach(messages) { m in
@@ -28,15 +28,15 @@ struct JungleChatView: View {
                             else { MessageBubble(message: m, speaker: m.speakerID.flatMap { id in plants.first { $0.id == id } }) { send($0) } }
                         }
                         .id(m.id)
-                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                     }
                     Color.clear.frame(height: 1).id("bottom")
                 }
                 .padding(.horizontal, 16)
             }
             .scrollDismissesKeyboard(.interactively)
-            .onAppear { proxy.scrollTo("bottom") }
-            .onChange(of: messages.count) { withAnimation(.snappy) { proxy.scrollTo("bottom") } }
+            .defaultScrollAnchor(.bottom)
+            .defaultScrollAnchor(.bottom, for: .sizeChanges)
+            .onChange(of: messages.count) { withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo("bottom", anchor: .bottom) } }
         }
         .safeAreaInset(edge: .bottom) {
             GlassComposer(placeholder: String(localized: "Tell me how your plants are doing…", comment: "Chat input placeholder"), showChips: !plants.isEmpty, onChip: { kind in
