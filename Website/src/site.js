@@ -194,3 +194,10 @@ document.addEventListener("click", function (e) {
   var a = e.target.closest && e.target.closest("a.lang");
   if (a) { try { localStorage.setItem("lang", a.getAttribute("hreflang").toLowerCase().indexOf("pt") === 0 ? "pt" : "en"); } catch (x) {} }
 });
+/* media guard: no saving, dragging or long-press copying of images and videos */
+(function () {
+  var m = "img,video,picture,svg,.phone,.i3d";
+  ["contextmenu", "dragstart"].forEach(function (ev) {
+    document.addEventListener(ev, function (e) { if (e.target.closest && e.target.closest(m)) e.preventDefault(); });
+  });
+})();

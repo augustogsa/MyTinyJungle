@@ -628,3 +628,5 @@ html.switching,html.switching *{transition:background-color 1.1s var(--ease-out)
  :root:not([data-theme="light"]) .vn.them{background:transparent;box-shadow:inset 0 0 0 1px rgba(236,229,214,.08);color:#8C897F}
  :root:not([data-theme="light"]) .vn.them .vic{background:rgba(236,229,214,.06)}
 }
+/* media guard */
+img,video,picture{-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}

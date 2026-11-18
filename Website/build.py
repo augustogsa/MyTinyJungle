@@ -353,7 +353,22 @@ def build():
     (DIST / f"{seo.INDEXNOW_KEY}.txt").write_text(seo.INDEXNOW_KEY)
     (DIST / ".htaccess").write_text(seo.HTACCESS)
     print("built", len(urls), "pages")
+    harden()
 
 
 if __name__ == "__main__":
+def harden():
+    """Ship minified, mangled code and compact markup: nothing readable to lift."""
+    import re, subprocess
+    for f in ("site.js", "style.css"):
+        subprocess.run(["npx", "-y", "esbuild@0.24.0", str(SRC / f), "--minify", "--legal-comments=none",
+                        f"--outfile={DIST / f}", "--log-level=error"], check=True)
+    for h in DIST.rglob("*.html"):
+        s = h.read_text()
+        s = re.sub(r"<!--(?!\[if).*?-->", "", s, flags=re.S)
+        parts = re.split(r"(<(?:script|pre|textarea)\b.*?</(?:script|pre|textarea)>)", s, flags=re.S)
+        s = "".join(p if i % 2 else re.sub(r"\s+", " ", p) for i, p in enumerate(parts))
+        h.write_text(s.replace("> <!", "><!").strip())
+
+
     build()
