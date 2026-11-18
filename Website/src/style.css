@@ -360,3 +360,17 @@ p,li,.bcard span{text-wrap:pretty}
 @keyframes sp{to{rotate:calc(var(--sw) * 3deg)}}
 @media (prefers-reduced-motion:reduce){.sg .st,.sg .lf{transition:opacity .25s!important;stroke-dashoffset:0;scale:1}.sg{opacity:0;transition:opacity .25s}.brand:is(:hover,:focus-visible,.grow) .sg{opacity:1}}
 .sg.front{z-index:1}
+
+/* voices v2: bubbles in two columns, the lock screen pair below as the one bright moment */
+.vgrid{display:block}
+.msgs{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 48px;align-items:end}
+.lock{margin-top:96px;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:center}
+.lock h3{font-size:var(--t-l);line-height:1.05;margin:0;text-wrap:balance}
+.lockpair{display:flex;gap:32px;align-items:center;justify-content:center}
+.lockphone{flex:0 1 400px;min-width:0}
+.lockshot{flex:0 0 auto;width:240px;margin:0}
+@media (max-width:900px){.msgs{grid-template-columns:1fr}.lock{grid-template-columns:1fr;margin-top:64px}.lockpair{flex-direction:column}.lockphone{flex-basis:auto;width:100%;max-width:400px}.lockshot{width:min(240px,70%)}}
+.lock{align-items:start}.lock h3{position:sticky;top:120px}
+.lockpair{align-items:flex-end}.lockphone{flex:0 1 380px}.lockshot{width:220px}
+.lockpair{align-items:center}.lock h3{position:static;align-self:center}
+.lockshot{height:auto;align-self:center}

@@ -310,8 +310,9 @@ def render_home(L, t, page, phone, apple_icon):
 <section class="voices" id="voices"><div class="wrap">
 <div class="vhead"><h2>{h['voice_h']}</h2><p>{h['voice_p']}</p></div>
 <div class="vgrid"><div class="msgs">{"".join(f'<div class="msg"><img class="av" src="/assets/plants/{ph}.jpg" alt="" width="44" height="44" loading="lazy"><div><p class="who"><b>{nm}</b><span>{pers}</span></p><p class="bub">{line}</p><p class="whyl">{h["why"]}: {why}</p></div></div>' for ph, nm, pers, line, why in h["voices"])}</div>
-<div class="lock"><h3>{h['lock_h']}</h3><div class="lockphone"><p class="ltime">9:41</p>{"".join(f'<div class="ncard"><img src="/assets/plants/{ph}.jpg" alt="" width="38" height="38" loading="lazy"><div><b>{t}</b>{f"<span>{b}</span>" if b else ""}</div></div>' for ph, t, b in h["notifs"])}</div>
-{f'<img class="lockshot" src="/assets/notif/lily-expanded.jpg" alt="{h["lock_alt"]}" width="550" height="1196" loading="lazy">' if h["lock_alt"] else ""}</div></div>
+</div>
+<div class="lock"><h3>{h['lock_h']}</h3><div class="lockpair"><div class="lockphone"><p class="ltime">9:41</p>{"".join(f'<div class="ncard"><img src="/assets/plants/{ph}.jpg" alt="" width="38" height="38" loading="lazy"><div><b>{t}</b>{f"<span>{b}</span>" if b else ""}</div></div>' for ph, t, b in h["notifs"])}</div>
+{f'<img class="lockshot" src="/assets/notif/lily-expanded.jpg" alt="{h["lock_alt"]}" width="550" height="1196" loading="lazy">' if h["lock_alt"] else ""}</div></div></div>
 </div></section>
 <section class="pills-band" aria-label="Why"><div class="wrap pills">{"".join(f'<p class="pill">{I(i, 48)}{x}</p>' for i, x in h["pills"])}</div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
