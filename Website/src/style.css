@@ -374,3 +374,14 @@ p,li,.bcard span{text-wrap:pretty}
 .lockpair{align-items:flex-end}.lockphone{flex:0 1 380px}.lockshot{width:220px}
 .lockpair{align-items:center}.lock h3{position:static;align-self:center}
 .lockshot{height:auto;align-self:center}
+/* lock screen v3: one real iPhone, wallpaper, no slab */
+.lockpair{justify-content:center}
+.lockphone{flex:none;width:min(360px,100%);aspect-ratio:9/19.5;padding:52px 12px 20px;border-radius:52px;border:11px solid #1b1b1d;outline:1px solid #3a3a3d;background:url(/assets/plants/monstera.jpg) center/cover;position:relative;overflow:hidden;box-shadow:0 40px 80px -40px rgba(20,30,15,.55)}
+.lockphone::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,10,.25),rgba(10,20,10,.55));pointer-events:none}
+.lockphone::after{content:"";position:absolute;top:10px;left:50%;width:96px;height:28px;margin-left:-48px;border-radius:20px;background:#000}
+.lockphone>*{position:relative;z-index:1}
+.ldate{margin:0;text-align:center;color:rgba(255,255,255,.9);font-size:15px;font-weight:600}
+.ltime{margin:0 0 22px;font-size:76px;color:#fff}
+.ncard{font-size:13px;padding:10px 12px;border-radius:18px;margin-top:7px;background:rgba(245,245,240,.78)}
+.ncard img{width:34px;height:34px}
+.lock h3{font-size:var(--t-l)}
