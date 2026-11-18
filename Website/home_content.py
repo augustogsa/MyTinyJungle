@@ -84,6 +84,10 @@ H = {
   "plus_btn": "Get Plus in the app",
   "fine": "Prices in euros; local prices may vary. Subscriptions renew automatically until cancelled in your Apple account settings.",
   "faq_h": "Good to know",
+  "smart_h": "Quietly very clever",
+  "smart_p": "Behind the friendly chat is real plant knowledge. Every answer is tuned to the plant, your home and the weather outside your window.",
+  "smart": [("628", "species", "Known by name, each with its own care rhythm"), ("27", "pests", "Spotted early, with a calm plan for each"), ("45", "symptoms", "Yellow leaves, brown tips, droop: read and explained"),
+            ("Climate", "", "Local weather, seasons and hardiness zone shape every reminder"), ("Home", "", "Heating, air-con, draughts and room light change the advice"), ("Pets & kids", "", "Clear warnings for plants that aren't safe to nibble")],
   "faq": [("Can I share my plants with someone?", "Yes. Invite your partner, family or housemates and you all look after the same jungle, with fair turns and no double watering."), ("Do I need to know anything about plants?", "Not at all. Add a plant with a photo or its name and the app fills in the rest, in plain, friendly words."),
           ("Is it really free?", "Yes. Up to 5 plants with chat, care requests and reminders, forever, supported by ads. Plus is optional and removes the ads."),
           ("Does it speak Portuguese?", "Yes. The app and your plants speak English and Portuguese."),
@@ -158,6 +162,10 @@ H = {
   "plus_btn": "Assinar o Plus no app",
   "fine": "Preços em euros; podem variar de acordo com o país. As assinaturas são renovadas automaticamente até serem canceladas nos ajustes da sua conta Apple.",
   "faq_h": "Bom saber",
+  "smart_h": "Discreto e muito esperto",
+  "smart_p": "Por trás da conversa carinhosa tem conhecimento de verdade sobre plantas. Cada resposta leva em conta a planta, a sua casa e o tempo lá fora.",
+  "smart": [("628", "espécies", "Reconhecidas pelo nome, cada uma com seu ritmo de cuidado"), ("27", "pragas", "Identificadas cedo, com um plano tranquilo para cada uma"), ("45", "sintomas", "Folha amarela, ponta marrom, murchinha: tudo explicado"),
+            ("Clima", "", "Tempo local, estações e zona de rusticidade guiam cada lembrete"), ("Casa", "", "Aquecedor, ar-condicionado, vento encanado e luz de cada cômodo mudam o conselho"), ("Pets e crianças", "", "Avisos claros sobre plantas que não podem ser mordiscadas")],
   "faq": [("Dá para dividir as plantas com alguém?", "Dá sim. Convide quem mora com você e todo mundo cuida da mesma selva, com a vez dividida de forma justa e sem rega dobrada."), ("Preciso entender de plantas?", "Nadinha. Adicione uma planta com uma foto ou pelo nome e o app cuida do resto, com palavras simples e carinhosas."),
           ("É grátis mesmo?", "Sim. Até 5 plantas com bate-papo, pedidos de cuidado e lembretes, para sempre, com anúncios. O Plus é opcional e remove os anúncios."),
           ("Fala português?", "Fala, sim. O app e suas plantas falam português e inglês."),
@@ -256,6 +264,7 @@ def render_home(L, t, page, phone, apple_icon):
 </div>
 <section class="pills-band" aria-label="Why"><div class="wrap pills">{"".join(f'<p class="pill">{I(i, 48)}{x}</p>' for i, x in h["pills"])}</div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
+<section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
 <section class="beta" id="beta"><div class="wrap bgrid"><div><h2>{h['slip_h']}</h2><p>{h['slip_p']}</p>{cta}</div>
 <div class="slip">{slip}<p class="row end"><span>{se[0]}</span><span>{se[1]}</span></p></div></div></section>
 <section class="pricing" id="pricing"><h2 class="vh">Plus</h2><div class="wrap fields">

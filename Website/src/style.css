@@ -278,3 +278,16 @@ p,li,.bcard span{text-wrap:pretty}
 .ctext{max-width:30rem}
 .ctext h2{max-width:9em}
 .ctext > p{max-width:22em}
+
+/* Smart band: real knowledge, set large on the deep field */
+.smart{background:var(--deep);color:var(--on-deep);padding:140px 0}
+.smart h2{color:var(--on-deep);font-size:var(--t-l);max-width:10em;text-wrap:balance}
+.smart .stext p{margin-top:20px;max-width:28em;opacity:.86}
+.sgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 32px}
+.fact{border-top:1px solid rgba(243,248,239,.18);padding-top:20px}
+.fact b{display:inline-block;font-size:clamp(30px,3vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.fact span{margin-left:8px;font-weight:700;opacity:.86}
+.fact p{margin-top:10px;font-size:16px;line-height:1.45;opacity:.8;text-wrap:pretty}
+@media (max-width:980px){.smart{padding:100px 0}.sgrid{grid-template-columns:minmax(0,1fr);gap:40px}.facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 20px}}
+@media (max-width:520px){.facts{grid-template-columns:minmax(0,1fr)}}
