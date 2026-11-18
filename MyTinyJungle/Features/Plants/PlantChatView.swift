@@ -38,7 +38,7 @@ struct PlantChatView: View {
             .padding(.top, 6)
             .background(.bar)
         }
-        .background(Jungle.cream)
+        .jungleBackdrop()
         .navigationTitle(plant.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

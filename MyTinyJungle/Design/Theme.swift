@@ -45,7 +45,8 @@ enum Jungle {
 struct CardBackground: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+            .background(Jungle.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border.opacity(0.7), lineWidth: 0.5))
             .shadow(color: Color(red: 0.24, green: 0.3, blue: 0.2).opacity(0.06), radius: 10, y: 4)
     }

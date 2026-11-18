@@ -9,9 +9,11 @@ struct PlantHomeView: View {
     @Query private var spaces: [Space]
     @Bindable var plant: Plant
 
-    enum Tab: String, CaseIterable { case overview = "Overview", story = "Story", care = "Care", about = "About" }
+    enum Tab: String, CaseIterable { case overview = "Overview", story = "Timeline", care = "Care", about = "About" }
     @State private var tab: Tab = .overview
     @State private var sheet: Sheet?
+    @State private var guide: CareGuide?
+    @State private var showGuides = false
     @State private var pick: PhotosPickerItem?
 
     enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate; var id: String { rawValue } }
@@ -38,7 +40,7 @@ struct PlantHomeView: View {
             .animation(.snappy, value: tab)
         }
         .ignoresSafeArea(edges: .top)
-        .background(Jungle.cream)
+        .jungleBackdrop()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
@@ -115,6 +117,19 @@ struct PlantHomeView: View {
 
     private var overview: some View {
         VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 10) {
+                SectionTitle("How-to for \(plant.name)", action: "All") { showGuides = true }
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(GuideLibrary.suggested(for: plant).prefix(5)) { g in
+                            Button { guide = g } label: { GuideHeroCard(guide: g) }.buttonStyle(.plain)
+                        }
+                    }
+                }
+                .scrollClipDisabled()
+            }
+            .fullScreenCover(item: $guide) { GuidePlayerView(guide: $0, plant: plant) }
+            .navigationDestination(isPresented: $showGuides) { GuidesView(plant: plant) }
             NavigationLink { PlantChatView(plant: plant) } label: {
                 HStack(alignment: .top, spacing: 12) {
                     PlantAvatar(data: plant.photo, size: 40)
@@ -231,67 +246,218 @@ struct InfoRow: View {
 }
 
 /// "Milo's story": first vs latest photo, milestones and the full timeline.
+/// Full life timeline: every event since the plant joined, grouped by month, with photos and growth.
 struct PlantStoryView: View {
     let plant: Plant
     @Binding var pick: PhotosPickerItem?
+    @Query private var props: [Propagation]
+    enum Filter: String, CaseIterable { case all = "All", photos = "Photos", care = "Care", growth = "Growth", health = "Health" }
+    @State private var filter: Filter = .all
 
-    var body: some View {
-        let photos = plant.sortedEvents.filter { $0.photo != nil }
-        VStack(alignment: .leading, spacing: 14) {
-            if photos.count >= 2, let first = photos.last, let last = photos.first {
-                HStack(spacing: 8) {
-                    compare(first, label: first.date.formatted(.dateTime.month().year()))
-                    compare(last, label: "Now")
-                }
-            }
-            PhotosPicker(selection: $pick, matching: .images) {
-                Label(photos.isEmpty ? "Add the first photo" : "Add this month's photo", systemImage: "camera")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered).buttonBorderShape(.capsule)
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(milestones) { e in
-                    HStack(alignment: .top, spacing: 12) {
-                        VStack(spacing: 0) {
-                            Circle().fill(Jungle.sun).frame(width: 12, height: 12).padding(.top, 4)
-                            Rectangle().fill(Jungle.border).frame(width: 2)
-                        }
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(e.date.formatted(.dateTime.day().month(.abbreviated))).font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
-                            Text(storyLine(e)).foregroundStyle(Jungle.text)
-                            if let d = e.photo, let img = UIImage(data: d) {
-                                Image(uiImage: img).resizable().scaledToFill().frame(width: 120, height: 90)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                            }
-                        }
-                        .padding(.bottom, 14)
-                        Spacer()
-                    }
-                }
-                HStack(spacing: 12) {
-                    Circle().fill(Jungle.leaf).frame(width: 12, height: 12)
-                    Text("\(plant.acquiredAt.formatted(.dateTime.day().month(.abbreviated).year())): joined your jungle 💚").foregroundStyle(Jungle.text)
-                }
+    private var events: [CareEvent] { plant.sortedEvents.filter { $0.note != "safety-ack" } }
+    /// First moment: the earlier of when it joined and its oldest logged event.
+    private var born: Date { min(plant.acquiredAt, events.last?.date ?? plant.acquiredAt) }
+
+    private var shown: [CareEvent] {
+        events.filter { e in
+            switch filter {
+            case .all: true
+            case .photos: e.photo != nil
+            case .care: [.water, .feed, .mist, .soilCheck, .rotate, .clean, .prune, .repot, .move].contains(e.kind)
+            case .growth: [.newLeaf, .flower, .measure, .propagate, .photo].contains(e.kind)
+            case .health: [.health, .treat].contains(e.kind)
             }
         }
     }
 
-    private var milestones: [CareEvent] {
-        plant.sortedEvents.filter { [.photo, .repot, .move, .newLeaf, .flower, .health, .propagate, .prune, .measure, .note].contains($0.kind) && $0.note != "safety-ack" }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            facts
+            careRecords
+            let photos = events.filter { $0.photo != nil }
+            if photos.count >= 2, let first = photos.last, let last = photos.first {
+                VStack(alignment: .leading, spacing: 8) {
+                    SectionTitle("Then and now")
+                    HStack(spacing: 8) {
+                        compare(first, label: first.date.formatted(.dateTime.month(.abbreviated).year()))
+                        compare(last, label: "Now")
+                    }
+                }
+            }
+            if heights.count >= 2 { growthChart }
+            PhotosPicker(selection: $pick, matching: .images) {
+                Label(photos.isEmpty ? "Add the first photo" : "Add this month's photo", systemImage: "camera.fill").frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest).controlSize(.large)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(Filter.allCases, id: \.self) { f in
+                        Button { withAnimation(.snappy) { filter = f } } label: {
+                            Text(f.rawValue).font(.subheadline.weight(.medium))
+                                .foregroundStyle(filter == f ? Color.white : Jungle.text)
+                                .padding(.horizontal, 14).padding(.vertical, 7)
+                                .background(filter == f ? Jungle.forest : Jungle.surface, in: Capsule())
+                                .overlay(Capsule().strokeBorder(filter == f ? .clear : Jungle.border, lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+            .scrollClipDisabled()
+            timeline
+        }
+    }
+
+    // MARK: Facts grid (species, days, last watered, lineage)
+
+    private var facts: some View {
+        let parent = props.first { $0.childID == plant.id }
+        let offspring = props.filter { $0.parentID == plant.id }.count
+        let days = max(0, Int(CareEngine.days(from: born)))
+        return LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 14) {
+            fact("leaf", "Species", plant.species?.commonName ?? "Unknown")
+            fact("calendar", "Days with you", "\(days)")
+            fact("drop", "Last watered", plant.lastEvent(.water).map { $0.date.formatted(.dateTime.day().month(.abbreviated)) } ?? "Not yet")
+            fact("list.bullet", "Moments", "\(events.count)")
+            fact("arrow.up.forward", "Parent", parent == nil ? "None" : "Cutting")
+            fact("arrow.triangle.branch", "Offspring", offspring == 0 ? "None" : "\(offspring)")
+        }
+        .padding(16).jungleCard()
+    }
+
+    private func fact(_ s: String, _ t: String, _ v: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Label(t, systemImage: s).font(.caption).foregroundStyle(Jungle.subtle)
+            Text(v).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.8)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    // MARK: Care records row
+
+    private var careRecords: some View {
+        let kinds: [CareKind] = [.water, .feed, .prune, .repot, .treat, .clean]
+        return VStack(alignment: .leading, spacing: 10) {
+            SectionTitle("Care records")
+            HStack(spacing: 0) {
+                ForEach(kinds, id: \.self) { k in
+                    let last = plant.lastEvent(k)
+                    VStack(spacing: 4) {
+                        Image(systemName: k.symbol).font(.title3).foregroundStyle(last == nil ? Jungle.subtle : Jungle.forest)
+                            .frame(width: 44, height: 44).background(last == nil ? Jungle.mist : Jungle.mint, in: Circle())
+                        Text(short(k)).font(.caption2.weight(.medium)).foregroundStyle(Jungle.text)
+                        Text(last.map { $0.date.formatted(.dateTime.day().month(.defaultDigits)) } ?? "–").font(.caption2).foregroundStyle(Jungle.subtle)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .accessibilityElement(children: .combine)
+                }
+            }
+            .padding(.vertical, 12).jungleCard()
+        }
+    }
+
+    private func short(_ k: CareKind) -> String {
+        switch k { case .water: "Water"; case .feed: "Feed"; case .prune: "Prune"; case .repot: "Repot"; case .treat: "Pests"; case .clean: "Dust"; default: k.label }
+    }
+
+    // MARK: Growth chart from measurements
+
+    private var heights: [(Date, Double)] {
+        events.filter { $0.kind == .measure && $0.value != nil }.map { ($0.date, $0.value!) }.reversed()
+    }
+
+    private var growthChart: some View {
+        let h = heights
+        let maxV = h.map(\.1).max() ?? 1
+        return VStack(alignment: .leading, spacing: 10) {
+            SectionTitle("Growth")
+            HStack(alignment: .bottom, spacing: 8) {
+                ForEach(Array(h.suffix(10).enumerated()), id: \.offset) { _, p in
+                    VStack(spacing: 4) {
+                        Text("\(Int(p.1))").font(.caption2.weight(.semibold)).foregroundStyle(Jungle.text)
+                        RoundedRectangle(cornerRadius: 6, style: .continuous).fill(Jungle.leaf)
+                            .frame(height: max(8, 110 * p.1 / maxV))
+                        Text(p.0.formatted(.dateTime.month(.abbreviated))).font(.caption2).foregroundStyle(Jungle.subtle)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .frame(height: 150, alignment: .bottom)
+            .padding(14).jungleCard()
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Height grew from \(Int(h.first?.1 ?? 0)) to \(Int(h.last?.1 ?? 0)) centimetres")
+        }
+    }
+
+    // MARK: Timeline grouped by month
+
+    private var timeline: some View {
+        let cal = Calendar.current
+        let groups = Dictionary(grouping: shown) { cal.date(from: cal.dateComponents([.year, .month], from: $0.date))! }
+        return VStack(alignment: .leading, spacing: 18) {
+            ForEach(groups.keys.sorted(by: >), id: \.self) { month in
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(month.formatted(.dateTime.month(.wide).year())).font(.headline).foregroundStyle(Jungle.text).padding(.bottom, 10)
+                    ForEach(groups[month] ?? []) { e in row(e) }
+                }
+            }
+            HStack(alignment: .top, spacing: 12) {
+                VStack(spacing: 2) {
+                    Text(born.formatted(.dateTime.day())).font(.headline).foregroundStyle(Jungle.text)
+                    Text(born.formatted(.dateTime.month(.abbreviated))).font(.caption2).foregroundStyle(Jungle.subtle)
+                }
+                .frame(width: 40)
+                Image(systemName: "heart.fill").foregroundStyle(Jungle.terracotta).frame(width: 20)
+                Text("Joined your jungle on \(born.formatted(date: .long, time: .omitted)).").foregroundStyle(Jungle.text)
+            }
+        }
+    }
+
+    private func row(_ e: CareEvent) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(spacing: 2) {
+                Text(e.date.formatted(.dateTime.day())).font(.headline).foregroundStyle(Jungle.text)
+                Text(e.date.formatted(.dateTime.weekday(.abbreviated))).font(.caption2).foregroundStyle(Jungle.subtle)
+            }
+            .frame(width: 40)
+            VStack(spacing: 0) {
+                Image(systemName: e.kind.symbol).font(.caption.weight(.semibold)).foregroundStyle(Jungle.forest)
+                    .frame(width: 26, height: 26).background(Jungle.mint, in: Circle())
+                Rectangle().fill(Jungle.border).frame(width: 2).frame(maxHeight: .infinity)
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                Text(storyLine(e)).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
+                if let d = e.photo, let img = UIImage(data: d) {
+                    Image(uiImage: img).resizable().scaledToFill().frame(maxWidth: .infinity).frame(height: 180)
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                }
+                Text(e.date.formatted(date: .omitted, time: .shortened)).font(.caption).foregroundStyle(Jungle.subtle)
+            }
+            .padding(.bottom, 16)
+        }
+        .accessibilityElement(children: .combine)
     }
 
     private func storyLine(_ e: CareEvent) -> String {
         switch e.kind {
+        case .water: "Watered" + (e.value.map { ", \(Int($0)) ml" } ?? "") + "."
+        case .feed: "Fed" + (e.productName.map { " with \($0)" } ?? "") + "."
+        case .soilCheck: "Soil felt \((e.soil?.label ?? "checked").lowercased())."
+        case .mist: "Misted."
+        case .rotate: "Turned toward the light."
+        case .clean: "Leaves cleaned."
         case .newLeaf: "I grew a new leaf! 🌱"
         case .flower: "I flowered! 🌸"
         case .repot: "You repotted me" + (e.value.map { " into a \(Int($0)) cm pot" } ?? "") + "."
         case .move: "Moved to \(e.note.isEmpty ? "a new spot" : e.note)."
         case .health: "Health check: \(e.note)"
+        case .treat: "Treated" + (e.note.isEmpty ? "." : " for \(e.note).")
         case .measure: "\(Int(e.value ?? 0)) cm tall."
         case .propagate: "A cutting of me started a new life."
         case .prune: "Fresh haircut."
         case .photo: e.note.isEmpty ? "New portrait." : e.note
-        default: e.note
+        default: e.note.isEmpty ? e.kind.label : e.note
         }
     }
 
@@ -300,8 +466,8 @@ struct PlantStoryView: View {
             if let d = e.photo, let img = UIImage(data: d) {
                 Image(uiImage: img).resizable().scaledToFill().frame(height: 170).frame(maxWidth: .infinity).clipped()
             }
-            Text(label).font(.caption.weight(.semibold)).padding(.horizontal, 8).padding(.vertical, 4)
-                .background(.ultraThinMaterial, in: Capsule()).padding(8)
+            Text(label).font(.caption.weight(.semibold)).foregroundStyle(Jungle.text).padding(.horizontal, 8).padding(.vertical, 4)
+                .background(.regularMaterial, in: Capsule()).padding(8)
         }
         .clipShape(RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
     }
@@ -479,7 +645,7 @@ struct WaterSheet: View {
                 .buttonBorderShape(.capsule)
                 .padding(16).background(.bar)
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
         }
         .presentationDetents([.large])

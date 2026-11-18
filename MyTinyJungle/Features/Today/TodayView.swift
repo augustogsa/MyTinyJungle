@@ -84,7 +84,7 @@ struct TodayView: View {
                     .background(.bar)
                 }
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Label("My Tiny Jungle", systemImage: "leaf.fill").labelStyle(.titleAndIcon)

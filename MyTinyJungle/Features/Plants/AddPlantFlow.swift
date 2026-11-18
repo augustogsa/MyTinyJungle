@@ -32,7 +32,7 @@ struct AddPlantFlow: View {
                 case .meet: meet
                 }
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .animation(.snappy, value: stage)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
             .sheet(isPresented: $choosingSpecies) { SpeciesPicker(selection: $species) }

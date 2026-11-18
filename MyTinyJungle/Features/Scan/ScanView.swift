@@ -34,7 +34,7 @@ struct ScanView: View {
                 }
                 .padding(.horizontal, 16).padding(.bottom, 32)
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .navigationTitle("Scan")
             .sheet(item: $paywall) { PaywallView(reason: $0) }
             .sheet(isPresented: $addingPlant) { AddPlantFlow() }
@@ -270,7 +270,7 @@ private struct TypeLabelSheet: View {
                 Spacer()
             }
             .padding(16)
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .navigationTitle("Type the label").navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
@@ -310,7 +310,7 @@ private struct ProductResultView: View {
                 }
                 .padding(16)
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .safeAreaInset(edge: .bottom) {
                 HStack(spacing: 10) {
                     Button { isPlus ? onSave(true) : onLocked(.inventory) } label: { Label("Shopping list", systemImage: "cart").frame(maxWidth: .infinity) }

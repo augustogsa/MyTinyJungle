@@ -63,7 +63,7 @@ struct MeView: View {
                 }
                 .padding(16)
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .navigationTitle(JungleSettings.shared.ownerName.isEmpty ? "Me" : JungleSettings.shared.ownerName)
             .sheet(isPresented: $settings) { SettingsView() }
             .sheet(item: $paywall) { PaywallView(reason: $0) }

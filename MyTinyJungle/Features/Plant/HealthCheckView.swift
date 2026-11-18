@@ -28,7 +28,7 @@ struct HealthCheckView: View {
                 }
                 .padding(16)
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .navigationTitle("Health check")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

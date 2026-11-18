@@ -60,7 +60,7 @@ struct PlantsView: View {
                 }
                 .padding(16)
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .navigationTitle("My Collection")
             .searchable(text: $query, prompt: "Search plants")
             .toolbar {

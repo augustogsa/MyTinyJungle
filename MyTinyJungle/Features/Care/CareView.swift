@@ -6,7 +6,7 @@ struct CareView: View {
     @Environment(\.modelContext) private var ctx
     @Query(filter: #Predicate<Plant> { !$0.isArchived }, sort: \Plant.createdAt) private var plants: [Plant]
     @Query private var tasks: [CareTask]
-    enum Range: String, CaseIterable { case week = "This week", month = "Month", season = "Season" }
+    enum Range: String, CaseIterable { case week = "Week", month = "Month", calendar = "Calendar", season = "Season" }
     @State private var range: Range = .week
     @State private var adding = false
 
@@ -18,14 +18,18 @@ struct CareView: View {
                     HStack(spacing: 10) {
                         NavigationLink { TravelPlanView() } label: { shortcut("Travel care", "airplane") }
                         NavigationLink { PropagationListView() } label: { shortcut("Propagate", "scissors") }
-                        NavigationLink { SpacesView() } label: { shortcut("Spaces", "house") }
+                        NavigationLink { GuidesView() } label: { shortcut("How-to", "book.fill") }
                     }
                     .buttonStyle(.plain)
-                    if range == .season { SeasonGuideView(plants: plants) } else { agenda }
+                    switch range {
+                    case .season: SeasonGuideView(plants: plants)
+                    case .calendar: CareCalendarView(plants: plants, tasks: tasks)
+                    default: agenda
+                    }
                 }
                 .padding(16)
             }
-            .background(Jungle.cream)
+            .jungleBackdrop()
             .navigationTitle("Care")
             .toolbar { Button { adding = true } label: { Image(systemName: "plus") }.accessibilityLabel("Add care task") }
             .sheet(isPresented: $adding) { AddTaskView(plants: plants) }

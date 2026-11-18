@@ -26,7 +26,7 @@ struct SpacesView: View {
             }
             .padding(16)
         }
-        .background(Jungle.cream)
+        .jungleBackdrop()
         .navigationTitle("My Spaces")
         .toolbar { Button { adding = true } label: { Image(systemName: "plus") }.accessibilityLabel("Add space") }
         .sheet(isPresented: $adding) { SpaceEditor(space: nil) }

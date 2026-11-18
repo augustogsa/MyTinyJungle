@@ -40,7 +40,7 @@ struct OnboardingView: View {
             .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).frame(maxWidth: .infinity)
         }
         .padding(24)
-        .background(Jungle.cream)
+        .jungleBackdrop()
     }
 
     private func feature(_ s: String, _ t: String) -> some View {
