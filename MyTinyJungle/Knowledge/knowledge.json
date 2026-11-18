@@ -1427,5 +1427,1377 @@
    "name": "Grow light",
    "use": "Extra light for dark rooms and winter."
   }
+ ],
+ "topics": [
+  {
+   "id": "prop-water",
+   "title": "Rooting cuttings in water",
+   "kind": "propagation",
+   "intro": "The easiest way to watch roots grow. Great for pothos, philodendron, tradescantia, monstera and coleus.",
+   "steps": [
+    {
+     "title": "Cut below a node",
+     "detail": "Snip a 10–15 cm stem just under a node, the little bump where a leaf meets the stem. That is where roots start."
+    },
+    {
+     "title": "Strip the low leaves",
+     "detail": "Remove any leaf that would sit underwater, so it doesn't rot."
+    },
+    {
+     "title": "Bright, not sunny",
+     "detail": "A clear glass on a bright windowsill out of direct midday sun is perfect."
+    },
+    {
+     "title": "Fresh water weekly",
+     "detail": "Top up and swap the water every 5–7 days so it stays clear."
+    },
+    {
+     "title": "Pot at 3–5 cm of roots",
+     "detail": "Move it to soil once roots are a few centimetres long and keep the soil a little moister than usual for two weeks."
+    }
+   ],
+   "keywords": [
+    "water propagation",
+    "root in water",
+    "cutting in water",
+    "propagate in water",
+    "glass of water",
+    "estaca na agua",
+    "cuttings in water",
+    "root cuttings",
+    "rooting cuttings",
+    "cutting"
+   ]
+  },
+  {
+   "id": "prop-soil",
+   "title": "Rooting cuttings in soil",
+   "kind": "propagation",
+   "intro": "Cuttings rooted straight into soil skip the water-to-soil shock. Good for most herbs, begonias, succulents and woody plants.",
+   "steps": [
+    {
+     "title": "Take a healthy tip",
+     "detail": "Choose a non-flowering shoot with 2–3 nodes and cut just below the lowest one."
+    },
+    {
+     "title": "Light, airy mix",
+     "detail": "Use half potting mix and half perlite or sand, lightly moist."
+    },
+    {
+     "title": "Optional rooting powder",
+     "detail": "Dip the cut end in rooting hormone for tougher, woody stems."
+    },
+    {
+     "title": "Keep the air humid",
+     "detail": "Cover loosely with a clear bag or bottle, opening it daily for fresh air."
+    },
+    {
+     "title": "Tug test",
+     "detail": "After 3–6 weeks a gentle tug meets resistance: roots are in. Remove the cover slowly over a few days."
+    }
+   ],
+   "keywords": [
+    "soil propagation",
+    "cutting in soil",
+    "rooting hormone",
+    "rooting powder",
+    "enraizar"
+   ]
+  },
+  {
+   "id": "prop-leaf",
+   "title": "Growing new plants from a single leaf",
+   "kind": "propagation",
+   "intro": "Some plants regrow a whole plant from one leaf: snake plant, ZZ, African violet, many succulents, begonia and peperomia.",
+   "steps": [
+    {
+     "title": "Pick a plump leaf",
+     "detail": "A healthy, mature leaf from the middle of the plant works best."
+    },
+    {
+     "title": "Let succulent leaves callus",
+     "detail": "Leave succulent leaves on a dry plate for 2–4 days until the end seals over."
+    },
+    {
+     "title": "Lay or insert",
+     "detail": "Rest succulent leaves on gritty mix; tuck violet and peperomia leaf stalks 1 cm into moist mix."
+    },
+    {
+     "title": "Patience",
+     "detail": "Tiny plantlets appear after 4–12 weeks. Snake plant leaf sections can take months."
+    },
+    {
+     "title": "Leave the mother leaf",
+     "detail": "Let it shrivel naturally; it feeds the baby until then."
+    }
+   ],
+   "keywords": [
+    "leaf cutting",
+    "leaf propagation",
+    "propagate leaf",
+    "succulent leaf",
+    "folha"
+   ]
+  },
+  {
+   "id": "prop-division",
+   "title": "Dividing a crowded plant",
+   "kind": "propagation",
+   "intro": "Clumping plants make more of themselves. Split them when you repot: peace lily, calathea, ferns, snake plant, spider plant, aspidistra and many grasses.",
+   "steps": [
+    {
+     "title": "Spring is best",
+     "detail": "Divide at the start of the growing season so each piece recovers fast."
+    },
+    {
+     "title": "Water the day before",
+     "detail": "Moist roots slide apart with less tearing."
+    },
+    {
+     "title": "Tease apart",
+     "detail": "Ease the plant from its pot and pull clumps apart by hand, or cut through tough roots with a clean knife."
+    },
+    {
+     "title": "Each piece needs roots and leaves",
+     "detail": "Aim for at least 3 shoots with a good root ball per division."
+    },
+    {
+     "title": "Pot snugly",
+     "detail": "Use a pot just bigger than each root ball and keep out of strong sun for a week."
+    }
+   ],
+   "keywords": [
+    "divide",
+    "division",
+    "split plant",
+    "separate plant",
+    "dividir"
+   ]
+  },
+  {
+   "id": "prop-offsets",
+   "title": "Pups, runners and offsets",
+   "kind": "propagation",
+   "intro": "Many plants hand you babies: spider plant runners, aloe and haworthia pups, pilea offshoots, strawberry runners and bromeliad pups.",
+   "steps": [
+    {
+     "title": "Wait for size",
+     "detail": "Separate when the baby is about a third the size of its parent or has its own roots."
+    },
+    {
+     "title": "Cut close",
+     "detail": "Use a clean blade to cut the connecting stem as close to the mother as you can."
+    },
+    {
+     "title": "Pin runners",
+     "detail": "Spider plant and strawberry babies root fast if you pin them onto a pot of soil while still attached."
+    },
+    {
+     "title": "Pot and settle",
+     "detail": "Small pot, light mix, bright indirect light, and water once the top is dry."
+    }
+   ],
+   "keywords": [
+    "pup",
+    "pups",
+    "offset",
+    "offsets",
+    "runner",
+    "baby plant",
+    "plantlet",
+    "filhote"
+   ]
+  },
+  {
+   "id": "prop-air-layer",
+   "title": "Air layering a leggy plant",
+   "kind": "propagation",
+   "intro": "A way to root a branch while it is still on the plant. Ideal for tall rubber plants, monsteras and dracaenas that have lost their lower leaves.",
+   "steps": [
+    {
+     "title": "Choose a spot",
+     "detail": "Pick a node 20–30 cm below the tip."
+    },
+    {
+     "title": "Wound gently",
+     "detail": "Make a small upward cut or scrape a ring of bark to encourage roots. For monstera, just wrap an aerial root and node."
+    },
+    {
+     "title": "Wrap in moss",
+     "detail": "Pack damp sphagnum moss around it and wrap with clear plastic, tied at both ends."
+    },
+    {
+     "title": "Keep it damp",
+     "detail": "Check weekly and add water so the moss never dries out."
+    },
+    {
+     "title": "Cut and pot",
+     "detail": "When roots fill the moss, usually 4–8 weeks, cut below them and pot the new plant."
+    }
+   ],
+   "keywords": [
+    "air layer",
+    "air layering",
+    "too tall",
+    "alporquia"
+   ]
+  },
+  {
+   "id": "prop-seed",
+   "title": "Sowing seeds indoors",
+   "kind": "propagation",
+   "intro": "Herbs, chillies, tomatoes, flowers and even some houseplants start easily from seed.",
+   "steps": [
+    {
+     "title": "Fresh seed-starting mix",
+     "detail": "Use a fine, light mix. Garden soil is too heavy and can carry fungus."
+    },
+    {
+     "title": "Sow at the right depth",
+     "detail": "A rough rule: cover seeds about twice their own thickness. Tiny seeds just press onto the surface."
+    },
+    {
+     "title": "Warm and moist",
+     "detail": "Most seeds sprout best at 18–24 °C. Cover with a lid or clear bag until shoots appear."
+    },
+    {
+     "title": "Light at once",
+     "detail": "Move seedlings to the brightest spot or under a grow light as soon as they appear, or they stretch."
+    },
+    {
+     "title": "Thin and pot on",
+     "detail": "Keep the strongest seedling per cell and pot on when it has its first true leaves."
+    }
+   ],
+   "keywords": [
+    "seed",
+    "seeds",
+    "sow",
+    "sowing",
+    "germinate",
+    "germination",
+    "semente"
+   ]
+  },
+  {
+   "id": "water-bottom",
+   "title": "Bottom watering",
+   "kind": "watering",
+   "intro": "Letting a plant drink from below wets all the roots evenly and keeps leaves and crowns dry. Loved by African violets, calatheas, cacti and seedlings.",
+   "steps": [
+    {
+     "title": "Stand in water",
+     "detail": "Put the pot in a tray or bowl with 2–5 cm of room-temperature water."
+    },
+    {
+     "title": "10–30 minutes",
+     "detail": "Wait until the top of the soil feels damp."
+    },
+    {
+     "title": "Drain fully",
+     "detail": "Lift it out and let extra water run away. Never leave it sitting."
+    },
+    {
+     "title": "Top-water now and then",
+     "detail": "Every month or so, water from the top too, to flush out salts."
+    }
+   ],
+   "keywords": [
+    "bottom water",
+    "bottom watering",
+    "water from below",
+    "regar por baixo"
+   ]
+  },
+  {
+   "id": "water-soak",
+   "title": "Soaking a bone-dry plant",
+   "kind": "watering",
+   "intro": "If soil has shrunk from the pot and water runs straight through, it has turned water-repellent.",
+   "steps": [
+    {
+     "title": "Sink it",
+     "detail": "Submerge the pot in a bucket until bubbles stop, about 10–20 minutes."
+    },
+    {
+     "title": "Drain",
+     "detail": "Let it drip until no more water comes out."
+    },
+    {
+     "title": "Loosen the surface",
+     "detail": "Gently fork the top crust so future water sinks in."
+    },
+    {
+     "title": "Water a little more often",
+     "detail": "A plant that dried that far wants checking a bit sooner next time."
+    }
+   ],
+   "keywords": [
+    "bone dry",
+    "water runs through",
+    "soil pulled away",
+    "hydrophobic",
+    "won't absorb",
+    "soak"
+   ]
+  },
+  {
+   "id": "water-quality",
+   "title": "Tap water, rain water and filtered water",
+   "kind": "watering",
+   "intro": "Most plants are happy with tap water. A few are sensitive to salts, fluoride and chlorine: calatheas, marantas, dracaenas, spider plants, carnivorous plants and orchids.",
+   "steps": [
+    {
+     "title": "Let it stand",
+     "detail": "Leaving tap water out overnight lets chlorine escape and brings it to room temperature."
+    },
+    {
+     "title": "Rain water is a treat",
+     "detail": "Collected rain water is soft and slightly acidic. Sensitive plants love it."
+    },
+    {
+     "title": "Brown tips can be salts",
+     "detail": "Crispy brown tips on sensitive plants often mean mineral build-up. Flush the pot with plenty of water every month or two."
+    },
+    {
+     "title": "Carnivores need pure water",
+     "detail": "Venus flytraps, sundews and pitcher plants need rain, distilled or reverse-osmosis water only."
+    },
+    {
+     "title": "Avoid softened water",
+     "detail": "Water from a salt-based softener harms plants."
+    }
+   ],
+   "keywords": [
+    "tap water",
+    "rain water",
+    "rainwater",
+    "distilled",
+    "filtered water",
+    "chlorine",
+    "fluoride",
+    "hard water",
+    "agua da torneira"
+   ]
+  },
+  {
+   "id": "water-wicking",
+   "title": "Self-watering pots and wicks",
+   "kind": "watering",
+   "intro": "A reservoir or cotton wick keeps soil evenly moist. Great for thirsty plants and holidays, less so for succulents.",
+   "steps": [
+    {
+     "title": "Good for",
+     "detail": "Ferns, peace lilies, African violets, herbs, tomatoes and fittonia."
+    },
+    {
+     "title": "Not for",
+     "detail": "Cacti, succulents, snake plants and anything that likes to dry out."
+    },
+    {
+     "title": "Use a chunky mix",
+     "detail": "Add perlite so the soil wicks without going soggy."
+    },
+    {
+     "title": "Let it run dry sometimes",
+     "detail": "Let the reservoir empty for a couple of days now and then so roots get air."
+    }
+   ],
+   "keywords": [
+    "self watering",
+    "self-watering",
+    "wick",
+    "wicking",
+    "reservoir",
+    "auto rega"
+   ]
+  },
+  {
+   "id": "water-signs",
+   "title": "Reading thirst versus too much water",
+   "kind": "watering",
+   "intro": "Both too little and too much water can make a plant droop. Here is how to tell.",
+   "steps": [
+    {
+     "title": "Thirsty",
+     "detail": "Soil dry and light, pot feels light, leaves soft and limp, crispy edges. Perks up within hours of a drink."
+    },
+    {
+     "title": "Too wet",
+     "detail": "Soil damp and heavy, yellow lower leaves, mushy stems, fungus gnats, a sour smell. Watering makes it worse."
+    },
+    {
+     "title": "The finger test",
+     "detail": "Push a finger 2–3 cm into the soil. Dry means water most plants; damp means wait."
+    },
+    {
+     "title": "Lift the pot",
+     "detail": "Learn the weight of a just-watered pot. A much lighter pot is ready."
+    },
+    {
+     "title": "A chopstick helps",
+     "detail": "Push a wooden skewer to the bottom and pull it out. Dark, damp soil clinging to it means wait."
+    }
+   ],
+   "keywords": [
+    "overwater",
+    "underwater",
+    "too much water",
+    "not enough water",
+    "drooping",
+    "how do i know when to water",
+    "thirsty"
+   ]
+  },
+  {
+   "id": "light-windows",
+   "title": "Which window is which",
+   "kind": "light",
+   "intro": "The direction a window faces changes everything. In the Southern hemisphere, swap north and south.",
+   "steps": [
+    {
+     "title": "South-facing (north-facing down south)",
+     "detail": "The strongest light all day. Cacti, succulents, citrus and herbs love it. Pull tender plants a metre back in summer."
+    },
+    {
+     "title": "West-facing",
+     "detail": "Gentle morning shade, then hot afternoon sun. Good for sun lovers; watch for scorch in summer."
+    },
+    {
+     "title": "East-facing",
+     "detail": "Soft morning sun and bright shade later. The sweet spot for most tropical houseplants."
+    },
+    {
+     "title": "North-facing (south-facing down south)",
+     "detail": "Even, gentle light with no direct sun. Ferns, calatheas, peace lilies, pothos and ZZ plants are happy."
+    },
+    {
+     "title": "Distance matters",
+     "detail": "Light drops fast. One metre from a window can mean half the light, two metres a quarter."
+    }
+   ],
+   "keywords": [
+    "window",
+    "which window",
+    "north facing",
+    "south facing",
+    "east facing",
+    "west facing",
+    "janela"
+   ]
+  },
+  {
+   "id": "grow-lights",
+   "title": "Grow lights, simply",
+   "kind": "light",
+   "intro": "A grow light lets you grow anywhere, even in a dark corner or through a grey winter.",
+   "steps": [
+    {
+     "title": "Full-spectrum white LED",
+     "detail": "A white full-spectrum LED looks normal and gives everything a plant needs. No purple glow needed."
+    },
+    {
+     "title": "Distance",
+     "detail": "Hang it 20–40 cm above leafy plants and 15–25 cm above seedlings and herbs."
+    },
+    {
+     "title": "12–14 hours",
+     "detail": "Use a timer. Plants also need a dark rest each night."
+    },
+    {
+     "title": "Signs it's too strong",
+     "detail": "Bleached or crispy spots on the top leaves: raise the light."
+    },
+    {
+     "title": "Signs it's too weak",
+     "detail": "Long gaps between leaves and stems leaning toward the light: lower it or add hours."
+    }
+   ],
+   "keywords": [
+    "grow light",
+    "grow lights",
+    "led light",
+    "artificial light",
+    "lamp",
+    "luz artificial"
+   ]
+  },
+  {
+   "id": "light-signs",
+   "title": "Reading light hunger and sunburn",
+   "kind": "light",
+   "intro": "Plants show you clearly when the light is wrong.",
+   "steps": [
+    {
+     "title": "Too little",
+     "detail": "Stretched stems, small new leaves, leaning hard to one side, variegation fading to plain green, no flowers."
+    },
+    {
+     "title": "Too much",
+     "detail": "Bleached, yellow-white or brown crispy patches on the side facing the window."
+    },
+    {
+     "title": "Turn the pot",
+     "detail": "A quarter turn every week or two keeps growth even."
+    },
+    {
+     "title": "Move slowly",
+     "detail": "When moving a plant into much stronger light, do it over a week or two so leaves can adjust."
+    }
+   ],
+   "keywords": [
+    "not enough light",
+    "too much sun",
+    "sunburn",
+    "stretching",
+    "leaning",
+    "losing variegation"
+   ]
+  },
+  {
+   "id": "humidity-raise",
+   "title": "Raising humidity that really helps",
+   "kind": "environment",
+   "intro": "Calatheas, ferns, orchids and many tropicals like 50–60 % humidity. Heated rooms in winter often sit at 30 %.",
+   "steps": [
+    {
+     "title": "Group plants",
+     "detail": "Plants breathe out moisture. A cluster makes its own little humid pocket."
+    },
+    {
+     "title": "Pebble tray",
+     "detail": "Stand pots on a tray of pebbles and water, with the pot base above the waterline."
+    },
+    {
+     "title": "A humidifier is best",
+     "detail": "A small humidifier near the plants is the only thing that raises humidity a lot."
+    },
+    {
+     "title": "Misting is brief",
+     "detail": "Misting lifts humidity for only a few minutes. It's nice, but not a fix on its own."
+    },
+    {
+     "title": "Bathrooms and kitchens",
+     "detail": "A bright bathroom is a natural home for humidity lovers."
+    }
+   ],
+   "keywords": [
+    "humidity",
+    "humid",
+    "dry air",
+    "mist",
+    "misting",
+    "humidifier",
+    "pebble tray",
+    "umidade"
+   ]
+  },
+  {
+   "id": "temperature-home",
+   "title": "Draughts, radiators and cold windows",
+   "kind": "environment",
+   "intro": "Most houseplants like what we like: 16–26 °C, no sudden swings.",
+   "steps": [
+    {
+     "title": "Away from radiators",
+     "detail": "Heat sources dry leaves fast and cook roots. Keep plants a metre away."
+    },
+    {
+     "title": "Cold glass",
+     "detail": "In winter, leaves touching cold glass can get damaged. Pull plants back on frosty nights."
+    },
+    {
+     "title": "Draughts",
+     "detail": "Doors and leaky windows cause leaf drop, especially in fiddle leaf figs and crotons."
+    },
+    {
+     "title": "AC blasts",
+     "detail": "Air conditioning is dry and cold. Keep plants out of the direct airflow."
+    },
+    {
+     "title": "Night dip is good",
+     "detail": "A slightly cooler night helps many plants, and encourages orchids and Christmas cactus to flower."
+    }
+   ],
+   "keywords": [
+    "draught",
+    "draft",
+    "radiator",
+    "heater",
+    "cold window",
+    "air conditioning",
+    "temperature",
+    "aquecedor"
+   ]
+  },
+  {
+   "id": "acclimatize",
+   "title": "Settling in a new plant",
+   "kind": "care",
+   "intro": "A new plant has just left a perfect greenhouse. A few dropped leaves in the first weeks are normal.",
+   "steps": [
+    {
+     "title": "Check it over",
+     "detail": "Look under leaves and at the soil for pests before it joins the others."
+    },
+    {
+     "title": "Quarantine 2 weeks",
+     "detail": "Keep it apart from your other plants for two weeks if you can."
+    },
+    {
+     "title": "Don't repot yet",
+     "detail": "Let it adjust for 2–4 weeks unless it's root-bound or sitting in soggy soil."
+    },
+    {
+     "title": "Find its spot and stay",
+     "detail": "Choose a spot that matches its light needs and resist moving it around."
+    },
+    {
+     "title": "Water by the soil",
+     "detail": "Check the soil instead of following the label. Nursery soil can be very peaty and dry fast."
+    }
+   ],
+   "keywords": [
+    "new plant",
+    "just bought",
+    "brought home",
+    "acclimat",
+    "quarantine",
+    "planta nova"
+   ]
+  },
+  {
+   "id": "repot-signs",
+   "title": "When and how to repot",
+   "kind": "care",
+   "intro": "Most houseplants want a new pot every 1–3 years, in spring or early summer.",
+   "steps": [
+    {
+     "title": "Signs it's time",
+     "detail": "Roots poking out of the drainage holes, water rushing straight through, the plant toppling, or growth stalled."
+    },
+    {
+     "title": "Only one size up",
+     "detail": "Choose a pot 2–5 cm wider. A huge pot holds too much wet soil."
+    },
+    {
+     "title": "Holes are a must",
+     "detail": "Always use a pot with drainage holes, or a nursery pot inside a decorative one."
+    },
+    {
+     "title": "Loosen the roots",
+     "detail": "Gently tease circling roots so they grow outward."
+    },
+    {
+     "title": "Water and rest",
+     "detail": "Water well, then keep out of strong sun for a week. Hold the fertiliser for a month."
+    }
+   ],
+   "keywords": [
+    "repot",
+    "repotting",
+    "new pot",
+    "root bound",
+    "rootbound",
+    "bigger pot",
+    "replantar",
+    "vaso maior"
+   ]
+  },
+  {
+   "id": "prune-basics",
+   "title": "Pruning and pinching",
+   "kind": "care",
+   "intro": "Pruning keeps plants full, healthy and the size you want.",
+   "steps": [
+    {
+     "title": "Pinch for bushiness",
+     "detail": "Pinch off the growing tip of herbs, coleus, pothos and basil to make two shoots grow."
+    },
+    {
+     "title": "Cut above a node",
+     "detail": "Always cut just above a leaf joint. That's where new growth starts."
+    },
+    {
+     "title": "Clean blades",
+     "detail": "Wipe scissors with alcohol between plants to avoid spreading disease."
+    },
+    {
+     "title": "Remove the dead",
+     "detail": "Yellow, brown or damaged leaves can be cut off at the base any time."
+    },
+    {
+     "title": "Big cuts in spring",
+     "detail": "Save hard pruning for the start of the growing season."
+    }
+   ],
+   "keywords": [
+    "prune",
+    "pruning",
+    "pinch",
+    "pinching",
+    "cut back",
+    "trim",
+    "bushy",
+    "podar"
+   ]
+  },
+  {
+   "id": "clean-leaves",
+   "title": "Cleaning leaves",
+   "kind": "care",
+   "intro": "Dust blocks light and hides pests. Clean leaves breathe and grow better.",
+   "steps": [
+    {
+     "title": "Damp cloth",
+     "detail": "Wipe big leaves with a soft damp cloth, supporting each leaf from below."
+    },
+    {
+     "title": "Shower",
+     "detail": "Small or bushy plants can have a lukewarm shower. Let them drip dry out of the sun."
+    },
+    {
+     "title": "Soft brush",
+     "detail": "Fuzzy leaves (African violets, some begonias) hate water: use a soft paintbrush."
+    },
+    {
+     "title": "Skip leaf shine",
+     "detail": "Shine products can clog leaf pores. Plain water is best."
+    },
+    {
+     "title": "Check for pests",
+     "detail": "Cleaning time is the best time to spot spider mites and mealybugs."
+    }
+   ],
+   "keywords": [
+    "clean leaves",
+    "dusty",
+    "dust",
+    "wipe leaves",
+    "leaf shine",
+    "limpar folhas"
+   ]
+  },
+  {
+   "id": "dormancy",
+   "title": "Winter rest and dormancy",
+   "kind": "care",
+   "intro": "Many plants slow down in the darker months. That isn't a problem; it's a rest.",
+   "steps": [
+    {
+     "title": "Water less",
+     "detail": "Soil dries slower in winter. Check before watering, and expect gaps up to twice as long."
+    },
+    {
+     "title": "Stop feeding",
+     "detail": "Pause fertiliser from late autumn until new growth starts in spring."
+    },
+    {
+     "title": "Some go fully dormant",
+     "detail": "Caladiums, some begonias, bulbs and many cacti go dormant. Keep them cool and nearly dry."
+    },
+    {
+     "title": "Cacti like it cool",
+     "detail": "A cool, dry, bright winter helps many cacti flower next spring."
+    },
+    {
+     "title": "Wake up gently",
+     "detail": "When new growth appears, resume normal watering and start feeding at half strength."
+    }
+   ],
+   "keywords": [
+    "dormant",
+    "dormancy",
+    "winter rest",
+    "not growing",
+    "resting",
+    "dormencia"
+   ]
+  },
+  {
+   "id": "holiday-care",
+   "title": "Going away: keeping plants alive",
+   "kind": "care",
+   "intro": "A little planning keeps plants happy for one to three weeks.",
+   "steps": [
+    {
+     "title": "Water well before",
+     "detail": "Give everything a deep drink the day before you leave."
+    },
+    {
+     "title": "Pull back from windows",
+     "detail": "Move plants a little out of strong sun so they drink slower."
+    },
+    {
+     "title": "Group them",
+     "detail": "Grouped plants keep each other humid."
+    },
+    {
+     "title": "Bathtub trick",
+     "detail": "For a week or two, stand pots on a damp towel in a bath with a few centimetres of water."
+    },
+    {
+     "title": "Wicks and bottles",
+     "detail": "A cotton wick from a water jug or an upturned bottle spike keeps thirsty plants going."
+    },
+    {
+     "title": "Succulents are fine",
+     "detail": "Cacti and succulents can go two to four weeks with no help."
+    }
+   ],
+   "keywords": [
+    "holiday",
+    "vacation",
+    "going away",
+    "travel",
+    "away for",
+    "ferias",
+    "viagem"
+   ]
+  },
+  {
+   "id": "feeding-basics",
+   "title": "Feeding without fuss",
+   "kind": "care",
+   "intro": "Plants make their own food from light. Fertiliser is more like vitamins: a little, in the growing season.",
+   "steps": [
+    {
+     "title": "Spring to autumn",
+     "detail": "Feed when the plant is actively growing. Pause in winter."
+    },
+    {
+     "title": "Half strength",
+     "detail": "Most houseplants do best on fertiliser at half the strength on the bottle."
+    },
+    {
+     "title": "Moist soil first",
+     "detail": "Never feed bone-dry soil. Water first, or feed with the watering."
+    },
+    {
+     "title": "Signs of too much",
+     "detail": "A white crust on the soil, brown leaf tips, or sudden wilting after feeding. Flush with plenty of water."
+    },
+    {
+     "title": "Fresh soil feeds",
+     "detail": "A newly repotted plant has food in its soil. Wait 4–6 weeks."
+    }
+   ],
+   "keywords": [
+    "feed",
+    "feeding",
+    "fertilize",
+    "fertilise",
+    "fertilizer",
+    "plant food",
+    "adubo",
+    "adubar"
+   ]
+  },
+  {
+   "id": "pet-safety",
+   "title": "Keeping pets and plants friends",
+   "kind": "safety",
+   "intro": "Some common houseplants upset cats and dogs if chewed. Most cause mouth irritation or tummy trouble; lilies are serious for cats.",
+   "steps": [
+    {
+     "title": "Lilies and cats",
+     "detail": "True lilies (Lilium) and daylilies (Hemerocallis) can cause kidney failure in cats, even from pollen or vase water. Keep them out of homes with cats."
+    },
+    {
+     "title": "Common irritants",
+     "detail": "Pothos, philodendron, monstera, dieffenbachia, peace lily, ZZ and aloe can cause drooling, mouth pain or vomiting."
+    },
+    {
+     "title": "Pet-safe picks",
+     "detail": "Spider plant, calathea, parlour palm, Boston fern, peperomia, African violet, haworthia and most herbs are considered non-toxic."
+    },
+    {
+     "title": "Place smart",
+     "detail": "Hanging baskets and high shelves keep tempting plants out of reach."
+    },
+    {
+     "title": "If they chew",
+     "detail": "Rinse their mouth, note the plant, and call your vet or a pet poison line straight away."
+    }
+   ],
+   "keywords": [
+    "pet",
+    "pets",
+    "cat",
+    "cats",
+    "dog",
+    "dogs",
+    "toxic",
+    "poison",
+    "safe for",
+    "gato",
+    "cachorro",
+    "toxica"
+   ]
+  },
+  {
+   "id": "child-safety",
+   "title": "Plants and little children",
+   "kind": "safety",
+   "intro": "Toddlers taste everything. Most houseplants only cause mild irritation, but a few are worth keeping out of reach.",
+   "steps": [
+    {
+     "title": "Higher shelves",
+     "detail": "Keep irritating plants (dieffenbachia, pothos, philodendron, euphorbias with milky sap) up high."
+    },
+    {
+     "title": "Berries and seeds",
+     "detail": "Remove berries from plants like Jerusalem cherry and avoid castor bean entirely."
+    },
+    {
+     "title": "Wash hands",
+     "detail": "Wash hands after handling euphorbias and plants with sap."
+    },
+    {
+     "title": "If swallowed",
+     "detail": "Wipe the mouth, keep a piece of the plant, and call your local poison centre."
+    }
+   ],
+   "keywords": [
+    "child",
+    "children",
+    "baby",
+    "toddler",
+    "kids",
+    "crianca",
+    "bebe"
+   ]
+  },
+  {
+   "id": "herbs-harvest",
+   "title": "Harvesting herbs so they keep giving",
+   "kind": "edible",
+   "intro": "Regular picking makes herbs bushier and tastier.",
+   "steps": [
+    {
+     "title": "Pick from the top",
+     "detail": "Snip basil, mint and oregano just above a pair of leaves; two new shoots grow."
+    },
+    {
+     "title": "Never more than a third",
+     "detail": "Leave at least two-thirds of the plant to keep growing."
+    },
+    {
+     "title": "Stop the flowers",
+     "detail": "Pinch flower buds off basil, mint and coriander to keep leaves coming."
+    },
+    {
+     "title": "Morning is tastiest",
+     "detail": "Harvest in the morning, after the dew dries, when oils are strongest."
+    },
+    {
+     "title": "Woody herbs",
+     "detail": "Rosemary, thyme and sage: cut soft green tips, not old wood."
+    }
+   ],
+   "keywords": [
+    "harvest",
+    "harvesting",
+    "pick herbs",
+    "basil",
+    "mint",
+    "herbs",
+    "colher",
+    "ervas"
+   ]
+  },
+  {
+   "id": "kitchen-scraps",
+   "title": "Growing from kitchen scraps",
+   "kind": "edible",
+   "intro": "Some kitchen leftovers regrow happily on a windowsill.",
+   "steps": [
+    {
+     "title": "Spring onions",
+     "detail": "Stand the white roots in a little water. New green shoots in days."
+    },
+    {
+     "title": "Lettuce and celery bases",
+     "detail": "Sit the base in shallow water for fresh leaves, then pot up."
+    },
+    {
+     "title": "Avocado",
+     "detail": "Suspend the stone half in water with toothpicks, pointy end up. Roots in 4–8 weeks."
+    },
+    {
+     "title": "Ginger and turmeric",
+     "detail": "Plant a plump piece with visible buds just under moist soil in a warm spot."
+    },
+    {
+     "title": "Pineapple top",
+     "detail": "Twist off the crown, strip the lowest leaves, dry a day, then root in water or gritty soil."
+    }
+   ],
+   "keywords": [
+    "kitchen scraps",
+    "regrow",
+    "avocado seed",
+    "pineapple top",
+    "spring onion",
+    "ginger",
+    "caroco de abacate"
+   ]
+  },
+  {
+   "id": "myths",
+   "title": "Plant myths, gently busted",
+   "kind": "myths",
+   "intro": "A few popular ideas that don't hold up.",
+   "steps": [
+    {
+     "title": "Gravel at the bottom helps drainage",
+     "detail": "It actually raises the wet layer into the root zone. Use a free-draining mix and a pot with holes instead."
+    },
+    {
+     "title": "Ice cubes are a good way to water",
+     "detail": "They work for some orchids, but cold water and uneven wetting suit few plants. Room-temperature water is better."
+    },
+    {
+     "title": "Houseplants purify the air of a room",
+     "detail": "Lab studies were in sealed chambers. In a real home, normal ventilation does far more. Plants still make rooms nicer."
+    },
+    {
+     "title": "Yellow leaves always mean overwatering",
+     "detail": "Old leaves yellow naturally, and underwatering, low light and hunger all cause yellowing too."
+    },
+    {
+     "title": "Misting fixes dry air",
+     "detail": "Misting raises humidity only for minutes. A humidifier or grouping plants helps much more."
+    },
+    {
+     "title": "Bigger pots grow bigger plants faster",
+     "detail": "Too much wet soil around small roots leads to rot. One size up at a time."
+    },
+    {
+     "title": "Talking to plants helps",
+     "detail": "Plants don't hear words, but people who talk to their plants check on them more, and that does help."
+    }
+   ],
+   "keywords": [
+    "myth",
+    "myths",
+    "is it true",
+    "true or false",
+    "gravel",
+    "ice cube",
+    "purify air",
+    "mito"
+   ]
+  },
+  {
+   "id": "drainage",
+   "title": "Pots without holes",
+   "kind": "care",
+   "intro": "Drainage holes are the single biggest thing that stops root rot.",
+   "steps": [
+    {
+     "title": "Use a cachepot",
+     "detail": "Keep the plant in a plastic nursery pot with holes inside the pretty pot."
+    },
+    {
+     "title": "Empty the saucer",
+     "detail": "Tip out water that collects 15 minutes after watering."
+    },
+    {
+     "title": "Drill it",
+     "detail": "Ceramic pots can be drilled with a tile bit and a little water to cool it."
+    },
+    {
+     "title": "If you must",
+     "detail": "Only for very experienced waterers: measure water carefully and check soil often."
+    }
+   ],
+   "keywords": [
+    "no drainage",
+    "no holes",
+    "drainage hole",
+    "cachepot",
+    "decorative pot",
+    "furo"
+   ]
+  },
+  {
+   "id": "soil-refresh",
+   "title": "Refreshing tired soil",
+   "kind": "care",
+   "intro": "Soil compacts and loses food over time.",
+   "steps": [
+    {
+     "title": "Top dress",
+     "detail": "Scrape off the top 2–3 cm and replace with fresh mix or a little worm compost."
+    },
+    {
+     "title": "Aerate",
+     "detail": "Gently poke a chopstick into compacted soil to let air and water in."
+    },
+    {
+     "title": "Flush salts",
+     "detail": "Water slowly with plenty of water until it runs freely out, every few months."
+    },
+    {
+     "title": "Replace yearly-ish",
+     "detail": "Peat-based mixes break down. A full repot every 2–3 years keeps roots happy."
+    }
+   ],
+   "keywords": [
+    "old soil",
+    "tired soil",
+    "compacted",
+    "top dress",
+    "top dressing",
+    "white crust",
+    "solo velho"
+   ]
+  },
+  {
+   "id": "rebloom",
+   "title": "Getting plants to flower again",
+   "kind": "flowering",
+   "intro": "Many plants need a seasonal signal to bloom again.",
+   "steps": [
+    {
+     "title": "Orchids (Phalaenopsis)",
+     "detail": "A few weeks of cooler nights (around 15 °C) in autumn triggers a new spike. Keep in bright, indirect light."
+    },
+    {
+     "title": "Christmas and Thanksgiving cactus",
+     "detail": "Long, dark nights (12–14 hours) and cooler temps for 6 weeks in autumn, with less water."
+    },
+    {
+     "title": "Poinsettia",
+     "detail": "Needs 14 hours of total darkness nightly for about 8 weeks from autumn to colour up."
+    },
+    {
+     "title": "Peace lily",
+     "detail": "More light is usually the answer, plus a spring feed."
+    },
+    {
+     "title": "Amaryllis",
+     "detail": "After flowering, keep the leaves growing all summer, then rest it dry for 8–10 weeks before restarting."
+    }
+   ],
+   "keywords": [
+    "rebloom",
+    "flower again",
+    "won't flower",
+    "no flowers",
+    "bloom again",
+    "orchid spike",
+    "florescer"
+   ]
+  },
+  {
+   "id": "balcony",
+   "title": "Balcony and patio growing",
+   "kind": "outdoor",
+   "intro": "Balconies are windier, sunnier and dry faster than you'd think.",
+   "steps": [
+    {
+     "title": "Wind",
+     "detail": "Choose sturdy plants and heavier pots. Grasses, rosemary, lavender and succulents cope well."
+    },
+    {
+     "title": "Pots dry fast",
+     "detail": "Outdoor pots can need water daily in summer. Bigger pots and mulch help."
+    },
+    {
+     "title": "Weight",
+     "detail": "Large wet pots are heavy. Use lightweight pots and mixes on high balconies."
+    },
+    {
+     "title": "Bring in tropicals",
+     "detail": "Most houseplants enjoy summer outside in shade, but bring them in before nights drop below 10 °C."
+    },
+    {
+     "title": "Pests on return",
+     "detail": "Check and rinse plants for pests before they come back indoors."
+    }
+   ],
+   "keywords": [
+    "balcony",
+    "patio",
+    "terrace",
+    "outdoor pots",
+    "varanda",
+    "sacada"
+   ]
+  },
+  {
+   "id": "frost-protect",
+   "title": "Protecting plants from frost",
+   "kind": "outdoor",
+   "intro": "A frost can damage tender plants overnight.",
+   "steps": [
+    {
+     "title": "Watch the forecast",
+     "detail": "Below about 2 °C at night means frost is possible on clear, still nights."
+    },
+    {
+     "title": "Move pots in",
+     "detail": "Bring tender pots into a shed, garage or indoors overnight."
+    },
+    {
+     "title": "Cover up",
+     "detail": "Drape fleece or an old sheet over plants in the evening; remove in the morning. Avoid plastic touching leaves."
+    },
+    {
+     "title": "Water in the morning",
+     "detail": "Moist soil holds more heat than dry, but avoid watering at night."
+    },
+    {
+     "title": "Wait to prune",
+     "detail": "Leave frost-damaged growth until spring; it protects the buds beneath."
+    }
+   ],
+   "keywords": [
+    "frost",
+    "freeze",
+    "freezing",
+    "protect from cold",
+    "geada"
+   ]
+  },
+  {
+   "id": "heat-protect",
+   "title": "Helping plants through a heatwave",
+   "kind": "outdoor",
+   "intro": "Very hot days stress plants in pots most.",
+   "steps": [
+    {
+     "title": "Water early",
+     "detail": "Water deeply in the early morning, not in the midday sun."
+    },
+    {
+     "title": "Shade",
+     "detail": "Move pots to shade or rig up a shade cloth for the hottest hours."
+    },
+    {
+     "title": "Mulch",
+     "detail": "A layer of bark, gravel or straw keeps roots cooler and soil moist."
+    },
+    {
+     "title": "No feeding or repotting",
+     "detail": "Wait until the heat passes."
+    },
+    {
+     "title": "Indoor plants too",
+     "detail": "Pull plants back from hot windows and draw sheer curtains."
+    }
+   ],
+   "keywords": [
+    "heatwave",
+    "heat wave",
+    "too hot",
+    "hot weather",
+    "scorch",
+    "onda de calor"
+   ]
+  },
+  {
+   "id": "fungus-gnats",
+   "title": "Getting rid of fungus gnats",
+   "kind": "pests",
+   "intro": "Tiny black flies around the soil are fungus gnats. Their larvae live in damp soil.",
+   "steps": [
+    {
+     "title": "Let the top dry",
+     "detail": "Let the top 3–5 cm of soil dry between waterings. Larvae need moisture."
+    },
+    {
+     "title": "Yellow sticky traps",
+     "detail": "Catch the adults so they can't lay more eggs."
+    },
+    {
+     "title": "Bottom water",
+     "detail": "Watering from below keeps the surface drier."
+    },
+    {
+     "title": "BTI",
+     "detail": "Mosquito bits (Bacillus thuringiensis israelensis) soaked in water kill larvae safely."
+    },
+    {
+     "title": "Top layer of sand",
+     "detail": "A thin layer of sand or grit on top makes the soil less inviting."
+    }
+   ],
+   "keywords": [
+    "gnats",
+    "fungus gnats",
+    "small flies",
+    "little flies",
+    "mosquitinhos",
+    "flies",
+    "gnat",
+    "fruit flies"
+   ]
+  },
+  {
+   "id": "mold-soil",
+   "title": "White fuzz or mould on soil",
+   "kind": "problems",
+   "intro": "A white fluffy layer on soil is usually harmless saprophytic mould, but it means things are too damp.",
+   "steps": [
+    {
+     "title": "Scrape it off",
+     "detail": "Remove the top layer of mould and soil."
+    },
+    {
+     "title": "More air",
+     "detail": "Improve airflow and water less often."
+    },
+    {
+     "title": "Light helps",
+     "detail": "More light dries soil faster and discourages mould."
+    },
+    {
+     "title": "Cinnamon",
+     "detail": "A sprinkle of cinnamon on the surface is a gentle natural antifungal."
+    }
+   ],
+   "keywords": [
+    "mold",
+    "mould",
+    "white fuzz",
+    "fungus on soil",
+    "mofo"
+   ]
+  },
+  {
+   "id": "leggy-fix",
+   "title": "Fixing a leggy, stretched plant",
+   "kind": "problems",
+   "intro": "Long bare stems mean the plant has been reaching for light.",
+   "steps": [
+    {
+     "title": "More light first",
+     "detail": "Move it closer to a window or add a grow light, or new growth stretches too."
+    },
+    {
+     "title": "Cut back",
+     "detail": "Prune stems just above a node to encourage branching lower down."
+    },
+    {
+     "title": "Root the tips",
+     "detail": "Use the cut tops as cuttings and plant them back in the same pot for a fuller look."
+    },
+    {
+     "title": "Rotate",
+     "detail": "Turn the pot regularly so all sides get light."
+    }
+   ],
+   "keywords": [
+    "leggy",
+    "stretched",
+    "sparse",
+    "bare stems",
+    "spindly",
+    "estiolada"
+   ]
+  }
  ]
 }

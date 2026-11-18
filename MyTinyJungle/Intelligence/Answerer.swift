@@ -182,6 +182,11 @@ enum Answerer {
         if has(#"\b(tools?|equipment|what do i need|kit|ferramenta)"#) {
             return ("A cosy plant kit:\n" + k.tools.map { "• \($0.name): \($0.use ?? "")" }.joined(separator: "\n"), [])
         }
+        // How-to topics: propagation, watering methods, light, holidays, myths and more.
+        if let t = k.topic(in: q), (plant == nil && t.kind != "safety") || has(#"\b(how|why|tips?|guide|best way|should i|is it true|myth|como|por que|dicas?)\b"#) {
+            let steps = t.steps.prefix(5).map { "• \($0.title): \($0.detail)" }.joined(separator: "\n")
+            return ("\(t.title). \(t.intro)\n\(steps)", [])
+        }
         // A described symptom without a plant to ask about.
         if plant == nil || plant?.species == nil, let sym = k.symptom(in: q) {
             return ("\(sym.name). \(sym.looks)\nUsual causes: \(sym.causes.joined(separator: "; ")).\nWhat helps: \(sym.fixes.joined(separator: " "))", ["Send photo"])

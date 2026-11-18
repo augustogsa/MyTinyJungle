@@ -22,6 +22,10 @@ struct Knowledge: Decodable {
     struct Month: Decodable { let month: Int; let indoor, outdoor: String }
     struct LightLevel: Decodable { let id, lux, `where`, plants: String }
     struct Named: Decodable { let name: String; let note: String?; let use: String? }
+    struct Topic: Decodable, Identifiable {
+        struct Step: Decodable { let title, detail: String }
+        let id, title, kind, intro: String; let steps: [Step]; let keywords: [String]
+    }
 
     var symptoms: [Symptom] = []
     var diseases: [Disease] = []
@@ -31,13 +35,14 @@ struct Knowledge: Decodable {
     var lightLevels: [LightLevel] = []
     var potMaterials: [Named] = []
     var tools: [Named] = []
+    var topics: [Topic] = []
     let soils: [Soil]
     let components: [Component]
     let fertilizers: [Fertilizer]
     let pests: [Pest]
     let sources: [String]
 
-    enum CodingKeys: String, CodingKey { case soils, components, fertilizers, pests, sources, symptoms, diseases, deficiencies, glossary, calendar, lightLevels, potMaterials, tools }
+    enum CodingKeys: String, CodingKey { case soils, components, fertilizers, pests, sources, symptoms, diseases, deficiencies, glossary, calendar, lightLevels, potMaterials, tools, topics }
     init(from d: Decoder) throws {
         let c = try d.container(keyedBy: CodingKeys.self)
         soils = try c.decode([Soil].self, forKey: .soils)
@@ -53,6 +58,7 @@ struct Knowledge: Decodable {
         lightLevels = (try? c.decode([LightLevel].self, forKey: .lightLevels)) ?? []
         potMaterials = (try? c.decode([Named].self, forKey: .potMaterials)) ?? []
         tools = (try? c.decode([Named].self, forKey: .tools)) ?? []
+        topics = (try? c.decode([Topic].self, forKey: .topics)) ?? []
     }
     init(soils: [Soil], components: [Component], fertilizers: [Fertilizer], pests: [Pest], sources: [String]) {
         self.soils = soils; self.components = components; self.fertilizers = fertilizers; self.pests = pests; self.sources = sources
@@ -184,4 +190,21 @@ enum PlantKnowledgeRows {
 
 extension String {
     var sentenceCased: String { prefix(1).uppercased() + dropFirst() }
+}
+
+extension Knowledge {
+    /// Best how-to topic for a question: longest matching keyword wins.
+    func topic(in q: String) -> Topic? {
+        let f = q.folded
+        var best: (Topic, Int)?
+        for t in topics {
+            for k in t.keywords {
+                let kf = k.folded
+                guard kf.count > (best?.1 ?? 2), f.range(of: "\\b\(NSRegularExpression.escapedPattern(for: kf))", options: .regularExpression) != nil else { continue }
+                best = (t, kf.count)
+            }
+        }
+        return best?.0
+    }
+    func topic(id: String) -> Topic? { topics.first { $0.id == id } }
 }

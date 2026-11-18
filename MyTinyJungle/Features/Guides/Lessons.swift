@@ -191,6 +191,17 @@ extension GuideLibrary {
                 S(title: "Next time", detail: d.prevent, symbol: "shield.fill"),
             ])
         }
+        let topicLook: [String: (String, Color)] = [
+            "propagation": ("scissors", Jungle.leaf), "watering": ("drop.fill", Color(red: 0.36, green: 0.6, blue: 0.75)), "light": ("sun.max.fill", gold),
+            "environment": ("humidity.fill", Color(red: 0.36, green: 0.6, blue: 0.75)), "care": ("leaf.fill", Jungle.leaf), "safety": ("pawprint.fill", Jungle.terracotta),
+            "edible": ("leaf.arrow.circlepath", Jungle.leaf), "myths": ("sparkles", plum), "flowering": ("camera.macro", plum),
+            "outdoor": ("sun.horizon.fill", gold), "pests": ("ant.fill", Jungle.terracotta), "problems": ("stethoscope", Jungle.terracotta),
+        ]
+        out += k.topics.map { t in
+            let look = topicLook[t.kind] ?? ("leaf.fill", Jungle.leaf)
+            return lesson("topic-\(t.id)", t.title, t.intro.components(separatedBy: ". ").first ?? t.intro, look.0, look.1, max(2, t.steps.count / 2 + 1),
+                          when: t.intro, t.steps.map { S(title: $0.title, detail: $0.detail, symbol: look.0) })
+        }
         if !k.deficiencies.isEmpty {
             out.append(lesson("hunger-signs", "When leaves are hungry", "Reading nutrient shortages", "leaf.fill", Jungle.leaf, 4,
                               when: "Pale, patchy or oddly coloured leaves in the growing season.", k.deficiencies.map {
