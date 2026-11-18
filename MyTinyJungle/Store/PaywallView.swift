@@ -13,6 +13,7 @@ struct PaywallView: View {
                 if let reason { Text(reason.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.leaf) }
                 VStack(alignment: .leading, spacing: 10) {
                     perk("leaf", "Unlimited plants")
+                    perk("nosign", "No ads")
                     perk("barcode.viewfinder", "Scan soil & fertilizer: see which plants it suits")
                     perk("tray.full", "Growing inventory & shopping list")
                     perk("stethoscope", "Plant Doctor & memory insights, coming first to Plus")

@@ -114,3 +114,21 @@ struct EngineTests {
         #expect((p.learnedDryDays ?? 0) > 9.5)
     }
 }
+
+import Testing
+@testable import MyTinyJungle
+
+struct AdSlotTests {
+    @Test func gridBreaksAfterRow4ThenEvery8() {
+        let c = AdSlots.chunks(50, perRow: 2)
+        #expect(c.first == 0..<8)
+        #expect(c.dropFirst().first == 8..<24)
+        #expect(AdSlots.chunks(8, perRow: 2).count == 1)
+    }
+    @Test func agendaNeverFirst() {
+        #expect(!AdSlots.agendaAd(before: 0))
+        #expect(!AdSlots.agendaAd(before: 1))
+        #expect(AdSlots.agendaAd(before: 2))
+        #expect(AdSlots.agendaAd(before: 7))
+    }
+}

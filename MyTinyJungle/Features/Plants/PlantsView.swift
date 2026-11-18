@@ -51,10 +51,16 @@ struct PlantsView: View {
                         if shown.isEmpty {
                             Text("No plants here.").foregroundStyle(Jungle.subtle).frame(maxWidth: .infinity).padding(.top, 30)
                         }
-                        LazyVGrid(columns: columns, spacing: 12) {
-                            ForEach(shown) { p in
-                                NavigationLink(value: p.id) { PlantTile(plant: p) }.buttonStyle(.plain)
+                        // Ads sit between grid rows only: after row 4, then every 8 rows (free users).
+                        let perRow = columns.count
+                        let chunks = AdSlots.chunks(shown.count, perRow: perRow)
+                        ForEach(chunks.indices, id: \.self) { i in
+                            LazyVGrid(columns: columns, spacing: 12) {
+                                ForEach(shown[chunks[i]]) { p in
+                                    NavigationLink(value: p.id) { PlantTile(plant: p) }.buttonStyle(.plain)
+                                }
                             }
+                            if i < chunks.count - 1 { NativeAdCard() }
                         }
                     }
                 }

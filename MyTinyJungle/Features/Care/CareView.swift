@@ -53,7 +53,9 @@ struct CareView: View {
             if items.isEmpty {
                 Text(plants.isEmpty ? "Add a plant and its care shows up here." : "Nothing planned. Your jungle is relaxing. 🌿").foregroundStyle(Jungle.subtle)
             }
-            ForEach(grouped.keys.sorted(), id: \.self) { day in
+            let days = grouped.keys.sorted()
+            ForEach(days, id: \.self) { day in
+                if AdSlots.agendaAd(before: days.firstIndex(of: day) ?? 0) { NativeAdCard() }
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(dayTitle(day)).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
@@ -175,6 +177,7 @@ struct SeasonGuideView: View {
             }
             Text("\(season.rawValue) for your plants").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             ForEach(items, id: \.self) { item in
+                if item == items.dropFirst(3).first { NativeAdCard() }
                 Button { toggle(item) } label: {
                     HStack(alignment: .top, spacing: 10) {
                         Image(systemName: checked(item) ? "checkmark.circle.fill" : "circle").foregroundStyle(Jungle.leaf)
@@ -184,6 +187,7 @@ struct SeasonGuideView: View {
                 }
                 .buttonStyle(.plain)
             }
+            BottomBannerAd().padding(.top, 8)
         }
     }
 
@@ -324,6 +328,7 @@ struct PropagationListView: View {
             }
             .onDelete { idx in idx.forEach { ctx.delete(props[$0]) }; try? ctx.save() }
         }
+        .safeAreaInset(edge: .bottom) { BottomBannerAd() }
         .navigationTitle("Propagation")
         .toolbar { Button { starting = true } label: { Image(systemName: "plus") } }
         .sheet(isPresented: $starting) { NavigationStack { StartPropagationView(parent: nil) } }

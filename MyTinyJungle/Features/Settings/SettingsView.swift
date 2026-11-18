@@ -14,6 +14,7 @@ struct SettingsView: View {
                         Link("Manage subscription", destination: URL(string: "https://apps.apple.com/account/subscriptions")!)
                     } else {
                         Button("See Plus: €1.99/month or €11.99/year") { paywall = true }
+                        Button("Remove ads with Tiny Jungle Plus", systemImage: "nosign") { paywall = true }
                     }
                     Button("Restore purchases") { Task { await Store.shared.restore() } }
                 }
@@ -26,6 +27,11 @@ struct SettingsView: View {
                 Section {
                     Toggle("Southern hemisphere", isOn: $settings.southernHemisphere)
                 } footer: { Text("Seasons drive feeding, repotting and watering. Brazil and Australia are in the southern hemisphere.") }
+                if !Store.shared.isPlus {
+                    Section {
+                        Button("Privacy & ads choices", systemImage: "hand.raised") { AdsManager.shared.presentPrivacyOptions() }
+                    } footer: { Text("Your plant photos and data never leave your device. Ads help keep Tiny Jungle free.") }
+                }
                 Section("About") {
                     LabeledContent("Version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
                     Text("Care knowledge is reviewed from open botanical sources (Kew POWO, GBIF, ASPCA, extension guides). Advice is guidance, not a guarantee. Always check the soil.")

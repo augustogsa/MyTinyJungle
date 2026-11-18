@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A10000000000000000000063 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000061 /* GoogleMobileAds */; };
+		A10000000000000000000064 /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000062 /* GoogleUserMessagingPlatform */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A10000000000000000000020 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,7 +32,7 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A10000000000000000000013 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000013 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000063, A10000000000000000000064); runOnlyForDeploymentPostprocessing = 0; };
 		A10000000000000000000023 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
@@ -67,6 +72,10 @@
 				A10000000000000000000012 /* MyTinyJungle */,
 			);
 			name = MyTinyJungle;
+			packageProductDependencies = (
+				A10000000000000000000061 /* GoogleMobileAds */,
+				A10000000000000000000062 /* GoogleUserMessagingPlatform */,
+			);
 			productName = MyTinyJungle;
 			productReference = A10000000000000000000011;
 			productType = "com.apple.product-type.application";
@@ -112,6 +121,10 @@
 			mainGroup = A10000000000000000000002;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
+			packageReferences = (
+				A10000000000000000000059 /* swift-package-manager-google-mobile-ads */,
+				A10000000000000000000060 /* swift-package-manager-google-user-messaging-platform */,
+			);
 			productRefGroup = A10000000000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -197,6 +210,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Tiny Jungle";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_FILE = Config/AdsInfo.plist;
+				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your plants and product labels.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -228,6 +244,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Tiny Jungle";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_FILE = Config/AdsInfo.plist;
+				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your plants and product labels.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -287,6 +306,32 @@
 		A10000000000000000000040 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000041, A10000000000000000000042); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		A10000000000000000000050 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000051, A10000000000000000000052); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A10000000000000000000059 /* swift-package-manager-google-mobile-ads */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = { kind = upToNextMajorVersion; minimumVersion = 13.13.0; };
+		};
+		A10000000000000000000060 /* swift-package-manager-google-user-messaging-platform */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git";
+			requirement = { kind = upToNextMajorVersion; minimumVersion = 3.1.0; };
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A10000000000000000000061 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000059;
+			productName = GoogleMobileAds;
+		};
+		A10000000000000000000062 /* GoogleUserMessagingPlatform */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000060;
+			productName = GoogleUserMessagingPlatform;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A10000000000000000000001 /* Project object */;
 }
