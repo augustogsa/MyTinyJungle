@@ -220,7 +220,7 @@ struct GlassComposer: View {
         .contentShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
         .onTapGesture { focused = true }
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
-        .padding(.horizontal, 12).padding(.bottom, 6)
+        .padding(.horizontal, 21).padding(.bottom, 6) // same inset as the floating tab bar
         .animation(.easeOut(duration: 0.2), value: expanded)
         .onChange(of: pick) { _, item in
             guard let item else { return }
