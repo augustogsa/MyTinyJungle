@@ -32,6 +32,7 @@ struct MeView: View {
                     }
                     .buttonStyle(.plain)
                     SharedJungleRow()
+                    SharedJungleRow()
                     milestones
                     if !store.isPlus { plusCard }
                     JungleGroup(title: String(localized: "Your jungle", comment: "Me section title")) {

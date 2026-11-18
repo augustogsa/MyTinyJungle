@@ -31,6 +31,7 @@ struct CareView: View {
                     }
                     WeekStrip(plants: plants, tasks: tasks, selected: $selectedDay, offset: $weekOffset)
                     HouseholdTodayCard(plants: plants)
+                    HouseholdTodayCard(plants: plants)
                     Picker("Range", selection: $range) { ForEach(Range.allCases, id: \.self) { Text($0.label) } }.pickerStyle(.segmented)
                     HStack(spacing: 10) {
                         NavigationLink { TravelPlanView() } label: { shortcut(String(localized: "Travel care", comment: "Care shortcut tile; max 12 chars"), "airplane") }

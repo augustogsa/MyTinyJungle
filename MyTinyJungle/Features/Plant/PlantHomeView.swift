@@ -33,6 +33,7 @@ struct PlantHomeView: View {
             VStack(spacing: 16) {
                 hero
                 actions
+                PlantShareSection(plant: plant).padding(.horizontal, 16)
                 Picker("Section", selection: $tab) { ForEach(Tab.allCases, id: \.self) { Text($0.label) } }
                     .pickerStyle(.segmented).padding(.horizontal, 16)
                 Group {

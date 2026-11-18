@@ -31,6 +31,7 @@ struct TodayView: View {
                         header
                         if plants.isEmpty { EmptyJungle { addingPlant = true } }
                         else {
+                            HouseholdTodayCard(plants: plants)
                             if requests.isEmpty {
                                 Button { selectedTab = 2 } label: { CaughtUpCard(plants: plants) }.buttonStyle(.plain).id("today")
                             } else {

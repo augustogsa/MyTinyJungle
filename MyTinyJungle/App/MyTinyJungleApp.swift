@@ -67,6 +67,7 @@ struct RootView: View {
     @AppStorage("selectedTab") private var tab = 0
     @AppStorage("onboarded") private var onboarded = false
     @AppStorage("openPlantChat") private var openChat = ""
+    @State private var openHouse = false
     var body: some View {
         let skip = DemoSeeder.photoDir != nil || ProcessInfo.processInfo.arguments.contains("-uiTesting")
         // `-setupChat` opens the setup chat directly (screenshots and QA, no sign-in needed).
@@ -93,11 +94,18 @@ struct RootView: View {
             }
             .onChange(of: phase) { _, p in
                 if p == .background { Task { await CareReminders.reschedule(ctx) } }
-                if p == .active { Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); ProactiveVoice.speak(ctx); await CareReminders.reschedule(ctx) } }
+                if p == .active { Task { await Household.shared.sync(ctx); if UserDefaults.standard.bool(forKey: "house.openHub") { UserDefaults.standard.set(false, forKey: "house.openHub"); openHouse = true } }; Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); ProactiveVoice.speak(ctx); await CareReminders.reschedule(ctx) } }
             }
             // Reschedule on every change to the care log.
             .onReceive(NotificationCenter.default.publisher(for: ModelContext.didSave).debounce(for: .seconds(1), scheduler: RunLoop.main)) { _ in
                 Task { await CareReminders.reschedule(ctx) }
+                Task { await Household.shared.onLocalChange(ctx) }
+            }
+            .sheet(isPresented: $openHouse) { NavigationStack { SharedJungleView() } }
+            .task {
+                if Household.demo { try? await Task.sleep(for: .seconds(1.5)); Household.shared.seedDemo(ctx) }
+                await Household.shared.sync(ctx)
+                if ProcessInfo.processInfo.arguments.contains("-openSharedJungle") { openHouse = true }
             }
             .task {
                 JungleRooms.sync((try? ctx.fetch(FetchDescriptor<Space>())) ?? [])

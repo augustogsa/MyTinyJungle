@@ -23,6 +23,7 @@ struct SettingsView: View {
                         }
                     }
                     SharedJungleSettingsGroup()
+                    SharedJungleSettingsGroup()
                     JungleGroup(title: String(localized: "iCloud backup", comment: "Settings title"), footer: String(localized: "Your plants, photos and history copy to your private iCloud. Sign in to the same iCloud on a new iPhone and your jungle comes back on its own.", comment: "Settings footer")) {
                         JungleRow(icon: .weather, title: String(localized: "Back up to iCloud", comment: "Settings title"), subtitle: cloud.summary) {
                             let blocked = cloud.status == .noAccount || (cloud.status == .unavailable && !cloud.pendingRestart)

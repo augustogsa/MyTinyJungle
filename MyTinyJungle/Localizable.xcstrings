@@ -103,6 +103,18 @@
         }
       }
     },
+    "%@ (you)": {
+      "comment": "Member row name for yourself",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (você)"
+          }
+        }
+      }
+    },
     "%@ Always water first. Never feed dry roots. Scan any bottle at the shop and I'll tell you if it suits me.": {
       "comment": "Plant chat: feeding advice. %@ = species feeding plan sentence.",
       "localizations": {
@@ -110,6 +122,66 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ Sempre regue antes. Nunca adube raiz seca. Escaneie qualquer frasco na loja e eu digo se combina comigo."
+          }
+        }
+      }
+    },
+    "%@ asked %@ to take %@.": {
+      "comment": "Feed: cover request to one member; %1$@ name, %2$@ other name, %3$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ pediu para %2$@ cuidar de %3$@."
+          }
+        }
+      }
+    },
+    "%@ asked for a hand with %@.": {
+      "comment": "Feed: cover request to everyone; %1$@ name, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ pediu uma mãozinha com %2$@."
+          }
+        }
+      }
+    },
+    "%@ cared for %@.": {
+      "comment": "Shared jungle feed, generic care; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ cuidou de %2$@."
+          }
+        }
+      }
+    },
+    "%@ could use a hand": {
+      "comment": "Notification title: member asks for help; %@ first name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ precisa de uma mãozinha"
+          }
+        }
+      }
+    },
+    "%@ fed %@.": {
+      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ adubou %2$@."
           }
         }
       }
@@ -131,6 +203,30 @@
         }
       }
     },
+    "%@ has got %@. Enjoy the break.": {
+      "comment": "Notification: member accepted covering; %1$@ name, %2$@ plant name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ vai cuidar de %2$@. Aproveite a folga."
+          }
+        }
+      }
+    },
+    "%@ has today's care. Enjoy a day off.": {
+      "comment": "Shared card: other member's turn; %@ first name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoje é com %@. Aproveite a folga."
+          }
+        }
+      }
+    },
     "%@ If I stretch toward the window or my new leaves come out small, I need more light. Bleached or scorched patches mean too much direct sun.": {
       "comment": "Plant chat: light advice. %@ = species light rule sentence.",
       "localizations": {
@@ -142,6 +238,138 @@
         }
       }
     },
+    "%@ invited you to care for %@ together on My Tiny Jungle. We'll take turns, and the app tells us whose turn it is.": {
+      "comment": "Invite message text; %1$@ inviter name, %2$@ jungle name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ convidou você para cuidar de %2$@ juntos no My Tiny Jungle. A gente reveza, e o app avisa de quem é a vez."
+          }
+        }
+      }
+    },
+    "%@ is away. %@ is covering.": {
+      "comment": "Feed: member travelling, other covers; %1$@ name, %2$@ cover name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ está fora. %2$@ está cobrindo."
+          }
+        }
+      }
+    },
+    "%@ is away. Turns are shared meanwhile.": {
+      "comment": "Feed: member travelling; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ está fora. Enquanto isso, a vez é dividida."
+          }
+        }
+      }
+    },
+    "%@ is back home.": {
+      "comment": "Feed: member back from trip; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ voltou para casa."
+          }
+        }
+      }
+    },
+    "%@ is covering": {
+      "comment": "Turn pill; %@ first name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ está cobrindo"
+          }
+        }
+      }
+    },
+    "%@ is covering %@ for %@.": {
+      "comment": "Feed: member accepted cover; %1$@ name, %2$@ plant, %3$@ other name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ está cuidando de %2$@ por %3$@."
+          }
+        }
+      }
+    },
+    "%@ is covering for you": {
+      "comment": "Hub row; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ está cobrindo você"
+          }
+        }
+      }
+    },
+    "%@ is no longer in the jungle.": {
+      "comment": "Feed: member removed by owner; %@ name. Neutral, no blame",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ não faz mais parte da selva."
+          }
+        }
+      }
+    },
+    "%@ is your turn today": {
+      "comment": "Shared card; %@ plant name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoje %@ é com você"
+          }
+        }
+      }
+    },
+    "%@ joined the jungle.": {
+      "comment": "Feed: member joined; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entrou na selva."
+          }
+        }
+      }
+    },
+    "%@ joined. Turns are now shared fairly.": {
+      "comment": "Notification: new member joined the shared jungle; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entrou. Agora a vez é dividida de forma justa."
+          }
+        }
+      }
+    },
     "%@ Jr.": {
       "comment": "Default name for plant grown from a cutting; arg parent name",
       "localizations": {
@@ -149,6 +377,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ Jr."
+          }
+        }
+      }
+    },
+    "%@ just watered %@.": {
+      "comment": "Shared jungle feed/notification; %1$@ member name, %2$@ plant name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ acabou de regar %2$@."
           }
         }
       }
@@ -166,6 +406,90 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ Mantenha entre %2$@ e %3$@, longe de aquecedor e corrente de ar."
+          }
+        }
+      }
+    },
+    "%@ left the jungle.": {
+      "comment": "Feed: member left; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ saiu da selva."
+          }
+        }
+      }
+    },
+    "%@ misted %@.": {
+      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ borrifou %2$@."
+          }
+        }
+      }
+    },
+    "%@ repotted %@.": {
+      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ replantou %2$@."
+          }
+        }
+      }
+    },
+    "%@ says thank you for caring for %@.": {
+      "comment": "Notification: thanks from member; %1$@ name, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ agradece por você cuidar de %2$@."
+          }
+        }
+      }
+    },
+    "%@ started the shared jungle.": {
+      "comment": "Feed: jungle created; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ criou a selva compartilhada."
+          }
+        }
+      }
+    },
+    "%@ thanked %@ for %@.": {
+      "comment": "Feed: thanks; %1$@ name, %2$@ other, %3$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ agradeceu %2$@ por %3$@."
+          }
+        }
+      }
+    },
+    "%@ until %@": {
+      "comment": "Hub row subtitle; %1$@ plant, %2$@ date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ até %2$@"
           }
         }
       }
@@ -686,6 +1010,18 @@
         }
       }
     },
+    "%@ watered %@.": {
+      "comment": "Shared jungle feed, older entry; %1$@ member name, %2$@ plant name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ regou %2$@."
+          }
+        }
+      }
+    },
     "%@ will be ready for a spring trim %@": {
       "comment": "Forecast line on Today/agenda, warm, no final period. Args: plant name, when.",
       "localizations": {
@@ -838,6 +1174,18 @@
         }
       }
     },
+    "%@ · %lld to do": {
+      "comment": "Member status: role and count of plants on their turn",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$lld para cuidar"
+          }
+        }
+      }
+    },
     "%@ · day %lld": {
       "comment": "Propagation row subtitle: method and day number",
       "localizations": {
@@ -957,6 +1305,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "A terra de %@ já deve estar sequinha. Uma regadinha ia cair muito bem."
+          }
+        }
+      }
+    },
+    "%@'s turn": {
+      "comment": "Turn pill: it's this person's turn; %@ first name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vez de %@"
           }
         }
       }
@@ -1413,6 +1773,18 @@
         }
       }
     },
+    "%lld care moments this month": {
+      "comment": "Accessibility: member's care count",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld cuidados este mês"
+          }
+        }
+      }
+    },
     "%lld care moments today": {
       "comment": "Caption",
       "localizations": {
@@ -1849,6 +2221,42 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld de 50 regas"
+          }
+        }
+      }
+    },
+    "%lld people · %lld plants": {
+      "comment": "Hub header; %1$lld people, %2$lld plants",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld pessoas · %2$lld plantas"
+          }
+        }
+      }
+    },
+    "%lld people · you're %@": {
+      "comment": "Settings row subtitle; %1$lld count, %2$@ role phrase",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld pessoas · você é %2$@"
+          }
+        }
+      }
+    },
+    "%lld plants are your turn today": {
+      "comment": "Shared card; %lld count",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoje %lld plantas são com você"
           }
         }
       }
@@ -2827,6 +3235,18 @@
         }
       }
     },
+    "A gentle look at how care is shared. Turns adjust on their own.": {
+      "comment": "Hub footer: balance",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um olhar carinhoso sobre como o cuidado está dividido. A vez se ajusta sozinha."
+          }
+        }
+      }
+    },
     "A gentle look under leaves": {
       "comment": "Reminder kind subtitle in Settings, short and warm.",
       "localizations": {
@@ -2978,6 +3398,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bastante amarelado. Confira as raízes e quanto tempo a terra fica molhada."
+          }
+        }
+      }
+    },
+    "a member": {
+      "comment": "Role phrase",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "membro"
           }
         }
       }
@@ -3292,6 +3724,18 @@
         }
       }
     },
+    "Activity": {
+      "comment": "Hub section: feed",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atividade"
+          }
+        }
+      }
+    },
     "Adapts to your home": {
       "comment": "Care plan hint; max 30 chars",
       "localizations": {
@@ -3310,6 +3754,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Adicionar"
+          }
+        }
+      }
+    },
+    "Add a note (optional)": {
+      "comment": "Ask cover note placeholder",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deixe um recado (opcional)"
           }
         }
       }
@@ -3917,6 +4373,18 @@
         }
       }
     },
+    "Anyone": {
+      "comment": "Ask cover: send to everyone",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qualquer pessoa"
+          }
+        }
+      }
+    },
     "Aphids": {
       "comment": "Pest name",
       "localizations": {
@@ -3990,6 +4458,42 @@
           "stringUnit": {
             "state": "translated",
             "value": "Assim que aparecerem teias, algodãozinho branco, folhas grudentas ou mosquinhas."
+          }
+        }
+      }
+    },
+    "Ask": {
+      "comment": "Ask cover: recipient picker label",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pedir para"
+          }
+        }
+      }
+    },
+    "Ask for a hand": {
+      "comment": "Ask cover screen title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pedir uma mãozinha"
+          }
+        }
+      }
+    },
+    "Ask someone to cover": {
+      "comment": "Hub row",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pedir para alguém cobrir"
           }
         }
       }
@@ -4071,6 +4575,30 @@
         }
       }
     },
+    "Away this weekend": {
+      "comment": "Demo cover request note",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vou viajar no fim de semana"
+          }
+        }
+      }
+    },
+    "Away until %@": {
+      "comment": "Hub row: I'm travelling; %@ date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fora até %@"
+          }
+        }
+      }
+    },
     "Azaleas, camellias, gardenias and blueberries need 4.5 to 6. In chalky soil their leaves turn yellow with green veins.": {
       "comment": "Care guide step instruction; warm, practical",
       "localizations": {
@@ -4078,6 +4606,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Azaleias, camélias, gardênias e mirtilos precisam de pH entre 4,5 e 6. Em solo calcário, as folhas amarelam com as nervuras verdes."
+          }
+        }
+      }
+    },
+    "Back on": {
+      "comment": "Away: return date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volto em"
           }
         }
       }
@@ -4676,6 +5216,18 @@
         }
       }
     },
+    "Busy day? Pass a plant along.": {
+      "comment": "Hub row subtitle",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dia corrido? Passe uma plantinha adiante."
+          }
+        }
+      }
+    },
     "Cacti like a cool, dry winter: it's what makes them flower.": {
       "comment": "Care guide step tip",
       "localizations": {
@@ -4858,6 +5410,30 @@
         }
       }
     },
+    "Care for your plants together": {
+      "comment": "Shared jungle setup headline",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuidem das plantinhas juntos"
+          }
+        }
+      }
+    },
+    "Care for your plants with the people you live with.": {
+      "comment": "Settings footer",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuide das plantas junto com quem mora com você."
+          }
+        }
+      }
+    },
     "Care level": {
       "comment": "Plant passport row title; short",
       "localizations": {
@@ -4887,6 +5463,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Histórico de cuidados"
+          }
+        }
+      }
+    },
+    "Care you all log shows up here.": {
+      "comment": "Empty activity feed",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os cuidados de todo mundo aparecem aqui."
           }
         }
       }
@@ -5981,6 +6569,30 @@
         }
       }
     },
+    "Copied": {
+      "comment": "Link copied confirmation",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiado"
+          }
+        }
+      }
+    },
+    "Copy link": {
+      "comment": "Invite button",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar link"
+          }
+        }
+      }
+    },
     "Copy the name, NPK numbers or ingredients. For example: Orchid mix, pine bark, perlite, NPK 3-1-1.": {
       "comment": "Type label hint",
       "localizations": {
@@ -6025,6 +6637,30 @@
         }
       }
     },
+    "Could you look after %@ until %@?": {
+      "comment": "Cover request text; %1$@ plant name, %2$@ weekday",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você pode cuidar de %1$@ até %2$@?"
+          }
+        }
+      }
+    },
+    "Could you look after %lld plants until %@?": {
+      "comment": "Cover request text; %1$lld plant count, %2$@ weekday",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você pode cuidar de %1$lld plantas até %2$@?"
+          }
+        }
+      }
+    },
     "Could you peek at my drainage holes? Roots poking out means I need more room.": {
       "comment": "Plant speaking in chat, request checkRoots, default voice (cheerful/any personality): warm and friendly.",
       "localizations": {
@@ -6065,6 +6701,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Conte as folhas novas"
+          }
+        }
+      }
+    },
+    "Couple": {
+      "comment": "Household type; max 14 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casal"
           }
         }
       }
@@ -6994,6 +7642,18 @@
         }
       }
     },
+    "Email": {
+      "comment": "Invite by email button",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-mail"
+          }
+        }
+      }
+    },
     "Estimated from the photo's colours. I'll get more precise as we go.": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -7181,6 +7841,30 @@
         }
       }
     },
+    "Everyone at home can help. Turns rotate fairly, kids included.": {
+      "comment": "Invite blurb, family",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo mundo em casa pode ajudar. A vez roda de forma justa, crianças incluídas."
+          }
+        }
+      }
+    },
+    "Everyone at home helps, kids too": {
+      "comment": "Household type description; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo mundo ajuda, as crianças também"
+          }
+        }
+      }
+    },
     "Everyone copes with a deep water before you go.": {
       "comment": "Travel plan: all plants fine",
       "localizations": {
@@ -7188,6 +7872,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Todo mundo aguenta com uma boa regada antes de você ir."
+          }
+        }
+      }
+    },
+    "Everyone else loses access. Your plants and history stay with you.": {
+      "comment": "Stop sharing explanation",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As outras pessoas perdem o acesso. Suas plantas e o histórico ficam com você."
           }
         }
       }
@@ -7254,6 +7950,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Todo mundo está ouvindo."
+          }
+        }
+      }
+    },
+    "Everyone's plants are happy today": {
+      "comment": "Shared jungle card: nothing needed",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas as plantinhas estão felizes hoje"
           }
         }
       }
@@ -7357,6 +8065,18 @@
         }
       }
     },
+    "Fair turns for the shared plants, and a heads-up when someone's away.": {
+      "comment": "Invite blurb, housemates",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vez justa para as plantas da casa, e um aviso quando alguém viaja."
+          }
+        }
+      }
+    },
     "Family": {
       "comment": "Info row title: botanical family\nPlant passport row title; short",
       "localizations": {
@@ -7364,6 +8084,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Família"
+          }
+        }
+      }
+    },
+    "Family jungle": {
+      "comment": "Default shared jungle name; max 24 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selva da família"
           }
         }
       }
@@ -7846,6 +8578,18 @@
         }
       }
     },
+    "Flat jungle": {
+      "comment": "Default shared jungle name for housemates; max 24 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selva do apê"
+          }
+        }
+      }
+    },
     "Flip a leaf": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -8206,6 +8950,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Casa nova e arejada"
+          }
+        }
+      }
+    },
+    "Friends": {
+      "comment": "Household type: friends who plant-sit; max 14 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amigos"
+          }
+        }
+      }
+    },
+    "Friends who water while you're away": {
+      "comment": "Household type description; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amigos que regam quando você viaja"
           }
         }
       }
@@ -9108,6 +9876,18 @@
         }
       }
     },
+    "Hand-offs": {
+      "comment": "Hub section: cover requests",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passagens de vez"
+          }
+        }
+      }
+    },
     "Happiest indoors in %@; outside only on warm summer days above %@.": {
       "comment": "Climate fit. Args: place, temperature.",
       "localizations": {
@@ -9777,6 +10557,18 @@
         }
       }
     },
+    "Housemates": {
+      "comment": "Household type; max 14 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Divide o apê"
+          }
+        }
+      }
+    },
     "How": {
       "comment": "Section header",
       "localizations": {
@@ -10301,6 +11093,18 @@
         }
       }
     },
+    "I'm back home": {
+      "comment": "End travel",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltei para casa"
+          }
+        }
+      }
+    },
     "I'm comfortable and content today.": {
       "comment": "Plant chat greeting when all is well, calm personality: gentle, unhurried, serene.",
       "localizations": {
@@ -10507,6 +11311,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ando me sentindo meio encharcada. Pode sentir minha terra antes da próxima rega?"
+          }
+        }
+      }
+    },
+    "I've got it": {
+      "comment": "Notification action: accept covering plant care; max 20 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deixa comigo"
+          }
+        }
+      }
+    },
+    "iCloud is taking a moment. Try the invite again in a little while.": {
+      "comment": "Shared jungle: share creation failed",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O iCloud está demorando um pouquinho. Tente o convite de novo daqui a pouco."
           }
         }
       }
@@ -11139,6 +11967,54 @@
         }
       }
     },
+    "Invite people": {
+      "comment": "Settings row",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convidar pessoas"
+          }
+        }
+      }
+    },
+    "Invite someone": {
+      "comment": "Hub row",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convidar alguém"
+          }
+        }
+      }
+    },
+    "Invite the people you live with. Everyone gets reminders on their turn, sees who watered last, and can pass a plant along when life gets busy.": {
+      "comment": "Shared jungle setup body",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convide quem mora com você. Cada um recebe lembretes na sua vez, vê quem regou por último e pode passar uma planta adiante quando a vida apertar."
+          }
+        }
+      }
+    },
+    "Invite to %@": {
+      "comment": "Invite headline; %@ jungle name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convidar para %@"
+          }
+        }
+      }
+    },
     "Is it getting dry in here, or is it just me? Check my soil, quickly!": {
       "comment": "Plant speaking in chat, request checkSoil, dramatic personality: over-the-top drama queen, theatrical, CAPS for emphasis (pt: 'dramática', exagerada).",
       "localizations": {
@@ -11399,6 +12275,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Só você e suas plantas"
+          }
+        }
+      }
+    },
+    "Just you so far. Invite someone to share the care.": {
+      "comment": "Hub header when alone",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por enquanto, só você. Convide alguém para dividir o cuidado."
           }
         }
       }
@@ -11931,6 +12819,18 @@
         }
       }
     },
+    "Leave": {
+      "comment": "Member leaves button",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sair"
+          }
+        }
+      }
+    },
     "Leave it be": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -11949,6 +12849,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deixe num lugar seco por 2–3 dias até a ponta fechar."
+          }
+        }
+      }
+    },
+    "Leave this jungle": {
+      "comment": "Member leaves",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sair desta selva"
+          }
+        }
+      }
+    },
+    "Leave this jungle?": {
+      "comment": "Dialog title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sair desta selva?"
           }
         }
       }
@@ -12492,6 +13416,18 @@
         }
       }
     },
+    "Looked after by": {
+      "comment": "Plant page row: who cares for this plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem cuida"
+          }
+        }
+      }
+    },
     "Looking at the leaves…": {
       "comment": "Loading step while reading photo; plant voice; max 30 chars",
       "localizations": {
@@ -12675,6 +13611,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Crie uma planta nova"
+          }
+        }
+      }
+    },
+    "Manage people and access": {
+      "comment": "Opens system CloudKit sharing controls",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerenciar pessoas e acesso"
           }
         }
       }
@@ -12928,6 +13876,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Conheça sua planta"
+          }
+        }
+      }
+    },
+    "Member": {
+      "comment": "Member role",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membro"
           }
         }
       }
@@ -13607,6 +14567,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Minha terra ainda está fresquinha do replantio e cheia de nutrientes. Vamos esperar umas 6 semanas para adubar."
+          }
+        }
+      }
+    },
+    "Not this time": {
+      "comment": "Decline cover request button; kind",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dessa vez não"
           }
         }
       }
@@ -15052,6 +16024,18 @@
         }
       }
     },
+    "Only the people you invite can see this jungle. It lives in iCloud, and members see plant names, photos and care, never your location or account.": {
+      "comment": "Hub privacy footer",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só quem você convidar vê esta selva. Ela fica no iCloud, e as pessoas veem nomes, fotos e cuidados das plantas, nunca sua localização ou sua conta."
+          }
+        }
+      }
+    },
     "Only use it if you've confirmed a pest on %@.": {
       "comment": "Product scan verdict reason for one plant. Args are plant or species names, numbers.",
       "localizations": {
@@ -15228,6 +16212,18 @@
         }
       }
     },
+    "Others have today's care. Enjoy a day off.": {
+      "comment": "Shared card: others' turn",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoje é com o pessoal. Aproveite a folga."
+          }
+        }
+      }
+    },
     "Our care tips come from botanists and trusted plant sources like Kew Gardens and the ASPCA. Every plant is a little different, so trust your fingers in the soil too.": {
       "comment": "Settings footer",
       "localizations": {
@@ -15235,6 +16231,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nossas dicas vêm de botânicos e fontes confiáveis como o Kew Gardens e a ASPCA. Cada planta é de um jeito, então confie também no dedo na terra."
+          }
+        }
+      }
+    },
+    "Our jungle": {
+      "comment": "Default shared jungle name for a couple; max 24 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nossa selva"
           }
         }
       }
@@ -15279,6 +16287,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Visão geral"
+          }
+        }
+      }
+    },
+    "Owner": {
+      "comment": "Member role",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dono"
           }
         }
       }
@@ -15334,6 +16354,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mãe"
+          }
+        }
+      }
+    },
+    "Partner, family or housemates. Take turns, never double-water.": {
+      "comment": "Me card subtitle: invite pitch",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amor, família ou quem divide o apê. Revezem e nunca reguem em dobro."
           }
         }
       }
@@ -15466,6 +16498,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dê uma olhada na muda de %@ e troque a água"
+          }
+        }
+      }
+    },
+    "People": {
+      "comment": "Hub section: members",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pessoas"
+          }
+        }
+      }
+    },
+    "Perfect for plant-sitting. They see exactly what each plant needs.": {
+      "comment": "Invite blurb, friends",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfeito para quem cuida enquanto você viaja. Dá para ver exatamente o que cada planta precisa."
           }
         }
       }
@@ -15867,6 +16923,18 @@
         }
       }
     },
+    "Plant pals": {
+      "comment": "Default shared jungle name for friends; max 24 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amigos das plantas"
+          }
+        }
+      }
+    },
     "Plant parent": {
       "comment": "Me tab header fallback when owner has no name; max 20 chars",
       "localizations": {
@@ -15979,6 +17047,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Plantas %1$@:\n%2$@"
+          }
+        }
+      }
+    },
+    "Plants you already have stay on your iPhone. You can be invited again anytime.": {
+      "comment": "Leave explanation",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As plantas que você já tem ficam no seu iPhone. Você pode ser convidado de novo quando quiser."
           }
         }
       }
@@ -16764,6 +17844,18 @@
         }
       }
     },
+    "Remove %@?": {
+      "comment": "Remove member dialog; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover %@?"
+          }
+        }
+      }
+    },
     "Remove fallen leaves from the soil to keep pests away.": {
       "comment": "Care guide step instruction; warm, practical",
       "localizations": {
@@ -16771,6 +17863,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tire as folhas caídas da terra para afastar pragas."
+          }
+        }
+      }
+    },
+    "Remove from jungle": {
+      "comment": "Owner removes member",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover da selva"
           }
         }
       }
@@ -17592,6 +18696,18 @@
         }
       }
     },
+    "Say thanks": {
+      "comment": "Accessibility: thank member button",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agradecer"
+          }
+        }
+      }
+    },
     "Scale insects": {
       "comment": "Pest name",
       "localizations": {
@@ -18084,6 +19200,30 @@
         }
       }
     },
+    "Share fairly": {
+      "comment": "Away: turns rotate among the rest",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dividir de forma justa"
+          }
+        }
+      }
+    },
+    "Share invite link": {
+      "comment": "Invite primary button",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar convite"
+          }
+        }
+      }
+    },
     "Share shopping list": {
       "comment": "Accessibility label for share button",
       "localizations": {
@@ -18091,6 +19231,54 @@
           "stringUnit": {
             "state": "translated",
             "value": "Compartilhar lista de compras"
+          }
+        }
+      }
+    },
+    "Share your jungle": {
+      "comment": "Me card title: invite people to care together",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhe sua selva"
+          }
+        }
+      }
+    },
+    "Shared care": {
+      "comment": "Plant page section title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuidado compartilhado"
+          }
+        }
+      }
+    },
+    "Shared flat, shared plants, fair turns": {
+      "comment": "Household type description; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apê dividido, plantas divididas, vez justa"
+          }
+        }
+      }
+    },
+    "Shared jungle": {
+      "comment": "Settings title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selva compartilhada"
           }
         }
       }
@@ -18212,6 +19400,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entre no iCloud pelo app Ajustes para fazer backup."
+          }
+        }
+      }
+    },
+    "Sign in to iCloud in the Settings app to invite people. Your shared jungle is ready the moment you do.": {
+      "comment": "Shared jungle: invite needs iCloud",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre no iCloud nos Ajustes para convidar pessoas. Sua selva compartilhada fica pronta na hora."
           }
         }
       }
@@ -19005,6 +20205,18 @@
         }
       }
     },
+    "Someone": {
+      "comment": "Shared jungle: unknown member",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alguém"
+          }
+        }
+      }
+    },
     "Something else": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -19468,6 +20680,18 @@
         }
       }
     },
+    "Start and invite": {
+      "comment": "Setup primary button",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Começar e convidar"
+          }
+        }
+      }
+    },
     "Start feeding": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -19646,6 +20870,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ainda molhada! Vou esperar. Água demais é pior pra mim do que pouca. Vou aprender que seco mais devagar do que eu pensava."
+          }
+        }
+      }
+    },
+    "Stop sharing": {
+      "comment": "Owner ends shared jungle",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de compartilhar"
+          }
+        }
+      }
+    },
+    "Stop sharing this jungle?": {
+      "comment": "Dialog title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de compartilhar esta selva?"
           }
         }
       }
@@ -19932,6 +21180,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Requer cuidado"
+          }
+        }
+      }
+    },
+    "Take turns": {
+      "comment": "Care plan: rotate between members",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revezar"
           }
         }
       }
@@ -20365,6 +21625,18 @@
         }
       }
     },
+    "That invite didn't open. Ask for a fresh link.": {
+      "comment": "Shared jungle: accepting invite failed",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esse convite não abriu. Peça um link novo."
+          }
+        }
+      }
+    },
     "That's all": {
       "comment": "Setup chat chip: finish a multi-choice answer",
       "localizations": {
@@ -20486,6 +21758,18 @@
         }
       }
     },
+    "the owner": {
+      "comment": "Role phrase",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o dono"
+          }
+        }
+      }
+    },
     "The pests that bother %@ most:\n%@\nCheck under my leaves and along the stems. A clear photo will help most.": {
       "comment": "Plant chat: likely pests. Args: species common name, bulleted list of pests.",
       "localizations": {
@@ -20569,6 +21853,18 @@
         }
       }
     },
+    "Their turns go back to the rest of you. They keep their own plants.": {
+      "comment": "Remove member explanation",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A vez dessa pessoa volta para vocês. As plantas dela continuam com ela."
+          }
+        }
+      }
+    },
     "Then and now": {
       "comment": "Section title: first vs latest photo",
       "localizations": {
@@ -20613,6 +21909,18 @@
         }
       }
     },
+    "They open the link and get the app": {
+      "comment": "Invite how-it-works step",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pessoa abre o link e baixa o app"
+          }
+        }
+      }
+    },
     "They share light, humidity and watering rhythm. Grouping them raises local humidity and makes care easier.": {
       "comment": "Welcome care plan for a newly added plant.",
       "localizations": {
@@ -20631,6 +21939,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Elas compartilham luz, umidade e ritmo de rega. Agrupar aumenta a umidade ao redor e facilita os cuidados. Confira se há pragas antes de juntar."
+          }
+        }
+      }
+    },
+    "They sign in and join with one tap": {
+      "comment": "Invite how-it-works step",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entra na conta e participa com um toque"
           }
         }
       }
@@ -20703,6 +22023,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hoje à noite"
+          }
+        }
+      }
+    },
+    "This month": {
+      "comment": "Hub section: care balance",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este mês"
           }
         }
       }
@@ -21396,6 +22728,18 @@
         }
       }
     },
+    "Try again": {
+      "comment": "Retry button",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentar de novo"
+          }
+        }
+      }
+    },
     "Tucked in safe": {
       "comment": "Notification action: plant moved inside from cold; max 22 chars",
       "localizations": {
@@ -21451,6 +22795,18 @@
         }
       }
     },
+    "Turns go to whoever didn't do it last, keeping things fair across the month.": {
+      "comment": "Hub footer explaining turn logic",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A vez vai para quem não cuidou por último, mantendo tudo justo ao longo do mês."
+          }
+        }
+      }
+    },
     "Twist off a leaf": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -21480,6 +22836,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Duas famílias"
+          }
+        }
+      }
+    },
+    "Two plant parents, one jungle": {
+      "comment": "Household type description; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dois pais de planta, uma selva"
           }
         }
       }
@@ -21704,6 +23072,18 @@
         }
       }
     },
+    "Uses iCloud sharing. Only people you invite can join.": {
+      "comment": "Setup privacy note",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa o compartilhamento do iCloud. Só entra quem você convidar."
+          }
+        }
+      }
+    },
     "Usually every %lld years": {
       "comment": "Repot interval; plural",
       "localizations": {
@@ -21870,6 +23250,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Espere a água sair pelos furos e depois esvazie o pratinho."
+          }
+        }
+      }
+    },
+    "Waiting for a yes": {
+      "comment": "Hub row: my open cover request",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando um sim"
+          }
+        }
+      }
+    },
+    "Waiting for your first invite to be accepted": {
+      "comment": "Me card: jungle created, nobody joined",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando o primeiro convite ser aceito"
           }
         }
       }
@@ -23374,6 +24778,30 @@
         }
       }
     },
+    "Who looks after %@": {
+      "comment": "Accessibility: assignment menu; %@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem cuida de %@"
+          }
+        }
+      }
+    },
+    "Who looks after what": {
+      "comment": "Hub section: plant assignments",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem cuida de quem"
+          }
+        }
+      }
+    },
     "Who needs it": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -23381,6 +24809,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quem precisa"
+          }
+        }
+      }
+    },
+    "Who's sharing?": {
+      "comment": "Setup section: household type",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem vai dividir?"
           }
         }
       }
@@ -23627,6 +25067,18 @@
         }
       }
     },
+    "With %@": {
+      "comment": "Me card subtitle; %@ list of member names",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Com %@"
+          }
+        }
+      }
+    },
     "With My Tiny Jungle Plus": {
       "comment": "Upsell",
       "localizations": {
@@ -23667,6 +25119,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Com você desde"
+          }
+        }
+      }
+    },
+    "Withdraw": {
+      "comment": "Cancel my cover request",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar pedido"
           }
         }
       }
@@ -23965,6 +25429,18 @@
         }
       }
     },
+    "You won't get care reminders while you're away. Everyone sees you're travelling.": {
+      "comment": "Away footer",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você não recebe lembretes enquanto estiver fora. Todo mundo vê que você está viajando."
+          }
+        }
+      }
+    },
     "You'll need": {
       "comment": "Heading above tools list",
       "localizations": {
@@ -23972,6 +25448,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Você vai precisar de"
+          }
+        }
+      }
+    },
+    "You're covering": {
+      "comment": "Turn pill; short, max 18 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você está cobrindo"
+          }
+        }
+      }
+    },
+    "You're covering for %@": {
+      "comment": "Hub row; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você está cobrindo %@"
           }
         }
       }
@@ -24193,6 +25693,30 @@
         }
       }
     },
+    "Your part": {
+      "comment": "Hub section: my actions",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua parte"
+          }
+        }
+      }
+    },
+    "Your partner gets reminders on their turn and sees when you've watered. No more double drinks.": {
+      "comment": "Invite blurb, couple",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu amor recebe lembretes na vez dele e vê quando você já regou. Chega de rega dobrada."
+          }
+        }
+      }
+    },
     "Your plants": {
       "comment": "Group title\nSection title\nTravel plan section title",
       "localizations": {
@@ -24222,6 +25746,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Suas plantinhas estão pensando em você."
+          }
+        }
+      }
+    },
+    "Your plants show up on their iPhone, turns included": {
+      "comment": "Invite how-it-works step",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas plantas aparecem no iPhone dela, com a vez de cada um"
           }
         }
       }
@@ -24332,6 +25868,42 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seus espaços"
+          }
+        }
+      }
+    },
+    "Your turn": {
+      "comment": "Turn pill: it's your turn to care; max 18 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua vez"
+          }
+        }
+      }
+    },
+    "Your turns go to": {
+      "comment": "Away: who covers",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua vez vai para"
+          }
+        }
+      }
+    },
+    "Your turns pass on while you travel": {
+      "comment": "Hub row subtitle",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua vez passa adiante enquanto você viaja"
           }
         }
       }

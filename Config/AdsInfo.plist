@@ -11,6 +11,8 @@
 			<array><string>$(GID_URL_SCHEME)</string></array>
 		</dict>
 	</array>
+	<key>CKSharingSupported</key>
+	<true/>
 	<key>NSUserActivityTypes</key>
 	<array><string>INSendMessageIntent</string></array>
 	<key>UIBackgroundModes</key>

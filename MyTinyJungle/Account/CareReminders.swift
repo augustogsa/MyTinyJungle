@@ -53,6 +53,8 @@ enum CareReminders {
             let thirsty = Set(forecast.filter { $0.kind == .water && cal.isDate($0.date, inSameDayAs: day) }.compactMap(\.plantID))
             let due = !CarePrefs.isOn(.water) ? [] : plants.filter { p in
                 guard !snoozed(p.id) || offset > 0 else { return false }
+                // Shared jungle: only whoever's turn it is (anyone if a plant has waited too long).
+                guard Household.shared.shouldRemindMe(p, now: fire) else { return false }
                 return offset == 0 ? CareEngine.status(for: p, now: fire).needsAttention : thirsty.contains(p.id)
             }
             let planned = forecast.filter { cal.isDate($0.date, inSameDayAs: day) && !due.map(\.id).contains($0.plantID ?? UUID()) && $0.kind != .weather }
@@ -132,6 +134,10 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let action = response.actionIdentifier
         await MainActor.run { UserDefaults.standard.set(action, forKey: "lastNotificationAction") }
+        if response.notification.request.content.categoryIdentifier == Household.coverCategory {
+            await MainActor.run { Household.shared.handleNotification(response) }
+            return
+        }
         guard let container else { return }
         await PlantNote.handle(response, ctx: container.mainContext)
     }
@@ -141,6 +147,21 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
         CareReminders.registerCategories()
+        Task { await Household.registerCategory() }
+        application.registerForRemoteNotifications()
         return true
+    }
+
+    /// Shared jungle: a silent CloudKit push means someone changed something.
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async -> UIBackgroundFetchResult {
+        guard let ctx = NotificationDelegate.shared.container?.mainContext else { return .noData }
+        await Household.shared.sync(ctx)
+        return .newData
+    }
+
+    func application(_ application: UIApplication, configurationForConnecting session: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let c = UISceneConfiguration(name: nil, sessionRole: session.role)
+        c.delegateClass = HouseholdSceneDelegate.self
+        return c
     }
 }
