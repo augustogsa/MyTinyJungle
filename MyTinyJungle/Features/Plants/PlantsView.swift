@@ -75,17 +75,24 @@ struct PlantsView: View {
                         if shown.isEmpty {
                             Text(query.isEmpty ? "No plants here." : "No plant called \"\(query)\".").foregroundStyle(Jungle.subtle).frame(maxWidth: .infinity).padding(.top, 30)
                         }
-                        // Ads sit between grid rows only: after row 4, then every 8 rows (free users).
+                        // Ads never leave holes: a tile only when it completes a row, else a full-width card between rows.
                         let perRow = columns.count
-                        let chunks = AdSlots.chunks(shown.count, perRow: perRow)
-                        ForEach(chunks.indices, id: \.self) { i in
+                        let tileAd = AdPool.shared.ad(for: "plants-grid") != nil && shown.count % perRow != 0 && shown.count > perRow
+                        let rowAd = !tileAd && AdPool.shared.ad(for: "plants-row") != nil && shown.count > perRow * 2
+                        let split = rowAd ? perRow * 2 : shown.count
+                        LazyVGrid(columns: columns, spacing: 12) {
+                            ForEach(shown[0..<(tileAd ? shown.count : split)]) { p in
+                                NavigationLink(value: p.id) { PlantTile(plant: p) }.buttonStyle(.plain)
+                            }
+                            if tileAd { NativeAdCard(slot: "plants-grid", style: .tile) }
+                        }
+                        if rowAd {
+                            NativeAdCard(slot: "plants-row")
                             LazyVGrid(columns: columns, spacing: 12) {
-                                ForEach(shown[chunks[i]]) { p in
+                                ForEach(shown[split..<shown.count]) { p in
                                     NavigationLink(value: p.id) { PlantTile(plant: p) }.buttonStyle(.plain)
                                 }
-                                if i == 0, chunks.count > 1 || shown.count >= 4 { NativeAdCard(slot: "plants-grid-\(i)", style: .tile) }
                             }
-                            if i > 0, i < chunks.count - 1 { NativeAdCard(slot: "plants-row-\(i)") }
                         }
                     }
                 }
