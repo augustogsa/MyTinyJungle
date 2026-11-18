@@ -14,7 +14,7 @@ struct OnboardingView: View {
             Spacer()
             if step == 0 {
                 Image(systemName: "leaf.circle.fill").font(.system(size: 88)).foregroundStyle(Jungle.leaf)
-                Text("My Tiny Jungle").font(.largeTitle.weight(.bold)).foregroundStyle(Jungle.text)
+                Text("My Tiny Jungle").font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                 Text("Your plants, talking to you.").foregroundStyle(Jungle.subtle)
                 VStack(alignment: .leading, spacing: 14) {
                     feature("bubble.left.and.text.bubble.right", "Plants tell you when they need water or food")
@@ -23,7 +23,7 @@ struct OnboardingView: View {
                 }
                 .padding(.top, 10)
             } else {
-                Text("A little about you").font(.title.weight(.bold)).foregroundStyle(Jungle.text)
+                Text("A little about you").font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                 TextField("Your name", text: $name).textFieldStyle(.roundedBorder).textContentType(.givenName)
                 VStack(spacing: 0) {
                     Toggle("Cats at home", isOn: $cats).padding(12)
@@ -37,14 +37,14 @@ struct OnboardingView: View {
             Button(step == 0 ? "Get started" : "Start my jungle") {
                 if step == 0 { withAnimation(.snappy) { step = 1 } } else { finish() }
             }
-            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).frame(maxWidth: .infinity)
+            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large).frame(maxWidth: .infinity)
         }
         .padding(24)
         .jungleBackdrop()
     }
 
     private func feature(_ s: String, _ t: String) -> some View {
-        HStack(spacing: 14) { Image(systemName: s).font(.title2).foregroundStyle(Jungle.leaf).frame(width: 36); Text(t).foregroundStyle(Jungle.text) }
+        HStack(spacing: 14) { Image(systemName: s).font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.leaf).frame(width: 36); Text(t).foregroundStyle(Jungle.text) }
     }
 
     private func finish() {

@@ -82,11 +82,11 @@ struct PlantsView: View {
             ZStack {
                 Circle().stroke(Jungle.mint, lineWidth: 8)
                 Circle().trim(from: 0, to: score).stroke(Jungle.leaf, style: StrokeStyle(lineWidth: 8, lineCap: .round)).rotationEffect(.degrees(-90))
-                Text("\(Int(score * 100))%").font(.headline).foregroundStyle(Jungle.text)
+                Text("\(Int(score * 100))%").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             }
             .frame(width: 64, height: 64)
             VStack(alignment: .leading, spacing: 6) {
-                Text("Collection health").font(.headline).foregroundStyle(Jungle.text)
+                Text("Collection health").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 HStack(spacing: 12) {
                     legend(Jungle.leaf, "\(t) thriving")
                     legend(Jungle.sun, "\(f) fine")
@@ -125,7 +125,7 @@ struct PlantTile: View {
                     .padding(8)
             }
             VStack(alignment: .leading, spacing: 3) {
-                Text(plant.name).font(.headline).foregroundStyle(Jungle.text).lineLimit(1)
+                Text(plant.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)
                 Text(plant.species?.commonName ?? "Unknown species").font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
                 HStack(spacing: 4) {
                     Image(systemName: "drop").font(.caption2).foregroundStyle(Jungle.leaf)

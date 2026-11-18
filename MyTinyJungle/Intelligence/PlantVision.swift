@@ -1,5 +1,6 @@
 import UIKit
 import Vision
+import CoreML
 
 /// On-device photo reading: what the camera sees, leaf colour health and a soil moisture estimate.
 /// Everything here is an estimate and is labelled as such in the UI.
@@ -45,10 +46,27 @@ enum PlantVision {
 
     static func classify(_ image: UIImage) async -> [(String, Float)] {
         guard let cg = image.cgImage else { return [] }
+        #if targetEnvironment(simulator)
+        return [] // Vision's classifier returns the same junk labels on the simulator; the species list takes over.
+        #endif
         return await Task.detached(priority: .userInitiated) {
-            let req = VNClassifyImageRequest()
-            try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-            return (req.results ?? []).filter { $0.confidence > 0.05 }.prefix(25).map { ($0.identifier, $0.confidence) }
+            func run(cpu: Bool) -> [(String, Float)]? {
+                let req = VNClassifyImageRequest()
+                #if targetEnvironment(simulator)
+                // Simulator has no Neural Engine/GPU inference context: force CPU.
+                if let cpuDevice = MLComputeDevice.allComputeDevices.first(where: { if case .cpu = $0 { true } else { false } }) {
+                    req.setComputeDevice(cpuDevice, for: .main)
+                }
+                #else
+                if cpu, let cpuDevice = MLComputeDevice.allComputeDevices.first(where: { if case .cpu = $0 { true } else { false } }) {
+                    req.setComputeDevice(cpuDevice, for: .main)
+                }
+                #endif
+                do { try VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req]) } catch { return nil }
+                return (req.results ?? []).filter { $0.confidence > 0.05 }.prefix(25).map { ($0.identifier, $0.confidence) }
+            }
+            if let r = run(cpu: false), !r.isEmpty { return r }
+            return run(cpu: true) ?? []
         }.value
     }
 

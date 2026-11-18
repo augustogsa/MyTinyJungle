@@ -173,7 +173,7 @@ struct GuideRow: View {
         HStack(spacing: 12) {
             GuideIcon(guide: guide)
             VStack(alignment: .leading, spacing: 2) {
-                Text(guide.title).font(.headline).foregroundStyle(Jungle.text)
+                Text(guide.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Text("\(guide.steps.count) steps · \(guide.minutes) min · \(guide.level.rawValue)").font(.subheadline).foregroundStyle(Jungle.subtle)
             }
             Spacer()
@@ -229,7 +229,7 @@ struct GuidePlayerView: View {
                 }
                 .frame(height: 340).frame(maxWidth: .infinity)
                 Button { dismiss() } label: {
-                    Image(systemName: "xmark").font(.headline).foregroundStyle(Jungle.text)
+                    Image(systemName: "xmark").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         .frame(width: 44, height: 44).background(.regularMaterial, in: Circle())
                 }
                 .accessibilityLabel("Close").padding(.top, 56).padding(.trailing, 16)
@@ -245,13 +245,13 @@ struct GuidePlayerView: View {
                 Spacer(minLength: 0)
                 HStack(spacing: 12) {
                     Button { go(index - 1) } label: { Text("Back").frame(maxWidth: .infinity) }
-                        .buttonStyle(.bordered).tint(Jungle.forest).disabled(index < 0)
+                        .buttonStyle(.bordered).fontDesign(.rounded).tint(Jungle.forest).disabled(index < 0)
                     if index == guide.steps.count - 1 {
                         Button { finish() } label: { Text(logged ? "Logged ✓" : finishLabel).frame(maxWidth: .infinity) }
-                            .buttonStyle(.borderedProminent).tint(Jungle.forest).disabled(logged)
+                            .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest).disabled(logged)
                     } else {
                         Button { go(index + 1) } label: { Text(index < 0 ? "Start" : "Next").frame(maxWidth: .infinity) }
-                            .buttonStyle(.borderedProminent).tint(Jungle.forest)
+                            .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest)
                     }
                 }
                 .controlSize(.large).buttonBorderShape(.capsule)
@@ -278,7 +278,7 @@ struct GuidePlayerView: View {
 
     private var overview: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(guide.title).font(.title.weight(.bold)).foregroundStyle(Jungle.text)
+            Text(guide.title).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             HStack(spacing: 8) {
                 StatusPill(text: "\(guide.minutes) min", symbol: "clock", tint: guide.tint)
                 StatusPill(text: "\(guide.steps.count) steps", symbol: "list.number", tint: guide.tint)
@@ -289,7 +289,7 @@ struct GuidePlayerView: View {
                 Label("For \(plant.name): about \(a.lo)–\(a.hi) ml", systemImage: "drop.fill").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
             }
             if !guide.tools.isEmpty {
-                Text("You'll need").font(.headline).foregroundStyle(Jungle.text).padding(.top, 4)
+                Text("You'll need").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).padding(.top, 4)
                 ForEach(guide.tools, id: \.self) { Label($0, systemImage: "checkmark.circle").font(.subheadline).foregroundStyle(Jungle.text) }
             }
         }
@@ -298,7 +298,7 @@ struct GuidePlayerView: View {
     private func stepBody(_ s: CareGuide.Step) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Step \(index + 1) of \(guide.steps.count)").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.subtle)
-            Text(s.title).font(.title.weight(.bold)).foregroundStyle(Jungle.text)
+            Text(s.title).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             Text(detail(s)).font(.body).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
             if let tip = s.tip {
                 Label(tip, systemImage: "lightbulb.fill").font(.subheadline).foregroundStyle(Jungle.text)
@@ -314,7 +314,7 @@ struct GuidePlayerView: View {
                         if remaining == 0 { remaining = secs }
                         running.toggle()
                     }
-                    .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(Jungle.forest)
+                    .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.forest)
                 }
                 .padding(14).background(Jungle.mist, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             }

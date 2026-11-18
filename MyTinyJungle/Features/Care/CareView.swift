@@ -39,7 +39,7 @@ struct CareView: View {
 
     private func shortcut(_ t: String, _ s: String) -> some View {
         VStack(spacing: 6) {
-            Image(systemName: s).font(.title3).foregroundStyle(Jungle.leaf)
+            Image(systemName: s).font(.system(.title3, design: .rounded)).foregroundStyle(Jungle.leaf)
             Text(t).font(.caption.weight(.medium)).foregroundStyle(Jungle.text)
         }
         .frame(maxWidth: .infinity).padding(.vertical, 12).jungleCard()
@@ -56,13 +56,13 @@ struct CareView: View {
             ForEach(grouped.keys.sorted(), id: \.self) { day in
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text(dayTitle(day)).font(.headline).foregroundStyle(Jungle.text)
+                        Text(dayTitle(day)).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         if cal.isDateInToday(day) { Text("Now").font(.caption.weight(.bold)).foregroundStyle(Jungle.warmText).padding(.horizontal, 8).padding(.vertical, 2).background(Jungle.peach.opacity(0.5), in: Capsule()) }
                     }
                     ForEach(grouped[day] ?? []) { item in
                         HStack(spacing: 12) {
                             Button { complete(item) } label: {
-                                Image(systemName: "circle").font(.title3).foregroundStyle(Jungle.leaf)
+                                Image(systemName: "circle").font(.system(.title3, design: .rounded)).foregroundStyle(Jungle.leaf)
                             }
                             .buttonStyle(.plain).accessibilityLabel("Done")
                             if let p = item.plant { PlantAvatar(data: p.photo, size: 34) }
@@ -156,7 +156,7 @@ struct SeasonGuideView: View {
     static func current(_ d: Date = Date()) -> Season {
         var m = Calendar.current.component(.month, from: d)
         if JungleSettings.shared.southernHemisphere { m = (m + 5) % 12 + 1 }
-        switch m { case 3...5: return .spring; case 6...8: return .summer; case 9...10: return .autumn; default: return .winter }
+        switch m { case 3...5: return .spring; case 6...8: return .summer; case 9...11: return .autumn; default: return .winter }
     }
     @State private var season: Season = SeasonGuideView.current()
 
@@ -173,7 +173,7 @@ struct SeasonGuideView: View {
                     .buttonStyle(.plain)
                 }
             }
-            Text("\(season.rawValue) for your plants").font(.title3.weight(.bold)).foregroundStyle(Jungle.text)
+            Text("\(season.rawValue) for your plants").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             ForEach(items, id: \.self) { item in
                 Button { toggle(item) } label: {
                     HStack(alignment: .top, spacing: 10) {
@@ -300,7 +300,7 @@ struct PropagationListView: View {
                     HStack {
                         PlantAvatar(data: parent?.photo, size: 36)
                         VStack(alignment: .leading) {
-                            Text("\(parent?.name ?? "Cutting") cutting").font(.headline)
+                            Text("\(parent?.name ?? "Cutting") cutting").font(.system(.headline, design: .rounded))
                             Text("\(pr.method) · day \(Int(CareEngine.days(from: pr.startedAt)) + 1)").font(.caption).foregroundStyle(Jungle.subtle)
                         }
                     }
@@ -315,7 +315,7 @@ struct PropagationListView: View {
                     }
                     if pr.stage != .done {
                         Button(pr.stage == .growing ? "It's a plant now! Add to jungle" : "Next: \(Propagation.Stage(rawValue: pr.stage.rawValue + 1)?.label ?? "")") { advance(pr, parent: parent) }
-                            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.small)
+                            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                     } else {
                         Label("Joined your jungle", systemImage: "leaf.fill").foregroundStyle(Jungle.accentText)
                     }

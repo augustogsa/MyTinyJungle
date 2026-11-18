@@ -92,7 +92,7 @@ struct PlantHomeView: View {
             if hasPhoto { LinearGradient(colors: [.clear, .black.opacity(0.6)], startPoint: .center, endPoint: .bottom) }
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(plant.name).font(.largeTitle.weight(.bold)).foregroundStyle(hasPhoto ? Color.white : Jungle.text)
+                    Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Color.white : Jungle.text)
                     Text(plant.species?.scientific ?? "Unknown species").font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
                 }
                 Spacer()
@@ -215,7 +215,7 @@ struct ActionTile: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 6) {
-                Image(systemName: symbol).font(.title3).foregroundStyle(tint)
+                Image(systemName: symbol).font(.system(.title3, design: .rounded)).foregroundStyle(tint)
                 Text(title).font(.caption.weight(.medium)).foregroundStyle(Jungle.text)
             }
             .frame(maxWidth: .infinity).padding(.vertical, 12)
@@ -288,7 +288,7 @@ struct PlantStoryView: View {
             PhotosPicker(selection: $pick, matching: .images) {
                 Label(photos.isEmpty ? "Add the first photo" : "Add this month's photo", systemImage: "camera.fill").frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest).controlSize(.large)
+            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.forest).controlSize(.large)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
@@ -344,7 +344,7 @@ struct PlantStoryView: View {
                 ForEach(kinds, id: \.self) { k in
                     let last = plant.lastEvent(k)
                     VStack(spacing: 4) {
-                        Image(systemName: k.symbol).font(.title3).foregroundStyle(last == nil ? Jungle.subtle : Jungle.forest)
+                        Image(systemName: k.symbol).font(.system(.title3, design: .rounded)).foregroundStyle(last == nil ? Jungle.subtle : Jungle.forest)
                             .frame(width: 44, height: 44).background(last == nil ? Jungle.mist : Jungle.mint, in: Circle())
                         Text(short(k)).font(.caption2.weight(.medium)).foregroundStyle(Jungle.text)
                         Text(last.map { $0.date.formatted(.dateTime.day().month(.defaultDigits)) } ?? "–").font(.caption2).foregroundStyle(Jungle.subtle)
@@ -398,13 +398,13 @@ struct PlantStoryView: View {
         return VStack(alignment: .leading, spacing: 18) {
             ForEach(groups.keys.sorted(by: >), id: \.self) { month in
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(month.formatted(.dateTime.month(.wide).year())).font(.headline).foregroundStyle(Jungle.text).padding(.bottom, 10)
+                    Text(month.formatted(.dateTime.month(.wide).year())).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).padding(.bottom, 10)
                     ForEach(groups[month] ?? []) { e in row(e) }
                 }
             }
             HStack(alignment: .top, spacing: 12) {
                 VStack(spacing: 2) {
-                    Text(born.formatted(.dateTime.day())).font(.headline).foregroundStyle(Jungle.text)
+                    Text(born.formatted(.dateTime.day())).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     Text(born.formatted(.dateTime.month(.abbreviated))).font(.caption2).foregroundStyle(Jungle.subtle)
                 }
                 .frame(width: 40)
@@ -417,7 +417,7 @@ struct PlantStoryView: View {
     private func row(_ e: CareEvent) -> some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(spacing: 2) {
-                Text(e.date.formatted(.dateTime.day())).font(.headline).foregroundStyle(Jungle.text)
+                Text(e.date.formatted(.dateTime.day())).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Text(e.date.formatted(.dateTime.weekday(.abbreviated))).font(.caption2).foregroundStyle(Jungle.subtle)
             }
             .frame(width: 40)
@@ -497,7 +497,7 @@ struct PlantCarePlanView: View {
             .jungleCard()
             let mine = tasks.filter { $0.plantID == plant.id && !$0.done }.sorted { $0.due < $1.due }
             if !mine.isEmpty {
-                Text("Planned").font(.headline).foregroundStyle(Jungle.text)
+                Text("Planned").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 ForEach(mine) { t in
                     HStack {
                         Image(systemName: t.kind.symbol).foregroundStyle(Jungle.leaf)
@@ -506,7 +506,7 @@ struct PlantCarePlanView: View {
                             Text(t.due.formatted(.dateTime.weekday().day().month())).font(.caption).foregroundStyle(Jungle.subtle)
                         }
                         Spacer()
-                        Button("Done") { complete(t) }.buttonStyle(.bordered).buttonBorderShape(.capsule).controlSize(.small)
+                        Button("Done") { complete(t) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                     }
                     .padding(12).jungleCard()
                 }
@@ -589,7 +589,7 @@ struct PlantAboutView: View {
     private func stat(_ t: String, _ v: String, _ s: String) -> some View {
         VStack(spacing: 4) {
             Image(systemName: s).foregroundStyle(Jungle.leaf)
-            Text(v).font(.headline).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.7)
+            Text(v).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.7)
             Text(t).font(.caption).foregroundStyle(Jungle.subtle)
         }
         .frame(maxWidth: .infinity).padding(.vertical, 12).jungleCard()
@@ -610,11 +610,11 @@ struct WaterSheet: View {
                 VStack(spacing: 18) {
                     PlantAvatar(data: plant.photo, size: 120)
                         .overlay(alignment: .topTrailing) {
-                            Image(systemName: "drop.fill").font(.title2).foregroundStyle(Jungle.forest)
+                            Image(systemName: "drop.fill").font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.forest)
                                 .padding(10).background(.regularMaterial, in: Circle()).offset(x: 10, y: -6)
                         }
                     VStack(spacing: 6) {
-                        Text(needsWater ? "\(plant.name) needs water" : "Watering \(plant.name)").font(.title2.weight(.bold)).foregroundStyle(Jungle.text)
+                        Text(needsWater ? "\(plant.name) needs water" : "Watering \(plant.name)").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                         Text(needsWater ? "My soil is dry and it's time for a drink." : "Feel the soil 3–4 cm deep first. If it's still moist, wait.")
                             .multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
                     }
@@ -634,13 +634,13 @@ struct WaterSheet: View {
                     Button {
                         JungleBrain.quick(.water, plants: [plant], in: ctx, announce: true); dismiss()
                     } label: { Label("Mark as watered", systemImage: "checkmark").frame(maxWidth: .infinity) }
-                        .buttonStyle(.borderedProminent).controlSize(.large)
+                        .buttonStyle(.borderedProminent).fontDesign(.rounded).controlSize(.large)
                     Menu {
                         Button("This evening") { remind(hours: 8) }
                         Button("Tomorrow") { remind(hours: 24) }
                         Button("In 2 days") { remind(hours: 48) }
                     } label: { Text("Remind me later").frame(maxWidth: .infinity) }
-                        .buttonStyle(.bordered).controlSize(.large)
+                        .buttonStyle(.bordered).fontDesign(.rounded).controlSize(.large)
                 }
                 .buttonBorderShape(.capsule)
                 .padding(16).background(.bar)

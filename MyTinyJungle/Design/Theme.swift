@@ -87,7 +87,7 @@ struct SectionTitle: View {
     init(_ title: String, action: String? = nil, onAction: @escaping () -> Void = {}) { self.title = title; self.action = action; self.onAction = onAction }
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
-            Text(title).font(.title3.weight(.semibold)).foregroundStyle(Jungle.text)
+            Text(title).font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             Spacer()
             if let action { Button(action, action: onAction).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText) }
         }
@@ -105,7 +105,7 @@ struct StatTile: View {
         VStack(alignment: .leading, spacing: 6) {
             Image(systemName: symbol).font(.subheadline.weight(.semibold)).foregroundStyle(tint)
                 .frame(width: 30, height: 30).background(tint.opacity(0.16), in: Circle())
-            Text(value).font(.title2.weight(.bold)).foregroundStyle(Jungle.text).contentTransition(.numericText())
+            Text(value).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).contentTransition(.numericText())
             Text(label).font(.footnote).foregroundStyle(Jungle.subtle).lineLimit(1).minimumScaleFactor(0.8)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(12).jungleCard()

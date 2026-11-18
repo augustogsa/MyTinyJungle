@@ -17,7 +17,7 @@ struct PlantProfileView: View {
                     HStack(spacing: 14) {
                         PlantAvatar(data: plant.photo, size: 72)
                         VStack(alignment: .leading) {
-                            TextField("Name", text: $plant.name).font(.title3.weight(.semibold))
+                            TextField("Name", text: $plant.name).font(.system(.title3, design: .rounded, weight: .semibold))
                             Text(plant.species?.scientific ?? "").font(.caption).italic().foregroundStyle(Jungle.subtle)
                         }
                     }

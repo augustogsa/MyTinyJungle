@@ -13,6 +13,27 @@ struct MyTinyJungleApp: App {
         }
     }()
 
+    init() { Self.roundedTitles() }
+
+    /// Navigation titles in SF Pro Rounded, warm forest ink.
+    private static func roundedTitles() {
+        func rounded(_ style: UIFont.TextStyle, _ weight: UIFont.Weight) -> UIFont {
+            let base = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: style).pointSize, weight: weight)
+            let d = base.fontDescriptor.withDesign(.rounded) ?? base.fontDescriptor
+            return UIFontMetrics(forTextStyle: style).scaledFont(for: UIFont(descriptor: d, size: 0))
+        }
+        let ink = UIColor { $0.userInterfaceStyle == .dark ? UIColor(hex: 0xE4EBE2) : UIColor(hex: 0x3E4E3D) }
+        let a = UINavigationBarAppearance()
+        a.configureWithTransparentBackground()
+        a.largeTitleTextAttributes = [.font: rounded(.largeTitle, .bold), .foregroundColor: ink]
+        a.titleTextAttributes = [.font: rounded(.headline, .semibold), .foregroundColor: ink]
+        UINavigationBar.appearance().standardAppearance = a
+        UINavigationBar.appearance().scrollEdgeAppearance = a
+        let s2 = UINavigationBarAppearance(); s2.configureWithDefaultBackground()
+        s2.largeTitleTextAttributes = a.largeTitleTextAttributes; s2.titleTextAttributes = a.titleTextAttributes
+        UINavigationBar.appearance().compactAppearance = s2
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -23,7 +44,7 @@ struct MyTinyJungleApp: App {
 }
 
 struct RootView: View {
-    @State private var tab = 0
+    @AppStorage("selectedTab") private var tab = 0
     @AppStorage("onboarded") private var onboarded = false
     var body: some View {
         if !onboarded && !ProcessInfo.processInfo.arguments.contains("-uiTesting") {

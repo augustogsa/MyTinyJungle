@@ -14,7 +14,7 @@ struct MessageBubble: View {
                 if message.fromUser { Spacer(minLength: 48) }
                 if !message.fromUser, showAvatar {
                     if let plant = speaker ?? message.plant { PlantAvatar(data: plant.photo, size: 28) }
-                    else { Image(systemName: "leaf.circle.fill").font(.title2).foregroundStyle(Jungle.leaf).accessibilityHidden(true) }
+                    else { Image(systemName: "leaf.circle.fill").font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.leaf).accessibilityHidden(true) }
                 }
                 VStack(alignment: .leading, spacing: 6) {
                     if let speaker, !message.fromUser {
@@ -43,7 +43,7 @@ struct MessageBubble: View {
                     HStack(spacing: 8) {
                         ForEach(message.suggestions, id: \.self) { s in
                             Button(s) { onSuggestion(s) }
-                                .buttonStyle(.bordered).buttonBorderShape(.capsule).controlSize(.small)
+                                .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                         }
                     }
                     .padding(.leading, showAvatar ? 36 : 0)
@@ -65,7 +65,7 @@ struct Composer: View {
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
             PhotosPicker(selection: $pick, matching: .images) {
-                Image(systemName: "camera").font(.title3).frame(width: 36, height: 36)
+                Image(systemName: "camera").font(.system(.title3, design: .rounded)).frame(width: 36, height: 36)
             }
             .accessibilityLabel("Add photo")
             TextField(placeholder, text: $text, axis: .vertical)

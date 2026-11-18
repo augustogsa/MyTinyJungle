@@ -13,9 +13,9 @@ struct SpacesView: View {
             VStack(spacing: 14) {
                 if spaces.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Add your rooms").font(.headline).foregroundStyle(Jungle.text)
+                        Text("Add your rooms").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         Text("Tell me about each room's light and I'll tell you which plants feel best where.").foregroundStyle(Jungle.subtle)
-                        Button("Add a space", systemImage: "plus") { adding = true }.buttonStyle(.borderedProminent).buttonBorderShape(.capsule)
+                        Button("Add a space", systemImage: "plus") { adding = true }.buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule)
                     }
                     .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
                 }
@@ -57,7 +57,7 @@ struct SpaceCard: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Image(systemName: space.isOutdoor ? "sun.horizon" : "house").foregroundStyle(Jungle.leaf)
-                Text(space.name).font(.headline).foregroundStyle(Jungle.text)
+                Text(space.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Spacer()
                 if !fits.isEmpty {
                     Text(good == fits.count ? "Optimal" : "\(good)/\(fits.count) happy")
@@ -129,7 +129,7 @@ struct SpaceDetailView: View {
                                 JungleBrain.apply(.init(kind: .move, plantIDs: [p.id], date: Date(), detail: space.name), to: p, in: ctx, now: Date(), source: "space")
                                 try? ctx.save()
                             }
-                            .buttonStyle(.bordered).buttonBorderShape(.capsule).controlSize(.small)
+                            .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                         }
                     }
                 }
@@ -220,7 +220,7 @@ struct BestPlaceView: View {
                 let current = spaces.first { $0.name.folded == plant.location.folded }
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
-                        Label(PlacementEngine.lightLabel(s.light), systemImage: PlacementEngine.lightSymbol(s.light)).font(.headline)
+                        Label(PlacementEngine.lightLabel(s.light), systemImage: PlacementEngine.lightSymbol(s.light)).font(.system(.headline, design: .rounded))
                         Text("\(Int(s.tempMin))–\(Int(s.tempMax)) °C · humidity \(Int(s.humidityMin))%+").font(.subheadline).foregroundStyle(Jungle.subtle)
                         Text(s.lightRule).font(.subheadline)
                     }
@@ -233,7 +233,7 @@ struct BestPlaceView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 HStack {
                                     Image(systemName: f.fit.symbol).foregroundStyle(f.fit >= .good ? Jungle.leaf : Jungle.terracotta)
-                                    Text(space.name).font(.headline)
+                                    Text(space.name).font(.system(.headline, design: .rounded))
                                     if space.id == current?.id { Text("Now").font(.caption2.weight(.bold)).padding(.horizontal, 6).padding(.vertical, 2).background(Jungle.sun.opacity(0.4), in: Capsule()) }
                                     Spacer()
                                     Text(f.fit.label).font(.subheadline).foregroundStyle(Jungle.subtle)
@@ -245,12 +245,12 @@ struct BestPlaceView: View {
                                         JungleBrain.apply(.init(kind: .move, plantIDs: [plant.id], date: Date(), detail: space.name), to: plant, in: ctx, now: Date(), source: "space")
                                         try? ctx.save(); dismiss()
                                     }
-                                    .buttonStyle(.bordered).buttonBorderShape(.capsule).controlSize(.small)
+                                    .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                                 } else if current == nil {
                                     Button("\(plant.name) lives here") {
                                         plant.location = space.name; try? ctx.save(); dismiss()
                                     }
-                                    .buttonStyle(.bordered).buttonBorderShape(.capsule).controlSize(.small)
+                                    .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                                 }
                             }
                             .padding(.vertical, 4)

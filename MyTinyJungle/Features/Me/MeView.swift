@@ -25,12 +25,12 @@ struct MeView: View {
                         ZStack {
                             Circle().stroke(Jungle.mint, lineWidth: 12)
                             Circle().trim(from: 0, to: score).stroke(Jungle.leaf, style: StrokeStyle(lineWidth: 12, lineCap: .round)).rotationEffect(.degrees(-90))
-                            Text("\(Int(score * 100))%").font(.title2.weight(.bold)).foregroundStyle(Jungle.text)
+                            Text("\(Int(score * 100))%").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                         }
                         .frame(width: 96, height: 96)
                         .accessibilityLabel("Collection health \(Int(score * 100)) percent")
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Collection health").font(.headline).foregroundStyle(Jungle.text)
+                            Text("Collection health").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                             Text("\(plants.count) plants").foregroundStyle(Jungle.subtle)
                         }
                         Spacer()
@@ -43,7 +43,7 @@ struct MeView: View {
                         StatTile(value: "\(needs)", label: "Needs you", symbol: "exclamationmark", tint: Jungle.terracotta)
                     }
                     VStack(alignment: .leading, spacing: 6) {
-                        Label("Plant whisper", systemImage: "leaf.fill").font(.headline).foregroundStyle(Jungle.forest)
+                        Label("Plant whisper", systemImage: "leaf.fill").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.forest)
                         Text(whisper).foregroundStyle(Jungle.text)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading).padding(16)
@@ -79,7 +79,7 @@ struct MeView: View {
 
     private func stat(_ t: String, _ n: Int, _ c: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("\(n)").font(.title.weight(.bold)).foregroundStyle(Jungle.text)
+            Text("\(n)").font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             Text(t).font(.subheadline).foregroundStyle(Jungle.subtle)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(14).jungleCard()

@@ -22,6 +22,7 @@ struct AddPlantFlow: View {
     @State private var showCamera = false
     @State private var choosingSpecies = false
     @State private var nameEdited = false
+    @State private var locationEdited = false
 
     var body: some View {
         NavigationStack {
@@ -47,9 +48,9 @@ struct AddPlantFlow: View {
                 guard let s else { return }
                 if stage == .capture { stage = .meet }
                 let plan = PlantAdvisor.plan(species: s, read: read, existing: plants)
-                if !nameEdited { name = plan.suggestedName }
                 personality = plan.suggestedPersonality
-                if plan.outdoorsHint && location.isEmpty { outdoor = true }
+                if !nameEdited { name = plan.suggestedName }
+                if !locationEdited { location = PlantAdvisor.suggestedRoom(for: s, existing: plants); outdoor = plan.outdoorsHint || location == "Balcony" }
             }
         }
     }
@@ -65,7 +66,7 @@ struct AddPlantFlow: View {
             }
             .accessibilityHidden(true)
             VStack(spacing: 8) {
-                Text("Snap your new plant").font(.title2.weight(.bold)).foregroundStyle(Jungle.text)
+                Text("Snap your new plant").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                 Text("Get the whole plant and a bit of its soil in the shot. I'll work out who it is, how it's doing and how to look after it.")
                     .multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
             }
@@ -76,12 +77,12 @@ struct AddPlantFlow: View {
                     Button { showCamera = true } label: {
                         Label("Take a photo", systemImage: "camera.fill").frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.borderedProminent).controlSize(.large)
+                    .buttonStyle(.borderedProminent).fontDesign(.rounded).controlSize(.large)
                 }
                 PhotosPicker(selection: $pick, matching: .images) {
                     Label("Choose from Photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.bordered).controlSize(.large)
+                .buttonStyle(.bordered).fontDesign(.rounded).controlSize(.large)
                 Button("I know the species") { choosingSpecies = true }
                     .font(.subheadline).padding(.top, 4)
             }
@@ -115,6 +116,8 @@ struct AddPlantFlow: View {
             VStack(alignment: .leading, spacing: 16) {
                 hero
                 speciesSection
+                if let s = species { factsSection(s) }
+                nameSection
                 if let read, photo != nil { healthSection(read) }
                 if let s = species {
                     let plan = PlantAdvisor.plan(species: s, read: read, existing: plants)
@@ -129,11 +132,11 @@ struct AddPlantFlow: View {
         .scrollDismissesKeyboard(.interactively)
         .safeAreaInset(edge: .bottom) {
             Button(action: save) {
-                Text(species == nil ? "Pick the species first" : "Welcome \(name.isEmpty ? "home" : name) 🌱")
-                    .font(.headline).frame(maxWidth: .infinity)
+                Text(species == nil && name.isEmpty ? "Pick the species first" : "Welcome \(name.isEmpty ? "home" : name) 🌱")
+                    .font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large)
-            .disabled(species == nil && name.isEmpty)
+            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
+            .disabled(name.isEmpty && species == nil)
             .padding(.horizontal, 16).padding(.vertical, 10)
             .background(.bar)
         }
@@ -151,9 +154,7 @@ struct AddPlantFlow: View {
             .clipped()
             LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
             VStack(alignment: .leading, spacing: 2) {
-                TextField("Name", text: $name, prompt: Text("Name").foregroundStyle(.white.opacity(0.7)))
-                    .font(.largeTitle.weight(.bold)).foregroundStyle(.white)
-                    .onChange(of: name) { _, _ in nameEdited = true }
+                Text(species?.commonName ?? "New plant").font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(.white)
                 if let s = species { Text(s.scientific).font(.subheadline).italic().foregroundStyle(.white.opacity(0.85)) }
             }
             .padding(16)
@@ -161,9 +162,14 @@ struct AddPlantFlow: View {
         .clipShape(RoundedRectangle(cornerRadius: Jungle.radius + 4, style: .continuous))
     }
 
+    private var popular: [Species] {
+        ["monstera-deliciosa", "epipremnum-aureum", "sansevieria", "zamioculcas", "spathiphyllum", "ficus-lyrata", "phalaenopsis", "calathea", "aloe-vera", "ocimum-basilicum", "echeveria", "chlorophytum"]
+            .compactMap { SpeciesLibrary.shared.species(id: $0) }
+    }
+
     private var speciesSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(candidates.isEmpty ? "Which plant is this?" : "I think I'm a…").font(.headline).foregroundStyle(Jungle.text)
+            Text(candidates.isEmpty ? "Which plant is this?" : "I think I'm a…").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(candidates) { c in
@@ -189,15 +195,84 @@ struct AddPlantFlow: View {
                     .buttonStyle(.plain)
                 }
             }
-            if let s = species, !candidates.contains(where: { $0.species == s }) {
+            if candidates.isEmpty {
+                Text("Popular plants").font(.subheadline).foregroundStyle(Jungle.subtle)
+                FlowChips(items: popular.map(\.commonName), selected: species?.commonName) { name in
+                    withAnimation(.snappy) { species = popular.first { $0.commonName == name } }
+                }
+            } else if let s = species, !candidates.contains(where: { $0.species == s }) {
                 Text("Chosen: \(s.commonName)").font(.caption).foregroundStyle(Jungle.subtle)
             }
         }
     }
 
+    private var nameIdeas: [String] { PlantAdvisor.nameIdeas(for: species, personality: personality, existing: plants) }
+
+    private var nameSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("What's my name?").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                Spacer()
+                Button {
+                    let ideas = nameIdeas.filter { $0 != name }
+                    withAnimation(.snappy) { name = ideas.randomElement() ?? name; nameEdited = false }
+                } label: { Label("Shuffle", systemImage: "dice").font(.subheadline.weight(.medium)) }
+                .accessibilityHint("Suggests another name")
+            }
+            TextField("Name", text: Binding(get: { name }, set: { name = $0; nameEdited = true }))
+                .font(.system(.title2, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+                .padding(.horizontal, 14).padding(.vertical, 10)
+                .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
+                .submitLabel(.done)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(nameIdeas.prefix(8), id: \.self) { idea in
+                        Button(idea) { withAnimation(.snappy) { name = idea; nameEdited = false } }
+                            .buttonStyle(.plain)
+                            .font(.subheadline.weight(.medium)).fontDesign(.rounded)
+                            .padding(.horizontal, 14).padding(.vertical, 8)
+                            .foregroundStyle(name == idea ? Color.white : Jungle.text)
+                            .background(name == idea ? Jungle.forest : Jungle.surface, in: Capsule())
+                            .overlay(Capsule().strokeBorder(Jungle.border, lineWidth: name == idea ? 0 : 0.5))
+                    }
+                }
+            }
+            Text(species == nil ? "Ideas from its personality. Pick the species for names made for it." : "Ideas from its species, family and personality.")
+                .font(.caption).foregroundStyle(Jungle.subtle)
+        }
+        .padding(14).jungleCard()
+    }
+
+    /// Everything the app already knows about it, at a glance.
+    private func factsSection(_ s: Species) -> some View {
+        let petsOK = !(s.toxicCats || s.toxicDogs)
+        let facts: [(String, String, String, Color)] = [
+            ("drop.fill", "Water", "Every \(Int(s.dryMin))–\(Int(s.dryMax)) days", Jungle.leaf),
+            ("sun.max.fill", "Light", s.light.rawValue.capitalized, Jungle.sun),
+            ("humidity.fill", "Humidity", "\(Int(s.humidityMin))%+", Jungle.leaf),
+            ("thermometer.medium", "Temp", "\(Int(s.tempMin))–\(Int(s.tempMax)) °C", Jungle.terracotta),
+            (petsOK ? "pawprint.fill" : "exclamationmark.triangle.fill", "Pets", petsOK ? "Safe" : "Toxic", petsOK ? Jungle.leaf : Jungle.terracotta),
+            ("leaf.arrow.triangle.circlepath", "Feed", "Every \(Int(s.feedWeeks)) wk", Jungle.leaf),
+        ]
+        return LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
+            ForEach(facts, id: \.1) { f in
+                VStack(alignment: .leading, spacing: 4) {
+                    Image(systemName: f.0).font(.subheadline).foregroundStyle(f.3)
+                    Text(f.2).font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.8)
+                    Text(f.1).font(.caption2).foregroundStyle(Jungle.subtle)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(10).jungleCard()
+                .accessibilityElement(children: .combine)
+            }
+        }
+        .transition(.opacity)
+    }
+
     private func healthSection(_ r: PhotoRead) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Label("First look", systemImage: "eye").font(.headline).foregroundStyle(Jungle.text)
+            Label("First look", systemImage: "eye").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             Text(r.healthSummary).foregroundStyle(Jungle.text)
             LeafBar(read: r)
             if r.soilVisible, let m = r.soilMoisture {
@@ -210,10 +285,10 @@ struct AddPlantFlow: View {
 
     private func planSection(_ p: WelcomePlan) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("How I like to live").font(.headline).foregroundStyle(Jungle.text)
+            Text("How I like to live").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             ForEach([p.firstWater, p.food, p.spot] + [p.neighbours, p.potAndSoil, p.safety].compactMap { $0 }) { item in
                 HStack(alignment: .top, spacing: 12) {
-                    Image(systemName: item.symbol).font(.title3).foregroundStyle(item.symbol == "pawprint.fill" ? Jungle.terracotta : Jungle.leaf).frame(width: 28)
+                    Image(systemName: item.symbol).font(.system(.title3, design: .rounded)).foregroundStyle(item.symbol == "pawprint.fill" ? Jungle.terracotta : Jungle.leaf).frame(width: 28)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                         Text(item.detail).font(.subheadline).foregroundStyle(Jungle.subtle)
@@ -227,11 +302,16 @@ struct AddPlantFlow: View {
 
     private var personalitySection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Personality").font(.headline).foregroundStyle(Jungle.text)
+            Text("Personality").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(Personality.allCases) { p in
-                        Button(p.label) { withAnimation(.snappy) { personality = p } }
+                        Button(p.label) {
+                            withAnimation(.snappy) {
+                                personality = p
+                                if !nameEdited { name = nameIdeas.first ?? name }
+                            }
+                        }
                             .buttonStyle(.plain)
                             .padding(.horizontal, 14).padding(.vertical, 8)
                             .foregroundStyle(personality == p ? Color.white : Jungle.text)
@@ -246,17 +326,17 @@ struct AddPlantFlow: View {
     private func homeSection(_ plan: WelcomePlan) -> some View {
         let rooms = (plants.map(\.location).filter { !$0.isEmpty } + ["Living room", "Bedroom", "Kitchen", "Bathroom", "Office", "Balcony"]).uniqued()
         return VStack(alignment: .leading, spacing: 10) {
-            Text("Where will I live?").font(.headline).foregroundStyle(Jungle.text)
-            TextField("Room or spot", text: $location)
+            Text("Where will I live?").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+            TextField("Room or spot", text: Binding(get: { location }, set: { location = $0; locationEdited = true }))
                 .padding(12).background(Jungle.mist, in: RoundedRectangle(cornerRadius: Jungle.innerRadius))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(rooms.prefix(8), id: \.self) { r in
                         Button(r.capitalized) {
-                            location = r
+                            location = r; locationEdited = true
                             if ["balcony", "garden", "terrace", "varanda", "jardim"].contains(r.folded) { outdoor = true }
                         }
-                        .buttonStyle(.bordered).buttonBorderShape(.capsule).controlSize(.small)
+                        .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                     }
                 }
             }
@@ -285,6 +365,7 @@ struct AddPlantFlow: View {
             withAnimation(.snappy) {
                 stage = .meet
                 species = candidates.first?.species
+                if species == nil, !nameEdited { name = nameIdeas.first ?? "" }
             }
         }
     }
@@ -347,7 +428,7 @@ private struct ReadingSteps: View {
     var body: some View {
         VStack(spacing: 10) {
             ProgressView()
-            Text(steps[step % steps.count]).font(.headline).foregroundStyle(Jungle.text)
+            Text(steps[step % steps.count]).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 .contentTransition(.opacity)
                 .id(step)
         }

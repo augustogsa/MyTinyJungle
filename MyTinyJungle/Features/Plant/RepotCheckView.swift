@@ -33,7 +33,7 @@ struct RepotCheckView: View {
                 Section {
                     let v = verdict
                     Label { VStack(alignment: .leading, spacing: 3) {
-                        Text(title(v)).font(.headline).foregroundStyle(Jungle.text)
+                        Text(title(v)).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         Text(explanation(v)).font(.subheadline).foregroundStyle(Jungle.subtle)
                     } } icon: { Image(systemName: icon(v)).foregroundStyle(color(v)) }
                 }

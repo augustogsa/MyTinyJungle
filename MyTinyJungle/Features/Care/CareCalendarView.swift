@@ -26,7 +26,7 @@ struct CareCalendarView: View {
                     Button { shift(-1) } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }
                         .accessibilityLabel("Previous month")
                     Spacer()
-                    Text(month.formatted(.dateTime.month(.wide).year())).font(.headline).foregroundStyle(Jungle.text)
+                    Text(month.formatted(.dateTime.month(.wide).year())).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     Spacer()
                     Button { shift(1) } label: { Image(systemName: "chevron.right").frame(width: 44, height: 44) }
                         .accessibilityLabel("Next month")
@@ -85,7 +85,7 @@ struct CareCalendarView: View {
     @ViewBuilder private func dayDetail(done: [CareEvent], planned: [AgendaItem]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(cal.isDateInToday(selected) ? "Today" : selected.formatted(.dateTime.weekday(.wide).day().month(.wide)))
-                .font(.title3.weight(.semibold)).foregroundStyle(Jungle.text)
+                .font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             if done.isEmpty && planned.isEmpty {
                 Text(selected > Date() ? "Nothing planned." : "Nothing logged this day.").foregroundStyle(Jungle.subtle)
                     .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()

@@ -86,9 +86,9 @@ struct LoggedCardView: View {
         HStack(spacing: 8) {
             Image(systemName: card.undone ? "arrow.uturn.backward.circle.fill" : "checkmark.circle.fill")
                 .foregroundStyle(card.undone ? Jungle.subtle : Jungle.leaf)
-                .font(.title3)
+                .font(.system(.title3, design: .rounded))
                 .contentTransition(.symbolEffect(.replace))
-            Text(card.undone ? "Undone" : "Logged").font(.headline).foregroundStyle(Jungle.text)
+            Text(card.undone ? "Undone" : "Logged").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             Spacer()
             Text(dayLabel(card.date)).font(.subheadline).foregroundStyle(Jungle.subtle)
         }
@@ -111,7 +111,7 @@ struct LoggedCardView: View {
             }
             VStack(alignment: .leading, spacing: 3) {
                 HStack {
-                    Text(row.plant.name).font(.headline).foregroundStyle(Jungle.text)
+                    Text(row.plant.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     Spacer()
                     if !undone { Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle) }
                 }
@@ -160,7 +160,7 @@ struct LoggedCardView: View {
             }
         }
         .font(.subheadline.weight(.medium))
-        .buttonStyle(.bordered)
+        .buttonStyle(.bordered).fontDesign(.rounded)
         .buttonBorderShape(.capsule)
         .controlSize(.small)
     }

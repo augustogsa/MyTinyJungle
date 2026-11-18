@@ -58,11 +58,11 @@ struct HealthCheckView: View {
             if photo == nil {
                 HStack(spacing: 10) {
                     if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                        Button { camera = true } label: { Label("Photo", systemImage: "camera.fill") }.buttonStyle(.borderedProminent)
+                        Button { camera = true } label: { Label("Photo", systemImage: "camera.fill") }.buttonStyle(.borderedProminent).fontDesign(.rounded)
                     }
-                    PhotosPicker(selection: $pick, matching: .images) { Label("Library", systemImage: "photo") }.buttonStyle(.bordered)
+                    PhotosPicker(selection: $pick, matching: .images) { Label("Library", systemImage: "photo") }.buttonStyle(.bordered).fontDesign(.rounded)
                     if plant.photo != nil {
-                        Button { if let d = plant.photo { analyze(d) } } label: { Text("Use last") }.buttonStyle(.bordered)
+                        Button { if let d = plant.photo { analyze(d) } } label: { Text("Use last") }.buttonStyle(.bordered).fontDesign(.rounded)
                     }
                 }
                 .buttonBorderShape(.capsule).tint(.white).foregroundStyle(Jungle.forest)
@@ -81,16 +81,16 @@ struct HealthCheckView: View {
         }
         return VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 12) {
-                Image(systemName: symbol).font(.largeTitle).foregroundStyle(color)
+                Image(systemName: symbol).font(.system(.largeTitle, design: .rounded)).foregroundStyle(color)
                 VStack(alignment: .leading) {
-                    Text(title).font(.title3.weight(.bold)).foregroundStyle(Jungle.text)
+                    Text(title).font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                     Text(r.healthSummary).font(.subheadline).foregroundStyle(Jungle.subtle)
                 }
             }
             .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
 
             VStack(alignment: .leading, spacing: 10) {
-                Text("Analysis").font(.headline).foregroundStyle(Jungle.text)
+                Text("Analysis").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 LeafBar(read: r)
                 analysisRow("Leaf colour", percent(r.greenShare, of: r) + " green", r.health == .lush || r.health == .good)
                 analysisRow("Yellowing", r.yellowShare < 0.02 ? "None seen" : percent(r.yellowShare, of: r), r.yellowShare < 0.03)
@@ -104,7 +104,7 @@ struct HealthCheckView: View {
             let causes = likelyCauses(r)
             if !causes.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("What I'd do").font(.headline).foregroundStyle(Jungle.text)
+                    Text("What I'd do").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     ForEach(causes, id: \.self) { c in Label(c, systemImage: "arrow.right.circle").font(.subheadline).foregroundStyle(Jungle.text) }
                 }
                 .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
@@ -114,7 +114,7 @@ struct HealthCheckView: View {
 
     private var pestSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Label("Pest guard", systemImage: "ant").font(.headline).foregroundStyle(Jungle.text)
+            Label("Pest guard", systemImage: "ant").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             Text("Seeing any of these? Tap it.").font(.subheadline).foregroundStyle(Jungle.subtle)
             FlowChips(items: Pest.allCases.map(\.sign), selected: pest?.sign) { sign in
                 withAnimation(.snappy) { pest = Pest.allCases.first { $0.sign == sign } }
@@ -229,7 +229,7 @@ struct PestPlanView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: "ant.fill").foregroundStyle(Jungle.terracotta)
-                Text("Possibly \(pest.name)").font(.headline).foregroundStyle(Jungle.text)
+                Text("Possibly \(pest.name)").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             }
             Text("Based on what you saw. Confirm with a close look under the leaves.").font(.caption).foregroundStyle(Jungle.subtle)
             ForEach(Array(pest.steps.enumerated()), id: \.offset) { i, step in
@@ -256,7 +256,7 @@ struct PestPlanView: View {
                 try? ctx.save()
                 onStart()
             } label: { Label("Start treatment plan", systemImage: "cross.case.fill").frame(maxWidth: .infinity) }
-                .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large)
+                .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
         }
         .padding(14).jungleCard()
     }

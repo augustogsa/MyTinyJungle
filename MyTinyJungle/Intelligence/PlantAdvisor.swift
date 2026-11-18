@@ -59,9 +59,6 @@ enum PlantAdvisor {
                            detail: "Toxic or irritating if chewed (ASPCA).\(settings.hasKids ? " Keep it out of children's reach too." : "")")
         }
 
-        let used = Set(existing.map { $0.name.folded })
-        let name = nameIdeas(for: s).first { !used.contains($0.folded) } ?? s.en
-
         let personality: Personality = switch s.family {
         case "Marantaceae": .dramatic
         case "Cactaceae", "Crassulaceae", "Asphodelaceae": .independent
@@ -71,6 +68,7 @@ enum PlantAdvisor {
         default: .cheerful
         }
 
+        let name = nameIdeas(for: s, personality: personality, existing: existing).first ?? s.en
         return WelcomePlan(firstWater: water, food: food, spot: spot, neighbours: neighbours, potAndSoil: pot, safety: safety,
                            suggestedName: name, suggestedPersonality: personality,
                            outdoorsHint: ["Lamiaceae", "Solanaceae", "Oleaceae", "Rutaceae"].contains(s.family))
@@ -99,15 +97,63 @@ enum PlantAdvisor {
         }
     }
 
-    static func nameIdeas(for s: Species) -> [String] {
-        switch s.family {
-        case "Araceae": ["Milo", "Ollie", "Fern", "Leo", "Kiki", "Bruno"]
-        case "Marantaceae": ["Luna", "Diva", "Iris", "Stella"]
-        case "Cactaceae", "Crassulaceae", "Asphodelaceae": ["Spike", "Prickles", "Sunny", "Pepe"]
-        case "Moraceae": ["Figgy", "Rex", "Bonnie"]
-        case "Orchidaceae": ["Grace", "Pearl", "Lola"]
-        case "Lamiaceae": ["Basil", "Minty", "Rosie", "Sage"]
-        default: ["Olive", "Pip", "Juno", "Coco", "Willow"]
+    /// Name ideas from the species itself (puns on its name), its family and its personality. Never repeats a name already in the jungle.
+    static func nameIdeas(for s: Species?, personality: Personality? = nil, existing: [Plant] = []) -> [String] {
+        let byID: [String: [String]] = [
+            "monstera-deliciosa": ["Monty", "Swiss", "Cheesy", "Delilah"],
+            "epipremnum-aureum": ["Goldie", "Posh", "Vinnie", "Trailblazer"],
+            "sansevieria": ["Sergeant", "Sabre", "Snakey", "Zara"],
+            "zamioculcas": ["Zeke", "Zuzu", "Zen"],
+            "spathiphyllum": ["Lily", "Peaches", "Dove"],
+            "ficus-lyrata": ["Fiddle", "Fifi", "Lyra"],
+            "phalaenopsis": ["Mothra", "Phala", "Orla"],
+            "calathea": ["Cala", "Prayer", "Drama"],
+            "aloe-vera": ["Aloha", "Vera", "Gel"],
+            "ocimum-basilicum": ["Basil", "Pesto", "Genovese"],
+            "echeveria": ["Rosetta", "Echo", "Chubby"],
+            "chlorophytum": ["Spidey", "Charlotte", "Webster"],
+        ]
+        var pool: [String] = []
+        if let s {
+            pool += byID[s.id] ?? []
+            let first = s.en.split(separator: " ").first.map(String.init) ?? s.en
+            if first.count >= 4 { pool += [String(first.prefix(4)) + "y", first] }
+            let fam: [String] = switch s.family {
+            case "Araceae": ["Milo", "Ollie", "Leo", "Kiki", "Bruno"]
+            case "Marantaceae": ["Luna", "Diva", "Iris", "Stella"]
+            case "Cactaceae", "Crassulaceae", "Asphodelaceae": ["Spike", "Prickles", "Sunny", "Pepe"]
+            case "Moraceae": ["Figgy", "Rex", "Bonnie"]
+            case "Orchidaceae": ["Grace", "Pearl", "Lola"]
+            case "Lamiaceae": ["Minty", "Rosie", "Sage"]
+            case "Rosaceae": ["Rosa", "Ruby", "Thorny"]
+            case "Asteraceae": ["Daisy", "Sunny", "Goldie"]
+            default: ["Olive", "Pip", "Juno", "Willow"]
+            }
+            pool += fam
+        }
+        let mood: [String] = switch personality ?? .cheerful {
+        case .cheerful: ["Sunny", "Pip", "Coco"]
+        case .calm: ["Zen", "Willow", "Sage"]
+        case .dramatic: ["Diva", "Duchess", "Romeo"]
+        case .curious: ["Nemo", "Scout", "Pixel"]
+        case .independent: ["Rocky", "Solo", "Boss"]
+        case .chatty: ["Ziggy", "Gossip", "Bubbles"]
+        }
+        pool += mood
+        let used = Set(existing.map { $0.name.folded })
+        return pool.uniqued().filter { !used.contains($0.folded) }
+    }
+
+    /// Best spot for it: a room you already use with the same light needs, else the classic room for its needs.
+    static func suggestedRoom(for s: Species, existing: [Plant]) -> String {
+        if let room = existing.first(where: { $0.species?.light == s.light && !$0.location.isEmpty })?.location { return room.capitalized }
+        if s.family == "Lamiaceae" { return "Kitchen" }
+        if s.humidityMin >= 60 { return "Bathroom" }
+        switch s.light {
+        case .direct: return "Balcony"
+        case .bright: return "Living room"
+        case .medium: return "Bedroom"
+        case .low: return "Office"
         }
     }
 }
