@@ -183,10 +183,10 @@ struct SetupChatView: View {
     ]
 
     static let lights: [(Species.Light, String, Icon3D)] = [
-        (.low, String(localized: "Rather dim", comment: "Setup chat chip: room light level, low"), .moon),
-        (.medium, String(localized: "Some light", comment: "Setup chat chip: room light level, medium"), .lamp),
-        (.bright, String(localized: "Bright", comment: "Setup chat chip: room light level, bright, no direct sun"), .sunny),
-        (.direct, String(localized: "Direct sun", comment: "Setup chat chip: room light level, direct sun"), .sun),
+        (.low, String(localized: "Dim: lamps on even by day", comment: "Setup chat chip: room light level, low"), .moon),
+        (.medium, String(localized: "Some light, away from windows", comment: "Setup chat chip: room light level, medium"), .lamp),
+        (.bright, String(localized: "Bright, by a window, no sun on leaves", comment: "Setup chat chip: room light level, bright, no direct sun"), .sunny),
+        (.direct, String(localized: "Sun shines right on the plants", comment: "Setup chat chip: room light level, direct sun"), .sun),
     ]
 
     /// "in the living room" with the right preposition and article for each language.
@@ -208,7 +208,7 @@ struct SetupChatView: View {
         case .place: String(localized: "Where do you live? Your city is enough. Local climate and weather change how much water your plants need.", comment: "Setup chat: mascot asks for city")
         case .heating: String(localized: "Do you turn the heating on in winter?", comment: "Setup chat: mascot asks about home heating")
         case .aircon: String(localized: "And air conditioning in summer?", comment: "Setup chat: mascot asks about AC")
-        case .air: String(localized: "How does the air at home feel most days?", comment: "Setup chat: mascot asks about indoor humidity")
+        case .air: String(localized: "Is the air at home dry or damp?", comment: "Setup chat: mascot asks about indoor humidity")
         case .drafts: String(localized: "Any draughty windows or doors?", comment: "Setup chat: mascot asks about drafts")
         case .outside: String(localized: "Do you grow plants outside too, on a balcony, terrace or in a garden?", comment: "Setup chat: mascot asks about outdoor plants")
         case .family: String(localized: "Who else lives with you? I'll warn you about any plant that could hurt them.", comment: "Setup chat: mascot asks about pets and small kids; multi-select")

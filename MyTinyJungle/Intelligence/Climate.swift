@@ -20,7 +20,7 @@ final class Climate {
     }
     struct Day: Codable, Hashable { let date: Date; let tMin: Double; let tMax: Double; let rain: Double; let humidity: Double? }
     enum HomeAir: Int, Codable, CaseIterable { case dry, normal, humid
-        var label: String { switch self { case .dry: String(localized: "On the dry side", comment: "Home air humidity option in Settings."); case .normal: String(localized: "Comfortable", comment: "Home air humidity option in Settings."); case .humid: String(localized: "Quite humid", comment: "Home air humidity option in Settings.") } }
+        var label: String { switch self { case .dry: String(localized: "Dry: static, dry skin or lips", comment: "Home air humidity option in Settings."); case .normal: String(localized: "Normal, nothing special", comment: "Home air humidity option in Settings."); case .humid: String(localized: "Damp: foggy windows, mould spots", comment: "Home air humidity option in Settings.") } }
     }
 
     private let d = UserDefaults.standard

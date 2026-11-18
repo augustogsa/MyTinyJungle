@@ -3928,6 +3928,17 @@
         }
       }
     },
+    "App icon": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ícone do app"
+          }
+        }
+      }
+    },
     "Apple sign-in didn't finish. Try again.": {
       "comment": "Sign-in error under Apple button; calm; max 50 chars",
       "localizations": {
@@ -4192,6 +4203,17 @@
         }
       }
     },
+    "Basket": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cesta"
+          }
+        }
+      }
+    },
     "Bathroom": {
       "comment": "Demo plant room name\nRoom suggestion chip; stored as the plant location; max 16 chars\nSuggested room name\nSuggested room name for a new plant, capitalized.",
       "localizations": {
@@ -4357,6 +4379,17 @@
         }
       }
     },
+    "Big hug": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abração"
+          }
+        }
+      }
+    },
     "Bigger home, fresh soil": {
       "comment": "Care guide subtitle; short",
       "localizations": {
@@ -4485,6 +4518,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Clara é perto de uma janela ensolarada. Dá pra mudar quando quiser em Cômodos."
+          }
+        }
+      }
+    },
+    "Bright, by a window, no sun on leaves": {
+      "comment": "Light level",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bem claro, perto da janela, sem sol direto"
           }
         }
       }
@@ -4639,6 +4683,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cactos gostam de inverno fresco e seco: é isso que faz eles florirem."
+          }
+        }
+      }
+    },
+    "Cactus": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cacto"
           }
         }
       }
@@ -4920,6 +4975,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Conversar"
+          }
+        }
+      }
+    },
+    "Chat with your plants": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Converse com suas plantas"
           }
         }
       }
@@ -5270,6 +5336,17 @@
         }
       }
     },
+    "Cherish": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Com carinho"
+          }
+        }
+      }
+    },
     "Chilly nights (%@)": {
       "comment": "Weather alert title. %@ = temperature.",
       "localizations": {
@@ -5536,6 +5613,7 @@
     },
     "Close": {
       "comment": "Button",
+      "extractionState": "manual",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -5969,6 +6047,17 @@
         }
       }
     },
+    "Couldn’t change the icon": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível mudar o ícone"
+          }
+        }
+      }
+    },
     "Count new leaves": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -6147,6 +6236,7 @@
     },
     "Cuttings": {
       "comment": "Me shortcut title: propagation cuttings",
+      "extractionState": "manual",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -6185,6 +6275,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Margô, Solzinho, Dourada"
+          }
+        }
+      }
+    },
+    "Damp: foggy windows, mould spots": {
+      "comment": "Home air humidity option in Settings.",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Úmido: janela embaçada, mofo"
           }
         }
       }
@@ -6266,6 +6367,17 @@
         }
       }
     },
+    "Dim: lamps on even by day": {
+      "comment": "Setup chat chip: room light level, low",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escuro: luz acesa até de dia"
+          }
+        }
+      }
+    },
     "Dining room": {
       "comment": "Room suggestion chip; stored as the plant location; max 16 chars",
       "localizations": {
@@ -6273,17 +6385,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sala de jantar"
-          }
-        }
-      }
-    },
-    "Direct sun": {
-      "comment": "Light level label. Max 20 chars.",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sol direto"
           }
         }
       }
@@ -6739,6 +6840,17 @@
         }
       }
     },
+    "Dry: static, dry skin or lips": {
+      "comment": "Home air humidity option in Settings.",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seco: pele e lábios ressecados, choque ao tocar"
+          }
+        }
+      }
+    },
     "Dry? Then yes, I'd love a drink. Water slowly until it runs out the bottom.": {
       "comment": "Plant replies after the user reports how its soil feels. Plant speaks in first person; the terse one is the independent personality.",
       "localizations": {
@@ -7186,6 +7298,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Espere um biquinho"
+          }
+        }
+      }
+    },
+    "Explorer": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explorador"
           }
         }
       }
@@ -8230,6 +8353,17 @@
         }
       }
     },
+    "Gentle care requests": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pedidos de cuidado gentis"
+          }
+        }
+      }
+    },
     "Gentle fixes:\n%@": {
       "comment": "Chat: list of home remedies follows (bulleted).",
       "localizations": {
@@ -8474,6 +8608,7 @@
     },
     "Going away": {
       "comment": "Me row title: travel plan",
+      "extractionState": "manual",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -8793,6 +8928,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Luz de cultivo sem mistério"
+          }
+        }
+      }
+    },
+    "Grow new plants from the ones you love.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faça plantas novas a partir das que você ama."
           }
         }
       }
@@ -9565,6 +9711,17 @@
         }
       }
     },
+    "Holiday plans so every plant is fine while you're gone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planos de viagem para todas ficarem bem enquanto você está fora."
+          }
+        }
+      }
+    },
     "Home": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -9583,6 +9740,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lar na natureza"
+          }
+        }
+      }
+    },
+    "Home screen": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tela de início"
           }
         }
       }
@@ -9693,17 +9861,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Como está a terra do meu vaso?"
-          }
-        }
-      }
-    },
-    "How does the air at home feel most days?": {
-      "comment": "Setup chat: mascot asks about indoor humidity",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Como o ar da sua casa costuma ser?"
           }
         }
       }
@@ -10800,6 +10957,17 @@
         }
       }
     },
+    "In use": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Em uso"
+          }
+        }
+      }
+    },
     "In winter, when heating dries the air.": {
       "comment": "When to do this care guide",
       "localizations": {
@@ -10993,6 +11161,17 @@
         }
       }
     },
+    "Is the air at home dry or damp?": {
+      "comment": "Setup chat: mascot asks about indoor humidity",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O ar da sua casa é seco ou úmido?"
+          }
+        }
+      }
+    },
     "Isolate": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -11176,6 +11355,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Chegou na sua selvinha em %@."
+          }
+        }
+      }
+    },
+    "Journal": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diário"
           }
         }
       }
@@ -11395,6 +11585,17 @@
         }
       }
     },
+    "Know if a food or soil suits each of your plants.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saiba se um adubo ou substrato serve para cada planta."
+          }
+        }
+      }
+    },
     "Know the risky ones": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -11428,6 +11629,17 @@
         }
       }
     },
+    "Knows when it's time and what pot and soil to use.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sabe quando é a hora e qual vaso e substrato usar."
+          }
+        }
+      }
+    },
     "Köppen %@": {
       "comment": "Köppen climate code, e.g. Köppen Cfa",
       "localizations": {
@@ -11435,6 +11647,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Köppen %@"
+          }
+        }
+      }
+    },
+    "Label scanner": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leitor de rótulos"
           }
         }
       }
@@ -11693,6 +11916,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aprendendo com suas checagens da terra."
+          }
+        }
+      }
+    },
+    "Learns each plant's rhythm so watering is just right.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprende o ritmo de cada planta para regar na medida certa."
           }
         }
       }
@@ -12909,6 +13143,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fique de olho nas raízes"
+          }
+        }
+      }
+    },
+    "Monstera": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Costela-de-adão"
           }
         }
       }
@@ -14181,6 +14426,17 @@
         }
       }
     },
+    "Normal, nothing special": {
+      "comment": "Home air humidity option in Settings.",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal, nada de especial"
+          }
+        }
+      }
+    },
     "North": {
       "comment": "Window faces north",
       "localizations": {
@@ -14566,6 +14822,16 @@
         }
       }
     },
+    "OK": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
     "Off after you reopen the app.": {
       "comment": "Backup status after turning off",
       "localizations": {
@@ -14676,13 +14942,13 @@
         }
       }
     },
-    "On the dry side": {
-      "comment": "Home air humidity option in Settings.",
+    "On your home screen": {
+      "extractionState": "manual",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mais pra seco"
+            "value": "Na sua tela de início"
           }
         }
       }
@@ -15239,6 +15505,7 @@
     },
     "Pest guard": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
+      "extractionState": "manual",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -15936,6 +16203,17 @@
         }
       }
     },
+    "Potted": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No vaso"
+          }
+        }
+      }
+    },
     "Potting compost": {
       "comment": "Tool needed for a care guide",
       "localizations": {
@@ -16090,6 +16368,17 @@
         }
       }
     },
+    "Pruning": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poda"
+          }
+        }
+      }
+    },
     "Push a finger 2–3 cm into the soil. Dry? Water. Still cool and damp? Wait a day or two.": {
       "comment": "Care guide step instruction; warm, practical",
       "localizations": {
@@ -16211,17 +16500,6 @@
         }
       }
     },
-    "Quite humid": {
-      "comment": "Home air humidity option in Settings.",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bem úmido"
-          }
-        }
-      }
-    },
     "Radiators and heaters dry the air. Keep pots a metre away.": {
       "comment": "Care guide step instruction; warm, practical",
       "localizations": {
@@ -16295,17 +16573,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Período"
-          }
-        }
-      }
-    },
-    "Rather dim": {
-      "comment": "Setup chat chip: room light level, low",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meio escuro"
           }
         }
       }
@@ -16591,6 +16858,17 @@
         }
       }
     },
+    "Repot check": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora de trocar o vaso"
+          }
+        }
+      }
+    },
     "Repot into fresh, chunkier mix in a pot with drainage holes, only as big as the root ball.": {
       "comment": "Care guide step instruction; warm, practical",
       "localizations": {
@@ -16818,6 +17096,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rocky, Solo, Chefinho"
+          }
+        }
+      }
+    },
+    "Room by room, the right light for every plant.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cômodo por cômodo, a luz certa para cada planta."
           }
         }
       }
@@ -17414,12 +17703,23 @@
       }
     },
     "Season": {
-      "comment": "Care range segment; max 8 chars",
+      "comment": "Accessibility label for the season picker\nCare range segment; max 8 chars",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Estação"
+          }
+        }
+      }
+    },
+    "Season guide": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guia das estações"
           }
         }
       }
@@ -17582,6 +17882,17 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Seedling": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muda"
           }
         }
       }
@@ -18606,6 +18917,17 @@
         }
       }
     },
+    "Soil-check ritual": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ritual da terra"
+          }
+        }
+      }
+    },
     "Soil: %@": {
       "comment": "Species card bullet.",
       "localizations": {
@@ -18628,13 +18950,13 @@
         }
       }
     },
-    "Some light": {
+    "Some light, away from windows": {
       "comment": "Setup chat chip: room light level, medium",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Luz média"
+            "value": "Claro, mas longe da janela"
           }
         }
       }
@@ -18751,6 +19073,7 @@
     },
     "Spaces": {
       "comment": "Me shortcut title: rooms in the home",
+      "extractionState": "manual",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -18855,6 +19178,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Identifique, trate, previna"
+          }
+        }
+      }
+    },
+    "Spot pests early and follow a simple plan.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontre pragas cedo e siga um plano simples."
           }
         }
       }
@@ -19064,6 +19398,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Na primavera, quando as raízes dão voltas no vaso ou saem pelos furos."
+          }
+        }
+      }
+    },
+    "Sprout": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Broto"
           }
         }
       }
@@ -19426,6 +19771,17 @@
         }
       }
     },
+    "Sun shines right on the plants": {
+      "comment": "Light level label. Max 20 chars.",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sol batendo direto nas plantas"
+          }
+        }
+      }
+    },
     "Sun, grit and soak-and-dry": {
       "comment": "Care guide subtitle; short",
       "localizations": {
@@ -19609,6 +19965,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Toque para achar meu melhor cantinho"
+          }
+        }
+      }
+    },
+    "Tap to use": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque para usar"
           }
         }
       }
@@ -19862,6 +20229,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Barro ou plástico?"
+          }
+        }
+      }
+    },
+    "Terrarium": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terrário"
           }
         }
       }
@@ -20854,6 +21232,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Toxicidade"
+          }
+        }
+      }
+    },
+    "Trailing": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pendente"
           }
         }
       }
@@ -21939,6 +22328,17 @@
         }
       }
     },
+    "Water, feed, mist and turn, only when it's time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regar, adubar, borrifar e girar, só na hora certa."
+          }
+        }
+      }
+    },
     "Water, please.": {
       "comment": "Plant speaking in chat, request water, independent personality: terse, dry, no-nonsense, few words.",
       "localizations": {
@@ -22134,6 +22534,7 @@
     },
     "Watering": {
       "comment": "Nav title",
+      "extractionState": "manual",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -22354,6 +22755,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "O que você está notando?"
+          }
+        }
+      }
+    },
+    "What each season means for your plants, where you live.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que cada estação muda para suas plantas, onde você mora."
           }
         }
       }
@@ -23314,6 +23726,17 @@
         }
       }
     },
+    "Write it like a text. They reply with personality.": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreva como uma mensagem. Elas respondem com personalidade."
+          }
+        }
+      }
+    },
     "Writing my care plan…": {
       "comment": "Loading step while reading photo; plant voice; max 30 chars",
       "localizations": {
@@ -23721,7 +24144,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sua selvinha está bombando"
+            "value": "Sua selvinha está florescendo"
           }
         }
       }
