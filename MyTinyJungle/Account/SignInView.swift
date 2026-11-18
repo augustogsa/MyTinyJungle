@@ -21,9 +21,9 @@ struct SignInView: View {
             }
             .padding(.bottom, 28)
             VStack(alignment: .leading, spacing: 14) {
-                promise(.chat, "Plants tell you when they need water or food")
-                promise(.leafTag, "Scan soil and fertilizer to see what fits")
-                promise(.shieldCheck, "Backed up to your iCloud, private to you")
+                promise(.wateringCan, "Water at the right time", "Each plant gets its own rhythm by room, light and season.")
+                promise(.firstAid, "Snap a sad leaf", "See what's wrong and exactly how to fix it.")
+                promise(.shieldLeaf, "Safe for pets", "Know which plants your cat or dog shouldn't nibble.")
             }
             .padding(.bottom, 32)
             VStack(spacing: 12) {
@@ -44,7 +44,7 @@ struct SignInView: View {
                     .buttonStyle(.plain)
                 }
                 if let e = auth.error { Text(e).font(.footnote).foregroundStyle(Jungle.warmText) }
-                Text("We only use your account to keep your jungle safe. No posts, no spam.")
+                Text("Your jungle is backed up to your iCloud. No posts, no spam.")
                     .font(.footnote).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center).padding(.top, 6)
             }
         }
@@ -61,11 +61,15 @@ struct SignInView: View {
         }
     }
 
-    private func promise(_ icon: Icon3D, _ text: String) -> some View {
+    private func promise(_ icon: Icon3D, _ title: String, _ detail: String) -> some View {
         HStack(spacing: 14) {
-            Icon3DView(icon, size: 34).frame(width: 38)
-            Text(text).font(.body).foregroundStyle(Jungle.text)
+            Icon3DView(icon, size: 36).frame(width: 40)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(.headline).foregroundStyle(Jungle.text)
+                Text(detail).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
+            }
             Spacer(minLength: 0)
         }
+        .accessibilityElement(children: .combine)
     }
 }
