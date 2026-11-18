@@ -183,10 +183,21 @@ def render_home(L, t, page, phone, apple_icon):
                f'<button type="button" class="sbtn next" aria-label="{h["next"]}">&rarr;</button></div>')
         return f'<div class="slider"><div class="track" tabindex="0">{cards}</div>{nav}</div>'
 
-    layers = "".join(
-        f'<div class="layer{" on" if k == 0 else ""}" data-scene="{k}"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400"{LAZY[k == 0]}>'
-        f'{phone("app/" + sc + ".jpg", h["stage_alt"], "stage-phone") if sc else ""}</div>'
-        for k, (ph, sc) in enumerate(SCENES))
+    shots = [[]] + [c["thumbs"] if not c.get("chat") else [] for c in h["chapters"]]
+
+    def layer(k, ph, sc):
+        reel = shots[k] if len(shots[k]) > 1 else []
+        dots = ""
+        if reel:
+            dots = '<div class="reel" role="group">' + "".join(
+                f'<button type="button" class="rdot{" on" if j == 0 else ""}" data-i="{j}" data-src="/assets/app/{n}.jpg">{cap}</button>'
+                for j, (n, cap) in enumerate(reel)) + "</div>"
+        first = reel[0][0] if reel else sc
+        ph_html = phone("app/" + first + ".jpg", h["stage_alt"], "stage-phone").replace(' loading="lazy"', "") if sc else ""
+        return (f'<div class="layer{" on" if k == 0 else ""}" data-scene="{k}"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400"{LAZY[k == 0]}>'
+                f'{ph_html}{dots}</div>')
+
+    layers = "".join(layer(k, ph, sc) for k, (ph, sc) in enumerate(SCENES))
 
     chapters = ""
     for k, c in enumerate(h["chapters"], start=1):
@@ -194,7 +205,7 @@ def render_home(L, t, page, phone, apple_icon):
         inner = f'<h2>{c["h"]}</h2><p class="lead2">{c["p"]}</p>'
         if sc:
             inner += f'<div class="m-scene"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400" loading="lazy">{phone("app/" + sc + ".jpg", c["h"], "stage-phone")}</div>'
-        if c.get("big"):
+        if c.get("big") and c["id"] not in h["cards"]:
             inner += '<ul class="four">' + "".join(f"<li>{w}</li>" for w in c["big"]) + f'</ul><p class="four-note">{c["big_note"]}</p>'
         if c.get("chat"):
             plants = "".join(f'<button type="button" class="chip{" on" if j == 0 else ""}" data-plant="{n}" aria-pressed="{"true" if j == 0 else "false"}"><img src="/assets/plants/{p}.jpg" alt="" width="28" height="28" loading="lazy">{n}</button>' for j, (n, p) in enumerate(h["chat_plants"]))
@@ -204,7 +215,7 @@ def render_home(L, t, page, phone, apple_icon):
                       f'<p class="talk-label">{h["chat_label"]}</p><div class="chips" role="group">{plants}</div>'
                       f'<div class="log" aria-live="polite"><p class="b me">{h["chat_qs"][0]}</p><p class="b plant"><b>{first}</b>{h["chat_a"][first][0]}</p></div>'
                       f'<div class="asks" role="group">{qs}</div></div>')
-        if c.get("list"):
+        if c.get("list") and c["id"] not in h["cards"]:
             inner += ilist(c["list"])
         if c["id"] in h["cards"]:
             inner += '<div class="cards">' + "".join(f'<div class="bcard">{I(i, 56)}<div><b>{a}</b><span>{b}</span></div></div>' for i, a, b in h["cards"][c["id"]]) + "</div>"
@@ -234,7 +245,7 @@ def render_home(L, t, page, phone, apple_icon):
 <div class="m-scene"><img class="photo" src="/assets/plants/monstera.jpg" alt="" width="1100" height="1400" fetchpriority="high">{phone("app/today1.jpg", h["stage_alt"], "stage-phone")}</div></section>
 {chapters}
 </div>
-<div class="stage" aria-hidden="true">{layers}</div>
+<div class="stage">{layers}</div>
 </div>
 <section class="pills-band" aria-label="Why"><div class="wrap pills">{"".join(f'<p class="pill">{I(i, 48)}{x}</p>' for i, x in h["pills"])}</div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>

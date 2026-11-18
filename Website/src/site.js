@@ -26,7 +26,25 @@
     });
   }
 
-  // Screen sliders.
+  // Stage reel: tap a caption or let it advance while the chapter is on screen.
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  layers.forEach(function (l) {
+    var dots = l.querySelectorAll(".rdot"), img = l.querySelector(".phone-screen img");
+    if (!dots.length || !img) return;
+    var cur = 0, timer = null;
+    var go = function (i) {
+      cur = i; dots.forEach(function (x, j) { x.classList.toggle("on", j === i); });
+      img.classList.add("fade");
+      setTimeout(function () { img.src = dots[i].dataset.src; img.alt = dots[i].textContent; img.classList.remove("fade"); }, 200);
+    };
+    dots.forEach(function (x, i) { x.addEventListener("click", function () { go(i); clearInterval(timer); timer = null; }); });
+    new MutationObserver(function () {
+      clearInterval(timer); timer = null;
+      if (l.classList.contains("on") && !reduce) timer = setInterval(function () { if (!d.hidden) go((cur + 1) % dots.length); }, 3600);
+    }).observe(l, { attributes: true, attributeFilter: ["class"] });
+  });
+
+  // Screen sliders (phone layout).
   d.querySelectorAll(".slider").forEach(function (sl) {
     var tr = sl.querySelector(".track"), pv = sl.querySelector(".prev"), nx = sl.querySelector(".next");
     var step = function () { var f = tr.querySelector(".slide"); return f ? f.getBoundingClientRect().width + 22 : 240; };
