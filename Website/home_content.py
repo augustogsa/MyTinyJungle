@@ -15,7 +15,7 @@ def I(name, size=40):
 
 
 # Scene per chapter: (plant photo, app screen). Index 0 is the hero.
-SCENES = [("monstera", "today1"), ("echeveria", "today-ring"), ("pothos", "plant"), ("basil", "plant-chat"),
+SCENES = [("monstera", "today1"), ("echeveria", "today-ring"), ("pothos", "plant"), ("basil", None),
           ("peacelily", "care-week"), ("orchid", "scan-result"), ("zz", "me")]
 
 H = {
@@ -175,14 +175,15 @@ def render_home(L, t, page, phone, apple_icon):
 
     layers = "".join(
         f'<div class="layer{" on" if k == 0 else ""}" data-scene="{k}"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400"{LAZY[k == 0]}>'
-        f'{phone("app/" + sc + ".jpg", h["stage_alt"], "stage-phone")}</div>'
+        f'{phone("app/" + sc + ".jpg", h["stage_alt"], "stage-phone") if sc else ""}</div>'
         for k, (ph, sc) in enumerate(SCENES))
 
     chapters = ""
     for k, c in enumerate(h["chapters"], start=1):
         ph, sc = SCENES[k]
         inner = f'<h2>{c["h"]}</h2><p class="lead2">{c["p"]}</p>'
-        inner += f'<div class="m-scene"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400" loading="lazy">{phone("app/" + sc + ".jpg", c["h"], "stage-phone")}</div>'
+        if sc:
+            inner += f'<div class="m-scene"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400" loading="lazy">{phone("app/" + sc + ".jpg", c["h"], "stage-phone")}</div>'
         if c.get("big"):
             inner += '<ul class="four">' + "".join(f"<li>{w}</li>" for w in c["big"]) + f'</ul><p class="four-note">{c["big_note"]}</p>'
         if c.get("chat"):
@@ -195,7 +196,7 @@ def render_home(L, t, page, phone, apple_icon):
                       f'<div class="asks" role="group">{qs}</div></div>')
         if c.get("list"):
             inner += ilist(c["list"])
-        if len(c["thumbs"]) > 1:
+        if len(c["thumbs"]) > 1 and not c.get("chat"):
             inner += thumbs(c["thumbs"])
         chapters += f'<section class="chapter" id="{c["id"]}" data-scene="{k}">{inner}</section>'
 
