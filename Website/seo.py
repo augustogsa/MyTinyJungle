@@ -57,7 +57,7 @@ def og_image(L, path, title, desc, dist):
     """1200x630 share card per page and language, cached by content."""
     name = f"{L}-{path.strip('/').replace('/', '-') or 'home'}"
     out = dist / "og" / f"{name}.png"
-    key = hashlib.sha1(f"v6|{L}|{path}|{title}|{desc}".encode()).hexdigest()[:12]
+    key = hashlib.sha1(f"v9|{L}|{path}|{title}|{desc}".encode()).hexdigest()[:12]
     cached = CACHE / f"{name}-{key}.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     if not cached.exists():
@@ -69,52 +69,102 @@ def og_image(L, path, title, desc, dist):
     return f"{SITE}/og/{name}.png?v={key}"
 
 
+ERTY_FOR = {"/": "wave", "/get": "wave", "/features": "celebrate", "/good-to-know": "learn", "/plus": "award",
+            "/support": "love", "/404": "rain", "/features/chat": "love", "/features/soil-check": "soil",
+            "/features/smart-reminders": "water", "/features/health-check": "scan", "/features/pests": "scan",
+            "/features/repotting": "soil", "/features/travel-mode": "sleep", "/features/cuttings": "celebrate",
+            "/features/seasons": "rain", "/features/label-scanner": "soilbag", "/features/spaces": "idle",
+            "/features/pets-and-kids": "love"}
+WARM_TOP, WARM_BOT, PEACH, INK_W, MUTED_W, LEAF_W = (255, 248, 238), (252, 233, 214), (255, 222, 192), (52, 38, 28), (128, 104, 86), (46, 98, 58)
+
+
+def _rounded(img, r):
+    m = Image.new("L", img.size, 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, img.width - 1, img.height - 1), r, fill=255)
+    img.putalpha(m); return img
+
+
+def _shadow(size, box, r, blur, alpha):
+    from PIL import ImageFilter
+    sh = Image.new("RGBA", size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle(box, r, fill=(120, 70, 30, alpha))
+    return sh.filter(ImageFilter.GaussianBlur(blur))
+
+
+SAY = {"en": {"/": "Hi! I'm Erty", "default": "Hi! I'm Erty", "/404": "Oops, wrong pot"},
+       "pt": {"/": "Oi! Eu sou o Erty", "default": "Oi! Eu sou o Erty", "/404": "Ops, vaso errado"}}
+
+
+def _leaf(im, x, y, s, ang, col):
+    lf = Image.new("RGBA", (s, s), (0, 0, 0, 0)); ld = ImageDraw.Draw(lf)
+    ld.ellipse((s * .2, 0, s * .8, s), fill=col); ld.line((s / 2, s * .1, s / 2, s * .95), fill=(255, 255, 255, 90), width=max(2, s // 18))
+    lf = lf.rotate(ang, resample=Image.BICUBIC, expand=True); im.alpha_composite(lf, (int(x), int(y)))
+
+
 def _render(L, path, title, desc, dest):
+    from PIL import ImageFilter
     W, Ht = 1200, 630
-    im = Image.new("RGB", (W, Ht), CREAM)
-    d = ImageDraw.Draw(im)
     src = ROOT / "src"
+    im = Image.new("RGBA", (W, Ht))
+    for y in range(Ht):
+        k = y / Ht
+        im.paste(tuple(int(WARM_TOP[i] + (WARM_BOT[i] - WARM_TOP[i]) * k) for i in range(3)) + (255,), (0, y, W, y + 1))
+    # sun glow behind Erty
+    glow = Image.new("RGBA", (W, Ht), (0, 0, 0, 0)); gd = ImageDraw.Draw(glow)
+    gd.ellipse((640, 40, 1260, 660), fill=(255, 196, 140, 150)); gd.ellipse((760, 150, 1160, 550), fill=(255, 226, 180, 200))
+    im.alpha_composite(glow.filter(ImageFilter.GaussianBlur(40)))
+    # scattered leaves
+    for x, y, sz, ang, c in [(620, 40, 54, 30, (126, 176, 96, 230)), (1120, 70, 44, -40, (98, 150, 80, 220)),
+                             (660, 520, 40, 70, (150, 192, 110, 220)), (1110, 520, 60, -20, (110, 164, 88, 230)),
+                             (40, 560, 34, 50, (150, 192, 110, 160))]:
+        _leaf(im, x, y, sz, ang, c)
+    mood = ERTY_FOR.get(path, "wave")
+    er = Image.open(src / "assets" / "erty" / f"erty-{mood}.png").convert("RGBA")
+    es = 500
+    er = er.resize((es, int(er.height * es / er.width)), Image.LANCZOS)
+    ex, ey = W - es + 40, Ht - er.height + 60
+    sh = Image.new("RGBA", (W, Ht), (0, 0, 0, 0)); ImageDraw.Draw(sh).ellipse((ex + 90, Ht - 40, ex + es - 90, Ht + 30), fill=(150, 90, 40, 70))
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(16)))
+    im.alpha_composite(er, (ex, ey))
+    d = ImageDraw.Draw(im)
+    # speech bubble
+    say = SAY[L].get(path, SAY[L]["default"])
+    bf = _font(30, 680); bw = int(d.textlength(say, font=bf)) + 52
+    bx, by = ex + 40 - bw // 2 + 60, max(36, ey - 30)
+    bx = min(bx, W - bw - 30)
+    im.alpha_composite(_shadow((W, Ht), (bx, by + 6, bx + bw, by + 70), 35, 10, 60)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((bx, by, bx + bw, by + 64), 32, fill=(255, 255, 255))
+    d.polygon([(bx + bw // 2 + 10, by + 62), (bx + bw // 2 + 40, by + 62), (bx + bw // 2 + 40, by + 88)], fill=(255, 255, 255))
+    d.text((bx + 26, by + 14), say, font=bf, fill=LEAF_W)
     ic = _slug_icon(path)
-    # right visual: phone screenshot on home/features hub, 3D icon on features, mascot elsewhere
-    if path in ("/", "/features", "/get"):
-        shot = Image.open(src / "assets" / ("app-pt" if L == "pt" else "app") / "today1.jpg").convert("RGB")
-        sw = 270; sh = int(shot.height * sw / shot.width)
-        shot = shot.resize((sw, sh), Image.LANCZOS)
-        frame = Image.new("RGBA", (sw + 24, min(sh, 560) + 24), (0, 0, 0, 0))
-        fd = ImageDraw.Draw(frame); fd.rounded_rectangle((0, 0, frame.width - 1, frame.height - 1), 46, fill=(20, 24, 22))
-        mask = Image.new("L", (sw, min(sh, 560)), 0); ImageDraw.Draw(mask).rounded_rectangle((0, 0, sw - 1, min(sh, 560) - 1), 36, fill=255)
-        frame.paste(shot.crop((0, 0, sw, min(sh, 560))), (12, 12), mask)
-        im.paste(frame, (W - frame.width - 90, 50), frame)
-    else:
-        p = src / "icons" / f"{ic}.png" if ic else src / "assets" / "erty" / "erty-wave.png"
-        art = Image.open(p).convert("RGBA")
-        s = 300 if ic else 330
-        art = art.resize((s, int(art.height * s / art.width)), Image.LANCZOS)
-        d.ellipse((W - 470, 115, W - 70, 515), fill=(234, 242, 230))
-        im.paste(art, (W - 270 - s // 2, 315 - art.height // 2), art)
-    x, maxw = 80, 640
-    d.text((x, 70), BRAND, font=_font(34, 650), fill=GREEN)
+    if ic:
+        bs = 140; bx2, by2 = ex - 40, Ht - bs - 50
+        im.alpha_composite(_shadow((W, Ht), (bx2, by2 + 8, bx2 + bs, by2 + bs + 8), bs // 2, 14, 80)); d = ImageDraw.Draw(im)
+        d.ellipse((bx2, by2, bx2 + bs, by2 + bs), fill=(255, 253, 249))
+        art = Image.open(src / "icons" / f"{ic}.png").convert("RGBA").resize((100, 100), Image.LANCZOS)
+        im.alpha_composite(art, (bx2 + 20, by2 + 20)); d = ImageDraw.Draw(im)
+    x, maxw = 72, 560
+    icon = _rounded(Image.open(src / "assets" / "icon-512.png").convert("RGBA").resize((76, 76), Image.LANCZOS), 18)
+    im.alpha_composite(_shadow((W, Ht), (x, 60 + 6, x + 76, 136 + 6), 18, 10, 80))
+    im.alpha_composite(icon, (x, 60)); d = ImageDraw.Draw(im)
+    d.text((x + 94, 78), BRAND, font=_font(38, 680), fill=LEAF_W)
     t = title.replace(f" · {BRAND}", "").replace(f"{BRAND}: ", "")
     t = t[:1].upper() + t[1:]
-    size = 68
+    size = 76
     while True:
-        tf = _font(size, 720); lines = _wrap(d, t, tf, maxw)
-        if len(lines) <= 3 or size <= 44:
+        tf = _font(size, 760); lines = _wrap(d, t, tf, maxw)
+        if len(lines) <= 3 or size <= 46:
             break
         size -= 4
-    y = 170
+    y = 200 if len(lines) == 3 else 230
     for ln in lines[:3]:
-        d.text((x, y), ln, font=tf, fill=INK); y += int(size * 1.12)
-    df = _font(28, 420)
-    dl = _wrap(d, desc, df, maxw)
-    cap = 2 if len(lines) >= 3 else 3
-    if len(dl) > cap:
-        dl = dl[:cap]; dl[-1] = dl[-1].rstrip(",.;:") + "…"
-    for ln in dl[:3]:
-        d.text((x, y + 24), ln, font=df, fill=MUTED); y += 38
-    foot = "Grátis no iPhone · mytinyjungle.com" if L == "pt" else "Free on iPhone · mytinyjungle.com"
-    d.text((x, Ht - 80), foot, font=_font(26, 560), fill=GREEN)
-    im.save(dest, optimize=True)
+        d.text((x, y), ln, font=tf, fill=INK_W); y += int(size * 1.08)
+    foot = "Grátis no iPhone" if L == "pt" else "Free on iPhone"
+    ff = _font(28, 680); fw = int(d.textlength(foot, font=ff))
+    im.alpha_composite(_shadow((W, Ht), (x, Ht - 112 + 6, x + fw + 56, Ht - 52 + 6), 30, 10, 70)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((x, Ht - 112, x + fw + 56, Ht - 52), 30, fill=(46, 98, 58))
+    d.text((x + 28, Ht - 98), foot, font=ff, fill=(255, 248, 238))
+    d.text((x + fw + 80, Ht - 96), "mytinyjungle.com", font=_font(26, 560), fill=MUTED_W)
+    im.convert("RGB").save(dest, optimize=True)
 
 
 def _ld(obj):
