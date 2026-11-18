@@ -16,8 +16,8 @@
 ## App Store Connect
 - Name "My Tiny Jungle" (available). Locales en-US (primary) + pt-PT: name, subtitle, promo text, description, keywords, URLs filled.
 - Support URL https://mytinyjungle.com/support, marketing https://mytinyjungle.com/, privacy https://mytinyjungle.com/privacy (en-US + pt-PT, set via ASC API). Terms: https://mytinyjungle.com/terms. See DomainSetup.md.
-- Category Lifestyle / Education. Age rating: all None/No (4+). Content rights: no third-party content.
-- App Privacy: Data Not Collected (photos and scans processed on-device, no tracking), published.
+- Category Lifestyle / Education. Age rating 4+, with Advertising = Yes. Content rights: no third-party content.
+- App Privacy (updated for AdMob, published): Coarse Location, Device ID, Product Interaction and Advertising Data are used for Third-Party Advertising + Analytics, not linked, and used for tracking (ATT). Crash and Performance Data are used for App Functionality + Analytics; Other Diagnostic Data for Advertising + Analytics; none of these are used for tracking. Plant photos, plant data and scans stay on the device.
 - Price Free (base USA). Availability: all territories except China mainland (needs ICP filing / security assessment), new territories auto-on.
 - Copyright "2026 Simple Apps Company". Review contact Augusto Gomes, as on My Digital Magnets; no demo account needed.
 - Export compliance: set `ITSAppUsesNonExemptEncryption = NO` in Info.plist (see MyTinyJungle/Info-Permissions.md).
@@ -36,3 +36,9 @@
 - Review screenshot: plain Forest/Cream placeholder (1290×2796). Replace it with a real paywall screenshot from the first build before submitting for review.
 - Both are in the draft submission. They go to review together with version 1.0 once the build is attached.
 - App Store Server Notifications V2: production and sandbox URL `https://api.mytinyjungle.com/storekit/notifications` (set in ASC web UI). The API backend on the VPS (127.0.0.1:3300) is not deployed yet; until it is, the route answers 503 and Apple retries.
+
+## Ads (AdMob)
+- Free tier shows AdMob native ads between content plus a bottom banner on long read-only pages; no interstitial or app-open ads. Tiny Jungle Plus removes all ads.
+- Consent: Google UMP form (EU/UK), then the ATT prompt after onboarding. Non-personalised ads if consent or tracking is refused.
+- ASC description, review notes, age rating (Advertising) and privacy labels updated to match. Site legal pages and app-ads.txt are handled by the domain session.
+- AdMob app ID and ad unit IDs: see the "AdMob IDs" line below once signup is verified (test IDs in DEBUG).
