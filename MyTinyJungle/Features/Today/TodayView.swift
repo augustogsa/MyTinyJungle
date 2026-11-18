@@ -30,21 +30,30 @@ struct TodayView: View {
                         header
                         if plants.isEmpty { EmptyJungle { addingPlant = true } }
                         else {
-                            if let (plant, req) = requests.first {
-                                NextUpCard(plant: plant, request: req, more: requests.count - 1) { action in handle(action, plant: plant) }
-                                    .id("today")
-                                if requests.count > 1 {
-                                    VStack(spacing: 0) {
-                                        ForEach(requests.dropFirst(), id: \.1.id) { p, r in
-                                            Button { path.append(p.id) } label: { CompactRequestRow(plant: p, request: r) }.buttonStyle(.plain)
-                                            if r.id != requests.last?.1.id { Divider().padding(.leading, 64) }
-                                        }
-                                    }
-                                    .jungleCard()
-                                }
-                            } else {
+                            TodayWeekStrip(plants: plants) { _ in selectedTab = 2 }
+                            if requests.isEmpty {
                                 Button { selectedTab = 2 } label: { CaughtUpCard(plants: plants) }.buttonStyle(.plain).id("today")
+                            } else {
+                                VStack(alignment: .leading, spacing: 12) {
+                                    SectionTitle("Today's care", action: requests.count > 1 ? "See all" : nil) { path.append(TodayRoute.watering) }
+                                    if requests.count == 1, let (p, r) = requests.first {
+                                        CareStoryCard(plant: p, request: r, onAction: { handle($0, plant: p) }, onOpen: { path.append(p.id) }, fullWidth: true)
+                                    } else {
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack(spacing: 12) {
+                                            ForEach(requests, id: \.1.id) { p, r in
+                                                CareStoryCard(plant: p, request: r, onAction: { handle($0, plant: p) }, onOpen: { path.append(p.id) })
+                                            }
+                                        }
+                                        .scrollTargetLayout()
+                                    }
+                                    .scrollTargetBehavior(.viewAligned)
+                                    .scrollClipDisabled()
+                                    }
+                                }
+                                .id("today")
                             }
+                            Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants) }.buttonStyle(.plain)
                             VStack(alignment: .leading, spacing: 10) {
                                 SectionTitle("Your plants", action: "See all") { selectedTab = 1 }
                                 carousel
@@ -83,11 +92,7 @@ struct TodayView: View {
                 }
             }
             .jungleBackdrop()
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { showSettings = true } label: { Image(systemName: "gearshape") }.accessibilityLabel("Settings")
-                }
-            }
+            .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: TodayRoute.self, destination: route)
             .navigationDestination(for: UUID.self) { id in
                 if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
@@ -163,7 +168,7 @@ struct TodayView: View {
         let score = (Double(moods.filter { $0 == .thriving }.count) + Double(moods.filter { $0 == .fine }.count) * 0.7) / Double(max(1, plants.count))
         let season = SeasonGuideView.current()
         return VStack(alignment: .leading, spacing: 10) {
-            SectionTitle("Summary")
+            SectionTitle("At a glance")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                 Button { path.append(TodayRoute.watering) } label: {
                     SummaryCard(title: "Next watering", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
@@ -172,27 +177,25 @@ struct TodayView: View {
                             .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
                     }
                 }
-                Button { path.append(TodayRoute.health) } label: {
-                    SummaryCard(title: "Health", symbol: "heart.fill", tint: Jungle.terracotta) {
-                        HStack(alignment: .center, spacing: 10) {
-                            Text("\(Int(score * 100))%").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                            Spacer(minLength: 0)
-                            DayRing(progress: score, size: 34)
-                        }
-                        Text(score >= 0.9 ? "Thriving jungle" : "Some need care").font(.subheadline).foregroundStyle(Jungle.subtle)
-                    }
-                }
                 Button { path.append(TodayRoute.season) } label: {
                     SummaryCard(title: season.rawValue, symbol: season.symbol, tint: Color(red: 0.72, green: 0.56, blue: 0.2)) {
                         Text(seasonTip(season)).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text).lineLimit(3, reservesSpace: true)
                     }
                 }
-                Button { path.append(TodayRoute.learn) } label: {
-                    SummaryCard(title: "Learn", symbol: "book.fill", tint: Jungle.leaf) {
-                        Text(guideOfDay.title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
-                        Text("\(guideOfDay.minutes) min guide").font(.caption).foregroundStyle(Jungle.subtle)
+            }
+            .buttonStyle(.plain)
+            Button { path.append(TodayRoute.learn) } label: {
+                HStack(spacing: 14) {
+                    GuideIcon(guide: guideOfDay)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Today's little lesson").font(.caption).foregroundStyle(Jungle.subtle)
+                        Text(guideOfDay.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)
+                        Text("\(guideOfDay.minutes) min").font(.caption).foregroundStyle(Jungle.subtle)
                     }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
                 }
+                .padding(14).jungleCard()
             }
             .buttonStyle(.plain)
         }
@@ -256,28 +259,30 @@ struct TodayView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(Date().formatted(.dateTime.weekday(.wide).day().month(.wide)).uppercased())
-                .font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle)
-            Text(greeting).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-            Text(contextLine).font(.body).foregroundStyle(Jungle.subtle)
+        HStack(alignment: .center, spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(greeting).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                HStack(spacing: 6) {
+                    if !plants.isEmpty { Circle().fill(requests.isEmpty ? Jungle.leaf : Jungle.terracotta).frame(width: 7, height: 7) }
+                    Text(contextLine).font(.subheadline).foregroundStyle(Jungle.subtle)
+                }
+            }
+            .accessibilityElement(children: .combine)
+            Spacer(minLength: 0)
+            Button { showSettings = true } label: {
+                Image(systemName: "gearshape").font(.system(size: 18, weight: .medium)).foregroundStyle(Jungle.text).frame(width: 44, height: 44)
+            }
+            .glassEffect(.regular.interactive(), in: Circle())
+            .accessibilityLabel("Settings")
         }
-        .padding(.top, 4)
-        .accessibilityElement(children: .combine)
+        .padding(.top, 8)
     }
 
     /// One calm line that ties the day, season and plants together.
     private var contextLine: String {
         if plants.isEmpty { return "Let's grow your little jungle." }
-        let season = SeasonGuideView.current()
-        let s: String = switch season {
-        case .spring: "Spring: growth is waking up, so feeding starts again."
-        case .summer: "Summer: soil dries fast, check it more often."
-        case .autumn: "Autumn: growth slows, water a little less."
-        case .winter: "Winter: rest season, water less, no feeding."
-        }
-        if requests.isEmpty { return "Everyone is happy. \(s)" }
-        return "\(requests.count) plant\(requests.count == 1 ? " needs" : "s need") you today. \(s)"
+        if requests.isEmpty { return "Everyone's happy today" }
+        return "\(requests.count) plant\(requests.count == 1 ? " needs" : "s need") you today"
     }
 
     private var greeting: String {

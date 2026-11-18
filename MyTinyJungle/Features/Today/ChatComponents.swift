@@ -152,15 +152,17 @@ struct GlassComposer: View {
     private var canSend: Bool { !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .bottom, spacing: 10) {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .center, spacing: 8) {
                 if !expanded { photoButton }
                 TextField(placeholder, text: $text, axis: .vertical)
                     .lineLimit(1...6)
                     .focused($focused)
                     .submitLabel(.send)
                     .onSubmit(send)
-                    .padding(.vertical, 6)
+                    .padding(.horizontal, expanded ? 10 : 2)
+                    .padding(.vertical, expanded ? 8 : 0)
+                    .frame(minHeight: 40)
                 if !expanded { sendButton }
             }
             if expanded {
@@ -173,8 +175,8 @@ struct GlassComposer: View {
                                     Button { onChip(kind); focused = false } label: {
                                         Label { Text(kind.chipTitle) } icon: { Icon3DView(Icon3D.care(kind), size: 18) }
                                             .font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
-                                            .padding(.horizontal, 12).padding(.vertical, 7)
-                                            .glassEffect(.regular.interactive(), in: Capsule())
+                                            .padding(.horizontal, 12).frame(height: 40)
+                                            .background(Jungle.text.opacity(0.06), in: Capsule())
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -188,10 +190,10 @@ struct GlassComposer: View {
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .padding(.horizontal, 14).padding(.vertical, expanded ? 12 : 8)
-        .contentShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+        .padding(6)
+        .contentShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
         .onTapGesture { focused = true }
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: expanded ? 26 : 28, style: .continuous))
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
         .padding(.horizontal, 12).padding(.bottom, 6)
         .animation(.spring(duration: 0.35, bounce: 0.2), value: expanded)
         .onChange(of: pick) { _, item in
@@ -208,14 +210,14 @@ struct GlassComposer: View {
     private var photoButton: some View {
         PhotosPicker(selection: $pick, matching: .images) {
             Image(systemName: "camera").font(.system(size: 17, weight: .medium)).foregroundStyle(Jungle.text)
-                .frame(width: 36, height: 36).glassEffect(.regular.interactive(), in: Circle())
+                .frame(width: 40, height: 40).background(Jungle.text.opacity(0.06), in: Circle())
         }
         .accessibilityLabel("Add photo")
     }
     private var sendButton: some View {
         Button(action: send) {
             Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(.white)
-                .frame(width: 36, height: 36)
+                .frame(width: 40, height: 40)
                 .background(canSend ? Jungle.forest : Jungle.subtle.opacity(0.4), in: Circle())
         }
         .disabled(!canSend)
