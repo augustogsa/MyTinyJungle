@@ -149,7 +149,7 @@ struct TodayView: View {
         switch r {
         case .watering: WateringListView()
         case .health: JungleHealthView()
-        case .season: SeasonGuideView(plants: plants)
+        case .season: ScrollView { SeasonGuideView(plants: plants).padding(16) }.jungleBackdrop().navigationTitle("Seasons")
         case .learn: GuidesView(plant: guidePlant)
         }
     }

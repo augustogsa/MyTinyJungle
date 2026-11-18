@@ -164,7 +164,7 @@ struct SeasonGuideView: View {
     @AppStorage("seasonChecks") private var checksRaw = ""
 
     enum Season: String, CaseIterable { case spring = "Spring", summer = "Summer", autumn = "Autumn", winter = "Winter"
-        var symbol: String { switch self { case .spring: "camera.macro"; case .summer: "sun.max.fill"; case .autumn: "leaf.fill.autumn"; case .winter: "snowflake" } }
+        var symbol: String { switch self { case .spring: "camera.macro"; case .summer: "sun.max.fill"; case .autumn: "leaf.fill"; case .winter: "snowflake" } }
     }
 
     static func current(_ d: Date = Date()) -> Season {
@@ -179,8 +179,8 @@ struct SeasonGuideView: View {
             HStack(spacing: 8) {
                 ForEach(Season.allCases, id: \.self) { s in
                     Button { season = s } label: {
-                        VStack(spacing: 4) { Image(systemName: s.symbol); Text(s.rawValue).font(.caption) }
-                            .frame(maxWidth: .infinity).padding(.vertical, 10)
+                        VStack(spacing: 4) { Image(systemName: s.symbol).frame(height: 22); Text(s.rawValue).font(.caption) }
+                            .frame(maxWidth: .infinity).frame(height: 64)
                             .foregroundStyle(season == s ? Color.white : Jungle.text)
                             .background(season == s ? Jungle.leaf : Jungle.mist, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                     }

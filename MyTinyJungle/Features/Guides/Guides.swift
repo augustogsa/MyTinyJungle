@@ -130,15 +130,15 @@ struct GuidesView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 if let plant {
-                    SectionTitle("For \(plant.name)")
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(GuideLibrary.suggested(for: plant).prefix(4)) { g in
-                                Button { open = g } label: { GuideHeroCard(guide: g) }.buttonStyle(.plain)
-                            }
+                    SectionTitle("Picked for \(plant.name)")
+                    VStack(spacing: 0) {
+                        let picks = Array(GuideLibrary.suggested(for: plant).prefix(3))
+                        ForEach(picks) { g in
+                            Button { open = g } label: { GuideRow(guide: g) }.buttonStyle(.plain)
+                            if g.id != picks.last?.id { Divider().padding(.leading, 76) }
                         }
                     }
-                    .scrollClipDisabled()
+                    .jungleCard()
                 }
                 SectionTitle("All guides")
                 VStack(spacing: 0) {
