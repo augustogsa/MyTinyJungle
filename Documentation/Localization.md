@@ -45,6 +45,7 @@ Warm, light, friendly; short sentences; plants are characters with moods.
 |---|---|---|
 | My Tiny Jungle | My Tiny Jungle | brand, never translated |
 | My Tiny Jungle Plus / Plus | My Tiny Jungle Plus / Plus | brand |
+| Erty (mascot) | Raminho | mascot name is localized per language: pick a name natives find cute |
 | your jungle | sua selvinha / sua mini selva | prose only |
 | Today / Plants / Care / Scan / Me | Hoje / Plantas / Cuidados / Escanear / Você | tabs |
 | water / watering | regar / rega | "dar uma regadinha" in casual copy |

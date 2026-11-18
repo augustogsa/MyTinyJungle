@@ -36,7 +36,7 @@
       }
     },
     "%@ %@": {
-      "comment": "Care task title: verb then plant name, e.g. Water Monstera",
+      "comment": "Balance legend; %1$@ name, %2$@ percent\nCare task title: verb then plant name, e.g. Water Monstera",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -126,66 +126,6 @@
         }
       }
     },
-    "%@ asked %@ to take %@.": {
-      "comment": "Feed: cover request to one member; %1$@ name, %2$@ other name, %3$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ pediu para %2$@ cuidar de %3$@."
-          }
-        }
-      }
-    },
-    "%@ asked for a hand with %@.": {
-      "comment": "Feed: cover request to everyone; %1$@ name, %2$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ pediu uma mãozinha com %2$@."
-          }
-        }
-      }
-    },
-    "%@ cared for %@.": {
-      "comment": "Shared jungle feed, generic care; %1$@ member, %2$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ cuidou de %2$@."
-          }
-        }
-      }
-    },
-    "%@ could use a hand": {
-      "comment": "Notification title: member asks for help; %@ first name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ precisa de uma mãozinha"
-          }
-        }
-      }
-    },
-    "%@ fed %@.": {
-      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ adubou %2$@."
-          }
-        }
-      }
-    },
     "%@ Harvest in about %@ days. %@": {
       "comment": "Crop step: how to start, days to harvest, tip",
       "localizations": {
@@ -203,30 +143,6 @@
         }
       }
     },
-    "%@ has got %@. Enjoy the break.": {
-      "comment": "Notification: member accepted covering; %1$@ name, %2$@ plant name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ vai cuidar de %2$@. Aproveite a folga."
-          }
-        }
-      }
-    },
-    "%@ has today's care. Enjoy a day off.": {
-      "comment": "Shared card: other member's turn; %@ first name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hoje é com %@. Aproveite a folga."
-          }
-        }
-      }
-    },
     "%@ If I stretch toward the window or my new leaves come out small, I need more light. Bleached or scorched patches mean too much direct sun.": {
       "comment": "Plant chat: light advice. %@ = species light rule sentence.",
       "localizations": {
@@ -238,138 +154,6 @@
         }
       }
     },
-    "%@ invited you to care for %@ together on My Tiny Jungle. We'll take turns, and the app tells us whose turn it is.": {
-      "comment": "Invite message text; %1$@ inviter name, %2$@ jungle name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ convidou você para cuidar de %2$@ juntos no My Tiny Jungle. A gente reveza, e o app avisa de quem é a vez."
-          }
-        }
-      }
-    },
-    "%@ is away. %@ is covering.": {
-      "comment": "Feed: member travelling, other covers; %1$@ name, %2$@ cover name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ está fora. %2$@ está cobrindo."
-          }
-        }
-      }
-    },
-    "%@ is away. Turns are shared meanwhile.": {
-      "comment": "Feed: member travelling; %@ name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ está fora. Enquanto isso, a vez é dividida."
-          }
-        }
-      }
-    },
-    "%@ is back home.": {
-      "comment": "Feed: member back from trip; %@ name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ voltou para casa."
-          }
-        }
-      }
-    },
-    "%@ is covering": {
-      "comment": "Turn pill; %@ first name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ está cobrindo"
-          }
-        }
-      }
-    },
-    "%@ is covering %@ for %@.": {
-      "comment": "Feed: member accepted cover; %1$@ name, %2$@ plant, %3$@ other name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ está cuidando de %2$@ por %3$@."
-          }
-        }
-      }
-    },
-    "%@ is covering for you": {
-      "comment": "Hub row; %@ name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ está cobrindo você"
-          }
-        }
-      }
-    },
-    "%@ is no longer in the jungle.": {
-      "comment": "Feed: member removed by owner; %@ name. Neutral, no blame",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ não faz mais parte da selva."
-          }
-        }
-      }
-    },
-    "%@ is your turn today": {
-      "comment": "Shared card; %@ plant name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hoje %@ é com você"
-          }
-        }
-      }
-    },
-    "%@ joined the jungle.": {
-      "comment": "Feed: member joined; %@ name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ entrou na selva."
-          }
-        }
-      }
-    },
-    "%@ joined. Turns are now shared fairly.": {
-      "comment": "Notification: new member joined the shared jungle; %@ name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ entrou. Agora a vez é dividida de forma justa."
-          }
-        }
-      }
-    },
     "%@ Jr.": {
       "comment": "Default name for plant grown from a cutting; arg parent name",
       "localizations": {
@@ -377,18 +161,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ Jr."
-          }
-        }
-      }
-    },
-    "%@ just watered %@.": {
-      "comment": "Shared jungle feed/notification; %1$@ member name, %2$@ plant name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ acabou de regar %2$@."
           }
         }
       }
@@ -406,90 +178,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ Mantenha entre %2$@ e %3$@, longe de aquecedor e corrente de ar."
-          }
-        }
-      }
-    },
-    "%@ left the jungle.": {
-      "comment": "Feed: member left; %@ name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ saiu da selva."
-          }
-        }
-      }
-    },
-    "%@ misted %@.": {
-      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ borrifou %2$@."
-          }
-        }
-      }
-    },
-    "%@ repotted %@.": {
-      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ replantou %2$@."
-          }
-        }
-      }
-    },
-    "%@ says thank you for caring for %@.": {
-      "comment": "Notification: thanks from member; %1$@ name, %2$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ agradece por você cuidar de %2$@."
-          }
-        }
-      }
-    },
-    "%@ started the shared jungle.": {
-      "comment": "Feed: jungle created; %@ name",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ criou a selva compartilhada."
-          }
-        }
-      }
-    },
-    "%@ thanked %@ for %@.": {
-      "comment": "Feed: thanks; %1$@ name, %2$@ other, %3$@ plant",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ agradeceu %2$@ por %3$@."
-          }
-        }
-      }
-    },
-    "%@ until %@": {
-      "comment": "Hub row subtitle; %1$@ plant, %2$@ date",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ até %2$@"
           }
         }
       }
@@ -574,6 +262,30 @@
         }
       }
     },
+    "%@ asked %@ to take %@.": {
+      "comment": "Feed: cover request to one member; %1$@ name, %2$@ other name, %3$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ pediu para %2$@ cuidar de %3$@."
+          }
+        }
+      }
+    },
+    "%@ asked for a hand with %@.": {
+      "comment": "Feed: cover request to everyone; %1$@ name, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ pediu uma mãozinha com %2$@."
+          }
+        }
+      }
+    },
     "%@ can upset furry friends if nibbled. Maybe a higher shelf?": {
       "comment": "Notification line; %@ plant name; toxic to pets; playful",
       "localizations": {
@@ -585,6 +297,18 @@
         }
       }
     },
+    "%@ cared for %@.": {
+      "comment": "Shared jungle feed, generic care; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ cuidou de %2$@."
+          }
+        }
+      }
+    },
     "%@ catches its own food. Fertilizer burns its roots.": {
       "comment": "Product scan verdict reason for one plant. Args are plant or species names, numbers.",
       "localizations": {
@@ -592,6 +316,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ caça a própria comida. Adubo queima as raízes."
+          }
+        }
+      }
+    },
+    "%@ could use a hand": {
+      "comment": "Notification title: member asks for help; %@ first name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ precisa de uma mãozinha"
           }
         }
       }
@@ -631,6 +367,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ bebe pelas folhas. Use ¼ da dose na água de molho."
+          }
+        }
+      }
+    },
+    "%@ fed %@.": {
+      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ adubou %2$@."
           }
         }
       }
@@ -709,6 +457,30 @@
         }
       }
     },
+    "%@ has got %@. Enjoy the break.": {
+      "comment": "Notification: member accepted covering; %1$@ name, %2$@ plant name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ vai cuidar de %2$@. Aproveite a folga."
+          }
+        }
+      }
+    },
+    "%@ has today's care. Enjoy a day off.": {
+      "comment": "Shared card: other member's turn; %@ first name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoje é com %@. Aproveite a folga."
+          }
+        }
+      }
+    },
     "%@ hasn't had a visit in a while. A quick hello would make its day.": {
       "comment": "Insight: plant misses you. %@ = plant name.",
       "localizations": {
@@ -748,6 +520,18 @@
         }
       }
     },
+    "%@ invited you to care for %@ together on My Tiny Jungle. We'll take turns, and the app tells us whose turn it is.": {
+      "comment": "Invite message text; %1$@ inviter name, %2$@ jungle name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ convidou você para cuidar de %2$@ juntos no My Tiny Jungle. A gente reveza, e o app avisa de quem é a vez."
+          }
+        }
+      }
+    },
     "%@ is a light feeder. Use half the label dose.": {
       "comment": "Product scan verdict reason for one plant. Args are plant or species names, numbers.",
       "localizations": {
@@ -759,6 +543,78 @@
         }
       }
     },
+    "%@ is away. %@ is covering.": {
+      "comment": "Feed: member travelling, other covers; %1$@ name, %2$@ cover name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ está fora. %2$@ está cobrindo."
+          }
+        }
+      }
+    },
+    "%@ is away. Turns are shared meanwhile.": {
+      "comment": "Feed: member travelling; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ está fora. Enquanto isso, a vez é dividida."
+          }
+        }
+      }
+    },
+    "%@ is back home.": {
+      "comment": "Feed: member back from trip; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ voltou para casa."
+          }
+        }
+      }
+    },
+    "%@ is covering": {
+      "comment": "Turn pill; %@ first name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ está cobrindo"
+          }
+        }
+      }
+    },
+    "%@ is covering %@ for %@.": {
+      "comment": "Feed: member accepted cover; %1$@ name, %2$@ plant, %3$@ other name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ está cuidando de %2$@ por %3$@."
+          }
+        }
+      }
+    },
+    "%@ is covering for you": {
+      "comment": "Hub row; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ está cobrindo você"
+          }
+        }
+      }
+    },
     "%@ is dreaming of a misty morning": {
       "comment": "Forecast line on Today/agenda, warm, no final period. Misting reminder. %@ = plant name.",
       "localizations": {
@@ -766,6 +622,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ está sonhando com uma borrifada"
+          }
+        }
+      }
+    },
+    "%@ is no longer in the jungle.": {
+      "comment": "Feed: member removed by owner; %@ name. Neutral, no blame",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ não faz mais parte da selva."
           }
         }
       }
@@ -788,6 +656,66 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ é tóxica para pets se mordida (ASPCA). Deixe fora do alcance."
+          }
+        }
+      }
+    },
+    "%@ is your turn today": {
+      "comment": "Shared card; %@ plant name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoje %@ é com você"
+          }
+        }
+      }
+    },
+    "%@ joined the jungle.": {
+      "comment": "Feed: member joined; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entrou na selva."
+          }
+        }
+      }
+    },
+    "%@ joined. Turns are now shared fairly.": {
+      "comment": "Notification: new member joined the shared jungle; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entrou. Agora a vez é dividida de forma justa."
+          }
+        }
+      }
+    },
+    "%@ just watered %@.": {
+      "comment": "Shared jungle feed/notification; %1$@ member name, %2$@ plant name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ acabou de regar %2$@."
+          }
+        }
+      }
+    },
+    "%@ left the jungle.": {
+      "comment": "Feed: member left; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ saiu da selva."
           }
         }
       }
@@ -853,6 +781,18 @@
         }
       }
     },
+    "%@ misted %@.": {
+      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ borrifou %2$@."
+          }
+        }
+      }
+    },
     "%@ needs nutrient-free sphagnum peat and perlite. Ordinary compost burns its roots.": {
       "comment": "Product scan verdict reason for one plant. Args are plant or species names, numbers.",
       "localizations": {
@@ -897,6 +837,18 @@
         }
       }
     },
+    "%@ repotted %@.": {
+      "comment": "Shared jungle feed; %1$@ member, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ replantou %2$@."
+          }
+        }
+      }
+    },
     "%@ says": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -904,6 +856,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ diz"
+          }
+        }
+      }
+    },
+    "%@ says thank you for caring for %@.": {
+      "comment": "Notification: thanks from member; %1$@ name, %2$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ agradece por você cuidar de %2$@."
           }
         }
       }
@@ -921,6 +885,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Falta de %1$@. Sinais: %2$@ Solução: %3$@"
+          }
+        }
+      }
+    },
+    "%@ started the shared jungle.": {
+      "comment": "Feed: jungle created; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ criou a selva compartilhada."
           }
         }
       }
@@ -943,6 +919,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ de altura."
+          }
+        }
+      }
+    },
+    "%@ thanked %@ for %@.": {
+      "comment": "Feed: thanks; %1$@ name, %2$@ other, %3$@ plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ agradeceu %2$@ por %3$@."
+          }
+        }
+      }
+    },
+    "%@ until %@": {
+      "comment": "Hub row subtitle; %1$@ plant, %2$@ date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ até %2$@"
           }
         }
       }
@@ -1722,7 +1722,7 @@
       }
     },
     "%lld": {
-      "comment": "UI text in plant/plants/spaces screens; keep short like English",
+      "comment": "Care count this month",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -2160,6 +2160,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%lld of %lld earned": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld conquistadas"
           }
         }
       }
@@ -3358,17 +3368,6 @@
         }
       }
     },
-    "A little about you": {
-      "comment": "Onboarding title",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um pouquinho sobre você"
-          }
-        }
-      }
-    },
     "A little leaf language": {
       "comment": "Care guide subtitle; short",
       "localizations": {
@@ -3398,18 +3397,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bastante amarelado. Confira as raízes e quanto tempo a terra fica molhada."
-          }
-        }
-      }
-    },
-    "a member": {
-      "comment": "Role phrase",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "membro"
           }
         }
       }
@@ -4610,18 +4597,6 @@
         }
       }
     },
-    "Back on": {
-      "comment": "Away: return date",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volto em"
-          }
-        }
-      }
-    },
     "BEHOLD. A new leaf.": {
       "comment": "Plant thanks the user after care action 'newLeaf'. If the line is short and dry it is the independent (terse) personality; if theatrical it is the dramatic one; otherwise warm and cheerful.",
       "localizations": {
@@ -4651,6 +4626,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Volta"
+          }
+        }
+      }
+    },
+    "Back on": {
+      "comment": "Away: return date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volto em"
           }
         }
       }
@@ -4700,7 +4687,7 @@
       }
     },
     "Balcony": {
-      "comment": "Demo plant room name\nRoom suggestion chip; stored as the plant location; max 16 chars\nSuggested room name for a new plant, capitalized.",
+      "comment": "Demo plant room name\nRoom suggestion chip; stored as the plant location; max 16 chars\nSuggested room name\nSuggested room name for a new plant, capitalized.",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -5063,7 +5050,7 @@
       }
     },
     "Bright, by a window, no sun on leaves": {
-      "comment": "Light level",
+      "comment": "Setup chat chip: room light level, bright, no direct sun",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -5456,6 +5443,26 @@
         }
       }
     },
+    "Care moments": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Momentos de cuidado"
+          }
+        }
+      }
+    },
+    "Care per week, by person": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuidados por semana, por pessoa"
+          }
+        }
+      }
+    },
     "Care records": {
       "comment": "Section title",
       "localizations": {
@@ -5513,23 +5520,12 @@
       }
     },
     "Cats": {
-      "comment": "Settings title",
+      "comment": "Settings title\nSetup chat chip: cats at home",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Gatos"
-          }
-        }
-      }
-    },
-    "Cats at home": {
-      "comment": "Toggle",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gatos em casa"
           }
         }
       }
@@ -6305,17 +6301,6 @@
         }
       }
     },
-    "Comfortable": {
-      "comment": "Home air humidity option in Settings.",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Confortável"
-          }
-        }
-      }
-    },
     "Coming up": {
       "comment": "Section title for upcoming care",
       "localizations": {
@@ -7037,6 +7022,9 @@
         }
       }
     },
+    "Direct sun": {
+      "comment": "Light level label. Max 20 chars."
+    },
     "Distance matters": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -7104,23 +7092,12 @@
       }
     },
     "Dogs": {
-      "comment": "Settings title",
+      "comment": "Settings title\nSetup chat chip: dogs at home",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Cachorros"
-          }
-        }
-      }
-    },
-    "Dogs at home": {
-      "comment": "Toggle",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cachorros em casa"
           }
         }
       }
@@ -7543,6 +7520,16 @@
         }
       }
     },
+    "Earned": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conquistado"
+          }
+        }
+      }
+    },
     "Ease it out": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -7943,17 +7930,6 @@
         }
       }
     },
-    "Everyone's listening.": {
-      "comment": "Chat header",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todo mundo está ouvindo."
-          }
-        }
-      }
-    },
     "Everyone's plants are happy today": {
       "comment": "Shared jungle card: nothing needed",
       "extractionState": "manual",
@@ -8078,7 +8054,7 @@
       }
     },
     "Family": {
-      "comment": "Info row title: botanical family\nPlant passport row title; short",
+      "comment": "Household type; max 14 chars\nInfo row title: botanical family\nPlant passport row title; short",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -8445,17 +8421,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ache o nó"
-          }
-        }
-      }
-    },
-    "Find the soil and food each plant will love": {
-      "comment": "Onboarding feature",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Descubra o substrato e o adubo que cada planta vai amar"
           }
         }
       }
@@ -9187,17 +9152,6 @@
         }
       }
     },
-    "Get started": {
-      "comment": "Button",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Começar"
-          }
-        }
-      }
-    },
     "Get the whole plant and a bit of its soil in the shot. I'll work out who it is, how it's doing and how to look after it.": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -9543,16 +9497,16 @@
     "Got it, %@. %@ climate. I'll keep an eye on the weather there.": {
       "comment": "Setup chat: place confirmed. Args: city, climate type name (capitalized, e.g. 'Humid subtropical')",
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anotado: %1$@. Clima: %2$@. Vou ficar de olho no tempo por aí."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "new",
             "value": "Got it, %1$@. %2$@ climate. I'll keep an eye on the weather there."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anotado: %1$@. Clima: %2$@. Vou ficar de olho no tempo por aí."
           }
         }
       }
@@ -10314,7 +10268,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oi! Eu sou o Erty, o melhor amigo das suas plantas, e estou aqui para ajudar a cuidar delas. Como posso te chamar?"
+            "value": "Oi! Eu sou o Raminho, o melhor amigo das suas plantas, e estou aqui para ajudar a cuidar delas. Como posso te chamar?"
           }
         }
       }
@@ -10498,6 +10452,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Planos de viagem para todas ficarem bem enquanto você está fora."
+          }
+        }
+      }
+    },
+    "Holiday plans so every plant stays fine.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planos de viagem para toda planta ficar bem."
           }
         }
       }
@@ -11327,18 +11291,6 @@
         }
       }
     },
-    "iCloud is taking a moment. Try the invite again in a little while.": {
-      "comment": "Shared jungle: share creation failed",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O iCloud está demorando um pouquinho. Tente o convite de novo daqui a pouco."
-          }
-        }
-      }
-    },
     "Ideal": {
       "comment": "Placement fit rating for a plant in a space. Max 12 chars.",
       "localizations": {
@@ -12015,6 +11967,16 @@
         }
       }
     },
+    "Invite, remove, rename or stop sharing": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convide, remova, renomeie ou pare de compartilhar"
+          }
+        }
+      }
+    },
     "Is it getting dry in here, or is it just me? Check my soil, quickly!": {
       "comment": "Plant speaking in chat, request checkSoil, dramatic personality: over-the-top drama queen, theatrical, CAPS for emphasis (pt: 'dramática', exagerada).",
       "localizations": {
@@ -12242,6 +12204,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diário"
+          }
+        }
+      }
+    },
+    "Jungle": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selva"
           }
         }
       }
@@ -12506,6 +12478,16 @@
         }
       }
     },
+    "Know which plants are gentle with them.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saiba quais plantas são seguras para eles."
+          }
+        }
+      }
+    },
     "Know your plant's style": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -12524,6 +12506,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sabe quando é a hora e qual vaso e substrato usar."
+          }
+        }
+      }
+    },
+    "Knows when it's time, and which pot and soil.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sabe quando é hora, e qual vaso e terra usar."
           }
         }
       }
@@ -12804,6 +12796,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aprendendo com suas checagens da terra."
+          }
+        }
+      }
+    },
+    "Learns each plant's rhythm for watering.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprende o ritmo de rega de cada planta."
           }
         }
       }
@@ -13615,6 +13617,26 @@
         }
       }
     },
+    "Manage": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerenciar"
+          }
+        }
+      }
+    },
+    "Manage people": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerenciar pessoas"
+          }
+        }
+      }
+    },
     "Manage people and access": {
       "comment": "Opens system CloudKit sharing controls",
       "extractionState": "manual",
@@ -13716,7 +13738,7 @@
       }
     },
     "Me": {
-      "comment": "Tab: profile",
+      "comment": "Care plan option: only me\nShared jungle: fallback member name for yourself",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -13921,6 +13943,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Método"
+          }
+        }
+      }
+    },
+    "Milestones": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conquistas"
           }
         }
       }
@@ -14256,6 +14288,16 @@
         }
       }
     },
+    "Most often with %@": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mais vezes com %@"
+          }
+        }
+      }
+    },
     "Most pests hide underneath. Look for webs, white fluff, brown bumps or tiny dots.": {
       "comment": "Care guide step instruction; warm, practical",
       "localizations": {
@@ -14443,6 +14485,17 @@
         }
       }
     },
+    "My Tiny Jungle Plus": {
+      "comment": "Settings title",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My Tiny Jungle Plus"
+          }
+        }
+      }
+    },
     "My Tiny Jungle: plant care from %@ to %@": {
       "comment": "Plant-sitter note heading; args are dates. Keep brand in English",
       "localizations": {
@@ -14571,18 +14624,6 @@
         }
       }
     },
-    "Not this time": {
-      "comment": "Decline cover request button; kind",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dessa vez não"
-          }
-        }
-      }
-    },
     "NPK %lld-%lld-%lld": {
       "comment": "Fertilizer NPK ratio, e.g. NPK 3-1-1",
       "localizations": {
@@ -14601,7 +14642,7 @@
       }
     },
     "Name": {
-      "comment": "Settings title",
+      "comment": "Hub row: jungle name\nSettings title\nSetup section: jungle name",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -15124,7 +15165,7 @@
       }
     },
     "No": {
-      "comment": "Yes/no value",
+      "comment": "Setup chat chip answer\nYes/no value",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -15207,6 +15248,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nada de brilho de folha"
+          }
+        }
+      }
+    },
+    "No more guessing": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chega de adivinhar"
           }
         }
       }
@@ -15581,6 +15632,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ainda não sei"
+          }
+        }
+      }
+    },
+    "Not this time": {
+      "comment": "Decline cover request button; kind",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dessa vez não"
           }
         }
       }
@@ -16124,6 +16187,16 @@
         }
       }
     },
+    "Opens all milestones": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre todas as conquistas"
+          }
+        }
+      }
+    },
     "Opens jungle health": {
       "comment": "Accessibility hint on Me header card",
       "localizations": {
@@ -16498,6 +16571,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dê uma olhada na muda de %@ e troque a água"
+          }
+        }
+      }
+    },
+    "Pending invites and who can join": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convites pendentes e quem pode entrar"
           }
         }
       }
@@ -16980,7 +17063,7 @@
       }
     },
     "Plants": {
-      "comment": "Tab",
+      "comment": "Ask cover: plant list header",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -17834,7 +17917,7 @@
       }
     },
     "Remove": {
-      "comment": "Context menu",
+      "comment": "Confirm remove member",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -17875,6 +17958,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Remover da selva"
+          }
+        }
+      }
+    },
+    "Removed people keep their own plants. Their turns go back to the rest of you.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem sai fica com as próprias plantas. As vezes dessa pessoa voltam para o resto de vocês."
           }
         }
       }
@@ -18200,6 +18293,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rocky, Solo, Chefinho"
+          }
+        }
+      }
+    },
+    "Room by room, the right light for each plant.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cômodo por cômodo, a luz certa para cada planta."
           }
         }
       }
@@ -18597,6 +18700,16 @@
         }
       }
     },
+    "Safe for pets and kids": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguro para pets e crianças"
+          }
+        }
+      }
+    },
     "Safe for your furry family": {
       "comment": "Sign-in promise title",
       "localizations": {
@@ -18928,6 +19041,16 @@
         }
       }
     },
+    "See all activity": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver toda a atividade"
+          }
+        }
+      }
+    },
     "See how %@'s little one is growing": {
       "comment": "Forecast line on Today/agenda, warm, no final period. %@ = parent plant name.",
       "localizations": {
@@ -18935,6 +19058,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Veja como a mudinha de %@ está crescendo"
+          }
+        }
+      }
+    },
+    "See if a food or soil suits each plant.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veja se um adubo ou terra serve para cada planta."
           }
         }
       }
@@ -19025,7 +19158,7 @@
       }
     },
     "Send": {
-      "comment": "Send button for notification reply; max 10 chars",
+      "comment": "Send button accessibility label\nSend button for notification reply; max 10 chars\nSend cover request",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -19659,7 +19792,7 @@
       }
     },
     "Small children": {
-      "comment": "Settings title",
+      "comment": "Settings title\nSetup chat chip: small children at home",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -19680,6 +19813,16 @@
         }
       }
     },
+    "Snap a photo and learn what it needs.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tire uma foto e descubra do que ela precisa."
+          }
+        }
+      }
+    },
     "Snap a photo and learn what your plant needs to feel better.": {
       "comment": "Sign-in promise",
       "localizations": {
@@ -19687,17 +19830,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tire uma foto e descubra do que sua planta precisa pra ficar melhor."
-          }
-        }
-      }
-    },
-    "Snap a photo to meet your plant and help it feel better": {
-      "comment": "Onboarding feature",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tire uma foto pra conhecer sua planta e ajudá-la a ficar melhor"
           }
         }
       }
@@ -20703,17 +20835,6 @@
         }
       }
     },
-    "Start my jungle": {
-      "comment": "Button",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Começar minha selvinha"
-          }
-        }
-      }
-    },
     "Start one": {
       "comment": "Me cuttings shortcut subtitle when none",
       "localizations": {
@@ -21020,7 +21141,7 @@
       }
     },
     "Sun shines right on the plants": {
-      "comment": "Light level label. Max 20 chars.",
+      "comment": "Setup chat chip: room light level, direct sun",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -21515,6 +21636,16 @@
         }
       }
     },
+    "Text them. They reply with personality.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mande mensagem. Elas respondem com personalidade."
+          }
+        }
+      }
+    },
     "Thank you for growing with us": {
       "comment": "Settings subtitle",
       "localizations": {
@@ -21566,6 +21697,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Obrigada! Vou deixar a terrinha de cima secar antes da próxima rega."
+          }
+        }
+      }
+    },
+    "Thanks": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agradecimentos"
           }
         }
       }
@@ -21754,18 +21895,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Próximas duas semanas"
-          }
-        }
-      }
-    },
-    "the owner": {
-      "comment": "Role phrase",
-      "extractionState": "manual",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "o dono"
           }
         }
       }
@@ -22179,17 +22308,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Histórico"
-          }
-        }
-      }
-    },
-    "My Tiny Jungle Plus": {
-      "comment": "Settings title",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Tiny Jungle Plus"
           }
         }
       }
@@ -22985,7 +23103,7 @@
       }
     },
     "Until": {
-      "comment": "Quiet hours end; max 10 chars",
+      "comment": "Ask cover: end date\nQuiet hours end; max 10 chars",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -23062,7 +23180,7 @@
       }
     },
     "Use my location": {
-      "comment": "Climate settings row",
+      "comment": "Climate settings row\nSetup chat chip: use device location",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -23743,6 +23861,16 @@
         }
       }
     },
+    "Water, feed, mist and turn, right on time.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regar, adubar, borrifar e girar, na hora certa."
+          }
+        }
+      }
+    },
     "Water, please.": {
       "comment": "Plant speaking in chat, request water, independent personality: terse, dry, no-nonsense, few words.",
       "localizations": {
@@ -23970,17 +24098,6 @@
         }
       }
     },
-    "We'll gently warn you about any plant that could hurt them.": {
-      "comment": "Onboarding footnote",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A gente avisa com carinho sobre qualquer planta que possa fazer mal a eles."
-          }
-        }
-      }
-    },
     "We'll gently warn you about plants that could hurt them.": {
       "comment": "Settings footer",
       "localizations": {
@@ -24170,6 +24287,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "O que cada estação muda para suas plantas, onde você mora."
+          }
+        }
+      }
+    },
+    "What each season means where you live.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O que cada estação significa onde você mora."
           }
         }
       }
@@ -24613,17 +24740,6 @@
         }
       }
     },
-    "Where do your plants live?": {
-      "comment": "Onboarding title",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Onde suas plantas moram?"
-          }
-        }
-      }
-    },
     "Where will I live?": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -24809,6 +24925,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quem precisa"
+          }
+        }
+      }
+    },
+    "Who's sharing": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem está compartilhando"
           }
         }
       }
@@ -25342,7 +25468,7 @@
       }
     },
     "Yes": {
-      "comment": "Yes/no value",
+      "comment": "Setup chat chip answer\nYes/no value",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -25375,7 +25501,7 @@
       }
     },
     "You": {
-      "comment": "Settings title",
+      "comment": "Settings title\nShared jungle: the current user, as a subject; capitalized",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -25494,17 +25620,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seu clima"
-          }
-        }
-      }
-    },
-    "Your climate, your home and this week's weather all change how much water and food they need. Tell me a little and I'll do the maths.": {
-      "comment": "Onboarding",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seu clima, sua casa e o tempo desta semana mudam quanta água e adubo elas precisam. Me conta um pouco que eu faço as contas."
           }
         }
       }
@@ -25660,17 +25775,6 @@
         }
       }
     },
-    "Your jungle lives safely in your iCloud. Never shared, never sold.": {
-      "comment": "Privacy note",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sua selvinha fica guardada no seu iCloud. Nunca compartilhada, nunca vendida."
-          }
-        }
-      }
-    },
     "Your jungle starts here": {
       "comment": "Header subtitle with no plants",
       "localizations": {
@@ -25683,7 +25787,7 @@
       }
     },
     "Your name": {
-      "comment": "Text field",
+      "comment": "Setup chat text field placeholder",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -25773,17 +25877,6 @@
         }
       }
     },
-    "Your plants tell you when they're thirsty or hungry": {
-      "comment": "Onboarding feature",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Suas plantas avisam quando estão com sede ou fome"
-          }
-        }
-      }
-    },
     "Your plants tell you when they're thirsty, gently and right on time.": {
       "comment": "Sign-in promise",
       "localizations": {
@@ -25791,6 +25884,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Suas plantas avisam quando estão com sede, com carinho e na hora certa."
+          }
+        }
+      }
+    },
+    "Your plants tell you when they're thirsty.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas plantas avisam quando estão com sede."
           }
         }
       }
@@ -25959,6 +26062,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tagarela, Fofoca, Bolinha"
+          }
+        }
+      }
+    },
+    "a member": {
+      "comment": "Role phrase",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "membro"
           }
         }
       }
@@ -26268,6 +26383,16 @@
         }
       }
     },
+    "iCloud access": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acesso pelo iCloud"
+          }
+        }
+      }
+    },
     "iCloud backup": {
       "comment": "Settings title",
       "localizations": {
@@ -26275,6 +26400,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Backup no iCloud"
+          }
+        }
+      }
+    },
+    "iCloud is taking a moment. Try the invite again in a little while.": {
+      "comment": "Shared jungle: share creation failed",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O iCloud está demorando um pouquinho. Tente o convite de novo daqui a pouco."
           }
         }
       }
@@ -26631,6 +26768,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "a cozinha"
+          }
+        }
+      }
+    },
+    "the owner": {
+      "comment": "Role phrase",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o dono"
           }
         }
       }
