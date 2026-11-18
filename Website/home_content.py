@@ -95,9 +95,9 @@ H = {
   "know_p": "Most plant apps ask how often to water, then count down: every 7 days, forever. My Tiny Jungle works it out for each plant, every day, from everything around it.",
   "know_vs": (("A reminder app", ["Water every 7 days", "The same in July and January", "Waters the balcony in the rain", "Two people, two reminders, one drowned fern"]), ("My Tiny Jungle", ["Water when that pot will be dry", "Shifts with your seasons and hemisphere", "Skips outdoor plants after rain", "Shares turns, so nobody double-waters"])),
   "two_h": "Same monstera, two homes",
-  "two_p": "One week in July. Same plant, same species. Different lives.",
+  "two_p": "Four weeks of July, one dot per watering. Same species, different homes, different rhythm.",
   "homes": [("Lisbon", "Balcony, terracotta pot, highs around 28 °C", "About every 5 days", "Warm days and a terracotta pot dry the soil fast. If it rains, the reminder waits."), ("Berlin", "Bright living room, plastic pot, 19 °C outside", "About every 8 days", "Indoors, plastic holds water longer. In winter, with the heating on, the sums change again.")],
-  "two_timer": "A fixed timer says every 7 days for both: too little in Lisbon, too much in Berlin.",
+  "timer_row": ("Fixed timer", "Every 7 days, whatever happens"), "day_lbl": "Day", "two_timer": "A fixed timer says every 7 days for both: too little in Lisbon, too much in Berlin.",
   "in_h": "What it takes into account",
   "inputs": [("sun", "Your city and climate", "Climate type, the local forecast, rain, the seasons and your hemisphere."), ("homeLeaf", "Your home", "Heating in winter, air conditioning in summer, and whether the air is dry or damp."), ("livingRoom", "Light, room by room", "The light you set for each room, matched to what each plant likes."), ("pot", "The pot", "Size, material and drainage. Terracotta dries faster than glass."), ("soilTest", "Its own rhythm", "Species data first, then your soil checks and care history teach it how fast that pot really dries."), ("balcony", "Inside or out", "Outdoor plants follow the real weather. Indoor plants follow your home."), ("shieldLeaf", "Pets and kids", "Clear warnings for plants that are toxic to cats, dogs or little ones."), ("careHands", "Your household", "Whose turn it is, cover while someone travels, and shared care so nobody waters twice.")],
   "smart_h": "Quietly very clever",
@@ -189,9 +189,9 @@ H = {
   "know_p": "A maioria dos apps pede um intervalo e repete o mesmo aviso para sempre. Aqui, o cuidado é recalculado todo dia, para cada planta, com base em tudo o que está ao redor dela.",
   "know_vs": (("Apps de lembrete", ["Rega a cada 7 dias, sempre", "Mesmo aviso no verão e no inverno", "Manda regar a varanda em dia de chuva", "Duas pessoas, dois avisos, planta encharcada"]), ("My Tiny Jungle", ["Rega quando o vaso realmente vai estar seco", "Ajusta o cuidado às estações e ao seu hemisfério", "Segura a rega das plantas de fora depois da chuva", "Organiza o rodízio para ninguém regar duas vezes"])),
   "two_h": "Mesma planta, casas diferentes, cuidados diferentes",
-  "two_p": "Uma costela-de-adão em duas casas, na mesma semana de julho.",
+  "two_p": "Quatro semanas de julho, um ponto para cada rega. Mesma espécie, casas diferentes, ritmos diferentes.",
   "homes": [("Lisboa", "Varanda, vaso de barro, máxima de 28 °C", "A cada 5 dias, em média", "Calor e vaso de barro secam a terra mais rápido. Se chover, o lembrete espera."), ("Berlim", "Sala iluminada, vaso de plástico, 19 °C lá fora", "A cada 8 dias, em média", "Dentro de casa, o plástico retém a água por mais tempo. No inverno, com aquecedor, o cálculo muda de novo.")],
-  "two_timer": "Um lembrete fixo de 7 dias erraria nas duas: faltaria água em Lisboa e sobraria em Berlim.",
+  "timer_row": ("Lembrete fixo", "A cada 7 dias, aconteça o que acontecer"), "day_lbl": "Dia", "two_timer": "Um lembrete fixo de 7 dias erraria nas duas: faltaria água em Lisboa e sobraria em Berlim.",
   "in_h": "O que entra no cálculo",
   "inputs": [("sun", "Cidade e clima", "Tipo de clima, previsão do tempo, chuva, estações e hemisfério."), ("homeLeaf", "Sua casa", "Aquecedor no inverno, ar-condicionado no verão e umidade do ar."), ("livingRoom", "Luz de cada cômodo", "A luz de cada ambiente comparada com a necessidade de cada planta."), ("pot", "Vaso", "Tamanho, material e drenagem. Vaso de barro seca mais rápido que o de vidro."), ("soilTest", "Ritmo de cada planta", "Começa com os dados da espécie e se ajusta a cada teste da terra e a cada cuidado registrado."), ("balcony", "Dentro ou fora de casa", "Plantas externas seguem o tempo real. As internas seguem o clima da sua casa."), ("shieldLeaf", "Pets e crianças", "Avisos claros sobre plantas tóxicas para gatos, cães e crianças."), ("careHands", "Quem mora com você", "Rodízio de cuidados, cobertura em viagens e tudo sincronizado.")],
   "smart_h": "Simples de usar. Inteligente por trás.",
@@ -212,6 +212,17 @@ H = {
 
 
 LAZY = {True: "", False: ' loading="lazy"'}
+
+
+def cmp_chart(h, days=28):
+    rows = [(c, sp, ev, why, n, "") for (c, sp, ev, why), n in zip(h["homes"], (5, 8))]
+    rows.append((h["timer_row"][0], h["timer_row"][1], "", "", 7, " timer"))
+    def cells(n): return "".join(f'<i class="{"on" if d % n == 0 else ""}"></i>' for d in range(days))
+    out = "".join(f'<div class="crow{cl}"><div class="clab"><b>{c}</b><span>{sp}</span></div><div class="cdays">{cells(n)}</div><p class="cev">{ev}</p></div>' for c, sp, ev, why, n, cl in rows)
+    ticks = "".join("<i>%s</i>" % (d + 1 if d in (0, 6, 13, 20, 27) else "") for d in range(days))
+    axis = f'<div class="crow axis"><div class="clab"></div><div class="cdays">{ticks}</div><p class="cev">{h["day_lbl"]}</p></div>'
+    whys = "".join(f'<p><b>{c}.</b> {why}</p>' for c, sp, ev, why in h["homes"])
+    return f'<div class="cmp">{out}{axis}</div><div class="cwhy">{whys}</div>'
 
 
 def render_home(L, t, page, phone, apple_icon):
@@ -303,7 +314,7 @@ def render_home(L, t, page, phone, apple_icon):
 <div class="vs">{"".join(f'<div class="vcol{" us" if j else ""}"><h3>{t}</h3><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for j, (t, xs) in enumerate(h["know_vs"]))}</div></div>
 {phone(A + "/care-season.jpg", h["in_h"], "kphone")}</div>
 <div class="two"><div class="ttext"><h3>{h['two_h']}</h3><p>{h['two_p']}</p></div>
-<div class="homes">{"".join(f'<div class="home"><p class="city">{c}</p><p class="spot">{sp}</p><p class="every">{ev}</p><p>{why}</p></div>' for c, sp, ev, why in h["homes"])}</div>
+{cmp_chart(h)}
 <p class="timer">{h['two_timer']}</p></div>
 <div class="inputs"><h3>{h['in_h']}</h3><div class="igrid">{"".join(f'<div class="inp">{I(ic, 48)}<h4>{t}</h4><p>{d}</p></div>' for ic, t, d in h["inputs"])}</div></div>
 </div></section>

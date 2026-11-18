@@ -426,3 +426,22 @@ p,li,.bcard span{text-wrap:pretty}
 .lockphone .ncard{transition:opacity .45s var(--ease),transform .55s cubic-bezier(.2,1.3,.4,1)}
 .msgs.anim .msg:not(.said) .whyl{opacity:0;transition:none}
 .msgs.anim .msg.said .whyl{transition:opacity .4s .25s}
+/* two homes: a 4-week watering strip, the fixed timer underneath */
+.two{grid-template-columns:1fr;gap:28px}
+.cmp{display:grid;gap:10px;background:var(--paper);border-radius:var(--r);padding:28px clamp(16px,3vw,32px) 20px}
+.crow{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr) minmax(0,9em);gap:20px;align-items:center}
+.clab b{display:block;font-size:var(--t-s);font-weight:800}.clab span{display:block;font-size:14px;color:var(--muted);line-height:1.35}
+.cdays{display:grid;grid-template-columns:repeat(28,minmax(0,1fr));gap:3px}
+.cdays i{aspect-ratio:1;border-radius:50%;background:var(--mint)}
+.cdays i.on{background:var(--forest);box-shadow:0 0 0 3px rgba(47,93,58,.15)}
+.cev{margin:0;font-weight:800;color:var(--forest);font-size:16px;line-height:1.25}
+.crow.timer{padding-top:14px;border-top:1px dashed rgba(36,51,31,.18)}
+.crow.timer .cdays i.on{background:#c4643f;box-shadow:0 0 0 3px rgba(196,100,63,.15)}
+.crow.timer .clab b{color:#a24e2f}
+.crow.axis .cdays i{background:none;aspect-ratio:auto;font-style:normal;font-size:11px;color:var(--muted);text-align:left;overflow:visible;white-space:nowrap}
+.crow.axis .cev{font-weight:400;color:var(--muted);font-size:12px}
+.cwhy{display:grid;grid-template-columns:1fr 1fr;gap:20px}.cwhy p{margin:0;font-size:16px;line-height:1.5}
+.two .timer{grid-column:1}
+@media (max-width:900px){.crow{grid-template-columns:1fr;gap:6px}.crow .cev{display:none}.crow.axis .clab{display:none}.crow+.crow{margin-top:8px}.cdays{gap:2px}.cwhy{grid-template-columns:1fr}}
+.cdays{grid-template-columns:repeat(28,minmax(0,20px));gap:clamp(2px,.6vw,8px);justify-content:start}
+@media (min-width:901px){.crow{grid-template-columns:minmax(0,14em) auto minmax(0,1fr)}.cev{padding-left:12px}}
