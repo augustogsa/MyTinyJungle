@@ -210,43 +210,8 @@ def phone(img, alt, cls=""):
 
 
 def home(L):
-    t = T[L]
-    bub = "".join(f'<div class="b me">{c[1]}</div>' if c[0] == "me" else f'<div class="b plant"><small>{c[1]}</small>{c[2]}</div>' for c in t["chat"])
-    feats = "".join(f'<div class="card"><div class="ico {c}">{ICON[i]}</div><h3>{h}</h3><p>{d}</p></div>' for i, c, h, d in t["features"])
-    lst = "".join(f"<li><b>{a}</b><span>{b}</span></li>" for a, b in t["s1_list"])
-    plans = "".join(
-        f'<div class="plan{" hl" if hl else ""}"><div class="name">{nm}{f"<span class=tag>{tag}</span>" if tag else ""}</div>'
-        f'<div class="price">{pr}</div><div class="per">{per}</div><ul>{"".join(f"<li>{x}</li>" for x in items)}</ul></div>'
-        for nm, pr, per, items, hl, tag in t["plans"])
-    cta = f'<span class="btn">{ICON["apple"]}{t["cta"]}</span>'
-    body = f"""
-<section class="hero"><div class="wrap">
-<div><h1 class="rise">{t['h1']}</h1><p class="lead rise d1">{t['lead']}</p>
-<div class="ctas rise d2">{cta}</div><p class="note">{t['note']}</p></div>
-<div class="stage"><div class="blob"></div>{phone('screen-home.jpg', 'Home screen').replace('loading="lazy"', 'fetchpriority="high"')}{phone('screen-plant.jpg', 'Plant page', 'back')}</div>
-</div></section>
-<section class="talk"><div class="wrap"><div class="bubbles">{bub}</div></div></section>
-<section class="section" id="features"><div class="wrap">
-<div class="eyebrow">{t['f_eyebrow']}</div><h2>{t['f_h']}</h2><p class="sub">{t['f_sub']}</p>
-<div class="grid">{feats}</div></div></section>
-<section class="section"><div class="wrap split rev">
-{phone('screen-plants.jpg', 'My Collection screen')}
-<div><div class="eyebrow">{t['s1_eyebrow']}</div><h2>{t['s1_h']}</h2><p class="sub">{t['s1_sub']}</p><ul>{lst}</ul></div>
-</div></section>
-<section class="section"><div class="wrap split">
-<div><div class="eyebrow">{t['s2_eyebrow']}</div><h2>{t['s2_h']}</h2><p class="sub">{t['s2_sub']}</p></div>
-{phone('screen-care.jpg', 'Care screen')}
-</div></section>
-<section class="section"><div class="wrap split rev">
-{phone('screen-scan.jpg', 'Scan screen')}
-<div><div class="eyebrow">{t['s3_eyebrow']}</div><h2>{t['s3_h']}</h2><p class="sub">{t['s3_sub']}</p></div>
-</div></section>
-<section class="section" id="pricing"><div class="wrap">
-<div class="eyebrow">{t['p_eyebrow']}</div><h2>{t['p_h']}</h2>
-<div class="plans">{plans}</div><p class="fine">{t['fine']}</p></div></section>
-<section class="closing"><div class="wrap"><img src="/assets/icon-512.png" alt="My Tiny Jungle icon" width="96" height="96">
-<h2>{t['c_h']}</h2><p>{t['c_p']}</p>{cta}</div></section>"""
-    return page(L, "/", t["home_title"], t["home_desc"], body)
+    from home_content import render_home
+    return render_home(L, T[L], page, phone, ICON["apple"])
 
 
 def doc(L, path, title, desc, inner):
