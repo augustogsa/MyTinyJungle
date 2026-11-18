@@ -5358,6 +5358,16 @@
         }
       }
     },
+    "Card": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartão"
+          }
+        }
+      }
+    },
     "Care": {
       "comment": "Care tab title\nPlant page segment; max 10 chars\nTimeline filter chip; max 10 chars",
       "localizations": {
@@ -5442,7 +5452,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Momentos de cuidado"
+            "value": "Cuidados"
           }
         }
       }
@@ -6946,6 +6956,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dia"
+          }
+        }
+      }
+    },
+    "Days together": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dias juntos"
           }
         }
       }
@@ -16753,7 +16773,6 @@
       }
     },
     "Photo": {
-      "comment": "Care log entry label, past tense; short\nLast message preview when it's a photo",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
@@ -19364,6 +19383,26 @@
         }
       }
     },
+    "Share": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar"
+          }
+        }
+      }
+    },
+    "Share %@": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar %@"
+          }
+        }
+      }
+    },
     "Share fairly": {
       "comment": "Away: turns rotate among the rest",
       "extractionState": "manual",
@@ -20970,6 +21009,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tratamento iniciado: %@"
+          }
+        }
+      }
+    },
+    "Stats": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Números"
           }
         }
       }
@@ -24181,6 +24230,16 @@
         }
       }
     },
+    "Waterings": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regas"
+          }
+        }
+      }
+    },
     "We'll gently warn you about plants that could hurt them.": {
       "comment": "Settings footer",
       "localizations": {
@@ -26238,6 +26297,16 @@
         }
       }
     },
+    "cares": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cuidados"
+          }
+        }
+      }
+    },
     "chunky aroid mix (bark, perlite, coco coir)": {
       "comment": "Soil mix name, lowercase, used inside a sentence",
       "localizations": {
@@ -26272,7 +26341,6 @@
       }
     },
     "days": {
-      "comment": "Me stat caption: days together",
       "localizations": {
         "pt-BR": {
           "stringUnit": {

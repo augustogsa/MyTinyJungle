@@ -26,7 +26,7 @@ struct PlantHomeView: View {
     @State private var showGuides = false
     @State private var pick: PhotosPickerItem?
 
-    enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate; var id: String { rawValue } }
+    enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate, share; var id: String { rawValue } }
 
     var body: some View {
         ScrollView {
@@ -55,6 +55,8 @@ struct PlantHomeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
+                Button { sheet = .share } label: { Image(systemName: "square.and.arrow.up") }
+                    .accessibilityLabel(Grammar.pt(String(localized: "Share \(plant.name)", comment: "Share screen title; %@ plant name")))
                 NavigationLink { PlantChatView(plant: plant) } label: { Image(systemName: "bubble.left.and.bubble.right") }
                     .accessibilityLabel(Grammar.pt(String(localized: "Talk to \(plant.name)")))
                 Menu {
@@ -70,6 +72,7 @@ struct PlantHomeView: View {
         .sheet(item: $sheet) { s in
             switch s {
             case .water: WaterSheet(plant: plant)
+            case .share: ShareStudio(plant: plant)
             case .health: HealthCheckView(plant: plant)
             case .repot: RepotCheckView(plant: plant)
             case .place: NavigationStack { BestPlaceView(plant: plant) }
