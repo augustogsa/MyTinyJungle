@@ -95,31 +95,91 @@ enum JungleBrain {
         }
 
         var summary: [String] = []
+        var entries: [LogCard.Entry] = []
+        var cardDate = now
         for action in result.actions {
             let targets = action.plantIDs.compactMap { byID[$0] }
             if targets.isEmpty { continue }
-            for p in targets { apply(action, to: p, in: ctx, now: now) }
-            let names = targets.map(\.name).joined(separator: ", ")
-            summary.append("\(action.kind.label) · \(names)\(dayNote(action.date, now))")
+            for p in targets {
+                let e = apply(action, to: p, in: ctx, now: now, speak: context != nil)
+                entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
+            }
+            cardDate = action.date
+            summary.append("\(action.kind.label) · \(targets.map(\.name).joined(separator: ", "))\(dayNote(action.date, now))")
         }
 
         if summary.isEmpty {
             reply("Which plant was that? Mention its name.", plant: context, in: ctx, suggestions: plants.prefix(4).map(\.name))
         } else if context == nil {
-            reply("Logged:\n" + summary.map { "✓ " + $0 }.joined(separator: "\n"), plant: nil, in: ctx)
+            postCard(entries, date: cardDate, text: summary.joined(separator: "\n"), in: ctx)
         }
         try? ctx.save()
     }
 
-    /// One-tap shortcuts (Water, Feed, Mist…) and soil answers.
-    static func quick(_ kind: CareKind, soil: SoilState? = nil, plants targets: [Plant], in ctx: ModelContext, now: Date = Date()) {
+    /// One-tap shortcuts (Water, Feed, Mist…) and soil answers. `announce` posts a card in the jungle thread.
+    static func quick(_ kind: CareKind, soil: SoilState? = nil, plants targets: [Plant], in ctx: ModelContext, now: Date = Date(), announce: Bool = false) {
+        var entries: [LogCard.Entry] = []
         for p in targets {
-            apply(.init(kind: kind, plantIDs: [p.id], date: now, soil: soil), to: p, in: ctx, now: now, source: "chip")
+            let e = apply(.init(kind: kind, plantIDs: [p.id], date: now, soil: soil), to: p, in: ctx, now: now, source: "chip", speak: !announce || kind == .soilCheck)
+            entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
+        }
+        if announce, !entries.isEmpty {
+            postCard(entries, date: now, text: "\(kind.label) · \(targets.map(\.name).joined(separator: ", "))", in: ctx)
         }
         try? ctx.save()
     }
 
-    static func apply(_ action: ParsedAction, to plant: Plant, in ctx: ModelContext, now: Date, source: String = "chat") {
+    static func postCard(_ entries: [LogCard.Entry], date: Date, text: String, in ctx: ModelContext) {
+        let m = ChatMessage(text: text, fromUser: false)
+        m.logCard = LogCard(entries: entries, date: date)
+        ctx.insert(m)
+    }
+
+    /// Undo a card: delete its events and restore what they changed.
+    static func undo(_ message: ChatMessage, plants: [Plant], in ctx: ModelContext) {
+        guard var card = message.logCard, !card.undone else { return }
+        let byID = Dictionary(uniqueKeysWithValues: plants.map { ($0.id, $0) })
+        for entry in card.entries {
+            guard let p = byID[entry.plantID], let e = (p.events ?? []).first(where: { $0.id == entry.eventID }) else { continue }
+            ctx.delete(e)
+            if e.kind == .repot { p.lastRepotAt = p.sortedEvents.first { $0.kind == .repot && $0.id != e.id }?.date }
+        }
+        card.undone = true
+        message.logCard = card
+        try? ctx.save()
+    }
+
+    static func redate(_ message: ChatMessage, to date: Date, plants: [Plant], in ctx: ModelContext) {
+        guard var card = message.logCard, !card.undone else { return }
+        let byID = Dictionary(uniqueKeysWithValues: plants.map { ($0.id, $0) })
+        for entry in card.entries {
+            if let e = byID[entry.plantID]?.events?.first(where: { $0.id == entry.eventID }) {
+                e.date = date
+                if e.kind == .repot { byID[entry.plantID]?.lastRepotAt = date }
+            }
+        }
+        card.date = date
+        message.logCard = card
+        try? ctx.save()
+    }
+
+    static func attachPhoto(_ data: Data, to message: ChatMessage, plants: [Plant], in ctx: ModelContext) {
+        guard var card = message.logCard else { return }
+        let ids = Set(card.entries.map(\.plantID))
+        for p in plants where ids.contains(p.id) {
+            let e = CareEvent(kind: .photo, note: "", source: "chat")
+            e.photo = data
+            e.plant = p
+            ctx.insert(e)
+            p.photo = data
+            card.entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
+        }
+        message.logCard = card
+        try? ctx.save()
+    }
+
+    @discardableResult
+    static func apply(_ action: ParsedAction, to plant: Plant, in ctx: ModelContext, now: Date, source: String = "chat", speak: Bool = true) -> CareEvent {
         let e = CareEvent(kind: action.kind, date: action.date, note: action.detail ?? "", source: source)
         e.value = action.value
         e.soil = action.soil
@@ -132,7 +192,7 @@ enum JungleBrain {
                 ctx.insert(e)
                 let reply = PlantVoice.soilReply(soil, plant: plant, expected: CareEngine.expectedDryDays(for: plant, at: now))
                 self.reply(reply, plant: plant, in: ctx, suggestions: soil == .dry ? ["Watered"] : [])
-                return
+                return e
             }
         case .water:
             // Watering right after a "dry" check confirms the learned interval.
@@ -150,13 +210,16 @@ enum JungleBrain {
         default: break
         }
         ctx.insert(e)
-        reply(PlantVoice.thanks(action.kind, plant: plant), plant: plant, in: ctx)
+        if speak { reply(PlantVoice.thanks(action.kind, plant: plant), plant: plant, in: ctx) }
+        return e
     }
 
     static func reply(_ text: String, plant: Plant?, in ctx: ModelContext, suggestions: [String] = [], alsoJungle: Bool = false) {
         ctx.insert(ChatMessage(text: text, fromUser: false, plant: plant, suggestions: suggestions))
         if alsoJungle, let plant {
-            ctx.insert(ChatMessage(text: "\(plant.name): \(text)", fromUser: false, plant: nil, suggestions: []))
+            let m = ChatMessage(text: text, fromUser: false, plant: nil, suggestions: [])
+            m.speakerID = plant.id
+            ctx.insert(m)
         }
     }
 

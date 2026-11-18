@@ -18,7 +18,7 @@ enum Personality: String, Codable, CaseIterable, Identifiable {
 }
 
 enum CareKind: String, Codable, CaseIterable {
-    case water, feed, mist, repot, prune, move, rotate, clean, soilCheck, photo, note, measure, newLeaf, flower, treat
+    case water, feed, mist, repot, prune, move, rotate, clean, soilCheck, photo, note, measure, newLeaf, flower, treat, health, propagate
     var label: String {
         switch self {
         case .water: "Watered"
@@ -36,6 +36,8 @@ enum CareKind: String, Codable, CaseIterable {
         case .newLeaf: "New leaf"
         case .flower: "Flowering"
         case .treat: "Treated"
+        case .health: "Health check"
+        case .propagate: "Propagation"
         }
     }
     var symbol: String {
@@ -55,6 +57,8 @@ enum CareKind: String, Codable, CaseIterable {
         case .newLeaf: "leaf.fill"
         case .flower: "camera.macro"
         case .treat: "cross.case.fill"
+        case .health: "stethoscope"
+        case .propagate: "scissors.circle"
         }
     }
 }
@@ -169,6 +173,10 @@ final class ChatMessage {
     var plant: Plant?
     /// Suggested quick replies (e.g. "Dry", "Moist", "Wet").
     var suggestionsRaw: String = ""
+    /// Plant speaking in the jungle thread (avatar + name header).
+    var speakerID: UUID?
+    /// JSON payload for rich cards (logged care).
+    var cardRaw: String = ""
 
     init(text: String, fromUser: Bool, plant: Plant? = nil, suggestions: [String] = [], photo: Data? = nil) {
         self.text = text
@@ -179,6 +187,23 @@ final class ChatMessage {
     }
 
     var suggestions: [String] { suggestionsRaw.isEmpty ? [] : suggestionsRaw.components(separatedBy: "|") }
+
+    var logCard: LogCard? {
+        get { cardRaw.isEmpty ? nil : try? JSONDecoder().decode(LogCard.self, from: Data(cardRaw.utf8)) }
+        set { cardRaw = newValue.flatMap { try? String(data: JSONEncoder().encode($0), encoding: .utf8) } ?? "" }
+    }
+}
+
+/// A logged-care card: which events were recorded, so the card can undo, re-date and add photos.
+struct LogCard: Codable, Equatable {
+    struct Entry: Codable, Equatable {
+        var plantID: UUID
+        var eventID: UUID
+        var kind: String
+    }
+    var entries: [Entry]
+    var date: Date
+    var undone = false
 }
 
 @Model
@@ -198,5 +223,80 @@ final class OwnedProduct {
     init(name: String, category: String) {
         self.name = name
         self.categoryRaw = category
+    }
+}
+
+
+/// A room, window, balcony or garden zone.
+@Model
+final class Space {
+    var id: UUID = UUID()
+    var name: String = ""
+    var lightRaw: String = Species.Light.medium.rawValue
+    var isOutdoor: Bool = false
+    var humidity: Double?
+    var temperature: Double?
+    var windowFacing: String = ""
+    var createdAt: Date = Date()
+
+    init(name: String, light: Species.Light = .medium, outdoor: Bool = false) {
+        self.name = name
+        self.lightRaw = light.rawValue
+        self.isOutdoor = outdoor
+    }
+    var light: Species.Light {
+        get { Species.Light(rawValue: lightRaw) ?? .medium }
+        set { lightRaw = newValue.rawValue }
+    }
+}
+
+/// A planned or reminded action ("Remind me later", "Plan repotting", travel prep).
+@Model
+final class CareTask {
+    var id: UUID = UUID()
+    var title: String = ""
+    var kindRaw: String = CareKind.note.rawValue
+    var plantID: UUID?
+    var due: Date = Date()
+    var done: Bool = false
+    var createdAt: Date = Date()
+
+    init(title: String, kind: CareKind, plantID: UUID?, due: Date) {
+        self.title = title
+        self.kindRaw = kind.rawValue
+        self.plantID = plantID
+        self.due = due
+    }
+    var kind: CareKind { CareKind(rawValue: kindRaw) ?? .note }
+}
+
+@Model
+final class Propagation {
+    enum Stage: Int, CaseIterable { case cutting, rooting, potting, growing, done
+        var label: String {
+            switch self {
+            case .cutting: "Cutting taken"
+            case .rooting: "Roots forming"
+            case .potting: "Ready to pot"
+            case .growing: "Growing"
+            case .done: "New plant"
+            }
+        }
+    }
+    var id: UUID = UUID()
+    var parentID: UUID = UUID()
+    var method: String = "Water"
+    var startedAt: Date = Date()
+    var stageRaw: Int = 0
+    var childID: UUID?
+    var note: String = ""
+
+    init(parentID: UUID, method: String) {
+        self.parentID = parentID
+        self.method = method
+    }
+    var stage: Stage {
+        get { Stage(rawValue: stageRaw) ?? .cutting }
+        set { stageRaw = newValue.rawValue }
     }
 }

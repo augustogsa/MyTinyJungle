@@ -4,6 +4,8 @@ import PhotosUI
 struct MessageBubble: View {
     let message: ChatMessage
     var showAvatar = true
+    /// Plant speaking in the jungle thread.
+    var speaker: Plant? = nil
     var onSuggestion: (String) -> Void = { _ in }
 
     var body: some View {
@@ -11,10 +13,13 @@ struct MessageBubble: View {
             HStack(alignment: .bottom, spacing: 8) {
                 if message.fromUser { Spacer(minLength: 48) }
                 if !message.fromUser, showAvatar {
-                    if let plant = message.plant { PlantAvatar(data: plant.photo, size: 28) }
+                    if let plant = speaker ?? message.plant { PlantAvatar(data: plant.photo, size: 28) }
                     else { Image(systemName: "leaf.circle.fill").font(.title2).foregroundStyle(Jungle.leaf).accessibilityHidden(true) }
                 }
                 VStack(alignment: .leading, spacing: 6) {
+                    if let speaker, !message.fromUser {
+                        Text(speaker.name).font(.caption.weight(.semibold)).foregroundStyle(Jungle.leaf)
+                    }
                     if let data = message.photo, let img = UIImage(data: data) {
                         Image(uiImage: img).resizable().scaledToFill()
                             .frame(maxWidth: 220, maxHeight: 220)

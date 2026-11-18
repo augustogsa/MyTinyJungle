@@ -10,6 +10,7 @@ struct TodayView: View {
     @State private var showSettings = false
     @State private var path = NavigationPath()
     @State private var paywall = false
+    @State private var addingPlant = false
 
     private var jungleMessages: [ChatMessage] { allMessages.filter { $0.plant == nil }.suffix(60) }
     private var requests: [(Plant, PlantRequest)] {
@@ -23,7 +24,7 @@ struct TodayView: View {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 14) {
                         header
-                        if plants.isEmpty { EmptyJungle() }
+                        if plants.isEmpty { EmptyJungle { addingPlant = true } }
                         if !requests.isEmpty {
                             Text("Requests from your plants").font(.headline).foregroundStyle(Jungle.text).padding(.top, 4)
                             ForEach(requests, id: \.1.id) { plant, req in
@@ -36,7 +37,15 @@ struct TodayView: View {
                         if !jungleMessages.isEmpty {
                             Text("Jungle chat").font(.headline).foregroundStyle(Jungle.text).padding(.top, 8)
                             ForEach(jungleMessages) { m in
-                                MessageBubble(message: m) { send($0) }.id(m.id)
+                                Group {
+                                    if m.logCard != nil {
+                                        LoggedCardView(message: m, plants: plants)
+                                    } else {
+                                        MessageBubble(message: m, speaker: m.speakerID.flatMap { id in plants.first { $0.id == id } }) { send($0) }
+                                    }
+                                }
+                                .id(m.id)
+                                .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                             }
                         }
                         Color.clear.frame(height: 1).id("bottom")
@@ -44,7 +53,8 @@ struct TodayView: View {
                     .padding(.horizontal, 16)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                .onChange(of: allMessages.count) { withAnimation { proxy.scrollTo("bottom") } }
+                .onChange(of: allMessages.count) { withAnimation(.snappy) { proxy.scrollTo("bottom") } }
+                .animation(.snappy, value: requests.map(\.1.id))
                 .safeAreaInset(edge: .bottom) {
                     VStack(spacing: 4) {
                         if !plants.isEmpty { QuickChips { chipKind = $0 } }
@@ -64,25 +74,26 @@ struct TodayView: View {
                 }
             }
             .navigationDestination(for: UUID.self) { id in
-                if let p = plants.first(where: { $0.id == id }) { PlantChatView(plant: p) }
+                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
             }
             .sheet(isPresented: $showSettings) { SettingsView() }
             .sheet(isPresented: $paywall) { PaywallView(reason: .morePlants) }
+            .sheet(isPresented: $addingPlant) { AddPlantFlow() }
             .confirmationDialog(chipTitle, isPresented: Binding(get: { chipKind != nil }, set: { if !$0 { chipKind = nil } }), titleVisibility: .visible) {
                 if let kind = chipKind {
                     ForEach(plants) { p in
                         Button(p.name) {
-                            if kind == .soilCheck { soilPlant = p } else { JungleBrain.quick(kind, plants: [p], in: ctx); log(kind, [p]) }
+                            if kind == .soilCheck { soilPlant = p } else { JungleBrain.quick(kind, plants: [p], in: ctx, announce: true) }
                         }
                     }
                     if kind != .soilCheck && plants.count > 1 {
-                        Button("All plants") { JungleBrain.quick(kind, plants: plants, in: ctx); log(kind, plants) }
+                        Button("All plants") { JungleBrain.quick(kind, plants: plants, in: ctx, announce: true) }
                     }
                 }
             }
             .confirmationDialog("How does \(soilPlant?.name ?? "the") soil feel?", isPresented: Binding(get: { soilPlant != nil }, set: { if !$0 { soilPlant = nil } }), titleVisibility: .visible) {
                 ForEach(SoilState.allCases, id: \.self) { s in
-                    Button(s.label) { if let p = soilPlant { JungleBrain.quick(.soilCheck, soil: s, plants: [p], in: ctx); log(.soilCheck, [p]) } }
+                    Button(s.label) { if let p = soilPlant { JungleBrain.quick(.soilCheck, soil: s, plants: [p], in: ctx, announce: true) } }
                 }
             }
         }
@@ -113,20 +124,14 @@ struct TodayView: View {
         return name.isEmpty ? base : "\(base), \(name)"
     }
 
-    private func log(_ kind: CareKind, _ ps: [Plant]) {
-        let text = kind == .soilCheck ? "Soil checked · \(ps.map(\.name).joined(separator: ", "))" : "✓ \(kind.label) · \(ps.map(\.name).joined(separator: ", "))"
-        ctx.insert(ChatMessage(text: text, fromUser: false))
-        try? ctx.save()
-    }
-
     private func send(_ text: String) {
         if text == "See Plus" { paywall = true; return }
         JungleBrain.handle(text, plant: nil, plants: plants, in: ctx) }
 
     private func handle(_ action: RequestCard.Action, plant: Plant) {
         switch action {
-        case .soil(let s): JungleBrain.quick(.soilCheck, soil: s, plants: [plant], in: ctx); log(.soilCheck, [plant])
-        case .care(let k): JungleBrain.quick(k, plants: [plant], in: ctx); log(k, [plant])
+        case .soil(let s): withAnimation(.snappy) { JungleBrain.quick(.soilCheck, soil: s, plants: [plant], in: ctx, announce: true) }
+        case .care(let k): withAnimation(.snappy) { JungleBrain.quick(k, plants: [plant], in: ctx, announce: true) }
         case .ack:
             let e = CareEvent(kind: .note, note: "safety-ack", source: "chip"); e.plant = plant; ctx.insert(e); try? ctx.save()
         case .open: path.append(plant.id)
@@ -192,12 +197,17 @@ struct RequestCard: View {
 }
 
 struct EmptyJungle: View {
+    var onAdd: (() -> Void)? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Image(systemName: "leaf").font(.largeTitle).foregroundStyle(Jungle.leaf).accessibilityHidden(true)
             Text("Your jungle is empty").font(.title3.weight(.semibold)).foregroundStyle(Jungle.text)
             Text("Just tell me about a plant, like \"I have a monstera called Milo in the living room\", or add one in Plants with a photo.")
                 .foregroundStyle(Jungle.subtle)
+            if let onAdd {
+                Button(action: onAdd) { Label("Snap your first plant", systemImage: "camera.fill") }
+                    .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).padding(.top, 4)
+            }
         }
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
