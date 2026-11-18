@@ -137,3 +137,99 @@ struct QuickChips: View {
         }
     }
 }
+
+/// Claude-style floating Liquid Glass composer. Minimal pill at rest,
+/// expands on focus to show care shortcuts, photo and send.
+struct GlassComposer: View {
+    let placeholder: String
+    var showChips = true
+    var onChip: (CareKind) -> Void = { _ in }
+    var onSend: (String, Data?) -> Void
+    @State private var text = ""
+    @State private var pick: PhotosPickerItem?
+    @FocusState private var focused: Bool
+    private var expanded: Bool { focused || !text.isEmpty }
+    private var canSend: Bool { !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .bottom, spacing: 10) {
+                if !expanded { photoButton }
+                TextField(placeholder, text: $text, axis: .vertical)
+                    .lineLimit(1...6)
+                    .focused($focused)
+                    .submitLabel(.send)
+                    .onSubmit(send)
+                    .padding(.vertical, 6)
+                if !expanded { sendButton }
+            }
+            if expanded {
+                HStack(spacing: 8) {
+                    photoButton
+                    if showChips {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 6) {
+                                ForEach(QuickChips.kinds, id: \.self) { kind in
+                                    Button { onChip(kind); focused = false } label: {
+                                        Label { Text(kind.chipTitle) } icon: { Icon3DView(Icon3D.care(kind), size: 18) }
+                                            .font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
+                                            .padding(.horizontal, 12).padding(.vertical, 7)
+                                            .glassEffect(.regular.interactive(), in: Capsule())
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                            }
+                        }
+                        .clipShape(Capsule())
+                        .mask(LinearGradient(stops: [.init(color: .black, location: 0), .init(color: .black, location: 0.88), .init(color: .clear, location: 1)], startPoint: .leading, endPoint: .trailing))
+                    } else { Spacer() }
+                    sendButton
+                }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .padding(.horizontal, 14).padding(.vertical, expanded ? 12 : 8)
+        .contentShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+        .onTapGesture { focused = true }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: expanded ? 26 : 28, style: .continuous))
+        .padding(.horizontal, 12).padding(.bottom, 6)
+        .animation(.spring(duration: 0.35, bounce: 0.2), value: expanded)
+        .onChange(of: pick) { _, item in
+            guard let item else { return }
+            Task {
+                if let data = try? await item.loadTransferable(type: Data.self) {
+                    let small = ImageShrinker.jpeg(data)
+                    await MainActor.run { onSend(text, small); text = ""; pick = nil }
+                }
+            }
+        }
+    }
+
+    private var photoButton: some View {
+        PhotosPicker(selection: $pick, matching: .images) {
+            Image(systemName: "camera").font(.system(size: 17, weight: .medium)).foregroundStyle(Jungle.text)
+                .frame(width: 36, height: 36).glassEffect(.regular.interactive(), in: Circle())
+        }
+        .accessibilityLabel("Add photo")
+    }
+    private var sendButton: some View {
+        Button(action: send) {
+            Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(.white)
+                .frame(width: 36, height: 36)
+                .background(canSend ? Jungle.forest : Jungle.subtle.opacity(0.4), in: Circle())
+        }
+        .disabled(!canSend)
+        .accessibilityLabel("Send")
+    }
+    private func send() {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !t.isEmpty else { return }
+        onSend(t, nil); text = ""
+    }
+}
+
+extension CareKind {
+    var chipTitle: String {
+        switch self { case .soilCheck: "Soil"; case .water: "Water"; case .feed: "Feed"; case .mist: "Mist"; case .rotate: "Rotate"; default: "New leaf" }
+    }
+}

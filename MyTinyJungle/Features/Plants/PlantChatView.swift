@@ -27,16 +27,11 @@ struct PlantChatView: View {
             .onChange(of: messages.count) { withAnimation { proxy.scrollTo("bottom") } }
         }
         .safeAreaInset(edge: .bottom) {
-            VStack(spacing: 4) {
-                QuickChips { kind in
-                    if kind == .soilCheck { soilAsk = true } else { JungleBrain.quick(kind, plants: [plant], in: ctx) }
-                }
-                Composer(placeholder: "Message \(plant.name)…") { text, photo in
-                    JungleBrain.handle(text, photo: photo, plant: plant, plants: plants, in: ctx)
-                }
+            GlassComposer(placeholder: "Message \(plant.name)…", onChip: { kind in
+                if kind == .soilCheck { soilAsk = true } else { JungleBrain.quick(kind, plants: [plant], in: ctx) }
+            }) { text, photo in
+                JungleBrain.handle(text, photo: photo, plant: plant, plants: plants, in: ctx)
             }
-            .padding(.top, 6)
-            .background(.bar)
         }
         .jungleBackdrop()
         .navigationTitle(plant.name)

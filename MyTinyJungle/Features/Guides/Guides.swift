@@ -186,17 +186,17 @@ struct GuideRow: View {
 struct GuideHeroCard: View {
     let guide: CareGuide
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            ZStack {
-                LinearGradient(colors: [guide.tint.opacity(0.22), guide.tint.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                Icon3DView(guide.icon, size: 72)
+        HStack(spacing: 10) {
+            Icon3DView(guide.icon, size: 30)
+                .frame(width: 44, height: 44)
+                .background(guide.tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(guide.title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2)
+                Text("\(guide.minutes) min").font(.caption).foregroundStyle(Jungle.subtle)
             }
-            .frame(height: 110)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-            Text(guide.title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
-            Text("\(guide.minutes) min").font(.caption).foregroundStyle(Jungle.subtle)
+            Spacer(minLength: 0)
         }
-        .padding(10).frame(width: 170).jungleCard()
+        .padding(8).frame(width: 210, height: 60).jungleCard()
     }
 }
 
@@ -354,7 +354,7 @@ extension CareGuide {
         case "cutting": .seedling
         case "repot": .pot
         case "feed": .fertilizer
-        case "clean": .careHands
+        case "clean": .leaves
         case "pests": .bug
         case "measure": .growth
         case "rotate": .repeat

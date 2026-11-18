@@ -76,14 +76,10 @@ struct TodayView: View {
                 .onChange(of: allMessages.count) { withAnimation(.snappy) { proxy.scrollTo("bottom") } }
                 .animation(.snappy, value: requests.map(\.1.id))
                 .safeAreaInset(edge: .bottom) {
-                    VStack(spacing: 4) {
-                        if !plants.isEmpty { QuickChips { chipKind = $0 } }
-                        Composer(placeholder: plants.isEmpty ? "Tell me about your plant…" : "What did you do? Ask anything…") { text, photo in
-                            JungleBrain.handle(text, photo: photo, plant: nil, plants: plants, in: ctx)
-                        }
+                    GlassComposer(placeholder: plants.isEmpty ? "Tell me about your plant…" : "What did you do? Ask anything…",
+                                  showChips: !plants.isEmpty, onChip: { chipKind = $0 }) { text, photo in
+                        JungleBrain.handle(text, photo: photo, plant: nil, plants: plants, in: ctx)
                     }
-                    .padding(.top, 6)
-                    .background(.bar)
                 }
             }
             .jungleBackdrop()
