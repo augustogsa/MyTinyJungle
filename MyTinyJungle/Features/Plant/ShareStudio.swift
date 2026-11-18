@@ -106,40 +106,125 @@ struct ShareStory: View {
         .environment(\.colorScheme, .light)
     }
 
-    // MARK: Cartão — polaroid on cream paper with a speech bubble.
+    // MARK: Cartão — a frosted-glass polaroid, taped onto a dreamy blur of the plant.
     private var polaroid: some View {
         ZStack {
-            cream
-            confetti
-            VStack(spacing: 18) {
+            dreamy
+            VStack(spacing: 16) {
                 Spacer(minLength: 0)
-                bubble(quote, tailLeft: true).padding(.horizontal, 34).rotationEffect(.degrees(1.5))
-                VStack(spacing: 10) {
-                    fill(232, 250).clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    VStack(spacing: 2) {
-                        Text(plant.name).font(.system(size: 24, weight: .heavy, design: .rounded)).foregroundStyle(ink)
-                        if !species.isEmpty { Text(species).font(.system(size: 14, weight: .medium, design: .rounded)).foregroundStyle(soft) }
+                glassQuote.padding(.horizontal, 30).rotationEffect(.degrees(2))
+                VStack(spacing: 12) {
+                    fill(236, 262).clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 4, style: .continuous).strokeBorder(.white.opacity(0.5), lineWidth: 0.8))
+                    VStack(spacing: 1) {
+                        Text(plant.name).font(.system(size: 26, weight: .heavy, design: .rounded))
+                        if !species.isEmpty { Text(species).font(.system(size: 14, weight: .semibold, design: .rounded)).opacity(0.85) }
                     }
-                    .padding(.bottom, 6)
+                    .foregroundStyle(.white).shadow(color: .black.opacity(0.25), radius: 4, y: 1)
+                    .padding(.bottom, 14)
                 }
-                .padding(12)
-                .background(.white, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .shadow(color: ink.opacity(0.18), radius: 14, y: 8)
-                .overlay(alignment: .top) { tape.offset(y: -10) }
-                .rotationEffect(.degrees(-2.5))
+                .padding(.horizontal, 13).padding(.top, 13)
+                .glassSkin(RoundedRectangle(cornerRadius: 8, style: .continuous), mask: false, tint: 0.32)
+                .overlay(alignment: .top) { glassTape.offset(y: -11) }
+                .rotationEffect(.degrees(-3))
                 HStack(spacing: 8) {
-                    chip(.calendarHeart, "\(days)", Grammar.pt(String(localized: "days", comment: "Share card stat unit: days together; short")), blush)
-                    chip(.waterDrops, "\(waters)", Grammar.pt(String(localized: "waterings", comment: "Share card stat unit: waterings; short, lowercase")), sky)
-                    chip(.careHands, "\(cares)", Grammar.pt(String(localized: "cares", comment: "Share card stat unit: care moments; short")), mint)
+                    glassStat(.calendarHeart, "\(days)", Grammar.pt(String(localized: "days", comment: "Share card stat unit: days together; short")), false)
+                    glassStat(.waterDrops, "\(waters)", Grammar.pt(String(localized: "waterings", comment: "Share card stat unit: waterings; short, lowercase")), false)
+                    glassStat(.careHands, "\(cares)", Grammar.pt(String(localized: "cares", comment: "Share card stat unit: care moments; short")), false)
                 }
+                .padding(.horizontal, 22)
                 Spacer(minLength: 0)
-                brand
+                glassBrand
             }
-            .padding(.vertical, 26)
+            .padding(.vertical, 22)
         }
     }
 
-    // MARK: Foto — the photo, warmed, with the plant talking and sticker stats.
+    // MARK: Diário — a journal page in glass: portrait, title, and our life together in rows.
+    private var diary: some View {
+        ZStack {
+            dreamy
+            VStack(spacing: 14) {
+                fill(124, 124).clipShape(Circle())
+                    .padding(6).glassSkin(Circle(), mask: false, tint: 0.3)
+                    .padding(.top, 30)
+                VStack(spacing: 3) {
+                    Text(Grammar.pt(String(localized: "Me and \(plant.name)", comment: "Share diary title; %@ plant name"))).font(.system(size: 28, weight: .heavy, design: .rounded))
+                    Text(Grammar.pt(String(localized: "Together since \(since)", comment: "Share image line; %@ month and year"))).font(.system(size: 14, weight: .semibold, design: .rounded)).opacity(0.9)
+                }
+                .foregroundStyle(.white).shadow(color: .black.opacity(0.25), radius: 5, y: 1)
+                VStack(spacing: 0) {
+                    glassRow(.calendarHeart, "\(days)", Grammar.pt(String(localized: "days of friendship", comment: "Share diary row; short, lowercase")))
+                    divider
+                    glassRow(.waterDrops, "\(waters)", Grammar.pt(String(localized: "waterings with love", comment: "Share diary row; short, lowercase")))
+                    divider
+                    glassRow(.sprout, "\(leaves)", leavesLabel)
+                    divider
+                    glassRow(.careHands, "\(cares)", Grammar.pt(String(localized: "little cares", comment: "Share diary row: care moments; short, lowercase")))
+                }
+                .padding(.vertical, 6)
+                .glassSkin(RoundedRectangle(cornerRadius: 30, style: .continuous), mask: false)
+                .padding(.horizontal, 24)
+                Spacer(minLength: 0)
+                glassBrand
+            }
+            .padding(.bottom, 22)
+        }
+    }
+
+    // MARK: glass pieces
+
+    /// The plant, blurred into a soft warm wash: the "wallpaper" the glass sits on.
+    private var dreamy: some View {
+        ZStack {
+            fill().blur(radius: 34).saturation(1.25).scaleEffect(1.15)
+            LinearGradient(colors: [Color(red: 1, green: 0.85, blue: 0.65).opacity(0.18), .clear, .black.opacity(0.25)], startPoint: .top, endPoint: .bottom)
+        }
+        .clipped()
+    }
+
+    private var glassQuote: some View {
+        HStack(alignment: .top, spacing: 10) {
+            fill(32, 32).clipShape(Circle()).overlay(Circle().strokeBorder(.white.opacity(0.8), lineWidth: 1.5))
+            Text("“\(quote)”").font(.system(size: 15, weight: .semibold, design: .rounded)).foregroundStyle(.white)
+                .lineLimit(4).fixedSize(horizontal: false, vertical: true)
+                .shadow(color: .black.opacity(0.25), radius: 4, y: 1)
+        }
+        .padding(.horizontal, 16).padding(.vertical, 13)
+        .glassSkin(RoundedRectangle(cornerRadius: 24, style: .continuous), mask: false)
+    }
+
+    private var glassTape: some View {
+        Rectangle().fill(.white.opacity(0.45)).frame(width: 78, height: 24)
+            .overlay(Rectangle().strokeBorder(.white.opacity(0.6), lineWidth: 0.6))
+            .rotationEffect(.degrees(5))
+            .shadow(color: .black.opacity(0.1), radius: 2, y: 1)
+    }
+
+    private func glassRow(_ icon: Icon3D, _ n: String, _ l: String) -> some View {
+        HStack(spacing: 12) {
+            Icon3DView(icon, size: 32).frame(width: 46, height: 46).glassSkin(Circle(), mask: false, tint: 0.25)
+            Text(n).font(.system(size: 26, weight: .heavy, design: .rounded)).monospacedDigit()
+            Text(l).font(.system(size: 15, weight: .semibold, design: .rounded)).opacity(0.9)
+            Spacer(minLength: 0)
+        }
+        .foregroundStyle(.white).shadow(color: .black.opacity(0.2), radius: 3, y: 1)
+        .padding(.horizontal, 12).padding(.vertical, 7)
+    }
+
+    private var divider: some View { Rectangle().fill(.white.opacity(0.25)).frame(height: 0.8).padding(.leading, 70).padding(.trailing, 16) }
+
+    private var glassBrand: some View {
+        HStack(spacing: 6) {
+            Image("AppMark").resizable().scaledToFit().frame(width: 18, height: 18).clipShape(RoundedRectangle(cornerRadius: 4.5, style: .continuous))
+            Text("My Tiny Jungle").font(.system(size: 12, weight: .bold, design: .rounded))
+            Text("· mytinyjungle.com").font(.system(size: 12, weight: .medium, design: .rounded)).opacity(0.8)
+        }
+        .foregroundStyle(.white)
+        .padding(.horizontal, 12).padding(.vertical, 8)
+        .glassSkin(Capsule(), mask: false)
+    }
+
     /// Liquid Glass look, rendered by hand so it survives ImageRenderer (system materials don't):
     /// a blurred copy of the photo shows through each glass shape, with a soft tint and a specular rim.
     private var full: some View {
@@ -202,34 +287,6 @@ struct ShareStory: View {
         .opacity(mask ? 0 : 1)
         .frame(maxWidth: .infinity).padding(.vertical, 12)
         .glassSkin(RoundedRectangle(cornerRadius: 24, style: .continuous), mask: mask)
-    }
-
-    // MARK: Números — a cozy diary page of our life together.
-    private var diary: some View {
-        ZStack {
-            paper
-            confetti
-            VStack(spacing: 16) {
-                fill(118, 118).clipShape(Circle())
-                    .overlay(Circle().strokeBorder(.white, lineWidth: 5))
-                    .shadow(color: ink.opacity(0.18), radius: 10, y: 5)
-                    .padding(.top, 34)
-                VStack(spacing: 4) {
-                    Text(Grammar.pt(String(localized: "Me and \(plant.name)", comment: "Share diary title; %@ plant name"))).font(.system(size: 28, weight: .heavy, design: .rounded)).foregroundStyle(ink)
-                    Text(Grammar.pt(String(localized: "Together since \(since)", comment: "Share image line; %@ month and year"))).font(.system(size: 14, weight: .semibold, design: .rounded)).foregroundStyle(soft)
-                }
-                VStack(spacing: 10) {
-                    row(.calendarHeart, "\(days)", Grammar.pt(String(localized: "days of friendship", comment: "Share diary row; short, lowercase")), blush)
-                    row(.waterDrops, "\(waters)", Grammar.pt(String(localized: "waterings with love", comment: "Share diary row; short, lowercase")), sky)
-                    row(.sprout, "\(leaves)", leavesLabel, mint)
-                    row(.careHands, "\(cares)", Grammar.pt(String(localized: "little cares", comment: "Share diary row: care moments; short, lowercase")), butter)
-                }
-                .padding(.horizontal, 30)
-                Spacer(minLength: 0)
-                brand
-            }
-            .padding(.bottom, 26)
-        }
     }
 
     // MARK: pieces
@@ -303,13 +360,13 @@ struct ShareStory: View {
 
 private extension View {
     /// Hand-made Liquid Glass: tint, top sheen, specular rim and a soft lift. In mask mode, a solid shape.
-    @ViewBuilder func glassSkin<S: InsettableShape>(_ shape: S, mask: Bool) -> some View {
+    @ViewBuilder func glassSkin<S: InsettableShape>(_ shape: S, mask: Bool, tint: Double = 0.16) -> some View {
         if mask {
             background(shape.fill(.black))
         } else {
             background {
                 ZStack {
-                    shape.fill(.white.opacity(0.16))
+                    shape.fill(.white.opacity(tint))
                     shape.fill(LinearGradient(colors: [.white.opacity(0.28), .clear], startPoint: .top, endPoint: .center))
                     shape.strokeBorder(LinearGradient(colors: [.white.opacity(0.85), .white.opacity(0.15), .white.opacity(0.45)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
                 }
