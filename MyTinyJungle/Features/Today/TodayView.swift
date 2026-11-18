@@ -1,0 +1,206 @@
+import SwiftUI
+import SwiftData
+
+struct TodayView: View {
+    @Environment(\.modelContext) private var ctx
+    @Query(filter: #Predicate<Plant> { !$0.isArchived }, sort: \Plant.createdAt) private var plants: [Plant]
+    @Query(sort: \ChatMessage.date) private var allMessages: [ChatMessage]
+    @State private var chipKind: CareKind?
+    @State private var soilPlant: Plant?
+    @State private var showSettings = false
+    @State private var path = NavigationPath()
+    @State private var paywall = false
+
+    private var jungleMessages: [ChatMessage] { allMessages.filter { $0.plant == nil }.suffix(60) }
+    private var requests: [(Plant, PlantRequest)] {
+        plants.flatMap { p in CareEngine.requests(for: p).filter { $0.priority <= 2 }.prefix(1).map { (p, $0) } }
+            .sorted { $0.1.priority < $1.1.priority }
+    }
+
+    var body: some View {
+        NavigationStack(path: $path) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 14) {
+                        header
+                        if plants.isEmpty { EmptyJungle() }
+                        if !requests.isEmpty {
+                            Text("Requests from your plants").font(.headline).foregroundStyle(Jungle.text).padding(.top, 4)
+                            ForEach(requests, id: \.1.id) { plant, req in
+                                RequestCard(plant: plant, request: req) { action in handle(action, plant: plant) }
+                                    .onTapGesture { path.append(plant.id) }
+                            }
+                        } else if !plants.isEmpty {
+                            Text("Everyone is happy today. 🌿").font(.subheadline).foregroundStyle(Jungle.subtle)
+                        }
+                        if !jungleMessages.isEmpty {
+                            Text("Jungle chat").font(.headline).foregroundStyle(Jungle.text).padding(.top, 8)
+                            ForEach(jungleMessages) { m in
+                                MessageBubble(message: m) { send($0) }.id(m.id)
+                            }
+                        }
+                        Color.clear.frame(height: 1).id("bottom")
+                    }
+                    .padding(.horizontal, 16)
+                }
+                .scrollDismissesKeyboard(.interactively)
+                .onChange(of: allMessages.count) { withAnimation { proxy.scrollTo("bottom") } }
+                .safeAreaInset(edge: .bottom) {
+                    VStack(spacing: 4) {
+                        if !plants.isEmpty { QuickChips { chipKind = $0 } }
+                        Composer(placeholder: plants.isEmpty ? "Tell me about your plant…" : "What did you do? Ask anything…") { text, photo in
+                            JungleBrain.handle(text, photo: photo, plant: nil, plants: plants, in: ctx)
+                        }
+                    }
+                    .padding(.top, 6)
+                    .background(.bar)
+                }
+            }
+            .background(Jungle.cream)
+            .navigationTitle("My Tiny Jungle")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { showSettings = true } label: { Image(systemName: "gearshape") }.accessibilityLabel("Settings")
+                }
+            }
+            .navigationDestination(for: UUID.self) { id in
+                if let p = plants.first(where: { $0.id == id }) { PlantChatView(plant: p) }
+            }
+            .sheet(isPresented: $showSettings) { SettingsView() }
+            .sheet(isPresented: $paywall) { PaywallView(reason: .morePlants) }
+            .confirmationDialog(chipTitle, isPresented: Binding(get: { chipKind != nil }, set: { if !$0 { chipKind = nil } }), titleVisibility: .visible) {
+                if let kind = chipKind {
+                    ForEach(plants) { p in
+                        Button(p.name) {
+                            if kind == .soilCheck { soilPlant = p } else { JungleBrain.quick(kind, plants: [p], in: ctx); log(kind, [p]) }
+                        }
+                    }
+                    if kind != .soilCheck && plants.count > 1 {
+                        Button("All plants") { JungleBrain.quick(kind, plants: plants, in: ctx); log(kind, plants) }
+                    }
+                }
+            }
+            .confirmationDialog("How does \(soilPlant?.name ?? "the") soil feel?", isPresented: Binding(get: { soilPlant != nil }, set: { if !$0 { soilPlant = nil } }), titleVisibility: .visible) {
+                ForEach(SoilState.allCases, id: \.self) { s in
+                    Button(s.label) { if let p = soilPlant { JungleBrain.quick(.soilCheck, soil: s, plants: [p], in: ctx); log(.soilCheck, [p]) } }
+                }
+            }
+        }
+    }
+
+    private var chipTitle: String {
+        switch chipKind {
+        case .water: "Who did you water?"
+        case .feed: "Who did you feed?"
+        case .soilCheck: "Whose soil did you check?"
+        default: "Which plant?"
+        }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(greeting).font(.title2.weight(.semibold)).foregroundStyle(Jungle.text)
+            Text(plants.isEmpty ? "Let's grow your little jungle." : "\(plants.count) plant\(plants.count == 1 ? "" : "s") in your jungle")
+                .font(.subheadline).foregroundStyle(Jungle.subtle)
+        }
+        .padding(.top, 8)
+    }
+
+    private var greeting: String {
+        let h = Calendar.current.component(.hour, from: Date())
+        let name = JungleSettings.shared.ownerName
+        let base = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"
+        return name.isEmpty ? base : "\(base), \(name)"
+    }
+
+    private func log(_ kind: CareKind, _ ps: [Plant]) {
+        let text = kind == .soilCheck ? "Soil checked · \(ps.map(\.name).joined(separator: ", "))" : "✓ \(kind.label) · \(ps.map(\.name).joined(separator: ", "))"
+        ctx.insert(ChatMessage(text: text, fromUser: false))
+        try? ctx.save()
+    }
+
+    private func send(_ text: String) {
+        if text == "See Plus" { paywall = true; return }
+        JungleBrain.handle(text, plant: nil, plants: plants, in: ctx) }
+
+    private func handle(_ action: RequestCard.Action, plant: Plant) {
+        switch action {
+        case .soil(let s): JungleBrain.quick(.soilCheck, soil: s, plants: [plant], in: ctx); log(.soilCheck, [plant])
+        case .care(let k): JungleBrain.quick(k, plants: [plant], in: ctx); log(k, [plant])
+        case .ack:
+            let e = CareEvent(kind: .note, note: "safety-ack", source: "chip"); e.plant = plant; ctx.insert(e); try? ctx.save()
+        case .open: path.append(plant.id)
+        }
+    }
+}
+
+struct RequestCard: View {
+    enum Action { case soil(SoilState), care(CareKind), ack, open }
+    let plant: Plant
+    let request: PlantRequest
+    var onAction: (Action) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
+                PlantAvatar(data: plant.photo, size: 40)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(plant.name).font(.headline).foregroundStyle(Jungle.text)
+                    Text(plant.species?.commonName ?? "Unknown species").font(.caption).foregroundStyle(Jungle.subtle)
+                }
+                Spacer()
+                Image(systemName: icon).foregroundStyle(request.priority == 0 ? Jungle.terracotta : Jungle.leaf).accessibilityHidden(true)
+            }
+            Text("“\(PlantVoice.say(request, plant: plant))”").font(.body).foregroundStyle(Jungle.text)
+            Text(request.reason).font(.caption).foregroundStyle(Jungle.subtle)
+            HStack(spacing: 8) { buttons }
+        }
+        .padding(14)
+        .jungleCard()
+        .contentShape(Rectangle())
+    }
+
+    private var icon: String {
+        switch request.kind {
+        case .water: "drop.fill"
+        case .checkSoil: "hand.point.down.fill"
+        case .feed: "leaf.arrow.triangle.circlepath"
+        case .checkRoots: "arrow.up.bin"
+        case .portrait: "camera"
+        case .safety: "pawprint.fill"
+        case .pauseFeeding: "moon.zzz"
+        }
+    }
+
+    @ViewBuilder private var buttons: some View {
+        switch request.kind {
+        case .checkSoil:
+            ForEach(SoilState.allCases, id: \.self) { s in
+                Button(s == .slightlyMoist ? "Moist" : s.label) { onAction(.soil(s)) }.buttonStyle(.bordered).buttonBorderShape(.capsule)
+            }
+        case .water:
+            Button("Watered", systemImage: "drop.fill") { onAction(.care(.water)) }.buttonStyle(.borderedProminent).buttonBorderShape(.capsule)
+        case .feed:
+            Button("Fed", systemImage: "checkmark") { onAction(.care(.feed)) }.buttonStyle(.borderedProminent).buttonBorderShape(.capsule)
+            Button("Ask why") { onAction(.open) }.buttonStyle(.bordered).buttonBorderShape(.capsule)
+        case .safety:
+            Button("Got it") { onAction(.ack) }.buttonStyle(.bordered).buttonBorderShape(.capsule)
+        default:
+            Button("Talk to \(plant.name)") { onAction(.open) }.buttonStyle(.bordered).buttonBorderShape(.capsule)
+        }
+    }
+}
+
+struct EmptyJungle: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Image(systemName: "leaf").font(.largeTitle).foregroundStyle(Jungle.leaf).accessibilityHidden(true)
+            Text("Your jungle is empty").font(.title3.weight(.semibold)).foregroundStyle(Jungle.text)
+            Text("Just tell me about a plant, like \"I have a monstera called Milo in the living room\", or add one in Plants with a photo.")
+                .foregroundStyle(Jungle.subtle)
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .jungleCard()
+    }
+}
