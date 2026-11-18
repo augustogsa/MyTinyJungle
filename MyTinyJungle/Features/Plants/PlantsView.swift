@@ -111,7 +111,6 @@ struct PlantsView: View {
 struct PlantTile: View {
     let plant: Plant
     var body: some View {
-        let mood = CareEngine.mood(for: plant)
         VStack(alignment: .leading, spacing: 0) {
             ZStack(alignment: .topLeading) {
                 // Fixed box first, photo as overlay: a wide photo can never push the grid out of line.
@@ -124,11 +123,7 @@ struct PlantTile: View {
                         }
                     }
                     .clipped()
-                StatusPill(text: mood == .needsYou ? "Needs you" : mood == .fine ? "Fine" : "Thriving",
-                           symbol: mood == .needsYou ? "drop.fill" : "leaf.fill",
-                           tint: mood == .needsYou ? Jungle.peach : Jungle.surface)
-                    .background(Jungle.surface.opacity(0.85), in: Capsule())
-                    .padding(8)
+                StatusBadge(status: CareEngine.status(for: plant), compact: true).padding(8)
             }
             VStack(alignment: .leading, spacing: 3) {
                 Text(plant.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)

@@ -56,7 +56,7 @@ struct SpaceCard: View {
         let good = fits.filter { $0 >= .good }.count
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Image(systemName: space.isOutdoor ? "sun.horizon" : "house").foregroundStyle(Jungle.leaf)
+                Icon3DView(.room(space.name), size: 28)
                 Text(space.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Spacer()
                 if !fits.isEmpty {
@@ -66,8 +66,8 @@ struct SpaceCard: View {
                 }
             }
             HStack(spacing: 14) {
-                Label(PlacementEngine.lightLabel(space.light), systemImage: PlacementEngine.lightSymbol(space.light))
-                if let t = space.temperature { Label("\(Int(t)) °C", systemImage: "thermometer.medium") }
+                Label { Text(PlacementEngine.lightLabel(space.light)) } icon: { SmartIcon(symbol: PlacementEngine.lightSymbol(space.light), size: 16) }
+                if let t = space.temperature { Label { Text("\(Int(t)) °C") } icon: { Icon3DView(t < 15 ? .cold : t > 26 ? .hot : .thermometer, size: 16) } }
                 if let h = space.humidity { Label("\(Int(h))%", systemImage: "humidity") }
             }
             .font(.caption).foregroundStyle(Jungle.subtle)

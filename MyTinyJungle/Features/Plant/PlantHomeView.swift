@@ -97,7 +97,7 @@ struct PlantHomeView: View {
                     Text(plant.species?.scientific ?? "Unknown species").font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
                 }
                 Spacer()
-                MoodPill(mood: mood)
+                StatusBadge(status: CareEngine.status(for: plant))
             }
             .padding(.horizontal, 16).padding(.bottom, 50)
         }
@@ -160,7 +160,7 @@ struct PlantHomeView: View {
                 InfoRow(symbol: "sparkles", title: "Personality", value: plant.personality.label + " · " + plant.personality.blurb)
                 Divider().padding(.leading, 44)
                 Button { sheet = .place } label: {
-                    InfoRow(symbol: "house", title: "Location", value: locationLine, chevron: true)
+                    InfoRow(symbol: "house", title: "Location", value: locationLine, chevron: true, icon: plant.location.isEmpty ? .homeLeaf : .room(plant.location))
                 }.buttonStyle(.plain)
                 Divider().padding(.leading, 44)
                 Button { sheet = .edit } label: {
@@ -254,9 +254,10 @@ struct InfoRow: View {
     let title: String
     let value: String
     var chevron = false
+    var icon: Icon3D? = nil
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            SmartIcon(symbol: symbol, size: 26).frame(width: 30)
+            Group { if let icon { Icon3DView(icon, size: 30) } else { SmartIcon(symbol: symbol, size: 26) } }.frame(width: 30)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                 Text(value).font(.subheadline).foregroundStyle(Jungle.subtle)

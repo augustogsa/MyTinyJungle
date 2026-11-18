@@ -48,6 +48,7 @@ struct OnboardingView: View {
     }
 
     private func finish() {
+        Task { await CareReminders.requestPermission() }
         let s = JungleSettings.shared
         s.ownerName = name.trimmingCharacters(in: .whitespaces)
         s.hasCats = cats; s.hasDogs = dogs; s.hasKids = kids

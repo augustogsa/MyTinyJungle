@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 struct PlantRequest: Identifiable, Hashable {
     enum Kind: String { case water, checkSoil, feed, checkRoots, portrait, safety, pauseFeeding }
@@ -136,5 +136,78 @@ enum CareEngine {
         case 1: return "yesterday"
         default: return "\(d) days ago"
         }
+    }
+}
+
+/// What a plant needs right now, in plain words. One state per plant, the most important wins.
+enum PlantStatus: Int, Comparable {
+    case struggling, thirsty, checkSoil, petRisk, hungry, repot, thriving
+
+    static func < (a: Self, b: Self) -> Bool { a.rawValue < b.rawValue }
+
+    var label: String {
+        switch self {
+        case .struggling: "Struggling"
+        case .thirsty: "Thirsty"
+        case .checkSoil: "Check soil"
+        case .petRisk: "Pet alert"
+        case .hungry: "Hungry"
+        case .repot: "Root check"
+        case .thriving: "Thriving"
+        }
+    }
+    var icon: Icon3D {
+        switch self {
+        case .struggling: .wilted
+        case .thirsty: .waterDrops
+        case .checkSoil: .soilTest
+        case .petRisk: .shieldStar
+        case .hungry: .fertilizer
+        case .repot: .pot
+        case .thriving: .shieldLeaf
+        }
+    }
+    var tint: Color {
+        switch self {
+        case .struggling: Jungle.terracotta
+        case .thirsty, .checkSoil: Color(red: 0.27, green: 0.5, blue: 0.72)
+        case .petRisk: Jungle.peach
+        case .hungry, .repot: Jungle.sun
+        case .thriving: Jungle.leaf
+        }
+    }
+    var needsAttention: Bool { self <= .petRisk }
+}
+
+extension CareEngine {
+    static func status(for plant: Plant, now: Date = Date()) -> PlantStatus {
+        let r = requests(for: plant, now: now)
+        // Struggling: far past its rhythm, or dry soil left unwatered for days.
+        if let w = plant.lastEvent(.water)?.date, days(from: w, to: now) > expectedDryDays(for: plant, at: now) * 2 { return .struggling }
+        if let c = plant.lastEvent(.soilCheck), c.soil == .dry, c.date > (plant.lastEvent(.water)?.date ?? .distantPast), days(from: c.date, to: now) >= 3 { return .struggling }
+        if r.contains(where: { $0.kind == .water }) { return .thirsty }
+        if r.contains(where: { $0.kind == .checkSoil && $0.priority == 0 }) { return .thirsty }
+        if r.contains(where: { $0.kind == .checkSoil }) { return .checkSoil }
+        if r.contains(where: { $0.kind == .safety }) { return .petRisk }
+        if r.contains(where: { $0.kind == .feed }) { return .hungry }
+        if r.contains(where: { $0.kind == .checkRoots }) { return .repot }
+        return .thriving
+    }
+}
+
+/// Small capsule showing a plant's state.
+struct StatusBadge: View {
+    let status: PlantStatus
+    var compact = false
+    var body: some View {
+        HStack(spacing: 5) {
+            Icon3DView(status.icon, size: compact ? 16 : 18)
+            Text(status.label).foregroundStyle(Jungle.text)
+        }
+        .font(.caption.weight(.semibold))
+        .padding(.horizontal, 9).padding(.vertical, 5)
+        .background(.regularMaterial, in: Capsule())
+        .overlay(Capsule().strokeBorder(status.tint.opacity(0.6), lineWidth: status.needsAttention ? 1.5 : 0))
+        .accessibilityLabel("Status: \(status.label)")
     }
 }

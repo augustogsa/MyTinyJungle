@@ -605,7 +605,7 @@ struct JungleHealthView: View {
                                     Text(reason(p)).font(.caption).foregroundStyle(CareEngine.mood(for: p) == .needsYou ? Jungle.warmText : Jungle.subtle).lineLimit(2)
                                 }
                                 Spacer(minLength: 0)
-                                MoodPill(mood: CareEngine.mood(for: p))
+                                StatusBadge(status: CareEngine.status(for: p))
                             }
                             .padding(.vertical, 10)
                         }

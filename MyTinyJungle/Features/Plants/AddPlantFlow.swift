@@ -324,19 +324,26 @@ struct AddPlantFlow: View {
     }
 
     private func homeSection(_ plan: WelcomePlan) -> some View {
-        let rooms = (plants.map(\.location).filter { !$0.isEmpty } + ["Living room", "Bedroom", "Kitchen", "Bathroom", "Office", "Balcony"]).uniqued()
+        let rooms = (plants.map(\.location).filter { !$0.isEmpty } + ["Living room", "Bedroom", "Kitchen", "Bathroom", "Office", "Dining room", "Kids room", "Hallway", "Windowsill", "Balcony", "Terrace", "Garden", "Greenhouse"]).uniqued()
         return VStack(alignment: .leading, spacing: 10) {
             Text("Where will I live?").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             TextField("Room or spot", text: Binding(get: { location }, set: { location = $0; locationEdited = true }))
                 .padding(12).background(Jungle.mist, in: RoundedRectangle(cornerRadius: Jungle.innerRadius))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(rooms.prefix(8), id: \.self) { r in
-                        Button(r.capitalized) {
+                    ForEach(rooms.prefix(14), id: \.self) { r in
+                        let on = location.folded == r.folded
+                        Button {
                             location = r; locationEdited = true
-                            if ["balcony", "garden", "terrace", "varanda", "jardim"].contains(r.folded) { outdoor = true }
+                            outdoor = [.balcony, .patio, .garden, .backyard, .shed].contains(Icon3D.room(r))
+                        } label: {
+                            HStack(spacing: 6) { Icon3DView(.room(r), size: 20); Text(r.capitalized) }
+                                .font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
+                                .padding(.horizontal, 12).padding(.vertical, 7)
+                                .background(on ? Jungle.mint : Jungle.surface, in: Capsule())
+                                .overlay(Capsule().strokeBorder(on ? Jungle.leaf : Jungle.border, lineWidth: on ? 1.5 : 0.5))
                         }
-                        .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
+                        .buttonStyle(.plain)
                     }
                 }
             }

@@ -164,7 +164,7 @@ struct SeasonGuideView: View {
     @AppStorage("seasonChecks") private var checksRaw = ""
 
     enum Season: String, CaseIterable { case spring = "Spring", summer = "Summer", autumn = "Autumn", winter = "Winter"
-        var symbol: String { switch self { case .spring: "camera.macro"; case .summer: "sun.max.fill"; case .autumn: "leaf.fill"; case .winter: "snowflake" } }
+        var symbol: String { switch self { case .spring: "camera.macro"; case .summer: "sun.max.fill"; case .autumn: "leaf.fill.autumn"; case .winter: "snowflake" } }
     }
 
     static func current(_ d: Date = Date()) -> Season {
@@ -308,8 +308,8 @@ struct TravelPlanView: View {
     private var atRisk: Int { plants.filter { Int(CareEngine.expectedDryDays(for: $0) * 1.3) < days }.count }
     private let prep: [(Icon3D, String)] = [
         (.waterDrops, "Water everyone deeply the day before"),
-        (.sun, "Move plants back from hot windows"),
-        (.rainFlower, "Group humidity lovers together"),
+        (.hot, "Move plants back from hot windows"),
+        (.humidity, "Group humidity lovers together"),
         (.waterTray, "Wick or self-watering spike for thirsty plants"),
         (.fertilizer, "Skip fertilizer the week before"),
     ]

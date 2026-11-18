@@ -54,6 +54,8 @@ struct MyTinyJungleApp: App {
 }
 
 struct RootView: View {
+    @Environment(\.scenePhase) private var phase
+    @Environment(\.modelContext) private var ctx
     @AppStorage("selectedTab") private var tab = 0
     @AppStorage("onboarded") private var onboarded = false
     var body: some View {
@@ -65,6 +67,11 @@ struct RootView: View {
         } else { tabs }
     }
     private var tabs: some View {
+        tabView
+            .onChange(of: phase) { _, p in if p == .background { Task { await CareReminders.reschedule(ctx) } } }
+            .task { await CareReminders.reschedule(ctx) }
+    }
+    private var tabView: some View {
         TabView(selection: $tab) {
             Tab(value: 0) { TodayView() } label: { tabLabel("Today", "today", 0) }
             Tab(value: 1) { PlantsView() } label: { tabLabel("Plants", "plants", 1) }

@@ -14,6 +14,10 @@ enum Icon3D: String, CaseIterable, Identifiable {
     case gift, box, celebrate
     case mail, notification, chat, share
     case sun, hill, summit, waterfall
+    case sunny, moon, snowCloud, bayLeaf, thermometer, cold, hot, rainCloud, windCloud, wind, storm, snow, drop, humidity
+    case livingRoom, bedroom, kitchen, fridge, bathroom, office, desk, diningRoom, kidsRoom, hallway, laundry, balcony, patio, backyard
+    case gardenSwing, shed, stairs, tvRoom, homeLeaf, cabin, wateringCan, lamp, armchair, humidifier, radiator, heaterFan, airCooler, shelf, bench, stool, birdhouse, nightstand
+    case hygrometer, fan, airConditioner, heater, tap, frostDrop, coolingDown, warmingUp, mistRain, umbrella, puddle
     case tree, pine, willow, forest, cherryTree, bigTree, twoLeaves
 
     var id: String { rawValue }
@@ -78,16 +82,22 @@ extension Icon3D {
         case "scissors": .herbs
         case "scissors.badge.ellipsis": .seedling
         case "hand.point.down.fill", "hand.point.down": .soilTest
-        case "thermometer.medium": .weather
+        case "thermometer.medium", "thermometer", "thermometer.sun": .thermometer
+        case "thermometer.snowflake": .cold
+        case "wind", "wind.snow": .wind
+        case "cloud.rain", "cloud.rain.fill", "cloud.drizzle": .rainCloud
+        case "leaf.arrow.circlepath", "leaf.fill.autumn": .autumnLeaf
         case "arrow.up.bin", "arrow.up.bin.fill": .pot
-        case "sun.max", "sun.max.fill", "sun.horizon": .sun
+        case "sun.max", "sun.max.fill", "sun.horizon", "sun.min", "sun.min.fill": .sunny
+        case "moon", "moon.fill", "moon.stars": .moon
         case "pawprint.fill", "pawprint": .shieldCheck
         case "heart.fill": .calendarHeart
         case "ant.fill": .bug
         case "stethoscope": .healthShield
         case "ruler", "ruler.fill": .growth
-        case "moon.zzz", "snowflake": .frost
-        case "humidity", "humidity.fill": .rainFlower
+        case "moon.zzz": .moon
+        case "snowflake": .snow
+        case "humidity", "humidity.fill": .humidity
         case "house": .home
         case "cart": .box
         case "tray.full", "tray", "tray.and.arrow.down.fill": .box
@@ -106,6 +116,37 @@ extension Icon3D {
         case "eye": .healthShield
         default: nil
         }
+    }
+}
+
+extension Icon3D {
+    /// Icon for a room or outdoor spot, from its name (English and Portuguese).
+    static func room(_ name: String) -> Icon3D {
+        let n = name.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil).lowercased()
+        let table: [([String], Icon3D)] = [
+            (["balcon", "varanda", "sacada"], .balcony),
+            (["terrace", "terraco", "patio", "deck", "rooftop", "roof"], .patio),
+            (["greenhouse", "estufa", "conservator", "sunroom"], .greenhouse),
+            (["garden", "jardim", "horta", "yard", "quintal", "lawn"], .garden),
+            (["backyard", "bbq", "churrasq"], .backyard),
+            (["porch", "alpendre", "entrance", "entry", "entrada", "hall", "corredor", "foyer"], .hallway),
+            (["shed", "garage", "garagem", "barracao", "workshop"], .shed),
+            (["stair", "escada", "landing"], .stairs),
+            (["kitchen", "cozinha", "pantry", "despensa"], .kitchen),
+            (["dining", "jantar"], .diningRoom),
+            (["bath", "banheiro", "casa de banho", "wc", "toilet", "lavabo", "shower"], .bathroom),
+            (["laundry", "lavandaria", "lavanderia", "utility"], .laundry),
+            (["kid", "nursery", "crianc", "infantil", "bebe", "baby"], .kidsRoom),
+            (["bed", "quarto", "suite", "dormit"], .bedroom),
+            (["office", "escritorio", "study", "estudo", "work"], .office),
+            (["tv", "media", "cinema"], .tvRoom),
+            (["living", "lounge", "sala", "family"], .livingRoom),
+            (["attic", "sotao", "loft", "cabin"], .cabin),
+            (["window", "janela", "sill", "parapeito"], .pottedPlant),
+            (["shelf", "estante", "prateleira"], .shelf),
+        ]
+        for (keys, icon) in table where keys.contains(where: { n.contains($0) }) { return icon }
+        return .homeLeaf
     }
 }
 
