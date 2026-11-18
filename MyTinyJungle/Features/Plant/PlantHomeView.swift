@@ -83,11 +83,12 @@ struct PlantHomeView: View {
 
     private var hero: some View {
         ZStack(alignment: .bottomLeading) {
-            Group {
-                if let d = plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
-                else { ZStack { Jungle.mint; Image(systemName: "leaf").font(.system(size: 80, weight: .light)).foregroundStyle(Jungle.leaf) } }
-            }
-            .frame(height: 380).frame(maxWidth: .infinity).clipped()
+            Color.clear.frame(height: 380).frame(maxWidth: .infinity)
+                .overlay {
+                    if let d = plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
+                    else { ZStack { Jungle.mint; Icon3DView(.pottedPlant, size: 120) } }
+                }
+                .clipped()
             let hasPhoto = plant.photo != nil
             if hasPhoto { LinearGradient(colors: [.clear, .black.opacity(0.6)], startPoint: .center, endPoint: .bottom) }
             HStack(alignment: .bottom) {

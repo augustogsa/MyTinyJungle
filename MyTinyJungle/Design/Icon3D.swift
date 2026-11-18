@@ -75,7 +75,8 @@ extension Icon3D {
         case "leaf.fill", "leaf", "leaf.circle.fill": .leaf
         case "leaf.arrow.triangle.circlepath": .fertilizer
         case "calendar", "calendar.badge.plus": .calendar
-        case "scissors", "scissors.badge.ellipsis": .seedling
+        case "scissors": .herbs
+        case "scissors.badge.ellipsis": .seedling
         case "hand.point.down.fill", "hand.point.down": .soilTest
         case "thermometer.medium": .weather
         case "arrow.up.bin", "arrow.up.bin.fill": .pot

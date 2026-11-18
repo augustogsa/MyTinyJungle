@@ -54,11 +54,15 @@ struct RootView: View {
     }
     private var tabs: some View {
         TabView(selection: $tab) {
-            Tab("Today", systemImage: "bubble.left.and.text.bubble.right", value: 0) { TodayView() }
-            Tab("Plants", systemImage: "leaf", value: 1) { PlantsView() }
-            Tab("Care", systemImage: "calendar", value: 2) { CareView() }
-            Tab("Scan", systemImage: "barcode.viewfinder", value: 3) { ScanView() }
-            Tab("Me", systemImage: "person.crop.circle", value: 4) { MeView() }
+            Tab(value: 0) { TodayView() } label: { tabLabel("Today", "today", 0) }
+            Tab(value: 1) { PlantsView() } label: { tabLabel("Plants", "plants", 1) }
+            Tab(value: 2) { CareView() } label: { tabLabel("Care", "care", 2) }
+            Tab(value: 3) { ScanView() } label: { tabLabel("Scan", "scan", 3) }
+            Tab(value: 4) { MeView() } label: { tabLabel("Me", "me", 4) }
         }
+    }
+    /// 3D tab icon: full colour when selected, faded grey when not.
+    private func tabLabel(_ title: String, _ key: String, _ value: Int) -> some View {
+        Label { Text(title) } icon: { Image("TabIcons/\(key)\(tab == value ? "On" : "Off")").renderingMode(.original) }
     }
 }

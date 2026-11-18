@@ -161,7 +161,7 @@ struct GuideIcon: View {
     let guide: CareGuide
     var size: CGFloat = 52
     var body: some View {
-        SmartIcon(symbol: guide.symbol, size: size * 0.62, tint: guide.tint)
+        Icon3DView(guide.icon, size: size * 0.72)
             .frame(width: size, height: size)
             .background(guide.tint.opacity(0.14), in: RoundedRectangle(cornerRadius: size * 0.28, style: .continuous))
     }
@@ -189,7 +189,7 @@ struct GuideHeroCard: View {
         VStack(alignment: .leading, spacing: 10) {
             ZStack {
                 LinearGradient(colors: [guide.tint.opacity(0.22), guide.tint.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                SmartIcon(symbol: guide.symbol, size: 64, tint: guide.tint)
+                Icon3DView(guide.icon, size: 72)
             }
             .frame(height: 110)
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -341,5 +341,24 @@ struct GuidePlayerView: View {
             logged = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { dismiss() }
         } else { dismiss() }
+    }
+}
+
+extension CareGuide {
+    /// One distinct 3D icon per guide.
+    var icon: Icon3D {
+        switch id {
+        case "water": .waterDrops
+        case "soil": .soilTest
+        case "prune": .herbs
+        case "cutting": .seedling
+        case "repot": .pot
+        case "feed": .fertilizer
+        case "clean": .careHands
+        case "pests": .bug
+        case "measure": .growth
+        case "rotate": .repeat
+        default: Icon3D.forSymbol(symbol) ?? .leaf
+        }
     }
 }
