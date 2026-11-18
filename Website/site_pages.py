@@ -147,25 +147,25 @@ GENERAL = {
  ],
  "pt": [
   ("Primeiros passos", [
-   ("Preciso entender de plantas?", "Não. Adicione uma planta por foto ou pelo nome e o app monta o plano de cuidados, com explicações simples."),
+   ("Preciso manjar de plantas?", "Nada disso. Tira uma foto ou digita o nome da planta e o app monta todo o cuidado pra você, explicado do jeito mais simples."),
    ("Quem é o Raminho?", "O mascote do app e o melhor amigo das suas plantas. Ele te recebe no primeiro acesso, faz algumas perguntas sobre a sua casa e deixa tudo configurado."),
-   ("Funciona em qual iPhone?", "Em qualquer iPhone com a versão mais recente do iOS. Durante os testes, a instalação é pelo TestFlight, app gratuito da Apple."),
-   ("O app está em português?", "Está. O app e as plantas falam português e inglês.")]),
+   ("Roda em qual iPhone?", "Em qualquer iPhone com a versão mais recente do iOS. Durante os testes, a instalação é pelo TestFlight, app gratuito da Apple."),
+   ("Tem em português?", "Tem, sim. O app e as plantas falam português e inglês.")]),
   ("Planos e pagamento", [
-   ("É grátis mesmo?", "É. O Broto é grátis para sempre para até 5 plantas, com conversa, lembretes e teste da terra, e tem anúncios discretos."),
-   ("O que Estufa e Selva têm a mais?", "Os dois são o My Tiny Jungle Plus: plantas ilimitadas, zero anúncios, diagnóstico de saúde, leitor de rótulos, modo viagem, estações e mudas. A Selva é o plano anual, por 1 € ao mês."),
-   ("Como cancelo?", "Ajustes do iPhone → seu nome → Assinaturas → My Tiny Jungle. Você continua com o Plus até o fim do período pago."),
-   ("O que acontece com as plantas se eu cancelar?", "Nada é apagado. Você continua cuidando de 5 plantas de graça e pode voltar quando quiser.")]),
+   ("É de graça mesmo?", "É, sim. O Broto é de graça pra sempre, pra até 5 plantas, com conversa, lembretes e teste da terra, e tem anúncios discretos."),
+   ("O que os planos Estufa e Selva têm a mais?", "Os dois planos são o My Tiny Jungle Plus: plantas ilimitadas, zero anúncios, diagnóstico de saúde, leitor de rótulos, modo viagem, estações e mudas. A Estufa é o plano mensal e a Selva, o anual, que sai mais em conta."),
+   ("Como faço pra cancelar a assinatura?", "É rapidinho: Ajustes do iPhone → seu nome → Assinaturas → My Tiny Jungle → Cancelar assinatura. O Plus continua valendo até o fim do período que você já pagou."),
+   ("Se eu cancelar, perco minhas plantas?", "Não perde nada. Tudo fica salvo, você segue cuidando de até 5 plantas de graça e pode voltar quando quiser.")]),
   ("Privacidade", [
    ("Onde ficam minhas fotos?", "Só no seu iPhone. Fotos, leituras e anotações não vão para nenhum servidor."),
-   ("Preciso criar conta?", "Você entra com Apple ou Google para ter backup da sua selva e dividir com quem mora com você."),
+   ("Preciso criar uma conta?", "Você entra com Apple ou Google pra ter backup da sua selva e dividir com quem mora com você."),
    ("Os anúncios me rastreiam?", "Só se você permitir quando o iOS perguntar. O Plus remove todos os anúncios.")]),
   ("Casa compartilhada", [
-   ("Posso dividir os cuidados com outras pessoas?", "Pode. Convide quem mora com você e todos cuidam das mesmas plantas, com rodízio justo e sem rega em dobro."),
+   ("Dá pra dividir os cuidados com mais gente?", "Dá, sim. Chama quem mora com você e todos cuidam das mesmas plantas, com rodízio justo e sem rega em dobro."),
    ("E quando eu viajar?", "Alguém da casa assume a sua vez, e as plantas sabem a quem agradecer.")]),
   ("A vida acontece", [
-   ("Fiquei um tempo sem cuidar. E agora?", "Sem culpa. O app mostra por onde começar e as plantas comemoram a sua volta."),
-   ("Uma planta morreu. E agora?", "Acontece com todo mundo. A história dela fica na sua selva, e o app ajuda a próxima a ir melhor.")]),
+   ("Abandonei as plantas por um tempo. E agora?", "Sem culpa. O app mostra por onde começar e as plantas comemoram a sua volta."),
+   ("Minha planta morreu. E agora?", "Acontece com todo mundo, relaxa. A história dela fica na sua selva, e o app ajuda a próxima a ir melhor.")]),
  ],
 }
 

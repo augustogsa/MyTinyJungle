@@ -516,3 +516,5 @@ a.acard:hover{transform:translateY(-3px);box-shadow:0 16px 32px -20px rgba(36,51
 .fnav{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;padding-top:20px;border-top:1px solid rgba(36,51,31,.1);font-weight:700}
 h3.fq{display:flex;align-items:center;gap:10px;margin:28px 0 8px}h3.fq a{color:var(--forest)}
 .qhead .btn{margin-top:20px}
+
+details summary:focus:not(:focus-visible){outline:none}
