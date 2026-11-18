@@ -545,6 +545,111 @@
    "signs": "Grassy, flowerless leaves from soft bulbs.",
    "fix": "Firm, healthy bulbs only; plant deep and mulch.",
    "likes": "Daffodils and relatives"
+  },
+  {
+   "id": "broad-mites",
+   "name": "Broad mites",
+   "signs": "Twisted, bronzed, stunted new growth; flowers that fail to open. The mites are too small to see.",
+   "fix": "Cut off the worst tips, then spray with sulphur or a miticide every 5 days for 3 weeks. Isolate the plant.",
+   "likes": "Warm, humid greenhouses; begonias, peppers and gerberas"
+  },
+  {
+   "id": "russet-mites",
+   "name": "Russet mites",
+   "signs": "Bronze or rusty leaves and fruit, curling lower leaves, especially on tomatoes.",
+   "fix": "Remove affected leaves and treat with sulphur. Check neighbouring plants.",
+   "likes": "Hot, dry weather; tomatoes"
+  },
+  {
+   "id": "leaf-miners",
+   "name": "Leaf miners",
+   "signs": "Pale winding trails inside the leaf.",
+   "fix": "Pick off mined leaves and squash the larvae at the end of each trail. Cover crops with fine mesh.",
+   "likes": "Spinach, chard, chrysanthemums, citrus"
+  },
+  {
+   "id": "caterpillars",
+   "name": "Caterpillars",
+   "signs": "Large ragged holes, dark droppings, rolled leaves.",
+   "fix": "Pick off by hand in the evening. Fine mesh netting keeps butterflies away from brassicas.",
+   "likes": "Brassicas, herbs, many garden plants"
+  },
+  {
+   "id": "snails",
+   "name": "Snails",
+   "signs": "Irregular holes and silvery slime trails, often overnight.",
+   "fix": "Hand-pick at dusk, use copper tape on pots, and lift pots onto feet.",
+   "likes": "Damp nights, tender young growth"
+  },
+  {
+   "id": "earwigs",
+   "name": "Earwigs",
+   "signs": "Ragged holes in petals and soft leaves at night.",
+   "fix": "Trap them in upturned pots stuffed with straw; empty each morning.",
+   "likes": "Dahlias, clematis, seedlings"
+  },
+  {
+   "id": "springtails",
+   "name": "Springtails",
+   "signs": "Tiny white or grey bugs jumping on wet soil.",
+   "fix": "Harmless to plants: they eat fungi. Let the soil dry more and they vanish.",
+   "likes": "Constantly damp soil"
+  },
+  {
+   "id": "soil-mites",
+   "name": "Soil mites",
+   "signs": "Tiny brown or white specks crawling in the potting mix.",
+   "fix": "Mostly harmless decomposers. Repot in fresh mix if numbers are huge.",
+   "likes": "Old, organic-rich soil"
+  },
+  {
+   "id": "leafhoppers",
+   "name": "Leafhoppers",
+   "signs": "Pale stippling on leaves, little insects that jump sideways.",
+   "fix": "Shower plants and use sticky traps. Soap spray on nymphs.",
+   "likes": "Roses, herbs, outdoor plants"
+  },
+  {
+   "id": "sawfly",
+   "name": "Sawfly larvae",
+   "signs": "Leaves stripped to the midrib in days, often on roses and gooseberries.",
+   "fix": "Pick larvae off by hand and check undersides of leaves weekly.",
+   "likes": "Roses, gooseberries, Solomon's seal"
+  },
+  {
+   "id": "lily-beetle",
+   "name": "Lily beetle",
+   "signs": "Bright red beetles and messy larvae eating lily leaves.",
+   "fix": "Pick off beetles daily in spring; they drop when disturbed so hold a hand underneath.",
+   "likes": "Lilies and fritillaries"
+  },
+  {
+   "id": "ants",
+   "name": "Ants",
+   "signs": "Ants marching up stems, often farming aphids or nesting in pots.",
+   "fix": "Treat the aphids or scale they protect. Stand pots in a moat of water if they nest.",
+   "likes": "Plants with aphids or scale"
+  },
+  {
+   "id": "nematodes",
+   "name": "Root-knot nematodes",
+   "signs": "Stunted, wilting plants with knobbly swollen roots.",
+   "fix": "Bin the soil, repot healthy cuttings into fresh mix, and don't reuse old soil.",
+   "likes": "Warm soils; tomatoes, cucumbers, figs"
+  },
+  {
+   "id": "rodents",
+   "name": "Mice and squirrels",
+   "signs": "Dug-up bulbs, chewed seedlings, bitten fruit.",
+   "fix": "Cover pots with chicken wire after planting bulbs; protect fruit with mesh.",
+   "likes": "Bulbs, seeds and ripe fruit"
+  },
+  {
+   "id": "birds",
+   "name": "Birds",
+   "signs": "Pecked seedlings, stripped berries.",
+   "fix": "Net crops and berries; a few CDs or tape help briefly.",
+   "likes": "Berries, seedlings, peas"
   }
  ],
  "sources": [
@@ -996,6 +1101,382 @@
     "no holes monstera",
     "no splits"
    ]
+  },
+  {
+   "id": "red-leaves",
+   "name": "Leaves turning red or purple",
+   "looks": "Green leaves blushing red, purple or bronze.",
+   "causes": [
+    "Strong sun (often harmless in succulents)",
+    "Cold",
+    "Phosphorus shortage"
+   ],
+   "fixes": [
+    "Succulents blushing in sun is healthy.",
+    "Move tender plants out of the cold.",
+    "Feed in spring if older leaves go purple."
+   ],
+   "keywords": [
+    "red",
+    "purple",
+    "bronze",
+    "blushing"
+   ]
+  },
+  {
+   "id": "pale-new",
+   "name": "Pale, washed-out new growth",
+   "looks": "New leaves come in pale or white.",
+   "causes": [
+    "Too little light",
+    "Iron shortage",
+    "Too much direct sun"
+   ],
+   "fixes": [
+    "Find a brighter spot.",
+    "Rain water and a feed with micronutrients.",
+    "Shade from harsh midday sun."
+   ],
+   "keywords": [
+    "pale",
+    "washed out",
+    "white new",
+    "bleached new"
+   ]
+  },
+  {
+   "id": "leaf-split",
+   "name": "Leaves splitting or tearing",
+   "looks": "Tears along banana, bird of paradise or palm leaves.",
+   "causes": [
+    "Natural wind tears",
+    "Low humidity",
+    "Handling"
+   ],
+   "fixes": [
+    "It's normal for these plants.",
+    "Raise humidity for new leaves."
+   ],
+   "keywords": [
+    "split",
+    "torn",
+    "tear",
+    "ripped"
+   ]
+  },
+  {
+   "id": "stem-black",
+   "name": "Black stem at the base",
+   "looks": "The stem darkens at soil level and goes soft.",
+   "causes": [
+    "Stem or crown rot",
+    "Overwatering",
+    "Cold"
+   ],
+   "fixes": [
+    "Take healthy cuttings now.",
+    "Discard soggy soil.",
+    "Water less in winter."
+   ],
+   "keywords": [
+    "black stem",
+    "stem base",
+    "rotting stem"
+   ]
+  },
+  {
+   "id": "wrinkled",
+   "name": "Wrinkled, shrivelled succulent leaves",
+   "looks": "Leaves look deflated and wrinkly.",
+   "causes": [
+    "Thirst",
+    "Root damage (if soil is wet)"
+   ],
+   "fixes": [
+    "Soak and drain well.",
+    "If soil is wet, check the roots for rot."
+   ],
+   "keywords": [
+    "wrinkled",
+    "shrivelled",
+    "shriveled",
+    "deflated"
+   ]
+  },
+  {
+   "id": "translucent",
+   "name": "Translucent, mushy succulent leaves",
+   "looks": "Leaves look glassy, soft or see-through.",
+   "causes": [
+    "Too much water",
+    "Cold damage"
+   ],
+   "fixes": [
+    "Stop watering and let dry fully.",
+    "Remove mushy leaves; take healthy cuttings if the stem is soft."
+   ],
+   "keywords": [
+    "translucent",
+    "glassy",
+    "see through",
+    "mushy leaves"
+   ]
+  },
+  {
+   "id": "rusty-spots",
+   "name": "Rusty or bronze spots",
+   "looks": "Tiny rusty dots or a bronze sheen on leaves.",
+   "causes": [
+    "Mites",
+    "Rust fungus",
+    "Thrips damage"
+   ],
+   "fixes": [
+    "Check undersides with a magnifier.",
+    "Shower and isolate.",
+    "Remove spotted leaves."
+   ],
+   "keywords": [
+    "rust",
+    "rusty",
+    "bronze spots"
+   ]
+  },
+  {
+   "id": "silver-streaks",
+   "name": "Silvery streaks",
+   "looks": "Silvery, scratched-looking patches with black dots.",
+   "causes": [
+    "Thrips"
+   ],
+   "fixes": [
+    "Shower, then use soap or neem spray weekly.",
+    "Blue sticky traps."
+   ],
+   "keywords": [
+    "silver",
+    "silvery",
+    "streaks",
+    "scratched"
+   ]
+  },
+  {
+   "id": "holes-edges",
+   "name": "Notches in leaf edges",
+   "looks": "Neat notches or scallops cut from the edges.",
+   "causes": [
+    "Vine weevil adults",
+    "Leafcutter bees (harmless)"
+   ],
+   "fixes": [
+    "Check at night with a torch.",
+    "Inspect roots for weevil grubs."
+   ],
+   "keywords": [
+    "notch",
+    "notches",
+    "scalloped",
+    "edges eaten"
+   ]
+  },
+  {
+   "id": "roots-out",
+   "name": "Roots out of the pot",
+   "looks": "Roots poking out of holes or coiling on top.",
+   "causes": [
+    "Root-bound",
+    "Normal aerial roots"
+   ],
+   "fixes": [
+    "Repot one size up in spring.",
+    "Aerial roots are fine; guide them onto a pole."
+   ],
+   "keywords": [
+    "roots out",
+    "roots coming out",
+    "roots poking"
+   ]
+  },
+  {
+   "id": "leaning",
+   "name": "Plant leaning or falling over",
+   "looks": "The plant leans hard to one side or topples.",
+   "causes": [
+    "Reaching for light",
+    "Top-heavy in a small pot",
+    "Rot at the base"
+   ],
+   "fixes": [
+    "Turn the pot weekly.",
+    "Repot into a heavier, bigger pot.",
+    "Check the stem base."
+   ],
+   "keywords": [
+    "leaning",
+    "falling over",
+    "toppling",
+    "tilting"
+   ]
+  },
+  {
+   "id": "no-new-growth",
+   "name": "No new growth",
+   "looks": "Weeks without a new leaf.",
+   "causes": [
+    "Winter rest",
+    "Too little light",
+    "Root-bound or hungry"
+   ],
+   "fixes": [
+    "Normal in winter.",
+    "More light in spring.",
+    "Repot or feed in the growing season."
+   ],
+   "keywords": [
+    "not growing",
+    "no new growth",
+    "stopped growing"
+   ]
+  },
+  {
+   "id": "smell",
+   "name": "Bad smell from the soil",
+   "looks": "A sour, rotten or swampy smell.",
+   "causes": [
+    "Root rot",
+    "Waterlogged soil"
+   ],
+   "fixes": [
+    "Unpot and check the roots.",
+    "Repot into fresh, airy mix."
+   ],
+   "keywords": [
+    "smell",
+    "smells",
+    "stink",
+    "rotten smell"
+   ]
+  },
+  {
+   "id": "white-roots-top",
+   "name": "Fuzzy white stuff on roots",
+   "looks": "White cottony patches on roots when unpotting.",
+   "causes": [
+    "Root mealybugs",
+    "Harmless fungal threads"
+   ],
+   "fixes": [
+    "Mealybugs look waxy and move when poked: wash roots and repot.",
+    "Harmless threads are fine."
+   ],
+   "keywords": [
+    "white on roots",
+    "root mealybug"
+   ]
+  },
+  {
+   "id": "cracked-fruit",
+   "name": "Cracked fruit",
+   "looks": "Tomatoes, figs or citrus splitting.",
+   "causes": [
+    "Irregular watering after a dry spell"
+   ],
+   "fixes": [
+    "Water evenly and mulch."
+   ],
+   "keywords": [
+    "cracked",
+    "split fruit",
+    "fruit splitting"
+   ]
+  },
+  {
+   "id": "drop-fruit",
+   "name": "Fruit or flowers dropping early",
+   "looks": "Young fruit or flowers fall off.",
+   "causes": [
+    "Not pollinated",
+    "Heat or cold",
+    "Drought"
+   ],
+   "fixes": [
+    "Hand-pollinate with a brush indoors.",
+    "Steady watering and temperature."
+   ],
+   "keywords": [
+    "fruit drop",
+    "fruit falling",
+    "flowers falling"
+   ]
+  },
+  {
+   "id": "variegation-loss",
+   "name": "Variegation fading to green",
+   "looks": "New leaves come in plain green.",
+   "causes": [
+    "Too little light",
+    "Natural reversion"
+   ],
+   "fixes": [
+    "Brighter light.",
+    "Cut back to a variegated leaf."
+   ],
+   "keywords": [
+    "losing variegation",
+    "reverting",
+    "all green"
+   ]
+  },
+  {
+   "id": "brown-spots-water",
+   "name": "Brown spots after misting",
+   "looks": "Spots appearing where water droplets sat.",
+   "causes": [
+    "Bacterial or fungal spots",
+    "Cold water on leaves"
+   ],
+   "fixes": [
+    "Stop misting the plant.",
+    "Water the soil only."
+   ],
+   "keywords": [
+    "spots after misting",
+    "water spots"
+   ]
+  },
+  {
+   "id": "sticky-floor",
+   "name": "Sticky floor or shelf under the plant",
+   "looks": "A shiny, sticky film around the plant.",
+   "causes": [
+    "Honeydew from scale, aphids or mealybugs",
+    "Natural nectar on some plants"
+   ],
+   "fixes": [
+    "Check stems and leaf undersides for bugs.",
+    "Wipe and treat."
+   ],
+   "keywords": [
+    "sticky floor",
+    "sticky shelf",
+    "honeydew"
+   ]
+  },
+  {
+   "id": "pups-dying",
+   "name": "Mother plant dying after flowering",
+   "looks": "The rosette fades after it flowered.",
+   "causes": [
+    "Natural for bromeliads, agaves and some succulents"
+   ],
+   "fixes": [
+    "Keep caring for it: pups grow at the base. Pot them on when a third of the size."
+   ],
+   "keywords": [
+    "mother dying",
+    "after flowering dying",
+    "bromeliad dying"
+   ]
   }
  ],
  "diseases": [
@@ -1078,6 +1559,118 @@
    "why": "Roots take up water faster than leaves can release it.",
    "fix": "Water less and increase light and airflow.",
    "prevent": "Water in the morning, avoid cold soggy soil."
+  },
+  {
+   "id": "downy-mildew",
+   "name": "Downy mildew",
+   "signs": "Yellow patches on top of leaves, grey-purple fuzz underneath.",
+   "why": "Cool, damp weather and wet leaves.",
+   "fix": "Remove infected leaves, water at the base in the morning, improve airflow.",
+   "prevent": "Space plants, avoid wetting leaves, choose resistant varieties (basil, impatiens)."
+  },
+  {
+   "id": "anthracnose",
+   "name": "Anthracnose",
+   "signs": "Sunken brown or black spots with dark rims, often along the veins.",
+   "why": "A fungus spread by splashing water.",
+   "fix": "Cut out infected parts, keep leaves dry, clean tools.",
+   "prevent": "Water the soil, not the plant; good airflow."
+  },
+  {
+   "id": "bacterial-leaf-spot",
+   "name": "Bacterial leaf spot",
+   "signs": "Water-soaked spots with yellow halos that turn brown, sometimes smelly.",
+   "why": "Bacteria entering through wet leaves or wounds.",
+   "fix": "Remove spotted leaves, stop misting, isolate the plant.",
+   "prevent": "Keep foliage dry and use clean scissors."
+  },
+  {
+   "id": "fusarium-wilt",
+   "name": "Fusarium wilt",
+   "signs": "One side of the plant wilts and yellows; brown streaks inside the stem.",
+   "why": "A soil fungus that blocks water flow.",
+   "fix": "There's no cure: discard the plant and its soil.",
+   "prevent": "Fresh sterile mix and resistant varieties."
+  },
+  {
+   "id": "southern-blight",
+   "name": "Stem rot",
+   "signs": "Brown, soft stem at soil level, white threads, collapse.",
+   "why": "Fungi in warm, wet soil.",
+   "fix": "Take healthy cuttings and start again; discard the soil.",
+   "prevent": "Don't bury stems too deep and let the surface dry."
+  },
+  {
+   "id": "blossom-end-rot",
+   "name": "Blossom end rot",
+   "signs": "A sunken dark patch at the bottom of tomatoes and peppers.",
+   "why": "Uneven watering stops calcium reaching the fruit.",
+   "fix": "Water steadily and deeply; remove affected fruit.",
+   "prevent": "Mulch pots and never let them swing from soaked to bone dry."
+  },
+  {
+   "id": "tomato-blight",
+   "name": "Late blight",
+   "signs": "Brown blotches on leaves and stems, brown rotting fruit, fast spread in wet weather.",
+   "why": "A water mould carried on the wind in warm, wet summers.",
+   "fix": "Remove and bin infected growth at once (not compost).",
+   "prevent": "Grow under cover, water at the base, choose blight-resistant tomatoes."
+  },
+  {
+   "id": "mosaic-virus",
+   "name": "Mosaic virus",
+   "signs": "Mottled light and dark patches, crinkled leaves, stunted growth.",
+   "why": "Viruses spread by aphids, hands or tools.",
+   "fix": "No cure: bin the plant and wash hands and tools.",
+   "prevent": "Control aphids and buy healthy plants."
+  },
+  {
+   "id": "chlorosis-lime",
+   "name": "Lime-induced chlorosis",
+   "signs": "Yellow leaves with green veins on acid lovers.",
+   "why": "Alkaline water or soil locks up iron.",
+   "fix": "Water with rain water, use ericaceous feed with chelated iron.",
+   "prevent": "Ericaceous compost and rain water for acid lovers."
+  },
+  {
+   "id": "sunscald",
+   "name": "Sunscald",
+   "signs": "Bleached white or papery brown patches on the sunny side.",
+   "why": "A sudden move into strong sun, or water droplets in hot sun.",
+   "fix": "Move back to softer light; cut damaged leaves once new ones grow.",
+   "prevent": "Acclimatise plants to stronger light over 1–2 weeks."
+  },
+  {
+   "id": "cold-damage",
+   "name": "Cold damage",
+   "signs": "Dark, glassy or mushy leaves after a cold night or draught.",
+   "why": "Tropical cells burst below about 10 °C.",
+   "fix": "Cut damaged parts once it warms and keep it warm and slightly dry.",
+   "prevent": "Keep tropicals away from cold glass and doors in winter."
+  },
+  {
+   "id": "transplant-shock",
+   "name": "Transplant shock",
+   "signs": "Wilting or dropping leaves just after repotting or moving.",
+   "why": "Roots were disturbed or conditions changed.",
+   "fix": "Steady light, normal watering, no feed for a month.",
+   "prevent": "Repot in spring and disturb roots gently."
+  },
+  {
+   "id": "orchid-crown-rot",
+   "name": "Orchid crown rot",
+   "signs": "Black, mushy centre where leaves meet.",
+   "why": "Water left sitting in the crown.",
+   "fix": "Dab with cinnamon or 3 % hydrogen peroxide, keep dry, hope for a keiki.",
+   "prevent": "Water in the morning, tilt to drain the crown."
+  },
+  {
+   "id": "rust-pelargonium",
+   "name": "Rose and pelargonium rust",
+   "signs": "Orange powdery pustules under leaves.",
+   "why": "A fungus spread in humid, still air.",
+   "fix": "Remove spotted leaves and improve airflow.",
+   "prevent": "Water at the base and space plants out."
   }
  ],
  "deficiencies": [
@@ -1278,6 +1871,270 @@
   {
    "term": "Leggy",
    "meaning": "Long and sparse, usually from too little light."
+  },
+  {
+   "term": "Apical dominance",
+   "meaning": "The main tip tells side buds to wait. Pinch the tip and side shoots grow."
+  },
+  {
+   "term": "Areole",
+   "meaning": "The fuzzy pad on a cactus where spines and flowers grow."
+  },
+  {
+   "term": "Axil",
+   "meaning": "The angle between a leaf and the stem, where new buds appear."
+  },
+  {
+   "term": "Bare root",
+   "meaning": "A plant sold or moved without soil around its roots."
+  },
+  {
+   "term": "Bulbil",
+   "meaning": "A tiny bulb that forms on a stem or in a flower head."
+  },
+  {
+   "term": "Caudex",
+   "meaning": "A swollen stem or root base that stores water."
+  },
+  {
+   "term": "Chitting",
+   "meaning": "Letting seed potatoes sprout before planting."
+  },
+  {
+   "term": "Cladode",
+   "meaning": "A flat stem that works like a leaf, as in a prickly pear pad."
+  },
+  {
+   "term": "Cloche",
+   "meaning": "A clear cover that protects plants from cold."
+  },
+  {
+   "term": "Coir",
+   "meaning": "Coconut fibre, a peat-free potting ingredient."
+  },
+  {
+   "term": "Companion planting",
+   "meaning": "Growing plants together that help each other."
+  },
+  {
+   "term": "Cotyledon",
+   "meaning": "The very first seed leaves, before true leaves."
+  },
+  {
+   "term": "Crown",
+   "meaning": "Where stems meet roots; keep it at soil level."
+  },
+  {
+   "term": "Cutting",
+   "meaning": "A piece of stem, leaf or root used to grow a new plant."
+  },
+  {
+   "term": "Damping off",
+   "meaning": "A fungus that makes seedlings collapse at the base."
+  },
+  {
+   "term": "Deciduous",
+   "meaning": "Drops its leaves for part of the year."
+  },
+  {
+   "term": "Evergreen",
+   "meaning": "Keeps its leaves all year."
+  },
+  {
+   "term": "Determinate",
+   "meaning": "A tomato that grows to a set height and fruits at once."
+  },
+  {
+   "term": "Indeterminate",
+   "meaning": "A tomato that keeps growing and fruiting all season."
+  },
+  {
+   "term": "Direct sow",
+   "meaning": "Sowing seeds straight where they'll grow."
+  },
+  {
+   "term": "Division",
+   "meaning": "Splitting a clump into smaller plants."
+  },
+  {
+   "term": "Drainage layer",
+   "meaning": "A gravel layer under soil. It doesn't help drainage, a good mix does."
+  },
+  {
+   "term": "Espalier",
+   "meaning": "Training a tree flat against a wall or wire."
+  },
+  {
+   "term": "Foliar feed",
+   "meaning": "Fertiliser sprayed on leaves."
+  },
+  {
+   "term": "Frond",
+   "meaning": "A fern or palm leaf."
+  },
+  {
+   "term": "Germination",
+   "meaning": "When a seed wakes up and sprouts."
+  },
+  {
+   "term": "Grafting",
+   "meaning": "Joining a variety onto a stronger root."
+  },
+  {
+   "term": "Habit",
+   "meaning": "How a plant grows: upright, trailing, bushy."
+  },
+  {
+   "term": "Half-hardy",
+   "meaning": "Survives light frost but not hard freezes."
+  },
+  {
+   "term": "Heirloom",
+   "meaning": "An old variety saved from seed for generations."
+  },
+  {
+   "term": "Humus",
+   "meaning": "Dark, rich, fully broken-down organic matter."
+  },
+  {
+   "term": "Hybrid",
+   "meaning": "A cross between two species or varieties."
+  },
+  {
+   "term": "Inflorescence",
+   "meaning": "A cluster of flowers on one stem."
+  },
+  {
+   "term": "Internode",
+   "meaning": "The bare stem between two nodes. Long internodes mean low light."
+  },
+  {
+   "term": "Leca",
+   "meaning": "Clay pebbles used for semi-hydro growing."
+  },
+  {
+   "term": "Loam",
+   "meaning": "Balanced garden soil of sand, silt and clay."
+  },
+  {
+   "term": "Mulch",
+   "meaning": "A layer over soil to keep moisture and warmth in."
+  },
+  {
+   "term": "Mycorrhiza",
+   "meaning": "Friendly fungi that partner with roots."
+  },
+  {
+   "term": "Native range",
+   "meaning": "Where a plant grows wild."
+  },
+  {
+   "term": "Offshoot",
+   "meaning": "A side shoot that can become a new plant."
+  },
+  {
+   "term": "Overwinter",
+   "meaning": "Keep a plant alive through winter."
+  },
+  {
+   "term": "Peat-free",
+   "meaning": "Compost made without peat, kinder to wetlands."
+  },
+  {
+   "term": "pH",
+   "meaning": "How acidic or alkaline soil is. 7 is neutral."
+  },
+  {
+   "term": "Photoperiod",
+   "meaning": "Day length that triggers flowering in some plants."
+  },
+  {
+   "term": "Photosynthesis",
+   "meaning": "How plants turn light, water and air into food."
+  },
+  {
+   "term": "Pollination",
+   "meaning": "Moving pollen so flowers can make fruit and seed."
+  },
+  {
+   "term": "Potting on",
+   "meaning": "Moving a plant to a slightly bigger pot."
+  },
+  {
+   "term": "Pumice",
+   "meaning": "Light volcanic rock that keeps mixes airy."
+  },
+  {
+   "term": "Rootball",
+   "meaning": "The roots and soil together as one lump."
+  },
+  {
+   "term": "Rosette",
+   "meaning": "Leaves arranged in a circle from one centre."
+  },
+  {
+   "term": "Runner",
+   "meaning": "A stem that roots along the ground to form a new plant."
+  },
+  {
+   "term": "Scarify",
+   "meaning": "Nicking a hard seed coat to help it sprout."
+  },
+  {
+   "term": "Self-fertile",
+   "meaning": "Can make fruit without another plant."
+  },
+  {
+   "term": "Sphagnum moss",
+   "meaning": "Spongy moss that holds water and air."
+  },
+  {
+   "term": "Spore",
+   "meaning": "The dust ferns use instead of seeds."
+  },
+  {
+   "term": "Stolon",
+   "meaning": "A creeping stem above ground."
+  },
+  {
+   "term": "Stratification",
+   "meaning": "Giving seeds a cold spell so they sprout."
+  },
+  {
+   "term": "Substrate",
+   "meaning": "Anything plants grow in: soil, bark, leca."
+  },
+  {
+   "term": "Succession sowing",
+   "meaning": "Sowing small batches often for steady harvests."
+  },
+  {
+   "term": "Taproot",
+   "meaning": "One thick main root going straight down."
+  },
+  {
+   "term": "Terrarium",
+   "meaning": "A glass garden with its own humidity."
+  },
+  {
+   "term": "Transpiration",
+   "meaning": "Plants breathing out water through leaves."
+  },
+  {
+   "term": "Tuber",
+   "meaning": "A swollen underground stem that stores food."
+  },
+  {
+   "term": "Understory",
+   "meaning": "Plants growing under the forest canopy."
+  },
+  {
+   "term": "Vermicompost",
+   "meaning": "Compost made by worms, rich and gentle."
+  },
+  {
+   "term": "Xeriscaping",
+   "meaning": "Gardening with drought-tolerant plants."
   }
  ],
  "calendar": [
