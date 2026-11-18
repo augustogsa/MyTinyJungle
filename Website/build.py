@@ -325,7 +325,7 @@ def build():
             "good-to-know": good_to_know(L),
             "plus": doc(L, "/plus", t["plus_title"], t["plus_desc"],
                         f'<p>{t["plus_intro"]}</p><p><a class="btn" href="{TESTFLIGHT}">{t["plus_btn"]}</a></p><div class="box"><p>{t["plus_tip"]}</p></div>'
-                        f'<script>if(/iPhone|iPad/.test(navigator.userAgent))setTimeout(function(){{location.href="{TESTFLIGHT}"}},1500)</script>'),
+                        f'<script>if(/iPhone|iPad/.test(navigator.userAgent))setTimeout(function(){{location.href="{TESTFLIGHT}"}},1500)</script>', meta=False),
         }
         out["get"] = doc(L, "/get", t["get_title"], t["get_desc"],
                         f'<p class="flead">{t["get_intro"]}</p><p><a class="btn" href="{TESTFLIGHT}" rel="noopener">{ICON["apple"]}{t["get_btn"]}</a></p>'
