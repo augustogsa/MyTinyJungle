@@ -148,7 +148,7 @@ struct SpaceDetailView: View {
         let poor = here.filter { $0.species.map { PlacementEngine.fit($0, in: space).fit < .good } ?? false }
         if !poor.isEmpty { return "\(poor.map(\.name).joined(separator: ", ")) would be happier elsewhere. Tap them to see their best place." }
         if !humid.isEmpty && (space.humidity ?? 45) < 55 { return "Conditions are great for \(s.count - humid.count) of \(s.count) plants. Consider a humidifier for the humidity lovers." }
-        return "Conditions suit all \(s.count) plant\(s.count == 1 ? "" : "s") here. 🌿"
+        return "Conditions suit all \(s.count) plant\(s.count == 1 ? "" : "s") here."
     }
 }
 

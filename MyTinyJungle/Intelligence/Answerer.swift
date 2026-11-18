@@ -15,7 +15,7 @@ enum Answerer {
                     guard let first = r.first else { return nil }
                     return "• \(p.name): \(label(first.kind))"
                 }
-                return needing.isEmpty ? ("Everyone is fine right now. Nothing needs you today. 🌿", [])
+                return needing.isEmpty ? ("Everyone is fine right now. Nothing needs you today.", [])
                     : ("Here's who needs you:\n" + needing.joined(separator: "\n"), [])
             }
             if has(#"\b(safe|toxic|poison|pet|cat|dog|gato|cao|toxic)"#) {

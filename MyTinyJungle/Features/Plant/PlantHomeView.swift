@@ -131,11 +131,24 @@ struct PlantHomeView: View {
             .fullScreenCover(item: $guide) { GuidePlayerView(guide: $0, plant: plant) }
             .navigationDestination(isPresented: $showGuides) { GuidesView(plant: plant) }
             NavigationLink { PlantChatView(plant: plant) } label: {
-                HStack(alignment: .top, spacing: 12) {
-                    PlantAvatar(data: plant.photo, size: 40)
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 10) {
+                        PlantAvatar(data: plant.photo, size: 36)
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("\(plant.name) says").font(.caption.weight(.semibold)).foregroundStyle(Jungle.warmText)
+                            Text(mood == .needsYou ? "Needs you today" : mood == .fine ? "Has a small request" : "Feeling good")
+                                .font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                        }
+                        Spacer(minLength: 0)
+                        Text("Chat").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                        Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                    }
                     Text("“\(currentLine)”").font(.body).foregroundStyle(Jungle.text).multilineTextAlignment(.leading)
-                    Spacer(minLength: 0)
-                    Image(systemName: "chevron.right").font(.caption).foregroundStyle(Jungle.subtle)
+                    HStack(spacing: 14) {
+                        ForEach(statusFacts, id: \.1) { f in
+                            HStack(spacing: 5) { Icon3DView(f.0, size: 18); Text(f.1).font(.caption).foregroundStyle(Jungle.subtle) }
+                        }
+                    }
                 }
                 .padding(14)
                 .background(Jungle.sun.opacity(0.22), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
@@ -161,9 +174,19 @@ struct PlantHomeView: View {
         }
     }
 
+    /// The facts behind the voice line, so the message never stands alone.
+    private var statusFacts: [(Icon3D, String)] {
+        var out: [(Icon3D, String)] = []
+        if let w = plant.lastEvent(.water)?.date {
+            let d = Int(CareEngine.days(from: w)); out.append((.waterDrops, d == 0 ? "Watered today" : "Watered \(d)d ago"))
+        } else { out.append((.waterDrops, "No water logged")) }
+        out.append((.soilTest, nextCare))
+        return out
+    }
+
     private var currentLine: String {
         if let r = CareEngine.requests(for: plant).first(where: { $0.priority <= 2 }) { return PlantVoice.say(r, plant: plant) }
-        if let leaf = plant.lastEvent(.newLeaf), CareEngine.days(from: leaf.date) < 14 { return "I'm growing really well! I just pushed a new leaf. 🌱" }
+        if let leaf = plant.lastEvent(.newLeaf), CareEngine.days(from: leaf.date) < 14 { return "I'm growing really well! I just pushed a new leaf." }
         return PlantVoice.happy(plant)
     }
     private var locationLine: String {
@@ -215,7 +238,7 @@ struct ActionTile: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 6) {
-                Image(systemName: symbol).font(.system(.title3, design: .rounded)).foregroundStyle(tint)
+                SmartIcon(symbol: symbol, size: 30, tint: tint)
                 Text(title).font(.caption.weight(.medium)).foregroundStyle(Jungle.text)
             }
             .frame(maxWidth: .infinity).padding(.vertical, 12)
@@ -232,7 +255,7 @@ struct InfoRow: View {
     var chevron = false
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            Image(systemName: symbol).foregroundStyle(Jungle.leaf).frame(width: 22)
+            SmartIcon(symbol: symbol, size: 26).frame(width: 30)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                 Text(value).font(.subheadline).foregroundStyle(Jungle.subtle)
@@ -344,7 +367,7 @@ struct PlantStoryView: View {
                 ForEach(kinds, id: \.self) { k in
                     let last = plant.lastEvent(k)
                     VStack(spacing: 4) {
-                        Image(systemName: k.symbol).font(.system(.title3, design: .rounded)).foregroundStyle(last == nil ? Jungle.subtle : Jungle.forest)
+                        Icon3DView(Icon3D.care(k), size: 32).saturation(last == nil ? 0.2 : 1)
                             .frame(width: 44, height: 44).background(last == nil ? Jungle.mist : Jungle.mint, in: Circle())
                         Text(short(k)).font(.caption2.weight(.medium)).foregroundStyle(Jungle.text)
                         Text(last.map { $0.date.formatted(.dateTime.day().month(.defaultDigits)) } ?? "–").font(.caption2).foregroundStyle(Jungle.subtle)
@@ -422,7 +445,7 @@ struct PlantStoryView: View {
             }
             .frame(width: 40)
             VStack(spacing: 0) {
-                Image(systemName: e.kind.symbol).font(.caption.weight(.semibold)).foregroundStyle(Jungle.forest)
+                Icon3DView(Icon3D.care(e.kind), size: 22)
                     .frame(width: 26, height: 26).background(Jungle.mint, in: Circle())
                 Rectangle().fill(Jungle.border).frame(width: 2).frame(maxHeight: .infinity)
             }
@@ -447,8 +470,8 @@ struct PlantStoryView: View {
         case .mist: "Misted."
         case .rotate: "Turned toward the light."
         case .clean: "Leaves cleaned."
-        case .newLeaf: "I grew a new leaf! 🌱"
-        case .flower: "I flowered! 🌸"
+        case .newLeaf: "I grew a new leaf!"
+        case .flower: "I flowered!"
         case .repot: "You repotted me" + (e.value.map { " into a \(Int($0)) cm pot" } ?? "") + "."
         case .move: "Moved to \(e.note.isEmpty ? "a new spot" : e.note)."
         case .health: "Health check: \(e.note)"
@@ -500,7 +523,7 @@ struct PlantCarePlanView: View {
                 Text("Planned").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 ForEach(mine) { t in
                     HStack {
-                        Image(systemName: t.kind.symbol).foregroundStyle(Jungle.leaf)
+                        Icon3DView(Icon3D.care(t.kind), size: 26)
                         VStack(alignment: .leading) {
                             Text(t.title).foregroundStyle(Jungle.text)
                             Text(t.due.formatted(.dateTime.weekday().day().month())).font(.caption).foregroundStyle(Jungle.subtle)
@@ -526,7 +549,7 @@ struct PlantCarePlanView: View {
     private func row(_ kind: CareKind, _ title: String, _ value: String, _ hint: String) -> some View {
         let last = plant.lastEvent(kind)
         return HStack(alignment: .top, spacing: 12) {
-            Image(systemName: kind.symbol).foregroundStyle(Jungle.leaf).frame(width: 22)
+            Icon3DView(Icon3D.care(kind), size: 26).frame(width: 28)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                 Text(value).font(.subheadline).foregroundStyle(Jungle.text)

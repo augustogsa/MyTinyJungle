@@ -9,11 +9,15 @@ struct CareView: View {
     enum Range: String, CaseIterable { case week = "Week", month = "Month", calendar = "Calendar", season = "Season" }
     @State private var range: Range = .week
     @State private var adding = false
+    /// Day picked in the week strip; nil shows every day.
+    @State private var selectedDay: Date?
+    @State private var weekOffset = 0
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
+                    WeekStrip(plants: plants, tasks: tasks, selected: $selectedDay, offset: $weekOffset)
                     Picker("Range", selection: $range) { ForEach(Range.allCases, id: \.self) { Text($0.rawValue) } }.pickerStyle(.segmented)
                     HStack(spacing: 10) {
                         NavigationLink { TravelPlanView() } label: { shortcut("Travel care", "airplane") }
@@ -30,7 +34,8 @@ struct CareView: View {
                 .padding(16)
             }
             .jungleBackdrop()
-            .navigationTitle("Care")
+            .navigationTitle(stripMonth)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar { Button { adding = true } label: { Image(systemName: "plus") }.accessibilityLabel("Add care task") }
             .sheet(isPresented: $adding) { AddTaskView(plants: plants) }
             .animation(.snappy, value: range)
@@ -39,19 +44,26 @@ struct CareView: View {
 
     private func shortcut(_ t: String, _ s: String) -> some View {
         VStack(spacing: 6) {
-            Image(systemName: s).font(.system(.title3, design: .rounded)).foregroundStyle(Jungle.leaf)
+            SmartIcon(symbol: s, size: 34)
             Text(t).font(.caption.weight(.medium)).foregroundStyle(Jungle.text)
         }
         .frame(maxWidth: .infinity).padding(.vertical, 12).jungleCard()
     }
 
+    private var stripMonth: String {
+        let d = Calendar.current.date(byAdding: .weekOfYear, value: weekOffset, to: selectedDay ?? Date()) ?? Date()
+        return (selectedDay ?? d).formatted(.dateTime.month(.wide).year())
+    }
+
     private var agenda: some View {
-        let items = Agenda.items(plants: plants, tasks: tasks, days: range == .week ? 7 : 30)
+        let cal0 = Calendar.current
+        let all = Agenda.items(plants: plants, tasks: tasks, days: selectedDay.map { max(7, Int(($0.timeIntervalSinceNow / 86_400).rounded(.up)) + 1) } ?? (range == .week ? 7 : 30))
+        let items = selectedDay.map { d in all.filter { cal0.isDate($0.date, inSameDayAs: d) } } ?? all
         let cal = Calendar.current
         let grouped = Dictionary(grouping: items) { cal.startOfDay(for: $0.date) }
         return VStack(alignment: .leading, spacing: 14) {
             if items.isEmpty {
-                Text(plants.isEmpty ? "Add a plant and its care shows up here." : "Nothing planned. Your jungle is relaxing. 🌿").foregroundStyle(Jungle.subtle)
+                Text(plants.isEmpty ? "Add a plant and its care shows up here." : selectedDay != nil ? "Nothing planned this day." : "Nothing planned. Your jungle is relaxing.").foregroundStyle(Jungle.subtle)
             }
             let days = grouped.keys.sorted()
             ForEach(days, id: \.self) { day in
@@ -73,7 +85,7 @@ struct CareView: View {
                                 if let loc = item.plant?.location, !loc.isEmpty { Text(loc).font(.caption).foregroundStyle(Jungle.subtle) }
                             }
                             Spacer()
-                            Image(systemName: item.kind.symbol).foregroundStyle(Jungle.sage)
+                            Icon3DView(Icon3D.care(item.kind), size: 28)
                         }
                         .padding(12).jungleCard()
                     }
@@ -259,13 +271,13 @@ struct TravelPlanView: View {
                 ForEach(["Water everyone deeply the day before", "Move plants a little back from hot windows", "Group humidity lovers together", "Use a water-wick or self-watering spike for thirsty plants", "Skip fertilizer the week before"], id: \.self) { Label($0, systemImage: "checkmark.circle") }
             }
             Section {
-                Button(saved ? "Prep tasks added ✓" : "Add prep tasks to Care", systemImage: "calendar.badge.plus") {
+                Button(saved ? "Prep tasks added" : "Add prep tasks to Care", systemImage: "calendar.badge.plus") {
                     let dayBefore = leave.addingTimeInterval(-86_400)
                     for p in plants { ctx.insert(CareTask(title: "Deep water \(p.name) before the trip", kind: .water, plantID: p.id, due: dayBefore)) }
                     try? ctx.save(); saved = true
                 }
                 .disabled(saved)
-                ShareLink(item: sitterNote, subject: Text("Plant care while I'm away"), message: Text("Thank you for looking after my plants 🌿")) {
+                ShareLink(item: sitterNote, subject: Text("Plant care while I'm away"), message: Text("Thank you for looking after my plants")) {
                     Label("Send plant-sitter instructions", systemImage: "square.and.arrow.up")
                 }
             }
@@ -274,14 +286,14 @@ struct TravelPlanView: View {
     }
 
     private var sitterNote: String {
-        var t = "🌿 My Tiny Jungle: plant care from \(leave.formatted(date: .abbreviated, time: .omitted)) to \(back.formatted(date: .abbreviated, time: .omitted))\n\n"
+        var t = " My Tiny Jungle: plant care from \(leave.formatted(date: .abbreviated, time: .omitted)) to \(back.formatted(date: .abbreviated, time: .omitted))\n\n"
         for p in plants {
             let every = Int(CareEngine.expectedDryDays(for: p).rounded())
             t += "• \(p.name)\(p.species.map { " (\($0.en))" } ?? "")\(p.location.isEmpty ? "" : ", \(p.location)"): "
             t += p.species?.waterRule ?? "Water when the soil is dry."
             t += " Roughly every \(every) days. Feel the soil first.\n"
         }
-        t += "\nIf a plant looks droopy and the soil is dry, give it a slow, deep drink. Thank you! 💚"
+        t += "\nIf a plant looks droopy and the soil is dry, give it a slow, deep drink. Thank you!"
         return t
     }
 }
@@ -351,7 +363,7 @@ struct PropagationListView: View {
             child.photo = parent.photo
             ctx.insert(child)
             pr.childID = child.id
-            ctx.insert(ChatMessage(text: "Hi! I'm \(child.name), grown from a cutting of \(parent.name). 🌱", fromUser: false, plant: child))
+            ctx.insert(ChatMessage(text: "Hi! I'm \(child.name), grown from a cutting of \(parent.name).", fromUser: false, plant: child))
         }
         pr.stage = next
         try? ctx.save()
@@ -394,5 +406,66 @@ struct StartPropagationView: View {
             }
         }
         .onAppear { parentID = parent?.id }
+    }
+}
+
+
+/// Apple Calendar/Fitness style week strip: swipe between weeks, tap a day to see only its care.
+struct WeekStrip: View {
+    let plants: [Plant]
+    let tasks: [CareTask]
+    @Binding var selected: Date?
+    @Binding var offset: Int
+    private let cal = Calendar.current
+
+    var body: some View {
+        TabView(selection: $offset) {
+            ForEach(-8...12, id: \.self) { w in week(w).tag(w).padding(.horizontal, 2) }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .frame(height: 76)
+        .padding(.vertical, 6)
+        .jungleCard()
+    }
+
+    private func days(_ w: Int) -> [Date] {
+        let base = cal.date(byAdding: .weekOfYear, value: w, to: Date())!
+        let start = cal.dateInterval(of: .weekOfYear, for: base)!.start
+        return (0..<7).map { cal.date(byAdding: .day, value: $0, to: start)! }
+    }
+
+    private func week(_ w: Int) -> some View {
+        let planned = Agenda.items(plants: plants, tasks: tasks, days: 7 * (max(w, 0) + 1) + 1)
+        return HStack(spacing: 0) {
+            ForEach(days(w), id: \.self) { d in
+                let isSel = selected.map { cal.isDate($0, inSameDayAs: d) } ?? false
+                let isToday = cal.isDateInToday(d)
+                let count = planned.filter { cal.isDate($0.date, inSameDayAs: d) }.count
+                let done = plants.flatMap { $0.events ?? [] }.filter { cal.isDate($0.date, inSameDayAs: d) && $0.kind != .photo && $0.kind != .note }.count
+                Button {
+                    withAnimation(.snappy) { selected = isSel ? nil : d }
+                } label: {
+                    VStack(spacing: 5) {
+                        Text(d.formatted(.dateTime.weekday(.narrow))).font(.caption2.weight(.semibold))
+                            .foregroundStyle(isToday ? Jungle.warmText : Jungle.subtle)
+                        Text(d.formatted(.dateTime.day()))
+                            .font(.system(.body, design: .rounded, weight: isSel || isToday ? .bold : .regular))
+                            .foregroundStyle(isSel ? Color.white : Jungle.text)
+                            .frame(width: 36, height: 36)
+                            .background { if isSel { Circle().fill(Jungle.forest) } else if isToday { Circle().strokeBorder(Jungle.forest, lineWidth: 1.5) } }
+                        HStack(spacing: 3) {
+                            if done > 0 { Circle().fill(Jungle.leaf).frame(width: 5, height: 5) }
+                            if count > 0 && d >= cal.startOfDay(for: Date()) { Circle().strokeBorder(Jungle.terracotta, lineWidth: 1.2).frame(width: 5, height: 5) }
+                        }
+                        .frame(height: 5)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("\(d.formatted(date: .complete, time: .omitted)), \(count) planned, \(done) done")
+                .accessibilityAddTraits(isSel ? .isSelected : [])
+            }
+        }
     }
 }

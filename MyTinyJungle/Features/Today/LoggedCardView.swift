@@ -100,11 +100,9 @@ struct LoggedCardView: View {
             ZStack(alignment: .bottomTrailing) {
                 PlantAvatar(data: row.plant.photo, size: 52)
                 if let k = row.kinds.first {
-                    Image(systemName: k.symbol)
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(.white)
-                        .frame(width: 22, height: 22)
-                        .background(k == .water ? Jungle.forest : Jungle.leaf, in: Circle())
+                    Icon3DView(Icon3D.care(k), size: 18)
+                        .frame(width: 24, height: 24)
+                        .background(Jungle.surface, in: Circle())
                         .overlay(Circle().stroke(Jungle.mist, lineWidth: 2))
                         .offset(x: 4, y: 4)
                 }

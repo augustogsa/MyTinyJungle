@@ -116,7 +116,7 @@ struct CareCalendarView: View {
                             if let p = item.plant { PlantAvatar(data: p.photo, size: 36) }
                             Text(item.title).foregroundStyle(Jungle.text)
                             Spacer()
-                            Image(systemName: item.kind.symbol).foregroundStyle(Jungle.leaf)
+                            Icon3DView(Icon3D.care(item.kind), size: 26)
                         }
                         .padding(12)
                         if item.id != planned.last?.id { Divider().padding(.leading, 60) }

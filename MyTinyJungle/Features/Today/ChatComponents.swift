@@ -122,8 +122,8 @@ struct QuickChips: View {
             HStack(spacing: 8) {
                 ForEach(Self.kinds, id: \.self) { kind in
                     Button { onTap(kind) } label: {
-                        Label(kind == .soilCheck ? "Soil" : kind == .water ? "Water" : kind == .feed ? "Feed" : kind == .mist ? "Mist" : kind == .rotate ? "Rotate" : "New leaf",
-                              systemImage: kind.symbol)
+                        Label { Text(kind == .soilCheck ? "Soil" : kind == .water ? "Water" : kind == .feed ? "Feed" : kind == .mist ? "Mist" : kind == .rotate ? "Rotate" : "New leaf") }
+                              icon: { Icon3DView(Icon3D.care(kind), size: 20) }
                             .font(.subheadline.weight(.medium))
                             .foregroundStyle(Jungle.text)
                             .padding(.horizontal, 14).padding(.vertical, 8)

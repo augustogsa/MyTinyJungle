@@ -414,7 +414,7 @@ struct SummaryCard<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
-                Image(systemName: symbol).font(.subheadline.weight(.semibold)).foregroundStyle(tint)
+                SmartIcon(symbol: symbol, size: 22, tint: tint)
                 Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(tint == Jungle.leaf ? Jungle.accentText : Jungle.text)
                 Spacer(minLength: 0)
                 Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)

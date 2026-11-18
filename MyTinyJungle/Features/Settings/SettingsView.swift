@@ -10,7 +10,7 @@ struct SettingsView: View {
             Form {
                 Section("Tiny Jungle Plus") {
                     if Store.shared.isPlus {
-                        Label("You're a Plus member. Thank you! 🌿", systemImage: "checkmark.seal.fill").foregroundStyle(Jungle.forest)
+                        Label("You're a Plus member. Thank you!", systemImage: "checkmark.seal.fill").foregroundStyle(Jungle.forest)
                         Link("Manage subscription", destination: URL(string: "https://apps.apple.com/account/subscriptions")!)
                     } else {
                         Button("See Plus: €1.99/month or €11.99/year") { paywall = true }

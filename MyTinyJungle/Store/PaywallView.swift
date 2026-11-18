@@ -35,6 +35,6 @@ struct PaywallView: View {
     }
 
     private func perk(_ symbol: String, _ text: String) -> some View {
-        Label { Text(text).foregroundStyle(Jungle.text) } icon: { Image(systemName: symbol).foregroundStyle(Jungle.leaf) }
+        Label { Text(text).foregroundStyle(Jungle.text) } icon: { SmartIcon(symbol: symbol, size: 26) }
     }
 }

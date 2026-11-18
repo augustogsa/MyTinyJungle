@@ -245,7 +245,7 @@ private struct ShelfCard: View {
     var body: some View {
         let cat = AnalyzedProduct.Category(rawValue: product.categoryRaw) ?? .unknown
         VStack(alignment: .leading, spacing: 10) {
-            Image(systemName: cat.symbol).font(.system(.title3, design: .rounded)).foregroundStyle(Jungle.forest)
+            SmartIcon(symbol: cat.symbol, size: 30, tint: Jungle.forest)
                 .frame(width: 44, height: 44).background(cat.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             Text(product.name).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
             Text(product.npkN != nil ? "NPK \(Int(product.npkN!))-\(Int(product.npkP ?? 0))-\(Int(product.npkK ?? 0))" : cat.label)
@@ -330,7 +330,7 @@ private struct ProductResultView: View {
 
     private var header: some View {
         HStack(spacing: 14) {
-            Image(systemName: product.category.symbol).font(.system(.title, design: .rounded)).foregroundStyle(Jungle.forest)
+            SmartIcon(symbol: product.category.symbol, size: 46, tint: Jungle.forest)
                 .frame(width: 64, height: 64).background(product.category.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
                 Text(product.name).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).lineLimit(2)

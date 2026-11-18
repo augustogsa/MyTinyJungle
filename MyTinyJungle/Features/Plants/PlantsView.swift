@@ -80,24 +80,22 @@ struct PlantsView: View {
         }
     }
 
+    /// Plain-language summary of the jungle: one sentence anyone understands, plus the next thing to do.
     private var summary: some View {
         let moods = plants.map { CareEngine.mood(for: $0) }
-        let t = moods.filter { $0 == .thriving }.count, f = moods.filter { $0 == .fine }.count, n = moods.filter { $0 == .needsYou }.count
-        let score = (Double(t) + Double(f) * 0.7) / Double(max(1, plants.count))
-        return HStack(spacing: 16) {
-            ZStack {
-                Circle().stroke(Jungle.mint, lineWidth: 8)
-                Circle().trim(from: 0, to: score).stroke(Jungle.leaf, style: StrokeStyle(lineWidth: 8, lineCap: .round)).rotationEffect(.degrees(-90))
-                Text("\(Int(score * 100))%").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-            }
-            .frame(width: 64, height: 64)
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Collection health").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                HStack(spacing: 12) {
-                    legend(Jungle.leaf, "\(t) thriving")
-                    legend(Jungle.sun, "\(f) fine")
-                    legend(Jungle.terracotta, "\(n) need you")
-                }
+        let need = plants.filter { CareEngine.mood(for: $0) == .needsYou }
+        let happy = moods.filter { $0 != .needsYou }.count
+        let title = plants.isEmpty ? "Your jungle starts here"
+            : need.isEmpty ? "All \(plants.count) plants are happy"
+            : need.count == 1 ? "\(need[0].name) needs you" : "\(need.count) plants need you"
+        let detail = plants.isEmpty ? "Add your first plant and I'll keep track of it."
+            : need.isEmpty ? "\(happy) of \(plants.count) are doing well. Nothing to do right now."
+            : "\(happy) of \(plants.count) are doing well. Tap \"Needs you\" to see what to do."
+        return HStack(spacing: 14) {
+            Icon3DView(need.isEmpty ? .shieldLeaf : .wilted, size: 56)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                Text(detail).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 0)
         }
@@ -116,14 +114,16 @@ struct PlantTile: View {
         let mood = CareEngine.mood(for: plant)
         VStack(alignment: .leading, spacing: 0) {
             ZStack(alignment: .topLeading) {
-                Group {
-                    if let d = plant.photo, let img = UIImage(data: d) {
-                        Image(uiImage: img).resizable().scaledToFill()
-                    } else {
-                        ZStack { Jungle.mint; Image(systemName: "leaf.fill").font(.system(size: 40)).foregroundStyle(Jungle.leaf) }
+                // Fixed box first, photo as overlay: a wide photo can never push the grid out of line.
+                Color.clear.frame(height: 140).frame(maxWidth: .infinity)
+                    .overlay {
+                        if let d = plant.photo, let img = UIImage(data: d) {
+                            Image(uiImage: img).resizable().scaledToFill()
+                        } else {
+                            ZStack { Jungle.mint; Icon3DView(plant.species.map(PlantsIcon.for) ?? .pottedPlant, size: 72) }
+                        }
                     }
-                }
-                .frame(height: 140).frame(maxWidth: .infinity).clipped()
+                    .clipped()
                 StatusPill(text: mood == .needsYou ? "Needs you" : mood == .fine ? "Fine" : "Thriving",
                            symbol: mood == .needsYou ? "drop.fill" : "leaf.fill",
                            tint: mood == .needsYou ? Jungle.peach : Jungle.surface)
@@ -176,6 +176,21 @@ struct SpeciesPicker: View {
             .navigationTitle("Species")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
+        }
+    }
+}
+
+enum PlantsIcon {
+    static func `for`(_ s: Species) -> Icon3D {
+        switch s.family {
+        case "Cactaceae": .cactus
+        case "Crassulaceae", "Asphodelaceae": .succulent
+        case "Orchidaceae": .flower
+        case "Lamiaceae": .herbs
+        case "Moraceae": .bonsai
+        case "Asparagaceae": .snakePlant
+        case "Arecaceae": .palm
+        default: .pottedPlant
         }
     }
 }

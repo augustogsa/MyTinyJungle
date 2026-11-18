@@ -132,7 +132,7 @@ struct AddPlantFlow: View {
         .scrollDismissesKeyboard(.interactively)
         .safeAreaInset(edge: .bottom) {
             Button(action: save) {
-                Text(species == nil && name.isEmpty ? "Pick the species first" : "Welcome \(name.isEmpty ? "home" : name) 🌱")
+                Text(species == nil && name.isEmpty ? "Pick the species first" : "Welcome \(name.isEmpty ? "home" : name)")
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
@@ -288,7 +288,7 @@ struct AddPlantFlow: View {
             Text("How I like to live").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             ForEach([p.firstWater, p.food, p.spot] + [p.neighbours, p.potAndSoil, p.safety].compactMap { $0 }) { item in
                 HStack(alignment: .top, spacing: 12) {
-                    Image(systemName: item.symbol).font(.system(.title3, design: .rounded)).foregroundStyle(item.symbol == "pawprint.fill" ? Jungle.terracotta : Jungle.leaf).frame(width: 28)
+                    SmartIcon(symbol: item.symbol, size: 28).frame(width: 28)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                         Text(item.detail).font(.subheadline).foregroundStyle(Jungle.subtle)

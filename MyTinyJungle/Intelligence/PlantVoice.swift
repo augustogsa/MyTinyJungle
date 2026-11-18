@@ -42,7 +42,7 @@ enum PlantVoice {
     static func happy(_ plant: Plant) -> String {
         switch plant.personality {
         case .dramatic: return pick(["I'm absolutely flourishing, darling.", "Thriving. Iconic, even."], seed: plant.name)
-        case .independent: return "All good."
+        case .independent: return pick(["Soil, light and leaves are fine. I'll speak up when I need something.", "No needs today. My next soil check is on the calendar."], seed: plant.name)
         case .calm: return pick(["I'm comfortable and content today.", "All is well here."], seed: plant.name)
         case .curious: return pick(["I'm doing well! What are you up to today?", "Feeling good. Wonder if I'll grow a new leaf soon?"], seed: plant.name)
         case .chatty: return pick(["I'm great! Nice light, happy roots. Did you see my leaves?", "Doing wonderfully, thanks for asking!"], seed: plant.name)
@@ -62,7 +62,7 @@ enum PlantVoice {
         case .rotate: return "Thanks for turning me. Now I'll grow straight."
         case .clean: return "Clean leaves! I can catch so much more light now."
         case .newLeaf: return p == .dramatic ? "BEHOLD. A new leaf." : "Yes! A new leaf. I'm proud of it."
-        case .flower: return "I'm flowering! 🌸"
+        case .flower: return "I'm flowering!"
         case .treat: return "Thank you for looking after me. Let's check again in a week."
         case .measure: return "Look how tall I'm getting!"
         default: return "Thank you!"

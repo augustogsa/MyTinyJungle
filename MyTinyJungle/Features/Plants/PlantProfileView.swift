@@ -68,7 +68,7 @@ struct PlantProfileView: View {
                     if events.isEmpty { Text("Nothing yet").foregroundStyle(Jungle.subtle) }
                     ForEach(events.prefix(50)) { e in
                         HStack(alignment: .top) {
-                            Image(systemName: e.kind.symbol).foregroundStyle(Jungle.leaf).frame(width: 24)
+                            Icon3DView(Icon3D.care(e.kind), size: 26).frame(width: 28)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(title(e))
                                 Text(e.date, format: .dateTime.day().month().year()).font(.caption).foregroundStyle(Jungle.subtle)

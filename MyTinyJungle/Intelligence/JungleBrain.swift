@@ -30,14 +30,14 @@ enum JungleBrain {
 
         // New plant by chat: "I got a monstera called Milo".
         if context == nil, mentionsNewPlant(trimmed.folded), !Store.shared.canAddPlant(current: plants.count) {
-            reply("Your jungle has \(plants.count) plants, the free limit. Tiny Jungle Plus lets it grow without limits. 🌱", plant: nil, in: ctx, suggestions: ["See Plus"])
+            reply("Your jungle has \(plants.count) plants, the free limit. Tiny Jungle Plus lets it grow without limits.", plant: nil, in: ctx, suggestions: ["See Plus"])
             try? ctx.save()
             return
         }
         if context == nil, let created = createPlantIfMentioned(trimmed, plants: plants, in: ctx, now: now) {
             let s = created.species.map { " I'm a \($0.en) (\($0.scientific)). \($0.waterRule)" } ?? " Tell me what kind of plant I am so I can look after myself properly."
             reply("Hi, I'm \(created.name)! Nice to meet you.\(s) When did you last water me?", plant: created, in: ctx, suggestions: ["Today", "Yesterday", "Not sure"])
-            reply("Added \(created.name) to your jungle. 🌱", plant: nil, in: ctx)
+            reply("Added \(created.name) to your jungle.", plant: nil, in: ctx)
             try? ctx.save()
             return
         }
@@ -85,7 +85,7 @@ enum JungleBrain {
                 let note = CareEvent(kind: .note, date: now, note: trimmed)
                 note.plant = context
                 ctx.insert(note)
-                reply("Noted in my journal. ✍️", plant: context, in: ctx)
+                reply("Noted in my journal.", plant: context, in: ctx)
             } else {
                 reply(plants.isEmpty ? "Tell me about your first plant, e.g. \"I have a monstera called Milo in the living room\"."
                       : "I didn't catch a care action there. Try \"watered Milo and Luna this morning\", or ask a question.", plant: nil, in: ctx)

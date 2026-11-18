@@ -161,7 +161,7 @@ struct GuideIcon: View {
     let guide: CareGuide
     var size: CGFloat = 52
     var body: some View {
-        Image(systemName: guide.symbol).font(.system(size: size * 0.42, weight: .semibold)).foregroundStyle(guide.tint)
+        SmartIcon(symbol: guide.symbol, size: size * 0.62, tint: guide.tint)
             .frame(width: size, height: size)
             .background(guide.tint.opacity(0.14), in: RoundedRectangle(cornerRadius: size * 0.28, style: .continuous))
     }
@@ -189,7 +189,7 @@ struct GuideHeroCard: View {
         VStack(alignment: .leading, spacing: 10) {
             ZStack {
                 LinearGradient(colors: [guide.tint.opacity(0.22), guide.tint.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                Image(systemName: guide.symbol).font(.system(size: 46, weight: .medium)).foregroundStyle(guide.tint)
+                SmartIcon(symbol: guide.symbol, size: 64, tint: guide.tint)
             }
             .frame(height: 110)
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -247,7 +247,7 @@ struct GuidePlayerView: View {
                     Button { go(index - 1) } label: { Text("Back").frame(maxWidth: .infinity) }
                         .buttonStyle(.bordered).fontDesign(.rounded).tint(Jungle.forest).disabled(index < 0)
                     if index == guide.steps.count - 1 {
-                        Button { finish() } label: { Text(logged ? "Logged ✓" : finishLabel).frame(maxWidth: .infinity) }
+                        Button { finish() } label: { Text(logged ? "Logged" : finishLabel).frame(maxWidth: .infinity) }
                             .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest).disabled(logged)
                     } else {
                         Button { go(index + 1) } label: { Text(index < 0 ? "Start" : "Next").frame(maxWidth: .infinity) }
