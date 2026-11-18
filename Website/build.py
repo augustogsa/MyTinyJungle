@@ -27,7 +27,7 @@ T = {
  "en": {
   "lang": "en", "prefix": "", "other": "pt", "other_label": "PT",
   "nav": ["Inside the app", "Plus", "Support", "Join the beta"],
-  "foot": ["Support", "Privacy", "Terms"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
+  "foot": ["Support", "Privacy", "Terms", "Good to know"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Coming soon on the App Store",
   "home_title": "My Tiny Jungle: plant care that knows your home",
   "home_desc": "Not a watering timer. My Tiny Jungle works out each plant's care from your weather, heating, room light, pot and soil, and your plants tell you in their own words.",
@@ -108,7 +108,7 @@ T = {
  "pt": {
   "lang": "pt-BR", "prefix": "/pt", "other": "en", "other_label": "EN",
   "nav": ["O app", "Plus", "Ajuda", "Quero testar"],
-  "foot": ["Suporte", "Privacidade", "Termos"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
+  "foot": ["Ajuda", "Privacidade", "Termos", "Bom saber"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Em breve na App Store",
   "home_title": "My Tiny Jungle: suas plantas cuidadas do jeito certo",
   "home_desc": "Chega de lembrete genérico. O My Tiny Jungle considera o clima da sua cidade, a luz de cada cômodo, o vaso e a terra para dizer o que cada planta precisa, na hora certa.",
@@ -219,7 +219,7 @@ def page(L, path, title, desc, body):
 </div></header>
 <main>{body}</main>
 <footer><div class="wrap"><span>© 2026 SimpleAppsCo LLC <img class="fsep" src="/icons/sprout.png" alt="" width="20" height="20" loading="lazy"> {t['made']}</span>
-<nav><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
+<nav><a href="{p}/good-to-know">{f[3]}</a><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
 <script src="/site.js?v={CSS_V}" defer></script>
 </body></html>"""
 
@@ -234,14 +234,48 @@ def home(L):
     return render_home(L, T[L], page, phone, ICON["apple"])
 
 
-def doc(L, path, title, desc, inner):
+def doc(L, path, title, desc, inner, meta=True):
     t = T[L]
-    body = f'<section class="doc"><div class="wrap"><div class="paper"><h1>{title}</h1><p class="meta">{t["updated"]}: {UPDATED[L]}</p>{inner}</div></div></section>'
+    m = f'<p class="meta">{t["updated"]}: {UPDATED[L]}</p>' if meta else ""
+    body = f'<section class="doc"><div class="wrap"><div class="paper"><h1>{title}</h1>{m}{inner}</div></div></section>'
     return page(L, path, f"{title} · My Tiny Jungle", desc, body)
 
 
 def sections(items):
     return "".join(f"<h2>{h}</h2>{b if b.startswith('<ul>') else f'<p>{b}</p>'}" for h, b in items)
+
+
+def _feat_rows(L):
+    from home_content import H
+    from site_pages import FEATURES
+    return [(ic, FEATURES[ic][0], title, short, FEATURES[ic][1][L]) for ic, title, short in H[L]["all"]]
+
+
+def feature_pages(L):
+    from site_pages import UI, PLUS
+    t, u, p = T[L], UI[L], T[L]["prefix"]
+    rows = _feat_rows(L)
+    out = {}
+    for k, (ic, slug, title, short, (intro, how, qs)) in enumerate(rows):
+        badge = f'<span class="fbadge">{u["plus_badge"]}</span>' if ic in PLUS else ""
+        nxt = rows[(k + 1) % len(rows)]
+        inner = (f'<div class="fhero"><img class="i3d" src="/icons/{ic}.png" alt="" width="88" height="88">{badge}</div>'
+                 f'<p class="flead">{intro}</p><h2>{u["how"]}</h2><ul class="fhow">' + "".join(f"<li>{x}</li>" for x in how) + "</ul>"
+                 f'<h2>{u["q"]}</h2><div class="faq">' + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in qs) + "</div>"
+                 f'<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a><a href="{p}/features/{nxt[1]}">{nxt[2]} →</a></div>')
+        out[f"features/{slug}"] = doc(L, f"/features/{slug}", title, short, inner, meta=False)
+    return out
+
+
+def good_to_know(L):
+    from site_pages import UI, GENERAL
+    t, u, p = T[L], UI[L], T[L]["prefix"]
+    det = lambda qs: '<div class="faq">' + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in qs) + "</div>"
+    inner = f'<p class="flead">{u["gk_intro"]}</p>' + "".join(f"<h2>{g}</h2>{det(qs)}" for g, qs in GENERAL[L])
+    inner += f'<h2>{u["by_feature"]}</h2>' + "".join(
+        f'<h3 class="fq"><img class="i3d" src="/icons/{ic}.png" alt="" width="32" height="32"><a href="{p}/features/{slug}">{title}</a></h3>{det(qs)}'
+        for ic, slug, title, short, (intro, how, qs) in _feat_rows(L))
+    return doc(L, "/good-to-know", u["gk_title"], u["gk_desc"], inner, meta=False)
 
 
 def build():
@@ -264,6 +298,8 @@ def build():
                            + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in t["faq"]) + "</div>"),
             "privacy": doc(L, "/privacy", t["pri_title"], t["pri_desc"], f'<div class="box"><p>{t["pri_box"]}</p></div>' + sections(t["pri"])),
             "terms": doc(L, "/terms", t["ter_title"], t["ter_desc"], sections(t["ter"])),
+            **feature_pages(L),
+            "good-to-know": good_to_know(L),
             "plus": doc(L, "/plus", t["plus_title"], t["plus_desc"],
                         f'<p>{t["plus_intro"]}</p><p><a class="btn" href="{TESTFLIGHT}">{t["plus_btn"]}</a></p><div class="box"><p>{t["plus_tip"]}</p></div>'
                         f'<script>if(/iPhone|iPad/.test(navigator.userAgent))setTimeout(function(){{location.href="{TESTFLIGHT}"}},1500)</script>'),

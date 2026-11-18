@@ -83,7 +83,7 @@ H = {
   "close_k": "8 plants waiting to say hello", "prev": "Previous screen", "next": "Next screen",
   "plus_btn": "Choose this plan",
   "fine": "Prices in euros; local prices may vary. Subscriptions renew automatically until cancelled in your Apple account settings.",
-  "faq_h": "Good to know",
+  "faq_h": "Good to know", "faq_more": "All questions",
   "voice_h": "Funny, because it's true",
   "voice_p": "Every plant has a personality, and every nudge has a reason. The jokes come from the real weather, your home and whose turn it is.",
   "why": "Why now",
@@ -179,7 +179,7 @@ H = {
   "close_k": "8 plantas esperando por você", "prev": "Tela anterior", "next": "Próxima tela",
   "plus_btn": "Quero este plano",
   "fine": "Valores em euros. No app, o preço aparece em reais. A assinatura é renovada automaticamente e pode ser cancelada a qualquer momento nos ajustes da sua conta Apple.",
-  "faq_h": "Perguntas frequentes",
+  "faq_h": "Bom saber", "faq_more": "Ver todas as perguntas",
   "voice_h": "Cada planta com a sua personalidade",
   "voice_p": "Os recados são divertidos, mas nunca aleatórios: cada um tem um motivo real, como o tempo lá fora, a sua casa ou de quem é a vez.",
   "why": "Motivo",
@@ -225,6 +225,10 @@ def cmp_chart(h):
         f'<div class="hrow them"><span>{h["cmp_them"]}</span><b>{bad}</b></div></div>'
         for (c, sp, ev, why), ic, bad in zip(h["homes"], ("sun", "livingRoom"), h["cmp_bad"]))
     return f'<div class="hcards">{cards}</div>'
+
+from site_pages import FEATURES as _F
+FEAT_SLUG = {k: v[0] for k, v in _F.items()}
+
 
 def render_home(L, t, page, phone, apple_icon):
     h = H[L]
@@ -327,7 +331,7 @@ def render_home(L, t, page, phone, apple_icon):
 <div class="lock"><h3>{h['lock_h']}</h3><div class="lockpair"><div class="phone lockdev"><div class="phone-screen"><div class="lockphone"><p class="ldate">{h["lock_date"]}</p><p class="ltime">9:41</p>{"".join(f'<div class="ncard"><img src="/assets/plants/{ph}.jpg" alt="" width="38" height="38" loading="lazy"><div class="nb"><b>{t}<i>{tm}</i></b>{f"<span>{b}</span>" if b else ""}</div></div>' for (ph, t, b), tm in zip(h["notifs"], h["ntimes"]))}</div></div><img class="phone-frame" src="/assets/device/iphone-frame.webp" alt="" width="588" height="1200"></div>
 </div></div></div>
 </div></section>
-<section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
+<section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<a class="acard" href="{t["prefix"]}/features/{FEAT_SLUG[i]}">{I(i, 64)}<h3>{x}</h3><p>{y}</p></a>' for i, x, y in h["all"])}</div></div></section>
 <section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
 <section class="pricing" id="pricing"><div class="wrap phead">{E("water", 120)}<h2>{h["plans_h"]}</h2><p>{h["plans_p"]}</p></div><div class="wrap fields">
 {field("free", h["free"], f'<a class="btn ghost" href="{TESTFLIGHT_URL}" rel="noopener">{h["cta"]}</a>')}
@@ -335,7 +339,7 @@ def render_home(L, t, page, phone, apple_icon):
 {field("plus", h["plus"], f'<a class="btn light" href="https://www.mytinyjungle.com{t["prefix"]}/plus?plan=yearly">{h["plus_btn"]}</a>', h["best"])}
 </div></section>
 <p class="wrap fine">{h['fine']}</p>
-<section class="faq" id="faq"><div class="wrap qgrid"><div class="qhead">{E("scan", 140)}<h2>{h['faq_h']}</h2></div><div class="qtext">{faq}</div></div></section>
+<section class="faq" id="faq"><div class="wrap qgrid"><div class="qhead">{E("scan", 140)}<h2>{h['faq_h']}</h2><p><a class="btn ghost" href="{t['prefix']}/good-to-know">{h['faq_more']}</a></p></div><div class="qtext">{faq}</div></div></section>
 <section class="closing"><div class="wrap cgrid">
 <div class="ctext">{E("love", 150)}<h2>{h['c_h']}</h2><p>{h['c_p']}</p>{cta.replace('class="btn"', 'class="btn light"')}<p class="note">{h['note']}</p></div>
 <div class="mosaic">{"".join(f'<figure><img src="/assets/plants/{ph}.jpg" alt="{kind}" width="400" height="400" loading="lazy"><figcaption><b>{nm}</b>{kind}</figcaption></figure>' for ph, nm, kind in h["close_names"])}</div>
