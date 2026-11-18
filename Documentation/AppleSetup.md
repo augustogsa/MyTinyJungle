@@ -22,3 +22,17 @@
 - Copyright "2026 Simple Apps Company". Review contact Augusto Gomes, as on My Digital Magnets; no demo account needed.
 - Export compliance: set `ITSAppUsesNonExemptEncryption = NO` in Info.plist (see MyTinyJungle/Info-Permissions.md).
 - Screenshots, app icon and build attach with the first upload (main session).
+
+## Subscriptions — "Tiny Jungle Plus"
+| Item | Value |
+|---|---|
+| Subscription group ID | 22591574 (ref. name "Tiny Jungle Plus", localised en-US + pt-PT) |
+| Monthly | `com.simpleappscompany.mytinyjungle.plus.monthly`, Apple ID 6836294080, 1 month, €1.99 (PRT base, equalised; US $1.99), level 2 |
+| Yearly | `com.simpleappscompany.mytinyjungle.plus.yearly`, Apple ID 6836294184, 1 year, €11.99 (PRT base, equalised; US $9.99), level 1 |
+
+- Display name "Tiny Jungle Plus" + description in en-US and pt-PT; review notes set (scanner, Plant Doctor, memory insights, plant-sitter link, unlimited plants; free = 5 plants).
+- Sold in 174 territories (not China mainland); a China price exists because ASC requires one for every territory.
+- App Store only, no multiseat, no Family Sharing, no 12-month-commitment plan.
+- Review screenshot: plain Forest/Cream placeholder (1290×2796). Replace it with a real paywall screenshot from the first build before submitting for review.
+- Both are in the draft submission. They go to review together with version 1.0 once the build is attached.
+- App Store Server Notifications V2: left blank for now, because `api.mytinyjungle.com` had no DNS yet. The domain session sets `https://api.mytinyjungle.com/storekit/notifications` (prod + sandbox) once the domain is live.
