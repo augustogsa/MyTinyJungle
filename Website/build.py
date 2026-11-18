@@ -192,8 +192,14 @@ def sentence_breaks(html):
     return re.sub(r"(<h[1-3][^>]*>)(.*?)(</h[1-3]>)", lambda m: m[1] + re.sub(r"([.?!])\s+(?=[A-ZÀ-Ý¿¡])", r"\1<br>", m[2]) + m[3], html, flags=re.S)
 
 
+def brand_mentions(html):
+    """Every 'My Tiny Jungle' in visible text is set as the brand: bolder, in the brand green. Tags, attributes and scripts untouched."""
+    parts = re.split(r"(<script.*?</script>|<[^>]+>)", html, flags=re.S)
+    return "".join(x if x.startswith("<") else x.replace("My Tiny Jungle", '<span class="mtj">My Tiny Jungle</span>') for x in parts)
+
+
 def page(L, path, title, desc, body):
-    body = sentence_breaks(body)
+    body = brand_mentions(sentence_breaks(body))
     t = T[L]; p = t["prefix"]
     other = T[t["other"]]["prefix"] + path
     canon = SITE + p + path
