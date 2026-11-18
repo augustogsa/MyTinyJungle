@@ -2,11 +2,11 @@ import Foundation
 import StoreKit
 import Observation
 
-/// Tiny Jungle Plus: €1.99/month or €11.99/year. StoreKit 2, verified on device.
+/// My Tiny Jungle Plus: €1.99/month or €11.99/year. StoreKit 2, verified on device.
 @Observable
 final class Store {
     static let shared = Store()
-    static let groupName = "Tiny Jungle Plus"
+    static let groupName = "My Tiny Jungle Plus"
     static let monthlyID = "com.simpleappscompany.mytinyjungle.plus.monthly"
     static let yearlyID = "com.simpleappscompany.mytinyjungle.plus.yearly"
     static let productIDs = [monthlyID, yearlyID]

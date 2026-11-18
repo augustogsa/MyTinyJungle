@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Bindable private var settings = JungleSettings.shared
     @State private var paywall = false
     @State private var confirmSignOut = false
+    @State private var iconPicker = false
     @Environment(\.modelContext) private var ctx
     private var plus: Bool { Store.shared.isPlus }
     private var auth = AuthManager.shared
@@ -21,6 +22,7 @@ struct SettingsView: View {
                             Button { confirmSignOut = true } label: { JungleRow(icon: .mail, title: String(localized: "Sign out", comment: "Settings title")) }.buttonStyle(.plain)
                         }
                     }
+                    SharedJungleSettingsGroup()
                     JungleGroup(title: String(localized: "iCloud backup", comment: "Settings title"), footer: String(localized: "Your plants, photos and history copy to your private iCloud. Sign in to the same iCloud on a new iPhone and your jungle comes back on its own.", comment: "Settings footer")) {
                         JungleRow(icon: .weather, title: String(localized: "Back up to iCloud", comment: "Settings title"), subtitle: cloud.summary) {
                             let blocked = cloud.status == .noAccount || (cloud.status == .unavailable && !cloud.pendingRestart)
@@ -42,6 +44,11 @@ struct SettingsView: View {
                             JungleRow(icon: .globe, title: String(localized: "Where you grow", comment: "Settings title"), subtitle: Climate.shared.profile.map { String(localized: "\($0.place) · \(Climate.shared.biome)", comment: "Settings row subtitle: city and climate type") } ?? String(localized: "Set your place for local climate and weather", comment: "Settings row subtitle when no place"), chevron: true)
                         }.buttonStyle(.plain)
                     }
+                    JungleGroup(title: String(localized: "Home screen", comment: "Settings title")) {
+                        Button { iconPicker = true } label: {
+                            JungleRow(icon: .shelf, title: String(localized: "App icon", comment: "Settings title"), subtitle: String(localized: JungleAppIcon.current.title), chevron: true)
+                        }.buttonStyle(.plain)
+                    }
                     JungleGroup(title: String(localized: "At home", comment: "Settings title"), footer: String(localized: "We'll gently warn you about plants that could hurt them.", comment: "Settings footer")) {
                         JungleRow(icon: .shieldCheck, title: String(localized: "Cats", comment: "Settings title")) { Toggle("", isOn: $settings.hasCats).labelsHidden() }
                         JungleDivider()
@@ -49,7 +56,7 @@ struct SettingsView: View {
                         JungleDivider()
                         JungleRow(icon: .heartPin, title: String(localized: "Small children", comment: "Settings title")) { Toggle("", isOn: $settings.hasKids).labelsHidden() }
                     }
-                    JungleGroup(title: String(localized: "Tiny Jungle Plus", comment: "Settings title")) {
+                    JungleGroup(title: String(localized: "My Tiny Jungle Plus", comment: "Settings title")) {
                         if plus {
                             JungleRow(icon: .crown, title: String(localized: "Plus is active", comment: "Settings title"), subtitle: String(localized: "Thank you for growing with us", comment: "Settings subtitle"))
                             JungleDivider()
@@ -67,7 +74,7 @@ struct SettingsView: View {
                         }.buttonStyle(.plain)
                     }
                     if !plus {
-                        JungleGroup(title: String(localized: "Privacy", comment: "Settings title"), footer: String(localized: "Your plants' photos and stories stay yours. Ads help keep Tiny Jungle free for everyone.", comment: "Settings footer")) {
+                        JungleGroup(title: String(localized: "Privacy", comment: "Settings title"), footer: String(localized: "Your plants' photos and stories stay yours. Ads help keep My Tiny Jungle free for everyone.", comment: "Settings footer")) {
                             Button { AdsManager.shared.presentPrivacyOptions() } label: {
                                 JungleRow(icon: .shieldStar, title: String(localized: "Privacy and ad choices", comment: "Settings title"), chevron: true)
                             }.buttonStyle(.plain)
@@ -85,6 +92,7 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $paywall) { PaywallView() }
+            .sheet(isPresented: $iconPicker) { AppIconPickerView() }
             .task { await cloud.refresh() }
             .confirmationDialog("Sign out of My Tiny Jungle?", isPresented: $confirmSignOut, titleVisibility: .visible) {
                 Button("Sign out", role: .destructive) { auth.signOut(); dismiss() }

@@ -23,14 +23,14 @@
 - Export compliance: set `ITSAppUsesNonExemptEncryption = NO` in Info.plist (see MyTinyJungle/Info-Permissions.md).
 - Screenshots, app icon and build attach with the first upload (main session).
 
-## Subscriptions — "Tiny Jungle Plus"
+## Subscriptions — "My Tiny Jungle Plus"
 | Item | Value |
 |---|---|
-| Subscription group ID | 22591574 (ref. name "Tiny Jungle Plus", localised en-US + pt-PT) |
+| Subscription group ID | 22591574 (ref. name "My Tiny Jungle Plus", localised en-US + pt-PT) |
 | Monthly | `com.simpleappscompany.mytinyjungle.plus.monthly`, Apple ID 6836294080, 1 month, €1.99 (PRT base, equalised; US $1.99), level 2 |
 | Yearly | `com.simpleappscompany.mytinyjungle.plus.yearly`, Apple ID 6836294184, 1 year, €11.99 (PRT base, equalised; US $9.99), level 1 |
 
-- Display name "Tiny Jungle Plus" + description in en-US and pt-PT; review notes set (scanner, Plant Doctor, memory insights, plant-sitter link, unlimited plants; free = 5 plants).
+- Display name "My Tiny Jungle Plus" + description in en-US and pt-PT; review notes set (scanner, Plant Doctor, memory insights, plant-sitter link, unlimited plants; free = 5 plants).
 - Sold in 174 territories (not China mainland); a China price exists because ASC requires one for every territory.
 - App Store only, no multiseat, no Family Sharing, no 12-month-commitment plan.
 - Review screenshot: plain Forest/Cream placeholder (1290×2796). Replace it with a real paywall screenshot from the first build before submitting for review.
@@ -38,7 +38,7 @@
 - App Store Server Notifications V2: production and sandbox URL `https://api.mytinyjungle.com/storekit/notifications` (set in ASC web UI). The API backend on the VPS (127.0.0.1:3300) is not deployed yet; until it is, the route answers 503 and Apple retries.
 
 ## Ads (AdMob)
-- Free tier shows AdMob native ads between content plus a bottom banner on long read-only pages; no interstitial or app-open ads. Tiny Jungle Plus removes all ads.
+- Free tier shows AdMob native ads between content plus a bottom banner on long read-only pages; no interstitial or app-open ads. My Tiny Jungle Plus removes all ads.
 - Consent: Google UMP form (EU/UK), then the ATT prompt after onboarding. Non-personalised ads if consent or tracking is refused.
 - ASC description, review notes, age rating (Advertising) and privacy labels updated to match. Site legal pages and app-ads.txt are handled by the domain session.
 - AdMob app ID and ad unit IDs: see the "AdMob IDs" line below once signup is verified (test IDs in DEBUG).

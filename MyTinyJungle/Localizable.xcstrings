@@ -14789,13 +14789,13 @@
         }
       }
     },
-    "Notifications are off for Tiny Jungle. You can let your plants reach you in the iPhone Settings app.": {
+    "Notifications are off for My Tiny Jungle. You can let your plants reach you in the iPhone Settings app.": {
       "comment": "Settings note",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "As notificações do Tiny Jungle estão desativadas. Você pode ativá-las no app Ajustes do iPhone."
+            "value": "As notificações do My Tiny Jungle estão desativadas. Você pode ativá-las no app Ajustes do iPhone."
           }
         }
       }
@@ -20851,13 +20851,13 @@
         }
       }
     },
-    "Tiny Jungle Plus": {
+    "My Tiny Jungle Plus": {
       "comment": "Settings title",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiny Jungle Plus"
+            "value": "My Tiny Jungle Plus"
           }
         }
       }
@@ -23627,13 +23627,13 @@
         }
       }
     },
-    "With Tiny Jungle Plus": {
+    "With My Tiny Jungle Plus": {
       "comment": "Upsell",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Com o Tiny Jungle Plus"
+            "value": "Com o My Tiny Jungle Plus"
           }
         }
       }
@@ -24053,8 +24053,8 @@
         }
       }
     },
-    "Your jungle has %lld plants, the free limit. Tiny Jungle Plus lets it grow without limits.": {
-      "comment": "Jungle chat: free plan plant limit reached. %lld = number of plants. Keep 'Tiny Jungle Plus' in English.",
+    "Your jungle has %lld plants, the free limit. My Tiny Jungle Plus lets it grow without limits.": {
+      "comment": "Jungle chat: free plan plant limit reached. %lld = number of plants. Keep 'My Tiny Jungle Plus' in English.",
       "localizations": {
         "en": {
           "variations": {
@@ -24062,13 +24062,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Your jungle has %lld plant, the free limit. Tiny Jungle Plus lets it grow without limits."
+                  "value": "Your jungle has %lld plant, the free limit. My Tiny Jungle Plus lets it grow without limits."
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Your jungle has %lld plants, the free limit. Tiny Jungle Plus lets it grow without limits."
+                  "value": "Your jungle has %lld plants, the free limit. My Tiny Jungle Plus lets it grow without limits."
                 }
               }
             }
@@ -24080,13 +24080,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Sua selvinha tem %lld planta, o limite grátis. Com o Tiny Jungle Plus ela cresce sem limites."
+                  "value": "Sua selvinha tem %lld planta, o limite grátis. Com o My Tiny Jungle Plus ela cresce sem limites."
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Sua selvinha tem %lld plantas, o limite grátis. Com o Tiny Jungle Plus ela cresce sem limites."
+                  "value": "Sua selvinha tem %lld plantas, o limite grátis. Com o My Tiny Jungle Plus ela cresce sem limites."
                 }
               }
             }
@@ -24292,13 +24292,13 @@
         }
       }
     },
-    "Your plants' photos and stories stay yours. Ads help keep Tiny Jungle free for everyone.": {
+    "Your plants' photos and stories stay yours. Ads help keep My Tiny Jungle free for everyone.": {
       "comment": "Settings footer",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "As fotos e histórias das suas plantas continuam suas. Os anúncios ajudam a manter o Tiny Jungle grátis pra todo mundo."
+            "value": "As fotos e histórias das suas plantas continuam suas. Os anúncios ajudam a manter o My Tiny Jungle grátis pra todo mundo."
           }
         }
       }

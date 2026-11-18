@@ -23,7 +23,7 @@ const il = (await call('GET', `/appInfos/${info.id}/appInfoLocalizations`)).data
 if (il) await call('PATCH', `/appInfoLocalizations/${il.id}`, { data: { type: 'appInfoLocalizations', id: il.id, attributes: inf } });
 else await call('POST', '/appInfoLocalizations', { data: { type: 'appInfoLocalizations', attributes: { locale, ...inf }, relationships: { appInfo: { data: { type: 'appInfos', id: info.id } } } } });
 console.log('done', locale);
-// Subscription group + products (Tiny Jungle Plus). Locked while in review: reported, not fatal.
+// Subscription group + products (My Tiny Jungle Plus). Locked while in review: reported, not fatal.
 const soft = async (label, f) => { try { await f(); console.log('ok', label); } catch (e) { console.log('locked', label, String(e).match(/\d{3}/)?.[0]); } };
 if (m.subscription) {
   const groups = (await call('GET', `/apps/${app.id}/subscriptionGroups`)).data;

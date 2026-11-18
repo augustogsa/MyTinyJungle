@@ -47,7 +47,7 @@ final class AdPool {
     }
 }
 
-/// Native ad dressed as a Tiny Jungle card, row or grid tile, always marked "Sponsored".
+/// Native ad dressed as a My Tiny Jungle card, row or grid tile, always marked "Sponsored".
 /// Renders nothing (no gap) for Plus, before consent, or until an ad is ready.
 struct NativeAdCard: View {
     var slot: String = "default"

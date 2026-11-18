@@ -31,6 +31,7 @@ struct MeView: View {
                         NavigationLink { PropagationListView() } label: { shortcut(.seedling, String(localized: "Cuttings", comment: "Me shortcut title: propagation cuttings"), props.isEmpty ? String(localized: "Start one", comment: "Me cuttings shortcut subtitle when none") : String(localized: "\(props.count) growing", comment: "Me cuttings shortcut subtitle: number of cuttings growing")) }
                     }
                     .buttonStyle(.plain)
+                    SharedJungleRow()
                     milestones
                     if !store.isPlus { plusCard }
                     JungleGroup(title: String(localized: "Your jungle", comment: "Me section title")) {
@@ -41,7 +42,7 @@ struct MeView: View {
                     .buttonStyle(.plain)
                     JungleGroup(title: String(localized: "Account", comment: "Me section title")) {
                         Button { if store.isPlus { settings = true } else { paywall = .morePlants } } label: {
-                            JungleRow(icon: .crown, title: "Tiny Jungle Plus", chevron: true) { Text(store.isPlus ? "Active" : "Free").foregroundStyle(Jungle.subtle) }
+                            JungleRow(icon: .crown, title: "My Tiny Jungle Plus", chevron: true) { Text(store.isPlus ? "Active" : "Free").foregroundStyle(Jungle.subtle) }
                         }
                         JungleDivider()
                         Button { settings = true } label: { JungleRow(icon: .profile, title: String(localized: "Settings", comment: "Me row title"), chevron: true) }
@@ -177,7 +178,7 @@ struct MeView: View {
         Button { paywall = .morePlants } label: {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Tiny Jungle Plus").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                    Text("My Tiny Jungle Plus").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     Text("Room for every plant you love, early help when one struggles, and the right food for each.").font(.subheadline).foregroundStyle(Jungle.subtle)
                         .fixedSize(horizontal: false, vertical: true)
                 }

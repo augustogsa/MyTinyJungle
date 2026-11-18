@@ -2,19 +2,19 @@
   "sourceLanguage": "en",
   "strings": {
     "CFBundleDisplayName": {
-      "comment": "Home-screen app name; brand, keep in English; max 12 chars",
+      "comment": "Home-screen app name; brand, keep in English",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiny Jungle"
+            "value": "My Tiny Jungle"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiny Jungle"
+            "value": "My Tiny Jungle"
           }
         }
       }

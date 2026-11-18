@@ -30,7 +30,7 @@ enum JungleBrain {
 
         // New plant by chat: "I got a monstera called Milo".
         if context == nil, mentionsNewPlant(trimmed.folded), !Store.shared.canAddPlant(current: plants.count) {
-            reply(String(localized: "Your jungle has \(plants.count) plants, the free limit. Tiny Jungle Plus lets it grow without limits.", comment: "Jungle chat: free plan plant limit reached. %lld = number of plants. Keep 'Tiny Jungle Plus' in English."), plant: nil, in: ctx, suggestions: [String(localized: "See Plus", comment: "Chat suggestion chip: see the Plus subscription. Max 14 chars.")])
+            reply(String(localized: "Your jungle has \(plants.count) plants, the free limit. My Tiny Jungle Plus lets it grow without limits.", comment: "Jungle chat: free plan plant limit reached. %lld = number of plants. Keep 'My Tiny Jungle Plus' in English."), plant: nil, in: ctx, suggestions: [String(localized: "See Plus", comment: "Chat suggestion chip: see the Plus subscription. Max 14 chars.")])
             try? ctx.save()
             return
         }

@@ -16,8 +16,14 @@ struct ComingUpCard: View {
                 VStack(spacing: 0) {
                     let shown = Array(all.prefix(expanded ? 12 : 4))
                     ForEach(Array(shown.enumerated()), id: \.element.id) { i, insight in
-                        Button { if let id = insight.plantID { onOpen(id) } } label: { InsightRow(insight: insight, plant: plants.first { $0.id == insight.plantID }) }
-                            .buttonStyle(.plain)
+                        let plant = plants.first { $0.id == insight.plantID }
+                        if let plant {
+                            Button { onOpen(plant.id) } label: { InsightRow(insight: insight, plant: plant) }
+                                .buttonStyle(.plain)
+                        } else {
+                            // No single plant: the names in the line are the links.
+                            InsightRow(insight: insight, plant: nil)
+                        }
                         if i < shown.count - 1 { Divider().padding(.leading, 58) }
                     }
                 }
@@ -32,13 +38,14 @@ struct ComingUpCard: View {
 struct InsightRow: View {
     let insight: JungleInsight
     let plant: Plant?
+    var current: UUID? = nil
     var body: some View {
         HStack(spacing: 12) {
             ZStack(alignment: .bottomTrailing) {
                 if let plant { PlantAvatar(data: plant.photo, size: 40) } else { Icon3DView(insight.icon, size: 36).frame(width: 40, height: 40) }
                 if plant != nil { Icon3DView(insight.icon, size: 18).offset(x: 4, y: 4) }
             }
-            Text(insight.text)
+            PlantText(insight.text, current: current ?? plant?.id)
                 .font(.subheadline).foregroundStyle(Jungle.text)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
@@ -60,7 +67,7 @@ struct PlantForecastSection: View {
             SectionTitle(String(localized: "The next two weeks", comment: "Section title, care calendar"))
             VStack(spacing: 0) {
                 ForEach(Array(insights)) { i in
-                    InsightRow(insight: i, plant: nil)
+                    InsightRow(insight: i, plant: nil, current: plant.id)
                     Divider().padding(.leading, 52)
                 }
                 if items.isEmpty {
@@ -70,7 +77,7 @@ struct PlantForecastSection: View {
                     HStack(spacing: 12) {
                         Icon3DView(f.kind.icon, size: 28).frame(width: 40)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(f.line).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
+                            PlantText(f.line, current: plant.id).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                             Text({ let w = CareForecast.dayWord(f.date); return w.prefix(1).uppercased() + w.dropFirst() }()).font(.caption).foregroundStyle(Jungle.subtle)
                         }
                         Spacer(minLength: 0)
@@ -129,7 +136,7 @@ struct ReminderSettingsView: View {
                     }
                 }
                 if denied {
-                    Text("Notifications are off for Tiny Jungle. You can let your plants reach you in the iPhone Settings app.")
+                    Text("Notifications are off for My Tiny Jungle. You can let your plants reach you in the iPhone Settings app.")
                         .font(.footnote).foregroundStyle(Jungle.warmText).padding(.horizontal, 4)
                 }
                 if on {

@@ -7,7 +7,7 @@
     {
       "id" : "21800001",
       "localizations" : [],
-      "name" : "Tiny Jungle Plus",
+      "name" : "My Tiny Jungle Plus",
       "subscriptions" : [
         { "adHocOffers" : [], "codeOffers" : [], "displayPrice" : "1.99", "familyShareable" : false, "groupNumber" : 1,
           "internalID" : "6800000001", "introductoryOffer" : null,

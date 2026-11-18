@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Tiny Jungle 3D icon library (Woopicx free 3D packs, exported from Figma).
+/// My Tiny Jungle 3D icon library (Woopicx free 3D packs, exported from Figma).
 /// Use `Icon3D.water.image(size:)` or `Icon3DView(.water)`. Never emoji.
 enum Icon3D: String, CaseIterable, Identifiable {
     case sprout, pottedSprout, seedling, succulent, leaf, leaves, pottedPlant, snakePlant, herbs, bonsai, careHands, plantStand

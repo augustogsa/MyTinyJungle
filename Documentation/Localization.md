@@ -44,7 +44,7 @@ Warm, light, friendly; short sentences; plants are characters with moods.
 | English | pt-BR | Notes |
 |---|---|---|
 | My Tiny Jungle | My Tiny Jungle | brand, never translated |
-| Tiny Jungle Plus / Plus | Tiny Jungle Plus / Plus | brand |
+| My Tiny Jungle Plus / Plus | My Tiny Jungle Plus / Plus | brand |
 | your jungle | sua selvinha / sua mini selva | prose only |
 | Today / Plants / Care / Scan / Me | Hoje / Plantas / Cuidados / Escanear / Você | tabs |
 | water / watering | regar / rega | "dar uma regadinha" in casual copy |

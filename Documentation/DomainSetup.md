@@ -44,4 +44,4 @@ When the My Tiny Jungle API ships, run it on `127.0.0.1:3300` and the existing p
 
 ## Ads (AdMob)
 - `https://mytinyjungle.com/app-ads.txt` is served from `Website/src/app-ads.txt` (placeholder until the AdMob publisher line is known). After editing it: `Website/deploy.sh`, then purge the Cloudflare cache (txt files are cached at the edge).
-- Privacy, terms and landing pages describe AdMob ads in the free tier (UMP consent in EEA/UK/CH, ATT for IDFA) and that Tiny Jungle Plus removes ads.
+- Privacy, terms and landing pages describe AdMob ads in the free tier (UMP consent in EEA/UK/CH, ATT for IDFA) and that My Tiny Jungle Plus removes ads.

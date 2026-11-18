@@ -408,7 +408,7 @@ private struct ProductResultView: View {
                     .blur(radius: 1.5)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(String(localized: "See which of your \(plants.count) plants this suits", comment: "Scan result Plus upsell; plural")).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
-                        Text("With Tiny Jungle Plus").font(.caption).foregroundStyle(Jungle.subtle)
+                        Text("With My Tiny Jungle Plus").font(.caption).foregroundStyle(Jungle.subtle)
                     }
                     .padding(.leading, 14)
                     Spacer()
