@@ -213,7 +213,8 @@ def page(L, path, title, desc, body):
 
 
 def phone(img, alt, cls=""):
-    return f'<div class="phone {cls}"><img src="/assets/{img}" alt="{alt}" width="1100" height="2392" loading="lazy"></div>'
+    return (f'<div class="phone {cls}"><div class="phone-screen"><img src="/assets/{img}" alt="{alt}" width="1100" height="2392" loading="lazy"></div>'
+            f'<img class="phone-frame" src="/assets/device/iphone-frame.webp" alt="" width="588" height="1200"></div>')
 
 
 def home(L):
