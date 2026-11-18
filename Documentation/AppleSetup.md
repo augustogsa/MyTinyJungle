@@ -15,7 +15,7 @@
 
 ## App Store Connect
 - Name "My Tiny Jungle" (available). Locales en-US (primary) + pt-PT: name, subtitle, promo text, description, keywords, URLs filled.
-- Support URL https://mydigitalmagnets.com/support, marketing https://simpleappscompany.com/, privacy https://mydigitalmagnets.com/privacy (no simpleappscompany.com support/privacy pages exist yet).
+- Support URL https://mytinyjungle.com/support, marketing https://mytinyjungle.com/, privacy https://mytinyjungle.com/privacy (en-US + pt-PT, set via ASC API). Terms: https://mytinyjungle.com/terms. See DomainSetup.md.
 - Category Lifestyle / Education. Age rating: all None/No (4+). Content rights: no third-party content.
 - App Privacy: Data Not Collected (photos and scans processed on-device, no tracking), published.
 - Price Free (base USA). Availability: all territories except China mainland (needs ICP filing / security assessment), new territories auto-on.
@@ -35,4 +35,4 @@
 - App Store only, no multiseat, no Family Sharing, no 12-month-commitment plan.
 - Review screenshot: plain Forest/Cream placeholder (1290×2796). Replace it with a real paywall screenshot from the first build before submitting for review.
 - Both are in the draft submission. They go to review together with version 1.0 once the build is attached.
-- App Store Server Notifications V2: left blank for now, because `api.mytinyjungle.com` had no DNS yet. The domain session sets `https://api.mytinyjungle.com/storekit/notifications` (prod + sandbox) once the domain is live.
+- App Store Server Notifications V2: production and sandbox URL `https://api.mytinyjungle.com/storekit/notifications` (set in ASC web UI). The API backend on the VPS (127.0.0.1:3300) is not deployed yet; until it is, the route answers 503 and Apple retries.

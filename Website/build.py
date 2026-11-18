@@ -286,7 +286,8 @@ def build():
     (DIST / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
                                       + "".join(f"<url><loc>{u}</loc></url>" for u in urls) + "</urlset>\n")
     (DIST / ".htaccess").write_text(
-        "DirectorySlash On\nErrorDocument 404 /\n"
+        "DirectorySlash Off\nErrorDocument 404 /\n"
+        "RewriteEngine On\nRewriteCond %{REQUEST_FILENAME} -d\nRewriteCond %{REQUEST_FILENAME}/index.html -f\nRewriteRule ^(.*[^/])$ $1/index.html [L]\n"
         "<IfModule mod_headers.c>\n<FilesMatch \"\\.(jpg|png|css)$\">\nHeader set Cache-Control \"public, max-age=604800\"\n</FilesMatch>\n"
         "Header always set X-Content-Type-Options nosniff\nHeader always set Referrer-Policy strict-origin-when-cross-origin\n</IfModule>\n")
     print("built", len(urls), "pages")
