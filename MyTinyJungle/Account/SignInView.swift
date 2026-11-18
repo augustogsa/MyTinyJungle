@@ -53,7 +53,7 @@ struct SignInView: View {
         .background {
             ZStack {
                 Image("SignInLeaves").resizable().scaledToFill().ignoresSafeArea()
-                    .blur(radius: 2)
+
                 Rectangle().fill(.ultraThinMaterial).ignoresSafeArea()
                     .mask(LinearGradient(stops: [.init(color: .clear, location: 0.0), .init(color: .clear, location: 0.12), .init(color: .black, location: 0.42)], startPoint: .top, endPoint: .bottom).ignoresSafeArea())
                 LinearGradient(stops: [.init(color: Jungle.cream.opacity(0), location: 0.12), .init(color: Jungle.cream.opacity(0.82), location: 0.48), .init(color: Jungle.cream.opacity(0.94), location: 1)], startPoint: .top, endPoint: .bottom).ignoresSafeArea()
