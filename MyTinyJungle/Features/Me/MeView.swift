@@ -32,7 +32,6 @@ struct MeView: View {
                     }
                     .buttonStyle(.plain)
                     SharedJungleRow()
-                    SharedJungleRow()
                     milestones
                     if !store.isPlus { plusCard }
                     JungleGroup(title: String(localized: "Your jungle", comment: "Me section title")) {
@@ -187,7 +186,7 @@ struct MeView: View {
                 Icon3DView(.pottedPlant, size: 48)
             }
             .padding(16)
-            .background(Jungle.sun.opacity(0.25), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+            .background(Jungle.mist, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
         }
         .buttonStyle(.plain)
     }

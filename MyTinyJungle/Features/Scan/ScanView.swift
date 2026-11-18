@@ -415,7 +415,7 @@ private struct ProductResultView: View {
                     Image(systemName: "lock.fill").foregroundStyle(Jungle.leaf)
                 }
                 .buttonStyle(.plain).padding(14)
-                .background(Jungle.sun.opacity(0.3), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                .background(Jungle.mist, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
             } else {
                 ForEach(ProductAnalyzer.compatibility(product, plants: plants)) { c in
                     let p = plants.first { $0.id == c.plantID }

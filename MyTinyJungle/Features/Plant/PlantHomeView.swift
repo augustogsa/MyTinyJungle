@@ -163,7 +163,7 @@ struct PlantHomeView: View {
                     }
                 }
                 .padding(14)
-                .background(Jungle.sun.opacity(0.22), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                .background(Jungle.mist, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
             }
             .buttonStyle(.plain)
 

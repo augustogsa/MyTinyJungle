@@ -333,7 +333,7 @@ struct GuidePlayerView: View {
             if let tip = s.tip {
                 Label(tip, systemImage: "lightbulb.fill").font(.subheadline).foregroundStyle(Jungle.text)
                     .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Jungle.sun.opacity(0.25), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .background(Jungle.mist, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
             if let secs = s.seconds {
                 HStack {
