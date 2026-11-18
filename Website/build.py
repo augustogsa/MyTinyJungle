@@ -5,6 +5,7 @@ from home_content import TESTFLIGHT_URL as TESTFLIGHT
 """Builds the static mytinyjungle.com site into Website/dist (EN at /, pt-BR at /pt/)."""
 import hashlib
 import shutil
+import seo
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -30,7 +31,7 @@ T = {
   "foot": ["Support", "Privacy", "Terms", "Good to know","Features"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Coming soon on the App Store",
   "home_title": "My Tiny Jungle: plant care that knows your home",
-  "home_desc": "Not a watering timer. My Tiny Jungle works out each plant's care from your weather, heating, room light, pot and soil, and your plants tell you in their own words.",
+  "home_desc": "Not a watering timer. My Tiny Jungle works out each plant's care from your weather, room light, pot and soil, and your plants tell you in their own words.",
   "h1": "Your plants have <em>something</em> to say.",
   "lead": "My Tiny Jungle turns plant care into a chat. Tell it what you did in plain words, and your plants answer back with what they need next.",
   "note": "Free for up to 5 plants. Photos stay on your iPhone.",
@@ -103,6 +104,10 @@ T = {
     ("Changes and law", "We may update these terms; the date above shows the latest version. These terms are governed by Portuguese law, without depriving you of protections under the law of your country of residence."),
     ("Contact", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
   ],
+  "get_nav": "Get the app", "get_title": "Get My Tiny Jungle for iPhone", "get_desc": "Free for up to 5 plants. Join the beta on TestFlight and your plants start talking today.",
+  "get_intro": "My Tiny Jungle is in public beta on iPhone. Install TestFlight, tap the button, and add your first plant in under a minute.",
+  "get_btn": "Join the beta on TestFlight", "get_pts": ["Free for up to 5 plants, no card needed", "Works on iPhone with iOS 26 or later", "English and Brazilian Portuguese", "Photos stay on your iPhone"],
+  "nf_title": "This page wandered off", "nf_desc": "We couldn't find that page. It may have moved, or the link has a typo.", "nf_home": "Back to the jungle",
   "updated": "Last updated", "plus_title": "Opening My Tiny Jungle", "plus_desc": "Choose your plan in the app.", "plus_intro": "If My Tiny Jungle is on this iPhone, it opens straight to your plan. Not installed yet? Get it free with TestFlight first, then tap the plan again.", "plus_btn": "Get My Tiny Jungle on TestFlight", "plus_tip": "On a computer? Open mytinyjungle.com on your iPhone to join.",
  },
  "pt": {
@@ -111,7 +116,7 @@ T = {
   "foot": ["Ajuda", "Privacidade", "Termos", "Bom saber","Recursos"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Em breve na App Store",
   "home_title": "My Tiny Jungle: suas plantas cuidadas do jeito certo",
-  "home_desc": "Chega de lembrete genérico. O My Tiny Jungle olha o clima da sua cidade, a luz de cada cômodo, o vaso e a terra pra te dizer do que cada planta precisa, na hora certa.",
+  "home_desc": "Chega de lembrete genérico. O My Tiny Jungle olha o clima, a luz de cada cômodo, o vaso e a terra pra te dizer do que cada planta precisa, na hora certa.",
   "h1": "Suas plantas têm <em>muito</em> a dizer.",
   "lead": "O My Tiny Jungle transforma o cuidado com as plantas num bate-papo. Conte o que você fez do seu jeito e elas respondem dizendo do que precisam agora.",
   "note": "Grátis para até 5 plantas. Suas fotos ficam no seu iPhone.",
@@ -182,6 +187,10 @@ T = {
     ("Alterações e lei aplicável", "Podemos atualizar estes termos; a data acima indica a versão mais recente. Estes termos são regidos pela lei portuguesa, sem prejuízo das proteções da lei do seu país de residência."),
     ("Contato", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
   ],
+  "get_nav": "Baixar o app", "get_title": "Baixe o My Tiny Jungle no iPhone", "get_desc": "Grátis pra até 5 plantas. Entra no beta pelo TestFlight e suas plantas já começam a falar hoje.",
+  "get_intro": "O My Tiny Jungle tá em beta aberto no iPhone. Instala o TestFlight, toca no botão e cadastra sua primeira planta em menos de um minuto.",
+  "get_btn": "Entrar no beta pelo TestFlight", "get_pts": ["Grátis pra até 5 plantas, sem cartão", "Funciona no iPhone com iOS 26 ou mais novo", "Em português do Brasil e em inglês", "Suas fotos ficam no seu iPhone"],
+  "nf_title": "Essa página se perdeu", "nf_desc": "A gente não achou essa página. Pode ter mudado de lugar ou o link tá com erro.", "nf_home": "Voltar pra selva",
   "updated": "Última atualização", "plus_title": "Abrindo o My Tiny Jungle", "plus_desc": "Escolhe seu plano no app.", "plus_intro": "Se o My Tiny Jungle já tá no seu iPhone, ele abre direto no plano que você escolheu. Ainda não tem? Instala de graça pelo TestFlight e toca no plano de novo.", "plus_btn": "Baixar o My Tiny Jungle no TestFlight", "plus_tip": "Tá no computador? Abre mytinyjungle.com no iPhone pra entrar.",
  },
 }
@@ -212,7 +221,7 @@ def page(L, path, title, desc, body):
 <link rel="canonical" href="{canon}">{alts}<link rel="alternate" hreflang="x-default" href="{SITE}{path}">
 <meta name="theme-color" content="#FCFAF6"><meta name="color-scheme" content="light">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}">
-<meta property="og:image" content="{SITE}/assets/icon-512.png"><meta property="og:url" content="{canon}">
+<meta property="og:url" content="{canon}">{seo.head(L, path, title, desc, canon, DIST)}
 <meta name="apple-itunes-app" content="app-id=6836292367">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="preload" as="image" href="/assets/erty/favicon-sprite.png?v=2">
 <link rel="preload" href="/fonts/Intern.woff2" as="font" type="font/woff2" crossorigin>
@@ -225,7 +234,7 @@ def page(L, path, title, desc, body):
 </div></header>
 <main>{body}</main>
 <footer><div class="wrap"><span>© 2026 SimpleAppsCo LLC <img class="fsep" src="/icons/sprout.png" alt="" width="20" height="20" loading="lazy"> {t['made']}</span>
-<nav><a href="{p}/features">{f[4]}</a><a href="{p}/good-to-know">{f[3]}</a><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
+<nav><a href="{p}/get">{t['get_nav']}</a><a href="{p}/features">{f[4]}</a><a href="{p}/good-to-know">{f[3]}</a><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
 <script src="/site.js?v={CSS_V}" defer></script>
 </body></html>"""
 
@@ -240,11 +249,11 @@ def home(L):
     return render_home(L, T[L], page, phone, ICON["apple"])
 
 
-def doc(L, path, title, desc, inner, meta=True):
+def doc(L, path, title, desc, inner, meta=True, seo_title=None):
     t = T[L]
     m = f'<p class="meta">{t["updated"]}: {UPDATED[L]}</p>' if meta else ""
     body = f'<section class="doc"><div class="wrap"><div class="paper"><h1>{title}</h1>{m}{inner}</div></div></section>'
-    return page(L, path, f"{title} · My Tiny Jungle", desc, body)
+    return page(L, path, f"{seo_title or title} · My Tiny Jungle", desc, body)
 
 
 def sections(items):
@@ -269,7 +278,8 @@ def feature_pages(L):
                  f'<p class="flead">{intro}</p><h2>{u["how"]}</h2><ul class="fhow">' + "".join(f"<li>{x}</li>" for x in how) + "</ul>"
                  f'<h2>{u["q"]}</h2><div class="faq">' + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in qs) + "</div>"
                  f'<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a><a href="{p}/features/{nxt[1]}">{nxt[2]} →</a></div>')
-        out[f"features/{slug}"] = doc(L, f"/features/{slug}", title, short, inner, meta=False)
+        out[f"features/{slug}"] = doc(L, f"/features/{slug}", title, seo.meta_desc(intro, *(x if x.endswith(".") else x + "." for x in how)), inner, meta=False,
+                                         seo_title=seo.FEATURE_TITLE[L].get(slug))
     grid = '<div class="fgrid">' + "".join(
         f'<a class="fcard" href="{p}/features/{slug}"><img class="i3d" src="/icons/{ic}.png" alt="" width="56" height="56">'
         f'<span class="ft">{title}' + (f' <span class="fbadge">{u["plus_badge"]}</span>' if ic in PLUS else "") + f'</span><span class="fs">{short}</span></a>'
@@ -290,6 +300,7 @@ def good_to_know(L):
 
 
 def build():
+    seo.PAGES.clear(); seo.HOME_DESC.update({L: T[L]["home_desc"] for L in T})
     if DIST.exists():
         shutil.rmtree(DIST)
     (DIST / "assets").mkdir(parents=True)
@@ -315,23 +326,29 @@ def build():
                         f'<p>{t["plus_intro"]}</p><p><a class="btn" href="{TESTFLIGHT}">{t["plus_btn"]}</a></p><div class="box"><p>{t["plus_tip"]}</p></div>'
                         f'<script>if(/iPhone|iPad/.test(navigator.userAgent))setTimeout(function(){{location.href="{TESTFLIGHT}"}},1500)</script>'),
         }
+        out["get"] = doc(L, "/get", t["get_title"], t["get_desc"],
+                        f'<p class="flead">{t["get_intro"]}</p><p><a class="btn" href="{TESTFLIGHT}" rel="noopener">{ICON["apple"]}{t["get_btn"]}</a></p>'
+                        f'<ul class="fhow">' + "".join(f"<li>{x}</li>" for x in t["get_pts"]) + f'</ul><div class="fnav"><a href="{p}/features">{t["foot"][4]} →</a></div>', meta=False)
         for slug, html in out.items():
             d = DIST / p.lstrip("/") / slug
             d.mkdir(parents=True, exist_ok=True)
             (d / "index.html").write_text(html)
             urls.append(f"{SITE}{p}/{slug}".rstrip("/") if slug else f"{SITE}{p}/")
+    t = T["en"]
+    (DIST / "404.html").write_text(doc("en", "/404", t["nf_title"], t["nf_desc"],
+        f'<p class="flead">{t["nf_desc"]}</p><p><a class="btn" href="/">{t["nf_home"]}</a></p><p><a href="/pt/">{T["pt"]["nf_title"]} · {T["pt"]["nf_home"]}</a></p>', meta=False))
     wk = DIST / ".well-known"; wk.mkdir(exist_ok=True)
+    (wk / "security.txt").write_text(seo.SECURITY)
     (wk / "apple-app-site-association").write_text(json.dumps({"applinks": {"details": [{"appIDs": ["JKMB58P38J.com.simpleappscompany.mytinyjungle"], "components": [{"/": "/plus"}, {"/": "/pt/plus"}]}]}}))
     if (SRC / "app-ads.txt").exists():
         shutil.copy(SRC / "app-ads.txt", DIST / "app-ads.txt")
-    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
-    (DIST / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-                                      + "".join(f"<url><loc>{u}</loc></url>" for u in urls) + "</urlset>\n")
-    (DIST / ".htaccess").write_text(
-        "Options -Indexes\nDirectorySlash Off\nErrorDocument 404 /\nErrorDocument 403 /\n"
-        "RewriteEngine On\nRewriteCond %{REQUEST_FILENAME} -d\nRewriteCond %{REQUEST_FILENAME}/index.html -f\nRewriteRule ^(.*[^/])$ $1/index.html [L]\n"
-        "<IfModule mod_headers.c>\n<FilesMatch \"\\.(jpg|png)$\">\nHeader set Cache-Control \"public, max-age=604800\"\n</FilesMatch>\n"
-        "<Files \"apple-app-site-association\">\nHeader set Content-Type application/json\n</Files>\nHeader always set X-Content-Type-Options nosniff\nHeader always set Referrer-Policy strict-origin-when-cross-origin\n</IfModule>\n")
+    (DIST / "robots.txt").write_text(seo.ROBOTS)
+    (DIST / "sitemap.xml").write_text(seo.sitemap(T))
+    (DIST / "llms.txt").write_text(seo.llms(T, {L: _feat_rows(L) for L in T}))
+    (DIST / "site.webmanifest").write_text(seo.manifest())
+    (DIST / "humans.txt").write_text(seo.HUMANS)
+    (DIST / f"{seo.INDEXNOW_KEY}.txt").write_text(seo.INDEXNOW_KEY)
+    (DIST / ".htaccess").write_text(seo.HTACCESS)
     print("built", len(urls), "pages")
 
 
