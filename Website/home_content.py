@@ -93,7 +93,7 @@ H = {
   "lock_date": "Wednesday, 18 November", "now": "now", "ntimes": ["now", "25m ago", "1h ago", "8:00", "Yesterday"], "lock_alt": "Lily's notification, expanded on the lock screen, with Watered, Still wet, Remind me tonight and Open chat",
   "know_h": "Not a timer. Care that knows your home.",
   "know_p": "Most plant apps ask how often to water, then count down: every 7 days, forever. My Tiny Jungle works it out for each plant, every day, from everything around it.",
-  "know_vs": (("A reminder app", ["Water every 7 days", "The same in July and January", "Waters the balcony in the rain", "Two people, two reminders, one drowned fern"]), ("My Tiny Jungle", ["Water when that pot will be dry", "Shifts with your seasons and hemisphere", "Skips outdoor plants after rain", "Shares turns, so nobody double-waters"])),
+  "vs_bell": "Reminder", "know_vs": (("A reminder app", ["Water every 7 days", "The same in July and January", "Waters the balcony in the rain", "Two people, two reminders, one drowned fern"]), ("My Tiny Jungle", ["Water when that pot will be dry", "Shifts with your seasons and hemisphere", "Skips outdoor plants after rain", "Shares turns, so nobody double-waters"])),
   "two_h": "Same monstera, two homes",
   "two_p": "Same plant, same week in July. One home needs water much sooner than the other.",
   "homes": [("Lisbon", "Balcony, terracotta pot, highs around 28 °C", "Every 5 days", "Warm days and a terracotta pot dry the soil fast. If it rains, the reminder waits."), ("Berlin", "Bright living room, plastic pot, 19 °C outside", "Every 8 days", "Indoors, plastic holds water longer. In winter, with the heating on, the sums change again.")],
@@ -187,7 +187,7 @@ H = {
   "lock_alt": "", "lock_date": "quarta-feira, 18 de novembro", "now": "agora", "ntimes": ["agora", "há 25 min", "há 1 h", "8:00", "Ontem"],
   "know_h": "Lembrete fixo não entende de planta. O My Tiny Jungle entende.",
   "know_p": "A maioria dos apps pede um intervalo e repete o mesmo aviso para sempre. Aqui, o cuidado é recalculado todo dia, para cada planta, com base em tudo o que está ao redor dela.",
-  "know_vs": (("Apps de lembrete", ["Rega a cada 7 dias, sempre", "Mesmo aviso no verão e no inverno", "Manda regar a varanda em dia de chuva", "Duas pessoas, dois avisos, planta encharcada"]), ("My Tiny Jungle", ["Rega quando o vaso realmente vai estar seco", "Ajusta o cuidado às estações e ao seu hemisfério", "Segura a rega das plantas de fora depois da chuva", "Organiza o rodízio para ninguém regar duas vezes"])),
+  "vs_bell": "Lembrete", "know_vs": (("Apps de lembrete", ["Rega a cada 7 dias, sempre", "Mesmo aviso no verão e no inverno", "Manda regar a varanda em dia de chuva", "Duas pessoas, dois avisos, planta encharcada"]), ("My Tiny Jungle", ["Rega quando o vaso realmente vai estar seco", "Ajusta o cuidado às estações e ao seu hemisfério", "Segura a rega das plantas de fora depois da chuva", "Organiza o rodízio para ninguém regar duas vezes"])),
   "two_h": "Mesma planta, casas diferentes, cuidados diferentes",
   "two_p": "Mesma planta, mesma semana de julho. Uma casa pede água bem antes da outra.",
   "homes": [("Lisboa", "Varanda, vaso de barro, máxima de 28 °C", "A cada 5 dias", "Calor e vaso de barro secam a terra mais rápido. Se chover, o lembrete espera."), ("Berlim", "Sala iluminada, vaso de plástico, 19 °C lá fora", "A cada 8 dias", "Dentro de casa, o plástico retém a água por mais tempo. No inverno, com aquecedor, o cálculo muda de novo.")],
@@ -309,7 +309,7 @@ def render_home(L, t, page, phone, apple_icon):
 </div>
 <section class="know" id="smart-care"><div class="wrap">
 <div class="ktop"><div class="khead">{E("scan", 120)}<h2>{h['know_h']}</h2><p>{h['know_p']}</p>
-<div class="vs">{"".join(f'<div class="vcol{" us" if j else ""}"><h3>{t}</h3><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for j, (t, xs) in enumerate(h["know_vs"]))}</div></div>
+<div class="vs2"><p class="vh2 them">{h["know_vs"][0][0]}</p><p class="vh2 us">{h["know_vs"][1][0]}</p>{"".join(f'<div class="vn them" style="--d:{k*500}"><span class="vic">⏰</span><div><b>{h["vs_bell"]}</b><span>{a}</span></div></div><div class="vn us" style="transition-delay:{k*500+300}ms"><img src="/assets/plants/{ph}.jpg" alt="" width="36" height="36" loading="lazy"><div><b>My Tiny Jungle</b><span>{b}</span></div></div>' for k, (a, b, ph) in enumerate(zip(h["know_vs"][0][1], h["know_vs"][1][1], ("monstera", "peacelily", "echeveria", "pothos"))))}</div></div>
 {phone(A + "/care-season.jpg", h["in_h"], "kphone")}</div>
 <div class="two"><div class="ttext"><h3>{h['two_h']}</h3><p>{h['two_p']}</p></div>
 {cmp_chart(h)}

@@ -127,3 +127,10 @@
   const lock = document.querySelector(".lockphone");
   if (lock) play(lock, [...lock.querySelectorAll(".ncard")].reverse(), 450, n => { n.classList.remove("pending"); n.classList.add("drop"); });
 })();
+(() => {
+  const v = document.querySelector(".vs2");
+  if (!v || matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  v.classList.add("wait");
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); v.classList.replace("wait", "go"); } }, { threshold: .3 });
+  io.observe(v);
+})();
