@@ -42,3 +42,9 @@
 - Consent: Google UMP form (EU/UK), then the ATT prompt after onboarding. Non-personalised ads if consent or tracking is refused.
 - ASC description, review notes, age rating (Advertising) and privacy labels updated to match. Site legal pages and app-ads.txt are handled by the domain session.
 - AdMob app ID and ad unit IDs: see the "AdMob IDs" line below once signup is verified (test IDs in DEBUG).
+
+## Public TestFlight beta
+- Build 1.0 (3), commit d89f0dc, submitted to Beta App Review 2026-11-18.
+- External group "Friends & testers" (7d6eed3d-159c-4780-84d6-16ac222e3f51), public link https://testflight.apple.com/join/A8YUuUHj, limit 100.
+- Beta review notes: no demo account; sign-in optional (Apple/Google with own account).
+- Link is on mytinyjungle.com (hero button + Join the beta section, EN + PT).
