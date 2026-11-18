@@ -26,6 +26,8 @@ struct Knowledge: Decodable {
         let id, name: String; let aliases: [String]; let sun: String; let potLitres, depthCm: Int
         let start, germDays, harvestDays: String; let spacingCm, minTemp: Int; let companions, avoid: [String]; let tip: String
     }
+    struct GroupCare: Decodable { let happy: String; let mistakes, wins: [String] }
+    struct Remedy: Decodable, Identifiable { let id, name, forWhat, recipe, how, caution: String }
     struct Family: Decodable, Identifiable { let id, name, common, traits, care, toxic: String; let examples: [String] }
     struct Topic: Decodable, Identifiable {
         struct Step: Decodable { let title, detail: String }
@@ -43,13 +45,15 @@ struct Knowledge: Decodable {
     var topics: [Topic] = []
     var crops: [Crop] = []
     var families: [Family] = []
+    var groups: [String: GroupCare] = [:]
+    var remedies: [Remedy] = []
     let soils: [Soil]
     let components: [Component]
     let fertilizers: [Fertilizer]
     let pests: [Pest]
     let sources: [String]
 
-    enum CodingKeys: String, CodingKey { case soils, components, fertilizers, pests, sources, symptoms, diseases, deficiencies, glossary, calendar, lightLevels, potMaterials, tools, topics, crops, families }
+    enum CodingKeys: String, CodingKey { case soils, components, fertilizers, pests, sources, symptoms, diseases, deficiencies, glossary, calendar, lightLevels, potMaterials, tools, topics, crops, families, groups, remedies }
     init(from d: Decoder) throws {
         let c = try d.container(keyedBy: CodingKeys.self)
         soils = try c.decode([Soil].self, forKey: .soils)
@@ -68,6 +72,8 @@ struct Knowledge: Decodable {
         topics = (try? c.decode([Topic].self, forKey: .topics)) ?? []
         crops = (try? c.decode([Crop].self, forKey: .crops)) ?? []
         families = (try? c.decode([Family].self, forKey: .families)) ?? []
+        groups = (try? c.decode([String: GroupCare].self, forKey: .groups)) ?? [:]
+        remedies = (try? c.decode([Remedy].self, forKey: .remedies)) ?? []
     }
     init(soils: [Soil], components: [Component], fertilizers: [Fertilizer], pests: [Pest], sources: [String]) {
         self.soils = soils; self.components = components; self.fertilizers = fertilizers; self.pests = pests; self.sources = sources
@@ -181,6 +187,11 @@ enum PlantKnowledgeRows {
         if let b = s.bloom { r.append(.init(symbol: "camera.macro", title: "Flowers", value: b)) }
         if let g = s.goodFor { r.append(.init(symbol: "hand.thumbsup", title: "Good for", value: g)) }
         if let fit = Climate.shared.fit(s) { r.append(.init(symbol: "globe.europe.africa", title: "In your climate", value: fit)) }
+        if let g = s.group.flatMap({ Knowledge.shared.groups[$0] }) {
+            r.append(.init(symbol: "face.smiling", title: "A happy one looks like", value: g.happy))
+            r.append(.init(symbol: "exclamationmark.triangle", title: "Common mistakes", value: g.mistakes.joined(separator: ". ") + "."))
+            r.append(.init(symbol: "star", title: "Quick wins", value: g.wins.joined(separator: ". ") + "."))
+        }
         if let f = Knowledge.shared.family(named: s.family) { r.append(.init(symbol: "tree", title: "Family", value: "\(f.name), \(f.common). \(f.traits)")) }
         if let a = s.about { r.append(.init(symbol: "book", title: "About", value: a)) }
         if let o = s.origin { r.append(.init(symbol: "globe.americas", title: "Home in the wild", value: o + (s.habit.map { " · \($0)" } ?? ""))) }
@@ -246,5 +257,13 @@ extension Knowledge.Crop {
         if !companions.isEmpty { t += "\n• Good neighbours: \(companions.joined(separator: ", "))." }
         if !avoid.isEmpty { t += " Keep away from: \(avoid.joined(separator: ", "))." }
         return t
+    }
+}
+
+extension Knowledge {
+    /// Remedies that treat a named pest or problem.
+    func remedies(for q: String) -> [Remedy] {
+        let f = q.folded
+        return remedies.filter { r in r.forWhat.folded.components(separatedBy: CharacterSet(charactersIn: ", ")).contains { $0.count > 3 && f.contains(String($0.prefix(max(4, $0.count - 1)))) } }
     }
 }

@@ -214,6 +214,12 @@ extension GuideLibrary {
                 S(title: $0.name, detail: "\($0.sun.capitalized). Pot \($0.potLitres) L. \($0.start) \($0.tip)", symbol: "sun.max.fill")
             }))
         }
+        if !k.remedies.isEmpty {
+            out.append(lesson("home-remedies", "Gentle pest remedies", "Exact mixes from your kitchen cupboard", "ant.fill", Jungle.terracotta, 4, .medium,
+                              when: "At the first sign of bugs.", logs: .treat, k.remedies.map {
+                S(title: $0.name, detail: "For \($0.forWhat). \($0.recipe) \($0.how) \($0.caution)", symbol: "drop.fill")
+            }))
+        }
         if !k.families.isEmpty {
             out.append(lesson("plant-families", "Plant families, and why they matter", "Relatives share care and quirks", "tree", plum, 4,
                               when: "A cosy read: know one, understand many.", k.families.prefix(12).map {

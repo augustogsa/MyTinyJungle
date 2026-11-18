@@ -182,6 +182,16 @@ enum Answerer {
         if has(#"\b(tools?|equipment|what do i need|kit|ferramenta)"#) {
             return ("A cosy plant kit:\n" + k.tools.map { "• \($0.name): \($0.use ?? "")" }.joined(separator: "\n"), [])
         }
+        // Home remedies with exact mixes.
+        if has(#"\b(remed|spray|natural|home ?made|diy|recipe|organic|neem|soap|receita|caseiro)"#) {
+            let list = k.remedies(for: q)
+            let pick = list.isEmpty ? Array(k.remedies.prefix(4)) : Array(list.prefix(3))
+            return ("Gentle fixes:\n" + pick.map { "• \($0.name) (for \($0.forWhat)): \($0.recipe) \($0.how) Careful: \($0.caution)" }.joined(separator: "\n"), [])
+        }
+        // What am I doing wrong, for this plant's kind.
+        if has(#"\b(mistake|doing wrong|wrong with|is it happy|happy|errando|erro)"#), let g = plant?.species?.group.flatMap({ k.groups[$0] }) {
+            return ("A happy one looks like this: \(g.happy)\nCommon mistakes: \(g.mistakes.joined(separator: "; ")).\nQuick wins: \(g.wins.joined(separator: "; ")).", [])
+        }
         // Growing food: sowing, spacing, harvest and neighbours.
         if let crop = k.crop(in: q), has(#"\b(grow|sow|plant (it|them|out)|harvest|pick|seed|companion|pot size|how long|when|plantar|semear|colher)"#) {
             return (crop.card, [])

@@ -4135,5 +4135,416 @@
     "Calamondin"
    ]
   }
+ ],
+ "groups": {
+  "succulent": {
+   "happy": "Plump, firm leaves, tight rosettes and strong colour.",
+   "mistakes": [
+    "Watering on a schedule instead of when the soil is fully dry",
+    "Too little light, so the plant stretches and turns pale",
+    "Pots without drainage holes",
+    "Misting: succulents hate wet leaves"
+   ],
+   "wins": [
+    "Give it the sunniest window you have",
+    "Soak, then wait until the soil is bone dry",
+    "Use gritty mix in terracotta"
+   ]
+  },
+  "cactus": {
+   "happy": "Firm, upright growth and new spines at the tip.",
+   "mistakes": [
+    "Overwatering in winter",
+    "Moving straight from shade into full sun, which scorches",
+    "Deep shade"
+   ],
+   "wins": [
+    "A cool, dry, bright winter for spring flowers",
+    "Water only in the growing season",
+    "Gritty mix with lots of grit or pumice"
+   ]
+  },
+  "tropical": {
+   "happy": "Steady new leaves, glossy foliage, no crispy edges.",
+   "mistakes": [
+    "Cold draughts and radiators",
+    "Letting it go bone dry and then flooding it",
+    "Dark corners"
+   ],
+   "wins": [
+    "Bright indirect light",
+    "Water when the top few centimetres dry",
+    "Group with others for humidity"
+   ]
+  },
+  "aroid": {
+   "happy": "Each new leaf bigger than the last; aerial roots reaching out.",
+   "mistakes": [
+    "Dense, soggy soil",
+    "Too little light, so leaves stay small and don't split",
+    "Never wiping dust off big leaves"
+   ],
+   "wins": [
+    "Chunky aroid mix with bark and perlite",
+    "A moss pole for climbers",
+    "Turn the pot every few weeks"
+   ]
+  },
+  "prayer": {
+   "happy": "Leaves fold up at night and open flat at dawn, with no brown edges.",
+   "mistakes": [
+    "Hard tap water, which brings brown tips",
+    "Direct sun, which fades the patterns",
+    "Letting it dry out completely"
+   ],
+   "wins": [
+    "Rain or filtered water",
+    "High humidity: a tray, a group or a humidifier",
+    "Keep the soil lightly moist"
+   ]
+  },
+  "fern": {
+   "happy": "Fresh fronds uncurling and soft green colour.",
+   "mistakes": [
+    "Dry air near heating",
+    "Letting the soil dry out",
+    "Direct sun"
+   ],
+   "wins": [
+    "A bright bathroom",
+    "Even moisture always",
+    "Trim old brown fronds at the base"
+   ]
+  },
+  "ficus": {
+   "happy": "Holds its leaves, with new growth at the tips.",
+   "mistakes": [
+    "Moving it around",
+    "Cold windows and draughts",
+    "Watering little and often instead of deeply"
+   ],
+   "wins": [
+    "Pick a bright spot and leave it there",
+    "Water deeply when the top 5 cm dry",
+    "Wipe the leaves monthly"
+   ]
+  },
+  "palm": {
+   "happy": "Fresh spears from the centre, green fronds.",
+   "mistakes": [
+    "Cutting green fronds",
+    "Letting it sit in water",
+    "Salt build-up from tap water"
+   ],
+   "wins": [
+    "Bright indirect light",
+    "Flush the soil every few months",
+    "Remove only fully brown fronds"
+   ]
+  },
+  "orchid": {
+   "happy": "Silvery-green firm roots, leathery leaves, flower spikes in autumn and winter.",
+   "mistakes": [
+    "Potting in soil",
+    "Watering on a schedule",
+    "Letting water sit in the crown"
+   ],
+   "wins": [
+    "Water when roots turn silver",
+    "Bright, indirect light",
+    "Cooler nights in autumn to set spikes"
+   ]
+  },
+  "violet": {
+   "happy": "Flat rosettes and flowers most of the year.",
+   "mistakes": [
+    "Cold water on the leaves, which leaves spots",
+    "Pots too big",
+    "Low light, so no flowers"
+   ],
+   "wins": [
+    "Bottom water with room-temperature water",
+    "Bright east window or a grow light",
+    "Keep it a little root-bound"
+   ]
+  },
+  "bromeliad": {
+   "happy": "Bright central bracts and healthy pups at the base.",
+   "mistakes": [
+    "Rich, wet soil",
+    "Expecting the mother to flower again"
+   ],
+   "wins": [
+    "Keep a little water in the cup and refresh it weekly",
+    "Pot the pups when a third of the mother's size"
+   ]
+  },
+  "airplant": {
+   "happy": "Leaves open and soft grey-green, sometimes blushing before flowering.",
+   "mistakes": [
+    "Never soaking it",
+    "Not letting it dry upside down after a soak",
+    "Gluing or planting it in soil"
+   ],
+   "wins": [
+    "Soak 20 minutes weekly, then shake and dry within 4 hours",
+    "Bright, airy spot"
+   ]
+  },
+  "carnivorous": {
+   "happy": "Fresh traps with bright colour.",
+   "mistakes": [
+    "Tap water and fertiliser",
+    "Normal potting soil",
+    "No winter rest for flytraps"
+   ],
+   "wins": [
+    "Rain or distilled water only",
+    "Peat-free carnivorous mix with sand",
+    "Sunniest spot you have"
+   ]
+  },
+  "citrus": {
+   "happy": "Dark green leaves, flowers in late winter and spring.",
+   "mistakes": [
+    "Pale leaves from hunger",
+    "Cold draughts or radiators indoors",
+    "Overwatering in winter"
+   ],
+   "wins": [
+    "Summer citrus feed and winter citrus feed",
+    "Outside in summer, in before frost",
+    "Very bright light"
+   ]
+  },
+  "acid": {
+   "happy": "Deep green leaves and lots of flowers.",
+   "mistakes": [
+    "Hard tap water, which yellows leaves",
+    "Ordinary compost"
+   ],
+   "wins": [
+    "Ericaceous compost",
+    "Rain water",
+    "Acid-plant feed in spring"
+   ]
+  },
+  "herb-soft": {
+   "happy": "Lush, bushy growth and strong scent.",
+   "mistakes": [
+    "Letting it flower",
+    "Too little light on a winter sill",
+    "Harvesting from the bottom"
+   ],
+   "wins": [
+    "Pinch tips weekly",
+    "Sunniest window",
+    "Sow again every few weeks"
+   ]
+  },
+  "herb-med": {
+   "happy": "Compact, aromatic and woody at the base.",
+   "mistakes": [
+    "Rich soil and too much water",
+    "Cutting into old bare wood"
+   ],
+   "wins": [
+    "Gritty soil and full sun",
+    "Trim soft tips after flowering"
+   ]
+  },
+  "vegetable": {
+   "happy": "Steady growth, flowers and setting fruit.",
+   "mistakes": [
+    "Pots too small",
+    "Uneven watering",
+    "Too little sun"
+   ],
+   "wins": [
+    "Big pots and rich compost",
+    "Water deeply and regularly",
+    "Feed with tomato food once fruiting"
+   ]
+  },
+  "shrub": {
+   "happy": "Steady new growth and seasonal flowers.",
+   "mistakes": [
+    "Pruning at the wrong time and cutting off flower buds",
+    "Drought in pots"
+   ],
+   "wins": [
+    "Prune just after flowering",
+    "Mulch pots in summer"
+   ]
+  },
+  "perennial": {
+   "happy": "Comes back stronger every year.",
+   "mistakes": [
+    "Cutting back too early in autumn",
+    "Never dividing old clumps"
+   ],
+   "wins": [
+    "Divide every 3–4 years",
+    "Leave seed heads for birds in winter"
+   ]
+  },
+  "bulb": {
+   "happy": "Leaves stay green after flowering to feed next year's bloom.",
+   "mistakes": [
+    "Cutting leaves too soon",
+    "Wet, cold soil in dormancy"
+   ],
+   "wins": [
+    "Leave leaves for 6 weeks after flowering",
+    "Feed with potash as flowers fade"
+   ]
+  },
+  "flowering": {
+   "happy": "Buds keep coming and flowers last.",
+   "mistakes": [
+    "Too little light",
+    "Never deadheading",
+    "Feeding high nitrogen"
+   ],
+   "wins": [
+    "Deadhead faded flowers",
+    "High-potash feed in bloom",
+    "Bright light"
+   ]
+  },
+  "epicactus": {
+   "happy": "Flat, arching stems and flowers at the tips.",
+   "mistakes": [
+    "Treating it like a desert cactus with full sun and very dry soil",
+    "Moving it while in bud, so buds drop"
+   ],
+   "wins": [
+    "Bright indirect light",
+    "Water when the top dries",
+    "Long nights in autumn for buds"
+   ]
+  }
+ },
+ "remedies": [
+  {
+   "id": "soap-spray",
+   "name": "Gentle soap spray",
+   "forWhat": "aphids, mealybugs, spider mites, whitefly",
+   "recipe": "1 teaspoon (5 ml) pure liquid castile soap in 1 litre of lukewarm water.",
+   "how": "Spray every surface, especially under leaves, until dripping. Repeat every 5–7 days for 3 weeks.",
+   "caution": "Test on one leaf first. Avoid dish soaps with degreasers. Don't spray in hot sun."
+  },
+  {
+   "id": "neem",
+   "name": "Neem oil spray",
+   "forWhat": "mealybugs, scale, spider mites, thrips, mildew",
+   "recipe": "1 teaspoon (5 ml) cold-pressed neem oil plus ½ teaspoon castile soap in 1 litre of warm water. Shake well.",
+   "how": "Spray all surfaces in the evening. Repeat weekly for a month.",
+   "caution": "Can mark tender leaves and smells strong. Mix fresh each time. Not near fish tanks."
+  },
+  {
+   "id": "alcohol",
+   "name": "Rubbing alcohol dab",
+   "forWhat": "mealybugs and scale",
+   "recipe": "70 % isopropyl alcohol on a cotton bud.",
+   "how": "Dab each bug directly; they dissolve on contact. Check every few days.",
+   "caution": "Test on one leaf first. Not on fuzzy or very thin leaves."
+  },
+  {
+   "id": "shower",
+   "name": "Shower blast",
+   "forWhat": "spider mites and aphids",
+   "recipe": "Lukewarm water from a shower head.",
+   "how": "Rinse leaves top and bottom, covering the soil with a bag. Repeat weekly.",
+   "caution": "Let the plant drip dry out of sun."
+  },
+  {
+   "id": "sticky-traps",
+   "name": "Yellow sticky traps",
+   "forWhat": "fungus gnats, whitefly, thrips",
+   "recipe": "Yellow sticky cards.",
+   "how": "Stick one in the soil or hang near the plant. Change when full.",
+   "caution": "Keep away from pets' fur."
+  },
+  {
+   "id": "bti",
+   "name": "Mosquito bits (BTI) water",
+   "forWhat": "fungus gnat larvae",
+   "recipe": "1 tablespoon of BTI granules steeped in 4 litres of water for 30 minutes.",
+   "how": "Strain and water the soil with it for 3 waterings in a row.",
+   "caution": "Safe for people, pets and plants."
+  },
+  {
+   "id": "cinnamon",
+   "name": "Cinnamon dust",
+   "forWhat": "mould on soil, damping off, cut stems",
+   "recipe": "Ground cinnamon.",
+   "how": "Sprinkle thinly on the soil surface or dab on fresh cuts.",
+   "caution": "A gentle aid, not a cure for rot."
+  },
+  {
+   "id": "hydrogen-peroxide",
+   "name": "Hydrogen peroxide drench",
+   "forWhat": "root rot, fungus gnat larvae, stale soil",
+   "recipe": "1 part 3 % hydrogen peroxide to 4 parts water.",
+   "how": "Water through the soil once; it fizzes as it works.",
+   "caution": "Only the 3 % kind. Once, not routinely: it also kills good microbes."
+  },
+  {
+   "id": "milk",
+   "name": "Milk spray for mildew",
+   "forWhat": "powdery mildew",
+   "recipe": "1 part milk to 9 parts water.",
+   "how": "Spray leaves in morning sun weekly.",
+   "caution": "Best as prevention or early on."
+  },
+  {
+   "id": "baking-soda",
+   "name": "Bicarbonate spray",
+   "forWhat": "powdery mildew",
+   "recipe": "1 teaspoon baking soda and ½ teaspoon castile soap in 1 litre of water.",
+   "how": "Spray affected leaves weekly.",
+   "caution": "Too much burns leaves. Not for frequent use."
+  },
+  {
+   "id": "garlic",
+   "name": "Garlic spray",
+   "forWhat": "aphids and soft pests",
+   "recipe": "2 crushed cloves steeped overnight in 1 litre of water, strained, plus a drop of soap.",
+   "how": "Spray leaves every few days.",
+   "caution": "Smells; best outdoors."
+  },
+  {
+   "id": "diatomaceous",
+   "name": "Diatomaceous earth",
+   "forWhat": "fungus gnats, slugs, crawling insects",
+   "recipe": "Food-grade diatomaceous earth.",
+   "how": "Dust a thin layer on dry soil; reapply after watering.",
+   "caution": "Don't breathe the dust. Only works dry."
+  },
+  {
+   "id": "copper",
+   "name": "Copper tape",
+   "forWhat": "slugs and snails",
+   "recipe": "Copper tape.",
+   "how": "Ring the rim of pots.",
+   "caution": "Keep it clean so it keeps working."
+  },
+  {
+   "id": "beneficials",
+   "name": "Beneficial insects",
+   "forWhat": "aphids, spider mites, thrips, whitefly",
+   "recipe": "Ladybirds, lacewings, predatory mites (Phytoseiulus, Amblyseius).",
+   "how": "Release in the evening onto infested plants; best in greenhouses or a sunroom.",
+   "caution": "Stop all sprays first, they kill helpers too."
+  },
+  {
+   "id": "quarantine",
+   "name": "Quarantine and clean-up",
+   "forWhat": "any pest",
+   "recipe": "A separate room or bag, clean scissors, fresh soil.",
+   "how": "Isolate the plant, remove the worst leaves, wipe the pot and shelf, then treat.",
+   "caution": "Check neighbours too: pests travel."
+  }
  ]
 }
