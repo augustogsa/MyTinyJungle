@@ -83,6 +83,18 @@ final class Climate {
         return (cold > 0 ? "C" : "D") + second + third
     }
 
+    /// 3D art for the local landscape.
+    var biomeIcon: Icon3D {
+        guard let k = koppen else { return .globe }
+        switch k.prefix(1) {
+        case "A": return .palm
+        case "B": return .cactus
+        case "C": return k.hasPrefix("Cs") ? .sunny : .tree
+        case "D": return .pine
+        default: return .summit
+        }
+    }
+
     var biome: String {
         guard let k = koppen else { return "Not set yet" }
         switch k {
@@ -337,6 +349,9 @@ struct WeatherAlert: Identifiable, Hashable {
     let detail: String
     let plantNames: [String]
     var id: String { title }
+    var icon: Icon3D {
+        switch kind { case .frost: .frost; case .cold: .cold; case .heat: .hot; case .storm: .storm; case .dry: .sunny }
+    }
     var symbol: String {
         switch kind { case .frost: "snowflake"; case .cold: "thermometer.snowflake"; case .heat: "sun.max.trianglebadge.exclamationmark"; case .storm: "cloud.heavyrain"; case .dry: "drop.triangle" }
     }

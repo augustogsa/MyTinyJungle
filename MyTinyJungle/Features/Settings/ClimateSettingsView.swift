@@ -11,10 +11,10 @@ struct ClimateForm: View {
         VStack(alignment: .leading, spacing: 16) {
             JungleGroup(title: "Where you live", footer: "Only your rough area (about 10 km) is used, to read your local climate and weather. It never leaves for anything else.") {
                 Button { Task { await climate.useMyLocation() } } label: {
-                    JungleRow(icon: .globe, title: "Use my location", subtitle: climate.profile.map { "\($0.place)\($0.country.isEmpty ? "" : ", \($0.country)")" } ?? "Rough area only", chevron: true)
+                    JungleRow(icon: .pin, title: "Use my location", subtitle: climate.profile.map { "\($0.place)\($0.country.isEmpty ? "" : ", \($0.country)")" } ?? "Rough area only", chevron: true)
                 }.buttonStyle(.plain)
                 JungleDivider()
-                JungleRow(icon: .travel, title: "Or type a city") {
+                JungleRow(icon: .globe, title: "Or type a city") {
                     TextField("Lisbon, São Paulo…", text: $city).multilineTextAlignment(.trailing).foregroundStyle(Jungle.subtle)
                         .submitLabel(.search)
                         .onSubmit { let c = city; Task { await climate.setPlace(named: c) } }
@@ -29,20 +29,20 @@ struct ClimateForm: View {
             }
             if climate.profile != nil, !compact {
                 JungleGroup(title: "Your climate") {
-                    JungleRow(icon: .weather, title: climate.biome, subtitle: climate.koppen.map { "Köppen \($0)" })
+                    JungleRow(icon: climate.biomeIcon, title: climate.biome, subtitle: climate.koppen.map { "Köppen \($0)" })
                     if let z = climate.hardinessZone {
                         JungleDivider()
                         JungleRow(icon: .frost, title: "Hardiness zone \(z)", subtitle: climate.profile?.coldestNight.map { "Coldest nights around \(Climate.temp($0))" })
                     }
                     JungleDivider()
-                    JungleRow(icon: .calendar, title: climate.isSouth ? "Southern hemisphere" : "Northern hemisphere",
+                    JungleRow(icon: .heartPin, title: climate.isSouth ? "Southern hemisphere" : "Northern hemisphere",
                               subtitle: climate.isTropical ? "Seasons follow the rains" : "Seasons set from your local temperatures")
                 }
             }
             JungleGroup(title: "Inside your home", footer: "This tunes how fast pots dry out.") {
-                JungleRow(icon: .hot, title: "Heating in winter") { Toggle("", isOn: $climate.heating).labelsHidden() }
+                JungleRow(icon: .radiator, title: "Heating in winter") { Toggle("", isOn: $climate.heating).labelsHidden() }
                 JungleDivider()
-                JungleRow(icon: .cold, title: "Air conditioning in summer") { Toggle("", isOn: $climate.aircon).labelsHidden() }
+                JungleRow(icon: .airConditioner, title: "Air conditioning in summer") { Toggle("", isOn: $climate.aircon).labelsHidden() }
                 JungleDivider()
                 JungleRow(icon: .humidity, title: "The air feels") {
                     Picker("", selection: $climate.homeAir) { ForEach(Climate.HomeAir.allCases, id: \.self) { Text($0.label).tag($0) } }.labelsHidden().tint(Jungle.subtle)
@@ -50,7 +50,7 @@ struct ClimateForm: View {
                 JungleDivider()
                 JungleRow(icon: .windCloud, title: "Draughty windows or doors") { Toggle("", isOn: $climate.drafts).labelsHidden() }
                 JungleDivider()
-                JungleRow(icon: .sunflower, title: "I grow plants outside too", subtitle: "Balcony, terrace or garden") { Toggle("", isOn: $climate.growsOutside).labelsHidden() }
+                JungleRow(icon: .garden, title: "I grow plants outside too", subtitle: "Balcony, terrace or garden") { Toggle("", isOn: $climate.growsOutside).labelsHidden() }
             }
         }
     }
