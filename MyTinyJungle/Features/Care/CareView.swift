@@ -17,6 +17,9 @@ struct CareView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
+                    TabHeader(title: "Care", subtitle: stripMonth) {
+                        HeaderButton(symbol: "plus", label: "Add care task") { adding = true }
+                    }
                     WeekStrip(plants: plants, tasks: tasks, selected: $selectedDay, offset: $weekOffset)
                     Picker("Range", selection: $range) { ForEach(Range.allCases, id: \.self) { Text($0.rawValue) } }.pickerStyle(.segmented)
                     HStack(spacing: 10) {
@@ -34,9 +37,7 @@ struct CareView: View {
                 .padding(16)
             }
             .jungleBackdrop()
-            .navigationTitle(stripMonth)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { Button { adding = true } label: { Image(systemName: "plus") }.accessibilityLabel("Add care task") }
+            .toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $adding) { AddTaskView(plants: plants) }
             .animation(.snappy, value: range)
         }
@@ -81,7 +82,7 @@ struct CareView: View {
                             .buttonStyle(.plain).accessibilityLabel("Done")
                             if let p = item.plant { PlantAvatar(data: p.photo, size: 34) }
                             VStack(alignment: .leading, spacing: 1) {
-                                Text(item.title).foregroundStyle(Jungle.text)
+                                Text(item.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                                 if let loc = item.plant?.location, !loc.isEmpty { Text(loc).font(.caption).foregroundStyle(Jungle.subtle) }
                             }
                             Spacer()

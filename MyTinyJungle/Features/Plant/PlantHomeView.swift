@@ -120,14 +120,14 @@ struct PlantHomeView: View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 10) {
                 SectionTitle("How-to for \(plant.name)", action: "All") { showGuides = true }
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(GuideLibrary.suggested(for: plant).prefix(5)) { g in
-                            Button { guide = g } label: { GuideHeroCard(guide: g) }.buttonStyle(.plain)
-                        }
+                let picks = Array(GuideLibrary.suggested(for: plant).prefix(3))
+                VStack(spacing: 0) {
+                    ForEach(picks) { g in
+                        Button { guide = g } label: { GuideRow(guide: g) }.buttonStyle(.plain)
+                        if g.id != picks.last?.id { Divider().padding(.leading, 76) }
                     }
                 }
-                .scrollClipDisabled()
+                .jungleCard()
             }
             .fullScreenCover(item: $guide) { GuidePlayerView(guide: $0, plant: plant) }
             .navigationDestination(isPresented: $showGuides) { GuidesView(plant: plant) }

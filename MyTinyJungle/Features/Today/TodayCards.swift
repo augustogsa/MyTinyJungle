@@ -163,8 +163,7 @@ struct JungleHealthCard: View {
             ZStack {
                 Circle().stroke(Jungle.mint, lineWidth: 12)
                 Circle().trim(from: 0, to: score)
-                    .stroke(AngularGradient(colors: [Jungle.sage, Jungle.leaf, Jungle.forest], center: .center),
-                            style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                    .stroke(Jungle.leaf, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                 VStack(spacing: 0) {
                     Text("\(Int((score * 100).rounded()))%").font(.system(.title2, design: .rounded, weight: .bold)).monospacedDigit().foregroundStyle(Jungle.text)

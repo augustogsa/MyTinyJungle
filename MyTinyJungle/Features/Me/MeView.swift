@@ -14,12 +14,15 @@ struct MeView: View {
     private var since: Date { plants.map(\.acquiredAt).min() ?? Date() }
     private var daysTogether: Int { max(1, Int(CareEngine.days(from: since))) }
     private var careCount: Int { events.filter { ![.photo, .note].contains($0.kind) }.count }
-    private var happy: Int { plants.filter { CareEngine.mood(for: $0) != .needsYou }.count }
+    private var happy: Int { plants.filter { !CareEngine.needsYou($0) }.count }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
+                    TabHeader(title: name, subtitle: (store.isPlus ? "Plus · " : "") + "Growing since \(since.formatted(.dateTime.month(.abbreviated).year()))") {
+                        HeaderButton(symbol: "gearshape", label: "Settings") { settings = true }
+                    }
                     header
                     HStack(spacing: 10) {
                         NavigationLink { SpacesView() } label: { shortcut(.home, "Spaces", "\(Set(plants.map(\.location).filter { !$0.isEmpty }).count) rooms") }
@@ -46,7 +49,10 @@ struct MeView: View {
                 .padding(.horizontal, 16).padding(.vertical, 8)
             }
             .jungleBackdrop()
-            .navigationTitle("Me")
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationDestination(for: UUID.self) { id in
+                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
+            }
             .sheet(isPresented: $settings) { SettingsView() }
             .sheet(item: $paywall) { PaywallView(reason: $0) }
         }
@@ -55,7 +61,7 @@ struct MeView: View {
     // MARK: header: your jungle at a glance (plant photos, name, three numbers)
 
     private var header: some View {
-        Button { settings = true } label: {
+        NavigationLink { JungleHealthView() } label: {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(alignment: .center, spacing: 14) {
                     HStack(spacing: -14) {
@@ -65,8 +71,8 @@ struct MeView: View {
                         if plants.isEmpty { Icon3DView(.pottedSprout, size: 46) }
                     }
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(name).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.7)
-                        Text((store.isPlus ? "Plus · " : "") + "Growing since \(since.formatted(.dateTime.month(.abbreviated).year()))")
+                        Text("Your jungle").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                        Text(happy == plants.count ? "Everyone's happy" : "\(plants.count - happy) would love some attention")
                             .font(.subheadline).foregroundStyle(Jungle.subtle)
                     }
                     Spacer(minLength: 0)
@@ -89,7 +95,7 @@ struct MeView: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
-        .accessibilityHint("Opens settings")
+        .accessibilityHint("Opens jungle health")
     }
 
     private func stat(_ v: String, _ l: String) -> some View {

@@ -53,7 +53,7 @@ struct TodayView: View {
                                 }
                                 .id("today")
                             }
-                            Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants, needIDs: Set(requests.map(\.0.id))) }.buttonStyle(.plain)
+                            Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants, needIDs: Set(plants.filter { CareEngine.needsYou($0) }.map(\.id))) }.buttonStyle(.plain)
                             VStack(alignment: .leading, spacing: 10) {
                                 SectionTitle("Your plants", action: "See all") { selectedTab = 1 }
                                 carousel
@@ -257,23 +257,9 @@ struct TodayView: View {
     }
 
     private var header: some View {
-        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(greeting).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                HStack(spacing: 6) {
-                    if !plants.isEmpty { Circle().fill(requests.isEmpty ? Jungle.leaf : Jungle.terracotta).frame(width: 7, height: 7) }
-                    Text(contextLine).font(.subheadline).foregroundStyle(Jungle.subtle)
-                }
-            }
-            .accessibilityElement(children: .combine)
-            Spacer(minLength: 0)
-            Button { showSettings = true } label: {
-                Image(systemName: "gearshape").font(.system(size: 18, weight: .medium)).foregroundStyle(Jungle.text).frame(width: 44, height: 44)
-            }
-            .glassEffect(.regular.interactive(), in: Circle())
-            .accessibilityLabel("Settings")
+        TabHeader(title: greeting, subtitle: contextLine, dot: plants.isEmpty ? nil : (requests.isEmpty ? Jungle.leaf : Jungle.terracotta)) {
+            HeaderButton(symbol: "gearshape", label: "Settings") { showSettings = true }
         }
-        .padding(.top, 8)
     }
 
     /// One calm line that ties the day, season and plants together.
@@ -590,7 +576,7 @@ struct JungleHealthView: View {
 
     var body: some View {
         let sorted = plants.sorted { rank(CareEngine.mood(for: $0)) < rank(CareEngine.mood(for: $1)) }
-        let need = Set(plants.filter { p in CareEngine.requests(for: p).contains { $0.priority <= 2 } }.map(\.id))
+        let need = Set(plants.filter { CareEngine.needsYou($0) }.map(\.id))
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 HStack(spacing: 16) {

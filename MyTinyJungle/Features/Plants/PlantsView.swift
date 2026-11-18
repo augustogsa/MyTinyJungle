@@ -10,13 +10,15 @@ struct PlantsView: View {
     @State private var query = ""
     enum Filter: String, CaseIterable { case all = "All", needs = "Needs you", indoors = "Indoors", outdoors = "Outdoors" }
     @State private var filter: Filter = .all
+    @State private var searching = false
+    @FocusState private var searchFocused: Bool
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
 
     private var shown: [Plant] {
         plants.filter { p in
             let f: Bool = switch filter {
             case .all: true
-            case .needs: CareEngine.mood(for: p) == .needsYou
+            case .needs: CareEngine.needsYou(p)
             case .indoors: !p.isOutdoor
             case .outdoors: p.isOutdoor
             }
@@ -28,10 +30,32 @@ struct PlantsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
+                    TabHeader(title: "My plants", subtitle: headerLine, dot: plants.isEmpty ? nil : (needCount == 0 ? Jungle.leaf : Jungle.terracotta)) {
+                        HStack(spacing: 8) {
+                            if !plants.isEmpty {
+                                HeaderButton(symbol: "magnifyingglass", label: "Search plants") {
+                                    withAnimation(.snappy) { searching.toggle() }
+                                    searchFocused = searching
+                                    if !searching { query = "" }
+                                }
+                            }
+                            HeaderButton(symbol: "plus", label: "Add plant") { addTapped() }
+                        }
+                    }
+                    if searching {
+                        HStack(spacing: 8) {
+                            Image(systemName: "magnifyingglass").foregroundStyle(Jungle.subtle)
+                            TextField("Name or species", text: $query).focused($searchFocused).submitLabel(.search)
+                            if !query.isEmpty { Button { query = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(Jungle.subtle) }.accessibilityLabel("Clear search") }
+                        }
+                        .padding(.horizontal, 14).frame(height: 44)
+                        .background(Jungle.surface, in: Capsule())
+                        .overlay(Capsule().strokeBorder(Jungle.border, lineWidth: 0.5))
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                    }
                     if plants.isEmpty {
                         EmptyJungle { adding = true }
                     } else {
-                        summary
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
                                 ForEach(Filter.allCases, id: \.self) { f in
@@ -49,7 +73,7 @@ struct PlantsView: View {
                         }
                         .scrollClipDisabled()
                         if shown.isEmpty {
-                            Text("No plants here.").foregroundStyle(Jungle.subtle).frame(maxWidth: .infinity).padding(.top, 30)
+                            Text(query.isEmpty ? "No plants here." : "No plant called \"\(query)\".").foregroundStyle(Jungle.subtle).frame(maxWidth: .infinity).padding(.top, 30)
                         }
                         // Ads sit between grid rows only: after row 4, then every 8 rows (free users).
                         let perRow = columns.count
@@ -67,11 +91,7 @@ struct PlantsView: View {
                 .padding(16)
             }
             .jungleBackdrop()
-            .navigationTitle("My Collection")
-            .searchable(text: $query, prompt: "Search plants")
-            .toolbar {
-                Button { if Store.shared.canAddPlant(current: plants.count) { adding = true } else { paywall = true } } label: { Image(systemName: "plus") }.accessibilityLabel("Add plant")
-            }
+            .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: UUID.self) { id in
                 if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
             }
@@ -79,6 +99,14 @@ struct PlantsView: View {
             .sheet(isPresented: $paywall) { PaywallView(reason: .morePlants) }
         }
     }
+
+    private var needCount: Int { plants.filter { CareEngine.needsYou($0) }.count }
+    private var headerLine: String {
+        if plants.isEmpty { return "Your jungle starts here" }
+        let n = "\(plants.count) plant\(plants.count == 1 ? "" : "s")"
+        return needCount == 0 ? "\(n) · everyone's happy" : "\(n) · \(needCount) need\(needCount == 1 ? "s" : "") you"
+    }
+    private func addTapped() { if Store.shared.canAddPlant(current: plants.count) { adding = true } else { paywall = true } }
 
     /// Plain-language summary of the jungle: one sentence anyone understands, plus the next thing to do.
     private var summary: some View {

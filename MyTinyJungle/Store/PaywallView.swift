@@ -58,14 +58,10 @@ struct PaywallView: View {
     }
 
     private var plans: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
-                if ordered.isEmpty { ProgressView().frame(height: 120).frame(maxWidth: .infinity) }
-                ForEach(ordered) { p in planCard(p) }
-            }
-            .padding(.vertical, 4)
+        HStack(spacing: 12) {
+            if ordered.isEmpty { ProgressView().frame(height: 120).frame(maxWidth: .infinity) }
+            ForEach(ordered) { p in planCard(p) }
         }
-        .scrollClipDisabled()
     }
 
     private func planCard(_ p: Product) -> some View {
@@ -84,15 +80,15 @@ struct PaywallView: View {
                     Spacer()
                     Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.title3).foregroundStyle(on ? Jungle.forest : Jungle.subtle.opacity(0.5))
                 }
-                Text(p.displayPrice).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                Text(yearly ? "per year · \((p.price / 12).formatted(p.priceFormatStyle))/month" : "per month")
+                Text(p.displayPrice).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                Text(yearly ? "\((p.price / 12).formatted(p.priceFormatStyle))/month" : "per month")
                     .font(.caption).foregroundStyle(Jungle.subtle)
                 if let save, save > 0 {
                     Text("Save \(save)%").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                         .padding(.horizontal, 8).padding(.vertical, 3).background(Jungle.mint, in: Capsule())
                 } else { Text(" ").font(.caption).padding(.vertical, 3) }
             }
-            .padding(16).frame(width: 220, alignment: .leading)
+            .padding(14).frame(maxWidth: .infinity, alignment: .leading)
             .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(on ? Jungle.forest : Jungle.border, lineWidth: on ? 2 : 0.5))
         }

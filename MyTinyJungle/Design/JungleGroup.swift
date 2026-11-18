@@ -45,3 +45,47 @@ extension JungleRow where Trailing == EmptyView {
 }
 
 struct JungleDivider: View { var body: some View { Divider().padding(.leading, 46) } }
+
+/// One header for every tab: rounded title, a status line, glass circle actions.
+struct TabHeader<Trailing: View>: View {
+    let title: String
+    var subtitle: String? = nil
+    var dot: Color? = nil
+    @ViewBuilder var trailing: Trailing
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 10) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                    .lineLimit(1).minimumScaleFactor(0.7)
+                if let subtitle {
+                    HStack(spacing: 6) {
+                        if let dot { Circle().fill(dot).frame(width: 7, height: 7) }
+                        Text(subtitle).font(.subheadline).foregroundStyle(Jungle.subtle)
+                    }
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isHeader)
+            Spacer(minLength: 0)
+            trailing
+        }
+        .padding(.top, 8)
+    }
+}
+
+/// 44pt glass circle button used in tab headers.
+struct HeaderButton: View {
+    let symbol: String
+    let label: String
+    var action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: symbol).font(.system(size: 18, weight: .medium)).foregroundStyle(Jungle.text).frame(width: 44, height: 44)
+                .glassEffect(.regular, in: Circle())
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(label)
+    }
+}

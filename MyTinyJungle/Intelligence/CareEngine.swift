@@ -123,10 +123,15 @@ enum CareEngine {
 
     enum Mood { case thriving, fine, needsYou }
     static func mood(for plant: Plant, now: Date = Date()) -> Mood {
-        let r = requests(for: plant, now: now)
-        if r.contains(where: { $0.priority == 0 }) { return .needsYou }
-        if r.contains(where: { $0.priority <= 1 }) { return .fine }
+        // Single source of truth shared by every screen.
+        if needsYou(plant, now: now) { return .needsYou }
+        if status(for: plant, now: now) != .thriving { return .fine }
         return .thriving
+    }
+
+    /// A plant needs you when it has a care task for today or its status asks for attention.
+    static func needsYou(_ plant: Plant, now: Date = Date()) -> Bool {
+        requests(for: plant, now: now).contains { $0.priority <= 2 } || status(for: plant, now: now).needsAttention
     }
 
     static func relative(_ date: Date, _ now: Date = Date()) -> String {
@@ -206,8 +211,9 @@ struct StatusBadge: View {
         }
         .font(.caption.weight(.semibold))
         .padding(.horizontal, 9).padding(.vertical, 5)
-        .background(.regularMaterial, in: Capsule())
-        .overlay(Capsule().strokeBorder(status.tint.opacity(0.6), lineWidth: status.needsAttention ? 1.5 : 0))
+        .background(Jungle.surface.opacity(0.95), in: Capsule())
+        .overlay(Capsule().strokeBorder(status.tint.opacity(0.7), lineWidth: status.needsAttention ? 1.5 : 0))
+        .shadow(color: .black.opacity(0.1), radius: 4, y: 1)
         .accessibilityLabel("Status: \(status.label)")
     }
 }
