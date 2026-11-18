@@ -7,6 +7,8 @@ enum Answerer {
         let q = raw.folded
         func has(_ p: String) -> Bool { ChatParser.matches(p, q) }
 
+        if let general = knowledgeAnswer(q, raw: raw, plant: plant, now: now) { return general }
+
         // Collection-level questions.
         if plant == nil {
             if has(#"\b(who|which|what|quem|quais|qual).{0,25}(need|thirst|water|attention|precis|sede|regar)"#) || has(#"\btoday\b|\bhoje\b"#) {
@@ -129,7 +131,45 @@ enum Answerer {
         if has(#"\b(problem|wrong|issue|sick|doente|ajuda|help)"#), let probs = s.problems, !probs.isEmpty {
             return ("Things that most often trouble \(s.en):\n" + probs.map { "• \($0.sign): \($0.cause.lowercased()). \($0.fix)" }.joined(separator: "\n"), ["Send photo"])
         }
+        if let sym = Knowledge.shared.symptom(in: q) {
+            let mine = s.problems?.first { p in sym.keywords.contains { p.sign.folded.contains($0.folded) } }
+            return ("\(sym.name). Usual causes: \(sym.causes.joined(separator: "; ")). \(sym.fixes.joined(separator: " "))\(mine.map { " For \(s.en) especially: \($0.fix)" } ?? "")", ["Send photo"])
+        }
         return ("I'm not sure about that one yet. Here's what I know for certain: \(s.tip) \(s.about ?? "")", ["Tell me your story", "What soil do you like?", "Any pests to watch?"])
+    }
+
+    /// Questions the knowledge base answers whatever plant we're talking about.
+    static func knowledgeAnswer(_ q: String, raw: String, plant: Plant?, now: Date) -> (text: String, suggestions: [String])? {
+        func has(_ p: String) -> Bool { ChatParser.matches(p, q) }
+        let k = Knowledge.shared
+        if has(#"\b(what is|what's|what are|whats|meaning|o que e|significa|define)\b"#), let t = k.term(in: q) {
+            return ("\(t.term): \(t.meaning)", [])
+        }
+        if let d = k.disease(in: q) {
+            return ("\(d.name). Signs: \(d.signs) Why: \(d.why) What helps: \(d.fix) Next time: \(d.prevent)", ["Send photo"])
+        }
+        if has(#"\b(deficien|nutrient|carenc|nitrogen|magnesium|iron|potassium|phosph|calcium)"#) {
+            let hit = k.deficiencies.first { q.contains($0.id) || q.contains($0.name.folded) }
+            if let n = hit { return ("\(n.name) shortage. Signs: \(n.signs) Fix: \(n.fix)", []) }
+            return ("Leaves tell you what's missing:\n" + k.deficiencies.map { "• \($0.name): \($0.signs)" }.joined(separator: "\n"), [])
+        }
+        if has(#"\b(this month|month|calendar|season tasks|mes|este mes|what should i do)"#), let m = k.month(now) {
+            return ("This month indoors: \(m.indoor)\nOutdoors: \(m.outdoor)", [])
+        }
+        if has(#"\b(lux|how bright|light level|light meter)"#) {
+            return (k.lightLevels.map { "• \($0.id.capitalized) (\($0.lux) lux): \($0.where). Think \($0.plants)." }.joined(separator: "\n"), [])
+        }
+        if has(#"\b(terracotta|plastic pot|ceramic|which pot|pot material|self.?watering|grow bag)"#) {
+            return (k.potMaterials.map { "• \($0.name): \($0.note ?? "")" }.joined(separator: "\n"), [])
+        }
+        if has(#"\b(tools?|equipment|what do i need|kit|ferramenta)"#) {
+            return ("A cosy plant kit:\n" + k.tools.map { "• \($0.name): \($0.use ?? "")" }.joined(separator: "\n"), [])
+        }
+        // A described symptom without a plant to ask about.
+        if plant == nil || plant?.species == nil, let sym = k.symptom(in: q) {
+            return ("\(sym.name). \(sym.looks)\nUsual causes: \(sym.causes.joined(separator: "; ")).\nWhat helps: \(sym.fixes.joined(separator: " "))", ["Send photo"])
+        }
+        return nil
     }
 
     /// A short profile of any species in the library, for questions about plants you don't own.
@@ -139,6 +179,8 @@ enum Answerer {
         t += "\n• Comfort: \(Int(s.tempMin))–\(Int(s.tempMax)) °C, humidity \(Int(s.humidityMin))%+"
         t += "\n• Soil: \(s.soilPlan)\n• Food: \(s.feedPlan)\n• Pets: \(s.toxicityLine)."
         if let p = s.propagation?.first { t += "\n• More plants: \(p)." }
+        t += "\n• Care level: \(s.difficultyLabel)."
+        if let b = s.bloom { t += "\n• Flowers: \(b)." }
         return t
     }
 
@@ -150,11 +192,13 @@ enum Answerer {
         if m(#"\b(pet|cat|dog|gato|cao|safe)"#) { pool = pool.filter(\.isPetSafe); why.append("pet-safe") }
         if m(#"\b(dark|low light|shade|north|escur|pouca luz)"#) { pool = pool.filter { $0.light == .low || $0.light == .medium }; why.append("happy in lower light") }
         if m(#"\b(sun|bright|south|sol)"#) { pool = pool.filter { $0.light == .bright || $0.light == .direct } ; why.append("sun-loving") }
-        if m(#"\b(easy|beginner|forget|travel|lazy|facil|iniciante)"#) { pool = pool.filter { $0.waterStyle == .dry || $0.waterStyle == .half }; why.append("forgiving") }
+        if m(#"\b(easy|beginner|forget|travel|lazy|facil|iniciante)"#) { pool = pool.filter { ($0.difficulty ?? 2) == 1 }; why.append("easy-going") }
         if m(#"\b(balcony|garden|outdoor|outside|varanda|jardim)"#) { pool = pool.filter { $0.outdoor == true }; why.append("good outdoors") }
         else if m(#"\b(indoor|inside|apartment|room|casa|apartamento)"#) { pool = pool.filter { $0.outdoor != true } }
         if m(#"\b(flower|bloom|flor)"#) { pool = pool.filter { ["flowering","orchid","violet","bulb","epicactus","bromeliad"].contains($0.group ?? "") || $0.feed == "bloom" }; why.append("flowering") }
         if m(#"\b(eat|herb|kitchen|food|erva|cozinha)"#) { pool = pool.filter { ["herb-med","herb-soft","vegetable","citrus"].contains($0.group ?? "") }; why.append("edible") }
+        if m(#"\b(hang|trail|shelf|shelves|pendur)"#) { pool = pool.filter { $0.tags?.contains("trailing") == true }; why.append("trailing") }
+        if m(#"\b(fast|quick|rapid)"#) { pool = pool.filter { $0.tags?.contains("fastGrowing") == true }; why.append("fast-growing") }
         if m(#"\b(humid|bathroom|banheiro)"#) { pool = pool.filter { $0.humidityMin >= 55 }; why.append("humidity-loving") }
         guard !pool.isEmpty else { return "I couldn't find a plant that ticks every box. Try fewer wishes, like \"easy and pet-safe\"." }
         let day = Calendar.current.ordinality(of: .day, in: .year, for: Date()) ?? 0

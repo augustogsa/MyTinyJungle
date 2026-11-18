@@ -15,11 +15,48 @@ struct Knowledge: Decodable {
     struct Fertilizer: Decodable, Identifiable { let id, name, npk, cadence, dilution, rest, note: String }
     struct Pest: Decodable, Identifiable { let id, name, signs, fix, likes: String }
 
+    struct Symptom: Decodable, Identifiable { let id, name, looks: String; let causes, fixes, keywords: [String] }
+    struct Disease: Decodable, Identifiable { let id, name, signs, why, fix, prevent: String }
+    struct Deficiency: Decodable, Identifiable { let id, name, signs, fix: String }
+    struct Term: Decodable { let term, meaning: String }
+    struct Month: Decodable { let month: Int; let indoor, outdoor: String }
+    struct LightLevel: Decodable { let id, lux, `where`, plants: String }
+    struct Named: Decodable { let name: String; let note: String?; let use: String? }
+
+    var symptoms: [Symptom] = []
+    var diseases: [Disease] = []
+    var deficiencies: [Deficiency] = []
+    var glossary: [Term] = []
+    var calendar: [Month] = []
+    var lightLevels: [LightLevel] = []
+    var potMaterials: [Named] = []
+    var tools: [Named] = []
     let soils: [Soil]
     let components: [Component]
     let fertilizers: [Fertilizer]
     let pests: [Pest]
     let sources: [String]
+
+    enum CodingKeys: String, CodingKey { case soils, components, fertilizers, pests, sources, symptoms, diseases, deficiencies, glossary, calendar, lightLevels, potMaterials, tools }
+    init(from d: Decoder) throws {
+        let c = try d.container(keyedBy: CodingKeys.self)
+        soils = try c.decode([Soil].self, forKey: .soils)
+        components = try c.decode([Component].self, forKey: .components)
+        fertilizers = try c.decode([Fertilizer].self, forKey: .fertilizers)
+        pests = try c.decode([Pest].self, forKey: .pests)
+        sources = try c.decode([String].self, forKey: .sources)
+        symptoms = (try? c.decode([Symptom].self, forKey: .symptoms)) ?? []
+        diseases = (try? c.decode([Disease].self, forKey: .diseases)) ?? []
+        deficiencies = (try? c.decode([Deficiency].self, forKey: .deficiencies)) ?? []
+        glossary = (try? c.decode([Term].self, forKey: .glossary)) ?? []
+        calendar = (try? c.decode([Month].self, forKey: .calendar)) ?? []
+        lightLevels = (try? c.decode([LightLevel].self, forKey: .lightLevels)) ?? []
+        potMaterials = (try? c.decode([Named].self, forKey: .potMaterials)) ?? []
+        tools = (try? c.decode([Named].self, forKey: .tools)) ?? []
+    }
+    init(soils: [Soil], components: [Component], fertilizers: [Fertilizer], pests: [Pest], sources: [String]) {
+        self.soils = soils; self.components = components; self.fertilizers = fertilizers; self.pests = pests; self.sources = sources
+    }
 
     static let shared: Knowledge = {
         guard let url = Bundle.main.url(forResource: "knowledge", withExtension: "json"),
@@ -29,6 +66,29 @@ struct Knowledge: Decodable {
         }
         return k
     }()
+
+    /// Best symptom for free text ("my leaves have brown tips").
+    func symptom(in text: String) -> Symptom? {
+        let t = text.folded
+        return symptoms.max { a, b in score(a, t) < score(b, t) }.flatMap { score($0, t) > 0 ? $0 : nil }
+    }
+    private func score(_ s: Symptom, _ t: String) -> Int { s.keywords.filter { t.contains($0.folded) }.map(\.count).reduce(0, +) }
+    func term(in text: String) -> Term? {
+        let t = text.folded
+        return glossary.filter { g in
+            let w = g.term.folded
+            return ["is a \(w)", "is an \(w)", "is \(w)", "are \(w)", "\(w) mean", "o que e \(w)", "define \(w)"].contains { t.contains($0) }
+        }.max { $0.term.count < $1.term.count }
+    }
+    func disease(in text: String) -> Disease? {
+        let t = text.folded
+        return diseases.first { d in t.contains(d.name.folded) || t.contains(d.id.replacingOccurrences(of: "-", with: " ")) }
+    }
+    func month(_ date: Date = Date(), south: Bool = JungleSettings.shared.southernHemisphere) -> Month? {
+        var m = Calendar.current.component(.month, from: date)
+        if south { m = (m + 5) % 12 + 1 }
+        return calendar.first { $0.month == m }
+    }
 
     func soil(_ id: String) -> Soil? { soils.first { $0.id == id } }
     func fertilizer(_ id: String) -> Fertilizer? { fertilizers.first { $0.id == id } }
@@ -79,6 +139,14 @@ extension Species {
         return r.isEmpty ? "\(s.name). \(s.note)" : "\(s.name): \(r). pH \(s.phMin.formatted())–\(s.phMax.formatted()), \(s.drainage.lowercased()) drainage."
     }
 
+    var difficultyLabel: String { ["", "Easy-going", "Needs a little attention", "For experienced plant parents"][min(3, max(1, difficulty ?? 2))] }
+    var goodFor: String? {
+        let names = ["beginner": "beginners", "lowLight": "lower light", "petSafe": "homes with pets", "bathroom": "bathrooms",
+                     "drought": "forgetful waterers", "edible": "the kitchen", "trailing": "shelves and hanging pots", "outdoor": "balconies and gardens"]
+        let l = (tags ?? []).compactMap { names[$0] }
+        return l.isEmpty ? nil : l.joined(separator: ", ").sentenceCased
+    }
+
     var toxicityLine: String {
         switch (toxicCats, toxicDogs) {
         case (true, true): "Toxic to cats and dogs if chewed (ASPCA)"
@@ -94,6 +162,9 @@ enum PlantKnowledgeRows {
     struct Row { let symbol, title, value: String }
     static func rows(for s: Species, plant: Plant?) -> [Row] {
         var r: [Row] = []
+        r.append(.init(symbol: "gauge.with.dots.needle.33percent", title: "Care level", value: s.difficultyLabel))
+        if let b = s.bloom { r.append(.init(symbol: "camera.macro", title: "Flowers", value: b)) }
+        if let g = s.goodFor { r.append(.init(symbol: "hand.thumbsup", title: "Good for", value: g)) }
         if let a = s.about { r.append(.init(symbol: "book", title: "About", value: a)) }
         if let o = s.origin { r.append(.init(symbol: "globe.americas", title: "Home in the wild", value: o + (s.habit.map { " · \($0)" } ?? ""))) }
         r.append(.init(symbol: "drop", title: "Water by season", value: s.seasonalWater + " " + s.potHint(diameter: plant?.potDiameterCm)))
@@ -108,4 +179,8 @@ enum PlantKnowledgeRows {
         }
         return r
     }
+}
+
+extension String {
+    var sentenceCased: String { prefix(1).uppercased() + dropFirst() }
 }

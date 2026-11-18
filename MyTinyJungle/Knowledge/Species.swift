@@ -42,6 +42,9 @@ struct Species: Codable, Identifiable, Hashable {
     var outdoor: Bool? = nil
     var aliases: [String]? = nil
     var wikidata: String? = nil
+    var difficulty: Int? = nil
+    var bloom: String? = nil
+    var tags: [String]? = nil
 
     struct Problem: Codable, Hashable { let sign: String; let cause: String; let fix: String }
 

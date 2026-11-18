@@ -46,6 +46,10 @@ enum Diagnosis {
         if out.isEmpty, r.health == .lush || r.health == .good {
             out.append(.init(title: "Looking healthy", detail: "Keep the routine. \(s?.tip ?? "")"))
         }
+        // Nutrient hints from where the yellow shows up is beyond a photo; point to the leaf-language lesson instead.
+        if yellow > 0.2, r.soilMoisture != .wet, let iron = Knowledge.shared.deficiencies.first(where: { $0.id == (s?.phMax ?? 7 <= 6 ? "iron" : "nitrogen") }) {
+            out.append(.init(title: "Could be hunger (\(iron.name.lowercased()))", detail: "\(iron.signs) \(iron.fix)"))
+        }
         if let pest = s?.pestList.first, r.health == .someStress || r.health == .stressed {
             out.append(.init(title: "Rule out \(pest.name.lowercased())", detail: "\(pest.signs) \(pest.fix)"))
         }

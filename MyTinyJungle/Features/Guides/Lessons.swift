@@ -178,4 +178,36 @@ extension GuideLibrary {
             S(title: "Winter sleep", detail: "Venus flytraps need a cool, bright rest from November to February.", symbol: "moon.zzz.fill"),
         ]),
     ]
+
+    /// Lessons generated from the knowledge base: one per plant illness, plus this month's jobs and leaf hunger signs.
+    static let knowledgeLessons: [CareGuide] = {
+        let k = Knowledge.shared
+        var out = k.diseases.map { d in
+            lesson("disease-\(d.id)", "Understanding \(d.name.lowercased())", "Spot it, fix it, prevent it", "cross.case.fill", Jungle.terracotta, 3, .medium,
+                   when: "If you notice: \(d.signs.prefix(1).lowercased() + d.signs.dropFirst())", logs: .treat, [
+                S(title: "What you'll see", detail: d.signs, symbol: "eye.fill"),
+                S(title: "Why it happens", detail: d.why, symbol: "questionmark.circle.fill"),
+                S(title: "What helps", detail: d.fix, symbol: "cross.case.fill"),
+                S(title: "Next time", detail: d.prevent, symbol: "shield.fill"),
+            ])
+        }
+        if !k.deficiencies.isEmpty {
+            out.append(lesson("hunger-signs", "When leaves are hungry", "Reading nutrient shortages", "leaf.fill", Jungle.leaf, 4,
+                              when: "Pale, patchy or oddly coloured leaves in the growing season.", k.deficiencies.map {
+                S(title: $0.name, detail: "\($0.signs) \($0.fix)", symbol: "leaf.fill")
+            }))
+        }
+        if let m = k.month() {
+            out.append(lesson("this-month", "This month in your jungle", "Seasonal jobs, little and often", "calendar", gold, 2, when: "Any day this month.", [
+                S(title: "Indoors", detail: m.indoor, symbol: "house.fill"),
+                S(title: "Outdoors", detail: m.outdoor, symbol: "sun.horizon.fill"),
+            ]))
+        }
+        if !k.glossary.isEmpty {
+            let pick = k.glossary.shuffled().prefix(5)
+            out.append(lesson("words", "Plant words, gently explained", "Five terms you'll hear", "text.book.closed.fill", plum, 2, when: "A cosy read with a cup of tea.",
+                              pick.map { S(title: $0.term, detail: $0.meaning, symbol: "text.bubble.fill") }))
+        }
+        return out
+    }()
 }

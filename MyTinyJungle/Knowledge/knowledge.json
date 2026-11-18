@@ -551,6 +551,881 @@
   "RHS (rhs.org.uk) plant and pest advice",
   "ASPCA Toxic and Non-Toxic Plant List",
   "University of Minnesota, Missouri Botanical Garden, NC State, UF/IFAS and Clemson extension services",
-  "Kew Plants of the World Online (names and native ranges)"
+  "Kew Plants of the World Online (names and native ranges)",
+  "Wikidata (CC0) for common names",
+  "UK Royal Horticultural Society glossary and pest pages, summarised in our own words"
+ ],
+ "symptoms": [
+  {
+   "id": "yellow-lower",
+   "name": "Yellow lower leaves",
+   "looks": "Older leaves near the base turn yellow, one or two at a time.",
+   "causes": [
+    "Natural ageing",
+    "Too much water",
+    "Hunger in the growing season"
+   ],
+   "fixes": [
+    "One old leaf now and then is normal: snip it.",
+    "If several go at once and soil is wet, water less.",
+    "If soil is fine, feed in spring and summer."
+   ],
+   "keywords": [
+    "yellow",
+    "old leaves",
+    "bottom leaves"
+   ]
+  },
+  {
+   "id": "yellow-new",
+   "name": "Yellow new leaves",
+   "looks": "Fresh growth comes in pale or yellow, often with green veins.",
+   "causes": [
+    "Iron or magnesium shortage",
+    "Soil too alkaline",
+    "Cold roots"
+   ],
+   "fixes": [
+    "Use a feed with micronutrients.",
+    "Rainwater for acid lovers.",
+    "Move away from cold floors and windows."
+   ],
+   "keywords": [
+    "new leaves yellow",
+    "chlorosis",
+    "green veins"
+   ]
+  },
+  {
+   "id": "yellow-all",
+   "name": "Yellowing all over",
+   "looks": "Leaves fade and yellow across the whole plant.",
+   "causes": [
+    "Waterlogged roots",
+    "Too little light",
+    "Long overdue repot"
+   ],
+   "fixes": [
+    "Check the roots and let the soil dry.",
+    "Brighter spot.",
+    "Fresh soil and a pot one size up in spring."
+   ],
+   "keywords": [
+    "all yellow",
+    "whole plant yellow"
+   ]
+  },
+  {
+   "id": "brown-tips",
+   "name": "Brown, crispy tips",
+   "looks": "Leaf tips and edges dry out and go papery brown.",
+   "causes": [
+    "Dry air",
+    "Uneven watering",
+    "Salt or fluoride from tap water and fertilizer"
+   ],
+   "fixes": [
+    "Raise humidity by grouping plants.",
+    "Water deeply, then on time.",
+    "Flush the soil and use rain or filtered water."
+   ],
+   "keywords": [
+    "brown tips",
+    "crispy",
+    "dry edges",
+    "pontas secas"
+   ]
+  },
+  {
+   "id": "brown-soft",
+   "name": "Soft brown patches",
+   "looks": "Dark, mushy areas, sometimes with a yellow ring.",
+   "causes": [
+    "Overwatering and rot",
+    "Bacterial or fungal leaf spot"
+   ],
+   "fixes": [
+    "Cut affected leaves with clean scissors.",
+    "Water less and improve airflow.",
+    "Keep leaves dry when watering."
+   ],
+   "keywords": [
+    "soft brown",
+    "mushy",
+    "black spots",
+    "rot"
+   ]
+  },
+  {
+   "id": "brown-scorch",
+   "name": "Bleached or scorched patches",
+   "looks": "Pale, crispy or brown patches on the sunniest side.",
+   "causes": [
+    "Sunburn after a sudden move into strong light"
+   ],
+   "fixes": [
+    "Move back from the window or filter with a sheer curtain.",
+    "Damaged spots won't heal, but new leaves will be fine."
+   ],
+   "keywords": [
+    "sunburn",
+    "scorch",
+    "bleached",
+    "white patches"
+   ]
+  },
+  {
+   "id": "droop-dry",
+   "name": "Droopy with dry soil",
+   "looks": "Leaves hang limp and the pot feels light.",
+   "causes": [
+    "Thirst"
+   ],
+   "fixes": [
+    "Water deeply until it drains, or bottom-soak for 30 minutes.",
+    "It should perk up within a day."
+   ],
+   "keywords": [
+    "droop",
+    "wilt",
+    "limp",
+    "thirsty"
+   ]
+  },
+  {
+   "id": "droop-wet",
+   "name": "Droopy with wet soil",
+   "looks": "Limp leaves although the soil is soggy.",
+   "causes": [
+    "Root rot: roots can't drink when drowned"
+   ],
+   "fixes": [
+    "Unpot, trim black mushy roots, repot in fresh airy mix.",
+    "Water only when the top dries."
+   ],
+   "keywords": [
+    "droop wet",
+    "wilting wet soil",
+    "root rot"
+   ]
+  },
+  {
+   "id": "leggy",
+   "name": "Leggy, stretched growth",
+   "looks": "Long gaps between leaves, stems leaning to the window.",
+   "causes": [
+    "Not enough light"
+   ],
+   "fixes": [
+    "Brighter spot or a grow light.",
+    "Prune leggy stems and root the cuttings."
+   ],
+   "keywords": [
+    "leggy",
+    "stretching",
+    "etiolated",
+    "leaning"
+   ]
+  },
+  {
+   "id": "small-leaves",
+   "name": "Small new leaves",
+   "looks": "Each new leaf is smaller than the last.",
+   "causes": [
+    "Low light",
+    "Hunger",
+    "Root-bound pot"
+   ],
+   "fixes": [
+    "More light first.",
+    "Feed in the growing season.",
+    "Check whether roots fill the pot."
+   ],
+   "keywords": [
+    "small leaves",
+    "tiny leaves"
+   ]
+  },
+  {
+   "id": "leaf-drop",
+   "name": "Sudden leaf drop",
+   "looks": "Healthy-looking leaves fall without warning.",
+   "causes": [
+    "A move, draught or temperature shock",
+    "Very dry or very wet roots"
+   ],
+   "fixes": [
+    "Choose a steady spot and leave it there.",
+    "Check soil moisture and adjust."
+   ],
+   "keywords": [
+    "dropping leaves",
+    "leaf drop",
+    "falling leaves"
+   ]
+  },
+  {
+   "id": "curling",
+   "name": "Curling leaves",
+   "looks": "Leaves roll inward or cup downward.",
+   "causes": [
+    "Thirst",
+    "Heat or dry air",
+    "Too much sun",
+    "Pests on the undersides"
+   ],
+   "fixes": [
+    "Feel the soil and water if dry.",
+    "Move away from heaters.",
+    "Look under the leaves."
+   ],
+   "keywords": [
+    "curl",
+    "curling",
+    "rolling"
+   ]
+  },
+  {
+   "id": "spots-rings",
+   "name": "Pale rings or blotches",
+   "looks": "Pale rings or spots, often on velvety leaves.",
+   "causes": [
+    "Cold water on the leaves",
+    "Leaf spot disease"
+   ],
+   "fixes": [
+    "Water the soil, not the leaves, with room-temperature water."
+   ],
+   "keywords": [
+    "rings",
+    "blotches",
+    "spots"
+   ]
+  },
+  {
+   "id": "white-powder",
+   "name": "White powder on leaves",
+   "looks": "A dusty white coating that wipes off.",
+   "causes": [
+    "Powdery mildew"
+   ],
+   "fixes": [
+    "Remove worst leaves, improve airflow, water the soil not the leaves."
+   ],
+   "keywords": [
+    "white powder",
+    "mildew",
+    "flour"
+   ]
+  },
+  {
+   "id": "sticky",
+   "name": "Sticky leaves",
+   "looks": "A shiny, sticky film, sometimes with black mould.",
+   "causes": [
+    "Sap-sucking pests: scale, aphids, mealybugs"
+   ],
+   "fixes": [
+    "Look for the insects under leaves and on stems and wipe them off."
+   ],
+   "keywords": [
+    "sticky",
+    "honeydew",
+    "shiny film"
+   ]
+  },
+  {
+   "id": "webbing",
+   "name": "Fine webbing",
+   "looks": "Thin webs between leaves and stems, speckled leaves.",
+   "causes": [
+    "Spider mites"
+   ],
+   "fixes": [
+    "Shower the plant and raise humidity; repeat weekly."
+   ],
+   "keywords": [
+    "web",
+    "webbing",
+    "teia"
+   ]
+  },
+  {
+   "id": "white-fluff",
+   "name": "White fluffy bits",
+   "looks": "Cotton-like tufts in leaf joints.",
+   "causes": [
+    "Mealybugs"
+   ],
+   "fixes": [
+    "Dab with alcohol on a cotton bud and repeat weekly."
+   ],
+   "keywords": [
+    "white fluff",
+    "cotton",
+    "cochonilha"
+   ]
+  },
+  {
+   "id": "flies",
+   "name": "Tiny flies around the soil",
+   "looks": "Small black flies rising when you water.",
+   "causes": [
+    "Fungus gnats from constantly damp compost"
+   ],
+   "fixes": [
+    "Let the top dry, use sticky traps, water from below."
+   ],
+   "keywords": [
+    "flies",
+    "gnats",
+    "mosquitinhos"
+   ]
+  },
+  {
+   "id": "mould-soil",
+   "name": "Mould on the soil",
+   "looks": "White fuzz on the surface of the compost.",
+   "causes": [
+    "Damp, still air and soggy topsoil"
+   ],
+   "fixes": [
+    "Scrape it off, let the top dry, and add airflow. Usually harmless."
+   ],
+   "keywords": [
+    "mould",
+    "mold",
+    "fuzz on soil"
+   ]
+  },
+  {
+   "id": "crust",
+   "name": "White crust on soil or pot",
+   "looks": "A crusty white layer on the soil or terracotta.",
+   "causes": [
+    "Mineral salts from tap water and fertilizer"
+   ],
+   "fixes": [
+    "Scrape it off and flush the pot with plenty of water."
+   ],
+   "keywords": [
+    "white crust",
+    "salt",
+    "calcium"
+   ]
+  },
+  {
+   "id": "no-flowers",
+   "name": "No flowers",
+   "looks": "A healthy plant that refuses to bloom.",
+   "causes": [
+    "Too little light",
+    "Too much nitrogen",
+    "Missed rest period"
+   ],
+   "fixes": [
+    "More light, a potassium-rich feed, and the right winter rest for its kind."
+   ],
+   "keywords": [
+    "no flowers",
+    "won't bloom",
+    "not flowering"
+   ]
+  },
+  {
+   "id": "bud-drop",
+   "name": "Buds fall before opening",
+   "looks": "Flower buds yellow and drop.",
+   "causes": [
+    "Moving the plant",
+    "Draughts or dry roots"
+   ],
+   "fixes": [
+    "Keep it in one spot and water evenly while in bud."
+   ],
+   "keywords": [
+    "bud drop",
+    "buds falling"
+   ]
+  },
+  {
+   "id": "mushy-stem",
+   "name": "Soft, dark stem base",
+   "looks": "The stem turns soft and dark at soil level.",
+   "causes": [
+    "Stem rot from soggy soil"
+   ],
+   "fixes": [
+    "Cut healthy tops and re-root them; the base rarely recovers."
+   ],
+   "keywords": [
+    "stem rot",
+    "soft stem",
+    "mushy base"
+   ]
+  },
+  {
+   "id": "holes",
+   "name": "Holes in leaves",
+   "looks": "Ragged holes or chewed edges.",
+   "causes": [
+    "Slugs, snails or caterpillars outdoors",
+    "Vine weevil notches"
+   ],
+   "fixes": [
+    "Check at night and remove pests by hand."
+   ],
+   "keywords": [
+    "holes",
+    "chewed",
+    "notches"
+   ]
+  },
+  {
+   "id": "no-splits",
+   "name": "Monstera leaves without splits",
+   "looks": "New monstera leaves stay solid.",
+   "causes": [
+    "Young plant or low light"
+   ],
+   "fixes": [
+    "More light and a pole to climb; mature leaves split."
+   ],
+   "keywords": [
+    "no fenestration",
+    "no holes monstera",
+    "no splits"
+   ]
+  }
+ ],
+ "diseases": [
+  {
+   "id": "root-rot",
+   "name": "Root rot",
+   "signs": "Wilting despite wet soil, yellow leaves, a sour smell, black mushy roots.",
+   "why": "Roots starved of air in waterlogged soil.",
+   "fix": "Unpot, cut away soft roots, repot into fresh airy mix in a clean pot, water sparingly.",
+   "prevent": "Pots with holes, airy mixes, and water only when needed."
+  },
+  {
+   "id": "powdery-mildew",
+   "name": "Powdery mildew",
+   "signs": "A white powdery film on leaves.",
+   "why": "A fungus that loves dry roots and still, humid air.",
+   "fix": "Remove badly hit leaves, increase airflow, keep leaves dry.",
+   "prevent": "Space plants out and water the soil, not the leaves."
+  },
+  {
+   "id": "leaf-spot",
+   "name": "Leaf spot",
+   "signs": "Brown or black spots, often with yellow halos.",
+   "why": "Fungi or bacteria spread by water splashes.",
+   "fix": "Snip spotted leaves, water at the base, improve airflow.",
+   "prevent": "Keep foliage dry and clean your tools."
+  },
+  {
+   "id": "botrytis",
+   "name": "Grey mould",
+   "signs": "Fuzzy grey mould on flowers, buds or soft leaves.",
+   "why": "Cool, damp, stagnant air.",
+   "fix": "Remove affected parts and ventilate.",
+   "prevent": "Deadhead faded flowers and avoid crowding."
+  },
+  {
+   "id": "rust",
+   "name": "Rust",
+   "signs": "Orange or brown powdery pustules under leaves.",
+   "why": "A fungus that spreads in damp weather.",
+   "fix": "Remove affected leaves and bin them, not compost.",
+   "prevent": "Water in the morning at soil level."
+  },
+  {
+   "id": "black-spot",
+   "name": "Black spot",
+   "signs": "Black blotches with yellowing on rose leaves.",
+   "why": "A fungus that spreads in wet weather.",
+   "fix": "Collect fallen leaves, remove affected ones.",
+   "prevent": "Water the soil, mulch, and choose resistant roses."
+  },
+  {
+   "id": "damping-off",
+   "name": "Damping off",
+   "signs": "Seedlings collapse at soil level.",
+   "why": "Fungi in cold, wet compost.",
+   "fix": "Sow in fresh compost, water from below, and give airflow.",
+   "prevent": "Clean pots and don't overwater seedlings."
+  },
+  {
+   "id": "sooty-mould",
+   "name": "Sooty mould",
+   "signs": "A black film that wipes off the leaves.",
+   "why": "Fungus feeding on the honeydew of sap-sucking pests.",
+   "fix": "Deal with the pests, then wipe leaves clean.",
+   "prevent": "Regular pest checks."
+  },
+  {
+   "id": "crown-rot",
+   "name": "Crown rot",
+   "signs": "The centre of a rosette turns soft and brown.",
+   "why": "Water sitting in the crown.",
+   "fix": "Remove rotted tissue, keep the crown dry.",
+   "prevent": "Water around the edge of the pot."
+  },
+  {
+   "id": "edema",
+   "name": "Oedema (corky bumps)",
+   "signs": "Small blister-like bumps under leaves that turn corky.",
+   "why": "Roots take up water faster than leaves can release it.",
+   "fix": "Water less and increase light and airflow.",
+   "prevent": "Water in the morning, avoid cold soggy soil."
+  }
+ ],
+ "deficiencies": [
+  {
+   "id": "nitrogen",
+   "name": "Nitrogen",
+   "signs": "Pale, evenly yellow older leaves; slow growth.",
+   "fix": "A balanced feed in the growing season."
+  },
+  {
+   "id": "phosphorus",
+   "name": "Phosphorus",
+   "signs": "Dull, dark leaves with purple tints; poor roots and flowers.",
+   "fix": "A balanced or bloom feed; check the soil isn't too cold."
+  },
+  {
+   "id": "potassium",
+   "name": "Potassium",
+   "signs": "Yellow or brown scorched edges on older leaves; few flowers.",
+   "fix": "A high-potassium (tomato) feed."
+  },
+  {
+   "id": "magnesium",
+   "name": "Magnesium",
+   "signs": "Yellow between the veins on older leaves.",
+   "fix": "A feed with magnesium, or Epsom salts at 1 teaspoon per litre once."
+  },
+  {
+   "id": "iron",
+   "name": "Iron",
+   "signs": "Yellow new leaves with green veins.",
+   "fix": "Lower the pH (rainwater, ericaceous feed) and use chelated iron."
+  },
+  {
+   "id": "calcium",
+   "name": "Calcium",
+   "signs": "Distorted new growth; blossom end rot on tomatoes.",
+   "fix": "Water evenly; most soils have calcium, but dry spells block it."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Node",
+   "meaning": "The bump on a stem where leaves and roots grow from. Cut just below it for cuttings."
+  },
+  {
+   "term": "Aerial root",
+   "meaning": "A root that grows in the air to grip or drink. Leave it, or tuck it into the pot."
+  },
+  {
+   "term": "Variegation",
+   "meaning": "Leaves patterned with white, cream or yellow. Variegated plants need more light."
+  },
+  {
+   "term": "Fenestration",
+   "meaning": "The natural holes and splits in monstera leaves."
+  },
+  {
+   "term": "Epiphyte",
+   "meaning": "A plant that grows on trees, not in soil. Orchids, hoyas and many bromeliads are epiphytes."
+  },
+  {
+   "term": "Rhizome",
+   "meaning": "A thick underground or creeping stem that stores food and water."
+  },
+  {
+   "term": "Corm",
+   "meaning": "A swollen stem base that stores food, like a bulb without layers."
+  },
+  {
+   "term": "Pup",
+   "meaning": "A baby plant growing at the base of its parent."
+  },
+  {
+   "term": "Offset",
+   "meaning": "Another word for pup."
+  },
+  {
+   "term": "Dormancy",
+   "meaning": "A resting period, usually winter, when a plant slows or stops growing."
+  },
+  {
+   "term": "Bolting",
+   "meaning": "When herbs or salad rush to flower, turning leaves bitter."
+  },
+  {
+   "term": "Deadheading",
+   "meaning": "Snipping faded flowers to encourage more."
+  },
+  {
+   "term": "Pinching",
+   "meaning": "Nipping out a growing tip to make a plant bushier."
+  },
+  {
+   "term": "Root-bound",
+   "meaning": "Roots fill and circle the pot with little soil left."
+  },
+  {
+   "term": "Top-dressing",
+   "meaning": "Replacing the top few centimetres of soil instead of repotting."
+  },
+  {
+   "term": "Bottom watering",
+   "meaning": "Letting a pot drink from a saucer of water."
+  },
+  {
+   "term": "Chlorosis",
+   "meaning": "Yellowing leaves from a lack of chlorophyll, often a nutrient issue."
+  },
+  {
+   "term": "Etiolation",
+   "meaning": "Pale, stretched growth caused by too little light."
+  },
+  {
+   "term": "Guttation",
+   "meaning": "Droplets on leaf tips when roots push up extra water."
+  },
+  {
+   "term": "Spathe",
+   "meaning": "The colourful hood around a flower spike, as on peace lilies and anthuriums."
+  },
+  {
+   "term": "Bract",
+   "meaning": "A coloured leaf that looks like a petal, as on poinsettias and bougainvillea."
+  },
+  {
+   "term": "Perlite",
+   "meaning": "Puffed volcanic glass that adds air to soil."
+  },
+  {
+   "term": "Ericaceous",
+   "meaning": "Lime-free and acidic, for azaleas and friends."
+  },
+  {
+   "term": "NPK",
+   "meaning": "Nitrogen, phosphorus and potassium: the three main plant foods."
+  },
+  {
+   "term": "Hardening off",
+   "meaning": "Slowly getting indoor-raised plants used to outdoor weather over 1–2 weeks."
+  },
+  {
+   "term": "Semi-hydro",
+   "meaning": "Growing in clay balls and water with nutrients instead of soil."
+  },
+  {
+   "term": "Callus",
+   "meaning": "A dry seal that forms over a cut before it roots."
+  },
+  {
+   "term": "Keiki",
+   "meaning": "A baby orchid growing on the stem. Hawaiian for 'little one'."
+  },
+  {
+   "term": "Moss pole",
+   "meaning": "A support wrapped in moss for climbing plants to grip."
+  },
+  {
+   "term": "Cultivar",
+   "meaning": "A named variety selected by growers, written in quotes like 'Tineke'."
+  },
+  {
+   "term": "Succulent",
+   "meaning": "A plant that stores water in thick leaves, stems or roots."
+  },
+  {
+   "term": "Perennial",
+   "meaning": "A plant that lives for more than two years."
+  },
+  {
+   "term": "Annual",
+   "meaning": "A plant that completes its life in one year."
+  },
+  {
+   "term": "Biennial",
+   "meaning": "A plant that grows leaves one year and flowers the next."
+  },
+  {
+   "term": "Hardy",
+   "meaning": "Able to survive frost outdoors."
+  },
+  {
+   "term": "Tender",
+   "meaning": "Damaged by frost; needs protection in winter."
+  },
+  {
+   "term": "Humidity",
+   "meaning": "The moisture in the air. Most tropical plants like 50% or more."
+  },
+  {
+   "term": "Lux",
+   "meaning": "A measure of light. A bright window can be 10,000+ lux; a dim corner under 500."
+  },
+  {
+   "term": "Propagation",
+   "meaning": "Making new plants from cuttings, division, leaves or seed."
+  },
+  {
+   "term": "Leggy",
+   "meaning": "Long and sparse, usually from too little light."
+  }
+ ],
+ "calendar": [
+  {
+   "month": 1,
+   "indoor": "Water sparingly, keep plants off cold glass, dust leaves for more light.",
+   "outdoor": "Protect pots from frost; check stored bulbs and tubers."
+  },
+  {
+   "month": 2,
+   "indoor": "Look for the first new leaves; start seeds indoors on a bright sill.",
+   "outdoor": "Prune late-summer flowering shrubs and roses as winter ends."
+  },
+  {
+   "month": 3,
+   "indoor": "Begin gentle feeding; repot root-bound plants.",
+   "outdoor": "Sow hardy seeds; divide perennials."
+  },
+  {
+   "month": 4,
+   "indoor": "Repot, take cuttings, rinse leaves.",
+   "outdoor": "Harden off seedlings; plant summer bulbs."
+  },
+  {
+   "month": 5,
+   "indoor": "Feed regularly; watch for pests as it warms.",
+   "outdoor": "Plant tender crops after the last frost."
+  },
+  {
+   "month": 6,
+   "indoor": "Water more often; shade from harsh midday sun.",
+   "outdoor": "Water pots daily in heat; deadhead flowers."
+  },
+  {
+   "month": 7,
+   "indoor": "Check pots twice a week; propagate generously.",
+   "outdoor": "Feed tomatoes weekly; keep acid lovers moist for next year's buds."
+  },
+  {
+   "month": 8,
+   "indoor": "Last strong growth; plan holiday care.",
+   "outdoor": "Take semi-ripe cuttings; collect seeds."
+  },
+  {
+   "month": 9,
+   "indoor": "Taper off feeding; bring summer-outside plants in before nights cool.",
+   "outdoor": "Plant spring bulbs; divide perennials."
+  },
+  {
+   "month": 10,
+   "indoor": "Stop feeding most plants; move closer to windows.",
+   "outdoor": "Lift tender tubers; plant tulips late in the month."
+  },
+  {
+   "month": 11,
+   "indoor": "Water less; give Christmas cactus cool nights; use a humidifier.",
+   "outdoor": "Mulch borders; raise pots on feet for drainage."
+  },
+  {
+   "month": 12,
+   "indoor": "Keep away from radiators; enjoy winter bloomers.",
+   "outdoor": "Rest. Plan next year's garden."
+  }
+ ],
+ "lightLevels": [
+  {
+   "id": "low",
+   "lux": "250–1,000",
+   "where": "A metre or more from a north window, or a dim corner",
+   "plants": "ZZ, cast iron plant, snake plant, pothos"
+  },
+  {
+   "id": "medium",
+   "lux": "1,000–5,000",
+   "where": "Near an east or north window, or a few metres back from a south one",
+   "plants": "Philodendron, calathea, peperomia, ferns"
+  },
+  {
+   "id": "bright",
+   "lux": "5,000–15,000",
+   "where": "Next to an east or west window, or behind a sheer curtain in a south one",
+   "plants": "Monstera, fiddle leaf fig, orchids, hoyas"
+  },
+  {
+   "id": "direct",
+   "lux": "15,000+",
+   "where": "On a south-facing sill or outdoors",
+   "plants": "Cacti, succulents, herbs, citrus"
+  }
+ ],
+ "potMaterials": [
+  {
+   "name": "Terracotta",
+   "note": "Breathes and dries fast. Best for succulents, cacti and herbs."
+  },
+  {
+   "name": "Plastic",
+   "note": "Light and moisture-holding. Good for ferns, calatheas and thirsty plants."
+  },
+  {
+   "name": "Glazed ceramic",
+   "note": "Holds moisture like plastic; heavy and stable for tall plants."
+  },
+  {
+   "name": "Self-watering",
+   "note": "A reservoir wicks water up. Great for herbs and moisture lovers, not for cacti."
+  },
+  {
+   "name": "Fabric grow bag",
+   "note": "Air-prunes roots. Lovely for vegetables outdoors."
+  },
+  {
+   "name": "Nursery pot in a cover pot",
+   "note": "Easy to lift out to water and drain, then return."
+  }
+ ],
+ "tools": [
+  {
+   "name": "Clean, sharp snips",
+   "use": "Pruning and cuttings. Wipe with alcohol between plants."
+  },
+  {
+   "name": "Long-spout watering can",
+   "use": "Reaches the soil under leaves without splashing."
+  },
+  {
+   "name": "Moisture meter or wooden chopstick",
+   "use": "Checks the soil deep down. A chopstick comes out dark when wet."
+  },
+  {
+   "name": "Spray bottle",
+   "use": "Cleaning leaves and air plants."
+  },
+  {
+   "name": "Sticky traps",
+   "use": "Catch and reveal flying pests."
+  },
+  {
+   "name": "Gloves",
+   "use": "For cacti, euphorbia sap and irritating plants."
+  },
+  {
+   "name": "Hygrometer",
+   "use": "Shows the room's humidity."
+  },
+  {
+   "name": "Grow light",
+   "use": "Extra light for dark rooms and winter."
+  }
  ]
 }
