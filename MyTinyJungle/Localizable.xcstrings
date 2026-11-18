@@ -8588,7 +8588,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Adubo Líquido Verde Vivo para plantas de interior\nNPK 7-3-6\nNitrogênio 7%, Fósforo 3%, Potássio 6%\nCom magnésio e ferro\nDilua 5 ml por litro a cada 2 semanas na primavera e no verão"
+            "value": "Adubo Verde Vivo para plantas\nNPK 7-3-6\nNitrogênio 7%, Fósforo 3%, Potássio 6%\nCom magnésio e ferro\nDilua 5 ml por litro a cada 2 semanas na primavera e no verão"
           }
         }
       }
@@ -15336,7 +15336,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Planeje onde %@ vão passar o inverno"
+            "value": "Planeje o inverno de %@"
           }
         }
       }

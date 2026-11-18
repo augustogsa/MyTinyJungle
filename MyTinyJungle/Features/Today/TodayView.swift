@@ -177,7 +177,7 @@ struct TodayView: View {
                     }
                 }
                 Button { path.append(TodayRoute.season) } label: {
-                    SummaryCard(title: season.rawValue, symbol: season.symbol, tint: Color(red: 0.72, green: 0.56, blue: 0.2)) {
+                    SummaryCard(title: season.label, symbol: season.symbol, tint: Color(red: 0.72, green: 0.56, blue: 0.2)) {
                         Text(seasonTip(season)).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                     }
                 }

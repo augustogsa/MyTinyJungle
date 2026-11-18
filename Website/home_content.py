@@ -170,16 +170,17 @@ LAZY = {True: "", False: ' loading="lazy"'}
 
 def render_home(L, t, page, phone, apple_icon):
     h = H[L]
+    A = "app-pt" if L == "pt" else "app"
     cta = f'<a class="btn" href="{TESTFLIGHT_URL}" rel="noopener">{apple_icon}{h["cta"]}</a>'
 
     def screen(name, alt, cls="screen"):
-        return f'<img class="{cls}" src="/assets/app/{name}.jpg" alt="{alt}" width="1100" height="2392" loading="lazy">'
+        return f'<img class="{cls}" src="/assets/{A}/{name}.jpg" alt="{alt}" width="1100" height="2392" loading="lazy">'
 
     def ilist(items):
         return '<ul class="ilist">' + "".join(f"<li>{I(i)}<span>{x}</span></li>" for i, x in items) + "</ul>"
 
     def thumbs(items):
-        cards = "".join(f'<figure class="slide">{phone("app/" + n + ".jpg", c)}<figcaption>{c}</figcaption></figure>' for n, c in items)
+        cards = "".join(f'<figure class="slide">{phone(A + "/" + n + ".jpg", c)}<figcaption>{c}</figcaption></figure>' for n, c in items)
         nav = (f'<div class="snav"><button type="button" class="sbtn prev" aria-label="{h["prev"]}">&larr;</button>'
                f'<button type="button" class="sbtn next" aria-label="{h["next"]}">&rarr;</button></div>')
         return f'<div class="slider"><div class="track" tabindex="0">{cards}</div>{nav}</div>'
@@ -191,10 +192,10 @@ def render_home(L, t, page, phone, apple_icon):
         dots = ""
         if reel:
             dots = '<div class="reel" role="group">' + "".join(
-                f'<button type="button" class="rdot{" on" if j == 0 else ""}" data-i="{j}" data-src="/assets/app/{n}.jpg">{cap}</button>'
+                f'<button type="button" class="rdot{" on" if j == 0 else ""}" data-i="{j}" data-src="/assets/{A}/{n}.jpg">{cap}</button>'
                 for j, (n, cap) in enumerate(reel)) + "</div>"
         first = reel[0][0] if reel else sc
-        ph_html = phone("app/" + first + ".jpg", h["stage_alt"], "stage-phone").replace(' loading="lazy"', "") if sc else ""
+        ph_html = phone(A + "/" + first + ".jpg", h["stage_alt"], "stage-phone").replace(' loading="lazy"', "") if sc else ""
         return (f'<div class="layer{" on" if k == 0 else ""}" data-scene="{k}"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400"{LAZY[k == 0]}>'
                 f'{ph_html}{dots}</div>')
 
@@ -205,7 +206,7 @@ def render_home(L, t, page, phone, apple_icon):
         ph, sc = SCENES[k]
         inner = f'<h2>{c["h"]}</h2><p class="lead2">{c["p"]}</p>'
         if sc:
-            inner += f'<div class="m-scene"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400" loading="lazy">{phone("app/" + sc + ".jpg", c["h"], "stage-phone")}</div>'
+            inner += f'<div class="m-scene"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400" loading="lazy">{phone(A + "/" + sc + ".jpg", c["h"], "stage-phone")}</div>'
         if c.get("big") and c["id"] not in h["cards"]:
             inner += '<ul class="four">' + "".join(f"<li>{w}</li>" for w in c["big"]) + f'</ul><p class="four-note">{c["big_note"]}</p>'
         if c.get("chat"):
@@ -242,7 +243,7 @@ def render_home(L, t, page, phone, apple_icon):
 <div class="split">
 <div class="read">
 <section class="hero" data-scene="0"><h1>{h['h1']}</h1><p class="lead">{h['lead']}</p>{cta}<p class="note">{h['note']}</p>
-<div class="m-scene"><img class="photo" src="/assets/plants/monstera.jpg" alt="" width="1100" height="1400" fetchpriority="high">{phone("app/today1.jpg", h["stage_alt"], "stage-phone")}</div></section>
+<div class="m-scene"><img class="photo" src="/assets/plants/monstera.jpg" alt="" width="1100" height="1400" fetchpriority="high">{phone(A + "/today1.jpg", h["stage_alt"], "stage-phone")}</div></section>
 {chapters}
 </div>
 <div class="stage">{layers}</div>

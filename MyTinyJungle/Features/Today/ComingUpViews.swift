@@ -71,7 +71,7 @@ struct PlantForecastSection: View {
                         Icon3DView(f.kind.icon, size: 28).frame(width: 40)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(f.line).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
-                            Text(CareForecast.dayWord(f.date).capitalized(with: .current)).font(.caption).foregroundStyle(Jungle.subtle)
+                            Text({ let w = CareForecast.dayWord(f.date); return w.prefix(1).uppercased() + w.dropFirst() }()).font(.caption).foregroundStyle(Jungle.subtle)
                         }
                         Spacer(minLength: 0)
                     }
