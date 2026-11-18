@@ -9,14 +9,18 @@ struct PlantChatView: View {
     @State private var soilAsk = false
 
     private var messages: [ChatMessage] { (plant.messages ?? []).sorted { $0.date < $1.date } }
+    private var items: [ThreadItem] { ThreadItem.merge(messages, plant.events ?? []) }
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
                     statusCard
-                    ForEach(messages) { m in
-                        MessageBubble(message: m, showAvatar: false) { send($0) }.id(m.id)
+                    ForEach(items) { item in
+                        switch item {
+                        case .message(let m): MessageBubble(message: m, showAvatar: false) { send($0) }.id(m.id)
+                        case .action(let e): ActionReceipt(event: e).id(e.id)
+                        }
                     }
                     Color.clear.frame(height: 1).id("bottom")
                 }
@@ -26,7 +30,7 @@ struct PlantChatView: View {
             .defaultScrollAnchor(.bottom)
             .defaultScrollAnchor(.bottom, for: .sizeChanges)
             .onAppear { greetIfNeeded() }
-            .onChange(of: messages.count) { withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo("bottom", anchor: .bottom) } }
+            .onChange(of: items.count) { withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo("bottom", anchor: .bottom) } }
         }
         .safeAreaInset(edge: .bottom) {
             GlassComposer(placeholder: String(localized: "Message \(plant.name)…", comment: "Chat composer placeholder; arg plant name; max 30 chars"), onChip: { kind in

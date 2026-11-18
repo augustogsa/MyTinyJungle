@@ -128,7 +128,7 @@ enum JungleBrain {
     static func quick(_ kind: CareKind, soil: SoilState? = nil, plants targets: [Plant], in ctx: ModelContext, now: Date = Date(), announce: Bool = false) {
         var entries: [LogCard.Entry] = []
         for p in targets {
-            let e = apply(.init(kind: kind, plantIDs: [p.id], date: now, soil: soil), to: p, in: ctx, now: now, source: "chip", speak: !announce || kind == .soilCheck)
+            let e = apply(.init(kind: kind, plantIDs: [p.id], date: now, soil: soil), to: p, in: ctx, now: now, source: "chip", speak: true)
             entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
         }
         if !targets.isEmpty {
