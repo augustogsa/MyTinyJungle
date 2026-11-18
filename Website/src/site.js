@@ -106,3 +106,24 @@
     });
   });
 })();
+
+// Plant voices: messages arrive one by one with a typing indicator; lock-screen notifications drop in
+(() => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  const play = (box, items, step, fn) => {
+    items.forEach(el => el.classList.add("pending"));
+    const io = new IntersectionObserver(es => {
+      if (!es.some(e => e.isIntersecting)) return;
+      io.disconnect();
+      items.forEach((el, i) => setTimeout(() => fn(el), i * step));
+    }, { threshold: 0.25 });
+    io.observe(box);
+  };
+  const msgs = document.querySelector(".msgs");
+  if (msgs) play(msgs, [...msgs.querySelectorAll(".msg")], 1100, m => {
+    const b = m.querySelector(".bub"); m.classList.add("typing"); m.classList.remove("pending");
+    setTimeout(() => { m.classList.remove("typing"); m.classList.add("said"); }, 650);
+  });
+  const lock = document.querySelector(".lockphone");
+  if (lock) play(lock, [...lock.querySelectorAll(".ncard")].reverse(), 450, n => { n.classList.remove("pending"); n.classList.add("drop"); });
+})();
