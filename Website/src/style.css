@@ -567,11 +567,11 @@ html.enter-ready [data-enter]:not([data-entered]){opacity:0;translate:0 var(--ri
 /* Lights off: the room at night. Warm dark surfaces, one lamp glowing from the switch corner,
    photos dimmed like real plants after sunset, app screens glowing because screens do. */
 :root[data-theme="dark"]{color-scheme:dark;
-  --ground:#13120F;--paper:#1B1A16;--sage:#212A20;--mint:#1D231B;
-  --forest:#3D7449;--leaf:#A9D99B;--deep:#0D1610;--ink:#ECE5D6;--muted:#A9A391;--on-deep:#ECE5D6;--lamp:1}
+  --ground:#0A0A09;--paper:#262522;--sage:#1E281D;--mint:#0E0F0D;
+  --forest:#3D7449;--leaf:#A9D99B;--deep:#0D1610;--ink:#F5F2EA;--muted:#B5B0A3;--on-deep:#F5F2EA;--lamp:1}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
-  --ground:#13120F;--paper:#1B1A16;--sage:#212A20;--mint:#1D231B;
-  --forest:#3D7449;--leaf:#A9D99B;--deep:#0D1610;--ink:#ECE5D6;--muted:#A9A391;--on-deep:#ECE5D6;--lamp:1}}
+  --ground:#0A0A09;--paper:#262522;--sage:#1E281D;--mint:#0E0F0D;
+  --forest:#3D7449;--leaf:#A9D99B;--deep:#0D1610;--ink:#F5F2EA;--muted:#B5B0A3;--on-deep:#F5F2EA;--lamp:1}}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:var(--lamp);transition:opacity 1.2s var(--ease-out);
   background:radial-gradient(60vmax 50vmax at 88% -8%,rgba(255,196,120,.13),rgba(255,170,90,.05) 45%,transparent 70%),
              radial-gradient(120vmax 90vmax at 50% 45%,transparent 50%,rgba(0,0,0,.38))}
