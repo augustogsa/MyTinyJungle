@@ -48,6 +48,7 @@ struct HealthCheckView: View {
     }
 
     private var viewfinder: some View {
+        VStack(spacing: 12) {
         ZStack {
             Group {
                 if let d = photo ?? plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
@@ -55,21 +56,23 @@ struct HealthCheckView: View {
             }
             .frame(height: 260).frame(maxWidth: .infinity).clipped()
             Viewfinder().stroke(.white, style: StrokeStyle(lineWidth: 4, lineCap: .round)).padding(28)
-            if photo == nil {
-                HStack(spacing: 10) {
-                    if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                        Button { camera = true } label: { Label("Photo", systemImage: "camera.fill") }.buttonStyle(.borderedProminent).fontDesign(.rounded)
-                    }
-                    PhotosPicker(selection: $pick, matching: .images) { Label("Library", systemImage: "photo") }.buttonStyle(.bordered).fontDesign(.rounded)
-                    if plant.photo != nil {
-                        Button { if let d = plant.photo { analyze(d) } } label: { Text("Use last") }.buttonStyle(.bordered).fontDesign(.rounded)
-                    }
-                }
-                .buttonBorderShape(.capsule).tint(.white).foregroundStyle(Jungle.forest)
-                .padding(.top, 180)
-            }
         }
         .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+        if photo == nil {
+            HStack(spacing: 10) {
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    Button { camera = true } label: { Label("Photo", systemImage: "camera.fill").frame(maxWidth: .infinity) }.buttonStyle(.borderedProminent)
+                }
+                PhotosPicker(selection: $pick, matching: .images) { Label("Library", systemImage: "photo").frame(maxWidth: .infinity) }.buttonStyle(.bordered)
+                if plant.photo != nil {
+                    Button { if let d = plant.photo { analyze(d) } } label: { Label("Use last", systemImage: "clock.arrow.circlepath").frame(maxWidth: .infinity) }.buttonStyle(.bordered)
+                }
+            }
+            .lineLimit(1).minimumScaleFactor(0.85)
+            .controlSize(.large).font(.subheadline.weight(.semibold)).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.forest)
+            .frame(maxWidth: .infinity)
+        }
+        }
     }
 
     private func result(_ r: PhotoRead) -> some View {

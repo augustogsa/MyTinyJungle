@@ -105,11 +105,11 @@ struct PlantHomeView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Color.white : Jungle.text)
                     Text(plant.species?.scientific ?? String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars")).font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
+                    StatusBadge(status: CareEngine.status(for: plant)).padding(.top, 8)
                 }
-                Spacer()
-                StatusBadge(status: CareEngine.status(for: plant))
+                Spacer(minLength: 0)
             }
-            .padding(.horizontal, 16).padding(.bottom, 50)
+            .padding(.horizontal, 16).padding(.bottom, 20)
         }
     }
 
@@ -122,8 +122,7 @@ struct PlantHomeView: View {
             ActionTile(title: String(localized: "Repot", comment: "Quick action tile; verb; max 10 chars"), symbol: "arrow.up.bin", tint: Jungle.terracotta) { sheet = .repot }
             ActionTile(title: String(localized: "Check", comment: "Quick action tile: health check; max 10 chars"), symbol: "stethoscope", tint: Jungle.leaf) { sheet = .health }
         }
-        .padding(.horizontal, 16)
-        .offset(y: -34).padding(.bottom, -34)
+        .padding(.horizontal, 16).padding(.top, 16)
     }
 
     private var overview: some View {
@@ -252,7 +251,7 @@ struct ActionTile: View {
         Button(action: action) {
             VStack(spacing: 6) {
                 SmartIcon(symbol: symbol, size: 30, tint: tint)
-                Text(title).font(.caption.weight(.medium)).foregroundStyle(Jungle.text)
+                Text(title).font(.caption.weight(.medium)).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.8)
             }
             .frame(maxWidth: .infinity).padding(.vertical, 12)
             .jungleCard()

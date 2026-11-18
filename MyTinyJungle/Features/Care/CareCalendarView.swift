@@ -6,6 +6,8 @@ import SwiftData
 struct CareCalendarView: View {
     let plants: [Plant]
     let tasks: [CareTask]
+    /// Day picked in the Care tab's week strip; drives this calendar.
+    var day: Date? = nil
     @Query(sort: \CareEvent.date, order: .reverse) private var events: [CareEvent]
     @State private var month = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Date()))!
     @State private var selected = Calendar.current.startOfDay(for: Date())
@@ -20,7 +22,6 @@ struct CareCalendarView: View {
     var body: some View {
         let done = doneByDay, planned = plannedByDay
         VStack(alignment: .leading, spacing: 16) {
-            weekStrip(done: done, planned: planned)
             VStack(spacing: 12) {
                 HStack {
                     Button { shift(-1) } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }
@@ -50,6 +51,10 @@ struct CareCalendarView: View {
             dayDetail(done: done[selected] ?? [], planned: planned[selected] ?? [])
         }
         .sensoryFeedback(.selection, trigger: selected)
+        .onChange(of: day, initial: true) { _, d in
+            guard let d else { return }
+            withAnimation(.snappy) { selected = cal.startOfDay(for: d); month = cal.date(from: cal.dateComponents([.year, .month], from: d))! }
+        }
     }
 
     private var days: [Date?] {

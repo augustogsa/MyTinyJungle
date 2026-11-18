@@ -193,7 +193,7 @@ struct JungleHealthCard: View {
     private func stat(_ n: Int, _ label: LocalizedStringKey, _ c: Color) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("\(n)").font(.system(.title3, design: .rounded, weight: .semibold)).monospacedDigit().foregroundStyle(Jungle.text)
-            HStack(spacing: 4) { Circle().fill(c).frame(width: 6, height: 6); Text(label).font(.caption2).foregroundStyle(Jungle.subtle) }
+            HStack(spacing: 4) { Circle().fill(c).frame(width: 6, height: 6); Text(label).font(.caption2).foregroundStyle(Jungle.subtle).lineLimit(1).minimumScaleFactor(0.7) }
         }
     }
 }

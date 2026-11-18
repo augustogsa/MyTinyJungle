@@ -39,7 +39,7 @@ struct CareView: View {
                     .buttonStyle(.plain)
                     switch range {
                     case .season: SeasonGuideView(plants: plants)
-                    case .calendar: CareCalendarView(plants: plants, tasks: tasks)
+                    case .calendar: CareCalendarView(plants: plants, tasks: tasks, day: selectedDay)
                     default: agenda
                     }
                 }
@@ -49,6 +49,7 @@ struct CareView: View {
             .toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $adding) { AddTaskView(plants: plants) }
             .animation(.snappy, value: range)
+            .onChange(of: selectedDay) { _, d in if d != nil && range == .season { range = .week } }
         }
     }
 
@@ -219,32 +220,32 @@ struct SeasonGuideView: View {
                 }
                 .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
             }
-            if Climate.shared.profile != nil {
-                Text(Climate.shared.summary).font(.footnote).foregroundStyle(Jungle.subtle)
+            Picker(String(localized: "Season", comment: "Accessibility label for the season picker"), selection: $season) {
+                ForEach(Season.allCases, id: \.self) { Text($0.label) }
             }
-            HStack(spacing: 8) {
-                ForEach(Season.allCases, id: \.self) { s in
-                    Button { season = s } label: {
-                        VStack(spacing: 4) { Image(systemName: s.symbol).frame(height: 22); Text(s.label).font(.caption) }
-                            .frame(maxWidth: .infinity).frame(height: 64)
-                            .foregroundStyle(season == s ? Color.white : Jungle.text)
-                            .background(season == s ? Jungle.leaf : Jungle.mist, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .pickerStyle(.segmented)
+            .padding(.top, 6)
+            if let line = Climate.shared.shortSummary {
+                Label(line, systemImage: "location.fill").font(.footnote).foregroundStyle(Jungle.subtle).labelStyle(.titleAndIcon).lineLimit(1).minimumScaleFactor(0.85)
+            }
+            Text(String(localized: "\(season.label) for your plants", comment: "Season guide title, e.g. Summer for your plants")).font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).padding(.top, 4)
+            let list = items
+            VStack(spacing: 0) {
+                ForEach(Array(list.enumerated()), id: \.element) { i, item in
+                    Button { toggle(item) } label: {
+                        HStack(alignment: .firstTextBaseline, spacing: 12) {
+                            Image(systemName: checked(item) ? "checkmark.circle.fill" : "circle").font(.title3).foregroundStyle(Jungle.leaf)
+                            Text(item).font(.subheadline).foregroundStyle(checked(item) ? Jungle.subtle : Jungle.text).strikethrough(checked(item)).multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                            Spacer(minLength: 0)
+                        }
+                        .padding(.horizontal, 14).padding(.vertical, 12)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    if i < list.count - 1 { Divider().padding(.leading, 48) }
                 }
             }
-            Text(String(localized: "\(season.label) for your plants", comment: "Season guide title, e.g. Summer for your plants")).font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-            ForEach(items, id: \.self) { item in
-                if item == items.dropFirst(3).first { NativeAdCard(slot: "agenda") }
-                Button { toggle(item) } label: {
-                    HStack(alignment: .top, spacing: 10) {
-                        Image(systemName: checked(item) ? "checkmark.circle.fill" : "circle").foregroundStyle(Jungle.leaf)
-                        Text(item).foregroundStyle(Jungle.text).strikethrough(checked(item)).multilineTextAlignment(.leading)
-                        Spacer()
-                    }
-                }
-                .buttonStyle(.plain)
-            }
+            .jungleCard()
             NativeAdCard(slot: "season").padding(.top, 8)
         }
     }

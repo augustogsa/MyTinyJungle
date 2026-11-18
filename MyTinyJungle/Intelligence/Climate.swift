@@ -431,6 +431,15 @@ extension Climate {
     }
 
     /// One-line summary for chat and settings.
+    /// One line for tight spaces: "Lisboa · Mediterrâneo · 11–24 °C".
+    var shortSummary: String? {
+        guard let p = profile else { return nil }
+        var parts = [p.place]
+        if hasClimate { parts.append(biome) }
+        if p.monthlyTemp.count == 12 { parts.append("\(Climate.temp(p.monthlyTemp.min()!))–\(Climate.temp(p.monthlyTemp.max()!))") }
+        return parts.joined(separator: " · ")
+    }
+
     var summary: String {
         guard let p = profile else { return String(localized: "Tell me where you live and I'll tune care to your climate.", comment: "Climate summary when no location is set.") }
         let where_ = p.country.isEmpty ? p.place : "\(p.place), \(p.country)"

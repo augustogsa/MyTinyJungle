@@ -44,7 +44,7 @@ enum L10nData {
         if let k = key, frozenKeys.contains(k), !(o is [[String: Any]]) { return o }
         switch o {
         case let s as String: return table.text?[s] ?? s
-        case let a as [Any]: return a.map { walk($0, key: key, table: table) }
+        case let a as [Any]: return a.map { walk($0, key: $0 is [String: Any] ? nil : key, table: table) }
         case let d as [String: Any]:
             var r = [String: Any]()
             for (k, v) in d { r[k] = walk(v, key: k, table: table) }
