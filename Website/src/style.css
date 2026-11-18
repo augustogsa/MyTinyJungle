@@ -469,3 +469,11 @@ p,li,.bcard span{text-wrap:pretty}
 .two .ttext{text-align:center}.two .ttext p{margin-left:auto;margin-right:auto}
 @media (min-width:901px){.lock{grid-template-columns:minmax(0,26rem) auto;justify-content:center;gap:clamp(40px,6vw,96px)}.lockpair{justify-content:flex-start}}
 .pricing{padding-top:72px}.phead{display:flex;justify-content:center;margin-bottom:8px}.phead .erty{width:120px;height:120px}
+.phead{flex-direction:column;align-items:center;text-align:center;margin-bottom:40px}
+.phead h2{font-size:var(--t-l);line-height:1.05;margin:8px 0 0;max-width:14em;text-wrap:balance}
+.phead p{margin:16px 0 0;max-width:34em;color:var(--muted)}
+.pts{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:10px;font-size:16px;line-height:1.4}
+.pts li{position:relative;padding-left:28px}
+.pts li::before{content:"";position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;background:currentColor;opacity:.14}
+.pts li::after{content:"";position:absolute;left:6px;top:6px;width:6px;height:9px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.field .kick{margin:0 0 4px;font-size:13px;font-weight:700;letter-spacing:.02em;opacity:.75}

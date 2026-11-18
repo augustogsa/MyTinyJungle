@@ -75,10 +75,10 @@ H = {
            ("In TestFlight", [("Accept the invite", "5 s"), ("Install My Tiny Jungle", "30 s")]),
            ("In the app", [("Add your first plant with a photo", "40 s")])],
   "slip_end": ("Your jungle starts talking", "2 min"),
-  "free": ("Free", "For your first little jungle.", "€0", "forever", "Up to 5 plants with chat, care requests, reminders and the soil-check ritual. Supported by ads."),
-  "monthly": ("Plus monthly", "Try everything, month by month.", "€1.99", "a month", "Unlimited plants, no ads, label verdicts and health checks. Cancel any time."),
-  "plus": ("Plus yearly", "For every plant you love, all year.", "€11.99", "a year", "Everything in Plus for just €1 a month. Half the price of paying monthly."),
-  "best": "Best value", "feat_p": "Every tool a plant parent could wish for, in four little groups.",
+  "free": ("Sprout", "Start with the plants on your windowsill.", "€0", "forever", ["Up to 5 plants, each with its own voice", "Smart watering that learns your home", "Weather, frost and heat warnings", "Share care with everyone at home", "Supported by small ads"]),
+  "monthly": ("Greenhouse", "For a home that keeps growing.", "€1.99", "a month", ["Unlimited plants", "No ads, ever", "Photo health check when a leaf looks wrong", "Label scanner: know if a product suits each plant", "Travel mode, seasons and cuttings guides", "Cancel any time in two taps"]),
+  "plus": ("Jungle", "The whole jungle, all year, for less than a coffee.", "€11.99", "a year", ["Everything in Plus", "Just €1 a month", "Half the price of paying monthly", "One payment, a whole year of happy plants"]),
+  "best": "Best value", "plan_k": {"free": "Free", "monthly": "Plus · monthly", "plus": "Plus · yearly"}, "plans_h": "Start free. Grow when you're ready.", "plans_p": "Five plants are free, forever. When your jungle outgrows them, Plus costs less than a coffee a month.", "feat_p": "Every tool a plant parent could wish for, in four little groups.",
   "close_names": [("monstera", "Monty", "Monstera"), ("basil", "Pesto", "Basil"), ("orchid", "Pearl", "Orchid"), ("pothos", "Goldie", "Pothos"), ("echeveria", "Rosetta", "Echeveria"), ("peacelily", "Lily", "Peace lily"), ("snake", "Sergeant", "Snake plant"), ("zz", "Zeke", "ZZ plant")],
   "close_k": "8 plants waiting to say hello", "prev": "Previous screen", "next": "Next screen",
   "plus_btn": "Get Plus in the app",
@@ -169,10 +169,10 @@ H = {
            ("No TestFlight", [("Aceite o convite", "5 s"), ("Instale o My Tiny Jungle", "30 s")]),
            ("No app", [("Fotografe sua primeira planta", "40 s")])],
   "slip_end": ("Pronto: suas plantas já estão em boas mãos", "2 min"),
-  "free": ("Grátis", "Para começar.", "0 €", "para sempre", "Até 5 plantas, com conversa, lembretes e teste da terra. Com anúncios."),
-  "monthly": ("Plus mensal", "Flexível, mês a mês.", "1,99 €", "por mês", "Plantas ilimitadas, sem anúncios, leitor de rótulos e diagnóstico de saúde. Cancele quando quiser."),
-  "plus": ("Plus anual", "O melhor custo-benefício.", "11,99 €", "por ano", "Todos os recursos do Plus por 1 € ao mês. Metade do valor do plano mensal."),
-  "best": "Mais vantajoso", "feat_p": "Todos os recursos, organizados em quatro grupos.",
+  "free": ("Broto", "Comece com as plantas da sua janela.", "0 €", "para sempre", ["Até 5 plantas, cada uma com sua personalidade", "Rega inteligente que aprende com a sua casa", "Avisos de geada, calor e chuva", "Cuidado dividido com quem mora com você", "Com anúncios discretos"]),
+  "monthly": ("Estufa", "Para uma casa que não para de ganhar verde.", "1,99 €", "por mês", ["Plantas ilimitadas", "Zero anúncios", "Diagnóstico por foto quando uma folha preocupa", "Leitor de rótulos: saiba se o produto serve para cada planta", "Modo viagem, estações e guia de mudas", "Cancele quando quiser, em dois toques"]),
+  "plus": ("Selva", "A selva inteira, o ano todo, por menos que um cafezinho.", "11,99 €", "por ano", ["Tudo do Plus", "Só 1 € por mês", "Metade do preço do plano mensal", "Um pagamento, um ano inteiro de plantas felizes"]),
+  "best": "Mais vantajoso", "plan_k": {"free": "Grátis", "monthly": "Plus · mensal", "plus": "Plus · anual"}, "plans_h": "Comece grátis. Cresça quando quiser.", "plans_p": "Cinco plantas são grátis para sempre. Quando a sua selva crescer, o Plus custa menos que um cafezinho por mês.", "feat_p": "Todos os recursos, organizados em quatro grupos.",
   "close_names": [("monstera", "Costelinha", "Costela-de-adão"), ("basil", "Pesto", "Manjericão"), ("orchid", "Pérola", "Orquídea"), ("pothos", "Dourada", "Jiboia"), ("echeveria", "Rosinha", "Echevéria"), ("peacelily", "Lili", "Lírio-da-paz"), ("snake", "Jorge", "Espada-de-são-jorge"), ("zz", "Zezé", "Zamioculca")],
   "close_k": "8 plantas esperando por você", "prev": "Tela anterior", "next": "Próxima tela",
   "plus_btn": "Assine o Plus pelo app",
@@ -288,7 +288,8 @@ def render_home(L, t, page, phone, apple_icon):
     def field(cls, d, btn, tag=""):
         name, who, price, per, inc = d
         tg = f'<span class="tag">{tag}</span>' if tag else ""
-        return (f'<div class="field {cls}">{tg}<h3>{name}</h3><p class="who">{who}</p><p>{inc}</p>'
+        body_ = '<ul class="pts">' + "".join("<li>%s</li>" % x for x in inc) + "</ul>" if isinstance(inc, list) else "<p>%s</p>" % inc
+        return (f'<div class="field {cls}">{tg}<p class="kick">{h["plan_k"][cls]}</p><h3>{name}</h3><p class="who">{who}</p>{body_}'
                 f'<div class="pfoot"><p class="price">{price}<small>{per}</small></p>{btn}</div></div>')
 
     def E(m, sz, cls=""):
@@ -324,7 +325,7 @@ def render_home(L, t, page, phone, apple_icon):
 </div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
 <section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
-<section class="pricing" id="pricing"><h2 class="vh">Plus</h2><div class="wrap phead">{E("water", 120)}</div><div class="wrap fields">
+<section class="pricing" id="pricing"><div class="wrap phead">{E("water", 120)}<h2>{h["plans_h"]}</h2><p>{h["plans_p"]}</p></div><div class="wrap fields">
 {field("free", h["free"], f'<a class="btn ghost" href="{TESTFLIGHT_URL}" rel="noopener">{h["cta"]}</a>')}
 {field("monthly", h["monthly"], f'<a class="btn" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>')}
 {field("plus", h["plus"], f'<a class="btn light" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>', h["best"])}
