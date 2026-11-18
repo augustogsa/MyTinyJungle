@@ -51,9 +51,9 @@ struct SettingsView: View {
                             TextField("Your name", text: $settings.ownerName).multilineTextAlignment(.trailing).foregroundStyle(Jungle.subtle)
                         }
                         JungleDivider()
-                        JungleRow(icon: .globe, title: "Southern hemisphere", subtitle: "Brazil, Australia, South Africa…") {
-                            Toggle("", isOn: $settings.southernHemisphere).labelsHidden()
-                        }
+                        NavigationLink { ClimateSettingsView() } label: {
+                            JungleRow(icon: .globe, title: "Where you grow", subtitle: Climate.shared.profile.map { "\($0.place) · \(Climate.shared.biome)" } ?? "Set your place for local climate and weather", chevron: true)
+                        }.buttonStyle(.plain)
                     }
                     JungleGroup(title: "At home", footer: "We'll gently warn you about plants that could hurt them.") {
                         JungleRow(icon: .shieldCheck, title: "Cats") { Toggle("", isOn: $settings.hasCats).labelsHidden() }

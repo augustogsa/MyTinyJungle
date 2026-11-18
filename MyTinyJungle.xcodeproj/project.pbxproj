@@ -222,6 +222,7 @@
 				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your rough area helps tune watering and feeding to your local climate and warns you about frost and heat for outdoor plants.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your plants and product labels.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -259,6 +260,7 @@
 				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allows ads to be more relevant to you. Your plant photos and data never leave your device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan soil, fertilizer and plant food labels, and take photos of your plants.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your rough area helps tune watering and feeding to your local climate and warns you about frost and heat for outdoor plants.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your plants and product labels.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

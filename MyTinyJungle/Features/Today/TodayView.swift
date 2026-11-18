@@ -207,7 +207,8 @@ struct TodayView: View {
     }
 
     private func seasonTip(_ s: SeasonGuideView.Season) -> String {
-        switch s {
+        if let local = Climate.shared.seasonTip(plants: plants) { return local }
+        return switch s {
         case .spring: "Fresh leaves are coming. Time for new pots and their first meal."
         case .summer: "Long sunny days. Peek at the soil a little more often."
         case .autumn: "Cozy season. One last meal, then let them rest."

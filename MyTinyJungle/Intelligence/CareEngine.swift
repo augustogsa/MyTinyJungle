@@ -13,23 +13,11 @@ struct PlantRequest: Identifiable, Hashable {
 enum CareEngine {
     static let calendar = Calendar.current
 
-    static func isGrowingSeason(_ date: Date = Date(), south: Bool = JungleSettings.shared.southernHemisphere) -> Bool {
-        var month = calendar.component(.month, from: date)
-        if south { month = (month + 5) % 12 + 1 }
-        return (3...9).contains(month)
-    }
+    static func isGrowingSeason(_ date: Date = Date()) -> Bool { Climate.shared.isGrowing(date) }
 
-    static func isWinter(_ date: Date = Date(), south: Bool = JungleSettings.shared.southernHemisphere) -> Bool {
-        var month = calendar.component(.month, from: date)
-        if south { month = (month + 5) % 12 + 1 }
-        return [11, 12, 1, 2].contains(month)
-    }
+    static func isWinter(_ date: Date = Date()) -> Bool { Climate.shared.isWinter(date) }
 
-    static func isPeakSummer(_ date: Date = Date(), south: Bool = JungleSettings.shared.southernHemisphere) -> Bool {
-        var month = calendar.component(.month, from: date)
-        if south { month = (month + 5) % 12 + 1 }
-        return (6...8).contains(month)
-    }
+    static func isPeakSummer(_ date: Date = Date()) -> Bool { Climate.shared.isPeakSummer(date) }
 
     static func days(from a: Date, to b: Date = Date()) -> Double { b.timeIntervalSince(a) / 86_400 }
 
@@ -44,10 +32,25 @@ enum CareEngine {
         if !plant.potHasDrainage { base *= 1.25 }
         // Species-specific seasonal rhythm: cacti nearly stop drinking in winter, ferns barely change.
         let winter = s?.winterFactor ?? 1.35, summer = s?.summerFactor ?? 1
-        if plant.isOutdoor { base *= isWinter(date) ? max(1.2, winter * 0.9) : 0.75 }
-        else if isWinter(date) { base *= winter }
-        else if isPeakSummer(date) { base *= summer }
+        let climate = Climate.shared
+        if plant.isOutdoor {
+            // Outside: the real weather decides, falling back to the season.
+            base *= climate.outdoorFactor(date) ?? (isWinter(date) ? max(1.2, winter * 0.9) : 0.75)
+            if isWinter(date) { base *= max(1, winter * 0.6) }
+        } else {
+            if isWinter(date) { base *= winter } else if isPeakSummer(date) { base *= summer }
+            base *= climate.indoorFactor(date)
+            base *= roomLightFactor(for: plant)
+        }
         return max(1, base)
+    }
+
+    /// Brighter rooms dry pots faster; dim rooms slower. Uses the light you set for the room.
+    static func roomLightFactor(for plant: Plant) -> Double {
+        guard let want = plant.species?.light, let room = JungleRooms.light(for: plant.location) else { return 1 }
+        let order: [Species.Light] = [.low, .medium, .bright, .direct]
+        let diff = (order.firstIndex(of: room) ?? 1) - (order.firstIndex(of: want) ?? 1)
+        return diff > 0 ? 0.9 : diff < 0 ? 1.15 : 1
     }
 
     /// Learn from a soil check: how long the substrate really took.
@@ -84,7 +87,8 @@ enum CareEngine {
             }
         } else if let lastWater {
             let since = days(from: lastWater, to: now)
-            if since >= expected * 0.9 {
+            let rained = plant.isOutdoor && Climate.shared.recentRain(now) >= 5
+            if since >= expected * 0.9 && !rained {
                 let urgent = since >= expected * 1.5 && s?.waterStyle == .moist
                 out.append(.init(plantID: plant.id, kind: .checkSoil, priority: urgent ? 0 : 1,
                                  reason: "Watered \(relative(lastWater, now)). It usually dries in about \(Int(expected.rounded())) days."))

@@ -134,7 +134,7 @@ extension GuideLibrary {
         lesson("orchid-rebloom", "Help an orchid bloom again", "Cool nights, patient days", "camera.macro", plum, 4, when: "After the last flower falls.", [
             S(title: "Trim the spike", detail: "Cut a green spike just above a node to encourage a side branch, or cut a brown one at the base.", symbol: "scissors"),
             S(title: "Weakly, weekly", detail: "Keep feeding at quarter strength while leaves and roots grow.", symbol: "drop.halffull"),
-            S(title: "Cool nights", detail: "In autumn, a few weeks of nights 5 °C cooler than days triggers a new spike.", symbol: "moon.stars.fill"),
+            S(title: "Cool nights", detail: "In autumn, a few weeks of nights a few degrees cooler than days triggers a new spike.", symbol: "moon.stars.fill"),
             S(title: "Leave it be", detail: "Once a spike appears, don't move or turn the plant.", symbol: "hand.raised.fill"),
         ]),
         lesson("succulent-care", "Succulent secrets", "Sun, grit and soak-and-dry", "sun.max.fill", Jungle.leaf, 3, when: "For any cactus or succulent.", [
@@ -169,7 +169,7 @@ extension GuideLibrary {
             S(title: "Bigger is easier", detail: "Large pots dry out slower and keep roots cooler in summer.", symbol: "cylinder.fill"),
             S(title: "Water daily in heat", detail: "On hot days, pots may need water morning and evening. Check early.", symbol: "drop.fill"),
             S(title: "Feed through summer", detail: "Rain washes nutrients out. A liquid feed every 1–2 weeks keeps flowers coming.", symbol: "leaf.arrow.triangle.circlepath"),
-            S(title: "Frost care", detail: "Move tender plants in when nights drop below about 5 °C.", symbol: "thermometer.snowflake"),
+            S(title: "Frost care", detail: "Move tender plants in when nights drop below about \(Climate.temp(5)).", symbol: "thermometer.snowflake"),
         ]),
         lesson("carnivorous", "Caring for carnivorous plants", "Rainwater, sun, and no food", "ant.circle.fill", plum, 3, when: "For flytraps, sundews and pitcher plants.", [
             S(title: "Only rainwater", detail: "Tap water minerals slowly poison them. Rain or distilled water only.", symbol: "cloud.rain.fill"),

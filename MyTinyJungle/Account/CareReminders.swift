@@ -47,6 +47,19 @@ enum CareReminders {
             try? await center.add(UNNotificationRequest(identifier: "care-\(offset)", content: c, trigger: trig))
         }
 
+        // Frost, heat or storms for plants outside: an evening heads-up, never in quiet hours.
+        if let alert = Climate.shared.alerts(for: plants, now: now).first {
+            let c = UNMutableNotificationContent()
+            c.title = alert.title
+            c.body = alert.detail
+            c.sound = .default
+            c.threadIdentifier = "weather"
+            let evening = cal.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
+            let fire = evening > now ? evening : now.addingTimeInterval(15 * 60)
+            try? await center.add(UNNotificationRequest(identifier: "care-weather", content: c,
+                                                        trigger: UNTimeIntervalNotificationTrigger(timeInterval: max(60, fire.timeIntervalSince(now)), repeats: false)))
+        }
+
         // A struggling plant gets its own nudge in a few hours if nothing changes.
         if let p = plants.first(where: { CareEngine.status(for: $0) == .struggling }) {
             let c = UNMutableNotificationContent()

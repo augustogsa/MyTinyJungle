@@ -592,7 +592,7 @@ struct PlantAboutView: View {
                     Divider().padding(.leading, 44)
                     InfoRow(symbol: "sun.max", title: "Light", value: s.lightRule)
                     Divider().padding(.leading, 44)
-                    InfoRow(symbol: "thermometer.medium", title: "Comfort", value: "\(Int(s.tempMin))–\(Int(s.tempMax)) °C · humidity \(Int(s.humidityMin))%+")
+                    InfoRow(symbol: "thermometer.medium", title: "Comfort", value: "\(Climate.tempRange(s.tempMin, s.tempMax)) · humidity \(Int(s.humidityMin))%+")
                     Divider().padding(.leading, 44)
                     InfoRow(symbol: "pawprint", title: "Toxicity", value: s.toxicityLine)
                     Divider().padding(.leading, 44)

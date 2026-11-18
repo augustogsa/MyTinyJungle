@@ -68,8 +68,16 @@ struct RootView: View {
     }
     private var tabs: some View {
         tabView
-            .onChange(of: phase) { _, p in if p == .background { Task { await CareReminders.reschedule(ctx) } } }
-            .task { await CareReminders.reschedule(ctx) }
+            .onChange(of: phase) { _, p in
+                if p == .background { Task { await CareReminders.reschedule(ctx) } }
+                if p == .active { Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); await CareReminders.reschedule(ctx) } }
+            }
+            .task {
+                JungleRooms.sync((try? ctx.fetch(FetchDescriptor<Space>())) ?? [])
+                await Climate.shared.refreshClimate()
+                await Climate.shared.refreshForecast()
+                await CareReminders.reschedule(ctx)
+            }
     }
     private var tabView: some View {
         TabView(selection: $tab) {

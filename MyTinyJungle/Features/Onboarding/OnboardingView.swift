@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// First launch: hero, name, pets, hemisphere from region.
+/// First launch: hero, name and pets, then where the plants live (place, climate, home, rooms).
 struct OnboardingView: View {
     var onDone: () -> Void
     @State private var step = 1
@@ -22,6 +22,17 @@ struct OnboardingView: View {
                     feature("barcode.viewfinder", "Find the soil and food each plant will love")
                 }
                 .padding(.top, 10)
+            } else if step == 2 {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Where do your plants live?").font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                        Text("Your climate, your home and this week's weather all change how much water and food they need. Tell me a little and I'll do the maths.")
+                            .foregroundStyle(Jungle.subtle)
+                        ClimateForm(compact: true)
+                        RoomLightForm()
+                    }
+                }
+                .scrollIndicators(.hidden)
             } else {
                 Text("A little about you").font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                 TextField("Your name", text: $name).textFieldStyle(.roundedBorder).textContentType(.givenName)
@@ -34,8 +45,8 @@ struct OnboardingView: View {
                 Text("We'll gently warn you about any plant that could hurt them.").font(.footnote).foregroundStyle(Jungle.subtle)
             }
             Spacer()
-            Button(step == 0 ? "Get started" : "Start my jungle") {
-                if step == 0 { withAnimation(.snappy) { step = 1 } } else { finish() }
+            Button(step == 0 ? "Get started" : step == 1 ? "Next" : "Start my jungle") {
+                if step < 2 { withAnimation(.snappy) { step += 1 } } else { finish() }
             }
             .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large).frame(maxWidth: .infinity)
         }
@@ -52,8 +63,6 @@ struct OnboardingView: View {
         let s = JungleSettings.shared
         s.ownerName = name.trimmingCharacters(in: .whitespaces)
         s.hasCats = cats; s.hasDogs = dogs; s.hasKids = kids
-        let south: Set<String> = ["AU", "NZ", "BR", "AR", "CL", "ZA", "UY", "PY", "PE", "BO"]
-        s.southernHemisphere = south.contains(Locale.current.region?.identifier ?? "")
         onDone()
     }
 }

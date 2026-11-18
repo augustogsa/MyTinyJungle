@@ -170,6 +170,14 @@ enum PlantIdentifier {
                 for s in lib where s.group == group { score[s.id, default: 0] += Double(conf) * 0.15 }
             }
         }
+        // Local climate: species hardy here are more likely in garden and balcony photos.
+        let outdoorish = read.labels.contains { l in ["garden", "outdoor", "sky", "yard", "patio", "tree", "grass", "balcony"].contains { l.0.lowercased().contains($0) } }
+        if outdoorish, let cold = Climate.shared.profile?.coldestNight {
+            for (id, v) in score { if let s = SpeciesLibrary.shared.species(id: id), s.outdoor == true, s.tempMin <= cold + 3 { score[id] = v * 1.2 } }
+        }
+        if Climate.shared.isTropical {
+            for (id, v) in score { if let s = SpeciesLibrary.shared.species(id: id), ["aroid", "tropical", "palm", "bromeliad", "orchid"].contains(s.group ?? "") { score[id] = v * 1.1 } }
+        }
         // Leaf colour as a tie-breaker: lots of red/yellow with little green favours colourful foliage and flowers.
         if read.yellowShare + read.brownShare > read.greenShare {
             for (id, v) in score { if let s = SpeciesLibrary.shared.species(id: id), ["flowering", "bulb", "shrub"].contains(s.group ?? "") { score[id] = v * 1.15 } }

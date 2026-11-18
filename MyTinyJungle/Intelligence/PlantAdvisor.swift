@@ -35,8 +35,10 @@ enum PlantAdvisor {
             guard let ps = p.species, !p.location.isEmpty, ps.light == s.light else { return nil }
             return p.location
         }.uniqued()
-        var spotDetail = "\(s.lightRule) Keep it between \(Int(s.tempMin)) and \(Int(s.tempMax)) °C, away from radiators and drafts."
+        var spotDetail = "\(s.lightRule) Keep it between \(Climate.temp(s.tempMin)) and \(Climate.temp(s.tempMax)), away from radiators and drafts."
         if s.humidityMin >= 55 { spotDetail += " Loves humidity: a bathroom with a window or a group of plants is ideal." }
+        if let fit = Climate.shared.fit(s) { spotDetail += " " + fit }
+        if Climate.shared.homeAir == .dry && s.humidityMin >= 50 { spotDetail += " Your home runs dry, so a humidifier or a plant group will help." }
         if let room = compatibleRooms.first { spotDetail += " \(room.capitalized) suits it, since plants there have the same light needs." }
         let spot = WelcomePlan.Item(symbol: "sun.max", title: spotTitle(s.light), detail: spotDetail)
 
@@ -71,7 +73,7 @@ enum PlantAdvisor {
         let name = nameIdeas(for: s, personality: personality, existing: existing).first ?? s.en
         return WelcomePlan(firstWater: water, food: food, spot: spot, neighbours: neighbours, potAndSoil: pot, safety: safety,
                            suggestedName: name, suggestedPersonality: personality,
-                           outdoorsHint: ["Lamiaceae", "Solanaceae", "Oleaceae", "Rutaceae"].contains(s.family))
+                           outdoorsHint: s.outdoor == true || ["Lamiaceae", "Solanaceae", "Oleaceae", "Rutaceae"].contains(s.family))
     }
 
     static func waterBand(_ w: Species.WaterStyle) -> Int { w == .dry ? 0 : w == .moist ? 2 : 1 }

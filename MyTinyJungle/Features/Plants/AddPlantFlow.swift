@@ -251,7 +251,7 @@ struct AddPlantFlow: View {
             ("drop.fill", "Water", "Every \(Int(s.dryMin))–\(Int(s.dryMax)) days", Jungle.leaf),
             ("sun.max.fill", "Light", s.light.rawValue.capitalized, Jungle.sun),
             ("humidity.fill", "Humidity", "\(Int(s.humidityMin))%+", Jungle.leaf),
-            ("thermometer.medium", "Temp", "\(Int(s.tempMin))–\(Int(s.tempMax)) °C", Jungle.terracotta),
+            ("thermometer.medium", "Temp", Climate.tempRange(s.tempMin, s.tempMax), Jungle.terracotta),
             (petsOK ? "pawprint.fill" : "exclamationmark.triangle.fill", "Pets", petsOK ? "Safe" : "Toxic", petsOK ? Jungle.leaf : Jungle.terracotta),
             ("leaf.arrow.triangle.circlepath", "Feed", "Every \(Int(s.feedWeeks)) wk", Jungle.leaf),
         ]

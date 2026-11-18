@@ -27,8 +27,8 @@ enum PlacementEngine {
             reasons.append("Likes humid air. A bathroom or a plant group helps")
         }
         if let t = space.temperature {
-            if t < s.tempMin { reasons.append("Too cold (\(Int(t)) °C)"); penalty += 3 }
-            else if t > s.tempMax { reasons.append("Too hot (\(Int(t)) °C)"); penalty += 2 }
+            if t < s.tempMin { reasons.append("Too cold (\(Climate.temp(t)))"); penalty += 3 }
+            else if t > s.tempMax { reasons.append("Too hot (\(Climate.temp(t)))"); penalty += 2 }
         }
         if space.isOutdoor && CareEngine.isWinter(now) && s.tempMin >= 10 {
             reasons.append("Outdoors in winter is too cold. Bring it in"); penalty += 3

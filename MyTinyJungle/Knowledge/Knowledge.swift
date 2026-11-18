@@ -165,6 +165,7 @@ enum PlantKnowledgeRows {
         r.append(.init(symbol: "gauge.with.dots.needle.33percent", title: "Care level", value: s.difficultyLabel))
         if let b = s.bloom { r.append(.init(symbol: "camera.macro", title: "Flowers", value: b)) }
         if let g = s.goodFor { r.append(.init(symbol: "hand.thumbsup", title: "Good for", value: g)) }
+        if let fit = Climate.shared.fit(s) { r.append(.init(symbol: "globe.europe.africa", title: "In your climate", value: fit)) }
         if let a = s.about { r.append(.init(symbol: "book", title: "About", value: a)) }
         if let o = s.origin { r.append(.init(symbol: "globe.americas", title: "Home in the wild", value: o + (s.habit.map { " · \($0)" } ?? ""))) }
         r.append(.init(symbol: "drop", title: "Water by season", value: s.seasonalWater + " " + s.potHint(diameter: plant?.potDiameterCm)))

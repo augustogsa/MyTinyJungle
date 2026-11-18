@@ -168,15 +168,27 @@ struct SeasonGuideView: View {
         var symbol: String { switch self { case .spring: "camera.macro"; case .summer: "sun.max.fill"; case .autumn: "leaf.fill"; case .winter: "snowflake" } }
     }
 
+    /// Climate-aware: hemisphere from where you live, tropics follow the rains, mild places skip winter.
     static func current(_ d: Date = Date()) -> Season {
-        var m = Calendar.current.component(.month, from: d)
-        if JungleSettings.shared.southernHemisphere { m = (m + 5) % 12 + 1 }
-        switch m { case 3...5: return .spring; case 6...8: return .summer; case 9...11: return .autumn; default: return .winter }
+        switch Climate.shared.phase(d) { case .spring: .spring; case .summer: .summer; case .autumn: .autumn; case .winter: .winter }
     }
     @State private var season: Season = SeasonGuideView.current()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
+            ForEach(Climate.shared.alerts(for: plants)) { a in
+                HStack(alignment: .top, spacing: 12) {
+                    Image(systemName: a.symbol).font(.title3).foregroundStyle(Jungle.terracotta).frame(width: 28)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(a.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                        Text(a.detail).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+            }
+            if Climate.shared.profile != nil {
+                Text(Climate.shared.summary).font(.footnote).foregroundStyle(Jungle.subtle)
+            }
             HStack(spacing: 8) {
                 ForEach(Season.allCases, id: \.self) { s in
                     Button { season = s } label: {
@@ -217,13 +229,13 @@ struct SeasonGuideView: View {
             let humid = names { $0.humidityMin >= 55 }
             if !humid.isEmpty { out.append("Extra humidity for \(humid)") }
         case .autumn:
-            out = ["Taper feeding, last feed of the year", "Bring outdoor plants in before nights drop below 10 °C", "Inspect for pests before moving plants inside", "Water less as growth slows"]
+            out = ["Taper feeding, last feed of the year", "Bring outdoor plants in before nights drop below \(Climate.temp(10))", "Inspect for pests before moving plants inside", "Water less as growth slows"]
             let outdoor = plants.filter(\.isOutdoor).map(\.name)
             if !outdoor.isEmpty { out.append("Plan where \(outdoor.joined(separator: ", ")) will overwinter") }
         case .winter:
             out = ["Pause feeding until spring", "Water less: soil dries slower", "Keep plants away from radiators and cold glass", "Wipe dust off leaves to catch more light", "Don't repot unless roots are rotting"]
             let cold = names { $0.tempMin >= 16 }
-            if !cold.isEmpty { out.append("Keep \(cold) above 16 °C") }
+            if !cold.isEmpty { out.append("Keep \(cold) above \(Climate.temp(16))") }
         }
         return out
     }

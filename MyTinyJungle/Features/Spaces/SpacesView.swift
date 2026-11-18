@@ -67,7 +67,7 @@ struct SpaceCard: View {
             }
             HStack(spacing: 14) {
                 Label { Text(PlacementEngine.lightLabel(space.light)) } icon: { SmartIcon(symbol: PlacementEngine.lightSymbol(space.light), size: 16) }
-                if let t = space.temperature { Label { Text("\(Int(t)) °C") } icon: { Icon3DView(t < 15 ? .cold : t > 26 ? .hot : .thermometer, size: 16) } }
+                if let t = space.temperature { Label { Text(Climate.temp(t)) } icon: { Icon3DView(t < 15 ? .cold : t > 26 ? .hot : .thermometer, size: 16) } }
                 if let h = space.humidity { Label("\(Int(h))%", systemImage: "humidity") }
             }
             .font(.caption).foregroundStyle(Jungle.subtle)
@@ -95,7 +95,7 @@ struct SpaceDetailView: View {
             Section("Conditions") {
                 LabeledContent("Light", value: PlacementEngine.lightLabel(space.light))
                 if !space.windowFacing.isEmpty { LabeledContent("Window faces", value: space.windowFacing) }
-                LabeledContent("Temperature", value: space.temperature.map { "\(Int($0)) °C" } ?? "Not set")
+                LabeledContent("Temperature", value: space.temperature.map { Climate.temp($0) } ?? "Not set")
                 LabeledContent("Humidity", value: space.humidity.map { "\(Int($0))%" } ?? "Not set")
                 LabeledContent("Outdoors", value: space.isOutdoor ? "Yes" : "No")
             }
@@ -179,7 +179,7 @@ struct SpaceEditor: View {
                         ForEach(["North", "East", "South", "West"], id: \.self) { Text($0).tag($0) }
                     }
                     Toggle("Outdoors", isOn: $outdoor)
-                    LabeledContent("Temperature °C") { TextField("optional", value: $temp, format: .number).keyboardType(.numbersAndPunctuation).multilineTextAlignment(.trailing) }
+                    LabeledContent(Climate.metricTemp ? "Temperature °C" : "Temperature °F") { TextField("optional", value: $temp, format: .number).keyboardType(.numbersAndPunctuation).multilineTextAlignment(.trailing) }
                     LabeledContent("Humidity %") { TextField("optional", value: $humidity, format: .number).keyboardType(.decimalPad).multilineTextAlignment(.trailing) }
                 }
             }
@@ -190,7 +190,7 @@ struct SpaceEditor: View {
                 ToolbarItem(placement: .confirmationAction) { Button("Save", action: save).disabled(name.trimmingCharacters(in: .whitespaces).isEmpty) }
             }
             .onAppear {
-                if let space { name = space.name; light = space.light; outdoor = space.isOutdoor; facing = space.windowFacing; temp = space.temperature; humidity = space.humidity }
+                if let space { name = space.name; light = space.light; outdoor = space.isOutdoor; facing = space.windowFacing; temp = space.temperature.map { Climate.metricTemp ? $0 : ($0 * 9 / 5 + 32).rounded() }; humidity = space.humidity }
             }
         }
     }
@@ -199,8 +199,9 @@ struct SpaceEditor: View {
         let s = space ?? Space(name: name)
         if space == nil { ctx.insert(s) }
         s.name = name.trimmingCharacters(in: .whitespaces)
-        s.light = light; s.isOutdoor = outdoor; s.windowFacing = facing; s.temperature = temp; s.humidity = humidity
+        s.light = light; s.isOutdoor = outdoor; s.windowFacing = facing; s.temperature = temp.map { Climate.metricTemp ? $0 : ($0 - 32) * 5 / 9 }; s.humidity = humidity
         try? ctx.save()
+        JungleRooms.sync((try? ctx.fetch(FetchDescriptor<Space>())) ?? [])
         dismiss()
     }
 }
@@ -221,7 +222,7 @@ struct BestPlaceView: View {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         Label(PlacementEngine.lightLabel(s.light), systemImage: PlacementEngine.lightSymbol(s.light)).font(.system(.headline, design: .rounded))
-                        Text("\(Int(s.tempMin))–\(Int(s.tempMax)) °C · humidity \(Int(s.humidityMin))%+").font(.subheadline).foregroundStyle(Jungle.subtle)
+                        Text("\(Climate.tempRange(s.tempMin, s.tempMax)) · humidity \(Int(s.humidityMin))%+").font(.subheadline).foregroundStyle(Jungle.subtle)
                         Text(s.lightRule).font(.subheadline)
                     }
                 } header: { Text("What \(plant.name) needs") }

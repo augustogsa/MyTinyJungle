@@ -7,7 +7,7 @@ enum Answerer {
         let q = raw.folded
         func has(_ p: String) -> Bool { ChatParser.matches(p, q) }
 
-        if let general = knowledgeAnswer(q, raw: raw, plant: plant, now: now) { return general }
+        if let general = knowledgeAnswer(q, raw: raw, plant: plant, plants: plants, now: now) { return general }
 
         // Collection-level questions.
         if plant == nil {
@@ -110,7 +110,7 @@ enum Answerer {
             return ("I'm happiest above \(Int(s.humidityMin))% humidity. Grouping plants or using a humidifier works better than misting, whose effect lasts only minutes.", [])
         }
         if has(#"\b(cold|hot|temperat|frio|calor|winter|inverno|heater|aquecedor|radiator)"#) {
-            return ("I'm comfortable between \(Int(s.tempMin)) and \(Int(s.tempMax)) °C. Keep me away from radiators, AC vents and cold drafts.", [])
+            return ("I'm comfortable between \(Climate.temp(s.tempMin)) and \(Climate.temp(s.tempMax)). Keep me away from radiators, AC vents and cold drafts.", [])
         }
         if has(#"\b(toxic|safe|pet|cat|dog|kid|child|gato|cao|crianc)"#) {
             let tox = s.toxicCats || s.toxicDogs
@@ -139,7 +139,7 @@ enum Answerer {
     }
 
     /// Questions the knowledge base answers whatever plant we're talking about.
-    static func knowledgeAnswer(_ q: String, raw: String, plant: Plant?, now: Date) -> (text: String, suggestions: [String])? {
+    static func knowledgeAnswer(_ q: String, raw: String, plant: Plant?, plants: [Plant], now: Date) -> (text: String, suggestions: [String])? {
         func has(_ p: String) -> Bool { ChatParser.matches(p, q) }
         let k = Knowledge.shared
         if has(#"\b(what is|what's|what are|whats|meaning|o que e|significa|define)\b"#), let t = k.term(in: q) {
@@ -155,6 +155,23 @@ enum Answerer {
         }
         if has(#"\b(this month|month|calendar|season tasks|mes|este mes|what should i do)"#), let m = k.month(now) {
             return ("This month indoors: \(m.indoor)\nOutdoors: \(m.outdoor)", [])
+        }
+        let c = Climate.shared
+        if has(#"\b(weather|forecast|frost|freez|heatwave|heat wave|storm|rain|tempo|geada|chuva|previs)"#) {
+            if c.profile == nil { return ("Tell me where you live (Me › Settings › Where you grow) and I'll watch the weather for your outdoor plants.", ["Open settings"]) }
+            let alerts = c.alerts(for: plants, now: now)
+            if !alerts.isEmpty { return (alerts.map { "\($0.title). \($0.detail)" }.joined(separator: "\n"), []) }
+            let days = c.upcoming(now)
+            guard let lo = days.map(\.tMin).min(), let hi = days.map(\.tMax).max() else { return ("I don't have a fresh forecast yet. I'll check again soon.", []) }
+            let rain = days.map(\.rain).reduce(0, +)
+            return ("Next few days in \(c.profile!.place): \(Climate.tempRange(lo, hi))\(rain >= 1 ? ", about \(Climate.rain(rain)) of rain" : ", dry"). Nothing your outdoor plants need to worry about.", [])
+        }
+        if has(#"\b(climate|clima|biome|bioma|koppen|hardiness|zone|zona|hemisphere|hemisferio|where i live|onde moro)"#) {
+            return (c.summary, [])
+        }
+        if has(#"\b(outside|outdoor|balcony|garden|fora|varanda|jardim)\b"#), has(#"\b(can|could|survive|live|ok|pode|aguenta)"#),
+           let sp = plant?.species ?? SpeciesLibrary.shared.mentioned(in: raw), let fit = c.fit(sp) {
+            return (fit, [])
         }
         if has(#"\b(lux|how bright|light level|light meter)"#) {
             return (k.lightLevels.map { "• \($0.id.capitalized) (\($0.lux) lux): \($0.where). Think \($0.plants)." }.joined(separator: "\n"), [])
@@ -176,7 +193,7 @@ enum Answerer {
     static func speciesCard(_ s: Species) -> String {
         var t = "\(s.en) (\(s.scientific)). \(s.about ?? s.tip)"
         t += "\n• Light: \(s.lightRule)\n• Water: \(s.waterRule) \(s.seasonalWater)"
-        t += "\n• Comfort: \(Int(s.tempMin))–\(Int(s.tempMax)) °C, humidity \(Int(s.humidityMin))%+"
+        t += "\n• Comfort: \(Climate.tempRange(s.tempMin, s.tempMax)), humidity \(Int(s.humidityMin))%+"
         t += "\n• Soil: \(s.soilPlan)\n• Food: \(s.feedPlan)\n• Pets: \(s.toxicityLine)."
         if let p = s.propagation?.first { t += "\n• More plants: \(p)." }
         t += "\n• Care level: \(s.difficultyLabel)."
@@ -193,7 +210,13 @@ enum Answerer {
         if m(#"\b(dark|low light|shade|north|escur|pouca luz)"#) { pool = pool.filter { $0.light == .low || $0.light == .medium }; why.append("happy in lower light") }
         if m(#"\b(sun|bright|south|sol)"#) { pool = pool.filter { $0.light == .bright || $0.light == .direct } ; why.append("sun-loving") }
         if m(#"\b(easy|beginner|forget|travel|lazy|facil|iniciante)"#) { pool = pool.filter { ($0.difficulty ?? 2) == 1 }; why.append("easy-going") }
-        if m(#"\b(balcony|garden|outdoor|outside|varanda|jardim)"#) { pool = pool.filter { $0.outdoor == true }; why.append("good outdoors") }
+        if m(#"\b(balcony|garden|outdoor|outside|varanda|jardim)"#) {
+            pool = pool.filter { $0.outdoor == true }
+            if let cold = Climate.shared.profile?.coldestNight {
+                let hardy = pool.filter { $0.tempMin <= cold }
+                if !hardy.isEmpty { pool = hardy; why.append("hardy in \(Climate.shared.profile!.place)") } else { why.append("good outdoors") }
+            } else { why.append("good outdoors") }
+        }
         else if m(#"\b(indoor|inside|apartment|room|casa|apartamento)"#) { pool = pool.filter { $0.outdoor != true } }
         if m(#"\b(flower|bloom|flor)"#) { pool = pool.filter { ["flowering","orchid","violet","bulb","epicactus","bromeliad"].contains($0.group ?? "") || $0.feed == "bloom" }; why.append("flowering") }
         if m(#"\b(eat|herb|kitchen|food|erva|cozinha)"#) { pool = pool.filter { ["herb-med","herb-soft","vegetable","citrus"].contains($0.group ?? "") }; why.append("edible") }
