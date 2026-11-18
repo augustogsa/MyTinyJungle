@@ -51,6 +51,8 @@ struct MyTinyJungleApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .modifier(ErtyCheerOverlay())
+                .task { if ProcessInfo.processInfo.arguments.contains("-ertyDemo") { try? await Task.sleep(for: .seconds(1)); ErtyCheer.shared.show(.water, "Watered · Goldie") } }
                 .tint(Jungle.forest)
                 .task { DemoSeeder.seedIfAsked(container.mainContext) }
                 .task { try? await Task.sleep(for: .seconds(2)); AdPool.shared.start() }

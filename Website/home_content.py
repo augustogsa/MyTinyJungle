@@ -251,12 +251,16 @@ def render_home(L, t, page, phone, apple_icon):
         return (f'<div class="field {cls}">{tg}<h3>{name}</h3><p class="who">{who}</p><p>{inc}</p>'
                 f'<div class="pfoot"><p class="price">{price}<small>{per}</small></p>{btn}</div></div>')
 
+    def E(m, sz, cls=""):
+        return (f'<video class="erty {cls}" width="{sz}" height="{sz}" autoplay loop muted playsinline aria-hidden="true" poster="/assets/erty/erty-{m}.png">'
+                f'<source src="/assets/erty/erty-{m}.mov" type=\'video/quicktime; codecs="hvc1"\'><source src="/assets/erty/erty-{m}.webm" type="video/webm"></video>')
+
     faq = "".join(f"<p><b>{q}</b> {a}</p>" for q, a in h["faq"])
 
     body = f"""
 <div class="split">
 <div class="read">
-<section class="hero" data-scene="0"><h1>{h['h1']}</h1><p class="lead">{h['lead']}</p>{cta}<p class="note">{h['note']}</p>
+<section class="hero" data-scene="0">{E("wave", 112, "hi")}<h1>{h['h1']}</h1><p class="lead">{h['lead']}</p>{cta}<p class="note">{h['note']}</p>
 <div class="m-scene"><img class="photo" src="/assets/plants/monstera.jpg" alt="" width="1100" height="1400" fetchpriority="high">{phone(A + "/today1.jpg", h["stage_alt"], "stage-phone")}</div></section>
 {chapters}
 </div>
@@ -265,7 +269,7 @@ def render_home(L, t, page, phone, apple_icon):
 <section class="pills-band" aria-label="Why"><div class="wrap pills">{"".join(f'<p class="pill">{I(i, 48)}{x}</p>' for i, x in h["pills"])}</div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
 <section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
-<section class="beta" id="beta"><div class="wrap bgrid"><div><h2>{h['slip_h']}</h2><p>{h['slip_p']}</p>{cta}</div>
+<section class="beta" id="beta"><div class="wrap bgrid"><div>{E("water", 130)}<h2>{h['slip_h']}</h2><p>{h['slip_p']}</p>{cta}</div>
 <div class="slip">{slip}<p class="row end"><span>{se[0]}</span><span>{se[1]}</span></p></div></div></section>
 <section class="pricing" id="pricing"><h2 class="vh">Plus</h2><div class="wrap fields">
 {field("free", h["free"], f'<a class="btn ghost" href="{TESTFLIGHT_URL}" rel="noopener">{h["cta"]}</a>')}
@@ -273,9 +277,9 @@ def render_home(L, t, page, phone, apple_icon):
 {field("plus", h["plus"], f'<a class="btn light" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>', h["best"])}
 </div></section>
 <p class="wrap fine">{h['fine']}</p>
-<section class="faq" id="faq"><div class="wrap qgrid"><h2>{h['faq_h']}</h2><div class="qtext">{faq}</div></div></section>
+<section class="faq" id="faq"><div class="wrap qgrid"><div class="qhead">{E("scan", 140)}<h2>{h['faq_h']}</h2></div><div class="qtext">{faq}</div></div></section>
 <section class="closing"><div class="wrap cgrid">
-<div class="ctext"><img class="appicon" src="/assets/apple-touch-icon.png" alt="" width="88" height="88" loading="lazy"><h2>{h['c_h']}</h2><p>{h['c_p']}</p>{cta.replace('class="btn"', 'class="btn light"')}<p class="note">{h['note']}</p></div>
+<div class="ctext">{E("love", 150)}<h2>{h['c_h']}</h2><p>{h['c_p']}</p>{cta.replace('class="btn"', 'class="btn light"')}<p class="note">{h['note']}</p></div>
 <div class="mosaic">{"".join(f'<figure><img src="/assets/plants/{ph}.jpg" alt="{kind}" width="400" height="400" loading="lazy"><figcaption><b>{nm}</b>{kind}</figcaption></figure>' for ph, nm, kind in h["close_names"])}</div>
 </div></section>"""
     return page(L, "/", t["home_title"], t["home_desc"], body)

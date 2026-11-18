@@ -104,7 +104,7 @@ struct PaywallView: View {
 
     private var plans: some View {
         HStack(spacing: 12) {
-            if ordered.isEmpty { ProgressView().frame(height: 120).frame(maxWidth: .infinity) }
+            if ordered.isEmpty { ErtyView(mood: .idle, size: 96).frame(height: 120).frame(maxWidth: .infinity) }
             ForEach(ordered) { p in planCard(p) }
         }
     }

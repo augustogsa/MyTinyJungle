@@ -131,6 +131,10 @@ enum JungleBrain {
             let e = apply(.init(kind: kind, plantIDs: [p.id], date: now, soil: soil), to: p, in: ctx, now: now, source: "chip", speak: !announce || kind == .soilCheck)
             entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
         }
+        if !targets.isEmpty {
+            let line = "\(kind.label) · \(targets.map(\.name).formatted(.list(type: .and)))"
+            Task { @MainActor in ErtyCheer.shared.show(ErtyMood.forCare(kind), line) }
+        }
         if announce, !entries.isEmpty {
             postCard(entries, date: now, text: cardLine(kind, targets, date: now, now: now), in: ctx)
         }

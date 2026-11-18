@@ -384,6 +384,7 @@ struct AddPlantFlow: View {
         plant.isOutdoor = outdoor
         plant.photo = photo
         ctx.insert(plant)
+        ErtyCheer.shared.show(.plant, String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name"))
         if let photo {
             let e = CareEvent(kind: .photo, note: "First photo", source: "onboarding"); e.photo = photo; e.plant = plant; ctx.insert(e)
         }
@@ -433,7 +434,7 @@ private struct ReadingSteps: View {
     private let steps = [String(localized: "Looking at the leaves…", comment: "Loading step while reading photo; plant voice; max 30 chars"), String(localized: "Working out the species…", comment: "Loading step while reading photo; plant voice; max 30 chars"), String(localized: "Checking the soil…", comment: "Loading step while reading photo; plant voice; max 30 chars"), String(localized: "Writing my care plan…", comment: "Loading step while reading photo; plant voice; max 30 chars")]
     var body: some View {
         VStack(spacing: 10) {
-            ProgressView()
+            ErtyView(mood: .scan, size: 96)
             Text(steps[step % steps.count]).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 .contentTransition(.opacity)
                 .id(step)

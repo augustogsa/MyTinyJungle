@@ -21,7 +21,7 @@ struct HealthCheckView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     viewfinder
-                    if working { HStack { ProgressView(); Text("Looking closely…").foregroundStyle(Jungle.subtle) } }
+                    if working { ErtyLoading(text: String(localized: "Looking closely…")) }
                     if let read { result(read) }
                     pestSection
                     if let pest { PestPlanView(pest: pest, plant: plant, neighbours: neighbours) { dismiss() } }

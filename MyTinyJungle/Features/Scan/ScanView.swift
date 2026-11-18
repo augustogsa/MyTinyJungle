@@ -81,7 +81,7 @@ struct ScanView: View {
                     .padding(28)
                 VStack(spacing: 8) {
                     if working {
-                        ProgressView().controlSize(.large).tint(Jungle.forest)
+                        ErtyView(mood: .scan, size: 110)
                         Text("Reading the label…").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
                     } else {
                         Icon3DView(.leafTag, size: 64)

@@ -71,7 +71,7 @@ struct PlantForecastSection: View {
                     Divider().padding(.leading, 52)
                 }
                 if items.isEmpty {
-                    Text("Nothing planned. \(plant.name) is simply enjoying life.").font(.subheadline).foregroundStyle(Jungle.subtle).padding(.vertical, 12)
+                    ErtyEmpty(text: String(localized: "Nothing planned. \(plant.name) is simply enjoying life.")).padding(.vertical, 8)
                 }
                 ForEach(Array(items.prefix(8).enumerated()), id: \.element.id) { i, f in
                     HStack(spacing: 12) {

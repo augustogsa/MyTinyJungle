@@ -4,6 +4,25 @@
   root.classList.add("js");
   var io = "IntersectionObserver" in window;
 
+  // Living favicon: Erty waves in the browser tab.
+  (function () {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var sp = new Image(), cv = d.createElement("canvas"), cx, links, n = 0, f = 0, tm;
+    cv.width = cv.height = 64; cx = cv.getContext("2d");
+    sp.onload = function () {
+      n = Math.round(sp.width / 64);
+      links = d.querySelectorAll('link[rel="icon"]');
+      var tick = function () {
+        cx.clearRect(0, 0, 64, 64); cx.drawImage(sp, f * 64, 0, 64, 64, 0, 0, 64, 64);
+        var u = cv.toDataURL("image/png"); links.forEach(function (l) { l.href = u; });
+        f = (f + 1) % n;
+      };
+      var run = function () { clearInterval(tm); if (!d.hidden) tm = setInterval(tick, 90); };
+      d.addEventListener("visibilitychange", run); run();
+    };
+    sp.src = "/assets/erty/favicon-sprite.png";
+  })();
+
   // Stage: show the layer matching the chapter in the middle of the screen.
   var layers = d.querySelectorAll(".stage .layer");
   if (layers.length && io) {

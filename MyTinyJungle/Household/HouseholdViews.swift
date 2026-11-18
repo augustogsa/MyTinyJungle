@@ -486,7 +486,7 @@ struct InviteView: View {
                             Button { Task { await house.prepareShare() } } label: { Text("Try again", comment: "Retry button") }.buttonStyle(.bordered)
                         }.padding(16).frame(maxWidth: .infinity).jungleCard()
                     } else {
-                        ProgressView().padding(30)
+                        ErtyLoading(text: "", mood: .idle).padding(20)
                     }
                     VStack(alignment: .leading, spacing: 12) {
                         step(1, String(localized: "They open the link and get the app", comment: "Invite how-it-works step"))

@@ -92,8 +92,8 @@ struct CareCalendarView: View {
             Text(cal.isDateInToday(selected) ? String(localized: "Today", comment: "Care agenda day header") : selected.formatted(.dateTime.weekday(.wide).day().month(.wide)))
                 .font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             if done.isEmpty && planned.isEmpty {
-                Text(selected > Date() ? String(localized: "Nothing planned.", comment: "Care calendar: empty future day") : String(localized: "Nothing logged this day.", comment: "Care calendar: empty past day")).foregroundStyle(Jungle.subtle)
-                    .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+                ErtyEmpty(text: selected > Date() ? String(localized: "Nothing planned.", comment: "Care calendar: empty future day") : String(localized: "Nothing logged this day.", comment: "Care calendar: empty past day"), mood: selected > Date() ? .happy : .notes)
+                    .padding(12).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
             }
             if !done.isEmpty {
                 VStack(spacing: 0) {

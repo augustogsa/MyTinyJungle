@@ -24214,6 +24214,17 @@
         }
       }
     },
+    "Welcome home, %@": {
+      "comment": "Little celebration when a plant is added; arg is plant name",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boas-vindas, %@"
+          }
+        }
+      }
+    },
     "West": {
       "comment": "Window faces west",
       "localizations": {

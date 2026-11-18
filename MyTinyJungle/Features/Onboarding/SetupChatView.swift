@@ -67,10 +67,7 @@ struct SetupChatView: View {
 
     private var header: some View {
         VStack(spacing: 8) {
-            Image("AppMark").resizable().scaledToFit().frame(width: 64, height: 64)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
-                .accessibilityHidden(true)
+            ErtyView(mood: step == .finished ? .love : .wave, size: 112)
             Text(String(localized: "A few quick questions so your plants get care that fits your home.", comment: "Setup chat intro under the mascot"))
                 .font(.subheadline).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
         }
@@ -90,7 +87,7 @@ struct SetupChatView: View {
     }
 
     private var mascot: some View {
-        Image("AppMark").resizable().scaledToFit().frame(width: 28, height: 28).clipShape(Circle()).accessibilityHidden(true)
+        Image("erty-idle").resizable().scaledToFit().frame(width: 32, height: 32).accessibilityHidden(true)
     }
 
     @ViewBuilder private var answerBar: some View {
@@ -427,7 +424,7 @@ private struct TypingBubble: View {
     @State private var on = false
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
-            Image("AppMark").resizable().scaledToFit().frame(width: 28, height: 28).clipShape(Circle())
+            Image("erty-idle").resizable().scaledToFit().frame(width: 32, height: 32).accessibilityHidden(true)
             HStack(spacing: 4) {
                 ForEach(0..<3) { i in
                     Circle().fill(Jungle.subtle).frame(width: 7, height: 7)

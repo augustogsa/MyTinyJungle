@@ -76,7 +76,7 @@ struct CareView: View {
         let grouped = Dictionary(grouping: items) { cal.startOfDay(for: $0.date) }
         return VStack(alignment: .leading, spacing: 14) {
             if items.isEmpty {
-                Text(plants.isEmpty ? String(localized: "Add a plant and its care shows up here.", comment: "Care agenda empty state with no plants") : selectedDay != nil ? String(localized: "Nothing planned this day.", comment: "Care agenda empty for selected day") : String(localized: "Nothing planned. Your jungle is relaxing.", comment: "Care agenda empty state; playful")).foregroundStyle(Jungle.subtle)
+                ErtyEmpty(text: plants.isEmpty ? String(localized: "Add a plant and its care shows up here.", comment: "Care agenda empty state with no plants") : selectedDay != nil ? String(localized: "Nothing planned this day.", comment: "Care agenda empty for selected day") : String(localized: "Nothing planned. Your jungle is relaxing.", comment: "Care agenda empty state; playful"))
             }
             let days = grouped.keys.sorted()
             ForEach(days, id: \.self) { day in

@@ -399,7 +399,7 @@ struct EmptyJungle: View {
     var onAdd: (() -> Void)? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Image(systemName: "leaf").font(.system(.largeTitle, design: .rounded)).foregroundStyle(Jungle.leaf).accessibilityHidden(true)
+            ErtyView(mood: .wave, size: 96)
             Text("Your jungle is waiting").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             Text("Just tell me about a plant, like \"I have a monstera called Milo in the living room\", or add one in Plants with a photo.")
                 .foregroundStyle(Jungle.subtle)

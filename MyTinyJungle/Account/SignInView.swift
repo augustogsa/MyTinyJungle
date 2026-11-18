@@ -32,10 +32,7 @@ struct SignInView: View {
         VStack(spacing: 0) {
             Spacer(minLength: 0)
             VStack(spacing: 0) {
-                Image("AppMark").resizable().scaledToFit().frame(width: 96, height: 96)
-                    .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                    .shadow(color: .black.opacity(0.15), radius: 18, y: 8)
-                    .accessibilityHidden(true)
+                ErtyView(mood: .wave, size: 132)
                 Text("My Tiny Jungle").font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                     .padding(.top, 18)
                 Text("Your plants, talking to you.").font(.body).foregroundStyle(Jungle.subtle).padding(.top, 2)
