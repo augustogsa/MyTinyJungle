@@ -445,3 +445,25 @@ p,li,.bcard span{text-wrap:pretty}
 @media (max-width:900px){.crow{grid-template-columns:1fr;gap:6px}.crow .cev{display:none}.crow.axis .clab{display:none}.crow+.crow{margin-top:8px}.cdays{gap:2px}.cwhy{grid-template-columns:1fr}}
 .cdays{grid-template-columns:repeat(28,minmax(0,20px));gap:clamp(2px,.6vw,8px);justify-content:start}
 @media (min-width:901px){.crow{grid-template-columns:minmax(0,14em) auto minmax(0,1fr)}.cev{padding-left:12px}}
+/* two homes v3: two plain cards, ours vs a timer */
+.hcards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hc{background:var(--paper);border-radius:var(--r);padding:28px}
+.hc .city{margin:14px 0 0;font-size:var(--t-m);font-weight:800}
+.hc .spot{margin:4px 0 20px;color:var(--muted);font-size:16px}
+.hrow{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:16px}
+.hrow span{font-size:13px;font-weight:700;letter-spacing:.01em}
+.hrow b{font-size:clamp(20px,2vw,26px);font-weight:800;line-height:1.15}
+.hrow.us{background:var(--mint);color:var(--forest)}
+.hrow.them{margin-top:8px;background:#f8ece6;color:#a24e2f}
+.hrow.them b{font-size:17px;font-weight:700}
+.cwhy,.cmp{display:none}
+@media (max-width:700px){.hcards{grid-template-columns:1fr}}
+/* Apple-simple: one huge number per home */
+.hrow.them{display:none}
+.hc{text-align:center;padding:40px 28px 44px}
+.hc .i3d{margin:0 auto}
+.hrow.us{background:none;padding:0;align-items:center}
+.hrow.us span{display:none}
+.hrow.us b{font-size:clamp(40px,5vw,64px);letter-spacing:-.03em;line-height:1}
+.two .timer{text-align:center;font-size:clamp(18px,1.6vw,22px);color:var(--ink);max-width:30em;margin:8px auto 0}
+.two .ttext{text-align:center}.two .ttext p{margin-left:auto;margin-right:auto}

@@ -95,9 +95,9 @@ H = {
   "know_p": "Most plant apps ask how often to water, then count down: every 7 days, forever. My Tiny Jungle works it out for each plant, every day, from everything around it.",
   "know_vs": (("A reminder app", ["Water every 7 days", "The same in July and January", "Waters the balcony in the rain", "Two people, two reminders, one drowned fern"]), ("My Tiny Jungle", ["Water when that pot will be dry", "Shifts with your seasons and hemisphere", "Skips outdoor plants after rain", "Shares turns, so nobody double-waters"])),
   "two_h": "Same monstera, two homes",
-  "two_p": "Four weeks of July, one dot per watering. Same species, different homes, different rhythm.",
-  "homes": [("Lisbon", "Balcony, terracotta pot, highs around 28 °C", "About every 5 days", "Warm days and a terracotta pot dry the soil fast. If it rains, the reminder waits."), ("Berlin", "Bright living room, plastic pot, 19 °C outside", "About every 8 days", "Indoors, plastic holds water longer. In winter, with the heating on, the sums change again.")],
-  "timer_row": ("Fixed timer", "Every 7 days, whatever happens"), "day_lbl": "Day", "two_timer": "A fixed timer says every 7 days for both: too little in Lisbon, too much in Berlin.",
+  "two_p": "Same plant, same week in July. One home needs water much sooner than the other.",
+  "homes": [("Lisbon", "Balcony, terracotta pot, highs around 28 °C", "Every 5 days", "Warm days and a terracotta pot dry the soil fast. If it rains, the reminder waits."), ("Berlin", "Bright living room, plastic pot, 19 °C outside", "Every 8 days", "Indoors, plastic holds water longer. In winter, with the heating on, the sums change again.")],
+  "timer_row": ("Fixed timer", "Every 7 days, whatever happens"), "day_lbl": "Day", "cmp_us": "My Tiny Jungle", "cmp_them": "A 7-day timer", "cmp_bad": ["Too late: thirsty, droopy leaves", "Too soon: soggy soil, sad roots"], "two_timer": "A 7-day timer gets both wrong. One goes thirsty. The other drowns.",
   "in_h": "What it takes into account",
   "inputs": [("sun", "Your city and climate", "Climate type, the local forecast, rain, the seasons and your hemisphere."), ("homeLeaf", "Your home", "Heating in winter, air conditioning in summer, and whether the air is dry or damp."), ("livingRoom", "Light, room by room", "The light you set for each room, matched to what each plant likes."), ("pot", "The pot", "Size, material and drainage. Terracotta dries faster than glass."), ("soilTest", "Its own rhythm", "Species data first, then your soil checks and care history teach it how fast that pot really dries."), ("balcony", "Inside or out", "Outdoor plants follow the real weather. Indoor plants follow your home."), ("shieldLeaf", "Pets and kids", "Clear warnings for plants that are toxic to cats, dogs or little ones."), ("careHands", "Your household", "Whose turn it is, cover while someone travels, and shared care so nobody waters twice.")],
   "smart_h": "Quietly very clever",
@@ -189,9 +189,9 @@ H = {
   "know_p": "A maioria dos apps pede um intervalo e repete o mesmo aviso para sempre. Aqui, o cuidado é recalculado todo dia, para cada planta, com base em tudo o que está ao redor dela.",
   "know_vs": (("Apps de lembrete", ["Rega a cada 7 dias, sempre", "Mesmo aviso no verão e no inverno", "Manda regar a varanda em dia de chuva", "Duas pessoas, dois avisos, planta encharcada"]), ("My Tiny Jungle", ["Rega quando o vaso realmente vai estar seco", "Ajusta o cuidado às estações e ao seu hemisfério", "Segura a rega das plantas de fora depois da chuva", "Organiza o rodízio para ninguém regar duas vezes"])),
   "two_h": "Mesma planta, casas diferentes, cuidados diferentes",
-  "two_p": "Quatro semanas de julho, um ponto para cada rega. Mesma espécie, casas diferentes, ritmos diferentes.",
-  "homes": [("Lisboa", "Varanda, vaso de barro, máxima de 28 °C", "A cada 5 dias, em média", "Calor e vaso de barro secam a terra mais rápido. Se chover, o lembrete espera."), ("Berlim", "Sala iluminada, vaso de plástico, 19 °C lá fora", "A cada 8 dias, em média", "Dentro de casa, o plástico retém a água por mais tempo. No inverno, com aquecedor, o cálculo muda de novo.")],
-  "timer_row": ("Lembrete fixo", "A cada 7 dias, aconteça o que acontecer"), "day_lbl": "Dia", "two_timer": "Um lembrete fixo de 7 dias erraria nas duas: faltaria água em Lisboa e sobraria em Berlim.",
+  "two_p": "Mesma planta, mesma semana de julho. Uma casa pede água bem antes da outra.",
+  "homes": [("Lisboa", "Varanda, vaso de barro, máxima de 28 °C", "A cada 5 dias", "Calor e vaso de barro secam a terra mais rápido. Se chover, o lembrete espera."), ("Berlim", "Sala iluminada, vaso de plástico, 19 °C lá fora", "A cada 8 dias", "Dentro de casa, o plástico retém a água por mais tempo. No inverno, com aquecedor, o cálculo muda de novo.")],
+  "timer_row": ("Lembrete fixo", "A cada 7 dias, aconteça o que acontecer"), "day_lbl": "Dia", "cmp_us": "My Tiny Jungle", "cmp_them": "Lembrete de 7 dias", "cmp_bad": ["Tarde demais: folhas murchas de sede", "Cedo demais: terra encharcada, raiz sofrendo"], "two_timer": "Um lembrete de 7 dias erra nas duas. Uma passa sede. A outra se afoga.",
   "in_h": "O que entra no cálculo",
   "inputs": [("sun", "Cidade e clima", "Tipo de clima, previsão do tempo, chuva, estações e hemisfério."), ("homeLeaf", "Sua casa", "Aquecedor no inverno, ar-condicionado no verão e umidade do ar."), ("livingRoom", "Luz de cada cômodo", "A luz de cada ambiente comparada com a necessidade de cada planta."), ("pot", "Vaso", "Tamanho, material e drenagem. Vaso de barro seca mais rápido que o de vidro."), ("soilTest", "Ritmo de cada planta", "Começa com os dados da espécie e se ajusta a cada teste da terra e a cada cuidado registrado."), ("balcony", "Dentro ou fora de casa", "Plantas externas seguem o tempo real. As internas seguem o clima da sua casa."), ("shieldLeaf", "Pets e crianças", "Avisos claros sobre plantas tóxicas para gatos, cães e crianças."), ("careHands", "Quem mora com você", "Rodízio de cuidados, cobertura em viagens e tudo sincronizado.")],
   "smart_h": "Simples de usar. Inteligente por trás.",
@@ -214,16 +214,13 @@ H = {
 LAZY = {True: "", False: ' loading="lazy"'}
 
 
-def cmp_chart(h, days=28):
-    rows = [(c, sp, ev, why, n, "") for (c, sp, ev, why), n in zip(h["homes"], (5, 8))]
-    rows.append((h["timer_row"][0], h["timer_row"][1], "", "", 7, " timer"))
-    def cells(n): return "".join(f'<i class="{"on" if d % n == 0 else ""}"></i>' for d in range(days))
-    out = "".join(f'<div class="crow{cl}"><div class="clab"><b>{c}</b><span>{sp}</span></div><div class="cdays">{cells(n)}</div><p class="cev">{ev}</p></div>' for c, sp, ev, why, n, cl in rows)
-    ticks = "".join("<i>%s</i>" % (d + 1 if d in (0, 6, 13, 20, 27) else "") for d in range(days))
-    axis = f'<div class="crow axis"><div class="clab"></div><div class="cdays">{ticks}</div><p class="cev">{h["day_lbl"]}</p></div>'
-    whys = "".join(f'<p><b>{c}.</b> {why}</p>' for c, sp, ev, why in h["homes"])
-    return f'<div class="cmp">{out}{axis}</div><div class="cwhy">{whys}</div>'
-
+def cmp_chart(h):
+    cards = "".join(
+        f'<div class="hc">{I(ic, 56)}<p class="city">{c}</p><p class="spot">{sp}</p>'
+        f'<div class="hrow us"><span>{h["cmp_us"]}</span><b>{ev}</b></div>'
+        f'<div class="hrow them"><span>{h["cmp_them"]}</span><b>{bad}</b></div></div>'
+        for (c, sp, ev, why), ic, bad in zip(h["homes"], ("sun", "livingRoom"), h["cmp_bad"]))
+    return f'<div class="hcards">{cards}</div>'
 
 def render_home(L, t, page, phone, apple_icon):
     h = H[L]
