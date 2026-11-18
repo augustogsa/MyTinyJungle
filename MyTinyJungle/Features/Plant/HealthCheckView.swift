@@ -139,20 +139,8 @@ struct HealthCheckView: View {
     }
 
     private func likelyCauses(_ r: PhotoRead) -> [String] {
-        guard let s = plant.species else { return ["Set the species so I can reason about causes."] }
-        var out: [String] = []
-        let expected = CareEngine.expectedDryDays(for: plant)
-        let sinceWater = plant.lastEvent(.water).map { CareEngine.days(from: $0.date) }
-        if r.yellowShare > 0.03 {
-            if let w = sinceWater, w < expected * 0.6 || r.soilMoisture == .wet { out.append("Yellowing + recent water: likely too much water. Let the soil dry \(s.waterStyle == .moist ? "on top" : "deeper") before the next drink.") }
-            else { out.append("Yellowing on old lower leaves is normal ageing. On new leaves, check light and feeding.") }
-        }
-        if r.brownShare > 0.03 {
-            out.append(s.humidityMin >= 50 ? "Brown edges: likely dry air. Group plants or add a humidifier (\(Int(s.humidityMin))%+)." : "Brown patches: check for sunburn or long dry spells.")
-        }
-        if r.soilMoisture == .dry, (sinceWater ?? 99) > expected { out.append("Soil looks dry: water today.") }
-        if r.health == .lush || r.health == .good { out.append("Keep the current routine. I'll check again in a month.") }
-        return out
+        guard plant.species != nil else { return ["Set the species so I can reason about causes."] }
+        return Diagnosis.findings(r, species: plant.species, plant: plant).map { "\($0.title): \($0.detail)" }
     }
 
     private func analyze(_ raw: Data) {

@@ -144,13 +144,35 @@ enum PlantIdentifier {
         ("flower", ["spathiphyllum", "anthurium", "phalaenopsis", "begonia-maculata"]),
     ]
 
+    /// Vision label words that point at a whole plant group in the knowledge base.
+    static let groupWords: [(String, String)] = [
+        ("cactus", "cactus"), ("succulent", "succulent"), ("fern", "fern"), ("orchid", "orchid"), ("palm", "palm"),
+        ("herb", "herb-soft"), ("vegetable", "vegetable"), ("bromeliad", "bromeliad"), ("shrub", "shrub"), ("bulb", "bulb"),
+        ("carnivorous", "carnivorous"), ("venus", "carnivorous"), ("flower", "flowering"), ("bonsai", "ficus"),
+    ]
+
     static func candidates(from read: PhotoRead) -> [Candidate] {
         var score: [String: Double] = [:]
+        let lib = SpeciesLibrary.shared.all
         for (label, conf) in read.labels {
-            let l = label.lowercased()
-            for (key, ids) in labelMap where l.contains(key) {
+            let l = label.lowercased().replacingOccurrences(of: "_", with: " ")
+            for (key, ids) in labelMap where l.contains(key.replacingOccurrences(of: "_", with: " ")) {
                 for (i, id) in ids.enumerated() { score[id, default: 0] += Double(conf) / Double(i + 1) }
             }
+            // Every species' own names and aliases (including Wikidata common names).
+            for s in lib {
+                let names = [s.en, s.scientific, s.scientific.components(separatedBy: " ").first ?? ""] + (s.aliases ?? [])
+                if names.contains(where: { $0.count >= 4 && $0.folded == l.folded || ($0.count >= 5 && l.folded.contains($0.folded)) }) {
+                    score[s.id, default: 0] += Double(conf) * 1.2
+                }
+            }
+            for (word, group) in groupWords where l.contains(word) {
+                for s in lib where s.group == group { score[s.id, default: 0] += Double(conf) * 0.15 }
+            }
+        }
+        // Leaf colour as a tie-breaker: lots of red/yellow with little green favours colourful foliage and flowers.
+        if read.yellowShare + read.brownShare > read.greenShare {
+            for (id, v) in score { if let s = SpeciesLibrary.shared.species(id: id), ["flowering", "bulb", "shrub"].contains(s.group ?? "") { score[id] = v * 1.15 } }
         }
         return score.sorted { $0.value > $1.value }.prefix(5).compactMap { id, s in
             SpeciesLibrary.shared.species(id: id).map { Candidate(species: $0, confidence: min(0.6, s), source: "On-device") }

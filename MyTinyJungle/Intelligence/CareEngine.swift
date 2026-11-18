@@ -25,6 +25,12 @@ enum CareEngine {
         return [11, 12, 1, 2].contains(month)
     }
 
+    static func isPeakSummer(_ date: Date = Date(), south: Bool = JungleSettings.shared.southernHemisphere) -> Bool {
+        var month = calendar.component(.month, from: date)
+        if south { month = (month + 5) % 12 + 1 }
+        return (6...8).contains(month)
+    }
+
     static func days(from a: Date, to b: Date = Date()) -> Double { b.timeIntervalSince(a) / 86_400 }
 
     /// Expected days for this plant's substrate to dry to its watering point.
@@ -36,8 +42,11 @@ enum CareEngine {
             if d < 12 { base *= 0.85 } else if d > 30 { base *= 1.2 }
         }
         if !plant.potHasDrainage { base *= 1.25 }
-        if plant.isOutdoor { base *= isWinter(date) ? 1.2 : 0.75 }
-        else if isWinter(date) { base *= 1.35 }
+        // Species-specific seasonal rhythm: cacti nearly stop drinking in winter, ferns barely change.
+        let winter = s?.winterFactor ?? 1.35, summer = s?.summerFactor ?? 1
+        if plant.isOutdoor { base *= isWinter(date) ? max(1.2, winter * 0.9) : 0.75 }
+        else if isWinter(date) { base *= winter }
+        else if isPeakSummer(date) { base *= summer }
         return max(1, base)
     }
 
@@ -88,10 +97,10 @@ enum CareEngine {
         if let s {
             let lastFeed = plant.lastEvent(.feed)?.date
             let freshSoil = plant.lastRepotAt.map { days(from: $0, to: now) < 42 } ?? false
-            if isGrowingSeason(now) && !freshSoil {
+            if isGrowingSeason(now) && !freshSoil && s.feed != "none" {
                 if lastFeed == nil || days(from: lastFeed!, to: now) >= s.feedWeeks * 7 {
                     out.append(.init(plantID: plant.id, kind: .feed, priority: 2,
-                                     reason: lastFeed.map { "Last fed \(relative($0, now)). Every \(Int(s.feedWeeks)) weeks in the growing season." }
+                                     reason: lastFeed.map { "Last fed \(relative($0, now)). \(s.fertilizer?.name ?? "Food") every \(Int(s.feedWeeks)) weeks in the growing season." }
                                         ?? "Growing season, and no feeding recorded yet."))
                 }
             }

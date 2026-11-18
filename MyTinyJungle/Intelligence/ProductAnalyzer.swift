@@ -169,6 +169,9 @@ enum ProductAnalyzer {
         if s.phMax <= 6.0 && !p.acidic && !p.limed { reasons.append("\(s.en) wants acidic soil. Not stated on the label."); score += 1 }
         if p.ingredients.contains("fertilizer charge") && s.feed == "cactus" { reasons.append("Pre-fertilized. Fine, but skip feeding for 6–8 weeks.") }
         if !plant.potHasDrainage && r > 0.6 { reasons.append("\(plant.name)'s pot has no drainage, so a moisture-holding mix is risky."); score += 1 }
+        if s.mix == "carnivorous" { reasons = ["\(s.en) needs nutrient-free sphagnum peat and perlite. Ordinary compost burns its roots."]; score = 3 }
+        if s.mix == "none" { reasons = ["\(s.en) lives without soil."]; score = 3 }
+        if score > 0, let soil = s.soil { reasons.append("Ideal recipe: \(Knowledge.shared.recipe(soil)).") }
         let verdict: Compatibility.Verdict = score == 0 ? .suitable : score == 1 ? .conditions : .notRecommended
         if verdict == .conditions, da >= -0.25 { reasons.append("Mixing in ~30% perlite or bark would fix it.") }
         return .init(plantID: plant.id, plantName: plant.name, verdict: verdict, reasons: reasons)
@@ -182,6 +185,8 @@ enum ProductAnalyzer {
         var verdict: Compatibility.Verdict = .suitable
         let want = s.feed
         switch (want, p.feedType) {
+        case ("none", _): verdict = .notRecommended; reasons.append("\(s.en) catches its own food. Fertilizer burns its roots.")
+        case ("bromeliad", _): verdict = .conditions; reasons.append("\(s.en) drinks through its leaves. Use at ¼ strength in the soaking water.")
         case ("orchid", .orchid), ("cactus", .cactus), ("acid", .acid), ("citrus", .citrus): reasons.append("Made for this kind of plant.")
         case ("orchid", _): verdict = .conditions; reasons.append("Orchids need weak feeds. Use at ¼ strength.")
         case ("cactus", .highN): verdict = .notRecommended; reasons.append("Too much nitrogen for a succulent. It causes soft, weak growth.")
@@ -193,6 +198,7 @@ enum ProductAnalyzer {
         case ("light", _): verdict = .conditions; reasons.append("\(s.en) is a light feeder. Use half the label dose.")
         default: reasons.append("Balanced nutrition suits \(s.en).")
         }
+        if verdict != .suitable, let f = s.fertilizer { reasons.append("Ideal: \(f.name.lowercased()), \(f.npk). \(f.cadence).") }
         if let npk = p.npk { reasons.append("NPK \(fmt(npk.n))-\(fmt(npk.p))-\(fmt(npk.k)).") }
         if !CareEngine.isGrowingSeason(now) { reasons.append("Not now: pause feeding until spring."); if verdict == .suitable { verdict = .conditions } }
         if let r = plant.lastRepotAt, CareEngine.days(from: r, to: now) < 42 { reasons.append("Recently repotted. Wait until 6 weeks after.") }

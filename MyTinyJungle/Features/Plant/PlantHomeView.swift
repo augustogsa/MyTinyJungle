@@ -593,13 +593,17 @@ struct PlantAboutView: View {
                     Divider().padding(.leading, 44)
                     InfoRow(symbol: "thermometer.medium", title: "Comfort", value: "\(Int(s.tempMin))–\(Int(s.tempMax)) °C · humidity \(Int(s.humidityMin))%+")
                     Divider().padding(.leading, 44)
-                    InfoRow(symbol: "pawprint", title: "Toxicity", value: s.toxicCats || s.toxicDogs ? "Toxic to cats and dogs if chewed (ASPCA)" : "Non-toxic to cats and dogs (ASPCA)")
+                    InfoRow(symbol: "pawprint", title: "Toxicity", value: s.toxicityLine)
                     Divider().padding(.leading, 44)
                     InfoRow(symbol: "lightbulb", title: "Good to know", value: s.tip)
+                    ForEach(PlantKnowledgeRows.rows(for: s, plant: plant), id: \.title) { r in
+                        Divider().padding(.leading, 44)
+                        InfoRow(symbol: r.symbol, title: r.title, value: r.value)
+                    }
                 }
             }
             .jungleCard()
-            Text("Care data reviewed from open botanical sources (Kew POWO, GBIF, ASPCA, extension guides).").font(.caption).foregroundStyle(Jungle.subtle)
+            Text("Care data written from RHS, ASPCA, university extension services, Kew POWO and Wikidata.").font(.caption).foregroundStyle(Jungle.subtle)
         }
     }
 

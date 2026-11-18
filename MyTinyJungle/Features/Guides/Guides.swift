@@ -38,7 +38,8 @@ extension CareEngine {
 }
 
 enum GuideLibrary {
-    static let all: [CareGuide] = [
+    static let all: [CareGuide] = core + lessons
+    static let core: [CareGuide] = [
         CareGuide(id: "water", title: "Water the right amount", subtitle: "Deep, slow, then drain", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72), minutes: 3, level: .easy,
                   tools: ["Watering can", "Measuring jug", "Saucer"], when: "Only when the top of the soil is dry for most plants.", logs: .water, steps: [
             .init(title: "Check first", detail: "Push a finger 2–3 cm into the soil. Dry? Water. Still cool and damp? Wait a day or two.", symbol: "hand.point.down.fill", tip: "Lift the pot: a dry pot feels surprisingly light."),
@@ -116,6 +117,21 @@ enum GuideLibrary {
         if reqs.contains(.water) || reqs.contains(.checkSoil) { ids += ["soil", "water"] }
         if reqs.contains(.checkRoots) { ids.append("repot") }
         if reqs.contains(.feed) { ids.append("feed") }
+        if let sp = plant.species {
+            switch sp.group {
+            case "succulent", "cactus": ids += ["succulent-care", "propagate-leaf"]
+            case "orchid": ids.append("orchid-rebloom")
+            case "carnivorous": ids.append("carnivorous")
+            case "herb-med", "herb-soft", "vegetable": ids += ["herbs", "outdoor-pots"]
+            case "prayer", "fern": ids += ["humidity", "water-quality"]
+            case "acid": ids.append("soil-ph")
+            case "aroid": ids += ["propagate-water", "soil-mixes"]
+            default: break
+            }
+            if !sp.isPetSafe && (JungleSettings.shared.hasCats || JungleSettings.shared.hasDogs) { ids.append("pet-safe") }
+            if CareEngine.isWinter() { ids.append("winter") }
+        }
+        if plant.sortedEvents.contains(where: { $0.kind == .health }) { ids.append("leaf-signs") }
         ids += ["clean", "prune", "cutting", "measure"]
         return ids.uniqued().compactMap(guide)
     }

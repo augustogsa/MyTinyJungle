@@ -1,0 +1,556 @@
+{
+ "soils": [
+  {
+   "id": "universal",
+   "name": "Airy houseplant mix",
+   "short": "good universal potting mix with extra perlite",
+   "parts": [
+    [
+     "peat-free",
+     60
+    ],
+    [
+     "perlite",
+     30
+    ],
+    [
+     "worm-castings",
+     10
+    ]
+   ],
+   "phMin": 6.0,
+   "phMax": 7.0,
+   "drainage": "Medium",
+   "forGroups": "Most leafy houseplants",
+   "note": "Squeeze a handful when moist: it should hold together and then crumble."
+  },
+  {
+   "id": "aroid",
+   "name": "Chunky aroid mix",
+   "short": "chunky aroid mix (bark, perlite, coco coir)",
+   "parts": [
+    [
+     "bark",
+     35
+    ],
+    [
+     "coir",
+     25
+    ],
+    [
+     "perlite",
+     25
+    ],
+    [
+     "charcoal",
+     5
+    ],
+    [
+     "worm-castings",
+     10
+    ]
+   ],
+   "phMin": 5.5,
+   "phMax": 7.0,
+   "drainage": "Fast",
+   "forGroups": "Monstera, philodendron, pothos, anthurium, alocasia",
+   "note": "Their roots climb trees in the wild, so they want air as much as water."
+  },
+  {
+   "id": "cactus",
+   "name": "Gritty succulent mix",
+   "short": "gritty cactus & succulent mix",
+   "parts": [
+    [
+     "peat-free",
+     40
+    ],
+    [
+     "pumice",
+     35
+    ],
+    [
+     "grit",
+     25
+    ]
+   ],
+   "phMin": 6.0,
+   "phMax": 7.5,
+   "drainage": "Very fast",
+   "forGroups": "Cacti, succulents, ZZ, snake plants",
+   "note": "Water should run straight through. If the mix stays dark for more than a few days, add more grit."
+  },
+  {
+   "id": "orchid",
+   "name": "Orchid bark mix",
+   "short": "orchid bark mix",
+   "parts": [
+    [
+     "bark",
+     70
+    ],
+    [
+     "perlite",
+     15
+    ],
+    [
+     "sphagnum-moss",
+     10
+    ],
+    [
+     "charcoal",
+     5
+    ]
+   ],
+   "phMin": 5.5,
+   "phMax": 6.5,
+   "drainage": "Very fast",
+   "forGroups": "Orchids, hoyas, bromeliads, Christmas cactus",
+   "note": "Air-loving roots: no ordinary compost at all."
+  },
+  {
+   "id": "acid",
+   "name": "Ericaceous mix",
+   "short": "acidic (ericaceous) mix",
+   "parts": [
+    [
+     "peat-free",
+     60
+    ],
+    [
+     "bark",
+     25
+    ],
+    [
+     "perlite",
+     15
+    ]
+   ],
+   "phMin": 4.5,
+   "phMax": 6.0,
+   "drainage": "Medium",
+   "forGroups": "Azaleas, camellias, hydrangeas (blue), gardenias",
+   "note": "Buy bags labelled ericaceous or lime-free, and water with rainwater where you can."
+  },
+  {
+   "id": "citrus",
+   "name": "Citrus mix",
+   "short": "citrus mix",
+   "parts": [
+    [
+     "peat-free",
+     50
+    ],
+    [
+     "bark",
+     20
+    ],
+    [
+     "pumice",
+     20
+    ],
+    [
+     "grit",
+     10
+    ]
+   ],
+   "phMin": 5.5,
+   "phMax": 6.5,
+   "drainage": "Fast",
+   "forGroups": "Lemons, oranges, kumquats",
+   "note": "Free-draining but rich, slightly acidic."
+  },
+  {
+   "id": "vegetable",
+   "name": "Veg and herb compost",
+   "short": "vegetable / herb potting mix",
+   "parts": [
+    [
+     "peat-free",
+     70
+    ],
+    [
+     "worm-castings",
+     15
+    ],
+    [
+     "perlite",
+     15
+    ]
+   ],
+   "phMin": 6.0,
+   "phMax": 7.0,
+   "drainage": "Medium",
+   "forGroups": "Tomatoes, basil, leafy herbs, salad",
+   "note": "Rich and moisture-holding, for hungry fast growers."
+  },
+  {
+   "id": "fern",
+   "name": "Moisture-keeping mix",
+   "short": "moisture-keeping mix (compost, coir, perlite)",
+   "parts": [
+    [
+     "peat-free",
+     50
+    ],
+    [
+     "coir",
+     25
+    ],
+    [
+     "perlite",
+     15
+    ],
+    [
+     "vermiculite",
+     10
+    ]
+   ],
+   "phMin": 5.5,
+   "phMax": 6.5,
+   "drainage": "Slow-medium",
+   "forGroups": "Ferns, calatheas, prayer plants, fittonia",
+   "note": "Stays evenly damp without going soggy."
+  },
+  {
+   "id": "mediterranean",
+   "name": "Mediterranean mix",
+   "short": "gritty, lean Mediterranean mix",
+   "parts": [
+    [
+     "peat-free",
+     50
+    ],
+    [
+     "grit",
+     30
+    ],
+    [
+     "sand",
+     20
+    ]
+   ],
+   "phMin": 6.5,
+   "phMax": 8.0,
+   "drainage": "Fast",
+   "forGroups": "Rosemary, lavender, thyme, sage, olive",
+   "note": "Lean and sunny: rich compost makes them soft and short-lived."
+  },
+  {
+   "id": "violet",
+   "name": "African violet mix",
+   "short": "light African violet mix",
+   "parts": [
+    [
+     "peat-free",
+     50
+    ],
+    [
+     "perlite",
+     30
+    ],
+    [
+     "vermiculite",
+     20
+    ]
+   ],
+   "phMin": 5.8,
+   "phMax": 6.5,
+   "drainage": "Medium",
+   "forGroups": "African violets, streptocarpus",
+   "note": "Very light and fluffy so fine roots can spread."
+  },
+  {
+   "id": "carnivorous",
+   "name": "Carnivorous plant mix",
+   "short": "carnivorous plant mix (sphagnum peat and sand, no fertilizer)",
+   "parts": [
+    [
+     "sphagnum-peat",
+     50
+    ],
+    [
+     "perlite",
+     50
+    ]
+   ],
+   "phMin": 3.5,
+   "phMax": 5.0,
+   "drainage": "Slow",
+   "forGroups": "Venus flytraps, sundews, pitcher plants",
+   "note": "Nutrient-free on purpose. Rainwater or distilled water only."
+  },
+  {
+   "id": "none",
+   "name": "No soil",
+   "short": "no soil at all (mounted or loose)",
+   "parts": [],
+   "phMin": 5.5,
+   "phMax": 6.5,
+   "drainage": "Air",
+   "forGroups": "Air plants",
+   "note": "They drink through their leaves."
+  }
+ ],
+ "components": [
+  {
+   "id": "perlite",
+   "name": "Perlite",
+   "role": "Air pockets",
+   "note": "Puffed volcanic glass. Light, doesn't break down, keeps roots breathing."
+  },
+  {
+   "id": "pumice",
+   "name": "Pumice",
+   "role": "Air and a little water",
+   "note": "Porous volcanic stone. Heavier than perlite, so it stays mixed in and steadies tall pots."
+  },
+  {
+   "id": "bark",
+   "name": "Orchid bark",
+   "role": "Chunky structure",
+   "note": "Fir or pine bark pieces. Big gaps for air, slowly breaks down over 1–2 years."
+  },
+  {
+   "id": "coir",
+   "name": "Coco coir",
+   "role": "Holds water",
+   "note": "Coconut husk fibre. A peat-free sponge that rewets easily. Rinse salty brands first."
+  },
+  {
+   "id": "peat-free",
+   "name": "Peat-free compost",
+   "role": "Base and nutrients",
+   "note": "Wood fibre, green compost and coir. Holds moisture and some food; kinder to bogs."
+  },
+  {
+   "id": "sphagnum-peat",
+   "name": "Sphagnum peat",
+   "role": "Acidic base",
+   "note": "Only for plants that truly need it, like carnivorous plants. Use sparingly."
+  },
+  {
+   "id": "sphagnum-moss",
+   "name": "Sphagnum moss",
+   "role": "Moist, airy wrap",
+   "note": "Living or dried moss. Great for rooting cuttings and orchids."
+  },
+  {
+   "id": "grit",
+   "name": "Horticultural grit",
+   "role": "Drainage",
+   "note": "Small washed stones. Makes mixes heavy and fast-draining for succulents and herbs."
+  },
+  {
+   "id": "sand",
+   "name": "Coarse sand",
+   "role": "Drainage",
+   "note": "Sharp, washed sand only. Fine play sand clogs pores."
+  },
+  {
+   "id": "charcoal",
+   "name": "Horticultural charcoal",
+   "role": "Structure",
+   "note": "Light chunks that add air. Doesn't purify water, but helps the mix stay open."
+  },
+  {
+   "id": "worm-castings",
+   "name": "Worm castings",
+   "role": "Gentle nutrients",
+   "note": "A mild, slow natural food. 10% is plenty."
+  },
+  {
+   "id": "akadama",
+   "name": "Akadama",
+   "role": "Water and air",
+   "note": "Baked Japanese clay granules. Loved by bonsai growers; breaks down after a few years."
+  },
+  {
+   "id": "vermiculite",
+   "name": "Vermiculite",
+   "role": "Holds water and nutrients",
+   "note": "Expanded mineral flakes. Good for seeds and moisture lovers."
+  },
+  {
+   "id": "leca",
+   "name": "LECA clay balls",
+   "role": "Air, semi-hydro",
+   "note": "Expanded clay pebbles. Used on their own for semi-hydro growing or as a chunky additive."
+  }
+ ],
+ "fertilizers": [
+  {
+   "id": "balanced",
+   "name": "Balanced liquid feed",
+   "npk": "3-1-2 or 10-10-10",
+   "cadence": "Every 4 weeks, spring to early autumn",
+   "dilution": "Half to full label strength, on moist soil",
+   "rest": "Pause from mid-autumn to early spring",
+   "note": "An all-rounder for leafy growth."
+  },
+  {
+   "id": "light",
+   "name": "Gentle liquid feed",
+   "npk": "3-1-2 at half strength",
+   "cadence": "Every 4–6 weeks in the growing season",
+   "dilution": "Half label strength",
+   "rest": "Pause in winter",
+   "note": "For slow growers and plants that burn easily."
+  },
+  {
+   "id": "cactus",
+   "name": "Cactus & succulent feed",
+   "npk": "Low nitrogen, e.g. 2-7-7",
+   "cadence": "Every 6 weeks, spring and summer",
+   "dilution": "Half label strength",
+   "rest": "No food at all from October to March",
+   "note": "Too much nitrogen makes them soft and floppy."
+  },
+  {
+   "id": "orchid",
+   "name": "Orchid feed",
+   "npk": "Balanced, e.g. 20-20-20 very weak",
+   "cadence": "Every other watering while growing",
+   "dilution": "Quarter strength, and flush with plain water monthly",
+   "rest": "Reduce in winter, pause while resting",
+   "note": "Weak and often: their roots are sensitive to salts."
+  },
+  {
+   "id": "acid",
+   "name": "Ericaceous feed",
+   "npk": "Balanced with iron and sulphur",
+   "cadence": "Every 4 weeks from spring to late summer",
+   "dilution": "As labelled, with rainwater",
+   "rest": "Stop in late summer so wood can ripen",
+   "note": "Keeps leaves green on lime-hating plants."
+  },
+  {
+   "id": "citrus",
+   "name": "Citrus feed",
+   "npk": "Summer: high nitrogen (e.g. 25-5-15). Winter: balanced",
+   "cadence": "Every 2–3 weeks in summer, monthly in winter",
+   "dilution": "As labelled",
+   "rest": "Lighter but not zero in winter",
+   "note": "Includes iron, magnesium and zinc that citrus crave."
+  },
+  {
+   "id": "bloom",
+   "name": "Flower & fruit feed",
+   "npk": "High potassium, e.g. 4-3-8 tomato feed",
+   "cadence": "Every 1–2 weeks once flowers appear",
+   "dilution": "As labelled",
+   "rest": "Pause once flowering and fruiting stop",
+   "note": "Potassium supports flowers and fruit."
+  },
+  {
+   "id": "bromeliad",
+   "name": "Foliar feed",
+   "npk": "Very weak balanced",
+   "cadence": "Monthly, misted or added to soaking water",
+   "dilution": "Quarter strength",
+   "rest": "Pause in winter",
+   "note": "For air plants and bromeliads that drink through leaves."
+  },
+  {
+   "id": "none",
+   "name": "No fertilizer",
+   "npk": "None",
+   "cadence": "Never: they catch their own food",
+   "dilution": "—",
+   "rest": "Always",
+   "note": "Fertilizer burns carnivorous plant roots."
+  }
+ ],
+ "pests": [
+  {
+   "id": "spider-mites",
+   "name": "Spider mites",
+   "signs": "Fine webbing, dusty speckled leaves, tiny moving dots underneath.",
+   "fix": "Shower the plant well, wipe leaves, raise humidity, and repeat every 5 days for three weeks. Insecticidal soap for stubborn cases.",
+   "likes": "Warm, dry air"
+  },
+  {
+   "id": "mealybugs",
+   "name": "Mealybugs",
+   "signs": "White cottony tufts in leaf joints and under leaves, sticky residue.",
+   "fix": "Dab each tuft with a cotton bud dipped in rubbing alcohol, then check weekly. Isolate until clear.",
+   "likes": "Soft new growth, crowded plants"
+  },
+  {
+   "id": "root-mealybugs",
+   "name": "Root mealybugs",
+   "signs": "White waxy patches on roots and inside the pot, plant stalls.",
+   "fix": "Unpot, wash the roots clean, discard old soil and repot into a fresh mix and clean pot.",
+   "likes": "Dry, rarely-repotted succulents"
+  },
+  {
+   "id": "scale",
+   "name": "Scale insects",
+   "signs": "Small brown or tan bumps on stems and leaf veins, sticky leaves.",
+   "fix": "Scrape off gently with a fingernail or soft brush, wipe with soapy water, recheck every week.",
+   "likes": "Woody stems, citrus, ficus, palms"
+  },
+  {
+   "id": "fungus-gnats",
+   "name": "Fungus gnats",
+   "signs": "Tiny black flies hovering around the soil.",
+   "fix": "Let the top of the soil dry out, use yellow sticky traps, and water from below for a few weeks.",
+   "likes": "Constantly damp compost"
+  },
+  {
+   "id": "thrips",
+   "name": "Thrips",
+   "signs": "Silvery streaks, black specks and twisted new leaves.",
+   "fix": "Shower the plant, use blue sticky traps and wipe leaves with insecticidal soap weekly.",
+   "likes": "Warm rooms, flowers"
+  },
+  {
+   "id": "aphids",
+   "name": "Aphids",
+   "signs": "Clusters of small green, black or pink insects on tips and buds.",
+   "fix": "Squash or rinse them off with water. Ladybirds and lacewings help outdoors.",
+   "likes": "Fresh soft shoots in spring"
+  },
+  {
+   "id": "whitefly",
+   "name": "Whitefly",
+   "signs": "Clouds of tiny white flies rising when you brush the leaves.",
+   "fix": "Yellow sticky traps, and rinse leaf undersides every few days.",
+   "likes": "Warm, still air, tomatoes and herbs"
+  },
+  {
+   "id": "cyclamen-mites",
+   "name": "Cyclamen mites",
+   "signs": "Tightly crinkled, stunted centre leaves.",
+   "fix": "Hard to clear: remove damaged growth and isolate. Discard badly hit plants.",
+   "likes": "African violets, cyclamen"
+  },
+  {
+   "id": "vine-weevil",
+   "name": "Vine weevil",
+   "signs": "Notched leaf edges above, plant collapsing as grubs eat roots below.",
+   "fix": "Check the root ball for C-shaped grubs. Nematodes watered in late summer work well.",
+   "likes": "Container plants outdoors"
+  },
+  {
+   "id": "slugs",
+   "name": "Slugs and snails",
+   "signs": "Ragged holes and shiny trails.",
+   "fix": "Night-time hand picking, copper tape on pots, and wildlife-friendly traps.",
+   "likes": "Damp evenings outdoors"
+  },
+  {
+   "id": "bulb-flies",
+   "name": "Bulb flies",
+   "signs": "Grassy, flowerless leaves from soft bulbs.",
+   "fix": "Firm, healthy bulbs only; plant deep and mulch.",
+   "likes": "Daffodils and relatives"
+  }
+ ],
+ "sources": [
+  "RHS (rhs.org.uk) plant and pest advice",
+  "ASPCA Toxic and Non-Toxic Plant List",
+  "University of Minnesota, Missouri Botanical Garden, NC State, UF/IFAS and Clemson extension services",
+  "Kew Plants of the World Online (names and native ranges)"
+ ]
+}

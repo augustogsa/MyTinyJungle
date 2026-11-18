@@ -28,6 +28,22 @@ struct Species: Codable, Identifiable, Hashable {
     let growth: String
     let repotYears: Double
     let tip: String
+    // Deep knowledge (optional so older entries still decode).
+    var group: String? = nil
+    var origin: String? = nil
+    var habit: String? = nil
+    var about: String? = nil
+    var propagation: [String]? = nil
+    var pests: [String]? = nil
+    var problems: [Problem]? = nil
+    var repotNotes: String? = nil
+    var winterFactor: Double? = nil
+    var summerFactor: Double? = nil
+    var outdoor: Bool? = nil
+    var aliases: [String]? = nil
+    var wikidata: String? = nil
+
+    struct Problem: Codable, Hashable { let sign: String; let cause: String; let fix: String }
 
     var commonName: String { Locale.current.language.languageCode?.identifier == "pt" ? pt : en }
 
@@ -48,7 +64,8 @@ struct Species: Codable, Identifiable, Hashable {
         }
     }
     var mixLabel: String {
-        switch mix {
+        if let soil = Knowledge.shared.soil(mix) { return soil.short }
+        return switch mix {
         case "aroid": "chunky aroid mix (bark, perlite, coco coir)"
         case "cactus": "gritty cactus & succulent mix"
         case "orchid": "orchid bark mix"
@@ -81,17 +98,17 @@ final class SpeciesLibrary {
     func search(_ query: String) -> [Species] {
         let q = query.folded
         guard !q.isEmpty else { return all }
-        return all.filter { [$0.en, $0.pt, $0.scientific, $0.family].contains { $0.folded.contains(q) } }
+        return all.filter { ([$0.en, $0.pt, $0.scientific, $0.family] + ($0.aliases ?? [])).contains { $0.folded.contains(q) } }
     }
 
     /// Best match of a species mentioned inside free text ("my new monstera").
     func mentioned(in text: String) -> Species? {
-        let t = text.folded
+        let t = " " + text.folded.replacingOccurrences(of: #"[^a-z0-9' ]"#, with: " ", options: .regularExpression) + " "
         var best: (Species, Int)?
         for s in all {
-            for name in [s.en, s.pt, s.scientific] + s.scientific.split(separator: " ").prefix(1).map(String.init) {
+            for name in [s.en, s.pt, s.scientific] + (s.aliases ?? []) + s.scientific.split(separator: " ").prefix(1).map(String.init) {
                 let n = name.folded
-                if n.count >= 4, t.contains(n), n.count > (best?.1 ?? 0) { best = (s, n.count) }
+                if n.count >= 4, t.contains(" " + n), n.count > (best?.1 ?? 0) { best = (s, n.count) }
             }
         }
         return best?.0

@@ -28,7 +28,7 @@ enum PlantAdvisor {
         let growing = CareEngine.isGrowingSeason(now)
         let food = WelcomePlan.Item(symbol: "leaf.arrow.triangle.circlepath",
             title: growing ? "Feed every \(Int(s.feedWeeks)) weeks" : "No food until spring",
-            detail: growing ? "Wait 2–3 weeks while it settles in, then \(feedPhrase(s.feed))." : "It's resting season, so feeding now only builds up salts. I'll remind you in spring.")
+            detail: s.feed == "none" ? "Never: it catches its own food. Rainwater only." : growing ? "Wait 2–3 weeks while it settles in, then \(feedPhrase(s.feed)). \(s.fertilizer.map { "\($0.name), \($0.npk)." } ?? "")" : "It's resting season, so feeding now only builds up salts. I'll remind you in spring.")
 
         // Spot: light + temperature + humidity, matched to rooms you already use.
         let compatibleRooms = existing.compactMap { p -> String? in
@@ -50,7 +50,7 @@ enum PlantAdvisor {
             detail: "They share light, humidity and watering rhythm. Grouping them raises local humidity and makes care easier\(mates.contains { CareEngine.mood(for: $0) == .needsYou } ? ". Check them for pests before grouping." : ".")")
 
         let pot = WelcomePlan.Item(symbol: "arrow.up.bin", title: "Pot & soil",
-            detail: "\(s.mixLabel.capitalized), with drainage holes always. \(s.waterStyle == .dry ? "Terracotta helps it dry out." : s.waterStyle == .moist ? "Plastic or glazed ceramic holds moisture better." : "Any material works with good drainage.") Usually needs a bigger pot every \(Int(s.repotYears)) year\(s.repotYears == 1 ? "" : "s"), only 2–5 cm wider.")
+            detail: "\(s.soilPlan) Drainage holes always. \(s.waterStyle == .dry ? "Terracotta helps it dry out." : s.waterStyle == .moist ? "Plastic or glazed ceramic holds moisture better." : "Any material works with good drainage.") Usually needs a bigger pot every \(Int(s.repotYears)) year\(s.repotYears == 1 ? "" : "s"), only 2–5 cm wider.")
 
         var safety: WelcomePlan.Item?
         if s.toxicCats || s.toxicDogs {
