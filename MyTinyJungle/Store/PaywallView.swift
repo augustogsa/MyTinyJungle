@@ -20,14 +20,14 @@ struct PaywallView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Tiny Jungle Plus").font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text(reason?.title ?? "Everything your jungle needs, without ads.")
+                        Text(reason?.title ?? "Give every plant the love it deserves.")
                             .font(.body).foregroundStyle(Jungle.subtle)
                     }
                     VStack(alignment: .leading, spacing: 18) {
-                        perk(.pottedPlant, "Unlimited plants", "Grow your jungle past the free limit.")
-                        perk(.shieldStar, "No ads", "A calm app, nothing in the way.")
-                        perk(.fertilizer, "Scan every label", "See which plants a soil or fertilizer suits.")
-                        perk(.healthShield, "Plant Doctor first", "New insights reach Plus before anyone.")
+                        perk(.pottedPlant, "Room for every plant you love", "No limits on your growing family.")
+                        perk(.shieldStar, "Calm, ad-free care", "Just you and your plants, nothing in between.")
+                        perk(.fertilizer, "The right food for each plant", "Scan any soil or fertilizer and see who will thrive on it.")
+                        perk(.healthShield, "Plant Doctor, always first", "New ways to keep your plants healthy reach you first.")
                     }
                     plans
                     footer
@@ -121,7 +121,7 @@ struct PaywallView: View {
                 Link("Privacy", destination: URL(string: "https://www.simpleappscompany.com/mytinyjungle/privacy")!)
             }
             .font(.footnote).foregroundStyle(Jungle.subtle)
-            Text("Renews automatically. Cancel anytime in Settings.").font(.caption2).foregroundStyle(Jungle.subtle)
+            Text("Renews automatically. Cancel anytime in Settings, no hard feelings.").font(.caption2).foregroundStyle(Jungle.subtle)
         }
     }
 }

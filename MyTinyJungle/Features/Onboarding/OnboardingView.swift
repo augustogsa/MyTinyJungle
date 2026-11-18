@@ -17,9 +17,9 @@ struct OnboardingView: View {
                 Text("My Tiny Jungle").font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                 Text("Your plants, talking to you.").foregroundStyle(Jungle.subtle)
                 VStack(alignment: .leading, spacing: 14) {
-                    feature("bubble.left.and.text.bubble.right", "Plants tell you when they need water or food")
-                    feature("camera.viewfinder", "Snap a photo to identify and check health")
-                    feature("barcode.viewfinder", "Scan soil and fertilizer to see what fits")
+                    feature("bubble.left.and.text.bubble.right", "Your plants tell you when they're thirsty or hungry")
+                    feature("camera.viewfinder", "Snap a photo to meet your plant and help it feel better")
+                    feature("barcode.viewfinder", "Find the soil and food each plant will love")
                 }
                 .padding(.top, 10)
             } else {
@@ -31,7 +31,7 @@ struct OnboardingView: View {
                     Toggle("Small children", isOn: $kids).padding(12)
                 }
                 .jungleCard()
-                Text("I'll warn you about plants that are toxic to them.").font(.footnote).foregroundStyle(Jungle.subtle)
+                Text("We'll gently warn you about any plant that could hurt them.").font(.footnote).foregroundStyle(Jungle.subtle)
             }
             Spacer()
             Button(step == 0 ? "Get started" : "Start my jungle") {

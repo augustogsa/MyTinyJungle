@@ -28,7 +28,7 @@ struct SettingsView: View {
                             Toggle("", isOn: Binding(get: { CloudBackup.enabled }, set: { cloud.setEnabled($0) })).labelsHidden()
                         }
                     }
-                    JungleGroup(title: "Care alerts", footer: "One note on mornings when a plant needs water, food or a check. Never more than one a day.") {
+                    JungleGroup(title: "Care alerts", footer: "A gentle note on mornings when a plant needs you. Never more than one a day.") {
                         JungleRow(icon: .notification, title: "Care reminders") {
                             Toggle("", isOn: Binding(get: { remindersOn }, set: { on in
                                 remindersOn = on; CareReminders.enabled = on
@@ -53,7 +53,7 @@ struct SettingsView: View {
                             Toggle("", isOn: $settings.southernHemisphere).labelsHidden()
                         }
                     }
-                    JungleGroup(title: "At home", footer: "Plants that are unsafe for pets or children warn you.") {
+                    JungleGroup(title: "At home", footer: "We'll gently warn you about plants that could hurt them.") {
                         JungleRow(icon: .shieldCheck, title: "Cats") { Toggle("", isOn: $settings.hasCats).labelsHidden() }
                         JungleDivider()
                         JungleRow(icon: .shieldLeaf, title: "Dogs") { Toggle("", isOn: $settings.hasDogs).labelsHidden() }
@@ -69,7 +69,7 @@ struct SettingsView: View {
                             }.buttonStyle(.plain)
                         } else {
                             Button { paywall = true } label: {
-                                JungleRow(icon: .crown, title: "Get Plus", subtitle: "Unlimited plants, every scan, no ads", chevron: true)
+                                JungleRow(icon: .crown, title: "Get Plus", subtitle: "Room for every plant, and no ads", chevron: true)
                             }.buttonStyle(.plain)
                         }
                         JungleDivider()
@@ -78,13 +78,13 @@ struct SettingsView: View {
                         }.buttonStyle(.plain)
                     }
                     if !plus {
-                        JungleGroup(title: "Privacy", footer: "Your plant photos and data stay on your device. Ads keep Tiny Jungle free.") {
+                        JungleGroup(title: "Privacy", footer: "Your plants' photos and stories stay yours. Ads help keep Tiny Jungle free for everyone.") {
                             Button { AdsManager.shared.presentPrivacyOptions() } label: {
                                 JungleRow(icon: .shieldStar, title: "Privacy and ad choices", chevron: true)
                             }.buttonStyle(.plain)
                         }
                     }
-                    JungleGroup(title: "About", footer: "Care knowledge comes from open botanical sources (Kew POWO, GBIF, ASPCA, extension guides). It is guidance, not a guarantee. Always check the soil.") {
+                    JungleGroup(title: "About", footer: "Our care tips come from botanists and trusted plant sources like Kew Gardens and the ASPCA. Every plant is a little different, so trust your fingers in the soil too.") {
                         JungleRow(icon: .leafTag, title: "Version") {
                             Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "").foregroundStyle(Jungle.subtle)
                         }

@@ -170,7 +170,7 @@ struct MeView: View {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Tiny Jungle Plus").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                    Text("Unlimited plants, label scanning for every plant and no ads.").font(.subheadline).foregroundStyle(Jungle.subtle)
+                    Text("Room for every plant you love, the right food for each one, and no ads.").font(.subheadline).foregroundStyle(Jungle.subtle)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)

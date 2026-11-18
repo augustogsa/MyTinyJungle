@@ -21,9 +21,9 @@ struct SignInView: View {
             }
             .padding(.bottom, 28)
             VStack(alignment: .leading, spacing: 14) {
-                promise(.wateringCan, "Water at the right time", "Each plant gets its own rhythm by room, light and season.")
-                promise(.firstAid, "Snap a sad leaf", "See what's wrong and exactly how to fix it.")
-                promise(.shieldLeaf, "Safe for pets", "Know which plants your cat or dog shouldn't nibble.")
+                promise(.wateringCan, "No more guessing, no more losses", "Your plants tell you when they're thirsty, gently and right on time.")
+                promise(.firstAid, "Droopy leaf? Let's save it", "Snap a photo and learn what your plant needs to feel better.")
+                promise(.shieldLeaf, "Safe for your furry family", "Know which plants are gentle with cats, dogs and little ones.")
             }
             .padding(.bottom, 32)
             VStack(spacing: 12) {
@@ -44,7 +44,7 @@ struct SignInView: View {
                     .buttonStyle(.plain)
                 }
                 if let e = auth.error { Text(e).font(.footnote).foregroundStyle(Jungle.warmText) }
-                Text("Your jungle is backed up to your iCloud. No posts, no spam.")
+                Text("Your jungle lives safely in your iCloud. Never shared, never sold.")
                     .font(.footnote).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center).padding(.top, 6)
             }
         }

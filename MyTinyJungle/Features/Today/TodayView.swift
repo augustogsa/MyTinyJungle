@@ -370,7 +370,7 @@ struct EmptyJungle: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Image(systemName: "leaf").font(.system(.largeTitle, design: .rounded)).foregroundStyle(Jungle.leaf).accessibilityHidden(true)
-            Text("Your jungle is empty").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+            Text("Your jungle is waiting").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             Text("Just tell me about a plant, like \"I have a monstera called Milo in the living room\", or add one in Plants with a photo.")
                 .foregroundStyle(Jungle.subtle)
             if let onAdd {
@@ -477,8 +477,8 @@ struct CaughtUpCard: View {
                 Image(systemName: "checkmark").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.forest)
             }
             VStack(alignment: .leading, spacing: 4) {
-                Text("All caught up").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                Text(doneToday > 0 ? "\(doneToday) care moment\(doneToday == 1 ? "" : "s") logged today." : "Nothing is due today.")
+                Text("Everyone's happy").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                Text(doneToday > 0 ? "\(doneToday) care moment\(doneToday == 1 ? "" : "s") logged today." : "No plant needs you today. Just enjoy them.")
                     .font(.subheadline).foregroundStyle(Jungle.subtle)
                 if let next {
                     Text("Next: \(next.title), \(next.date.formatted(.dateTime.weekday(.wide)))").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText)
@@ -529,7 +529,7 @@ struct WateringListView: View {
                     .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
                 }
                 if days.isEmpty {
-                    JungleGroup { JungleRow(icon: .shieldCheck, title: "Nothing to water in the next two weeks") }
+                    JungleGroup { JungleRow(icon: .shieldCheck, title: "No one's thirsty for the next two weeks") }
                 }
                 ForEach(days, id: \.key) { day, list in
                     JungleGroup(title: dayTitle(day) + " · \(list.count)") {
@@ -623,6 +623,6 @@ struct JungleHealthView: View {
     private func rank(_ m: CareEngine.Mood) -> Int { m == .needsYou ? 0 : m == .fine ? 1 : 2 }
     private func reason(_ p: Plant) -> String {
         if let r = CareEngine.requests(for: p).first { return PlantVoice.say(r, plant: p) }
-        return "No needs right now"
+        return "Everyone's feeling good"
     }
 }

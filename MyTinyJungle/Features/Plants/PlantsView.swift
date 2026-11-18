@@ -88,7 +88,7 @@ struct PlantsView: View {
         let title = plants.isEmpty ? "Your jungle starts here"
             : need.isEmpty ? "All \(plants.count) plants are happy"
             : need.count == 1 ? "\(need[0].name) needs you" : "\(need.count) plants need you"
-        let detail = plants.isEmpty ? "Add your first plant and I'll keep track of it."
+        let detail = plants.isEmpty ? "Bring home your first plant and we'll help it thrive."
             : need.isEmpty ? "\(happy) of \(plants.count) are doing well. Nothing to do right now."
             : "\(happy) of \(plants.count) are doing well. Tap \"Needs you\" to see what to do."
         return HStack(spacing: 14) {

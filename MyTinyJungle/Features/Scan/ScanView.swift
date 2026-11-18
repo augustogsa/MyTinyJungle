@@ -186,7 +186,7 @@ struct ScanView: View {
             if shelf.isEmpty {
                 HStack(spacing: 14) {
                     Icon3DView(.box, size: 40)
-                    Text("Scan what you own and I'll remember which soil and food goes with which plant.")
+                    Text("Scan the soils and foods you have, and I'll remember which plant loves which.")
                         .font(.subheadline).foregroundStyle(Jungle.subtle)
                 }
                 .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
