@@ -199,6 +199,8 @@ enum JungleBrain {
             if let check = plant.lastEvent(.soilCheck), check.soil == .dry,
                let prev = plant.lastEvent(.water)?.date, check.date > prev {
                 CareEngine.learn(from: .dry, plant: plant, at: check.date)
+            } else {
+                CareEngine.learnFromWatering(plant: plant, at: action.date)
             }
         case .repot:
             plant.lastRepotAt = action.date

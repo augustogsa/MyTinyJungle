@@ -85,6 +85,11 @@ enum Agenda {
                 rotate = rotate.addingTimeInterval(14 * 86_400)
             }
         }
+        // Everything else the forecast sees: mist, clean, pests, prune, repot, propagation, seasonal moves, trip prep.
+        let extra: Set<ReminderKind> = [.mist, .clean, .pests, .prune, .repot, .seasonal, .travel, .weather, .propagation]
+        for f in CareForecast.items(for: plants, days: min(days, CareForecast.horizon), now: now) where extra.contains(f.kind) && f.date <= end {
+            out.append(.init(id: f.id, date: f.date, plant: plants.first { $0.id == f.plantID }, kind: f.kind.careKind, title: f.line, task: nil))
+        }
         for t in tasks where !t.done && t.due <= end {
             out.append(.init(id: t.id.uuidString, date: max(t.due, cal.startOfDay(for: now)), plant: plants.first { $0.id == t.plantID }, kind: t.kind, title: t.title, task: t))
         }

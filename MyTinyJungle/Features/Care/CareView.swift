@@ -105,7 +105,7 @@ struct CareView: View {
     private func complete(_ item: AgendaItem) {
         withAnimation(.snappy) {
             item.task?.done = true
-            if let p = item.plant, item.kind != .note, item.kind != .health {
+            if let p = item.plant, item.kind != .note {
                 if item.kind == .soilCheck { return openSoil(p) }
                 JungleBrain.quick(item.kind, plants: [p], in: ctx, announce: true)
             }

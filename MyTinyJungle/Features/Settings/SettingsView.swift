@@ -5,8 +5,6 @@ struct SettingsView: View {
     @Bindable private var settings = JungleSettings.shared
     @State private var paywall = false
     @State private var confirmSignOut = false
-    @State private var remindersOn = CareReminders.enabled
-    @State private var reminderHour = CareReminders.hour
     @Environment(\.modelContext) private var ctx
     private var plus: Bool { Store.shared.isPlus }
     private var auth = AuthManager.shared
@@ -30,21 +28,10 @@ struct SettingsView: View {
                                 .disabled(blocked)
                         }
                     }
-                    JungleGroup(title: "Care alerts", footer: "A gentle note on mornings when a plant needs you. Never more than one a day.") {
-                        JungleRow(icon: .notification, title: "Care reminders") {
-                            Toggle("", isOn: Binding(get: { remindersOn }, set: { on in
-                                remindersOn = on; CareReminders.enabled = on
-                                Task { if on { await CareReminders.requestPermission() }; await CareReminders.reschedule(ctx) }
-                            })).labelsHidden()
-                        }
-                        if remindersOn {
-                            JungleDivider()
-                            JungleRow(icon: .sunny, title: "Remind me at") {
-                                Picker("", selection: Binding(get: { reminderHour }, set: { reminderHour = $0; CareReminders.hour = $0; Task { await CareReminders.reschedule(ctx) } })) {
-                                    ForEach(6..<22, id: \.self) { h in Text(Calendar.current.date(bySettingHour: h, minute: 0, second: 0, of: Date())!.formatted(date: .omitted, time: .shortened)).tag(h) }
-                                }.labelsHidden().tint(Jungle.subtle)
-                            }
-                        }
+                    JungleGroup(title: "Care alerts", footer: "How and when your plants can reach you.") {
+                        NavigationLink { ReminderSettingsView() } label: {
+                            JungleRow(icon: .notification, title: "Reminders", subtitle: ReminderSettingsView.summary, chevron: true)
+                        }.buttonStyle(.plain)
                     }
                     JungleGroup(title: "You") {
                         JungleRow(icon: .profile, title: "Name") {

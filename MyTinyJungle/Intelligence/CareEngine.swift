@@ -72,6 +72,17 @@ enum CareEngine {
         plant.learnedDryDays = min(max(blended, lower), upper)
     }
 
+    /// Learn from how you actually water: a slow drift toward your real rhythm when there's no soil evidence.
+    static func learnFromWatering(plant: Plant, at date: Date = Date()) {
+        guard let prev = plant.lastEvent(.water)?.date, prev < date else { return }
+        let gap = days(from: prev, to: date)
+        guard gap > 0.75 else { return }
+        let s = plant.species
+        let current = plant.learnedDryDays ?? ((s?.dryMin ?? 7) + (s?.dryMax ?? 12)) / 2
+        let blended = current * 0.8 + gap * 0.2
+        plant.learnedDryDays = min(max(blended, (s?.dryMin ?? 2) * 0.6), (s?.dryMax ?? 30) * 1.6)
+    }
+
     static func requests(for plant: Plant, now: Date = Date(), settings: JungleSettings = .shared) -> [PlantRequest] {
         guard !plant.isArchived else { return [] }
         var out: [PlantRequest] = []

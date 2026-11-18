@@ -131,7 +131,7 @@ final class Plant {
     }
     var species: Species? { speciesID.flatMap { SpeciesLibrary.shared.species(id: $0) } }
     var sortedEvents: [CareEvent] { (events ?? []).sorted { $0.date > $1.date } }
-    func lastEvent(_ kind: CareKind) -> CareEvent? { sortedEvents.first { $0.kind == kind } }
+    func lastEvent(_ kind: CareKind) -> CareEvent? { let raw = kind.rawValue; return (events ?? []).filter { $0.kindRaw == raw }.max { $0.date < $1.date } }
 }
 
 @Model
