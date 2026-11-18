@@ -261,22 +261,29 @@ def sitemap(langs):
             'xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + "\n".join(rows) + "\n</urlset>\n")
 
 
-ROBOTS = f"""# {BRAND}: everyone welcome, search and AI assistants alike.
+ROBOTS = f"""# {BRAND}: search and AI answers welcome, model training and scraping not.
 User-agent: *
 Allow: /
 
 User-agent: Googlebot
 User-agent: Bingbot
 User-agent: Applebot
-User-agent: Applebot-Extended
 User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
-User-agent: GPTBot
 User-agent: PerplexityBot
-User-agent: ClaudeBot
 User-agent: Claude-SearchBot
-User-agent: Google-Extended
 Allow: /
+
+# No model training on our words or images.
+User-agent: GPTBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: ClaudeBot
+User-agent: Bytespider
+User-agent: meta-externalagent
+Disallow: /
 
 Sitemap: {SITE}/sitemap.xml
 """

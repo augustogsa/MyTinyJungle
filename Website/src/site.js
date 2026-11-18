@@ -201,3 +201,17 @@ document.addEventListener("click", function (e) {
     document.addEventListener(ev, function (e) { if (e.target.closest && e.target.closest(m)) e.preventDefault(); });
   });
 })();
+/* source guard: block view-source, save, print-to-copy and devtools shortcuts; strip copied text to a link */
+(function () {
+  document.addEventListener("keydown", function (e) {
+    var k = (e.key || "").toLowerCase(), mod = e.metaKey || e.ctrlKey;
+    if (k === "f12" || (mod && (k === "u" || k === "s" || k === "p")) || (mod && (e.altKey || e.shiftKey) && (k === "i" || k === "j" || k === "c"))) e.preventDefault();
+  }, true);
+  document.addEventListener("copy", function (e) {
+    var t = String(window.getSelection() || "");
+    if (t.length > 140 && e.clipboardData) {
+      e.clipboardData.setData("text/plain", t.slice(0, 140) + "… " + location.href);
+      e.preventDefault();
+    }
+  });
+})();
