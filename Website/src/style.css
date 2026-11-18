@@ -497,3 +497,10 @@ p,li,.bcard span{text-wrap:pretty}
 .pts li::before{top:1px;width:20px;height:20px;opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}
 .pts li::after{left:0;top:1px;width:20px;height:20px;border:0;transform:none;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.4l2.6 2.6L14 7.4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.4l2.6 2.6L14 7.4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
 .phead h2{max-width:none}
+/* smart: heading on top, 12 tiles in a 4-column grid */
+.sgrid{grid-template-columns:1fr;gap:40px}
+.smart .stext{max-width:44em}
+.smart .facts{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1100px){.smart .facts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:800px){.smart .facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.smart .facts{grid-template-columns:1fr}}
