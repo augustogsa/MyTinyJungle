@@ -182,6 +182,17 @@ enum Answerer {
         if has(#"\b(tools?|equipment|what do i need|kit|ferramenta)"#) {
             return ("A cosy plant kit:\n" + k.tools.map { "• \($0.name): \($0.use ?? "")" }.joined(separator: "\n"), [])
         }
+        // Growing food: sowing, spacing, harvest and neighbours.
+        if let crop = k.crop(in: q), has(#"\b(grow|sow|plant (it|them|out)|harvest|pick|seed|companion|pot size|how long|when|plantar|semear|colher)"#) {
+            return (crop.card, [])
+        }
+        if has(#"\b(family|familia)\b"#), let f = k.family(in: q) ?? k.family(named: plant?.species?.family) {
+            return ("\(f.name), \(f.common). \(f.traits)\nCare: \(f.care)\nSafety: \(f.toxic)\nRelatives: \(f.examples.joined(separator: ", ")).", [])
+        }
+        if has(#"\b(what can i grow|grow food|vegetables?|veggies|kitchen garden|horta|legumes)\b"#) {
+            let easy = k.crops.filter { $0.potLitres <= 10 }.prefix(12).map(\.name)
+            return ("Easy food for pots: \(easy.joined(separator: ", ")). Ask me about any of them, like \"how do I grow chillies\".", [])
+        }
         // How-to topics: propagation, watering methods, light, holidays, myths and more.
         if let t = k.topic(in: q), (plant == nil && t.kind != "safety") || has(#"\b(how|why|tips?|guide|best way|should i|is it true|myth|como|por que|dicas?)\b"#) {
             let steps = t.steps.prefix(5).map { "• \($0.title): \($0.detail)" }.joined(separator: "\n")

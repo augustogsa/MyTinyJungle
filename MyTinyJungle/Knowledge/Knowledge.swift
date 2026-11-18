@@ -22,6 +22,11 @@ struct Knowledge: Decodable {
     struct Month: Decodable { let month: Int; let indoor, outdoor: String }
     struct LightLevel: Decodable { let id, lux, `where`, plants: String }
     struct Named: Decodable { let name: String; let note: String?; let use: String? }
+    struct Crop: Decodable, Identifiable {
+        let id, name: String; let aliases: [String]; let sun: String; let potLitres, depthCm: Int
+        let start, germDays, harvestDays: String; let spacingCm, minTemp: Int; let companions, avoid: [String]; let tip: String
+    }
+    struct Family: Decodable, Identifiable { let id, name, common, traits, care, toxic: String; let examples: [String] }
     struct Topic: Decodable, Identifiable {
         struct Step: Decodable { let title, detail: String }
         let id, title, kind, intro: String; let steps: [Step]; let keywords: [String]
@@ -36,13 +41,15 @@ struct Knowledge: Decodable {
     var potMaterials: [Named] = []
     var tools: [Named] = []
     var topics: [Topic] = []
+    var crops: [Crop] = []
+    var families: [Family] = []
     let soils: [Soil]
     let components: [Component]
     let fertilizers: [Fertilizer]
     let pests: [Pest]
     let sources: [String]
 
-    enum CodingKeys: String, CodingKey { case soils, components, fertilizers, pests, sources, symptoms, diseases, deficiencies, glossary, calendar, lightLevels, potMaterials, tools, topics }
+    enum CodingKeys: String, CodingKey { case soils, components, fertilizers, pests, sources, symptoms, diseases, deficiencies, glossary, calendar, lightLevels, potMaterials, tools, topics, crops, families }
     init(from d: Decoder) throws {
         let c = try d.container(keyedBy: CodingKeys.self)
         soils = try c.decode([Soil].self, forKey: .soils)
@@ -59,6 +66,8 @@ struct Knowledge: Decodable {
         potMaterials = (try? c.decode([Named].self, forKey: .potMaterials)) ?? []
         tools = (try? c.decode([Named].self, forKey: .tools)) ?? []
         topics = (try? c.decode([Topic].self, forKey: .topics)) ?? []
+        crops = (try? c.decode([Crop].self, forKey: .crops)) ?? []
+        families = (try? c.decode([Family].self, forKey: .families)) ?? []
     }
     init(soils: [Soil], components: [Component], fertilizers: [Fertilizer], pests: [Pest], sources: [String]) {
         self.soils = soils; self.components = components; self.fertilizers = fertilizers; self.pests = pests; self.sources = sources
@@ -172,6 +181,7 @@ enum PlantKnowledgeRows {
         if let b = s.bloom { r.append(.init(symbol: "camera.macro", title: "Flowers", value: b)) }
         if let g = s.goodFor { r.append(.init(symbol: "hand.thumbsup", title: "Good for", value: g)) }
         if let fit = Climate.shared.fit(s) { r.append(.init(symbol: "globe.europe.africa", title: "In your climate", value: fit)) }
+        if let f = Knowledge.shared.family(named: s.family) { r.append(.init(symbol: "tree", title: "Family", value: "\(f.name), \(f.common). \(f.traits)")) }
         if let a = s.about { r.append(.init(symbol: "book", title: "About", value: a)) }
         if let o = s.origin { r.append(.init(symbol: "globe.americas", title: "Home in the wild", value: o + (s.habit.map { " · \($0)" } ?? ""))) }
         r.append(.init(symbol: "drop", title: "Water by season", value: s.seasonalWater + " " + s.potHint(diameter: plant?.potDiameterCm)))
@@ -207,4 +217,34 @@ extension Knowledge {
         return best?.0
     }
     func topic(id: String) -> Topic? { topics.first { $0.id == id } }
+}
+
+extension Knowledge {
+    private static func hit(_ f: String, _ word: String) -> Bool {
+        f.range(of: "\\b\(NSRegularExpression.escapedPattern(for: word.folded))\\b", options: .regularExpression) != nil
+    }
+    /// A food crop named in the question (longest name or alias wins).
+    func crop(in q: String) -> Crop? {
+        let f = q.folded
+        return crops.flatMap { c in ([c.name] + c.aliases).map { (c, $0) } }
+            .filter { Self.hit(f, $0.1) }.max { $0.1.count < $1.1.count }?.0
+    }
+    func family(named n: String?) -> Family? {
+        guard let n, !n.isEmpty else { return nil }
+        return families.first { $0.id == n } ?? (n.hasSuffix("aceae") && ["Polypodiaceae", "Nephrolepidaceae", "Aspleniaceae", "Pteridaceae", "Dryopteridaceae", "Davalliaceae"].contains(n) ? families.first { $0.id == "Polypodiaceae" } : nil)
+    }
+    func family(in q: String) -> Family? {
+        let f = q.folded
+        return families.first { Self.hit(f, $0.id) || Self.hit(f, $0.common.components(separatedBy: ",").first ?? $0.common) }
+    }
+}
+
+extension Knowledge.Crop {
+    var card: String {
+        let temp = Climate.temp(Double(minTemp))
+        var t = "\(name) in a pot: \(sun). Pot at least \(potLitres) L and \(depthCm) cm deep, \(spacingCm) cm apart.\n• When: \(start)\n• Sprouts in \(germDays) days, harvest in about \(harvestDays) days.\n• Keep above \(temp).\n• \(tip)"
+        if !companions.isEmpty { t += "\n• Good neighbours: \(companions.joined(separator: ", "))." }
+        if !avoid.isEmpty { t += " Keep away from: \(avoid.joined(separator: ", "))." }
+        return t
+    }
 }

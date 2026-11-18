@@ -202,6 +202,24 @@ extension GuideLibrary {
             return lesson("topic-\(t.id)", t.title, t.intro.components(separatedBy: ". ").first ?? t.intro, look.0, look.1, max(2, t.steps.count / 2 + 1),
                           when: t.intro, t.steps.map { S(title: $0.title, detail: $0.detail, symbol: look.0) })
         }
+        if !k.crops.isEmpty {
+            let quick = k.crops.filter { $0.potLitres <= 5 }
+            out.append(lesson("grow-food-pots", "Grow food in small pots", "Herbs and salads for a sunny sill", "leaf.arrow.circlepath", Jungle.leaf, 4,
+                              when: "Spring to late summer, or any time on a warm windowsill.", quick.prefix(10).map {
+                S(title: $0.name, detail: "\($0.start) Harvest in about \($0.harvestDays) days. \($0.tip)", symbol: "leaf.fill")
+            }))
+            let big = k.crops.filter { $0.potLitres > 5 }
+            out.append(lesson("grow-food-balcony", "A balcony kitchen garden", "Tomatoes, beans, berries and more", "sun.max.fill", gold, 5,
+                              when: "Plan in late winter, plant out after your last frost.", big.prefix(12).map {
+                S(title: $0.name, detail: "\($0.sun.capitalized). Pot \($0.potLitres) L. \($0.start) \($0.tip)", symbol: "sun.max.fill")
+            }))
+        }
+        if !k.families.isEmpty {
+            out.append(lesson("plant-families", "Plant families, and why they matter", "Relatives share care and quirks", "tree", plum, 4,
+                              when: "A cosy read: know one, understand many.", k.families.prefix(12).map {
+                S(title: "\($0.name) · \($0.common)", detail: "\($0.traits) \($0.care) e.g. \($0.examples.prefix(4).joined(separator: ", ")).", symbol: "leaf.fill")
+            }))
+        }
         if !k.deficiencies.isEmpty {
             out.append(lesson("hunger-signs", "When leaves are hungry", "Reading nutrient shortages", "leaf.fill", Jungle.leaf, 4,
                               when: "Pale, patchy or oddly coloured leaves in the growing season.", k.deficiencies.map {

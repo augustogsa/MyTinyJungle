@@ -2799,5 +2799,1341 @@
     "estiolada"
    ]
   }
+ ],
+ "crops": [
+  {
+   "id": "tomato",
+   "name": "Tomato",
+   "aliases": [
+    "tomatoes",
+    "tomate",
+    "cherry tomato"
+   ],
+   "sun": "full sun, 6–8 h",
+   "potLitres": 20,
+   "depthCm": 30,
+   "start": "Sow indoors 6–8 weeks before your last frost; plant out when nights stay above 10 °C.",
+   "germDays": "5–10",
+   "harvestDays": "60–85 from planting out",
+   "spacingCm": 45,
+   "minTemp": 10,
+   "companions": [
+    "basil",
+    "marigold",
+    "chives",
+    "carrot"
+   ],
+   "avoid": [
+    "potato",
+    "fennel",
+    "brassicas"
+   ],
+   "tip": "Water deeply and evenly to prevent cracked fruit and blossom-end rot. Pinch side shoots on tall (cordon) types."
+  },
+  {
+   "id": "cherry-tomato",
+   "name": "Cherry tomato",
+   "aliases": [
+    "tumbling tomato",
+    "tomate cereja"
+   ],
+   "sun": "full sun",
+   "potLitres": 10,
+   "depthCm": 25,
+   "start": "Sow indoors 6–8 weeks before last frost.",
+   "germDays": "5–10",
+   "harvestDays": "55–70 from planting out",
+   "spacingCm": 40,
+   "minTemp": 10,
+   "companions": [
+    "basil",
+    "marigold"
+   ],
+   "avoid": [
+    "potato",
+    "fennel"
+   ],
+   "tip": "Tumbling varieties are perfect for hanging baskets and balcony rails."
+  },
+  {
+   "id": "chilli",
+   "name": "Chilli pepper",
+   "aliases": [
+    "chili",
+    "chile",
+    "hot pepper",
+    "pimenta"
+   ],
+   "sun": "full sun, warm",
+   "potLitres": 8,
+   "depthCm": 20,
+   "start": "Sow indoors 8–10 weeks before last frost, ideally on a warm mat at 25 °C.",
+   "germDays": "7–21",
+   "harvestDays": "70–90 from planting out",
+   "spacingCm": 35,
+   "minTemp": 12,
+   "companions": [
+    "basil",
+    "onion"
+   ],
+   "avoid": [
+    "fennel",
+    "beans"
+   ],
+   "tip": "Chillies love warmth and do brilliantly on a sunny windowsill. A little stress near ripening makes them hotter."
+  },
+  {
+   "id": "sweet-pepper",
+   "name": "Sweet pepper",
+   "aliases": [
+    "bell pepper",
+    "capsicum",
+    "pimentao"
+   ],
+   "sun": "full sun, warm",
+   "potLitres": 10,
+   "depthCm": 25,
+   "start": "Sow indoors 8–10 weeks before last frost.",
+   "germDays": "7–14",
+   "harvestDays": "70–90 from planting out",
+   "spacingCm": 40,
+   "minTemp": 12,
+   "companions": [
+    "basil",
+    "onion",
+    "carrot"
+   ],
+   "avoid": [
+    "fennel"
+   ],
+   "tip": "Pick the first fruits green to encourage more to set."
+  },
+  {
+   "id": "aubergine",
+   "name": "Aubergine",
+   "aliases": [
+    "eggplant",
+    "berinjela"
+   ],
+   "sun": "full sun, very warm",
+   "potLitres": 15,
+   "depthCm": 25,
+   "start": "Sow indoors 8–10 weeks before last frost.",
+   "germDays": "7–14",
+   "harvestDays": "80–100 from planting out",
+   "spacingCm": 50,
+   "minTemp": 13,
+   "companions": [
+    "beans",
+    "marigold"
+   ],
+   "avoid": [
+    "fennel"
+   ],
+   "tip": "Needs a long, hot season. A greenhouse or very sunny wall helps in cooler climates."
+  },
+  {
+   "id": "cucumber",
+   "name": "Cucumber",
+   "aliases": [
+    "pepino",
+    "gherkin"
+   ],
+   "sun": "full sun",
+   "potLitres": 15,
+   "depthCm": 30,
+   "start": "Sow indoors 3–4 weeks before last frost or outside once soil is 18 °C.",
+   "germDays": "3–10",
+   "harvestDays": "50–70",
+   "spacingCm": 45,
+   "minTemp": 12,
+   "companions": [
+    "beans",
+    "peas",
+    "dill",
+    "nasturtium"
+   ],
+   "avoid": [
+    "potato",
+    "sage"
+   ],
+   "tip": "Give climbing types a trellis. Pick often; overgrown fruit slows the plant."
+  },
+  {
+   "id": "courgette",
+   "name": "Courgette",
+   "aliases": [
+    "zucchini",
+    "abobrinha",
+    "summer squash"
+   ],
+   "sun": "full sun",
+   "potLitres": 40,
+   "depthCm": 40,
+   "start": "Sow indoors 3–4 weeks before last frost or direct after frost.",
+   "germDays": "5–10",
+   "harvestDays": "45–60",
+   "spacingCm": 90,
+   "minTemp": 12,
+   "companions": [
+    "nasturtium",
+    "beans",
+    "corn"
+   ],
+   "avoid": [
+    "potato"
+   ],
+   "tip": "One plant feeds a family. Pick at 15–20 cm, and check daily in summer."
+  },
+  {
+   "id": "pumpkin",
+   "name": "Pumpkin and winter squash",
+   "aliases": [
+    "squash",
+    "abobora",
+    "butternut"
+   ],
+   "sun": "full sun",
+   "potLitres": 60,
+   "depthCm": 45,
+   "start": "Sow indoors 3–4 weeks before last frost.",
+   "germDays": "5–10",
+   "harvestDays": "90–120",
+   "spacingCm": 150,
+   "minTemp": 12,
+   "companions": [
+    "corn",
+    "beans",
+    "nasturtium"
+   ],
+   "avoid": [
+    "potato"
+   ],
+   "tip": "Cure harvested fruit in the sun for 1–2 weeks so they keep for months."
+  },
+  {
+   "id": "bean-dwarf",
+   "name": "Dwarf French beans",
+   "aliases": [
+    "bush beans",
+    "green beans",
+    "feijao vagem"
+   ],
+   "sun": "full sun",
+   "potLitres": 10,
+   "depthCm": 20,
+   "start": "Sow direct after last frost when soil is above 12 °C.",
+   "germDays": "7–14",
+   "harvestDays": "50–60",
+   "spacingCm": 15,
+   "minTemp": 10,
+   "companions": [
+    "carrot",
+    "cucumber",
+    "strawberry"
+   ],
+   "avoid": [
+    "onion",
+    "garlic"
+   ],
+   "tip": "Pick young and often for tender pods and a longer harvest."
+  },
+  {
+   "id": "bean-runner",
+   "name": "Runner and climbing beans",
+   "aliases": [
+    "pole beans",
+    "runner beans"
+   ],
+   "sun": "full sun",
+   "potLitres": 20,
+   "depthCm": 30,
+   "start": "Sow direct after last frost, or indoors 3 weeks earlier.",
+   "germDays": "7–14",
+   "harvestDays": "60–70",
+   "spacingCm": 20,
+   "minTemp": 10,
+   "companions": [
+    "corn",
+    "squash"
+   ],
+   "avoid": [
+    "onion",
+    "garlic"
+   ],
+   "tip": "Grow up a wigwam of canes. Mist the flowers in hot, dry spells to help pods set."
+  },
+  {
+   "id": "pea",
+   "name": "Peas",
+   "aliases": [
+    "ervilha",
+    "sugar snap",
+    "mangetout"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 10,
+   "depthCm": 20,
+   "start": "Sow direct in early spring as soon as soil can be worked; peas like it cool.",
+   "germDays": "7–14",
+   "harvestDays": "60–70",
+   "spacingCm": 8,
+   "minTemp": 2,
+   "companions": [
+    "carrot",
+    "radish",
+    "lettuce"
+   ],
+   "avoid": [
+    "onion",
+    "garlic"
+   ],
+   "tip": "Pea shoots grown on a windowsill are a quick, sweet harvest in 2–3 weeks."
+  },
+  {
+   "id": "lettuce",
+   "name": "Lettuce",
+   "aliases": [
+    "alface",
+    "salad leaves",
+    "cos",
+    "romaine"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 5,
+   "depthCm": 15,
+   "start": "Sow little and often from early spring to late summer.",
+   "germDays": "4–10",
+   "harvestDays": "30–60 (leaves from 30)",
+   "spacingCm": 25,
+   "minTemp": 4,
+   "companions": [
+    "carrot",
+    "radish",
+    "strawberry",
+    "chives"
+   ],
+   "avoid": [
+    "celery"
+   ],
+   "tip": "Bolts in heat. Grow in light shade in summer and keep moist. Cut-and-come-again leaves regrow several times."
+  },
+  {
+   "id": "spinach",
+   "name": "Spinach",
+   "aliases": [
+    "espinafre"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 5,
+   "depthCm": 20,
+   "start": "Sow in early spring or late summer; it bolts in long hot days.",
+   "germDays": "5–10",
+   "harvestDays": "40–50",
+   "spacingCm": 10,
+   "minTemp": 2,
+   "companions": [
+    "peas",
+    "strawberry"
+   ],
+   "avoid": [],
+   "tip": "A cool-season favourite. Try perpetual spinach (chard) for summer."
+  },
+  {
+   "id": "chard",
+   "name": "Swiss chard",
+   "aliases": [
+    "acelga",
+    "perpetual spinach",
+    "silverbeet"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 10,
+   "depthCm": 25,
+   "start": "Sow spring to midsummer.",
+   "germDays": "7–14",
+   "harvestDays": "50–60",
+   "spacingCm": 30,
+   "minTemp": -5,
+   "companions": [
+    "beans",
+    "onion"
+   ],
+   "avoid": [],
+   "tip": "Pick outer leaves and it keeps going for a year. Colourful stems look lovely in pots."
+  },
+  {
+   "id": "kale",
+   "name": "Kale",
+   "aliases": [
+    "couve",
+    "borecole"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 15,
+   "depthCm": 30,
+   "start": "Sow spring to early summer; frost sweetens the leaves.",
+   "germDays": "5–10",
+   "harvestDays": "55–75",
+   "spacingCm": 45,
+   "minTemp": -10,
+   "companions": [
+    "onion",
+    "beets",
+    "herbs"
+   ],
+   "avoid": [
+    "tomato",
+    "strawberry"
+   ],
+   "tip": "Cover with fine mesh against cabbage white caterpillars."
+  },
+  {
+   "id": "radish",
+   "name": "Radish",
+   "aliases": [
+    "rabanete"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 3,
+   "depthCm": 15,
+   "start": "Sow direct every 2 weeks from spring to autumn.",
+   "germDays": "3–7",
+   "harvestDays": "25–30",
+   "spacingCm": 3,
+   "minTemp": 2,
+   "companions": [
+    "lettuce",
+    "peas",
+    "carrot"
+   ],
+   "avoid": [],
+   "tip": "The fastest crop there is. Keep evenly moist or they go woody and hot."
+  },
+  {
+   "id": "carrot",
+   "name": "Carrot",
+   "aliases": [
+    "cenoura"
+   ],
+   "sun": "full sun",
+   "potLitres": 15,
+   "depthCm": 30,
+   "start": "Sow direct from spring to midsummer.",
+   "germDays": "10–21",
+   "harvestDays": "70–80",
+   "spacingCm": 5,
+   "minTemp": 4,
+   "companions": [
+    "onion",
+    "leek",
+    "chives",
+    "rosemary"
+   ],
+   "avoid": [
+    "dill"
+   ],
+   "tip": "Round or short varieties grow well in pots. Sow thinly to avoid thinning, which attracts carrot fly."
+  },
+  {
+   "id": "beetroot",
+   "name": "Beetroot",
+   "aliases": [
+    "beet",
+    "beterraba"
+   ],
+   "sun": "full sun",
+   "potLitres": 10,
+   "depthCm": 25,
+   "start": "Sow direct from spring to midsummer.",
+   "germDays": "7–14",
+   "harvestDays": "55–70",
+   "spacingCm": 10,
+   "minTemp": 4,
+   "companions": [
+    "onion",
+    "lettuce",
+    "brassicas"
+   ],
+   "avoid": [
+    "beans"
+   ],
+   "tip": "Each seed is a cluster; thin to one seedling. Young leaves are great in salads."
+  },
+  {
+   "id": "onion",
+   "name": "Onion",
+   "aliases": [
+    "cebola"
+   ],
+   "sun": "full sun",
+   "potLitres": 10,
+   "depthCm": 20,
+   "start": "Plant sets in early spring or autumn; sow seed indoors late winter.",
+   "germDays": "7–14",
+   "harvestDays": "100–140",
+   "spacingCm": 10,
+   "minTemp": -5,
+   "companions": [
+    "carrot",
+    "beetroot",
+    "lettuce"
+   ],
+   "avoid": [
+    "beans",
+    "peas"
+   ],
+   "tip": "Stop watering once the tops fall over, then let them dry before storing."
+  },
+  {
+   "id": "spring-onion",
+   "name": "Spring onion",
+   "aliases": [
+    "scallion",
+    "green onion",
+    "cebolinha verde"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 3,
+   "depthCm": 15,
+   "start": "Sow little and often from spring to late summer.",
+   "germDays": "7–14",
+   "harvestDays": "50–60",
+   "spacingCm": 2,
+   "minTemp": 0,
+   "companions": [
+    "carrot",
+    "lettuce"
+   ],
+   "avoid": [
+    "beans",
+    "peas"
+   ],
+   "tip": "Regrows from the white roots in a glass of water."
+  },
+  {
+   "id": "garlic",
+   "name": "Garlic",
+   "aliases": [
+    "alho"
+   ],
+   "sun": "full sun",
+   "potLitres": 10,
+   "depthCm": 20,
+   "start": "Plant cloves in autumn for a summer harvest; most need a cold spell.",
+   "germDays": "—",
+   "harvestDays": "240–270",
+   "spacingCm": 15,
+   "minTemp": -15,
+   "companions": [
+    "carrot",
+    "beetroot",
+    "roses"
+   ],
+   "avoid": [
+    "beans",
+    "peas"
+   ],
+   "tip": "Plant pointy end up, 5 cm deep. Harvest when the lower third of leaves turn yellow."
+  },
+  {
+   "id": "potato",
+   "name": "Potato",
+   "aliases": [
+    "batata"
+   ],
+   "sun": "full sun",
+   "potLitres": 40,
+   "depthCm": 40,
+   "start": "Plant chitted tubers in spring after the worst frosts.",
+   "germDays": "—",
+   "harvestDays": "70–120",
+   "spacingCm": 35,
+   "minTemp": 4,
+   "companions": [
+    "beans",
+    "marigold"
+   ],
+   "avoid": [
+    "tomato",
+    "squash",
+    "cucumber"
+   ],
+   "tip": "Grow in a deep bag; add compost over the shoots as they grow (earthing up) for more tubers."
+  },
+  {
+   "id": "sweet-potato",
+   "name": "Sweet potato",
+   "aliases": [
+    "batata doce"
+   ],
+   "sun": "full sun, hot",
+   "potLitres": 30,
+   "depthCm": 40,
+   "start": "Root slips in water 6–8 weeks before planting out into warm soil.",
+   "germDays": "—",
+   "harvestDays": "90–120",
+   "spacingCm": 40,
+   "minTemp": 15,
+   "companions": [
+    "beans"
+   ],
+   "avoid": [],
+   "tip": "A trailing, pretty foliage plant indoors too. Leaves are edible."
+  },
+  {
+   "id": "strawberry",
+   "name": "Strawberry",
+   "aliases": [
+    "morango"
+   ],
+   "sun": "full sun",
+   "potLitres": 5,
+   "depthCm": 20,
+   "start": "Plant runners in spring or late summer.",
+   "germDays": "—",
+   "harvestDays": "fruits next summer; everbearers same year",
+   "spacingCm": 30,
+   "minTemp": -15,
+   "companions": [
+    "lettuce",
+    "spinach",
+    "borage",
+    "chives"
+   ],
+   "avoid": [
+    "brassicas"
+   ],
+   "tip": "Mulch with straw to keep fruit clean. Replace plants every 3 years."
+  },
+  {
+   "id": "blueberry",
+   "name": "Blueberry",
+   "aliases": [
+    "mirtilo"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 40,
+   "depthCm": 40,
+   "start": "Plant any time in mild weather in ericaceous (acid) compost.",
+   "germDays": "—",
+   "harvestDays": "fruits from year 2–3",
+   "spacingCm": 100,
+   "minTemp": -25,
+   "companions": [
+    "strawberry"
+   ],
+   "avoid": [],
+   "tip": "Needs acidic soil, pH 4.5–5.5. Water with rain water. Two varieties crop better."
+  },
+  {
+   "id": "corn",
+   "name": "Sweet corn",
+   "aliases": [
+    "milho",
+    "maize"
+   ],
+   "sun": "full sun",
+   "potLitres": 40,
+   "depthCm": 40,
+   "start": "Sow indoors 3–4 weeks before last frost in deep cells, or direct after frost.",
+   "germDays": "5–10",
+   "harvestDays": "70–90",
+   "spacingCm": 35,
+   "minTemp": 10,
+   "companions": [
+    "beans",
+    "squash"
+   ],
+   "avoid": [
+    "tomato"
+   ],
+   "tip": "Plant in a block, not a row, so the wind pollinates the cobs."
+  },
+  {
+   "id": "pak-choi",
+   "name": "Pak choi",
+   "aliases": [
+    "bok choy",
+    "pak choy"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 5,
+   "depthCm": 20,
+   "start": "Sow late summer for best results; spring sowings bolt.",
+   "germDays": "3–7",
+   "harvestDays": "30–45",
+   "spacingCm": 20,
+   "minTemp": 0,
+   "companions": [
+    "onion",
+    "celery"
+   ],
+   "avoid": [],
+   "tip": "Harvest baby leaves in 3 weeks."
+  },
+  {
+   "id": "rocket",
+   "name": "Rocket",
+   "aliases": [
+    "arugula",
+    "rucula"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 3,
+   "depthCm": 15,
+   "start": "Sow little and often spring to autumn.",
+   "germDays": "3–7",
+   "harvestDays": "21–40",
+   "spacingCm": 10,
+   "minTemp": -2,
+   "companions": [
+    "lettuce",
+    "bean"
+   ],
+   "avoid": [],
+   "tip": "Peppery leaves get hotter in heat and dry soil."
+  },
+  {
+   "id": "microgreens",
+   "name": "Microgreens",
+   "aliases": [
+    "micro greens",
+    "sprouts",
+    "brotos"
+   ],
+   "sun": "bright windowsill",
+   "potLitres": 1,
+   "depthCm": 3,
+   "start": "Sow any time indoors on a shallow tray.",
+   "germDays": "1–4",
+   "harvestDays": "7–21",
+   "spacingCm": 1,
+   "minTemp": 15,
+   "companions": [],
+   "avoid": [],
+   "tip": "Pea, radish, sunflower, broccoli and mustard are easiest. Cut just above the soil."
+  },
+  {
+   "id": "basil",
+   "name": "Basil",
+   "aliases": [
+    "manjericao",
+    "sweet basil"
+   ],
+   "sun": "full sun, warm",
+   "potLitres": 3,
+   "depthCm": 15,
+   "start": "Sow indoors any time it's warm, or outside when nights stay above 12 °C.",
+   "germDays": "5–10",
+   "harvestDays": "30–60 (pick leaves)",
+   "spacingCm": 20,
+   "minTemp": 10,
+   "companions": [
+    "tomato",
+    "pepper"
+   ],
+   "avoid": [
+    "rue",
+    "sage"
+   ],
+   "tip": "Water at the base in the morning. Pinch tops and flowers. Hates cold and wet."
+  },
+  {
+   "id": "parsley",
+   "name": "Parsley",
+   "aliases": [
+    "salsinha",
+    "salsa"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 5,
+   "depthCm": 25,
+   "start": "Sow spring to summer; soak seed overnight, it's slow to sprout.",
+   "germDays": "14–28",
+   "harvestDays": "70–90",
+   "spacingCm": 20,
+   "minTemp": -5,
+   "companions": [
+    "tomato",
+    "asparagus",
+    "chives"
+   ],
+   "avoid": [
+    "lettuce"
+   ],
+   "tip": "A biennial: it flowers and fades in its second year."
+  },
+  {
+   "id": "coriander",
+   "name": "Coriander",
+   "aliases": [
+    "cilantro",
+    "coentro"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 5,
+   "depthCm": 25,
+   "start": "Sow direct every 3 weeks; it dislikes transplanting.",
+   "germDays": "7–10",
+   "harvestDays": "40–50 leaves, 90 seeds",
+   "spacingCm": 10,
+   "minTemp": 0,
+   "companions": [
+    "spinach",
+    "beans"
+   ],
+   "avoid": [
+    "fennel"
+   ],
+   "tip": "Bolts fast in heat. Let some flower: seeds are delicious and attract hoverflies."
+  },
+  {
+   "id": "mint",
+   "name": "Mint",
+   "aliases": [
+    "hortela",
+    "menta",
+    "spearmint",
+    "peppermint"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 5,
+   "depthCm": 20,
+   "start": "Plant root cuttings any time in the growing season.",
+   "germDays": "—",
+   "harvestDays": "pick from 4 weeks",
+   "spacingCm": 30,
+   "minTemp": -20,
+   "companions": [
+    "cabbage",
+    "tomato"
+   ],
+   "avoid": [],
+   "tip": "Always grow in its own pot: it spreads everywhere in beds."
+  },
+  {
+   "id": "chives",
+   "name": "Chives",
+   "aliases": [
+    "cebolinha"
+   ],
+   "sun": "sun or part shade",
+   "potLitres": 3,
+   "depthCm": 15,
+   "start": "Sow spring or divide clumps.",
+   "germDays": "7–14",
+   "harvestDays": "60–90",
+   "spacingCm": 15,
+   "minTemp": -25,
+   "companions": [
+    "carrot",
+    "tomato",
+    "strawberry"
+   ],
+   "avoid": [
+    "beans",
+    "peas"
+   ],
+   "tip": "Cut right down to 3 cm; it regrows fast. Purple flowers are edible."
+  },
+  {
+   "id": "thyme",
+   "name": "Thyme",
+   "aliases": [
+    "tomilho"
+   ],
+   "sun": "full sun",
+   "potLitres": 3,
+   "depthCm": 15,
+   "start": "Buy a plant or root cuttings in spring.",
+   "germDays": "14–28",
+   "harvestDays": "pick from 8 weeks",
+   "spacingCm": 25,
+   "minTemp": -15,
+   "companions": [
+    "rosemary",
+    "cabbage"
+   ],
+   "avoid": [],
+   "tip": "Gritty, free-draining soil and little water. Trim after flowering."
+  },
+  {
+   "id": "rosemary",
+   "name": "Rosemary",
+   "aliases": [
+    "alecrim"
+   ],
+   "sun": "full sun",
+   "potLitres": 10,
+   "depthCm": 25,
+   "start": "Root cuttings in spring or summer.",
+   "germDays": "15–25",
+   "harvestDays": "pick from year 1",
+   "spacingCm": 60,
+   "minTemp": -8,
+   "companions": [
+    "sage",
+    "carrot",
+    "beans"
+   ],
+   "avoid": [],
+   "tip": "Hates wet roots in winter. Terracotta and gritty mix."
+  },
+  {
+   "id": "oregano",
+   "name": "Oregano",
+   "aliases": [
+    "oregano",
+    "marjoram",
+    "manjerona"
+   ],
+   "sun": "full sun",
+   "potLitres": 3,
+   "depthCm": 15,
+   "start": "Sow spring indoors or divide clumps.",
+   "germDays": "7–14",
+   "harvestDays": "pick from 8 weeks",
+   "spacingCm": 30,
+   "minTemp": -15,
+   "companions": [
+    "peppers",
+    "tomato"
+   ],
+   "avoid": [],
+   "tip": "Flavour is strongest just before flowering."
+  },
+  {
+   "id": "dill",
+   "name": "Dill",
+   "aliases": [
+    "endro",
+    "aneto"
+   ],
+   "sun": "full sun",
+   "potLitres": 5,
+   "depthCm": 25,
+   "start": "Sow direct every 3 weeks.",
+   "germDays": "7–21",
+   "harvestDays": "40–60",
+   "spacingCm": 20,
+   "minTemp": 0,
+   "companions": [
+    "cucumber",
+    "lettuce",
+    "onion"
+   ],
+   "avoid": [
+    "carrot",
+    "tomato"
+   ],
+   "tip": "Tall and wispy; attracts beneficial insects."
+  },
+  {
+   "id": "lemongrass",
+   "name": "Lemongrass",
+   "aliases": [
+    "capim limao",
+    "capim santo"
+   ],
+   "sun": "full sun, warm",
+   "potLitres": 15,
+   "depthCm": 25,
+   "start": "Root shop-bought stalks in water, then pot.",
+   "germDays": "—",
+   "harvestDays": "pick from 3–4 months",
+   "spacingCm": 60,
+   "minTemp": 5,
+   "companions": [],
+   "avoid": [],
+   "tip": "Bring indoors below 5 °C. Cut stalks at the base."
+  },
+  {
+   "id": "ginger",
+   "name": "Ginger",
+   "aliases": [
+    "gengibre"
+   ],
+   "sun": "bright shade, warm",
+   "potLitres": 10,
+   "depthCm": 20,
+   "start": "Plant plump pieces with buds in spring indoors.",
+   "germDays": "14–28",
+   "harvestDays": "8–10 months",
+   "spacingCm": 20,
+   "minTemp": 13,
+   "companions": [],
+   "avoid": [],
+   "tip": "Grows lush foliage. Harvest small pieces from the edge after 4 months."
+  },
+  {
+   "id": "lemon",
+   "name": "Lemon tree",
+   "aliases": [
+    "limao",
+    "citrus",
+    "meyer lemon"
+   ],
+   "sun": "full sun",
+   "potLitres": 30,
+   "depthCm": 35,
+   "start": "Buy a grafted plant; plant in spring.",
+   "germDays": "—",
+   "harvestDays": "fruits in 1–3 years on grafted plants",
+   "spacingCm": 150,
+   "minTemp": 3,
+   "companions": [
+    "nasturtium"
+   ],
+   "avoid": [],
+   "tip": "Citrus food in summer, water when the top 3 cm dries. Bring in before frost."
+  },
+  {
+   "id": "fig",
+   "name": "Fig tree",
+   "aliases": [
+    "figo",
+    "figueira"
+   ],
+   "sun": "full sun",
+   "potLitres": 40,
+   "depthCm": 40,
+   "start": "Plant in spring; restrict roots in a pot for more fruit.",
+   "germDays": "—",
+   "harvestDays": "fruits in 2–3 years",
+   "spacingCm": 200,
+   "minTemp": -10,
+   "companions": [],
+   "avoid": [],
+   "tip": "Pinch new shoots to 5 leaves in early summer for more fruit."
+  },
+  {
+   "id": "olive",
+   "name": "Olive tree",
+   "aliases": [
+    "oliveira",
+    "azeitona"
+   ],
+   "sun": "full sun",
+   "potLitres": 40,
+   "depthCm": 40,
+   "start": "Plant in spring in gritty, free-draining mix.",
+   "germDays": "—",
+   "harvestDays": "fruits in 3–5 years",
+   "spacingCm": 200,
+   "minTemp": -8,
+   "companions": [
+    "rosemary",
+    "lavender"
+   ],
+   "avoid": [],
+   "tip": "Very drought tolerant once settled. Hates soggy winters."
+  }
+ ],
+ "families": [
+  {
+   "id": "Araceae",
+   "name": "Araceae",
+   "common": "the arum family, aroids",
+   "traits": "Big leaves from a hooded flower (spathe and spadix). Many climb with aerial roots, and many split or fenestrate leaves as they mature.",
+   "care": "Chunky, airy mix, bright indirect light, water when the top third dries. A moss pole makes climbers grow bigger leaves.",
+   "toxic": "Most contain calcium oxalate crystals that sting the mouth of pets and people.",
+   "examples": [
+    "Monstera",
+    "Philodendron",
+    "Pothos",
+    "Anthurium",
+    "Peace lily",
+    "ZZ plant",
+    "Alocasia",
+    "Aglaonema"
+   ]
+  },
+  {
+   "id": "Marantaceae",
+   "name": "Marantaceae",
+   "common": "the prayer plant family",
+   "traits": "Patterned leaves that fold up at night and open at dawn.",
+   "care": "Steady moisture, high humidity, soft or rain water, no direct sun. Brown tips mean dry air or salty water.",
+   "toxic": "Non-toxic to cats and dogs.",
+   "examples": [
+    "Calathea",
+    "Goeppertia",
+    "Maranta",
+    "Ctenanthe",
+    "Stromanthe"
+   ]
+  },
+  {
+   "id": "Cactaceae",
+   "name": "Cactaceae",
+   "common": "the cactus family",
+   "traits": "Swollen stems that store water, spines from little pads called areoles. Almost all from the Americas.",
+   "care": "Brightest light, gritty mix, water thoroughly then let dry fully. Cool, dry winter rest for flowers.",
+   "toxic": "Mostly non-toxic; the spines are the danger.",
+   "examples": [
+    "Echinocactus",
+    "Mammillaria",
+    "Opuntia",
+    "Schlumbergera",
+    "Epiphyllum"
+   ]
+  },
+  {
+   "id": "Crassulaceae",
+   "name": "Crassulaceae",
+   "common": "the stonecrop family",
+   "traits": "Fleshy succulent leaves, often in rosettes, that store water.",
+   "care": "Bright sun, gritty mix, soak and dry. Leaves root easily.",
+   "toxic": "Jade and kalanchoe are mildly toxic to pets; echeveria and sempervivum are considered safe.",
+   "examples": [
+    "Jade plant",
+    "Echeveria",
+    "Kalanchoe",
+    "Sedum",
+    "Sempervivum",
+    "Aeonium"
+   ]
+  },
+  {
+   "id": "Asparagaceae",
+   "name": "Asparagaceae",
+   "common": "the asparagus family",
+   "traits": "A varied family of tough plants: rosettes, swords and fern-like fronds.",
+   "care": "Mostly very forgiving: moderate light, let soil dry partly.",
+   "toxic": "Snake plant and dracaena mildly irritating; spider plant is safe.",
+   "examples": [
+    "Snake plant",
+    "Dracaena",
+    "Spider plant",
+    "Yucca",
+    "Hosta",
+    "Asparagus fern",
+    "Cast iron plant"
+   ]
+  },
+  {
+   "id": "Moraceae",
+   "name": "Moraceae",
+   "common": "the fig and mulberry family",
+   "traits": "Woody plants with milky latex sap.",
+   "care": "Bright light, steady routine; they drop leaves when moved or chilled.",
+   "toxic": "Ficus sap irritates skin and is mildly toxic if chewed.",
+   "examples": [
+    "Fiddle leaf fig",
+    "Rubber plant",
+    "Weeping fig",
+    "Edible fig"
+   ]
+  },
+  {
+   "id": "Orchidaceae",
+   "name": "Orchidaceae",
+   "common": "the orchid family",
+   "traits": "The largest flowering plant family. Many grow on trees, holding on with silvery aerial roots.",
+   "care": "Bark mix, bright indirect light, water when roots turn silver. Cooler nights trigger flowers.",
+   "toxic": "Phalaenopsis is non-toxic.",
+   "examples": [
+    "Phalaenopsis",
+    "Dendrobium",
+    "Oncidium",
+    "Cattleya",
+    "Vanilla"
+   ]
+  },
+  {
+   "id": "Bromeliaceae",
+   "name": "Bromeliaceae",
+   "common": "the bromeliad family",
+   "traits": "Rosettes that often hold water in a central cup; many are air plants.",
+   "care": "Bright indirect light, water in the cup or soak air plants, little soil. The mother flowers once then makes pups.",
+   "toxic": "Non-toxic.",
+   "examples": [
+    "Guzmania",
+    "Aechmea",
+    "Tillandsia",
+    "Pineapple",
+    "Neoregelia"
+   ]
+  },
+  {
+   "id": "Arecaceae",
+   "name": "Arecaceae",
+   "common": "the palm family",
+   "traits": "Single growing points: cut the top and the stem stops.",
+   "care": "Bright indirect light, steady moisture, never cut green fronds. Brown tips from dry air or salts.",
+   "toxic": "Most indoor palms are pet-safe; sago 'palm' is not a palm and is very toxic.",
+   "examples": [
+    "Parlour palm",
+    "Kentia",
+    "Areca",
+    "Date palm",
+    "Fan palm"
+   ]
+  },
+  {
+   "id": "Gesneriaceae",
+   "name": "Gesneriaceae",
+   "common": "the African violet family",
+   "traits": "Soft, often furry leaves and long-blooming flowers.",
+   "care": "Bright indirect light, bottom water with tepid water, keep leaves dry.",
+   "toxic": "Non-toxic.",
+   "examples": [
+    "African violet",
+    "Streptocarpus",
+    "Goldfish plant",
+    "Lipstick plant",
+    "Episcia"
+   ]
+  },
+  {
+   "id": "Lamiaceae",
+   "name": "Lamiaceae",
+   "common": "the mint family",
+   "traits": "Square stems, opposite leaves and aromatic oils.",
+   "care": "Most herbs here want sun and good drainage; pinch tips to keep bushy.",
+   "toxic": "Mostly safe; pennyroyal is toxic.",
+   "examples": [
+    "Basil",
+    "Mint",
+    "Rosemary",
+    "Thyme",
+    "Lavender",
+    "Sage",
+    "Coleus",
+    "Plectranthus"
+   ]
+  },
+  {
+   "id": "Solanaceae",
+   "name": "Solanaceae",
+   "common": "the nightshade family",
+   "traits": "Fruiting crops and ornamentals; leaves and green fruit often toxic.",
+   "care": "Full sun, warmth, steady water and potassium-rich feed when fruiting.",
+   "toxic": "Leaves and stems of tomato, potato and pepper are toxic to pets.",
+   "examples": [
+    "Tomato",
+    "Chilli",
+    "Potato",
+    "Aubergine",
+    "Petunia"
+   ]
+  },
+  {
+   "id": "Asteraceae",
+   "name": "Asteraceae",
+   "common": "the daisy family",
+   "traits": "What looks like one flower is many tiny flowers packed together.",
+   "care": "Mostly sun lovers with moderate water.",
+   "toxic": "Chrysanthemums are toxic to pets; most others mild.",
+   "examples": [
+    "Sunflower",
+    "Daisy",
+    "Chrysanthemum",
+    "Lettuce",
+    "Dahlia",
+    "String of pearls"
+   ]
+  },
+  {
+   "id": "Apocynaceae",
+   "name": "Apocynaceae",
+   "common": "the dogbane family",
+   "traits": "Often milky sap; includes waxy flowers and star-shaped succulents.",
+   "care": "Bright light, let dry between waters.",
+   "toxic": "Many are toxic: oleander and adenium seriously so.",
+   "examples": [
+    "Hoya",
+    "Adenium",
+    "Oleander",
+    "Ceropegia",
+    "Stapelia",
+    "Plumeria"
+   ]
+  },
+  {
+   "id": "Begoniaceae",
+   "name": "Begoniaceae",
+   "common": "the begonia family",
+   "traits": "Lopsided leaves, often silver-spotted or glittering.",
+   "care": "Bright indirect light, let the top dry, keep leaves dry, good airflow against mildew.",
+   "toxic": "Toxic to pets, especially the tubers.",
+   "examples": [
+    "Rex begonia",
+    "Begonia maculata",
+    "Tuberous begonia"
+   ]
+  },
+  {
+   "id": "Euphorbiaceae",
+   "name": "Euphorbiaceae",
+   "common": "the spurge family",
+   "traits": "Milky sap that irritates skin and eyes; flowers often hidden in coloured bracts.",
+   "care": "Mostly bright light and dry soil; wear gloves when pruning.",
+   "toxic": "Sap is irritating; keep from pets and children.",
+   "examples": [
+    "Poinsettia",
+    "Crown of thorns",
+    "Croton",
+    "Pencil cactus"
+   ]
+  },
+  {
+   "id": "Araliaceae",
+   "name": "Araliaceae",
+   "common": "the ivy family",
+   "traits": "Hand-shaped or divided leaves, often variegated.",
+   "care": "Bright indirect light, even moisture; mist against spider mites.",
+   "toxic": "Mildly toxic.",
+   "examples": [
+    "Schefflera",
+    "Ivy",
+    "Fatsia",
+    "Aralia",
+    "Polyscias"
+   ]
+  },
+  {
+   "id": "Piperaceae",
+   "name": "Piperaceae",
+   "common": "the pepper family",
+   "traits": "Thick, often succulent leaves on compact plants.",
+   "care": "Bright indirect light, let dry halfway; easy from leaf cuttings.",
+   "toxic": "Non-toxic.",
+   "examples": [
+    "Peperomia",
+    "Black pepper vine"
+   ]
+  },
+  {
+   "id": "Polypodiaceae",
+   "name": "Ferns",
+   "common": "fern families",
+   "traits": "No flowers or seeds: ferns spread by spores on the underside of fronds (those brown dots are normal).",
+   "care": "Even moisture, high humidity, no direct sun.",
+   "toxic": "Most true ferns are pet-safe; asparagus fern is not a fern and is toxic.",
+   "examples": [
+    "Boston fern",
+    "Bird's nest fern",
+    "Maidenhair",
+    "Staghorn",
+    "Rabbit's foot fern"
+   ]
+  },
+  {
+   "id": "Rutaceae",
+   "name": "Rutaceae",
+   "common": "the citrus family",
+   "traits": "Aromatic leaves with oil glands; scented flowers.",
+   "care": "Full sun, citrus feed, water when top dries, no cold draughts.",
+   "toxic": "Mildly toxic to pets.",
+   "examples": [
+    "Lemon",
+    "Orange",
+    "Lime",
+    "Kumquat",
+    "Calamondin"
+   ]
+  }
  ]
 }
