@@ -17,7 +17,7 @@ def I(name, size=40, lazy=True):
 
 # Scene per chapter: (plant photo, app screen). Index 0 is the hero.
 SCENES = [("monstera", "today1"), ("echeveria", "today-ring"), ("pothos", "plant"), ("basil", "jungle-chat"),
-          ("peacelily", "care-week"), ("orchid", "scan-result"), ("zz", "me")]
+          ("peacelily", "care-week"), ("orchid", "scan-result"), ("snake", "share-home"), ("zz", "me")]
 
 H = {
  "en": {
@@ -43,6 +43,9 @@ H = {
    {"id": "scan", "h": "Scan a label in the shop", "p": "Standing in the garden centre? Point at a fertiliser, soil or treatment and see which of your plants it suits, and how and when to use it. Or scan a new plant, or a sick leaf.",
     "list": [("fertilizer", "A verdict from each of your plants on that bottle"), ("pottedPlant", "Meet a new plant and get its care plan straight away"), ("firstAid", "Show a sick leaf and get kind, clear next steps")],
     "thumbs": [("scan", "Scan anything"), ("scan-result", "Verdicts"), ("health", "Health check")]},
+   {"id": "share", "h": "Share your jungle", "p": "Living with a partner, family or housemates? Invite them and care for the same plants together. Turns are shared fairly, everyone sees what was done, and nobody waters twice.",
+    "list": [("gift", "Invite in one tap: by link, email or message"), ("calendarHeart", "Fair turns: whoever didn't water last time goes next"), ("careHands", "Cover for each other: busy or away? Someone says I've got it")],
+    "thumbs": [("share-home", "Our jungle"), ("share-turns", "Who looks after what"), ("share-invite", "Invite someone")]},
    {"id": "me", "h": "Your jungle, growing with you", "p": "Plants, happy plants, care moments and years together. Rooms and spaces, cuttings and milestones, from your first plant to an all-happy jungle.",
     "list": [("livingRoom", "Living room, kitchen, balcony: who lives where"), ("award", "Milestones that make care feel like a joy")],
     "thumbs": [("me", "Me")]},
@@ -81,7 +84,7 @@ H = {
   "plus_btn": "Get Plus in the app",
   "fine": "Prices in euros; local prices may vary. Subscriptions renew automatically until cancelled in your Apple account settings.",
   "faq_h": "Good to know",
-  "faq": [("Do I need to know anything about plants?", "Not at all. Add a plant with a photo or its name and the app fills in the rest, in plain, friendly words."),
+  "faq": [("Can I share my plants with someone?", "Yes. Invite your partner, family or housemates and you all look after the same jungle, with fair turns and no double watering."), ("Do I need to know anything about plants?", "Not at all. Add a plant with a photo or its name and the app fills in the rest, in plain, friendly words."),
           ("Is it really free?", "Yes. Up to 5 plants with chat, care requests and reminders, forever, supported by ads. Plus is optional and removes the ads."),
           ("Does it speak Portuguese?", "Yes. The app and your plants speak English and Portuguese."),
           ("Where do my plant photos go?", "Nowhere. Photos, scans and notes stay on your phone, and you do not need an account."),
@@ -114,6 +117,9 @@ H = {
    {"id": "scan", "h": "Escaneie um rótulo na loja", "p": "No garden center, sem saber o que levar? Aponte para um adubo, substrato ou tratamento e veja para quais plantas serve, como e quando usar. Ou escaneie uma planta nova, ou uma folha doente.",
     "list": [("fertilizer", "Um veredito de cada planta sobre aquele produto"), ("pottedPlant", "Conheça uma planta nova e já receba o plano dela"), ("firstAid", "Mostre uma folha doente e receba os próximos passos, bem explicados")],
     "thumbs": [("scan", "Escaneie tudo"), ("scan-result", "Vereditos"), ("health", "Saúde")]},
+   {"id": "share", "h": "Divida a sua selva", "p": "Mora com alguém, com a família ou divide a casa? Convide quem mora com você e cuidem das mesmas plantas juntos. A vez é dividida de forma justa, todo mundo vê o que já foi feito e ninguém rega duas vezes.",
+    "list": [("gift", "Convite em um toque: por link, e-mail ou mensagem"), ("calendarHeart", "Vez justa: quem não regou da última vez é o próximo"), ("careHands", "Um cobre o outro: ocupado ou viajando? Alguém diz deixa comigo")],
+    "thumbs": [("share-home", "Nossa selva"), ("share-turns", "Quem cuida de quem"), ("share-invite", "Convidar alguém")]},
    {"id": "me", "h": "Sua selva, crescendo com você", "p": "Plantas, plantas felizes, momentos de cuidado e anos juntos. Cômodos, mudas e conquistas, da primeira plantinha a uma selva inteira feliz.",
     "list": [("livingRoom", "Sala, cozinha, varanda: quem mora onde"), ("award", "Conquistas que deixam o cuidado ainda mais gostoso")],
     "thumbs": [("me", "Você")]},
@@ -130,7 +136,7 @@ H = {
    "Pearl": ["Descansando, sonhando com a próxima haste de flores.", "Ainda não. Me rega quando as raízes estiverem prateadas, uma vez por semana.", "Nesta estação, não. Adubo de orquídea quando a primavera chegar."],
    "Goldie": ["Meio murchinha, para ser sincera. Acho que estou com sede.", "Sim, dá uma olhada na minha terra? Se os dois centímetros de cima estiverem secos, eu adoraria uma água.", "Depois de beber, sim. Nunca me adube com a terra seca."]},
   "you": "Você",
-  "all": [["chat", "Conversar com as plantas", "Escreva como uma mensagem. Elas respondem com personalidade."], ["soilTest", "Ritual da terra", "Aprende o ritmo de cada planta para regar na medida certa."], ["calendarHeart", "Pedidos de cuidado", "Regar, adubar, borrifar e rodar, só quando é altura."], ["firstAid", "Verificação de saúde", "Ajuda clara e gentil quando uma planta sofre."], ["bug", "Guarda contra pragas", "Detete pragas cedo e siga um plano simples."], ["pot", "Mudança de vaso", "Sabe quando é altura e que vaso e terra usar."], ["travel", "Vou viajar", "Planos de férias para todas ficarem bem."], ["seedling", "Estacas", "Faça plantas novas a partir das que adora."], ["sun", "Guia das estações", "O que cada estação significa onde você mora."], ["fertilizer", "Leitor de rótulos", "Saiba se um adubo ou terra serve a cada planta."], ["livingRoom", "Cômodos", "Cômodo a cômodo, a luz certa para cada planta."], ["shieldLeaf", "Avisos para animais", "Notas claras para gatos, cães e crianças."]],
+  "all": [["chat", "Conversar com as plantas", "Escreva como uma mensagem. Elas respondem com personalidade."], ["soilTest", "Ritual da terra", "Aprende o ritmo de cada planta para regar na medida certa."], ["calendarHeart", "Pedidos de cuidado", "Regar, adubar, borrifar e rodar, só na hora certa."], ["firstAid", "Verificação de saúde", "Ajuda clara e gentil quando uma planta sofre."], ["bug", "Guarda contra pragas", "Identifique pragas cedo e siga um plano simples."], ["pot", "Mudança de vaso", "Sabe a hora certa e qual vaso e terra usar."], ["travel", "Vou viajar", "Planos de férias para todas ficarem bem."], ["seedling", "Mudas", "Faça plantas novas a partir das que você ama."], ["sun", "Guia das estações", "O que cada estação significa onde você mora."], ["fertilizer", "Leitor de rótulos", "Saiba se um adubo ou terra serve a cada planta."], ["livingRoom", "Cômodos", "Cômodo a cômodo, a luz certa para cada planta."], ["shieldLeaf", "Avisos para animais", "Notas claras para gatos, cachorros e crianças."]],
   "all_h": "Toda a ajuda que quem cuida de plantas pode querer",
   "feat_h": "Tudo o que vem no app",
   "feat": [("monstera", "Cuidado com atenção", [("chat", "Converse com cada planta, na voz dela"), ("soilTest", "O ritual da terra aprende o ritmo de cada uma"), ("calendarHeart", "Lembretes gentis para regar, adubar, borrifar e girar o vaso"), ("celebrate", "Sequências e conquistas, nunca culpa")]),
@@ -152,7 +158,7 @@ H = {
   "plus_btn": "Assinar o Plus no app",
   "fine": "Preços em euros; podem variar de acordo com o país. As assinaturas são renovadas automaticamente até serem canceladas nos ajustes da sua conta Apple.",
   "faq_h": "Bom saber",
-  "faq": [("Preciso entender de plantas?", "Nadinha. Adicione uma planta com uma foto ou pelo nome e o app cuida do resto, com palavras simples e carinhosas."),
+  "faq": [("Dá para dividir as plantas com alguém?", "Dá sim. Convide quem mora com você e todo mundo cuida da mesma selva, com a vez dividida de forma justa e sem rega dobrada."), ("Preciso entender de plantas?", "Nadinha. Adicione uma planta com uma foto ou pelo nome e o app cuida do resto, com palavras simples e carinhosas."),
           ("É grátis mesmo?", "Sim. Até 5 plantas com bate-papo, pedidos de cuidado e lembretes, para sempre, com anúncios. O Plus é opcional e remove os anúncios."),
           ("Fala português?", "Fala, sim. O app e suas plantas falam português e inglês."),
           ("Para onde vão as fotos?", "Para lugar nenhum. Fotos, leituras e anotações ficam no seu celular, e você nem precisa criar conta."),
