@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 SRC, DIST = ROOT / "src", ROOT / "dist"
 SITE = "https://mytinyjungle.com"
-BRAND_LEAVES = (Path(__file__).parent / "src" / "brand-leaves.svg.html").read_text()
+BRAND_NAME = (Path(__file__).parent / "src" / "brand-name.html").read_text()
 CSS_V = hashlib.sha1(b"".join((Path(__file__).parent / "src" / f).read_bytes() for f in ("style.css", "site.js"))).hexdigest()[:10]
 UPDATED = {"en": "18 November 2026", "pt": "18 de novembro de 2026"}
 EMAIL = "support@simpleappscompany.com"
@@ -204,7 +204,7 @@ def page(L, path, title, desc, body):
 <link rel="stylesheet" href="/style.css?v={CSS_V}">
 </head><body>
 <header class="nav"><div class="wrap navbar">
-<a class="brand" href="{p}/"><span class="bname">My Tiny Jungle{BRAND_LEAVES}</span></a>
+<a class="brand" href="{p}/"><span class="bname" aria-label="My Tiny Jungle">{BRAND_NAME}</span></a>
 <nav><a class="hide-s" href="{p}/#today">{n[0]}</a><a class="hide-s" href="{p}/#pricing">{n[1]}</a><a class="hide-s" href="{p}/support">{n[2]}</a>
 <a class="lang" href="{other}" hreflang="{T[t['other']]['lang']}">{t['other_label']}</a><a class="btn btn-s" href="https://testflight.apple.com/join/A8YUuUHj" rel="noopener">{n[3]}</a></nav>
 </div></header>

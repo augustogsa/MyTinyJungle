@@ -22,16 +22,6 @@ h1,h2,h3{color:var(--forest);font-weight:800;letter-spacing:-.03em;line-height:1
 .nav{position:sticky;top:0;z-index:30;background:var(--ground)}
 .navbar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--forest);font-weight:800;font-size:var(--t-b);white-space:nowrap}
-.bname{position:relative;display:inline-block;padding:6px 2px}
-.bname{isolation:isolate}
-.bleaves{position:absolute;left:50%;top:50%;width:calc(100% + 4px);height:auto;aspect-ratio:160/60;translate:-50% -50%;overflow:visible;pointer-events:none;z-index:-1}
-.bleaves .st{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .22s cubic-bezier(.4,0,1,1)}
-.bleaves .lf{scale:0;rotate:-24deg;opacity:0;transition:scale .18s cubic-bezier(.4,0,1,1),rotate .18s ease-in,opacity .14s linear .06s}
-.bleaves .sp{transform-box:view-box}
-.brand:is(:hover,:focus-visible,.grow) .bleaves .st{stroke-dashoffset:0;transition:stroke-dashoffset var(--t) cubic-bezier(.16,1,.3,1) var(--d)}
-.brand:is(:hover,:focus-visible,.grow) .bleaves .lf{scale:1;rotate:0deg;opacity:1;transition:scale .62s cubic-bezier(.16,1,.3,1) var(--d),rotate .8s cubic-bezier(.16,1,.3,1) var(--d),opacity .2s linear var(--d)}
-.brand{transition:color .3s}.brand:hover{color:var(--deep)}
-@media (prefers-reduced-motion:reduce){.bleaves .st,.bleaves .lf{transition:opacity .25s!important;stroke-dashoffset:0;scale:1;rotate:0deg}.brand:not(:hover):not(:focus-visible):not(.grow) .bleaves{opacity:0}.bleaves{transition:opacity .25s}}
 .navbar nav{display:flex;align-items:center;gap:4px;font-size:var(--t-s);font-weight:700}
 .navbar nav a:not(.btn){color:var(--ink);text-decoration:none;padding:10px 12px;border-radius:999px;transition:background .2s}
 .navbar nav a:not(.btn):hover{background:var(--mint)}
@@ -357,5 +347,16 @@ p,li,.bcard span{text-wrap:pretty}
 .ncard b{display:block}.ncard span{display:block}
 .lockshot{width:min(280px,70%);margin:28px auto 0;border-radius:36px;box-shadow:0 30px 60px -30px rgba(0,0,0,.4)}
 @media (max-width:900px){.vgrid{grid-template-columns:1fr}.voices{padding:96px 0}}
-@media (hover:hover) and (prefers-reduced-motion:no-preference){.brand:hover .bleaves .sp{animation:sp 3.4s ease-in-out 1s infinite alternate}}
-@keyframes sp{to{rotate:calc(var(--sw) * 3.5deg)}}
+/* Wordmark sprouts */
+.bname{position:relative;display:inline-block;line-height:1;padding:6px 2px;isolation:isolate}
+.bl{position:relative;display:inline-block}
+.sg{position:absolute;overflow:visible;pointer-events:none;z-index:-1}
+.sg .st{stroke-dasharray:1;stroke-dashoffset:1;opacity:0;transition:stroke-dashoffset .2s cubic-bezier(.4,0,1,1),opacity 0s linear .2s}
+.sg .lf{scale:0;opacity:0;transition:scale .18s cubic-bezier(.4,0,1,1),opacity .12s linear .06s}
+.brand:is(:hover,:focus-visible,.grow) .sg .st{stroke-dashoffset:0;opacity:1;transition:stroke-dashoffset var(--t) cubic-bezier(.16,1,.3,1) var(--d),opacity 0s linear var(--d)}
+.brand:is(:hover,:focus-visible,.grow) .sg .lf{scale:1;opacity:1;transition:scale .6s cubic-bezier(.16,1,.3,1) var(--d),opacity .18s linear var(--d)}
+.brand{transition:color .3s}.brand:hover{color:var(--deep)}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.brand:hover .sg .sp{animation:sp 3.4s ease-in-out 1s infinite alternate}}
+@keyframes sp{to{rotate:calc(var(--sw) * 3deg)}}
+@media (prefers-reduced-motion:reduce){.sg .st,.sg .lf{transition:opacity .25s!important;stroke-dashoffset:0;scale:1}.sg{opacity:0;transition:opacity .25s}.brand:is(:hover,:focus-visible,.grow) .sg{opacity:1}}
+.sg.front{z-index:1}
