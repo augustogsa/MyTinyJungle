@@ -41,17 +41,60 @@
     addEventListener("resize", pick); pick();
   }
 
-  // Entrances: heading, text, then pictures, staggered.
-  var parts = d.querySelectorAll(".chapter > *, .bcard, .pill, .acard, .allf h2, .field, .mosaic figure, .beta .bgrid > *, .faq h2, .qtext p, .ctext > *");
-  if (io && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    var ro = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); ro.unobserve(e.target); } });
-    }, { rootMargin: "0px 0px -8% 0px" });
-    parts.forEach(function (p) {
-      var i = Array.prototype.indexOf.call(p.parentNode.children, p);
-      p.classList.add("rv"); p.style.transitionDelay = Math.min(i, 6) * 75 + "ms"; ro.observe(p);
+  // Entrances, one system for the whole site: every block rises in, staggered within its section.
+  var reduceM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (io) {
+    var SEL = "h1,h2,h3,p,ul,ol,figure,details,.btn,.acard,.fcard,.field,.hc,.facts > *,.agrid > *,.fgrid > *,.inputs > *,.mosaic figure,.phone,.m-scene,.talk,.qhead > *,.fhero,.fnav,.slider";
+    var SKIP = ".stage,.nav,.msgs,.lockphone,.vs2,.talk *,.phone *,.m-scene *,.slider *,.agrid *,.fgrid *,.facts > * *,.field *,.hc *,.acard *,.fcard *,footer,.hero h1";
+    var eo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.setAttribute("data-entered", ""); eo.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -10% 0px" });
+    d.querySelectorAll("main section, main .chapter, .doc .paper").forEach(function (sec) {
+      var i = 0;
+      sec.querySelectorAll(SEL).forEach(function (el) {
+        if (el.closest(SKIP) || el.hasAttribute("data-enter")) return;
+        var up = el.parentElement.closest("[data-enter]"); if (up && sec.contains(up)) return;
+        el.setAttribute("data-enter", ""); el.style.setProperty("--enter-i", Math.min(i++, 8)); eo.observe(el);
+      });
     });
+    root.classList.add("enter-ready");
+    // Safety net: anything already scrolled past (fast flicks, anchors, restored scroll) is shown.
+    var pend = false, sweep = function () {
+      pend = false;
+      d.querySelectorAll("[data-enter]:not([data-entered])").forEach(function (el) {
+        if (el.getBoundingClientRect().top < innerHeight * 0.9) { el.setAttribute("data-entered", ""); eo.unobserve(el); }
+      });
+    };
+    addEventListener("scroll", function () { if (!pend) { pend = true; setTimeout(sweep, 200); } }, { passive: true });
+    addEventListener("load", sweep);
   }
+
+  // Hero headline: words rise out of their line on load.
+  var h1 = d.querySelector(".hero h1");
+  if (h1 && !reduceM) {
+    var w = 0;
+    (function split(n) {
+      Array.prototype.slice.call(n.childNodes).forEach(function (c) {
+        if (c.nodeType === 3) {
+          var f = d.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function (t) {
+            if (!t) return;
+            if (/^\s+$/.test(t)) { f.appendChild(d.createTextNode(t)); return; }
+            var o = d.createElement("span"), i2 = d.createElement("span");
+            o.className = "hw"; i2.textContent = t; i2.style.setProperty("--w", w++); o.appendChild(i2); f.appendChild(o);
+          });
+          c.parentNode.replaceChild(f, c);
+        } else if (c.nodeType === 1 && c.tagName !== "BR") split(c);
+      });
+    })(h1);
+    h1.classList.add("words");
+  }
+
+  // Nav tucks away while reading down, returns on the way up.
+  var nav = d.querySelector(".nav"), lastY = scrollY;
+  if (nav) addEventListener("scroll", function () {
+    var y = scrollY; nav.toggleAttribute("data-tucked", y > lastY && y > 240); lastY = y;
+  }, { passive: true });
 
   // Stage reel: the active caption fills up, then hands over to the next screen.
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
