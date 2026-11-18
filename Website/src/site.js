@@ -23,6 +23,10 @@
     sp.src = "/assets/erty/favicon-sprite.png";
   })();
 
+  // Brand: on touch screens, a tap on the name grows the leaves briefly.
+  var brand = d.querySelector(".brand");
+  if (brand && matchMedia("(hover: none)").matches) brand.addEventListener("touchstart", function () { brand.classList.add("grow"); setTimeout(function () { brand.classList.remove("grow"); }, 1600); }, { passive: true });
+
   // Stage: show the layer matching the chapter in the middle of the screen.
   var layers = d.querySelectorAll(".stage .layer");
   if (layers.length && io) {
