@@ -21,6 +21,8 @@ enum Jungle {
     static let sage = Color(light: 0xA8C7A5, dark: 0x4C6A4E)
     static let cream = Color(light: 0xFCFAF6, dark: 0x141A15)
     static let mist = Color(light: 0xF4F9EF, dark: 0x1C241D)
+    /// Incoming message bubble (people and plants), visible on white cards and the backdrop.
+    static let incoming = Color(light: 0xE8EEE4, dark: 0x2B342C)
     static let mint = Color(light: 0xEEF7E8, dark: 0x223024)
     static let sun = Color(light: 0xF6D992, dark: 0xC9A955)
     static let peach = Color(light: 0xF8CDB6, dark: 0xB98A72)

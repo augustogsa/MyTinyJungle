@@ -32,10 +32,7 @@ struct MessageBubble: View {
                             .textSelection(.enabled)
                     }
                 }
-                .padding(.horizontal, 14).padding(.vertical, 10)
-                .background(message.fromUser ? Jungle.userBubble : Jungle.surface,
-                            in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-                .overlay { if !message.fromUser { RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5) } }
+                .messageBubble(fromMe: message.fromUser)
             }
             .containerRelativeFrame(.horizontal, alignment: message.fromUser ? .trailing : .leading) { w, _ in w * 0.8 }
             .frame(maxWidth: .infinity, alignment: message.fromUser ? .trailing : .leading)

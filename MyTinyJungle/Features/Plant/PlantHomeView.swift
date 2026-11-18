@@ -155,7 +155,10 @@ struct PlantHomeView: View {
                         Text("Chat").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
                         Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                     }
-                    Text("“\(currentLine)”").font(.body).foregroundStyle(Jungle.text).multilineTextAlignment(.leading)
+                    Text(currentLine).font(.body).foregroundStyle(Jungle.text).multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .messageBubble(fill: Jungle.incoming)
+                        .padding(.leading, 4)
                     HStack(spacing: 14) {
                         ForEach(statusFacts, id: \.1) { f in
                             HStack(spacing: 5) { Icon3DView(f.0, size: 18); Text(f.1).font(.caption).foregroundStyle(Jungle.subtle) }

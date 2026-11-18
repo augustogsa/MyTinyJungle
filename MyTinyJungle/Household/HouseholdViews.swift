@@ -111,27 +111,30 @@ struct RequestRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Divider()
-            HStack(alignment: .top, spacing: 12) {
-                if let m = house.member(request.fromID) { MemberAvatar(member: m, size: 36) }
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("\(house.name(request.fromID)) could use a hand", comment: "Cover request title; %@ first name").font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
-                    Text(HouseText.askLine(request, plantName: house.state?.plants.first { $0.id == request.plantIDs.first }?.name ?? "")).font(.subheadline).foregroundStyle(Jungle.subtle)
-                    if !request.note.isEmpty { Text("“\(request.note)”").font(.subheadline).foregroundStyle(Jungle.subtle) }
+            HStack(alignment: .bottom, spacing: 8) {
+                if let m = house.member(request.fromID) { MemberAvatar(member: m, size: 28) }
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("\(house.name(request.fromID)) could use a hand", comment: "Cover request title; %@ first name").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText).padding(.leading, 14)
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(HouseText.askLine(request, plantName: house.state?.plants.first { $0.id == request.plantIDs.first }?.name ?? ""))
+                        if !request.note.isEmpty { Text(request.note).foregroundStyle(Jungle.subtle) }
+                        HStack(spacing: 8) {
+                            Button { withAnimation { house.dismissRequest(request.id) } } label: {
+                                Text("Not this time", comment: "Decline cover request button; kind").frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.bordered).tint(Jungle.text)
+                            Button { withAnimation { house.acceptCover(request.id) } } label: {
+                                Text("I've got it", comment: "Accept cover request button").foregroundStyle(.white).frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.borderedProminent).tint(Jungle.forest)
+                        }
+                        .controlSize(.regular).buttonBorderShape(.capsule).fontDesign(.rounded)
+                    }
+                    .font(.subheadline).foregroundStyle(Jungle.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .messageBubble(fill: Jungle.incoming)
                 }
-                .fixedSize(horizontal: false, vertical: true)
-                Spacer(minLength: 0)
             }
-            HStack(spacing: 10) {
-                Button { withAnimation { house.dismissRequest(request.id) } } label: {
-                    Text("Not this time", comment: "Decline cover request button; kind").frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered).tint(Jungle.text)
-                Button { withAnimation { house.acceptCover(request.id) } } label: {
-                    Text("I've got it", comment: "Accept cover request button").frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent).tint(Jungle.forest)
-            }
-            .controlSize(.large).buttonBorderShape(.capsule).fontDesign(.rounded)
         }
     }
 }
