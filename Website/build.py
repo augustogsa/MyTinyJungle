@@ -198,15 +198,14 @@ def page(L, path, title, desc, body):
 <meta property="og:image" content="{SITE}/assets/icon-512.png"><meta property="og:url" content="{canon}">
 <meta name="apple-itunes-app" content="app-id=6836292367">
 <link rel="icon" href="/assets/favicon-64.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/Intern.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css?v={CSS_V}">
 </head><body>
-<header class="nav"><div class="wrap">
+<header class="nav"><div class="wrap"><div class="navbar">
 <a class="brand" href="{p}/"><img src="/assets/apple-touch-icon.png" alt="">My Tiny Jungle</a>
 <nav><a class="hide-s" href="{p}/#features">{n[0]}</a><a class="hide-s" href="{p}/#pricing">{n[1]}</a><a href="{p}/support">{n[2]}</a>
 <a class="lang" href="{other}" hreflang="{T[t['other']]['lang']}">{t['other_label']}</a></nav>
-</div></header>
+</div></div></header>
 <main>{body}</main>
 <footer><div class="wrap"><span>© 2026 Simple Apps Company · {t['made']}</span>
 <nav><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
@@ -224,7 +223,7 @@ def home(L):
 
 def doc(L, path, title, desc, inner):
     t = T[L]
-    body = f'<section class="doc"><div class="wrap"><h1>{title}</h1><p class="meta">{t["updated"]}: {UPDATED[L]}</p>{inner}</div></section>'
+    body = f'<section class="doc"><div class="wrap"><div class="paper"><h1>{title}</h1><p class="meta">{t["updated"]}: {UPDATED[L]}</p>{inner}</div></div></section>'
     return page(L, path, f"{title} · My Tiny Jungle", desc, body)
 
 
@@ -236,8 +235,9 @@ def build():
     if DIST.exists():
         shutil.rmtree(DIST)
     (DIST / "assets").mkdir(parents=True)
-    for f in (SRC / "assets").iterdir():
-        shutil.copy(f, DIST / "assets" / f.name)
+    shutil.copytree(SRC / "assets", DIST / "assets", dirs_exist_ok=True)
+    for d in ("icons", "fonts"):
+        shutil.copytree(SRC / d, DIST / d)
     shutil.copy(SRC / "style.css", DIST / "style.css")
     urls = []
     for L, t in T.items():
