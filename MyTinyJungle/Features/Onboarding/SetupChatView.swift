@@ -204,7 +204,7 @@ struct SetupChatView: View {
 
     private func question(_ s: Step) -> String {
         switch s {
-        case .name: String(localized: "Hi! I'm your plants' best friend, here to help you care for them. What should I call you?", comment: "Setup chat: first mascot question")
+        case .name: String(localized: "Hi! I'm Erty, your plants' best friend, here to help you care for them. What should I call you?", comment: "Setup chat: first mascot question")
         case .place: String(localized: "Where do you live? Your city is enough. Local climate and weather change how much water your plants need.", comment: "Setup chat: mascot asks for city")
         case .heating: String(localized: "Do you turn the heating on in winter?", comment: "Setup chat: mascot asks about home heating")
         case .aircon: String(localized: "And air conditioning in summer?", comment: "Setup chat: mascot asks about AC")

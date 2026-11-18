@@ -10308,13 +10308,13 @@
         }
       }
     },
-    "Hi! I'm your plants' best friend, here to help you care for them. What should I call you?": {
-      "comment": "Setup chat: first mascot question; the mascot introduces itself as the plants' best friend and care helper",
+    "Hi! I'm Erty, your plants' best friend, here to help you care for them. What should I call you?": {
+      "comment": "Setup chat: first mascot question",
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oi! Eu sou a melhor amiga das suas plantas e estou aqui para te ajudar a cuidar delas. Como posso te chamar?"
+            "value": "Oi! Eu sou o Erty, o melhor amigo das suas plantas, e estou aqui para ajudar a cuidar delas. Como posso te chamar?"
           }
         }
       }
