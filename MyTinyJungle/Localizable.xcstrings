@@ -9681,28 +9681,6 @@
         }
       }
     },
-    "Grow with Plus · %@/month": {
-      "comment": "Paywall buy button; arg is price",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Assinar o Plus · %@/mês"
-          }
-        }
-      }
-    },
-    "Grow with Plus · %@/year": {
-      "comment": "Paywall buy button; arg is price",
-      "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Assinar o Plus · %@/ano"
-          }
-        }
-      }
-    },
     "Growing": {
       "comment": "Propagation stage; short",
       "localizations": {
@@ -27041,6 +27019,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "“%@”"
+          }
+        }
+      }
+    },
+    "Start Jungle · %@/year": {
+      "comment": "Paywall buy button for the yearly plan named Jungle; arg is price",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quero a Selva · %@/ano"
+          }
+        }
+      }
+    },
+    "Start Greenhouse · %@/month": {
+      "comment": "Paywall buy button for the monthly plan named Greenhouse; arg is price",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quero a Estufa · %@/mês"
           }
         }
       }

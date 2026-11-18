@@ -124,7 +124,10 @@ struct PaywallView: View {
         return Button { selected = p.id } label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    Text(yearly ? String(localized: "Yearly", comment: "Paywall plan name") : String(localized: "Monthly", comment: "Paywall plan name")).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(yearly ? String(localized: "Jungle", comment: "Paywall yearly plan name, same as the website") : String(localized: "Greenhouse", comment: "Paywall monthly plan name, same as the website")).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                        Text(yearly ? String(localized: "Yearly", comment: "Paywall plan period") : String(localized: "Monthly", comment: "Paywall plan period")).font(.caption2.weight(.semibold)).foregroundStyle(Jungle.subtle)
+                    }
                     Spacer()
                     Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.title3).foregroundStyle(on ? Jungle.forest : Jungle.subtle.opacity(0.5))
                 }
@@ -154,7 +157,7 @@ struct PaywallView: View {
                     buying = false
                 }
             } label: {
-                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? String(localized: "Grow with Plus · \($0.displayPrice)/year", comment: "Paywall buy button; arg is price") : String(localized: "Grow with Plus · \($0.displayPrice)/month", comment: "Paywall buy button; arg is price") } ?? String(localized: "Grow with Plus", comment: "Paywall buy button")).font(.headline) } }
+                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? String(localized: "Start Jungle · \($0.displayPrice)/year", comment: "Paywall buy button for the yearly plan named Jungle; arg is price") : String(localized: "Start Greenhouse · \($0.displayPrice)/month", comment: "Paywall buy button for the monthly plan named Greenhouse; arg is price") } ?? String(localized: "Grow with Plus", comment: "Paywall buy button")).font(.headline) } }
                     .frame(maxWidth: .infinity).frame(height: 50)
             }
             .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
