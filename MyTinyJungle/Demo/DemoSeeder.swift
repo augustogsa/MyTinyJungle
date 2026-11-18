@@ -9,6 +9,12 @@ enum DemoSeeder {
         guard let i = a.firstIndex(of: "-demoPhotos"), i + 1 < a.count else { return nil }
         return a[i + 1]
     }
+    /// `-demoDue N`: exactly N plants overdue for water (0 = everyone happy). Above 8, plants are duplicated.
+    static var dueCount: Int? {
+        let a = ProcessInfo.processInfo.arguments
+        guard let i = a.firstIndex(of: "-demoDue"), i + 1 < a.count else { return nil }
+        return Int(a[i + 1])
+    }
     static var wantsScan: Bool { ProcessInfo.processInfo.arguments.contains("-demoScan") }
     static let sampleLabel = "GreenGrow Houseplant Feed, liquid\nNPK 7-3-6\nNitrogen 7%, Phosphorus 3%, Potassium 6%\nWith magnesium and iron\nDilute 5 ml per litre every 2 weeks in spring and summer"
 
@@ -29,7 +35,12 @@ enum DemoSeeder {
         try? ctx.delete(model: ChatMessage.self); try? ctx.delete(model: CareEvent.self); try? ctx.delete(model: CareTask.self); try? ctx.delete(model: Plant.self)
         let cal = Calendar.current
         func ago(_ d: Int, _ h: Int = 10) -> Date { cal.date(byAdding: .day, value: -d, to: cal.date(bySettingHour: h, minute: 0, second: 0, of: Date())!)! }
-        for s in specs {
+        var list = specs
+        if let n = dueCount {
+            while list.count < n { list += specs.map { Spec(file: $0.file, name: $0.name + " II", species: $0.species, personality: $0.personality, room: $0.room, outdoor: $0.outdoor, days: $0.days, lastWater: $0.lastWater) } }
+            list = list.enumerated().map { i, x in Spec(file: x.file, name: x.name, species: x.species, personality: x.personality, room: x.room, outdoor: x.outdoor, days: x.days, lastWater: i < n ? 45 : 1) }
+        }
+        for s in list {
             let url = URL(fileURLWithPath: dir).appendingPathComponent("\(s.file).jpg")
             let photo = (try? Data(contentsOf: url)).map { ImageShrinker.jpeg($0, maxSide: 1200) }
             let p = Plant(name: s.name, speciesID: s.species, personality: s.personality, location: s.room)

@@ -35,7 +35,7 @@ struct TodayView: View {
                                 Button { selectedTab = 2 } label: { CaughtUpCard(plants: plants) }.buttonStyle(.plain).id("today")
                             } else {
                                 VStack(alignment: .leading, spacing: 12) {
-                                    SectionTitle("Today's care", action: requests.count > 1 ? "See all" : nil) { path.append(TodayRoute.watering) }
+                                    SectionTitle(requests.count > 1 ? "Today's care · \(requests.count)" : "Today's care", action: requests.count > 1 ? "See all" : nil) { path.append(TodayRoute.watering) }
                                     if requests.count == 1, let (p, r) = requests.first {
                                         CareStoryCard(plant: p, request: r, onAction: { handle($0, plant: p) }, onOpen: { path.append(p.id) }, fullWidth: true)
                                     } else {
@@ -53,7 +53,7 @@ struct TodayView: View {
                                 }
                                 .id("today")
                             }
-                            Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants) }.buttonStyle(.plain)
+                            Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants, needIDs: Set(requests.map(\.0.id))) }.buttonStyle(.plain)
                             VStack(alignment: .leading, spacing: 10) {
                                 SectionTitle("Your plants", action: "See all") { selectedTab = 1 }
                                 carousel
@@ -164,14 +164,12 @@ struct TodayView: View {
         let waterItems = Agenda.items(plants: plants, tasks: [], days: 30).filter { $0.kind == .soilCheck || $0.kind == .water }
         let next = waterItems.first
         let sameDay = next.map { n in waterItems.filter { Calendar.current.isDate($0.date, inSameDayAs: n.date) }.compactMap(\.plant) } ?? []
-        let moods = plants.map { CareEngine.mood(for: $0) }
-        let score = (Double(moods.filter { $0 == .thriving }.count) + Double(moods.filter { $0 == .fine }.count) * 0.7) / Double(max(1, plants.count))
-        let season = SeasonGuideView.current()
+                let season = SeasonGuideView.current()
         return VStack(alignment: .leading, spacing: 10) {
             SectionTitle("At a glance")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                 Button { path.append(TodayRoute.watering) } label: {
-                    SummaryCard(title: "Next watering", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
+                    SummaryCard(title: "Watering", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
                         Text(next.map { relativeDay($0.date) } ?? "No plan").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                         Text(sameDay.count > 2 ? "\(sameDay[0].name), \(sameDay[1].name) +\(sameDay.count - 2)" : sameDay.isEmpty ? "Add a plant" : sameDay.map(\.name).joined(separator: ", "))
                             .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
@@ -401,8 +399,12 @@ struct PlantShelfCard: View {
                     else { ZStack { Jungle.mint; Image(systemName: "leaf.fill").font(.system(size: 44)).foregroundStyle(Jungle.leaf) } }
                 }
                 .frame(width: 150, height: 130).clipped()
-                Circle().fill(mood == .needsYou ? Jungle.terracotta : mood == .fine ? Jungle.sun : Jungle.leaf)
-                    .frame(width: 12, height: 12).overlay(Circle().stroke(.white, lineWidth: 2)).padding(10)
+                Text(mood == .needsYou ? "Needs you" : mood == .fine ? "Okay" : "Thriving")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(mood == .needsYou ? Color.white : Jungle.forest)
+                    .padding(.horizontal, 8).padding(.vertical, 4)
+                    .background(mood == .needsYou ? Jungle.terracotta : Jungle.surface.opacity(0.94), in: Capsule())
+                    .padding(8)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(plant.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)
@@ -486,7 +488,7 @@ struct CaughtUpCard: View {
                 Text(doneToday > 0 ? "\(doneToday) care moment\(doneToday == 1 ? "" : "s") logged today." : "No plant needs you today. Just enjoy them.")
                     .font(.subheadline).foregroundStyle(Jungle.subtle)
                 if let next {
-                    Text("Next: \(next.title), \(next.date.formatted(.dateTime.weekday(.wide)))").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText)
+                    Text("\(next.date.formatted(.dateTime.weekday(.wide))): \(next.title)").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText)
                 }
             }
             Spacer(minLength: 0)
@@ -588,17 +590,11 @@ struct JungleHealthView: View {
 
     var body: some View {
         let sorted = plants.sorted { rank(CareEngine.mood(for: $0)) < rank(CareEngine.mood(for: $1)) }
-        let moods = plants.map { CareEngine.mood(for: $0) }
-        let score = (Double(moods.filter { $0 == .thriving }.count) + Double(moods.filter { $0 == .fine }.count) * 0.7) / Double(max(1, plants.count))
+        let need = Set(plants.filter { p in CareEngine.requests(for: p).contains { $0.priority <= 2 } }.map(\.id))
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 HStack(spacing: 16) {
-                    DayRing(progress: score, size: 64)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("\(Int(score * 100))% healthy").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text("\(moods.filter { $0 == .thriving }.count) thriving · \(moods.filter { $0 == .fine }.count) fine · \(moods.filter { $0 == .needsYou }.count) need you")
-                            .font(.subheadline).foregroundStyle(Jungle.subtle)
-                    }
+                    JungleHealthCard(plants: plants, needIDs: need)
                 }
                 JungleGroup(title: "Your plants") {
                     ForEach(Array(sorted.enumerated()), id: \.element.id) { i, p in

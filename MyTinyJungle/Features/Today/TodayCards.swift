@@ -90,13 +90,15 @@ struct CareStoryCard: View {
                         }
                     }
                     .padding(.horizontal, 12).padding(.vertical, 8)
-                    .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .background(Jungle.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
                     Spacer()
                     Button(action: onOpen) {
                         Image(systemName: "arrow.up.right").font(.system(size: 14, weight: .semibold)).foregroundStyle(Jungle.text)
                             .frame(width: 36, height: 36)
+                            .background(Jungle.surface.opacity(0.92), in: Circle())
+                            .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
                     }
-                    .glassEffect(.regular.interactive(), in: Circle())
                     .accessibilityLabel("Open \(plant.name)")
                 }
                 .padding(12)
@@ -104,7 +106,7 @@ struct CareStoryCard: View {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(task).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)
-                        Capsule().fill(Jungle.text.opacity(0.12)).frame(height: 4)
+                        Capsule().fill(Jungle.mint).frame(height: 5)
                             .overlay(alignment: .leading) {
                                 GeometryReader { g in Capsule().fill(Jungle.leaf).frame(width: g.size.width * progress) }
                             }
@@ -113,7 +115,8 @@ struct CareStoryCard: View {
                     action
                 }
                 .padding(12)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .background(Jungle.surface.opacity(0.94), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .shadow(color: .black.opacity(0.15), radius: 12, y: 4)
                 .padding(10)
             }
         }
@@ -141,18 +144,19 @@ struct CareStoryCard: View {
 
     private var check: some View {
         Image(systemName: "checkmark").font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
-            .frame(width: 48, height: 48).background(Jungle.leaf, in: Circle())
+            .frame(width: 48, height: 48).background(Jungle.forest, in: Circle())
     }
 }
 
 /// Ring card: how the whole jungle is doing today.
 struct JungleHealthCard: View {
     let plants: [Plant]
+    var needIDs: Set<UUID> = []
     var body: some View {
-        let moods = plants.map { CareEngine.mood(for: $0) }
-        let thriving = moods.filter { $0 == .thriving }.count
-        let fine = moods.filter { $0 == .fine }.count
-        let needs = moods.count - thriving - fine
+        let rest = plants.filter { !needIDs.contains($0.id) }
+        let needs = plants.count - rest.count
+        let thriving = rest.filter { CareEngine.mood(for: $0) == .thriving }.count
+        let fine = rest.count - thriving
         let score = (Double(thriving) + Double(fine) * 0.7) / Double(max(1, plants.count))
         let caredToday = plants.flatMap { $0.events ?? [] }.filter { Calendar.current.isDateInToday($0.date) && $0.kind != .note }.count
         HStack(spacing: 20) {
@@ -169,7 +173,7 @@ struct JungleHealthCard: View {
             }
             .frame(width: 104, height: 104)
             VStack(alignment: .leading, spacing: 10) {
-                Text(needs == 0 ? "Your jungle is thriving" : "\(needs) \(needs == 1 ? "plant would" : "plants would") love some attention")
+                Text(needs == 0 ? (fine == 0 ? "Your jungle is thriving" : "Your jungle is doing well") : "\(needs) \(needs == 1 ? "plant would" : "plants would") love some attention")
                     .font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 14) {
                     stat(thriving, "Thriving", Jungle.leaf)
