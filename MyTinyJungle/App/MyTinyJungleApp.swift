@@ -69,10 +69,13 @@ struct RootView: View {
     @AppStorage("openPlantChat") private var openChat = ""
     var body: some View {
         let skip = DemoSeeder.photoDir != nil || ProcessInfo.processInfo.arguments.contains("-uiTesting")
-        if !skip && !AuthManager.shared.signedIn {
+        // `-setupChat` opens the setup chat directly (screenshots and QA, no sign-in needed).
+        if ProcessInfo.processInfo.arguments.contains("-setupChat") && !onboarded {
+            SetupChatView { onboarded = true }
+        } else if !skip && !AuthManager.shared.signedIn {
             SignInView()
         } else if !skip && !onboarded {
-            OnboardingView { onboarded = true }
+            SetupChatView { onboarded = true }
         } else { tabs }
     }
     private var tabs: some View {

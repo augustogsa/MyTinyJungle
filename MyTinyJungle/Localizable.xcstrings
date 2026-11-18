@@ -2794,6 +2794,17 @@
         }
       }
     },
+    "A few quick questions so your plants get care that fits your home.": {
+      "comment": "Setup chat intro under the mascot",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umas perguntinhas rápidas para suas plantas receberem o cuidado certo para a sua casa."
+          }
+        }
+      }
+    },
     "A fresh haircut. I'll push new growth from there.": {
       "comment": "Plant thanks the user after care action 'prune'. If the line is short and dry it is the independent (terse) personality; if theatrical it is the dramatic one; otherwise warm and cheerful.",
       "localizations": {
@@ -3369,6 +3380,17 @@
         }
       }
     },
+    "Add my first plant": {
+      "comment": "Setup chat chip: open add-plant flow",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar minha primeira planta"
+          }
+        }
+      }
+    },
     "Add photo": {
       "comment": "Accessibility",
       "localizations": {
@@ -3735,6 +3757,17 @@
         }
       }
     },
+    "All set! Want to meet your first plant now? Just snap a photo.": {
+      "comment": "Setup chat: mascot offers adding the first plant",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo pronto! Quer apresentar sua primeira planta agora? É só tirar uma foto."
+          }
+        }
+      }
+    },
     "Aloha, Vera, Gel": {
       "comment": "Comma-separated pet-name ideas for a plant; give local, playful names a native would pick, same count",
       "localizations": {
@@ -3829,6 +3862,17 @@
         }
       }
     },
+    "And air conditioning in summer?": {
+      "comment": "Setup chat: mascot asks about AC",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E ar-condicionado no verão?"
+          }
+        }
+      }
+    },
     "Any day this month.": {
       "comment": "When to do this care guide",
       "localizations": {
@@ -3836,6 +3880,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Qualquer dia deste mês."
+          }
+        }
+      }
+    },
+    "Any draughty windows or doors?": {
+      "comment": "Setup chat: mascot asks about drafts",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tem janela ou porta que deixa entrar vento?"
           }
         }
       }
@@ -6277,6 +6332,28 @@
         }
       }
     },
+    "Do you grow plants outside too, on a balcony, terrace or in a garden?": {
+      "comment": "Setup chat: mascot asks about outdoor plants",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você também tem plantas do lado de fora, na varanda, no terraço ou no quintal?"
+          }
+        }
+      }
+    },
+    "Do you turn the heating on in winter?": {
+      "comment": "Setup chat: mascot asks about home heating",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você liga o aquecedor no inverno?"
+          }
+        }
+      }
+    },
     "Dogs": {
       "comment": "Settings title",
       "localizations": {
@@ -8241,6 +8318,17 @@
         }
       }
     },
+    "Getting set up": {
+      "comment": "Setup chat navigation title",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primeiros passos"
+          }
+        }
+      }
+    },
     "Give %@ a little turn toward the light": {
       "comment": "Forecast line on Today/agenda, warm, no final period. %@ = plant name.",
       "localizations": {
@@ -8545,6 +8633,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entendi"
+          }
+        }
+      }
+    },
+    "Got it, %@. %@ climate. I'll keep an eye on the weather there.": {
+      "comment": "Setup chat: place confirmed. Args: city, climate type name (capitalized, e.g. 'Humid subtropical')",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anotado: %1$@. Clima: %2$@. Vou ficar de olho no tempo por aí."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Got it, %1$@. %2$@ climate. I'll keep an eye on the weather there."
+          }
+        }
+      }
+    },
+    "Got it, %@. I'll keep an eye on the weather there.": {
+      "comment": "Setup chat: place confirmed without climate data. Arg: city",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anotado: %@. Vou ficar de olho no tempo por aí."
           }
         }
       }
@@ -9266,6 +9382,17 @@
         }
       }
     },
+    "Hi! I'm your plants' best friend, here to help you care for them. What should I call you?": {
+      "comment": "Setup chat: first mascot question; the mascot introduces itself as the plants' best friend and care helper",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oi! Eu sou a melhor amiga das suas plantas e estou aqui para te ajudar a cuidar delas. Como posso te chamar?"
+          }
+        }
+      }
+    },
     "Hi, I'm %@! I'm a %@ (%@).": {
       "comment": "Plant voice intro in chat; args plant name, common species name, scientific name",
       "localizations": {
@@ -9570,6 +9697,17 @@
         }
       }
     },
+    "How does the air at home feel most days?": {
+      "comment": "Setup chat: mascot asks about indoor humidity",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Como o ar da sua casa costuma ser?"
+          }
+        }
+      }
+    },
     "How does the soil feel?": {
       "comment": "Dialog title",
       "localizations": {
@@ -9577,6 +9715,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Como está a terra?"
+          }
+        }
+      }
+    },
+    "How much light is there %@?": {
+      "comment": "Setup chat: mascot asks light level of a room. Arg is a place phrase with preposition, e.g. 'in the living room' / 'na sala'",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quanta luz tem %@?"
           }
         }
       }
@@ -11427,6 +11576,17 @@
         }
       }
     },
+    "Later": {
+      "comment": "Setup chat chip: add a plant later",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depois"
+          }
+        }
+      }
+    },
     "Lay it on soil": {
       "comment": "Care guide step title; short",
       "localizations": {
@@ -12171,6 +12331,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Muita luz, incluindo sol direto."
+          }
+        }
+      }
+    },
+    "Lovely to meet you, %@!": {
+      "comment": "Setup chat: mascot greets user by first name",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que bom te conhecer, %@!"
           }
         }
       }
@@ -13977,6 +14148,17 @@
         }
       }
     },
+    "None of these": {
+      "comment": "Setup chat chip: no pets or small kids",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhum desses"
+          }
+        }
+      }
+    },
     "None of your plants are on the toxic list for cats or dogs.": {
       "comment": "Jungle chat: pet safety answer.",
       "localizations": {
@@ -14259,6 +14441,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anotado no meu diário."
+          }
+        }
+      }
+    },
+    "Noted. I'll flag any plant that isn't safe for them.": {
+      "comment": "Setup chat: mascot confirms pet/kid safety warnings",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anotado. Eu aviso se alguma planta não for segura para eles."
           }
         }
       }
@@ -14721,6 +14914,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ou digite uma cidade"
+          }
+        }
+      }
+    },
+    "Or type a room": {
+      "comment": "Setup chat text field placeholder: add a custom room name",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ou digite um cômodo"
           }
         }
       }
@@ -16091,6 +16295,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Período"
+          }
+        }
+      }
+    },
+    "Rather dim": {
+      "comment": "Setup chat chip: room light level, low",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meio escuro"
           }
         }
       }
@@ -18413,6 +18628,17 @@
         }
       }
     },
+    "Some light": {
+      "comment": "Setup chat chip: room light level, medium",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luz média"
+          }
+        }
+      }
+    },
     "Some signs of a crowded pot.": {
       "comment": "Repot verdict explanation",
       "localizations": {
@@ -19739,6 +19965,17 @@
         }
       }
     },
+    "Thanks! That tells me how fast pots dry out at your place.": {
+      "comment": "Setup chat: mascot thanks after home conditions",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valeu! Assim eu sei com que rapidez a terra seca aí na sua casa."
+          }
+        }
+      }
+    },
     "Thanks.": {
       "comment": "Plant thanks the user after care action 'water'. If the line is short and dry it is the independent (terse) personality; if theatrical it is the dramatic one; otherwise warm and cheerful.",
       "localizations": {
@@ -19746,6 +19983,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Valeu."
+          }
+        }
+      }
+    },
+    "That's all": {
+      "comment": "Setup chat chip: finish a multi-choice answer",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Só isso"
           }
         }
       }
@@ -20876,6 +21124,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Digite o rótulo"
+          }
+        }
+      }
+    },
+    "Type your city": {
+      "comment": "Setup chat text field placeholder",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digite sua cidade"
+          }
+        }
+      }
+    },
+    "Typing": {
+      "comment": "Accessibility label for the mascot typing indicator",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitando"
           }
         }
       }
@@ -22516,6 +22786,17 @@
         }
       }
     },
+    "Where do you live? Your city is enough. Local climate and weather change how much water your plants need.": {
+      "comment": "Setup chat: mascot asks for city",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onde você mora? Só a cidade já basta. O clima e o tempo da sua região mudam quanta água suas plantas precisam."
+          }
+        }
+      }
+    },
     "Where do your plants live?": {
       "comment": "Onboarding title",
       "localizations": {
@@ -22615,6 +22896,17 @@
         }
       }
     },
+    "Which rooms will have plants? Pick all that apply.": {
+      "comment": "Setup chat: mascot asks which rooms; multi-select",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Em quais cômodos vão ficar plantas? Escolha quantos quiser."
+          }
+        }
+      }
+    },
     "Which water is best?": {
       "comment": "Care guide title; short",
       "localizations": {
@@ -22655,6 +22947,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quem você regou?"
+          }
+        }
+      }
+    },
+    "Who else lives with you? I'll warn you about any plant that could hurt them.": {
+      "comment": "Setup chat: mascot asks about pets and small kids; multi-select",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem mais mora com você? Eu aviso sobre qualquer planta que possa fazer mal a eles."
           }
         }
       }
@@ -23390,6 +23693,28 @@
         }
       }
     },
+    "Your jungle is ready, %@. You can change any of this later in Settings.": {
+      "comment": "Setup chat: closing line. Arg: first name",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua selva está pronta, %@. Dá para mudar tudo isso depois em Ajustes."
+          }
+        }
+      }
+    },
+    "Your jungle is ready. You can change any of this later in Settings.": {
+      "comment": "Setup chat: closing line without a name",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua selva está pronta. Dá para mudar tudo isso depois em Ajustes."
+          }
+        }
+      }
+    },
     "Your jungle is thriving": {
       "comment": "Summary",
       "localizations": {
@@ -24022,6 +24347,72 @@
         }
       }
     },
+    "in the bathroom": {
+      "comment": "Setup chat room phrase, used in 'How much light is there …?'",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no banheiro"
+          }
+        }
+      }
+    },
+    "in the bedroom": {
+      "comment": "Setup chat room phrase, used in 'How much light is there …?'",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no quarto"
+          }
+        }
+      }
+    },
+    "in the kitchen": {
+      "comment": "Setup chat room phrase, used in 'How much light is there …?'",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "na cozinha"
+          }
+        }
+      }
+    },
+    "in the living room": {
+      "comment": "Setup chat room phrase, used in 'How much light is there …?'. pt: na sala",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "na sala"
+          }
+        }
+      }
+    },
+    "in the office": {
+      "comment": "Setup chat room phrase, used in 'How much light is there …?'",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no escritório"
+          }
+        }
+      }
+    },
+    "in “%@”": {
+      "comment": "Setup chat room phrase for a custom room name, used in 'How much light is there …?'. Arg: room name",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "em “%@”"
+          }
+        }
+      }
+    },
     "lower light": {
       "comment": "Care guide UI",
       "localizations": {
@@ -24062,6 +24453,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@"
+          }
+        }
+      }
+    },
+    "on the balcony": {
+      "comment": "Setup chat room phrase, used in 'How much light is there …?'",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "na varanda"
           }
         }
       }
