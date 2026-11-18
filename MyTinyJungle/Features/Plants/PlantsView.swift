@@ -83,8 +83,9 @@ struct PlantsView: View {
                                 ForEach(shown[chunks[i]]) { p in
                                     NavigationLink(value: p.id) { PlantTile(plant: p) }.buttonStyle(.plain)
                                 }
+                                if i == 0, chunks.count > 1 || shown.count >= 4 { NativeAdCard(slot: "plants-grid-\(i)", style: .tile) }
                             }
-                            if i < chunks.count - 1 { NativeAdCard() }
+                            if i > 0, i < chunks.count - 1 { NativeAdCard(slot: "plants-row-\(i)") }
                         }
                     }
                 }

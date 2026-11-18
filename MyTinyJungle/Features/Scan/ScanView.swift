@@ -31,7 +31,7 @@ struct ScanView: View {
                     hero
                     modes
                     if !shopping.isEmpty { shoppingList }
-                    if shelf.count + shopping.count >= 2 { NativeAdCard() }
+                    if shelf.count + shopping.count >= 2 { NativeAdCard(slot: "scan") }
                     shelfSection
                 }
                 .padding(.horizontal, 16).padding(.bottom, 32)

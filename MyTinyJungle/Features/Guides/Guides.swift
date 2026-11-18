@@ -159,9 +159,13 @@ struct GuidesView: View {
                 }
                 SectionTitle("All guides")
                 VStack(spacing: 0) {
-                    ForEach(GuideLibrary.all) { g in
+                    ForEach(Array(GuideLibrary.all.enumerated()), id: \.element.id) { i, g in
                         Button { open = g } label: { GuideRow(guide: g) }.buttonStyle(.plain)
                         if g.id != GuideLibrary.all.last?.id { Divider().padding(.leading, 76) }
+                        if i == 4, AdPool.shared.ad(for: "guides") != nil {
+                            NativeAdCard(slot: "guides", style: .row)
+                            Divider().padding(.leading, 76)
+                        }
                     }
                 }
                 .jungleCard()

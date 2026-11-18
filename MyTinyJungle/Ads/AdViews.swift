@@ -2,30 +2,63 @@ import SwiftUI
 import UIKit
 import GoogleMobileAds
 
-/// Native ad as a Tiny Jungle card, with an "Ad" label. Renders nothing for Plus, before consent, or on load failure.
+enum AdStyle { case card, row, tile }
+
+/// Keeps a few native ads ready so slots appear filled or not at all (never an empty gap).
+@MainActor @Observable
+final class AdPool {
+    static let shared = AdPool()
+    private(set) var ads: [NativeAd] = []
+    private var bySlot: [String: Int] = [:]
+    private var fetchers: [NativeAdFetcher] = []
+    private var started = false
+
+    func start() {
+        let m = AdsManager.shared
+        guard m.shouldShowAds else { return }
+        m.prepare()
+        guard m.ready, !started else { return }
+        started = true
+        for _ in 0..<4 {
+            let f = NativeAdFetcher(); fetchers.append(f)
+            f.load { [weak self] ad in self?.ads.append(ad) }
+        }
+    }
+
+    func ad(for slot: String) -> NativeAd? {
+        guard AdsManager.shared.shouldShowAds, !ads.isEmpty else { return nil }
+        if let i = bySlot[slot] { return ads[i % ads.count] }
+        let i = bySlot.count % ads.count
+        bySlot[slot] = i
+        return ads[i]
+    }
+}
+
+/// Native ad dressed as a Tiny Jungle card, row or grid tile, always marked "Sponsored".
+/// Renders nothing (no gap) for Plus, before consent, or until an ad is ready.
 struct NativeAdCard: View {
-    @State private var ad: NativeAd?
-    @State private var loader = NativeAdFetcher()
-    private var ads: AdsManager { .shared }
+    var slot: String = "default"
+    var style: AdStyle = .card
+    private var pool: AdPool { .shared }
 
     var body: some View {
         Group {
-            if ads.shouldShowAds, let ad {
-                NativeAdCardView(ad: ad).frame(height: 72)
-                    .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
-                    .accessibilityLabel("Advertisement")
-            } else {
-                Color.clear.frame(height: 0)
+            if let ad = pool.ad(for: slot) {
+                switch style {
+                case .card:
+                    NativeAdCardView(ad: ad, style: .card).frame(height: 76)
+                        .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                        .shadow(color: .black.opacity(0.05), radius: 10, y: 3)
+                case .row:
+                    NativeAdCardView(ad: ad, style: .row).frame(height: 76)
+                case .tile:
+                    NativeAdCardView(ad: ad, style: .tile).frame(height: 218)
+                        .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                        .shadow(color: .black.opacity(0.05), radius: 10, y: 3)
+                }
             }
         }
-        .onAppear { ads.prepare(); load() }
-        .onChange(of: ads.ready) { _, _ in load() }
-    }
-
-    private func load() {
-        guard ads.shouldShowAds, ads.ready, ad == nil else { return }
-        loader.load { ad = $0 }
+        .accessibilityLabel("Sponsored")
     }
 }
 
@@ -47,9 +80,43 @@ final class NativeAdFetcher: NSObject, NativeAdLoaderDelegate {
 
 private struct NativeAdCardView: UIViewRepresentable {
     let ad: NativeAd
+    var style: AdStyle = .card
     func makeUIView(context: Context) -> NativeAdView {
+        style == .tile ? makeTile() : makeRow()
+    }
+    private func makeTile() -> NativeAdView {
         let v = NativeAdView()
         v.backgroundColor = UIColor(Jungle.surface)
+        let media = MediaView(); media.contentMode = .scaleAspectFill; media.clipsToBounds = true
+        let badge = Self.badge()
+        let headline = UILabel(); headline.font = Self.rounded(.headline); headline.textColor = UIColor(Jungle.text); headline.numberOfLines = 1
+        let body = UILabel(); body.font = .preferredFont(forTextStyle: .subheadline); body.textColor = UIColor(Jungle.subtle); body.numberOfLines = 1
+        var cfg = UIButton.Configuration.tinted(); cfg.cornerStyle = .capsule; cfg.baseForegroundColor = UIColor(Jungle.forest); cfg.baseBackgroundColor = UIColor(Jungle.forest); cfg.buttonSize = .mini
+        let cta = UIButton(configuration: cfg); cta.isUserInteractionEnabled = false
+        for s in [media, badge, headline, body, cta] as [UIView] { s.translatesAutoresizingMaskIntoConstraints = false; v.addSubview(s) }
+        NSLayoutConstraint.activate([
+            media.topAnchor.constraint(equalTo: v.topAnchor), media.leadingAnchor.constraint(equalTo: v.leadingAnchor),
+            media.trailingAnchor.constraint(equalTo: v.trailingAnchor), media.heightAnchor.constraint(equalToConstant: 128),
+            badge.topAnchor.constraint(equalTo: v.topAnchor, constant: 10), badge.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 10),
+            headline.topAnchor.constraint(equalTo: media.bottomAnchor, constant: 12),
+            headline.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 14), headline.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -14),
+            body.topAnchor.constraint(equalTo: headline.bottomAnchor, constant: 2),
+            body.leadingAnchor.constraint(equalTo: headline.leadingAnchor), body.trailingAnchor.constraint(equalTo: headline.trailingAnchor),
+            cta.topAnchor.constraint(equalTo: body.bottomAnchor, constant: 6), cta.leadingAnchor.constraint(equalTo: headline.leadingAnchor),
+        ])
+        v.mediaView = media; v.headlineView = headline; v.bodyView = body; v.callToActionView = cta
+        return v
+    }
+    private static func badge() -> UILabel {
+        let b = UILabel(); b.text = "  Sponsored  "; b.font = .systemFont(ofSize: 11, weight: .semibold)
+        b.textColor = UIColor(Jungle.text); b.backgroundColor = UIColor(Jungle.surface).withAlphaComponent(0.92)
+        b.layer.cornerRadius = 9; b.clipsToBounds = true
+        b.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        return b
+    }
+    private func makeRow() -> NativeAdView {
+        let v = NativeAdView()
+        v.backgroundColor = style == .row ? .clear : UIColor(Jungle.surface)
         let icon = UIImageView(); icon.layer.cornerRadius = 12; icon.layer.cornerCurve = .continuous; icon.clipsToBounds = true; icon.contentMode = .scaleAspectFill
         let badge = UILabel(); badge.text = " Sponsored "; badge.font = .systemFont(ofSize: 10, weight: .semibold)
         badge.textColor = UIColor(Jungle.subtle); badge.backgroundColor = UIColor(Jungle.subtle).withAlphaComponent(0.12)
@@ -81,6 +148,8 @@ private struct NativeAdCardView: UIViewRepresentable {
         (v.bodyView as? UILabel)?.text = ad.body
         (v.iconView as? UIImageView)?.image = ad.icon?.image
         v.iconView?.isHidden = ad.icon == nil
+        v.mediaView?.mediaContent = ad.mediaContent
+        v.mediaView?.contentMode = .scaleAspectFill
         (v.callToActionView as? UIButton)?.configuration?.title = ad.callToAction ?? "Open"
         v.nativeAd = ad
     }
@@ -92,5 +161,6 @@ private struct NativeAdCardView: UIViewRepresentable {
 
 /// Bottom-of-page ad: the same compact native row, so it reads like part of the page.
 struct BottomBannerAd: View {
-    var body: some View { NativeAdCard().padding(.horizontal, 16).padding(.vertical, 6) }
+    var slot = "bottom"
+    var body: some View { NativeAdCard(slot: slot).padding(.horizontal, 16).padding(.vertical, 6) }
 }

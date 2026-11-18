@@ -5,6 +5,7 @@ struct TodayView: View {
     @Environment(\.modelContext) private var ctx
     @Query(filter: #Predicate<Plant> { !$0.isArchived }, sort: \Plant.createdAt) private var plants: [Plant]
     @Query(sort: \ChatMessage.date) private var allMessages: [ChatMessage]
+    @Query private var propagations: [Propagation]
     @State private var chipKind: CareKind?
     @State private var soilPlant: Plant?
     @State private var showSettings = false
@@ -52,6 +53,7 @@ struct TodayView: View {
                                 }
                                 .id("today")
                             }
+                            ComingUpCard(plants: plants, propagations: propagations) { path.append($0) }
                             Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants, needIDs: Set(plants.filter { CareEngine.needsYou($0) }.map(\.id))) }.buttonStyle(.plain)
                             VStack(alignment: .leading, spacing: 10) {
                                 SectionTitle("Your plants", action: "See all") { selectedTab = 1 }
@@ -196,6 +198,7 @@ struct TodayView: View {
                 .padding(14).jungleCard()
             }
             .buttonStyle(.plain)
+            NativeAdCard(slot: "today")
         }
     }
 

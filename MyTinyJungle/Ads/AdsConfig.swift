@@ -17,11 +17,12 @@ enum AdsConfig {
     #endif
 
     /// Collection grid: first ad after this many rows, then every `gridEvery` rows.
-    static let gridFirstRow = 4
-    static let gridEvery = 8
+    static let gridFirstRow = 2
+    static let gridEvery = 6
     /// Ads off for UI tests and website demo screenshots.
     static var disabledByLaunch: Bool {
         let a = ProcessInfo.processInfo.arguments
+        if a.contains("-demoAds") { return false }
         return a.contains("-uiTesting") || a.contains("-noAds") || a.contains("-demoPhotos")
     }
 }

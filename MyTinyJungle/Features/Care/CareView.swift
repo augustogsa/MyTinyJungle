@@ -68,7 +68,7 @@ struct CareView: View {
             }
             let days = grouped.keys.sorted()
             ForEach(days, id: \.self) { day in
-                if AdSlots.agendaAd(before: days.firstIndex(of: day) ?? 0) { NativeAdCard() }
+                if AdSlots.agendaAd(before: days.firstIndex(of: day) ?? 0) { NativeAdCard(slot: "agenda") }
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(dayTitle(day)).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
@@ -178,7 +178,7 @@ struct SeasonGuideView: View {
         VStack(alignment: .leading, spacing: 14) {
             ForEach(Climate.shared.alerts(for: plants)) { a in
                 HStack(alignment: .top, spacing: 12) {
-                    Image(systemName: a.symbol).font(.title3).foregroundStyle(Jungle.terracotta).frame(width: 28)
+                    Icon3DView(a.icon, size: 28)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(a.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         Text(a.detail).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
@@ -202,7 +202,7 @@ struct SeasonGuideView: View {
             }
             Text("\(season.rawValue) for your plants").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             ForEach(items, id: \.self) { item in
-                if item == items.dropFirst(3).first { NativeAdCard() }
+                if item == items.dropFirst(3).first { NativeAdCard(slot: "agenda") }
                 Button { toggle(item) } label: {
                     HStack(alignment: .top, spacing: 10) {
                         Image(systemName: checked(item) ? "checkmark.circle.fill" : "circle").foregroundStyle(Jungle.leaf)
@@ -212,7 +212,7 @@ struct SeasonGuideView: View {
                 }
                 .buttonStyle(.plain)
             }
-            BottomBannerAd().padding(.top, 8)
+            NativeAdCard(slot: "season").padding(.top, 8)
         }
     }
 
@@ -303,8 +303,9 @@ struct TravelPlanView: View {
                     Button {
                         let dayBefore = leave.addingTimeInterval(-86_400)
                         for p in plants { ctx.insert(CareTask(title: "Deep water \(p.name) before the trip", kind: .water, plantID: p.id, due: dayBefore)) }
+                        CarePrefs.trip = (leave, back)
                         try? ctx.save(); saved = true
-                    } label: { Text(saved ? "Prep tasks added to Care" : "Add prep tasks to Care").font(.headline).frame(maxWidth: .infinity).frame(height: 48) }
+                    } label: { Text(saved ? "We'll remind you before you go" : "Remind me to get everyone ready").font(.headline).frame(maxWidth: .infinity).frame(height: 48) }
                     .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest).disabled(saved)
                     ShareLink(item: sitterNote, subject: Text("Plant care while I'm away"), message: Text("Thank you for looking after my plants")) {
                         Text("Send plant-sitter instructions").font(.headline).frame(maxWidth: .infinity).frame(height: 48)

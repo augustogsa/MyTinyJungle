@@ -118,6 +118,7 @@ struct PlantHomeView: View {
 
     private var overview: some View {
         VStack(alignment: .leading, spacing: 14) {
+            PlantForecastSection(plant: plant)
             VStack(alignment: .leading, spacing: 10) {
                 SectionTitle("How-to for \(plant.name)", action: "All") { showGuides = true }
                 let picks = Array(GuideLibrary.suggested(for: plant).prefix(3))
@@ -172,6 +173,7 @@ struct PlantHomeView: View {
                 InfoRow(symbol: "calendar", title: "Next care", value: nextCare)
             }
             .jungleCard()
+            NativeAdCard(slot: "plant-\(plant.id)")
         }
     }
 

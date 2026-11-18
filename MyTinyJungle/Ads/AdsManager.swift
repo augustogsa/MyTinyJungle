@@ -33,6 +33,7 @@ final class AdsManager {
                 guard ConsentInformation.shared.canRequestAds, !Store.shared.isPlus else { self.preparing = false; return }
                 await MobileAds.shared.start()
                 self.ready = true
+                AdPool.shared.start()
                 self.preparing = false
             }
         }

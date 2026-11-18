@@ -1,10 +1,14 @@
 import SwiftUI
 import SwiftData
 import GoogleSignIn
+import Combine
+import UserNotifications
 
 @main
 struct MyTinyJungleApp: App {
-    let container: ModelContainer = {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    let container: ModelContainer = MyTinyJungleApp.shared
+    static let shared: ModelContainer = {
         let schema = Schema([Plant.self, CareEvent.self, ChatMessage.self, OwnedProduct.self, Space.self, CareTask.self, Propagation.self])
         let inMemory = ProcessInfo.processInfo.arguments.contains("-uiTesting")
         // iCloud backup: mirror to the private CloudKit database. Never for tests or demo data.
@@ -20,7 +24,10 @@ struct MyTinyJungleApp: App {
         }
     }()
 
-    init() { Self.roundedTitles() }
+    init() {
+        Self.roundedTitles()
+        NotificationDelegate.shared.container = Self.shared
+    }
 
     /// Navigation titles in SF Pro Rounded, warm forest ink.
     private static func roundedTitles() {
@@ -46,6 +53,7 @@ struct MyTinyJungleApp: App {
             RootView()
                 .tint(Jungle.forest)
                 .task { DemoSeeder.seedIfAsked(container.mainContext) }
+                .task { try? await Task.sleep(for: .seconds(2)); AdPool.shared.start() }
                 .task { await AuthManager.shared.refresh(); await CloudBackup.shared.refresh() }
                 .onOpenURL { GIDSignIn.sharedInstance.handle($0) }
         }
@@ -70,12 +78,20 @@ struct RootView: View {
         tabView
             .onChange(of: phase) { _, p in
                 if p == .background { Task { await CareReminders.reschedule(ctx) } }
-                if p == .active { Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); await CareReminders.reschedule(ctx) } }
+                if p == .active { Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); ProactiveVoice.speak(ctx); await CareReminders.reschedule(ctx) } }
+            }
+            // Reschedule on every change to the care log.
+            .onReceive(NotificationCenter.default.publisher(for: ModelContext.didSave).debounce(for: .seconds(1), scheduler: RunLoop.main)) { _ in
+                Task { await CareReminders.reschedule(ctx) }
             }
             .task {
                 JungleRooms.sync((try? ctx.fetch(FetchDescriptor<Space>())) ?? [])
                 await Climate.shared.refreshClimate()
                 await Climate.shared.refreshForecast()
+                ProactiveVoice.speak(ctx)
+                if CareReminders.enabled, await UNUserNotificationCenter.current().notificationSettings().authorizationStatus == .notDetermined {
+                    await CareReminders.requestPermission()
+                }
                 await CareReminders.reschedule(ctx)
             }
     }
