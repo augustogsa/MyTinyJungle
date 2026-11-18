@@ -1,5 +1,6 @@
 import SwiftUI
 import StoreKit
+import SwiftData
 
 /// Compact paywall: short header, benefits, then a plan carousel (yearly first) and one buy button.
 struct PaywallView: View {
@@ -10,6 +11,7 @@ struct PaywallView: View {
     @State private var selected: Product.ID?
     @State private var buying = false
     @State private var height: CGFloat = 700
+    @Query(sort: \Plant.createdAt) private var plants: [Plant]
 
     private var ordered: [Product] { products.sorted { ($0.subscription?.subscriptionPeriod.unit == .year ? 0 : 1) < ($1.subscription?.subscriptionPeriod.unit == .year ? 0 : 1) } }
     private var current: Product? { ordered.first { $0.id == selected } ?? ordered.first }
@@ -18,16 +20,12 @@ struct PaywallView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Tiny Jungle Plus").font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text(reason?.title ?? "Give every plant the love it deserves.")
-                            .font(.body).foregroundStyle(Jungle.subtle)
-                    }
+                    hero
                     VStack(alignment: .leading, spacing: 18) {
-                        perk(.pottedPlant, "Room for every plant you love", "No limits on your growing family.")
-                        perk(.shieldStar, "Calm, ad-free care", "Just you and your plants, nothing in between.")
-                        perk(.fertilizer, "The right food for each plant", "Scan any soil or fertilizer and see who will thrive on it.")
-                        perk(.healthShield, "Plant Doctor, always first", "New ways to keep your plants healthy reach you first.")
+                        perk(.pottedPlant, "Every plant gets a place", "Adopt as many green friends as your windowsills can hold.")
+                        perk(.firstAid, "Catch trouble early", "A droopy leaf or a yellow tip? You'll know what to do before it gets worse.")
+                        perk(.fertilizer, "The right food, every time", "Scan a bag of soil or fertilizer and see which plants will love it.")
+                        perk(.careHands, "Just you and your plants", "No ads. Quiet, calm care, the way it should feel.")
                     }
                     plans
                     footer
@@ -43,6 +41,48 @@ struct PaywallView: View {
                 products = (try? await Product.products(for: Store.productIDs)) ?? []
                 selected = ordered.first?.id
             }
+        }
+    }
+
+    private var hero: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: -14) {
+                ForEach(Array(plants.prefix(5).enumerated()), id: \.element.id) { i, p in
+                    PlantAvatar(data: p.photo, size: 56)
+                        .overlay(Circle().strokeBorder(Jungle.surface, lineWidth: 3))
+                        .zIndex(Double(10 - i))
+                }
+                if plants.isEmpty { Icon3DView(.pottedPlant, size: 56) }
+                ZStack {
+                    Circle().fill(Jungle.forest)
+                    Image(systemName: "plus").font(.system(size: 20, weight: .bold)).foregroundStyle(.white)
+                }
+                .frame(width: 56, height: 56).overlay(Circle().strokeBorder(Jungle.surface, lineWidth: 3))
+            }
+            .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(headline).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(subline).font(.body).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var headline: String {
+        switch reason {
+        case .morePlants: "Your jungle is ready to grow"
+        case .scanCompatibility: "Feed them what they love"
+        case .inventory: "Everything they need, in one place"
+        case nil: "Give every plant the love it deserves"
+        }
+    }
+
+    private var subline: String {
+        let names = plants.prefix(2).map(\.name)
+        let family = names.count == 2 ? "\(names[0]), \(names[1]) and the rest of the family" : "Your plants"
+        switch reason {
+        case .morePlants: return "\(family) would love some company. Plus makes room for all of them."
+        default: return "\(family) will thank you. Plus gives you everything to keep them happy."
         }
     }
 
@@ -106,7 +146,7 @@ struct PaywallView: View {
                     buying = false
                 }
             } label: {
-                Group { if buying { ProgressView().tint(.white) } else { Text("Continue").font(.headline) } }
+                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? "Grow with Plus · \($0.displayPrice)/year" : "Grow with Plus · \($0.displayPrice)/month" } ?? "Grow with Plus").font(.headline) } }
                     .frame(maxWidth: .infinity).frame(height: 50)
             }
             .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
@@ -117,7 +157,7 @@ struct PaywallView: View {
                 Link("Privacy", destination: URL(string: "https://www.simpleappscompany.com/mytinyjungle/privacy")!)
             }
             .font(.footnote).foregroundStyle(Jungle.subtle)
-            Text("Renews automatically. Cancel anytime in Settings, no hard feelings.").font(.caption2).foregroundStyle(Jungle.subtle)
+            Text("Renews automatically. Cancel anytime in Settings, no hard feelings. Your plants stay yours either way.").font(.caption2).foregroundStyle(Jungle.subtle)
         }
     }
 }

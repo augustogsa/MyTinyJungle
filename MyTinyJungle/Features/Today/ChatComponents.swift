@@ -216,7 +216,7 @@ struct GlassComposer: View {
     }
     private var sendButton: some View {
         Button(action: send) {
-            Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(.white)
+            Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(Jungle.surface)
                 .frame(width: 40, height: 40)
                 .background(canSend ? Jungle.forest : Jungle.subtle.opacity(0.4), in: Circle())
         }

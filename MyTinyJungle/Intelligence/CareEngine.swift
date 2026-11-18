@@ -178,7 +178,7 @@ enum PlantStatus: Int, Comparable {
         case .petRisk: .shieldStar
         case .hungry: .fertilizer
         case .repot: .pot
-        case .thriving: .shieldLeaf
+        case .thriving: .sprout
         }
     }
     var tint: Color {

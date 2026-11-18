@@ -54,7 +54,7 @@ final class CloudBackup {
         case .on: syncing ? "Backing up…" : lastSync.map { "Last backup \($0.formatted(.relative(presentation: .named)))" } ?? "On. Your jungle backs up automatically."
         case .noAccount: "Sign in to iCloud in the Settings app to back up."
         case .off: pendingRestart ? "Off after you reopen the app." : "Off. Your jungle stays on this iPhone."
-        case .unavailable: pendingRestart ? "On after you reopen the app." : "iCloud isn't available right now."
+        case .unavailable: pendingRestart ? "On after you reopen the app." : "Sign in to iCloud on this iPhone to keep your jungle safe."
         }
     }
 }

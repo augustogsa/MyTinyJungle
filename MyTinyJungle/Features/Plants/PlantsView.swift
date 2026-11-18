@@ -120,7 +120,7 @@ struct PlantsView: View {
             : need.isEmpty ? "\(happy) of \(plants.count) are doing well. Nothing to do right now."
             : "\(happy) of \(plants.count) are doing well. Tap \"Needs you\" to see what to do."
         return HStack(spacing: 14) {
-            Icon3DView(need.isEmpty ? .shieldLeaf : .wilted, size: 56)
+            Icon3DView(need.isEmpty ? .sprout : .wilted, size: 56)
             VStack(alignment: .leading, spacing: 4) {
                 Text(title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Text(detail).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)

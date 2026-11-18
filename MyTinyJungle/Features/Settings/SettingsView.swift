@@ -25,7 +25,9 @@ struct SettingsView: View {
                     }
                     JungleGroup(title: "iCloud backup", footer: "Your plants, photos and history copy to your private iCloud. Sign in to the same iCloud on a new iPhone and your jungle comes back on its own.") {
                         JungleRow(icon: .weather, title: "Back up to iCloud", subtitle: cloud.summary) {
-                            Toggle("", isOn: Binding(get: { CloudBackup.enabled }, set: { cloud.setEnabled($0) })).labelsHidden()
+                            let blocked = cloud.status == .noAccount || (cloud.status == .unavailable && !cloud.pendingRestart)
+                            Toggle("", isOn: Binding(get: { CloudBackup.enabled && !blocked }, set: { cloud.setEnabled($0) })).labelsHidden()
+                                .disabled(blocked)
                         }
                     }
                     JungleGroup(title: "Care alerts", footer: "A gentle note on mornings when a plant needs you. Never more than one a day.") {

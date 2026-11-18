@@ -176,11 +176,11 @@ struct MeView: View {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Tiny Jungle Plus").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                    Text("Room for every plant you love, the right food for each one, and no ads.").font(.subheadline).foregroundStyle(Jungle.subtle)
+                    Text("Room for every plant you love, early help when one struggles, and the right food for each.").font(.subheadline).foregroundStyle(Jungle.subtle)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
-                Icon3DView(.crown, size: 48)
+                Icon3DView(.pottedPlant, size: 48)
             }
             .padding(16)
             .background(Jungle.sun.opacity(0.25), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))

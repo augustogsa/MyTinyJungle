@@ -27,6 +27,7 @@ struct ScanView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
+                    TabHeader(title: "Scan", subtitle: "Labels, new plants and sick leaves") { EmptyView() }
                     hero
                     modes
                     if !shopping.isEmpty { shoppingList }
@@ -36,7 +37,7 @@ struct ScanView: View {
                 .padding(.horizontal, 16).padding(.bottom, 32)
             }
             .jungleBackdrop()
-            .navigationTitle("Scan")
+            .toolbar(.hidden, for: .navigationBar)
             .task { if DemoSeeder.wantsScan, product == nil { try? await Task.sleep(for: .seconds(1)); product = ProductAnalyzer.analyze(text: DemoSeeder.sampleLabel) } }
             .sheet(item: $paywall) { PaywallView(reason: $0) }
             .sheet(isPresented: $addingPlant) { AddPlantFlow() }
@@ -125,7 +126,7 @@ struct ScanView: View {
                 Menu {
                     ForEach(plants) { p in Button(p.name) { checking = p } }
                 } label: {
-                    modeTile("A sick leaf", "Spots, yellowing or pests", .healthShield, Jungle.peach.opacity(0.45))
+                    modeTile("A sick leaf", "Spots, yellowing or pests", .wilted, Jungle.peach.opacity(0.45))
                 }
                 .disabled(plants.isEmpty)
             }

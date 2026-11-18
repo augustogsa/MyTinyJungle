@@ -143,7 +143,7 @@ struct CareStoryCard: View {
     }
 
     private var check: some View {
-        Image(systemName: "checkmark").font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
+        Image(systemName: "checkmark").font(.system(size: 18, weight: .bold)).foregroundStyle(Jungle.surface)
             .frame(width: 48, height: 48).background(Jungle.forest, in: Circle())
     }
 }

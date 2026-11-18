@@ -454,7 +454,8 @@ struct PlantStoryView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(storyLine(e)).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                 if let d = e.photo, let img = UIImage(data: d) {
-                    Image(uiImage: img).resizable().scaledToFill().frame(maxWidth: .infinity).frame(height: 180)
+                    Color.clear.frame(maxWidth: .infinity).frame(height: 180)
+                        .overlay { Image(uiImage: img).resizable().scaledToFill() }
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
                 Text(e.date.formatted(date: .omitted, time: .shortened)).font(.caption).foregroundStyle(Jungle.subtle)

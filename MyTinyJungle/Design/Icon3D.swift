@@ -42,7 +42,7 @@ enum Icon3D: String, CaseIterable, Identifiable {
         case .newLeaf: .sprout
         case .flower: .flower
         case .treat: .treatment
-        case .health: .healthShield
+        case .health: .firstAid
         case .propagate: .seedling
         }
     }
@@ -93,7 +93,7 @@ extension Icon3D {
         case "pawprint.fill", "pawprint": .shieldCheck
         case "heart.fill": .calendarHeart
         case "ant.fill": .bug
-        case "stethoscope": .healthShield
+        case "stethoscope": .firstAid
         case "ruler", "ruler.fill": .growth
         case "moon.zzz": .moon
         case "snowflake": .snow
@@ -113,7 +113,7 @@ extension Icon3D {
         case "nosign": .shieldStar
         case "hand.raised", "hand.raised.fill": .shieldCheck
         case "person.2.fill": .forest
-        case "eye": .healthShield
+        case "eye": .firstAid
         default: nil
         }
     }
