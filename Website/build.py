@@ -44,6 +44,8 @@ T = {
   "s1_list": [("Plants", "Names, species, rooms and history"), ("Today", "The chat where you log care and ask questions"), ("Care", "This week, this month, this season"), ("Scan", "Products and plants, on-device")],
   "s2_eyebrow": "Plan ahead", "s2_h": "Know what's next before your plants droop.",
   "s2_sub": "A care calendar built from what you actually did. Going away? Travel care tells you what to do before you leave.",
+  "s3_eyebrow": "Scan", "s3_h": "Point at a label. Know if it's right for your plants.",
+  "s3_sub": "Scan the back of a fertiliser, potting mix or treatment and My Tiny Jungle checks it against every plant you have. Or scan a new plant, or a sick leaf, to find out what's going on.",
   "p_eyebrow": "Pricing", "p_h": "Start free. Grow when you're ready.",
   "plans": [
     ("Free", "€0", "forever", ["Up to 5 plants", "Chat and care requests", "Soil-check ritual", "Care calendar"], False, ""),
@@ -120,6 +122,8 @@ T = {
   "s1_list": [("Plantas", "Nomes, espécies, divisões e histórico"), ("Hoje", "A conversa onde regista cuidados e faz perguntas"), ("Cuidados", "Esta semana, este mês, esta estação"), ("Ler", "Produtos e plantas, no dispositivo")],
   "s2_eyebrow": "Planeie com antecedência", "s2_h": "Saiba o que vem a seguir antes de as plantas murcharem.",
   "s2_sub": "Um calendário feito a partir do que realmente fez. Vai viajar? Os cuidados de viagem dizem-lhe o que fazer antes de sair.",
+  "s3_eyebrow": "Ler", "s3_h": "Aponte para o rótulo. Saiba se serve para as suas plantas.",
+  "s3_sub": "Leia o verso de um adubo, substrato ou tratamento e a My Tiny Jungle compara-o com todas as suas plantas. Ou leia uma planta nova, ou uma folha doente, para perceber o que se passa.",
   "p_eyebrow": "Preços", "p_h": "Comece grátis. Cresça quando quiser.",
   "plans": [
     ("Grátis", "0 €", "para sempre", ["Até 5 plantas", "Conversa e pedidos de cuidado", "Ritual de verificar a terra", "Calendário de cuidados"], False, ""),
@@ -219,19 +223,23 @@ def home(L):
 <section class="hero"><div class="wrap">
 <div><h1 class="rise">{t['h1']}</h1><p class="lead rise d1">{t['lead']}</p>
 <div class="ctas rise d2">{cta}</div><p class="note">{t['note']}</p></div>
-<div class="stage"><div class="blob"></div>{phone('screen-today.jpg', 'Today chat screen').replace('loading="lazy"', 'fetchpriority="high"')}{phone('screen-care.jpg', 'Care calendar screen', 'back')}</div>
+<div class="stage"><div class="blob"></div>{phone('screen-home.jpg', 'Home screen').replace('loading="lazy"', 'fetchpriority="high"')}{phone('screen-plant.jpg', 'Plant page', 'back')}</div>
 </div></section>
 <section class="talk"><div class="wrap"><div class="bubbles">{bub}</div></div></section>
 <section class="section" id="features"><div class="wrap">
 <div class="eyebrow">{t['f_eyebrow']}</div><h2>{t['f_h']}</h2><p class="sub">{t['f_sub']}</p>
 <div class="grid">{feats}</div></div></section>
 <section class="section"><div class="wrap split rev">
-{phone('screen-plants.jpg', 'Plants screen')}
+{phone('screen-plants.jpg', 'My Collection screen')}
 <div><div class="eyebrow">{t['s1_eyebrow']}</div><h2>{t['s1_h']}</h2><p class="sub">{t['s1_sub']}</p><ul>{lst}</ul></div>
 </div></section>
 <section class="section"><div class="wrap split">
 <div><div class="eyebrow">{t['s2_eyebrow']}</div><h2>{t['s2_h']}</h2><p class="sub">{t['s2_sub']}</p></div>
 {phone('screen-care.jpg', 'Care screen')}
+</div></section>
+<section class="section"><div class="wrap split rev">
+{phone('screen-scan.jpg', 'Scan screen')}
+<div><div class="eyebrow">{t['s3_eyebrow']}</div><h2>{t['s3_h']}</h2><p class="sub">{t['s3_sub']}</p></div>
 </div></section>
 <section class="section" id="pricing"><div class="wrap">
 <div class="eyebrow">{t['p_eyebrow']}</div><h2>{t['p_h']}</h2>
