@@ -81,7 +81,7 @@ H = {
   "best": "Best value", "plan_k": {"free": "Free", "monthly": "Plus · monthly", "plus": "Plus · yearly"}, "plans_h": "Start free. Grow when you're ready.", "plans_p": "Five plants are free, forever. When your jungle outgrows them, Plus costs less than a coffee a month.", "feat_p": "Every tool a plant parent could wish for, in four little groups.",
   "close_names": [("monstera", "Monty", "Monstera"), ("basil", "Pesto", "Basil"), ("orchid", "Pearl", "Orchid"), ("pothos", "Goldie", "Pothos"), ("echeveria", "Rosetta", "Echeveria"), ("peacelily", "Lily", "Peace lily"), ("snake", "Sergeant", "Snake plant"), ("zz", "Zeke", "ZZ plant")],
   "close_k": "8 plants waiting to say hello", "prev": "Previous screen", "next": "Next screen",
-  "plus_btn": "Get Plus in the app",
+  "plus_btn": "Choose this plan",
   "fine": "Prices in euros; local prices may vary. Subscriptions renew automatically until cancelled in your Apple account settings.",
   "faq_h": "Good to know",
   "voice_h": "Funny, because it's true",
@@ -175,7 +175,7 @@ H = {
   "best": "Mais vantajoso", "plan_k": {"free": "Grátis", "monthly": "Plus · mensal", "plus": "Plus · anual"}, "plans_h": "Comece grátis. Cresça quando quiser.", "plans_p": "Cinco plantas são grátis para sempre. Quando a sua selva crescer, o Plus custa menos que um cafezinho por mês.", "feat_p": "Todos os recursos, organizados em quatro grupos.",
   "close_names": [("monstera", "Costelinha", "Costela-de-adão"), ("basil", "Pesto", "Manjericão"), ("orchid", "Pérola", "Orquídea"), ("pothos", "Dourada", "Jiboia"), ("echeveria", "Rosinha", "Echevéria"), ("peacelily", "Lili", "Lírio-da-paz"), ("snake", "Jorge", "Espada-de-são-jorge"), ("zz", "Zezé", "Zamioculca")],
   "close_k": "8 plantas esperando por você", "prev": "Tela anterior", "next": "Próxima tela",
-  "plus_btn": "Assine o Plus pelo app",
+  "plus_btn": "Quero este plano",
   "fine": "Valores em euros. No app, o preço aparece em reais. A assinatura é renovada automaticamente e pode ser cancelada a qualquer momento nos ajustes da sua conta Apple.",
   "faq_h": "Perguntas frequentes",
   "voice_h": "Cada planta com a sua personalidade",
@@ -327,8 +327,8 @@ def render_home(L, t, page, phone, apple_icon):
 <section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
 <section class="pricing" id="pricing"><div class="wrap phead">{E("water", 120)}<h2>{h["plans_h"]}</h2><p>{h["plans_p"]}</p></div><div class="wrap fields">
 {field("free", h["free"], f'<a class="btn ghost" href="{TESTFLIGHT_URL}" rel="noopener">{h["cta"]}</a>')}
-{field("monthly", h["monthly"], f'<a class="btn" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>')}
-{field("plus", h["plus"], f'<a class="btn light" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>', h["best"])}
+{field("monthly", h["monthly"], f'<a class="btn" href="https://www.mytinyjungle.com{t["prefix"]}/plus?plan=monthly">{h["plus_btn"]}</a>')}
+{field("plus", h["plus"], f'<a class="btn light" href="https://www.mytinyjungle.com{t["prefix"]}/plus?plan=yearly">{h["plus_btn"]}</a>', h["best"])}
 </div></section>
 <p class="wrap fine">{h['fine']}</p>
 <section class="faq" id="faq"><div class="wrap qgrid"><div class="qhead">{E("scan", 140)}<h2>{h['faq_h']}</h2></div><div class="qtext">{faq}</div></div></section>

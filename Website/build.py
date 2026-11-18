@@ -1,3 +1,5 @@
+import json
+from home_content import TESTFLIGHT_URL as TESTFLIGHT
 #!/usr/bin/env python3
 """Builds the static mytinyjungle.com site into Website/dist (EN at /, pt-BR at /pt/)."""
 import hashlib
@@ -100,7 +102,7 @@ T = {
     ("Changes and law", "We may update these terms; the date above shows the latest version. These terms are governed by Portuguese law, without depriving you of protections under the law of your country of residence."),
     ("Contact", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
   ],
-  "updated": "Last updated",
+  "updated": "Last updated", "plus_title": "Opening My Tiny Jungle", "plus_desc": "Choose your plan in the app.", "plus_intro": "If My Tiny Jungle is on this iPhone, it opens straight to your plan. Not installed yet? Get it free with TestFlight first, then tap the plan again.", "plus_btn": "Get My Tiny Jungle on TestFlight", "plus_tip": "On a computer? Open mytinyjungle.com on your iPhone to join.",
  },
  "pt": {
   "lang": "pt-BR", "prefix": "/pt", "other": "en", "other_label": "EN",
@@ -179,7 +181,7 @@ T = {
     ("Alterações e lei aplicável", "Podemos atualizar estes termos; a data acima indica a versão mais recente. Estes termos são regidos pela lei portuguesa, sem prejuízo das proteções da lei do seu país de residência."),
     ("Contato", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
   ],
-  "updated": "Última atualização",
+  "updated": "Última atualização", "plus_title": "Abrindo o My Tiny Jungle", "plus_desc": "Escolha seu plano no app.", "plus_intro": "Se o My Tiny Jungle já está no seu iPhone, ele abre direto no plano escolhido. Ainda não tem? Instale grátis pelo TestFlight e toque no plano de novo.", "plus_btn": "Baixar o My Tiny Jungle no TestFlight", "plus_tip": "Está no computador? Abra mytinyjungle.com no iPhone para participar.",
  },
 }
 
@@ -255,12 +257,17 @@ def build():
                            + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in t["faq"]) + "</div>"),
             "privacy": doc(L, "/privacy", t["pri_title"], t["pri_desc"], f'<div class="box"><p>{t["pri_box"]}</p></div>' + sections(t["pri"])),
             "terms": doc(L, "/terms", t["ter_title"], t["ter_desc"], sections(t["ter"])),
+            "plus": doc(L, "/plus", t["plus_title"], t["plus_desc"],
+                        f'<p>{t["plus_intro"]}</p><p><a class="btn" href="{TESTFLIGHT}">{t["plus_btn"]}</a></p><div class="box"><p>{t["plus_tip"]}</p></div>'
+                        f'<script>if(/iPhone|iPad/.test(navigator.userAgent))setTimeout(function(){{location.href="{TESTFLIGHT}"}},1500)</script>'),
         }
         for slug, html in out.items():
             d = DIST / p.lstrip("/") / slug
             d.mkdir(parents=True, exist_ok=True)
             (d / "index.html").write_text(html)
             urls.append(f"{SITE}{p}/{slug}".rstrip("/") if slug else f"{SITE}{p}/")
+    wk = DIST / ".well-known"; wk.mkdir(exist_ok=True)
+    (wk / "apple-app-site-association").write_text(json.dumps({"applinks": {"details": [{"appIDs": ["JKMB58P38J.com.simpleappscompany.mytinyjungle"], "components": [{"/": "/plus"}, {"/": "/pt/plus"}]}]}}))
     if (SRC / "app-ads.txt").exists():
         shutil.copy(SRC / "app-ads.txt", DIST / "app-ads.txt")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
@@ -270,7 +277,7 @@ def build():
         "DirectorySlash Off\nErrorDocument 404 /\n"
         "RewriteEngine On\nRewriteCond %{REQUEST_FILENAME} -d\nRewriteCond %{REQUEST_FILENAME}/index.html -f\nRewriteRule ^(.*[^/])$ $1/index.html [L]\n"
         "<IfModule mod_headers.c>\n<FilesMatch \"\\.(jpg|png)$\">\nHeader set Cache-Control \"public, max-age=604800\"\n</FilesMatch>\n"
-        "Header always set X-Content-Type-Options nosniff\nHeader always set Referrer-Policy strict-origin-when-cross-origin\n</IfModule>\n")
+        "<Files \"apple-app-site-association\">\nHeader set Content-Type application/json\n</Files>\nHeader always set X-Content-Type-Options nosniff\nHeader always set Referrer-Policy strict-origin-when-cross-origin\n</IfModule>\n")
     print("built", len(urls), "pages")
 
 

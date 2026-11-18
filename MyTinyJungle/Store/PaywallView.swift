@@ -5,6 +5,8 @@ import SwiftData
 /// Compact paywall: short header, benefits, then a plan carousel (yearly first) and one buy button.
 struct PaywallView: View {
     var reason: PlusFeature?
+    /// Plan to preselect, from a website link: "monthly" or "yearly".
+    var plan: String? = nil
     @Environment(\.dismiss) private var dismiss
     @Environment(\.purchase) private var purchase
     @State private var products: [Product] = []
@@ -39,7 +41,8 @@ struct PaywallView: View {
             .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Close", systemImage: "xmark") { dismiss() } } }
             .task {
                 products = (try? await Product.products(for: Store.productIDs)) ?? []
-                selected = ordered.first?.id
+                let want = plan == "monthly" ? Store.monthlyID : plan == "yearly" ? Store.yearlyID : nil
+                selected = ordered.first { $0.id == want }?.id ?? ordered.first?.id
             }
         }
     }

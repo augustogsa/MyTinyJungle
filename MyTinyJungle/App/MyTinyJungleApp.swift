@@ -57,7 +57,7 @@ struct MyTinyJungleApp: App {
                 .task { DemoSeeder.seedIfAsked(container.mainContext) }
                 .task { try? await Task.sleep(for: .seconds(2)); AdPool.shared.start() }
                 .task { await AuthManager.shared.refresh(); await CloudBackup.shared.refresh() }
-                .onOpenURL { GIDSignIn.sharedInstance.handle($0) }
+                .onOpenURL { if !PlanLink.handle($0) { GIDSignIn.sharedInstance.handle($0) } }
         }
         .modelContainer(container)
     }
@@ -83,6 +83,7 @@ struct RootView: View {
     }
     private var tabs: some View {
         tabView
+            .modifier(PlanLinkSheet())
             .task {
                 guard ProcessInfo.processInfo.arguments.contains("-notifyDemo") else { return }
                 try? await Task.sleep(for: .seconds(2))

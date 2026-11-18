@@ -12,6 +12,8 @@
 	<true/>
 	<key>com.apple.developer.usernotifications.time-sensitive</key>
 	<true/>
+	<key>com.apple.developer.associated-domains</key>
+	<array><string>applinks:www.mytinyjungle.com</string><string>applinks:mytinyjungle.com</string></array>
 	<key>aps-environment</key>
 	<string>development</string>
 </dict>
