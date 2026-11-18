@@ -112,7 +112,7 @@ struct SpaceDetailView: View {
                                     Text(f.reasons.joined(separator: " · ")).font(.caption).foregroundStyle(Jungle.subtle)
                                 }
                                 Spacer()
-                                Label(f.fit.label, systemImage: f.fit.symbol).labelStyle(.iconOnly).foregroundStyle(f.fit >= .good ? Jungle.leaf : Jungle.terracotta)
+                                Label(f.fit.label, systemImage: f.fit.symbol).labelStyle(.iconOnly).foregroundStyle(f.fit >= .good ? Jungle.accentText : Jungle.warmText)
                             }
                         }
                     }

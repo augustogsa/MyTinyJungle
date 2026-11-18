@@ -70,7 +70,7 @@ enum ProductAnalyzer {
 
         var category: AnalyzedProduct.Category = .unknown
         if has(#"\b(insecticid|pesticid|fungicid|neem|pyrethr|acaricid|spinosad|pest|praga|insect)"#) { category = .pesticide }
-        else if npk != nil || has(#"\b(fertili[sz]|plant food|adubo|abono|engrais|dunger|nutrient|liquid feed)"#) && !has(#"\b(potting|compost|substrat|soil|terra|mix)\b"#) { category = .fertilizer }
+        else if (npk != nil || has(#"\b(fertili[sz]|plant food|adubo|abono|engrais|dunger|nutrient|liquid feed)"#)) && !has(#"\b(potting|compost|substrat|soil|terra|mix)\b"#) && found.count < 2 { category = .fertilizer }
         else if has(#"\b(potting|compost|substrat|soil\b|terra\b|mix\b|erde\b|terreau|sustrato|bark|perlite|orchid)"#) || found.count >= 2 { category = .substrate }
         else if has(#"\b(pot|vaso|planter|maceta|cache-?pot|diameter|diametro)\b"#) { category = .pot }
 
@@ -95,8 +95,11 @@ enum ProductAnalyzer {
         let targets = ["monstera", "aroid", "cactus", "succulent", "orchid", "tomato", "herb", "citrus", "palm", "fern", "bonsai", "houseplant", "indoor", "vegetable", "flower"]
             .filter { t.contains($0) }
 
-        let name = raw.split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }
-            .first { $0.count >= 4 && $0.rangeOfCharacter(from: .letters) != nil } ?? "Scanned product"
+        // Product name: first wordy line, cut at the first comma (labels list ingredients after it).
+        let line = raw.split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }
+            .first { $0.count >= 4 && $0.rangeOfCharacter(from: .letters) != nil } ?? ""
+        let head = line.split(separator: ",").first.map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
+        let name = head.count >= 3 ? head.prefix(1).uppercased() + head.dropFirst() : (category == .unknown ? "Scanned product" : category.label)
 
         return AnalyzedProduct(name: String(name.prefix(48)), category: category, barcode: barcode, npk: npk,
                                ingredients: found.map(\.0), retention: retention, aeration: aeration,

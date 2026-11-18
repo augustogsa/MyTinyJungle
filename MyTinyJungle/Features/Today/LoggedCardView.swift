@@ -51,7 +51,7 @@ struct LoggedCardView: View {
                 if !card.undone { actions(card) }
             }
             .padding(14)
-            .background(Jungle.mist, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+            .jungleCard()
             .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).stroke(Jungle.border, lineWidth: 0.5))
             .opacity(card.undone ? 0.6 : 1)
             .animation(.snappy, value: card.undone)

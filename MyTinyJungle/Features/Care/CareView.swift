@@ -53,7 +53,7 @@ struct CareView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(dayTitle(day)).font(.headline).foregroundStyle(Jungle.text)
-                        if cal.isDateInToday(day) { Text("Now").font(.caption.weight(.bold)).foregroundStyle(Jungle.terracotta).padding(.horizontal, 8).padding(.vertical, 2).background(Jungle.peach.opacity(0.5), in: Capsule()) }
+                        if cal.isDateInToday(day) { Text("Now").font(.caption.weight(.bold)).foregroundStyle(Jungle.warmText).padding(.horizontal, 8).padding(.vertical, 2).background(Jungle.peach.opacity(0.5), in: Capsule()) }
                     }
                     ForEach(grouped[day] ?? []) { item in
                         HStack(spacing: 12) {
@@ -242,7 +242,7 @@ struct TravelPlanView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(p.name)
                             Text(copes >= days ? "Fine for \(copes) days after a deep water" : "Needs a sitter or self-watering: copes ~\(copes) days")
-                                .font(.caption).foregroundStyle(copes >= days ? Jungle.leaf : Jungle.terracotta)
+                                .font(.caption).foregroundStyle(copes >= days ? Jungle.accentText : Jungle.warmText)
                         }
                     }
                 }
@@ -313,7 +313,7 @@ struct PropagationListView: View {
                         Button(pr.stage == .growing ? "It's a plant now! Add to jungle" : "Next: \(Propagation.Stage(rawValue: pr.stage.rawValue + 1)?.label ?? "")") { advance(pr, parent: parent) }
                             .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.small)
                     } else {
-                        Label("Joined your jungle", systemImage: "leaf.fill").foregroundStyle(Jungle.leaf)
+                        Label("Joined your jungle", systemImage: "leaf.fill").foregroundStyle(Jungle.accentText)
                     }
                 }
                 .padding(.vertical, 4)

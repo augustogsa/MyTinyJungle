@@ -55,7 +55,7 @@ struct PlantProfileView: View {
                         Label(s.lightRule, systemImage: "sun.max")
                         Label("Humidity above \(Int(s.humidityMin))%", systemImage: "humidity")
                         Label("\(Int(s.tempMin))–\(Int(s.tempMax)) °C", systemImage: "thermometer.medium")
-                        if s.toxicCats || s.toxicDogs { Label("Toxic to pets if chewed", systemImage: "pawprint").foregroundStyle(Jungle.terracotta) }
+                        if s.toxicCats || s.toxicDogs { Label("Toxic to pets if chewed", systemImage: "pawprint").foregroundStyle(Jungle.warmText) }
                         Text(s.tip).font(.footnote).foregroundStyle(Jungle.subtle)
                     }
                     Section("Learned") {

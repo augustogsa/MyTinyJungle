@@ -37,10 +37,10 @@ struct MeView: View {
                     }
                     .padding(16).jungleCard()
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                        stat("Thriving", thriving, Jungle.leaf)
-                        stat("Doing fine", fine, Jungle.sage)
-                        stat("Recovering", recovering, Jungle.sun)
-                        stat("Needs you", needs, Jungle.terracotta)
+                        StatTile(value: "\(thriving)", label: "Thriving", symbol: "leaf.fill", tint: Jungle.leaf)
+                        StatTile(value: "\(fine)", label: "Doing fine", symbol: "hand.thumbsup.fill", tint: Jungle.forest)
+                        StatTile(value: "\(recovering)", label: "Recovering", symbol: "cross.case.fill", tint: Color.orange)
+                        StatTile(value: "\(needs)", label: "Needs you", symbol: "exclamationmark", tint: Jungle.terracotta)
                     }
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Plant whisper", systemImage: "leaf.fill").font(.headline).foregroundStyle(Jungle.forest)
@@ -79,7 +79,7 @@ struct MeView: View {
 
     private func stat(_ t: String, _ n: Int, _ c: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("\(n)").font(.title.weight(.bold)).foregroundStyle(c)
+            Text("\(n)").font(.title.weight(.bold)).foregroundStyle(Jungle.text)
             Text(t).font(.subheadline).foregroundStyle(Jungle.subtle)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(14).jungleCard()

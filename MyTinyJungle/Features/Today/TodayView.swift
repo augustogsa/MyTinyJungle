@@ -12,40 +12,58 @@ struct TodayView: View {
     @State private var paywall = false
     @State private var addingPlant = false
 
-    private var jungleMessages: [ChatMessage] { allMessages.filter { $0.plant == nil }.suffix(60) }
+    private var jungleMessages: [ChatMessage] { allMessages.filter { $0.plant == nil }.suffix(12) }
     private var requests: [(Plant, PlantRequest)] {
         plants.flatMap { p in CareEngine.requests(for: p).filter { $0.priority <= 2 }.prefix(1).map { (p, $0) } }
             .sorted { $0.1.priority < $1.1.priority }
     }
 
+    private var upcoming: Int { Agenda.items(plants: plants, tasks: [], days: 7).count }
+
     var body: some View {
         NavigationStack(path: $path) {
             ScrollViewReader { proxy in
                 ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 14) {
+                    LazyVStack(alignment: .leading, spacing: 22) {
                         header
                         if plants.isEmpty { EmptyJungle { addingPlant = true } }
-                        if !requests.isEmpty {
-                            Text("Requests from your plants").font(.headline).foregroundStyle(Jungle.text).padding(.top, 4)
-                            ForEach(requests, id: \.1.id) { plant, req in
-                                RequestCard(plant: plant, request: req) { action in handle(action, plant: plant) }
-                                    .onTapGesture { path.append(plant.id) }
+                        else {
+                            carousel
+                            HStack(spacing: 10) {
+                                StatTile(value: "\(requests.count)", label: "Requests", symbol: "bell.fill", tint: Jungle.terracotta)
+                                StatTile(value: "\(upcoming)", label: "This week", symbol: "calendar", tint: Jungle.leaf)
+                                StatTile(value: "\(plants.count - requests.count)", label: "All good", symbol: "checkmark", tint: Jungle.forest)
                             }
-                        } else if !plants.isEmpty {
-                            Text("Everyone is happy today. 🌿").font(.subheadline).foregroundStyle(Jungle.subtle)
+                            VStack(alignment: .leading, spacing: 10) {
+                                SectionTitle("Today")
+                                if requests.isEmpty {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "sun.max.fill").font(.title3).foregroundStyle(Jungle.sun)
+                                        Text("Everyone is happy today. Nothing to do.").foregroundStyle(Jungle.text)
+                                    }
+                                    .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+                                }
+                                ForEach(requests, id: \.1.id) { plant, req in
+                                    RequestCard(plant: plant, request: req) { action in handle(action, plant: plant) }
+                                        .onTapGesture { path.append(plant.id) }
+                                }
+                            }
+                            conversations
                         }
                         if !jungleMessages.isEmpty {
-                            Text("Jungle chat").font(.headline).foregroundStyle(Jungle.text).padding(.top, 8)
-                            ForEach(jungleMessages) { m in
-                                Group {
-                                    if m.logCard != nil {
-                                        LoggedCardView(message: m, plants: plants)
-                                    } else {
-                                        MessageBubble(message: m, speaker: m.speakerID.flatMap { id in plants.first { $0.id == id } }) { send($0) }
+                            VStack(alignment: .leading, spacing: 10) {
+                                SectionTitle("Jungle chat")
+                                ForEach(jungleMessages) { m in
+                                    Group {
+                                        if m.logCard != nil {
+                                            LoggedCardView(message: m, plants: plants)
+                                        } else {
+                                            MessageBubble(message: m, speaker: m.speakerID.flatMap { id in plants.first { $0.id == id } }) { send($0) }
+                                        }
                                     }
+                                    .id(m.id)
+                                    .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                                 }
-                                .id(m.id)
-                                .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                             }
                         }
                         Color.clear.frame(height: 1).id("bottom")
@@ -67,8 +85,11 @@ struct TodayView: View {
                 }
             }
             .background(Jungle.cream)
-            .navigationTitle("My Tiny Jungle")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Label("My Tiny Jungle", systemImage: "leaf.fill").labelStyle(.titleAndIcon)
+                        .font(.headline).foregroundStyle(Jungle.accentText)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showSettings = true } label: { Image(systemName: "gearshape") }.accessibilityLabel("Settings")
                 }
@@ -99,6 +120,59 @@ struct TodayView: View {
         }
     }
 
+    /// Plant cards with real photos, like a little shelf.
+    private var carousel: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                ForEach(plants) { p in
+                    Button { path.append(p.id) } label: { PlantShelfCard(plant: p) }.buttonStyle(.plain)
+                }
+                Button { addingPlant = true } label: {
+                    VStack(spacing: 8) {
+                        Image(systemName: "plus").font(.title2.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                            .frame(width: 52, height: 52).background(Jungle.mint, in: Circle())
+                        Text("Add plant").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
+                    }
+                    .frame(width: 120, height: 186).jungleCard()
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.vertical, 4)
+        }
+        .scrollClipDisabled()
+    }
+
+    /// Each plant's latest line, like a messages inbox.
+    private var conversations: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionTitle("Conversations")
+            VStack(spacing: 0) {
+                ForEach(plants) { p in
+                    let last = (p.messages ?? []).max { $0.date < $1.date }
+                    NavigationLink { PlantChatView(plant: p) } label: {
+                        HStack(spacing: 12) {
+                            PlantAvatar(data: p.photo, size: 44)
+                            VStack(alignment: .leading, spacing: 2) {
+                                HStack {
+                                    Text(p.name).font(.headline).foregroundStyle(Jungle.text)
+                                    Spacer()
+                                    if let last { Text(last.date, format: .relative(presentation: .named)).font(.caption).foregroundStyle(Jungle.subtle) }
+                                }
+                                Text(last?.text.isEmpty == false ? last!.text : PlantVoice.happy(p))
+                                    .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
+                            }
+                            Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
+                        }
+                        .padding(.horizontal, 14).padding(.vertical, 12).contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    if p.id != plants.last?.id { Divider().padding(.leading, 70) }
+                }
+            }
+            .jungleCard()
+        }
+    }
+
     private var chipTitle: String {
         switch chipKind {
         case .water: "Who did you water?"
@@ -110,11 +184,11 @@ struct TodayView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(greeting).font(.title2.weight(.semibold)).foregroundStyle(Jungle.text)
-            Text(plants.isEmpty ? "Let's grow your little jungle." : "\(plants.count) plant\(plants.count == 1 ? "" : "s") in your jungle")
-                .font(.subheadline).foregroundStyle(Jungle.subtle)
+            Text(greeting).font(.largeTitle.weight(.bold)).foregroundStyle(Jungle.text)
+            Text(plants.isEmpty ? "Let's grow your little jungle." : requests.isEmpty ? "Your plants are happy today." : "Your plants have \(requests.count) update\(requests.count == 1 ? "" : "s").")
+                .font(.body).foregroundStyle(Jungle.subtle)
         }
-        .padding(.top, 8)
+        .padding(.top, 4)
     }
 
     private var greeting: String {
@@ -212,5 +286,34 @@ struct EmptyJungle: View {
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
         .jungleCard()
+    }
+}
+
+
+struct PlantShelfCard: View {
+    let plant: Plant
+    var body: some View {
+        let mood = CareEngine.mood(for: plant)
+        VStack(alignment: .leading, spacing: 0) {
+            ZStack(alignment: .topTrailing) {
+                Group {
+                    if let d = plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
+                    else { ZStack { Jungle.mint; Image(systemName: "leaf.fill").font(.system(size: 44)).foregroundStyle(Jungle.leaf) } }
+                }
+                .frame(width: 150, height: 130).clipped()
+                Circle().fill(mood == .needsYou ? Jungle.terracotta : mood == .fine ? Jungle.sun : Jungle.leaf)
+                    .frame(width: 12, height: 12).overlay(Circle().stroke(.white, lineWidth: 2)).padding(10)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text(plant.name).font(.headline).foregroundStyle(Jungle.text).lineLimit(1)
+                Text(plant.species?.commonName ?? "Plant").font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
+            }
+            .padding(12)
+        }
+        .frame(width: 150)
+        .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+        .jungleCard()
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(plant.name), \(mood == .needsYou ? "needs you" : mood == .fine ? "doing fine" : "thriving")")
     }
 }

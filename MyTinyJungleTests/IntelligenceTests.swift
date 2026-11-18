@@ -64,6 +64,11 @@ struct ParserTests {
 
 @MainActor
 struct ProductTests {
+    @Test func mixWithNPKIsSubstrate() {
+        let p = ProductAnalyzer.analyze(text: "Aroid mix, pine bark, perlite, coco coir, NPK 3-1-2")
+        #expect(p.category == .substrate)
+        #expect(p.name == "Aroid mix")
+    }
     @Test func npkParsed() {
         let p = ProductAnalyzer.analyze(text: "Universal Liquid Plant Food\nNPK 7-3-6\nDilute 5 ml per litre")
         #expect(p.category == .fertilizer)

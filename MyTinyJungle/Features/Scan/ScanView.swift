@@ -4,6 +4,7 @@ import PhotosUI
 import Vision
 import VisionKit
 
+/// Scan: one warm place to point the camera at anything plant-related.
 struct ScanView: View {
     @Environment(\.modelContext) private var ctx
     @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
@@ -14,49 +15,36 @@ struct ScanView: View {
     @State private var barcode: String?
     @State private var product: AnalyzedProduct?
     @State private var working = false
-    @State private var pasted = ""
+    @State private var typing = false
     @State private var paywall: PlusFeature?
+    @State private var addingPlant = false
+    @State private var checking: Plant?
+
+    private var shelf: [OwnedProduct] { owned.filter { !$0.onShoppingList } }
+    private var shopping: [OwnedProduct] { owned.filter(\.onShoppingList) }
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Scan soil, fertilizer or plant food").font(.headline).foregroundStyle(Jungle.text)
-                        Text("Point at the back label with the ingredients or NPK. I'll check it against every plant you have.")
-                            .font(.subheadline).foregroundStyle(Jungle.subtle)
-                    }
-                    if DataScannerViewController.isSupported {
-                        Button { reset(); liveScanning = true } label: { Label("Scan label", systemImage: "text.viewfinder") }
-                    }
-                    PhotosPicker(selection: $pick, matching: .images) { Label("Choose a label photo", systemImage: "photo") }
-                    HStack {
-                        TextField("…or type what's on the label", text: $pasted, axis: .vertical).lineLimit(1...4)
-                        Button("Check") { analyze(pasted) }.disabled(pasted.isEmpty)
-                    }
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    hero
+                    modes
+                    if !shopping.isEmpty { shoppingList }
+                    shelfSection
                 }
-                if working { Section { ProgressView("Reading label…") } }
-                if let product { ResultSections(product: product, plants: plants, isPlus: Store.shared.isPlus, onLocked: { paywall = $0 }) { save(product, list: $0) } }
-                if !owned.isEmpty {
-                    Section("My growing inventory") {
-                        ForEach(owned) { p in
-                            VStack(alignment: .leading, spacing: 2) {
-                                HStack {
-                                    Text(p.name).foregroundStyle(Jungle.text)
-                                    if p.onShoppingList { Text("Shopping list").font(.caption2).padding(.horizontal, 6).padding(.vertical, 2).background(Jungle.sun.opacity(0.5), in: Capsule()) }
-                                }
-                                Text(p.categoryRaw.capitalized + (p.npkN != nil ? " · NPK \(Int(p.npkN!))-\(Int(p.npkP ?? 0))-\(Int(p.npkK ?? 0))" : "")).font(.caption).foregroundStyle(Jungle.subtle)
-                            }
-                        }
-                        .onDelete { idx in idx.forEach { ctx.delete(owned[$0]) }; try? ctx.save() }
-                    }
-                }
+                .padding(.horizontal, 16).padding(.bottom, 32)
             }
-            .scrollContentBackground(.hidden)
             .background(Jungle.cream)
             .navigationTitle("Scan")
             .sheet(item: $paywall) { PaywallView(reason: $0) }
-            .sheet(isPresented: $liveScanning) {
+            .sheet(isPresented: $addingPlant) { AddPlantFlow() }
+            .sheet(item: $checking) { p in NavigationStack { HealthCheckView(plant: p) } }
+            .sheet(isPresented: $typing) { TypeLabelSheet { analyze($0) } }
+            .sheet(item: Binding(get: { product.map(IdentifiedProduct.init) }, set: { if $0 == nil { product = nil } })) { wrap in
+                ProductResultView(product: wrap.product, plants: plants, onLocked: { p in product = nil; DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { paywall = p } }) { save(wrap.product, list: $0) }
+                    .presentationDetents([.large]).presentationDragIndicator(.visible)
+            }
+            .fullScreenCover(isPresented: $liveScanning) {
                 LiveLabelScanner { text, code in
                     if let code { barcode = code }
                     if let text { collectedText += "\n" + text }
@@ -73,11 +61,152 @@ struct ScanView: View {
                     let data = try? await item.loadTransferable(type: Data.self)
                     var text = ""
                     if let data, let img = UIImage(data: data) { text = await OCR.recognize(img) }
-                    await MainActor.run { working = false; analyze(text); pick = nil }
+                    await MainActor.run { working = false; pick = nil; analyze(text) }
                 }
             }
         }
     }
+
+    // MARK: Hero
+
+    private var hero: some View {
+        VStack(spacing: 18) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(LinearGradient(colors: [Jungle.mint, Jungle.sun.opacity(0.35)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                Viewfinder().stroke(Jungle.leaf.opacity(0.7), style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    .padding(28)
+                VStack(spacing: 8) {
+                    if working {
+                        ProgressView().controlSize(.large).tint(Jungle.forest)
+                        Text("Reading the label…").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
+                    } else {
+                        Image(systemName: "text.viewfinder").font(.system(size: 44, weight: .light)).foregroundStyle(Jungle.forest)
+                            .symbolEffect(.pulse, options: .repeating.speed(0.4))
+                        Text("Soil, food or treatment").font(.headline).foregroundStyle(Jungle.text)
+                        Text("Point at the back label. I'll check it\nagainst every plant you have.")
+                            .font(.footnote).multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
+                    }
+                }
+            }
+            .frame(height: 210)
+            .accessibilityElement(children: .combine)
+
+            Button {
+                reset()
+                if DataScannerViewController.isSupported && DataScannerViewController.isAvailable { liveScanning = true } else { typing = true }
+            } label: {
+                Label("Scan a label", systemImage: "camera.fill").font(.headline).frame(maxWidth: .infinity).padding(.vertical, 6)
+            }
+            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
+
+            HStack(spacing: 10) {
+                PhotosPicker(selection: $pick, matching: .images) {
+                    Label("From photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
+                }
+                Button { typing = true } label: { Label("Type it", systemImage: "keyboard").frame(maxWidth: .infinity) }
+            }
+            .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(Jungle.leaf).font(.subheadline.weight(.medium))
+        }
+        .padding(16)
+        .background(Color.white.opacity(0.6), in: RoundedRectangle(cornerRadius: 24 + 16, style: .continuous))
+    }
+
+    // MARK: Modes
+
+    private var modes: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Also scan").font(.title3.weight(.semibold)).foregroundStyle(Jungle.text)
+            HStack(spacing: 10) {
+                Button { Store.shared.canAddPlant(current: plants.count) ? (addingPlant = true) : (paywall = .morePlants) } label: {
+                    modeTile("A new plant", "Identify it and get its care plan", "leaf.fill", Jungle.mint)
+                }
+                Menu {
+                    ForEach(plants) { p in Button(p.name) { checking = p } }
+                } label: {
+                    modeTile("A sick leaf", "Spots, yellowing or pests", "stethoscope", Jungle.peach.opacity(0.45))
+                }
+                .disabled(plants.isEmpty)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private func modeTile(_ t: String, _ sub: String, _ s: String, _ bg: Color) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Image(systemName: s).font(.title3).foregroundStyle(Jungle.forest)
+                .frame(width: 40, height: 40).background(.white.opacity(0.7), in: Circle())
+            VStack(alignment: .leading, spacing: 2) {
+                Text(t).font(.headline).foregroundStyle(Jungle.text)
+                Text(sub).font(.caption).foregroundStyle(Jungle.subtle).multilineTextAlignment(.leading).lineLimit(2, reservesSpace: true)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading).padding(14)
+        .background(bg, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+    }
+
+    // MARK: Shopping + shelf
+
+    private var shoppingList: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("Shopping list").font(.title3.weight(.semibold)).foregroundStyle(Jungle.text)
+                Spacer()
+                ShareLink(item: shopping.map { "• \($0.name)" }.joined(separator: "\n"), subject: Text("Plant shopping list")) {
+                    Image(systemName: "square.and.arrow.up")
+                }
+                .accessibilityLabel("Share shopping list")
+            }
+            VStack(spacing: 0) {
+                ForEach(shopping) { o in
+                    Button {
+                        withAnimation(.snappy) { o.onShoppingList = false; o.addedAt = Date(); try? ctx.save() }
+                    } label: {
+                        HStack(spacing: 12) {
+                            Image(systemName: "circle").font(.title3).foregroundStyle(Jungle.leaf)
+                            Text(o.name).foregroundStyle(Jungle.text)
+                            Spacer()
+                            Text("Bought").font(.caption).foregroundStyle(Jungle.subtle)
+                        }
+                        .padding(14).contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .contextMenu { Button("Remove", systemImage: "trash", role: .destructive) { ctx.delete(o); try? ctx.save() } }
+                    if o.id != shopping.last?.id { Divider().padding(.leading, 46) }
+                }
+            }
+            .jungleCard()
+        }
+    }
+
+    private var shelfSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("On my shelf").font(.title3.weight(.semibold)).foregroundStyle(Jungle.text)
+            if shelf.isEmpty {
+                HStack(spacing: 14) {
+                    Image(systemName: "tray").font(.title2).foregroundStyle(Jungle.sage)
+                    Text("Scan what you own and I'll remember which soil and food goes with which plant.")
+                        .font(.subheadline).foregroundStyle(Jungle.subtle)
+                }
+                .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(shelf) { o in ShelfCard(product: o)
+                            .contextMenu {
+                                Button("Add to shopping list", systemImage: "cart") { o.onShoppingList = true; try? ctx.save() }
+                                Button("Remove", systemImage: "trash", role: .destructive) { ctx.delete(o); try? ctx.save() }
+                            }
+                        }
+                    }
+                    .padding(.vertical, 2)
+                }
+                .scrollClipDisabled()
+            }
+        }
+    }
+
+    // MARK: Logic
 
     private func reset() { collectedText = ""; barcode = nil; product = nil }
 
@@ -98,61 +227,208 @@ struct ScanView: View {
     }
 }
 
-private struct ResultSections: View {
+private struct IdentifiedProduct: Identifiable { let product: AnalyzedProduct; var id: String { product.name + (product.barcode ?? "") } }
+
+extension AnalyzedProduct.Category {
+    var symbol: String {
+        switch self { case .substrate: "square.stack.3d.down.forward.fill"; case .fertilizer: "drop.triangle.fill"; case .pesticide: "ant.fill"; case .pot: "cylinder.fill"; case .unknown: "questionmark" }
+    }
+    var tint: Color {
+        switch self { case .substrate: Jungle.terracotta; case .fertilizer: Jungle.leaf; case .pesticide: Jungle.peach; case .pot: Jungle.sun; case .unknown: Jungle.sage }
+    }
+}
+
+private struct ShelfCard: View {
+    let product: OwnedProduct
+    var body: some View {
+        let cat = AnalyzedProduct.Category(rawValue: product.categoryRaw) ?? .unknown
+        VStack(alignment: .leading, spacing: 10) {
+            Image(systemName: cat.symbol).font(.title3).foregroundStyle(Jungle.forest)
+                .frame(width: 44, height: 44).background(cat.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            Text(product.name).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
+            Text(product.npkN != nil ? "NPK \(Int(product.npkN!))-\(Int(product.npkP ?? 0))-\(Int(product.npkK ?? 0))" : cat.label)
+                .font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
+        }
+        .padding(12).frame(width: 150, alignment: .leading).jungleCard()
+    }
+}
+
+/// Typed label fallback, for when the camera can't read it.
+private struct TypeLabelSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    var onCheck: (String) -> Void
+    @State private var text = ""
+    @FocusState private var focused: Bool
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Copy the name, NPK numbers or ingredients. For example: Orchid mix, pine bark, perlite, NPK 3-1-1.")
+                    .font(.subheadline).foregroundStyle(Jungle.subtle)
+                TextField("What's on the label", text: $text, axis: .vertical)
+                    .lineLimit(4...8).focused($focused)
+                    .padding(14).background(Jungle.mist, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                Spacer()
+            }
+            .padding(16)
+            .background(Jungle.cream)
+            .navigationTitle("Type the label").navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Check") { let t = text; dismiss(); DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { onCheck(t) } }
+                        .disabled(text.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+            .onAppear { focused = true }
+        }
+        .presentationDetents([.medium])
+    }
+}
+
+/// Result: what it is, how it behaves, and a verdict per plant.
+private struct ProductResultView: View {
+    @Environment(\.dismiss) private var dismiss
     let product: AnalyzedProduct
     let plants: [Plant]
-    let isPlus: Bool
     var onLocked: (PlusFeature) -> Void
     var onSave: (Bool) -> Void
+    private var isPlus: Bool { Store.shared.isPlus }
 
     var body: some View {
-        Section("What I found") {
-            LabeledContent("Product", value: product.name)
-            LabeledContent("Type", value: product.category.label)
-            if let npk = product.npk { LabeledContent("NPK", value: "\(fmt(npk.n))-\(fmt(npk.p))-\(fmt(npk.k))") }
-            if !product.ingredients.isEmpty { LabeledContent("Contains", value: product.ingredients.joined(separator: ", ")) }
-            if let r = product.retention, let a = product.aeration {
-                LabeledContent("Holds water", value: level(r))
-                LabeledContent("Airy", value: level(a))
-            }
-            if let code = product.barcode { LabeledContent("Barcode", value: code) }
-        }
-        if !isPlus && !plants.isEmpty {
-            Section("For your plants") {
-                Button { onLocked(.scanCompatibility) } label: {
-                    Label("See which of your \(plants.count) plants this suits, and why. Tiny Jungle Plus.", systemImage: "lock")
-                }
-            }
-        } else if plants.isEmpty {
-            Section { Text("Add plants to see which ones this suits.").foregroundStyle(Jungle.subtle) }
-        } else {
-            Section("For your plants") {
-                ForEach(ProductAnalyzer.compatibility(product, plants: plants)) { c in
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text(c.plantName).font(.headline).foregroundStyle(Jungle.text)
-                            Spacer()
-                            Text(c.verdict.rawValue).font(.caption.weight(.semibold))
-                                .padding(.horizontal, 8).padding(.vertical, 3)
-                                .background(color(c.verdict).opacity(0.25), in: Capsule())
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    header
+                    if product.npk != nil || product.retention != nil { traits }
+                    if !product.ingredients.isEmpty {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Inside").font(.headline).foregroundStyle(Jungle.text)
+                            FlowChips(items: product.ingredients.map(\.capitalized), selected: nil) { _ in }
                         }
-                        ForEach(c.reasons, id: \.self) { Text("• " + $0).font(.subheadline).foregroundStyle(Jungle.subtle) }
                     }
-                    .padding(.vertical, 4)
+                    verdicts
                 }
+                .padding(16)
             }
-        }
-        Section {
-            Button("I own this. Add to inventory", systemImage: "tray.and.arrow.down") { isPlus ? onSave(false) : onLocked(.inventory) }
-            Button("Add to shopping list", systemImage: "cart") { isPlus ? onSave(true) : onLocked(.inventory) }
+            .background(Jungle.cream)
+            .safeAreaInset(edge: .bottom) {
+                HStack(spacing: 10) {
+                    Button { isPlus ? onSave(true) : onLocked(.inventory) } label: { Label("Shopping list", systemImage: "cart").frame(maxWidth: .infinity) }
+                        .buttonStyle(.bordered).tint(Jungle.leaf)
+                    Button { isPlus ? onSave(false) : onLocked(.inventory) } label: { Label("I own this", systemImage: "tray.and.arrow.down.fill").frame(maxWidth: .infinity) }
+                        .buttonStyle(.borderedProminent).tint(Jungle.forest)
+                }
+                .buttonBorderShape(.capsule).controlSize(.large)
+                .padding(.horizontal, 16).padding(.vertical, 10)
+                .background(.bar)
+            }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close", systemImage: "xmark") { dismiss() } } }
         }
     }
 
+    private var header: some View {
+        HStack(spacing: 14) {
+            Image(systemName: product.category.symbol).font(.title).foregroundStyle(Jungle.forest)
+                .frame(width: 64, height: 64).background(product.category.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            VStack(alignment: .leading, spacing: 3) {
+                Text(product.name).font(.title2.weight(.bold)).foregroundStyle(Jungle.text).lineLimit(2)
+                Text(product.category.label).font(.subheadline).foregroundStyle(Jungle.subtle)
+                if let code = product.barcode { Text(code).font(.caption.monospacedDigit()).foregroundStyle(Jungle.subtle) }
+            }
+        }
+    }
+
+    private var traits: some View {
+        VStack(spacing: 14) {
+            if let npk = product.npk {
+                HStack(spacing: 10) {
+                    nutrient("N", "Leaves", npk.n, Jungle.leaf)
+                    nutrient("P", "Roots and flowers", npk.p, Jungle.terracotta)
+                    nutrient("K", "Strength", npk.k, Jungle.sun)
+                }
+            }
+            if let r = product.retention, let a = product.aeration {
+                meter("Holds water", r, "drop.fill")
+                meter("Lets roots breathe", a, "wind")
+            }
+        }
+        .padding(16).jungleCard()
+    }
+
+    private func nutrient(_ l: String, _ sub: String, _ v: Double, _ c: Color) -> some View {
+        VStack(spacing: 4) {
+            Text(v == v.rounded() ? String(Int(v)) : String(format: "%.1f", v)).font(.title.weight(.bold)).foregroundStyle(Jungle.text)
+            Text(l).font(.caption.weight(.bold)).foregroundStyle(.white).frame(width: 22, height: 22).background(c, in: Circle())
+            Text(sub).font(.caption2).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func meter(_ t: String, _ v: Double, _ s: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Label(t, systemImage: s).font(.subheadline).foregroundStyle(Jungle.text)
+                Spacer()
+                Text(v > 0.66 ? "High" : v > 0.4 ? "Medium" : "Low").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.subtle)
+            }
+            GeometryReader { g in
+                Capsule().fill(Jungle.mint).overlay(alignment: .leading) { Capsule().fill(Jungle.leaf).frame(width: g.size.width * min(1, max(0.06, v))) }
+            }
+            .frame(height: 8)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    @ViewBuilder private var verdicts: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("For your plants").font(.headline).foregroundStyle(Jungle.text)
+            if plants.isEmpty {
+                Text("Add plants and I'll tell you which ones this suits.").foregroundStyle(Jungle.subtle)
+            } else if !isPlus {
+                Button { onLocked(.scanCompatibility) } label: {
+                    HStack(spacing: -10) {
+                        ForEach(plants.prefix(4)) { PlantAvatar(data: $0.photo, size: 36).overlay(Circle().stroke(Jungle.cream, lineWidth: 2)) }
+                    }
+                    .blur(radius: 1.5)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("See which of your \(plants.count) plants this suits").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
+                        Text("With Tiny Jungle Plus").font(.caption).foregroundStyle(Jungle.subtle)
+                    }
+                    .padding(.leading, 14)
+                    Spacer()
+                    Image(systemName: "lock.fill").foregroundStyle(Jungle.leaf)
+                }
+                .buttonStyle(.plain).padding(14)
+                .background(Jungle.sun.opacity(0.3), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+            } else {
+                ForEach(ProductAnalyzer.compatibility(product, plants: plants)) { c in
+                    let p = plants.first { $0.id == c.plantID }
+                    HStack(alignment: .top, spacing: 12) {
+                        PlantAvatar(data: p?.photo, size: 40)
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text(c.plantName).font(.headline).foregroundStyle(Jungle.text)
+                                Spacer()
+                                Label(c.verdict.rawValue, systemImage: icon(c.verdict)).font(.caption.weight(.semibold))
+                                    .foregroundStyle(Jungle.text)
+                                    .padding(.horizontal, 9).padding(.vertical, 4)
+                                    .background(color(c.verdict).opacity(0.3), in: Capsule())
+                            }
+                            ForEach(c.reasons, id: \.self) { Text($0).font(.subheadline).foregroundStyle(Jungle.subtle) }
+                        }
+                    }
+                    .padding(14).jungleCard()
+                }
+            }
+        }
+    }
+
+    private func icon(_ v: Compatibility.Verdict) -> String {
+        switch v { case .suitable: "checkmark.circle.fill"; case .conditions: "exclamationmark.circle.fill"; case .notRecommended: "xmark.circle.fill"; case .unknown: "questionmark.circle.fill" }
+    }
     private func color(_ v: Compatibility.Verdict) -> Color {
         switch v { case .suitable: Jungle.leaf; case .conditions: Jungle.sun; case .notRecommended: Jungle.terracotta; case .unknown: Jungle.sage }
     }
-    private func level(_ v: Double) -> String { v > 0.66 ? "High" : v > 0.4 ? "Medium" : "Low" }
-    private func fmt(_ v: Double) -> String { v == v.rounded() ? String(Int(v)) : String(format: "%.1f", v) }
 }
 
 enum OCR {

@@ -18,7 +18,7 @@ struct MessageBubble: View {
                 }
                 VStack(alignment: .leading, spacing: 6) {
                     if let speaker, !message.fromUser {
-                        Text(speaker.name).font(.caption.weight(.semibold)).foregroundStyle(Jungle.leaf)
+                        Text(speaker.name).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                     }
                     if let data = message.photo, let img = UIImage(data: data) {
                         Image(uiImage: img).resizable().scaledToFill()
@@ -28,13 +28,14 @@ struct MessageBubble: View {
                     if !message.text.isEmpty {
                         Text(message.text)
                             .font(.body)
-                            .foregroundStyle(message.fromUser ? Color.white : Jungle.text)
+                            .foregroundStyle(Jungle.text)
                             .textSelection(.enabled)
                     }
                 }
                 .padding(.horizontal, 14).padding(.vertical, 10)
-                .background(message.fromUser ? Jungle.forest : Jungle.mist,
+                .background(message.fromUser ? Jungle.userBubble : Jungle.surface,
                             in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                .overlay { if !message.fromUser { RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5) } }
                 if !message.fromUser { Spacer(minLength: 48) }
             }
             if !message.fromUser, !message.suggestions.isEmpty {
@@ -71,7 +72,7 @@ struct Composer: View {
                 .lineLimit(1...5)
                 .focused($focused)
                 .padding(.horizontal, 14).padding(.vertical, 9)
-                .background(Jungle.mist, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .background(Jungle.surface, in: Capsule()).overlay(Capsule().strokeBorder(Jungle.border, lineWidth: 0.5))
                 .submitLabel(.send)
                 .onSubmit(send)
             Button(action: send) {
@@ -124,9 +125,12 @@ struct QuickChips: View {
                         Label(kind == .soilCheck ? "Soil" : kind == .water ? "Water" : kind == .feed ? "Feed" : kind == .mist ? "Mist" : kind == .rotate ? "Rotate" : "New leaf",
                               systemImage: kind.symbol)
                             .font(.subheadline.weight(.medium))
+                            .foregroundStyle(Jungle.text)
+                            .padding(.horizontal, 14).padding(.vertical, 8)
+                            .background(Jungle.surface, in: Capsule())
+                            .overlay(Capsule().strokeBorder(Jungle.border, lineWidth: 1))
                     }
-                    .buttonStyle(.bordered).buttonBorderShape(.capsule)
-                    .tint(kind == .water ? Jungle.forest : Jungle.leaf)
+                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, 12)

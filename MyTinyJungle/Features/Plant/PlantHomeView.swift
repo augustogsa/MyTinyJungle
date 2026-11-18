@@ -86,16 +86,17 @@ struct PlantHomeView: View {
                 else { ZStack { Jungle.mint; Image(systemName: "leaf").font(.system(size: 80, weight: .light)).foregroundStyle(Jungle.leaf) } }
             }
             .frame(height: 380).frame(maxWidth: .infinity).clipped()
-            LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
+            let hasPhoto = plant.photo != nil
+            if hasPhoto { LinearGradient(colors: [.clear, .black.opacity(0.6)], startPoint: .center, endPoint: .bottom) }
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(plant.name).font(.largeTitle.weight(.bold)).foregroundStyle(.white)
-                    Text(plant.species?.scientific ?? "Unknown species").font(.subheadline).italic().foregroundStyle(.white.opacity(0.85))
+                    Text(plant.name).font(.largeTitle.weight(.bold)).foregroundStyle(hasPhoto ? Color.white : Jungle.text)
+                    Text(plant.species?.scientific ?? "Unknown species").font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
                 }
                 Spacer()
                 MoodPill(mood: mood)
             }
-            .padding(16)
+            .padding(.horizontal, 16).padding(.bottom, 50)
         }
     }
 
@@ -180,11 +181,14 @@ struct MoodPill: View {
         case .fine: ("Has a request", "hand.wave.fill", Jungle.sun)
         case .needsYou: ("Needs you", "drop.fill", Jungle.terracotta)
         }
-        Label(text, systemImage: symbol)
-            .font(.caption.weight(.semibold))
-            .padding(.horizontal, 10).padding(.vertical, 6)
-            .foregroundStyle(mood == .fine ? Jungle.text : .white)
-            .background(color, in: Capsule())
+        HStack(spacing: 5) {
+            Image(systemName: symbol).foregroundStyle(color)
+            Text(text).foregroundStyle(Jungle.text)
+        }
+        .font(.caption.weight(.semibold))
+        .padding(.horizontal, 10).padding(.vertical, 6)
+        .background(Jungle.surface, in: Capsule())
+        .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
     }
 }
 
@@ -200,8 +204,7 @@ struct ActionTile: View {
                 Text(title).font(.caption.weight(.medium)).foregroundStyle(Jungle.text)
             }
             .frame(maxWidth: .infinity).padding(.vertical, 12)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-            .shadow(color: .black.opacity(0.06), radius: 8, y: 3)
+            .jungleCard()
         }
         .buttonStyle(.plain)
     }
