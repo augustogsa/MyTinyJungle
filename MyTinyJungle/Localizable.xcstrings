@@ -7034,6 +7034,16 @@
         }
       }
     },
+    "Diary": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diário"
+          }
+        }
+      }
+    },
     "Dilute, never on dry soil": {
       "comment": "Care guide subtitle; short",
       "localizations": {
@@ -13789,6 +13799,16 @@
         }
       }
     },
+    "Me and %@": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eu e %@"
+          }
+        }
+      }
+    },
     "Mealybugs": {
       "comment": "Pest name",
       "localizations": {
@@ -13928,6 +13948,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Luz média e indireta."
+          }
+        }
+      }
+    },
+    "Meet %@! Cared for with My Tiny Jungle 🌿 https://mytinyjungle.com": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conheça %@! Cuidada com o My Tiny Jungle 🌿 https://mytinyjungle.com"
           }
         }
       }
@@ -22565,6 +22595,16 @@
         }
       }
     },
+    "Together since %@": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Juntos desde %@"
+          }
+        }
+      }
+    },
     "Tolerates low light. Happier in medium light.": {
       "comment": "Light need for a plant species; one sentence",
       "localizations": {
@@ -26350,6 +26390,16 @@
         }
       }
     },
+    "days of friendship": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dias de amizade"
+          }
+        }
+      }
+    },
     "dries in ~%lld d": {
       "comment": "Chat status: soil dries in about N days (d = days abbrev); lowercase; max 18 chars",
       "localizations": {
@@ -26718,6 +26768,16 @@
         }
       }
     },
+    "little cares": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cuidadinhos"
+          }
+        }
+      }
+    },
     "lower light": {
       "comment": "Care guide UI",
       "localizations": {
@@ -26736,6 +26796,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "foto do mês"
+          }
+        }
+      }
+    },
+    "new leaf": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "folha nova"
+          }
+        }
+      }
+    },
+    "new leaves": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "folhas novas"
           }
         }
       }
@@ -27085,6 +27165,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "água"
+          }
+        }
+      }
+    },
+    "waterings": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "regas"
+          }
+        }
+      }
+    },
+    "waterings with love": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "regas com carinho"
           }
         }
       }

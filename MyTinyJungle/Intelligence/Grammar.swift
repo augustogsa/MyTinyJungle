@@ -38,7 +38,7 @@ nonisolated enum Grammar {
     private static let forms: [(prep: String, f: String, m: String)] = [
         ("de", "da", "do"), ("em", "na", "no"), ("por", "pela", "pelo"),
         ("para", "para a", "para o"), ("pra", "pra", "pro"), ("com", "com a", "com o"),
-        ("sobre", "sobre a", "sobre o"), ("até", "até a", "até o"),
+        ("sobre", "sobre a", "sobre o"), ("até", "até a", "até o"), ("e", "e a", "e o"),
     ]
 
     private static func compile(_ names: [String: Gender]) -> [(NSRegularExpression, Gender)] {
