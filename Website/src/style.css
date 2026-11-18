@@ -600,3 +600,12 @@ html.switching,html.switching *{transition:background-color 1.1s var(--ease-out)
 @media (prefers-reduced-motion:reduce){html.switching,html.switching *{transition:none!important}body::after{transition:none}}
 /* Lock-screen notifications: iOS dark glass so white text reads over any wallpaper */
 .lockphone .ncard{background:linear-gradient(180deg,rgba(30,38,30,.52),rgba(22,28,22,.6));-webkit-backdrop-filter:blur(24px) saturate(150%) brightness(.8);backdrop-filter:blur(24px) saturate(150%) brightness(.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 .5px rgba(255,255,255,.14),0 6px 18px -8px rgba(0,0,0,.4);text-shadow:0 1px 1px rgba(0,0,0,.18)}
+/* Lights off: buttons are the lit thing in the room — pale leaf green, dark ink */
+:root[data-theme="dark"] .btn,:root[data-theme="dark"] .btn.light{background:#A9D99B;color:#11200F}
+:root[data-theme="dark"] .btn:hover,:root[data-theme="dark"] .btn.light:hover{background:#C3E8B7}
+:root[data-theme="dark"] .btn.ghost{background:transparent;color:#A9D99B;box-shadow:inset 0 0 0 1.5px rgba(169,217,155,.5)}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme="light"]) .btn,:root:not([data-theme="light"]) .btn.light{background:#A9D99B;color:#11200F}
+ :root:not([data-theme="light"]) .btn:hover,:root:not([data-theme="light"]) .btn.light:hover{background:#C3E8B7}
+ :root:not([data-theme="light"]) .btn.ghost{background:transparent;color:#A9D99B;box-shadow:inset 0 0 0 1.5px rgba(169,217,155,.5)}
+}
