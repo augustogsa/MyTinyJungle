@@ -93,7 +93,11 @@ H = {
           ("Is it really free?", "Yes. Up to 5 plants with chat, care requests and reminders, forever, supported by ads. Plus is optional and removes ads."),
           ("Does it speak Portuguese?", "Yes. The app and your plants speak English and Portuguese."),
           ("Where do my plants' photos go?", "Nowhere. They stay on your phone.")],
-  "c_h": "Give your plants a voice.", "c_p": "My Tiny Jungle is coming soon to iPhone. Your jungle is going to love it.",
+  "c_h": "Give your plants a voice.", "c_p": "My Tiny Jungle is in beta on iPhone. Join, and bring a friend.",
+  "beta_cta": "Join the beta on TestFlight", "beta_eyebrow": "Public beta",
+  "beta_h": "Try it before everyone else.",
+  "beta_p": "My Tiny Jungle is open for beta testers. Install Apple's free TestFlight app, tap the link and your jungle starts talking. Share the link with friends, up to 100 testers.",
+  "beta_steps": ["Open this page on your iPhone", "Tap Join the beta, then install TestFlight", "Accept the invite and add your first plant"],
  },
  "pt": {
   "kicker": "Para quem cuida de plantas, de primeira viagem ou com experiência",
@@ -182,14 +186,22 @@ H = {
           ("É mesmo grátis?", "Sim. Até 5 plantas com conversa, pedidos de cuidado e lembretes, para sempre, com anúncios. O Plus é opcional e remove os anúncios."),
           ("Fala português?", "Sim. A app e as suas plantas falam português e inglês."),
           ("Para onde vão as fotos das plantas?", "Para lado nenhum. Ficam no seu telemóvel.")],
-  "c_h": "Dê voz às suas plantas.", "c_p": "A My Tiny Jungle chega em breve ao iPhone. A sua selva vai adorar.",
+  "c_h": "Dê voz às suas plantas.", "c_p": "A My Tiny Jungle está em beta no iPhone. Entre e traga um amigo.",
+  "beta_cta": "Entrar na beta no TestFlight", "beta_eyebrow": "Beta pública",
+  "beta_h": "Experimente antes de todos.",
+  "beta_p": "A My Tiny Jungle está aberta a testers. Instale a app gratuita TestFlight da Apple, toque no link e a sua selva começa a falar. Partilhe o link com amigos, até 100 testers.",
+  "beta_steps": ["Abra esta página no iPhone", "Toque em Entrar na beta e instale o TestFlight", "Aceite o convite e adicione a primeira planta"],
  },
 }
 
 
+TESTFLIGHT_URL = "https://testflight.apple.com/join/A8YUuUHj"
+
+
 def render_home(L, t, page, phone, apple_icon):
     h = H[L]
-    cta = f'<a class="btn" href="#pricing">{apple_icon}{t["cta"]}</a>'
+    cta = f'<a class="btn" href="{TESTFLIGHT_URL}" rel="noopener">{apple_icon}{h["beta_cta"]}</a>'
+    steps = "".join(f"<li>{x}</li>" for x in h["beta_steps"])
 
     def shot(name, title, text):
         return f'<div class="shot">{phone("app/" + name + ".jpg", title)}<h3>{title}</h3><p>{text}</p></div>'
@@ -235,6 +247,10 @@ def render_home(L, t, page, phone, apple_icon):
 <div class="eyebrow">{h['all_eyebrow']}</div><h2>{h['all_h']}</h2><div class="grid">{feats}</div>
 <div class="trust">{"".join(f'<div class="benefit">{I(i)}<div><b>{a}</b><span>{b}</span></div></div>' for i, a, b in h["trust"])}</div>
 </div></section>
+<section class="chapter" id="beta"><div class="wrap"><div class="beta">
+<img class="app" src="/assets/icon-512.png" alt="" width="96" height="96">
+<div><div class="eyebrow">{h['beta_eyebrow']}</div><h2>{h['beta_h']}</h2><p class="sub">{h['beta_p']}</p>
+<ol class="steps">{steps}</ol>{cta}</div></div></div></section>
 <section class="chapter" id="pricing"><div class="wrap"><div class="plus">
 {phone('app/plus.jpg', 'Tiny Jungle Plus')}
 <div><div class="eyebrow">{h['plus_eyebrow']}</div><h2>{h['plus_h']}</h2><p class="sub">{h['plus_p']}</p>
