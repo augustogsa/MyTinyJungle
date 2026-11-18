@@ -248,42 +248,71 @@ struct TravelPlanView: View {
     private var days: Int { max(1, Int(back.timeIntervalSince(leave) / 86_400)) }
 
     var body: some View {
-        List {
-            Section {
-                DatePicker("Leaving", selection: $leave, in: Date()..., displayedComponents: .date)
-                DatePicker("Back", selection: $back, in: leave..., displayedComponents: .date)
-                LabeledContent("Away", value: "\(days) days")
-            }
-            Section("Your plants") {
-                ForEach(plants) { p in
-                    let copes = Int(CareEngine.expectedDryDays(for: p) * 1.3)
-                    HStack(spacing: 12) {
-                        PlantAvatar(data: p.photo, size: 36)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(p.name)
-                            Text(copes >= days ? "Fine for \(copes) days after a deep water" : "Needs a sitter or self-watering: copes ~\(copes) days")
-                                .font(.caption).foregroundStyle(copes >= days ? Jungle.accentText : Jungle.warmText)
-                        }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                HStack(spacing: 14) {
+                    Icon3DView(.travel, size: 56)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(days) days away").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                        Text(atRisk == 0 ? "Everyone copes with a deep water before you go." : "\(atRisk) plant\(atRisk == 1 ? "" : "s") need a sitter or self-watering.")
+                            .font(.subheadline).foregroundStyle(atRisk == 0 ? Jungle.accentText : Jungle.warmText)
                     }
                 }
-            }
-            Section("Before you go") {
-                ForEach(["Water everyone deeply the day before", "Move plants a little back from hot windows", "Group humidity lovers together", "Use a water-wick or self-watering spike for thirsty plants", "Skip fertilizer the week before"], id: \.self) { Label($0, systemImage: "checkmark.circle") }
-            }
-            Section {
-                Button(saved ? "Prep tasks added" : "Add prep tasks to Care", systemImage: "calendar.badge.plus") {
-                    let dayBefore = leave.addingTimeInterval(-86_400)
-                    for p in plants { ctx.insert(CareTask(title: "Deep water \(p.name) before the trip", kind: .water, plantID: p.id, due: dayBefore)) }
-                    try? ctx.save(); saved = true
+                JungleGroup(title: "Dates") {
+                    JungleRow(icon: .calendar, title: "Leaving") { DatePicker("", selection: $leave, in: Date()..., displayedComponents: .date).labelsHidden() }
+                    JungleDivider()
+                    JungleRow(icon: .calendarCheck, title: "Back") { DatePicker("", selection: $back, in: leave..., displayedComponents: .date).labelsHidden() }
                 }
-                .disabled(saved)
-                ShareLink(item: sitterNote, subject: Text("Plant care while I'm away"), message: Text("Thank you for looking after my plants")) {
-                    Label("Send plant-sitter instructions", systemImage: "square.and.arrow.up")
+                JungleGroup(title: "Your plants") {
+                    ForEach(plants) { p in
+                        let copes = Int(CareEngine.expectedDryDays(for: p) * 1.3)
+                        HStack(spacing: 12) {
+                            PlantAvatar(data: p.photo, size: 36)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(p.name).foregroundStyle(Jungle.text)
+                                Text(copes >= days ? "Fine for \(copes) days after a deep water" : "Copes about \(copes) days. Needs a sitter or a wick")
+                                    .font(.caption).foregroundStyle(copes >= days ? Jungle.accentText : Jungle.warmText)
+                            }
+                            Spacer()
+                            Icon3DView(copes >= days ? .shieldCheck : .waterDrops, size: 24)
+                        }
+                        .padding(.vertical, 10)
+                        if p.id != plants.last?.id { Divider().padding(.leading, 48) }
+                    }
+                }
+                JungleGroup(title: "Before you go") {
+                    ForEach(Array(prep.enumerated()), id: \.offset) { i, item in
+                        JungleRow(icon: item.0, title: item.1)
+                        if i < prep.count - 1 { JungleDivider() }
+                    }
+                }
+                VStack(spacing: 10) {
+                    Button {
+                        let dayBefore = leave.addingTimeInterval(-86_400)
+                        for p in plants { ctx.insert(CareTask(title: "Deep water \(p.name) before the trip", kind: .water, plantID: p.id, due: dayBefore)) }
+                        try? ctx.save(); saved = true
+                    } label: { Text(saved ? "Prep tasks added to Care" : "Add prep tasks to Care").font(.headline).frame(maxWidth: .infinity).frame(height: 48) }
+                    .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest).disabled(saved)
+                    ShareLink(item: sitterNote, subject: Text("Plant care while I'm away"), message: Text("Thank you for looking after my plants")) {
+                        Text("Send plant-sitter instructions").font(.headline).frame(maxWidth: .infinity).frame(height: 48)
+                    }
+                    .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(Jungle.forest)
                 }
             }
+            .padding(.horizontal, 16).padding(.vertical, 12)
         }
-        .navigationTitle("Travel care")
+        .jungleBackdrop()
+        .navigationTitle("Going away")
     }
+
+    private var atRisk: Int { plants.filter { Int(CareEngine.expectedDryDays(for: $0) * 1.3) < days }.count }
+    private let prep: [(Icon3D, String)] = [
+        (.waterDrops, "Water everyone deeply the day before"),
+        (.sun, "Move plants back from hot windows"),
+        (.rainFlower, "Group humidity lovers together"),
+        (.waterTray, "Wick or self-watering spike for thirsty plants"),
+        (.fertilizer, "Skip fertilizer the week before"),
+    ]
 
     private var sitterNote: String {
         var t = " My Tiny Jungle: plant care from \(leave.formatted(date: .abbreviated, time: .omitted)) to \(back.formatted(date: .abbreviated, time: .omitted))\n\n"

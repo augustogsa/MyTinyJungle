@@ -1,10 +1,9 @@
 import SwiftUI
 import SwiftData
 
-/// Me: an Airbnb-style profile. Who you are as a plant parent, your milestones, your places and tools.
+/// Me: your jungle at a glance, milestones, places and account.
 struct MeView: View {
     @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
-    @Query private var owned: [OwnedProduct]
     @Query private var props: [Propagation]
     @Query private var events: [CareEvent]
     @State private var settings = false
@@ -20,75 +19,73 @@ struct MeView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 22) {
-                    profileCard
-                    HStack(spacing: 12) {
-                        NavigationLink { SpacesView() } label: { bigTile(.home, "My spaces", "\(Set(plants.map(\.location).filter { !$0.isEmpty }).count) rooms") }
-                        NavigationLink { PropagationListView() } label: { bigTile(.seedling, "Propagation", props.isEmpty ? "Start a cutting" : "\(props.count) growing") }
+                VStack(alignment: .leading, spacing: 24) {
+                    header
+                    HStack(spacing: 10) {
+                        NavigationLink { SpacesView() } label: { shortcut(.home, "Spaces", "\(Set(plants.map(\.location).filter { !$0.isEmpty }).count) rooms") }
+                        NavigationLink { PropagationListView() } label: { shortcut(.seedling, "Cuttings", props.isEmpty ? "Start one" : "\(props.count) growing") }
                     }
                     .buttonStyle(.plain)
                     milestones
                     if !store.isPlus { plusCard }
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Your jungle").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).padding(.bottom, 4)
-                        NavigationLink { ScanView() } label: { row(.fertilizer, "Inventory and shopping", owned.isEmpty ? nil : "\(owned.count)") }
-                        Divider().padding(.leading, 58)
-                        NavigationLink { GuidesView() } label: { row(.tools, "How-to guides", nil) }
-                        Divider().padding(.leading, 58)
-                        NavigationLink { TravelPlanView() } label: { row(.travel, "Going away", nil) }
+                    JungleGroup(title: "Your jungle") {
+                        NavigationLink { GuidesView() } label: { JungleRow(icon: .tools, title: "How-to guides", chevron: true) }
+                        JungleDivider()
+                        NavigationLink { TravelPlanView() } label: { JungleRow(icon: .travel, title: "Going away", subtitle: "Plan care for a trip", chevron: true) }
                     }
                     .buttonStyle(.plain)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Account").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).padding(.bottom, 4)
-                        Button { if store.isPlus { settings = true } else { paywall = .morePlants } } label: { row(.crown, "Tiny Jungle Plus", store.isPlus ? "Active" : "€1.99/mo") }
-                        Divider().padding(.leading, 58)
-                        Button { settings = true } label: { row(.profile, "Settings", nil) }
-                        if !store.isPlus {
-                            Divider().padding(.leading, 58)
-                            Button { AdsManager.shared.presentPrivacyOptions() } label: { row(.shieldCheck, "Privacy & ads choices", nil) }
+                    JungleGroup(title: "Account") {
+                        Button { if store.isPlus { settings = true } else { paywall = .morePlants } } label: {
+                            JungleRow(icon: .crown, title: "Tiny Jungle Plus", chevron: true) { Text(store.isPlus ? "Active" : "Free").foregroundStyle(Jungle.subtle) }
                         }
+                        JungleDivider()
+                        Button { settings = true } label: { JungleRow(icon: .profile, title: "Settings", chevron: true) }
                     }
                     .buttonStyle(.plain)
                 }
-                .padding(.horizontal, 20).padding(.vertical, 8)
+                .padding(.horizontal, 16).padding(.vertical, 8)
             }
             .jungleBackdrop()
-            .navigationTitle("Profile")
+            .navigationTitle("Me")
             .sheet(isPresented: $settings) { SettingsView() }
             .sheet(item: $paywall) { PaywallView(reason: $0) }
         }
     }
 
-    // MARK: profile card (Airbnb host card: identity left, stats right)
+    // MARK: header: your jungle at a glance (plant photos, name, three numbers)
 
-    private var profileCard: some View {
+    private var header: some View {
         Button { settings = true } label: {
-            HStack(spacing: 0) {
-                VStack(spacing: 8) {
-                    ZStack(alignment: .bottomTrailing) {
-                        Text(String(name.prefix(1)).uppercased())
-                            .font(.system(size: 40, weight: .bold, design: .rounded)).foregroundStyle(.white)
-                            .frame(width: 92, height: 92)
-                            .background(LinearGradient(colors: [Jungle.leaf, Jungle.forest], startPoint: .top, endPoint: .bottom), in: Circle())
-                        Icon3DView(store.isPlus ? .crown : .shieldLeaf, size: 34)
-                            .offset(x: 6, y: 4)
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(alignment: .center, spacing: 14) {
+                    HStack(spacing: -14) {
+                        ForEach(Array(plants.prefix(4).enumerated()), id: \.offset) { _, p in
+                            PlantAvatar(data: p.photo, size: 46).overlay(Circle().strokeBorder(Jungle.surface, lineWidth: 3))
+                        }
+                        if plants.isEmpty { Icon3DView(.pottedSprout, size: 46) }
                     }
-                    Text(name).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.7)
-                    Text((store.isPlus ? "Plus · " : "") + "Growing since \(since.formatted(.dateTime.month(.abbreviated).year()))").font(.subheadline).foregroundStyle(Jungle.subtle)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(name).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).lineLimit(1).minimumScaleFactor(0.7)
+                        Text((store.isPlus ? "Plus · " : "") + "Growing since \(since.formatted(.dateTime.month(.abbreviated).year()))")
+                            .font(.subheadline).foregroundStyle(Jungle.subtle)
+                    }
+                    Spacer(minLength: 0)
                 }
-                .frame(maxWidth: .infinity)
-                VStack(alignment: .leading, spacing: 0) {
-                    stat("\(plants.count)", plants.count == 1 ? "Plant" : "Plants")
-                    Divider()
-                    stat("\(careCount)", "Care moments")
-                    Divider()
-                    stat(daysTogether >= 365 ? "\(daysTogether / 365)" : "\(daysTogether)", daysTogether >= 365 ? "Years growing" : "Days growing")
+                HStack(spacing: 0) {
+                    stat("\(plants.count)", plants.count == 1 ? "plant" : "plants")
+                    Divider().frame(height: 30)
+                    stat("\(happy)", "happy")
+                    Divider().frame(height: 30)
+                    stat("\(careCount)", "care moments")
+                    Divider().frame(height: 30)
+                    stat(daysTogether >= 365 ? "\(daysTogether / 365)" : "\(daysTogether)", daysTogether >= 730 ? "years" : daysTogether >= 365 ? "year" : "days")
                 }
-                .frame(width: 120)
+                .padding(.vertical, 10)
+                .background(Jungle.mint.opacity(0.6), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
-            .padding(.vertical, 22).padding(.horizontal, 12)
-            .background(Jungle.surface, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
-            .shadow(color: .black.opacity(0.10), radius: 18, y: 8)
+            .padding(16)
+            .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius + 4, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Jungle.radius + 4, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
@@ -96,69 +93,75 @@ struct MeView: View {
     }
 
     private func stat(_ v: String, _ l: String) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(v).font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-            Text(l).font(.caption2.weight(.medium)).foregroundStyle(Jungle.subtle)
+        VStack(spacing: 0) {
+            Text(v).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+            Text(l).font(.caption2).foregroundStyle(Jungle.subtle).lineLimit(1).minimumScaleFactor(0.8)
         }
-        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
     }
 
-    private func bigTile(_ icon: Icon3D, _ title: String, _ sub: String) -> some View {
-        VStack(spacing: 10) {
-            Icon3DView(icon, size: 72)
-            VStack(spacing: 2) {
-                Text(title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+    private func shortcut(_ icon: Icon3D, _ title: String, _ sub: String) -> some View {
+        HStack(spacing: 10) {
+            Icon3DView(icon, size: 36)
+            VStack(alignment: .leading, spacing: 0) {
+                Text(title).font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
                 Text(sub).font(.caption).foregroundStyle(Jungle.subtle)
             }
+            Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity).padding(.vertical, 18)
-        .background(Jungle.surface, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .shadow(color: .black.opacity(0.08), radius: 12, y: 5)
+        .padding(12)
+        .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
     }
 
     // MARK: milestones
 
-    private struct Milestone: Identifiable { let id: String; let icon: Icon3D; let title: String; let done: Bool; let detail: String }
+    private struct Milestone: Identifiable { let id: String; let icon: Icon3D; let title: String; let progress: Double; let detail: String
+        var done: Bool { progress >= 1 } }
     private var milestoneList: [Milestone] {
         let waters = events.filter { $0.kind == .water }.count
         let leaves = events.filter { $0.kind == .newLeaf }.count
+        func r(_ a: Int, _ b: Int) -> Double { b == 0 ? 0 : min(1, Double(a) / Double(b)) }
         return [
-            .init(id: "first", icon: .pottedSprout, title: "First plant", done: !plants.isEmpty, detail: "Add a plant"),
-            .init(id: "five", icon: .plantStand, title: "Little jungle", done: plants.count >= 5, detail: "\(min(plants.count, 5))/5 plants"),
-            .init(id: "water", icon: .waterDrops, title: "Hydration hero", done: waters >= 50, detail: "\(min(waters, 50))/50 drinks"),
-            .init(id: "leaf", icon: .sprout, title: "New growth", done: leaves >= 3, detail: "\(min(leaves, 3))/3 new leaves"),
-            .init(id: "prop", icon: .seedling, title: "Propagator", done: !props.isEmpty, detail: "Start a cutting"),
-            .init(id: "happy", icon: .award, title: "All happy", done: !plants.isEmpty && happy == plants.count, detail: "\(happy)/\(plants.count) happy"),
-            .init(id: "year", icon: .blossomTree, title: "One year", done: daysTogether >= 365, detail: "\(min(daysTogether, 365))/365 days"),
+            .init(id: "first", icon: .pottedSprout, title: "First plant", progress: r(plants.count, 1), detail: "Add your first plant"),
+            .init(id: "five", icon: .plantStand, title: "Little jungle", progress: r(plants.count, 5), detail: "\(min(plants.count, 5)) of 5 plants"),
+            .init(id: "leaf", icon: .sprout, title: "New growth", progress: r(leaves, 3), detail: "\(min(leaves, 3)) of 3 new leaves logged"),
+            .init(id: "prop", icon: .seedling, title: "Propagator", progress: r(props.count, 1), detail: "Start your first cutting"),
+            .init(id: "happy", icon: .award, title: "All happy", progress: plants.isEmpty ? 0 : r(happy, plants.count), detail: "\(happy) of \(plants.count) plants happy"),
+            .init(id: "water", icon: .waterDrops, title: "Hydration hero", progress: r(waters, 50), detail: "\(min(waters, 50)) of 50 waterings"),
+            .init(id: "year", icon: .blossomTree, title: "One year", progress: r(daysTogether, 365), detail: "\(min(daysTogether, 365)) of 365 days"),
         ]
     }
 
     private var milestones: some View {
         let list = milestoneList
-        return VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline) {
-                Text("Milestones").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                Spacer()
-                Text("\(list.filter(\.done).count) of \(list.count)").font(.subheadline).foregroundStyle(Jungle.subtle)
-            }
-            ScrollView(.horizontal, showsIndicators: false) {
+        let next = list.filter { !$0.done }.max { $0.progress < $1.progress }
+        return JungleGroup(title: "Milestones · \(list.filter(\.done).count) of \(list.count)") {
+            if let next {
                 HStack(spacing: 12) {
-                    ForEach(list) { m in
-                        VStack(spacing: 8) {
-                            Icon3DView(m.icon, size: 56)
-                                .saturation(m.done ? 1 : 0).opacity(m.done ? 1 : 0.45)
-                            Text(m.title).font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text).lineLimit(1)
-                            Text(m.done ? "Unlocked" : m.detail).font(.caption2).foregroundStyle(m.done ? Jungle.accentText : Jungle.subtle)
+                    Icon3DView(next.icon, size: 40)
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Text("Next: \(next.title)").font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+                            Spacer()
+                            Text("\(Int(next.progress * 100))%").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                         }
-                        .frame(width: 112).padding(.vertical, 14)
-                        .background(Jungle.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
-                        .accessibilityElement(children: .combine)
+                        ProgressView(value: next.progress).tint(Jungle.leaf)
+                        Text(next.detail).font(.caption).foregroundStyle(Jungle.subtle)
                     }
                 }
-                .padding(.vertical, 2)
+                .padding(.vertical, 12)
+                Divider()
             }
-            .scrollClipDisabled()
+            HStack(spacing: 0) {
+                ForEach(list) { m in
+                    Icon3DView(m.icon, size: 30)
+                        .saturation(m.done ? 1 : 0).opacity(m.done ? 1 : 0.35)
+                        .frame(maxWidth: .infinity)
+                        .accessibilityLabel("\(m.title), \(m.done ? "earned" : m.detail)")
+                }
+            }
+            .padding(.vertical, 12)
         }
     }
 
@@ -171,23 +174,11 @@ struct MeView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
-                Icon3DView(.crown, size: 64)
+                Icon3DView(.crown, size: 48)
             }
-            .padding(18)
-            .background(Jungle.surface, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-            .shadow(color: .black.opacity(0.08), radius: 12, y: 5)
+            .padding(16)
+            .background(Jungle.sun.opacity(0.25), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
         }
         .buttonStyle(.plain)
-    }
-
-    private func row(_ icon: Icon3D, _ t: String, _ v: String?) -> some View {
-        HStack(spacing: 14) {
-            Icon3DView(icon, size: 40).frame(width: 44)
-            Text(t).font(.body).foregroundStyle(Jungle.text)
-            Spacer()
-            if let v { Text(v).foregroundStyle(Jungle.subtle) }
-            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle)
-        }
-        .padding(.vertical, 10).contentShape(Rectangle())
     }
 }

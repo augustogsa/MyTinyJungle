@@ -4,43 +4,64 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable private var settings = JungleSettings.shared
     @State private var paywall = false
+    private var plus: Bool { Store.shared.isPlus }
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Tiny Jungle Plus") {
-                    if Store.shared.isPlus {
-                        Label("You're a Plus member. Thank you!", systemImage: "checkmark.seal.fill").foregroundStyle(Jungle.forest)
-                        Link("Manage subscription", destination: URL(string: "https://apps.apple.com/account/subscriptions")!)
-                    } else {
-                        Button("See Plus: €1.99/month or €11.99/year") { paywall = true }
-                        Button("Remove ads with Tiny Jungle Plus", systemImage: "nosign") { paywall = true }
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    JungleGroup(title: "You") {
+                        JungleRow(icon: .profile, title: "Name") {
+                            TextField("Your name", text: $settings.ownerName).multilineTextAlignment(.trailing).foregroundStyle(Jungle.subtle)
+                        }
+                        JungleDivider()
+                        JungleRow(icon: .globe, title: "Southern hemisphere", subtitle: "Brazil, Australia, South Africa…") {
+                            Toggle("", isOn: $settings.southernHemisphere).labelsHidden()
+                        }
                     }
-                    Button("Restore purchases") { Task { await Store.shared.restore() } }
+                    JungleGroup(title: "At home", footer: "Plants that are unsafe for pets or children warn you.") {
+                        JungleRow(icon: .shieldCheck, title: "Cats") { Toggle("", isOn: $settings.hasCats).labelsHidden() }
+                        JungleDivider()
+                        JungleRow(icon: .shieldLeaf, title: "Dogs") { Toggle("", isOn: $settings.hasDogs).labelsHidden() }
+                        JungleDivider()
+                        JungleRow(icon: .heartPin, title: "Small children") { Toggle("", isOn: $settings.hasKids).labelsHidden() }
+                    }
+                    JungleGroup(title: "Tiny Jungle Plus") {
+                        if plus {
+                            JungleRow(icon: .crown, title: "Plus is active", subtitle: "Thank you for growing with us")
+                            JungleDivider()
+                            Link(destination: URL(string: "https://apps.apple.com/account/subscriptions")!) {
+                                JungleRow(icon: .calendarClock, title: "Manage subscription", chevron: true)
+                            }.buttonStyle(.plain)
+                        } else {
+                            Button { paywall = true } label: {
+                                JungleRow(icon: .crown, title: "Get Plus", subtitle: "Unlimited plants, every scan, no ads", chevron: true)
+                            }.buttonStyle(.plain)
+                        }
+                        JungleDivider()
+                        Button { Task { await Store.shared.restore() } } label: {
+                            JungleRow(icon: .repeat, title: "Restore purchases")
+                        }.buttonStyle(.plain)
+                    }
+                    if !plus {
+                        JungleGroup(title: "Privacy", footer: "Your plant photos and data stay on your device. Ads keep Tiny Jungle free.") {
+                            Button { AdsManager.shared.presentPrivacyOptions() } label: {
+                                JungleRow(icon: .shieldStar, title: "Privacy and ad choices", chevron: true)
+                            }.buttonStyle(.plain)
+                        }
+                    }
+                    JungleGroup(title: "About", footer: "Care knowledge comes from open botanical sources (Kew POWO, GBIF, ASPCA, extension guides). It is guidance, not a guarantee. Always check the soil.") {
+                        JungleRow(icon: .leafTag, title: "Version") {
+                            Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "").foregroundStyle(Jungle.subtle)
+                        }
+                    }
                 }
-                Section("You") { TextField("Your name", text: $settings.ownerName) }
-                Section {
-                    Toggle("Cats", isOn: $settings.hasCats)
-                    Toggle("Dogs", isOn: $settings.hasDogs)
-                    Toggle("Small children", isOn: $settings.hasKids)
-                } header: { Text("At home") } footer: { Text("Your plants warn you if they're unsafe for pets.") }
-                Section {
-                    Toggle("Southern hemisphere", isOn: $settings.southernHemisphere)
-                } footer: { Text("Seasons drive feeding, repotting and watering. Brazil and Australia are in the southern hemisphere.") }
-                if !Store.shared.isPlus {
-                    Section {
-                        Button("Privacy & ads choices", systemImage: "hand.raised") { AdsManager.shared.presentPrivacyOptions() }
-                    } footer: { Text("Your plant photos and data never leave your device. Ads help keep Tiny Jungle free.") }
-                }
-                Section("About") {
-                    LabeledContent("Version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
-                    Text("Care knowledge is reviewed from open botanical sources (Kew POWO, GBIF, ASPCA, extension guides). Advice is guidance, not a guarantee. Always check the soil.")
-                        .font(.footnote).foregroundStyle(Jungle.subtle)
-                }
+                .padding(.horizontal, 16).padding(.vertical, 12)
             }
+            .jungleBackdrop()
             .navigationTitle("Settings")
-            .sheet(isPresented: $paywall) { PaywallView() }
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $paywall) { PaywallView() }
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         }
     }

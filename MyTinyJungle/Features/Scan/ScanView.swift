@@ -83,8 +83,7 @@ struct ScanView: View {
                         ProgressView().controlSize(.large).tint(Jungle.forest)
                         Text("Reading the label…").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
                     } else {
-                        Image(systemName: "text.viewfinder").font(.system(size: 44, weight: .light)).foregroundStyle(Jungle.forest)
-                            .symbolEffect(.pulse, options: .repeating.speed(0.4))
+                        Icon3DView(.leafTag, size: 64)
                         Text("Soil, food or treatment").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         Text("Point at the back label. I'll check it\nagainst every plant you have.")
                             .font(.footnote).multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
@@ -98,15 +97,15 @@ struct ScanView: View {
                 reset()
                 if DataScannerViewController.isSupported && DataScannerViewController.isAvailable { liveScanning = true } else { typing = true }
             } label: {
-                Label("Scan a label", systemImage: "camera.fill").font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity).padding(.vertical, 6)
+                Text("Scan a label").font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity).padding(.vertical, 6)
             }
             .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
 
             HStack(spacing: 10) {
                 PhotosPicker(selection: $pick, matching: .images) {
-                    Label("From photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
+                    Text("From photos").frame(maxWidth: .infinity)
                 }
-                Button { typing = true } label: { Label("Type it", systemImage: "keyboard").frame(maxWidth: .infinity) }
+                Button { typing = true } label: { Text("Type it").frame(maxWidth: .infinity) }
             }
             .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.leaf).font(.subheadline.weight(.medium))
         }
@@ -121,12 +120,12 @@ struct ScanView: View {
             Text("Also scan").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             HStack(spacing: 10) {
                 Button { Store.shared.canAddPlant(current: plants.count) ? (addingPlant = true) : (paywall = .morePlants) } label: {
-                    modeTile("A new plant", "Identify it and get its care plan", "leaf.fill", Jungle.mint)
+                    modeTile("A new plant", "Identify it and get its care plan", .pottedPlant, Jungle.mint)
                 }
                 Menu {
                     ForEach(plants) { p in Button(p.name) { checking = p } }
                 } label: {
-                    modeTile("A sick leaf", "Spots, yellowing or pests", "stethoscope", Jungle.peach.opacity(0.45))
+                    modeTile("A sick leaf", "Spots, yellowing or pests", .healthShield, Jungle.peach.opacity(0.45))
                 }
                 .disabled(plants.isEmpty)
             }
@@ -134,10 +133,10 @@ struct ScanView: View {
         }
     }
 
-    private func modeTile(_ t: String, _ sub: String, _ s: String, _ bg: Color) -> some View {
+    private func modeTile(_ t: String, _ sub: String, _ s: Icon3D, _ bg: Color) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Image(systemName: s).font(.system(.title3, design: .rounded)).foregroundStyle(Jungle.forest)
-                .frame(width: 40, height: 40).background(.white.opacity(0.7), in: Circle())
+            Icon3DView(s, size: 32)
+                .frame(width: 44, height: 44).background(.white.opacity(0.7), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text(t).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Text(sub).font(.caption).foregroundStyle(Jungle.subtle).multilineTextAlignment(.leading).lineLimit(2, reservesSpace: true)
@@ -186,7 +185,7 @@ struct ScanView: View {
             Text("On my shelf").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             if shelf.isEmpty {
                 HStack(spacing: 14) {
-                    Image(systemName: "tray").font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.sage)
+                    Icon3DView(.box, size: 40)
                     Text("Scan what you own and I'll remember which soil and food goes with which plant.")
                         .font(.subheadline).foregroundStyle(Jungle.subtle)
                 }
@@ -235,6 +234,9 @@ extension AnalyzedProduct.Category {
     var symbol: String {
         switch self { case .substrate: "square.stack.3d.down.forward.fill"; case .fertilizer: "drop.triangle.fill"; case .pesticide: "ant.fill"; case .pot: "cylinder.fill"; case .unknown: "questionmark" }
     }
+    var icon: Icon3D {
+        switch self { case .substrate: .soil; case .fertilizer: .fertilizer; case .pesticide: .bug; case .pot: .pot; case .unknown: .box }
+    }
     var tint: Color {
         switch self { case .substrate: Jungle.terracotta; case .fertilizer: Jungle.leaf; case .pesticide: Jungle.peach; case .pot: Jungle.sun; case .unknown: Jungle.sage }
     }
@@ -245,7 +247,7 @@ private struct ShelfCard: View {
     var body: some View {
         let cat = AnalyzedProduct.Category(rawValue: product.categoryRaw) ?? .unknown
         VStack(alignment: .leading, spacing: 10) {
-            SmartIcon(symbol: cat.symbol, size: 30, tint: Jungle.forest)
+            Icon3DView(cat.icon, size: 30)
                 .frame(width: 44, height: 44).background(cat.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             Text(product.name).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
             Text(product.npkN != nil ? "NPK \(Int(product.npkN!))-\(Int(product.npkP ?? 0))-\(Int(product.npkK ?? 0))" : cat.label)
@@ -330,7 +332,7 @@ private struct ProductResultView: View {
 
     private var header: some View {
         HStack(spacing: 14) {
-            SmartIcon(symbol: product.category.symbol, size: 46, tint: Jungle.forest)
+            Icon3DView(product.category.icon, size: 46)
                 .frame(width: 64, height: 64).background(product.category.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
                 Text(product.name).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).lineLimit(2)
