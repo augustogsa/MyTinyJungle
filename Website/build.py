@@ -1,3 +1,4 @@
+import re
 import json
 from home_content import TESTFLIGHT_URL as TESTFLIGHT
 #!/usr/bin/env python3
@@ -186,7 +187,13 @@ T = {
 }
 
 
+def sentence_breaks(html):
+    """Headlines with several sentences break between them, one sentence per line, never mid-sentence."""
+    return re.sub(r"(<h[1-3][^>]*>)(.*?)(</h[1-3]>)", lambda m: m[1] + re.sub(r"([.?!])\s+(?=[A-ZÀ-Ý¿¡])", r"\1<br>", m[2]) + m[3], html, flags=re.S)
+
+
 def page(L, path, title, desc, body):
+    body = sentence_breaks(body)
     t = T[L]; p = t["prefix"]
     other = T[t["other"]]["prefix"] + path
     canon = SITE + p + path
