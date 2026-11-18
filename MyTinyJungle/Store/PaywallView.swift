@@ -9,6 +9,7 @@ struct PaywallView: View {
     @State private var products: [Product] = []
     @State private var selected: Product.ID?
     @State private var buying = false
+    @State private var height: CGFloat = 700
 
     private var ordered: [Product] { products.sorted { ($0.subscription?.subscriptionPeriod.unit == .year ? 0 : 1) < ($1.subscription?.subscriptionPeriod.unit == .year ? 0 : 1) } }
     private var current: Product? { ordered.first { $0.id == selected } ?? ordered.first }
@@ -29,12 +30,15 @@ struct PaywallView: View {
                         perk(.healthShield, "Plant Doctor first", "New insights reach Plus before anyone.")
                     }
                     plans
+                    footer
                 }
-                .padding(.horizontal, 20).padding(.top, 8).padding(.bottom, 24)
+                .padding(.horizontal, 20).padding(.top, 8).padding(.bottom, 12)
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height = $0 + 70 }
             }
-            .safeAreaInset(edge: .bottom) { footer }
+            .scrollBounceBehavior(.basedOnSize)
+            .presentationDetents([.height(height)])
             .jungleBackdrop()
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close", systemImage: "xmark") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Close", systemImage: "xmark") { dismiss() } } }
             .task {
                 products = (try? await Product.products(for: Store.productIDs)) ?? []
                 selected = ordered.first?.id
@@ -119,7 +123,5 @@ struct PaywallView: View {
             .font(.footnote).foregroundStyle(Jungle.subtle)
             Text("Renews automatically. Cancel anytime in Settings.").font(.caption2).foregroundStyle(Jungle.subtle)
         }
-        .padding(.horizontal, 20).padding(.top, 12).padding(.bottom, 4)
-        .background(.bar)
     }
 }
