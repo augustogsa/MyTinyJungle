@@ -111,7 +111,7 @@
 (() => {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
   const play = (box, items, step, fn) => {
-    items.forEach(el => el.classList.add("pending"));
+    items.forEach(el => el.classList.add("pending")); box.classList.add("anim");
     const io = new IntersectionObserver(es => {
       if (!es.some(e => e.isIntersecting)) return;
       io.disconnect();
