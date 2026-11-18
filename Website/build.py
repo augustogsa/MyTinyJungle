@@ -23,7 +23,7 @@ T = {
  "en": {
   "lang": "en", "prefix": "", "other": "pt", "other_label": "PT",
   "nav": ["Inside the app", "Plus", "Support", "Join the beta"],
-  "foot": ["Support", "Privacy", "Terms"], "made": "Planted in Lisbon by Simple Apps Company",
+  "foot": ["Support", "Privacy", "Terms"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Coming soon on the App Store",
   "home_title": "My Tiny Jungle: plant care that talks back",
   "home_desc": "Chat with your plants. Log care by just saying what you did, get gentle care requests, and keep every plant happy. Your photos stay on your device.",
@@ -104,7 +104,7 @@ T = {
  "pt": {
   "lang": "pt-BR", "prefix": "/pt", "other": "en", "other_label": "EN",
   "nav": ["Dentro do app", "Plus", "Suporte", "Entrar no beta"],
-  "foot": ["Suporte", "Privacidade", "Termos"], "made": "Plantado em Lisboa pela Simple Apps Company",
+  "foot": ["Suporte", "Privacidade", "Termos"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Em breve na App Store",
   "home_title": "My Tiny Jungle: cuidar das plantas batendo papo",
   "home_desc": "Converse com suas plantas. Anote os cuidados do seu jeito, receba lembretes delas e deixe todas felizes. Suas fotos ficam no seu celular.",
@@ -208,7 +208,7 @@ def page(L, path, title, desc, body):
 <a class="lang" href="{other}" hreflang="{T[t['other']]['lang']}">{t['other_label']}</a><a class="btn btn-s" href="https://testflight.apple.com/join/A8YUuUHj" rel="noopener">{n[3]}</a></nav>
 </div></header>
 <main>{body}</main>
-<footer><div class="wrap"><span>© 2026 Simple Apps Company · {t['made']}</span>
+<footer><div class="wrap"><span>© 2026 SimpleAppsCo LLC · {t['made']}</span>
 <nav><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
 <script src="/site.js?v={CSS_V}" defer></script>
 </body></html>"""
