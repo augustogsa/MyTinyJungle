@@ -7,6 +7,12 @@ and a closing photograph.
 """
 import json
 
+def sentences(text):
+    """Each sentence stays whole on one line when it fits; lines break between sentences."""
+    import re
+    return " ".join(f'<span class="sn">{x}</span>' for x in re.split(r"(?<=[.!?])\s+", text))
+
+
 TESTFLIGHT_URL = "https://testflight.apple.com/join/A8YUuUHj"
 
 
@@ -321,7 +327,7 @@ def render_home(L, t, page, phone, apple_icon):
 {phone(A + "/care-season.jpg", h["in_h"], "kphone")}</div>
 <div class="two"><div class="ttext"><h3>{h['two_h']}</h3><p>{h['two_p']}</p></div>
 {cmp_chart(h)}
-<p class="timer">{h['two_timer']}</p></div>
+<p class="timer">{sentences(h['two_timer'])}</p></div>
 <div class="inputs"><h3>{h['in_h']}</h3><div class="igrid">{"".join(f'<div class="inp">{I(ic, 48)}<h4>{t}</h4><p>{d}</p></div>' for ic, t, d in h["inputs"])}</div></div>
 </div></section>
 <section class="voices" id="voices"><div class="wrap">

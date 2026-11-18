@@ -546,3 +546,4 @@ details summary:focus:not(:focus-visible){outline:none}
 .mtj{font-weight:650;color:var(--forest,#2f5a35);white-space:nowrap}
 h1 .mtj,h2 .mtj,h3 .mtj,.btn .mtj{color:inherit;font-weight:inherit}
 :is(.btn,.b.me,.features,.slip .row.end,.field.plus,.closing,.smart,.vcol.us,.chip.on) .mtj{color:inherit}
+.sn{display:inline-block}
