@@ -518,3 +518,15 @@ h3.fq{display:flex;align-items:center;gap:10px;margin:28px 0 8px}h3.fq a{color:v
 .qhead .btn{margin-top:20px}
 
 details summary:focus:not(:focus-visible){outline:none}
+
+/* Apple-style disclosure rows (FAQ, Good to know, feature pages) */
+.paper details{border-bottom:1px solid rgba(62,78,61,.12);margin:0;padding:0}
+.paper details summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:1.06rem;font-weight:600;line-height:1.35;color:var(--ink,#2f3f2e)}
+.paper details summary::-webkit-details-marker{display:none}
+.paper details summary::marker{content:""}
+.paper details summary::after{content:"";flex:none;width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;opacity:.45;transform:rotate(45deg) translateY(-3px);transition:transform .25s ease}
+.paper details[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
+.paper details > :not(summary){margin:0 0 18px;color:var(--ink2,#55624f);font-weight:400}
+.paper h3.fq a{text-decoration:none}
+.paper h3.fq a:hover{text-decoration:underline;text-underline-offset:4px}
+@media (prefers-reduced-motion:reduce){.paper details summary::after{transition:none}}
