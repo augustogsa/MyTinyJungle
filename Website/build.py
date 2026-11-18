@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Builds the static mytinyjungle.com site into Website/dist (EN at /, PT-PT at /pt/)."""
+import hashlib
 import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
 SRC, DIST = ROOT / "src", ROOT / "dist"
 SITE = "https://mytinyjungle.com"
+CSS_V = hashlib.sha1((Path(__file__).parent / "src" / "style.css").read_bytes()).hexdigest()[:10]
 UPDATED = {"en": "18 November 2026", "pt": "18 de novembro de 2026"}
 EMAIL = "support@simpleappscompany.com"
 
@@ -192,7 +194,7 @@ def page(L, path, title, desc, body):
 <link rel="icon" href="/assets/favicon-64.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v={CSS_V}">
 </head><body>
 <header class="nav"><div class="wrap">
 <a class="brand" href="{p}/"><img src="/assets/apple-touch-icon.png" alt="">My Tiny Jungle</a>
