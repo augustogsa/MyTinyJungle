@@ -284,8 +284,8 @@ def render_home(L, t, page, phone, apple_icon):
                 f'<div class="pfoot"><p class="price">{price}<small>{per}</small></p>{btn}</div></div>')
 
     def E(m, sz, cls=""):
-        return (f'<video class="erty {cls}" width="{sz}" height="{sz}" autoplay loop muted playsinline aria-hidden="true" poster="/assets/erty/erty-{m}.png">'
-                f'<source src="/assets/erty/erty-{m}.mov" type=\'video/quicktime; codecs="hvc1"\'><source src="/assets/erty/erty-{m}.webm" type="video/webm"></video>')
+        return (f'<video class="erty {cls}" width="{sz}" height="{sz}" autoplay loop muted playsinline aria-hidden="true" poster="/assets/erty/erty-{m}.png?v=2">'
+                f'<source src="/assets/erty/erty-{m}.mov?v=2" type=\'video/quicktime; codecs="hvc1"\'><source src="/assets/erty/erty-{m}.webm?v=2" type="video/webm"></video>')
 
     faq = "".join(f"<p><b>{q}</b> {a}</p>" for q, a in h["faq"])
 

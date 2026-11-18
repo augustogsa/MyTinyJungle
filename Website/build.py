@@ -199,7 +199,7 @@ def page(L, path, title, desc, body):
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}">
 <meta property="og:image" content="{SITE}/assets/icon-512.png"><meta property="og:url" content="{canon}">
 <meta name="apple-itunes-app" content="app-id=6836292367">
-<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="preload" as="image" href="/assets/erty/favicon-sprite.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="preload" as="image" href="/assets/erty/favicon-sprite.png?v=2">
 <link rel="preload" href="/fonts/Intern.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css?v={CSS_V}">
 </head><body>

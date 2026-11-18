@@ -20,7 +20,7 @@
       var run = function () { clearInterval(tm); if (!d.hidden) tm = setInterval(tick, 90); };
       d.addEventListener("visibilitychange", run); run();
     };
-    sp.src = "/assets/erty/favicon-sprite.png";
+    sp.src = "/assets/erty/favicon-sprite.png?v=2";
   })();
 
   // Brand: on touch screens, a tap on the name grows the leaves briefly.
