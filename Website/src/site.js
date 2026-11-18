@@ -88,6 +88,7 @@
       });
     })(h1);
     h1.classList.add("words");
+    void h1.offsetWidth; setTimeout(function () { h1.classList.add("go"); }, 30);
   }
 
   // Nav tucks away while reading down, returns on the way up.

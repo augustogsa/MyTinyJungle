@@ -5,7 +5,7 @@
   --forest:#2F5D3A;--deep:#22442B;--ink:#24331F;--muted:#4F5F4C;--on-deep:#F3F8EF;
   --r:28px;--gut:clamp(16px,3vw,32px);
   --font:ui-rounded,"SF Pro Rounded","Intern",-apple-system,system-ui,sans-serif;
-  --t-s:14px;--t-b:18px;--t-m:24px;--t-l:clamp(32px,3.4vw,46px);--t-xl:clamp(46px,6.4vw,96px);
+  --t-s:14px;--t-b:18px;--t-m:24px;--t-l:clamp(32px,3.4vw,46px);--t-xl:clamp(40px,min(6.4vw,10svh),96px);--t-l:clamp(30px,min(3.4vw,6svh),46px);
   --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box}
@@ -53,7 +53,8 @@ h1,h2,h3{color:var(--forest);font-weight:800;letter-spacing:-.03em;line-height:1
 .layer.on .phone{transform:translate(-50%,-56%)}
 
 .hero{min-height:calc(100svh - 160px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-bottom:40px}
-.hero h1{font-size:var(--t-xl);max-width:9em;line-height:.98}
+.read{container-type:inline-size}
+.hero h1{font-size:clamp(36px,min(10cqi,8.5svh),84px);max-width:11em;line-height:1;text-wrap:balance}
 .hero .lead{font-size:var(--t-m);line-height:1.4;width:24em;margin:32px 0}
 .hero > *{max-width:100%}
 .hero .note{font-size:var(--t-s);color:var(--muted);margin-top:16px;font-weight:600}
@@ -551,8 +552,8 @@ h1 .mtj,h2 .mtj,h3 .mtj,.btn .mtj{color:inherit;font-weight:inherit}
 html.enter-ready [data-enter]{transition:opacity var(--t-enter) var(--ease-out),translate var(--t-enter) var(--ease-out);transition-delay:calc(var(--enter-i,0) * var(--t-stagger))}
 html.enter-ready [data-enter]:not([data-entered]){opacity:0;translate:0 var(--rise)}
 .hero h1.words .hw{display:inline-block;overflow:clip;vertical-align:top;padding:.08em .04em .16em;margin:-.08em -.04em -.16em}
-.hero h1.words .hw>span{display:inline-block;animation:hw-rise 1s var(--ease-out) both;animation-delay:calc(120ms + var(--w) * 60ms)}
-@keyframes hw-rise{from{translate:0 112%;rotate:6deg}}
+.hero h1.words .hw>span{display:inline-block;transition:translate 1s var(--ease-out),rotate 1s var(--ease-out);transition-delay:calc(120ms + var(--w) * 60ms)}
+.hero h1.words:not(.go) .hw>span{translate:0 112%;rotate:6deg;transition:none}
 .nav{transition:translate .36s var(--ease-out)}
 .nav[data-tucked]{transition:translate .28s var(--ease-io);translate:0 calc(-100% - 24px)}
 .btn,.acard,.fcard,.chip,.rdot,.paper details summary,footer a{transition:background-color var(--t-out) var(--ease-out),color var(--t-out) var(--ease-out),transform var(--t-out) var(--ease-out),box-shadow var(--t-out) var(--ease-out)}
