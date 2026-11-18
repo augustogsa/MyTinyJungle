@@ -10,8 +10,9 @@ import json
 TESTFLIGHT_URL = "https://testflight.apple.com/join/A8YUuUHj"
 
 
-def I(name, size=40):
-    return f'<img class="i3d" src="/icons/{name}.png" alt="" width="{size}" height="{size}" loading="lazy">'
+def I(name, size=40, lazy=True):
+    lz = LAZY[not lazy]
+    return f'<img class="i3d" src="/icons/{name}.png" alt="" width="{size}" height="{size}"{lz}>'
 
 
 # Scene per chapter: (plant photo, app screen). Index 0 is the hero.
@@ -215,10 +216,9 @@ def render_home(L, t, page, phone, apple_icon):
                       f'<p class="talk-label">{h["chat_label"]}</p><div class="chips" role="group">{plants}</div>'
                       f'<div class="log" aria-live="polite"><p class="b me">{h["chat_qs"][0]}</p><p class="b plant"><b>{first}</b>{h["chat_a"][first][0]}</p></div>'
                       f'<div class="asks" role="group">{qs}</div></div>')
-        if c.get("list") and c["id"] not in h["cards"]:
-            inner += ilist(c["list"])
-        if c["id"] in h["cards"]:
-            inner += '<div class="cards">' + "".join(f'<div class="bcard">{I(i, 56)}<div><b>{a}</b><span>{b}</span></div></div>' for i, a, b in h["cards"][c["id"]]) + "</div>"
+        items = h["cards"].get(c["id"]) or [(i, *(x.split(": ", 1) if ": " in x else (x, ""))) for i, x in c.get("list", [])]
+        if items:
+            inner += '<div class="cards">' + "".join(f'<div class="bcard">{I(i, 56, False)}<div><b>{a}</b>{f"<span>{b}</span>" if b else ""}</div></div>' for i, a, b in items) + "</div>"
         if len(c["thumbs"]) > 1 and not c.get("chat"):
             inner += thumbs(c["thumbs"])
         chapters += f'<section class="chapter" id="{c["id"]}" data-scene="{k}">{inner}</section>'
@@ -260,6 +260,6 @@ def render_home(L, t, page, phone, apple_icon):
 <section class="faq" id="faq"><div class="wrap qgrid"><h2>{h['faq_h']}</h2><div class="qtext">{faq}</div></div></section>
 <section class="closing"><div class="wrap cgrid">
 <div class="ctext"><img class="appicon" src="/assets/apple-touch-icon.png" alt="" width="88" height="88" loading="lazy"><h2>{h['c_h']}</h2><p>{h['c_p']}</p>{cta.replace('class="btn"', 'class="btn light"')}<p class="note">{h['note']}</p></div>
-<div class="mosaic"><p class="mk">{h['close_k']}</p>{"".join(f'<figure><img src="/assets/plants/{ph}.jpg" alt="{kind}" width="400" height="400" loading="lazy"><figcaption><b>{nm}</b>{kind}</figcaption></figure>' for ph, nm, kind in h["close_names"])}</div>
+<div class="mosaic">{"".join(f'<figure><img src="/assets/plants/{ph}.jpg" alt="{kind}" width="400" height="400" loading="lazy"><figcaption><b>{nm}</b>{kind}</figcaption></figure>' for ph, nm, kind in h["close_names"])}</div>
 </div></section>"""
     return page(L, "/", t["home_title"], t["home_desc"], body)

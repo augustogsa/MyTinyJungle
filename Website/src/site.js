@@ -8,10 +8,14 @@
   var layers = d.querySelectorAll(".stage .layer");
   if (layers.length && io) {
     var show = function (k) { layers.forEach(function (l) { l.classList.toggle("on", l.dataset.scene === k); }); };
-    var so = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) show(e.target.dataset.scene); });
-    }, { rootMargin: "-45% 0px -45% 0px" });
-    d.querySelectorAll(".read [data-scene]").forEach(function (s) { so.observe(s); });
+    var secs = d.querySelectorAll(".read [data-scene]"), cur = "0", tick = false;
+    var pick = function () {
+      tick = false; var k = "0", mid = innerHeight * 0.5;
+      secs.forEach(function (s) { if (s.getBoundingClientRect().top < mid) k = s.dataset.scene; });
+      if (k !== cur) { cur = k; show(k); }
+    };
+    addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(pick); } }, { passive: true });
+    addEventListener("resize", pick); pick();
   }
 
   // Entrances: heading, text, then pictures, staggered.
@@ -26,22 +30,24 @@
     });
   }
 
-  // Stage reel: tap a caption or let it advance while the chapter is on screen.
+  // Stage reel: the active caption fills up, then hands over to the next screen.
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   layers.forEach(function (l) {
     var dots = l.querySelectorAll(".rdot"), img = l.querySelector(".phone-screen img");
     if (!dots.length || !img) return;
-    var cur = 0, timer = null;
+    var cur = 0;
     var go = function (i) {
-      cur = i; dots.forEach(function (x, j) { x.classList.toggle("on", j === i); });
+      cur = i;
+      dots.forEach(function (x, j) { x.classList.remove("on"); void x.offsetWidth; x.classList.toggle("on", j === i); x.setAttribute("aria-pressed", j === i); });
       img.classList.add("fade");
-      setTimeout(function () { img.src = dots[i].dataset.src; img.alt = dots[i].textContent; img.classList.remove("fade"); }, 200);
+      setTimeout(function () { img.src = dots[i].dataset.src; img.alt = dots[i].textContent; img.classList.remove("fade"); }, 220);
     };
-    dots.forEach(function (x, i) { x.addEventListener("click", function () { go(i); clearInterval(timer); timer = null; }); });
-    new MutationObserver(function () {
-      clearInterval(timer); timer = null;
-      if (l.classList.contains("on") && !reduce) timer = setInterval(function () { if (!d.hidden) go((cur + 1) % dots.length); }, 3600);
-    }).observe(l, { attributes: true, attributeFilter: ["class"] });
+    dots.forEach(function (x, i) {
+      x.innerHTML = "<span>" + x.textContent + "</span>";
+      x.addEventListener("click", function () { go(i); });
+      x.addEventListener("animationend", function () { if (!reduce && x.classList.contains("on")) go((i + 1) % dots.length); });
+    });
+    new MutationObserver(function () { if (l.classList.contains("on")) go(0); }).observe(l, { attributes: true, attributeFilter: ["class"] });
   });
 
   // Screen sliders (phone layout).

@@ -50,8 +50,8 @@ h1,h2,h3{color:var(--forest);font-weight:800;letter-spacing:-.03em;line-height:1
 .layer.on{opacity:1}
 .layer .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 9s linear}
 .layer.on .photo{transform:scale(1)}
-.layer .phone{position:absolute;left:50%;top:50%;width:auto;height:min(86%,640px);transform:translate(-50%,-46%);transition:transform 1.2s var(--ease)}
-.layer.on .phone{transform:translate(-50%,-50%)}
+.layer .phone{position:absolute;left:50%;top:50%;width:auto;height:min(76%,600px);transform:translate(-50%,-50%);transition:transform 1.2s var(--ease)}
+.layer.on .phone{transform:translate(-50%,-56%)}
 
 .hero{min-height:calc(100svh - 160px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-bottom:40px}
 .hero h1{font-size:var(--t-xl);max-width:9em;line-height:.98}
@@ -252,13 +252,29 @@ footer a:hover{text-decoration:underline}
 @media (max-width:560px){.agrid{grid-template-columns:1fr}.acard{padding:22px}}
 
 /* stage reel: the phone on the stage steps through the chapter's screens */
-.reel{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);display:flex;gap:6px;background:var(--paper);border-radius:999px;padding:5px;max-width:calc(100% - 32px);overflow-x:auto;scrollbar-width:none}
-.rdot{font:inherit;font-size:var(--t-s);font-weight:800;border:0;border-radius:999px;min-height:38px;padding:0 14px;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.reel{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;gap:6px;background:var(--paper);border-radius:999px;padding:5px;max-width:calc(100% - 32px);overflow-x:auto;scrollbar-width:none}
+.rdot{position:relative;overflow:hidden;font:inherit;font-size:var(--t-s);font-weight:800;border:0;border-radius:999px;min-height:40px;padding:0 16px;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap;transition:background .3s var(--ease),color .3s var(--ease)}
+.rdot span{position:relative}
 .rdot:hover{color:var(--forest)}
-.rdot.on{background:var(--forest);color:#fff}
+.rdot.on{background:var(--mint);color:var(--deep)}
+.rdot::before{content:"";position:absolute;inset:0;background:var(--sage);transform:scaleX(0);transform-origin:left;border-radius:inherit}
+.rdot.on::before{animation:fill var(--reel,4s) linear forwards}
+.layer:not(.on) .rdot::before,.stage:hover .rdot.on::before{animation-play-state:paused}
+@keyframes fill{to{transform:scaleX(1)}}
 .layer .phone-screen img{transition:opacity .35s var(--ease)}
 .layer .phone-screen img.fade{opacity:0}
 @media (min-width:981px){.read .slider{display:none}}
 .layer{visibility:hidden;transition:opacity 1.6s var(--ease),visibility 0s linear 1.6s}
 .layer.on{visibility:visible;transition:opacity 1.6s var(--ease)}
 .layer:not(.on) .reel{display:none}
+@media (prefers-reduced-motion:reduce){.rdot.on::before{animation:none;transform:scaleX(1)}}
+/* last chapter holds the stage until its end, so the stage switches to it and both end together */
+@media (min-width:981px){.read .chapter:last-child{min-height:calc(100svh - 92px);padding-bottom:12px}.read{padding-bottom:0}}
+.allf{padding-bottom:150px}
+.bcard:not(:has(span)) b{margin:0}
+h1,h2,h3{text-wrap:balance}
+p,li,.bcard span{text-wrap:pretty}
+.lead,.lead2,.ctext > p,.ctext .note,.hero .note,.fhead p,.beta p,.field .who{text-wrap:balance}
+.ctext{max-width:30rem}
+.ctext h2{max-width:9em}
+.ctext > p{max-width:22em}
