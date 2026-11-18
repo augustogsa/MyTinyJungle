@@ -15,7 +15,7 @@ def I(name, size=40):
 
 
 # Scene per chapter: (plant photo, app screen). Index 0 is the hero.
-SCENES = [("monstera", "today1"), ("echeveria", "today-ring"), ("pothos", "plant"), ("basil", None),
+SCENES = [("monstera", "today1"), ("echeveria", "today-ring"), ("pothos", "plant"), ("basil", "jungle-chat"),
           ("peacelily", "care-week"), ("orchid", "scan-result"), ("zz", "me")]
 
 H = {
@@ -46,6 +46,9 @@ H = {
     "list": [("livingRoom", "Living room, kitchen, balcony: who lives where"), ("award", "Milestones that make care feel like a joy")],
     "thumbs": [("me", "Me")]},
   ],
+  "pills": [("soilTest", "No more guessing when to water"), ("chat", "Plants with real personalities"), ("calendarHeart", "Gentle reminders, never nagging"), ("healthShield", "Early help when one struggles"), ("homeLeaf", "Made for real homes")],
+  "cards": {"today": [("wateringCan", "Care in one tap", "Water, feed, mist or check the soil straight from Today."), ("calendar", "Coming up, at a glance", "Know what's next before anyone droops."), ("celebrate", "Little wins, celebrated", "Streaks and milestones make care feel like a joy.")],
+            "plants": [("feedJar", "Water, Feed, Repot, Check", "The four things plants need most, always one tap away."), ("growth", "Watch them grow", "A photo timeline that shows how far you've come."), ("shieldLeaf", "Safe for pets and kids", "Clear warnings when a plant isn't safe to nibble.")]},
   "chat_label": "Pick a plant, then ask",
   "chat_plants": [("Monty", "monstera"), ("Pesto", "basil"), ("Pearl", "orchid"), ("Goldie", "pothos")],
   "chat_qs": ["How are you?", "Do you need water?", "Should I feed you?"],
@@ -55,6 +58,8 @@ H = {
    "Pearl": ["Resting, and dreaming of my next flower spike.", "Not yet. Water me when my roots look silvery, about once a week.", "Not this season. Orchid food again when spring arrives."],
    "Goldie": ["A little droopy, to be honest. I think I am thirsty.", "Yes, can you check my soil? If the top two centimetres are dry, I would love a drink.", "After a drink, yes. Never feed me when I am dry."]},
   "you": "You",
+  "all": [["chat", "Chat with your plants", "Write it like a text. They reply with personality."], ["soilTest", "Soil-check ritual", "Learns each plant's rhythm so watering is just right."], ["calendarHeart", "Gentle care requests", "Water, feed, mist and turn, only when it's time."], ["firstAid", "Health check", "Kind, clear help when a plant struggles."], ["bug", "Pest guard", "Spot pests early and follow a simple plan."], ["pot", "Repot check", "Knows when it's time and what pot and soil to use."], ["travel", "Going away", "Holiday plans so every plant is fine while you're gone."], ["seedling", "Cuttings", "Grow new plants from the ones you love."], ["sun", "Season guide", "What each season means for your plants, where you live."], ["fertilizer", "Label scanner", "Know if a food or soil suits each of your plants."], ["livingRoom", "Spaces", "Room by room, the right light for every plant."], ["shieldLeaf", "Pet-safety warnings", "Clear notes for cats, dogs and little ones."]],
+  "all_h": "All the help a plant parent could wish for",
   "feat_h": "Everything inside",
   "feat": [("monstera", "Care that listens", [("chat", "Chat with every plant, in their own voices"), ("soilTest", "The soil-check ritual learns each plant's rhythm"), ("calendarHeart", "Gentle requests to water, feed, mist and turn"), ("celebrate", "Streaks and milestones, never guilt")]),
            ("peacelily", "Help when one struggles", [("firstAid", "Health check from a photo"), ("bug", "Pest guard with a simple plan"), ("pot", "Repot check: when, which pot, which soil"), ("shieldLeaf", "Clear warnings for cats, dogs and little ones")]),
@@ -112,6 +117,9 @@ H = {
     "list": [("livingRoom", "Sala, cozinha, varanda: quem mora onde"), ("award", "Conquistas que deixam o cuidado ainda mais gostoso")],
     "thumbs": [("me", "Você")]},
   ],
+  "pills": [("soilTest", "Chega de adivinhar quando regar"), ("chat", "Plantas com personalidade"), ("calendarHeart", "Lembretes gentis, sem insistir"), ("healthShield", "Ajuda cedo quando uma sofre"), ("homeLeaf", "Feito para casas de verdade")],
+  "cards": {"today": [("wateringCan", "Cuidar num toque", "Regar, adubar, borrifar ou ver a terra, direto do Hoje."), ("calendar", "O que vem aí, num relance", "Saiba o que vem antes de alguma murchar."), ("celebrate", "Pequenas vitórias celebradas", "Sequências e marcos tornam o cuidado uma alegria.")],
+            "plants": [("feedJar", "Regar, Adubar, Vaso, Verificar", "O que as plantas mais precisam, sempre a um toque."), ("growth", "Veja-as crescer", "Uma linha do tempo de fotos que mostra o caminho feito."), ("shieldLeaf", "Seguro para pets e crianças", "Avisos claros quando uma planta não é para morder.")]},
   "chat_label": "Escolha uma planta e pergunte",
   "chat_plants": [("Monty", "monstera"), ("Pesto", "basil"), ("Pearl", "orchid"), ("Goldie", "pothos")],
   "chat_qs": ["Como você está?", "Precisa de água?", "Devo te adubar?"],
@@ -121,6 +129,8 @@ H = {
    "Pearl": ["Descansando, sonhando com a próxima haste de flores.", "Ainda não. Me rega quando as raízes estiverem prateadas, uma vez por semana.", "Nesta estação, não. Adubo de orquídea quando a primavera chegar."],
    "Goldie": ["Meio murchinha, para ser sincera. Acho que estou com sede.", "Sim, dá uma olhada na minha terra? Se os dois centímetros de cima estiverem secos, eu adoraria uma água.", "Depois de beber, sim. Nunca me adube com a terra seca."]},
   "you": "Você",
+  "all": [["chat", "Conversar com as plantas", "Escreva como uma mensagem. Elas respondem com personalidade."], ["soilTest", "Ritual da terra", "Aprende o ritmo de cada planta para regar na medida certa."], ["calendarHeart", "Pedidos de cuidado", "Regar, adubar, borrifar e rodar, só quando é altura."], ["firstAid", "Verificação de saúde", "Ajuda clara e gentil quando uma planta sofre."], ["bug", "Guarda contra pragas", "Detete pragas cedo e siga um plano simples."], ["pot", "Mudança de vaso", "Sabe quando é altura e que vaso e terra usar."], ["travel", "Vou viajar", "Planos de férias para todas ficarem bem."], ["seedling", "Estacas", "Faça plantas novas a partir das que adora."], ["sun", "Guia das estações", "O que cada estação significa onde você mora."], ["fertilizer", "Leitor de rótulos", "Saiba se um adubo ou terra serve a cada planta."], ["livingRoom", "Cômodos", "Cômodo a cômodo, a luz certa para cada planta."], ["shieldLeaf", "Avisos para animais", "Notas claras para gatos, cães e crianças."]],
+  "all_h": "Toda a ajuda que quem cuida de plantas pode querer",
   "feat_h": "Tudo o que vem no app",
   "feat": [("monstera", "Cuidado com atenção", [("chat", "Converse com cada planta, na voz dela"), ("soilTest", "O ritual da terra aprende o ritmo de cada uma"), ("calendarHeart", "Lembretes gentis para regar, adubar, borrifar e girar o vaso"), ("celebrate", "Sequências e conquistas, nunca culpa")]),
            ("peacelily", "Ajuda quando uma não vai bem", [("firstAid", "Checagem de saúde por foto"), ("bug", "Proteção contra pragas com um plano simples"), ("pot", "Troca de vaso: quando, qual vaso, qual substrato"), ("shieldLeaf", "Avisos claros para gatos, cachorros e crianças")]),
@@ -196,6 +206,8 @@ def render_home(L, t, page, phone, apple_icon):
                       f'<div class="asks" role="group">{qs}</div></div>')
         if c.get("list"):
             inner += ilist(c["list"])
+        if c["id"] in h["cards"]:
+            inner += '<div class="cards">' + "".join(f'<div class="bcard">{I(i, 56)}<div><b>{a}</b><span>{b}</span></div></div>' for i, a, b in h["cards"][c["id"]]) + "</div>"
         if len(c["thumbs"]) > 1 and not c.get("chat"):
             inner += thumbs(c["thumbs"])
         chapters += f'<section class="chapter" id="{c["id"]}" data-scene="{k}">{inner}</section>'
@@ -224,7 +236,8 @@ def render_home(L, t, page, phone, apple_icon):
 </div>
 <div class="stage" aria-hidden="true">{layers}</div>
 </div>
-<section class="features" id="features"><div class="wrap"><div class="fhead"><h2>{h['feat_h']}</h2><p>{h['feat_p']}</p></div><div class="fgrid">{feats}</div></div></section>
+<section class="pills-band" aria-label="Why"><div class="wrap pills">{"".join(f'<p class="pill">{I(i, 48)}{x}</p>' for i, x in h["pills"])}</div></section>
+<section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
 <section class="beta" id="beta"><div class="wrap bgrid"><div><h2>{h['slip_h']}</h2><p>{h['slip_p']}</p>{cta}</div>
 <div class="slip">{slip}<p class="row end"><span>{se[0]}</span><span>{se[1]}</span></p></div></div></section>
 <section class="pricing" id="pricing"><h2 class="vh">Plus</h2><div class="wrap fields">

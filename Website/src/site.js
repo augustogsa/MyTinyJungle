@@ -15,7 +15,7 @@
   }
 
   // Entrances: heading, text, then pictures, staggered.
-  var parts = d.querySelectorAll(".chapter > *, .fhead > *, .fblock, .field, .mosaic figure, .beta .bgrid > *, .faq h2, .qtext p, .ctext > *");
+  var parts = d.querySelectorAll(".chapter > *, .bcard, .pill, .acard, .allf h2, .field, .mosaic figure, .beta .bgrid > *, .faq h2, .qtext p, .ctext > *");
   if (io && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var ro = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); ro.unobserve(e.target); } });
