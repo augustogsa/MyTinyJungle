@@ -140,27 +140,68 @@ struct ShareStory: View {
     }
 
     // MARK: Foto — the photo, warmed, with the plant talking and sticker stats.
+    /// Liquid Glass look, rendered by hand so it survives ImageRenderer (system materials don't):
+    /// a blurred copy of the photo shows through each glass shape, with a soft tint and a specular rim.
     private var full: some View {
         ZStack {
             fill()
-            LinearGradient(colors: [Color(red: 0.35, green: 0.22, blue: 0.10).opacity(0.25), .clear, Color(red: 0.20, green: 0.13, blue: 0.07).opacity(0.75)], startPoint: .top, endPoint: .bottom)
-            VStack(alignment: .leading, spacing: 14) {
-                bubble(quote, tailLeft: true).padding(.trailing, 50).padding(.top, 40)
-                Spacer()
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(plant.name).font(.system(size: 38, weight: .heavy, design: .rounded))
-                    Text(Grammar.pt(String(localized: "Together since \(since)", comment: "Share image line; %@ month and year"))).font(.system(size: 15, weight: .semibold, design: .rounded)).opacity(0.9)
-                }
-                .foregroundStyle(.white).shadow(color: .black.opacity(0.3), radius: 8, y: 2)
-                HStack(spacing: 8) {
-                    chip(.calendarHeart, "\(days)", Grammar.pt(String(localized: "days", comment: "Share card stat unit: days together; short")), blush)
-                    chip(.waterDrops, "\(waters)", Grammar.pt(String(localized: "waterings", comment: "Share card stat unit: waterings; short, lowercase")), sky)
-                    chip(.sprout, "\(leaves)", leavesLabel, mint)
-                }
-                brandLight
-            }
-            .padding(22)
+            LinearGradient(colors: [.clear, .clear, .black.opacity(0.35)], startPoint: .top, endPoint: .bottom)
+            fill().blur(radius: 18).saturation(1.3).brightness(0.06).mask(glassLayout(mask: true))
+            glassLayout(mask: false)
         }
+    }
+
+    private func glassLayout(mask: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top, spacing: 10) {
+                fill(34, 34).clipShape(Circle()).overlay(Circle().strokeBorder(.white.opacity(0.8), lineWidth: 1.5))
+                Text("“\(quote)”").font(.system(size: 16, weight: .semibold, design: .rounded)).foregroundStyle(.white)
+                    .lineLimit(4).fixedSize(horizontal: false, vertical: true)
+                    .shadow(color: .black.opacity(0.25), radius: 4, y: 1)
+            }
+            .opacity(mask ? 0 : 1)
+            .padding(.horizontal, 16).padding(.vertical, 14)
+            .glassSkin(RoundedRectangle(cornerRadius: 26, style: .continuous), mask: mask)
+            .padding(.trailing, 40).padding(.top, 34)
+            Spacer()
+            VStack(alignment: .leading, spacing: 2) {
+                Text(plant.name).font(.system(size: 34, weight: .heavy, design: .rounded))
+                Text(Grammar.pt(String(localized: "Together since \(since)", comment: "Share image line; %@ month and year"))).font(.system(size: 14, weight: .semibold, design: .rounded)).opacity(0.9)
+            }
+            .foregroundStyle(.white).shadow(color: .black.opacity(0.3), radius: 6, y: 1)
+            .opacity(mask ? 0 : 1)
+            .padding(.horizontal, 18).padding(.vertical, 14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .glassSkin(RoundedRectangle(cornerRadius: 28, style: .continuous), mask: mask)
+            HStack(spacing: 8) {
+                glassStat(.calendarHeart, "\(days)", Grammar.pt(String(localized: "days", comment: "Share card stat unit: days together; short")), mask)
+                glassStat(.waterDrops, "\(waters)", Grammar.pt(String(localized: "waterings", comment: "Share card stat unit: waterings; short, lowercase")), mask)
+                glassStat(.sprout, "\(leaves)", leavesLabel, mask)
+            }
+            HStack(spacing: 6) {
+                Image("AppMark").resizable().scaledToFit().frame(width: 18, height: 18).clipShape(RoundedRectangle(cornerRadius: 4.5, style: .continuous))
+                Text("My Tiny Jungle").font(.system(size: 12, weight: .bold, design: .rounded))
+                Text("· mytinyjungle.com").font(.system(size: 12, weight: .medium, design: .rounded)).opacity(0.8)
+            }
+            .foregroundStyle(.white)
+            .opacity(mask ? 0 : 1)
+            .padding(.horizontal, 12).padding(.vertical, 8)
+            .glassSkin(Capsule(), mask: mask)
+            .frame(maxWidth: .infinity)
+        }
+        .padding(18)
+    }
+
+    private func glassStat(_ icon: Icon3D, _ n: String, _ l: String, _ mask: Bool) -> some View {
+        VStack(spacing: 2) {
+            Icon3DView(icon, size: 30)
+            Text(n).font(.system(size: 22, weight: .heavy, design: .rounded)).monospacedDigit()
+            Text(l).font(.system(size: 11, weight: .semibold, design: .rounded)).opacity(0.85).lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .foregroundStyle(.white).shadow(color: .black.opacity(0.2), radius: 3, y: 1)
+        .opacity(mask ? 0 : 1)
+        .frame(maxWidth: .infinity).padding(.vertical, 12)
+        .glassSkin(RoundedRectangle(cornerRadius: 24, style: .continuous), mask: mask)
     }
 
     // MARK: Números — a cozy diary page of our life together.
@@ -256,6 +297,24 @@ struct ShareStory: View {
             Image("AppMark").resizable().scaledToFit().frame(width: 20, height: 20).clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
             Text("My Tiny Jungle").font(.system(size: 13, weight: .bold, design: .rounded)).foregroundStyle(.white.opacity(0.9))
             Text("· mytinyjungle.com").font(.system(size: 13, weight: .medium, design: .rounded)).foregroundStyle(.white.opacity(0.75))
+        }
+    }
+}
+
+private extension View {
+    /// Hand-made Liquid Glass: tint, top sheen, specular rim and a soft lift. In mask mode, a solid shape.
+    @ViewBuilder func glassSkin<S: InsettableShape>(_ shape: S, mask: Bool) -> some View {
+        if mask {
+            background(shape.fill(.black))
+        } else {
+            background {
+                ZStack {
+                    shape.fill(.white.opacity(0.16))
+                    shape.fill(LinearGradient(colors: [.white.opacity(0.28), .clear], startPoint: .top, endPoint: .center))
+                    shape.strokeBorder(LinearGradient(colors: [.white.opacity(0.85), .white.opacity(0.15), .white.opacity(0.45)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
+                }
+                .shadow(color: .black.opacity(0.18), radius: 14, y: 6)
+            }
         }
     }
 }
