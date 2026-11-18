@@ -467,3 +467,4 @@ p,li,.bcard span{text-wrap:pretty}
 .hrow.us b{font-size:clamp(40px,5vw,64px);letter-spacing:-.03em;line-height:1}
 .two .timer{text-align:center;font-size:clamp(18px,1.6vw,22px);color:var(--ink);max-width:30em;margin:8px auto 0}
 .two .ttext{text-align:center}.two .ttext p{margin-left:auto;margin-right:auto}
+@media (min-width:901px){.lock{grid-template-columns:minmax(0,26rem) auto;justify-content:center;gap:clamp(40px,6vw,96px)}.lockpair{justify-content:flex-start}}
