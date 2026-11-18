@@ -154,7 +154,7 @@ struct TodayView: View {
                 let season = SeasonGuideView.current()
         return VStack(alignment: .leading, spacing: 10) {
             SectionTitle("At a glance")
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
+            HStack(alignment: .top, spacing: 12) {
                 Button { path.append(TodayRoute.watering) } label: {
                     SummaryCard(title: "Next sips", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
                         if upcoming.isEmpty {
@@ -176,10 +176,11 @@ struct TodayView: View {
                 }
                 Button { path.append(TodayRoute.season) } label: {
                     SummaryCard(title: season.rawValue, symbol: season.symbol, tint: Color(red: 0.72, green: 0.56, blue: 0.2)) {
-                        Text(seasonTip(season)).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text).lineLimit(3, reservesSpace: true)
+                        Text(seasonTip(season)).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                     }
                 }
             }
+            .fixedSize(horizontal: false, vertical: true)
             .buttonStyle(.plain)
             Button { path.append(TodayRoute.learn) } label: {
                 HStack(spacing: 14) {
@@ -451,14 +452,14 @@ struct SummaryCard<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
-                SmartIcon(symbol: symbol, size: 22, tint: tint)
+                SmartIcon(symbol: symbol, size: 22, tint: tint).frame(width: 26, height: 26)
                 Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(tint == Jungle.leaf ? Jungle.accentText : Jungle.text)
                 Spacer(minLength: 0)
                 Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
             }
             content
         }
-        .frame(maxWidth: .infinity, minHeight: 108, alignment: .topLeading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(14).jungleCard()
         .contentShape(Rectangle())
     }
