@@ -324,9 +324,7 @@ def render_home(L, t, page, phone, apple_icon):
 </div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
 <section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
-<section class="beta" id="beta"><div class="wrap bgrid"><div>{E("water", 130)}<h2>{h['slip_h']}</h2><p>{h['slip_p']}</p>{cta}</div>
-<div class="slip">{slip}<p class="row end"><span>{se[0]}</span><span>{se[1]}</span></p></div></div></section>
-<section class="pricing" id="pricing"><h2 class="vh">Plus</h2><div class="wrap fields">
+<section class="pricing" id="pricing"><h2 class="vh">Plus</h2><div class="wrap phead">{E("water", 120)}</div><div class="wrap fields">
 {field("free", h["free"], f'<a class="btn ghost" href="{TESTFLIGHT_URL}" rel="noopener">{h["cta"]}</a>')}
 {field("monthly", h["monthly"], f'<a class="btn" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>')}
 {field("plus", h["plus"], f'<a class="btn light" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>', h["best"])}
