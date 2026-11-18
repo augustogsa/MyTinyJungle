@@ -36,6 +36,7 @@ struct ScanView: View {
             }
             .jungleBackdrop()
             .navigationTitle("Scan")
+            .task { if DemoSeeder.wantsScan, product == nil { try? await Task.sleep(for: .seconds(1)); product = ProductAnalyzer.analyze(text: DemoSeeder.sampleLabel) } }
             .sheet(item: $paywall) { PaywallView(reason: $0) }
             .sheet(isPresented: $addingPlant) { AddPlantFlow() }
             .sheet(item: $checking) { p in NavigationStack { HealthCheckView(plant: p) } }

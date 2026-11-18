@@ -38,6 +38,7 @@ struct MyTinyJungleApp: App {
         WindowGroup {
             RootView()
                 .tint(Jungle.forest)
+                .task { DemoSeeder.seedIfAsked(container.mainContext) }
         }
         .modelContainer(container)
     }
@@ -47,7 +48,7 @@ struct RootView: View {
     @AppStorage("selectedTab") private var tab = 0
     @AppStorage("onboarded") private var onboarded = false
     var body: some View {
-        if !onboarded && !ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+        if !onboarded && DemoSeeder.photoDir == nil && !ProcessInfo.processInfo.arguments.contains("-uiTesting") {
             OnboardingView { onboarded = true }
         } else { tabs }
     }
