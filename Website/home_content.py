@@ -187,7 +187,7 @@ H = {
   "lock_h": "Avisos que chegam na hora certa",
   "notifs": [("echeveria", "Geada hoje à noite (0 °C)", "A Rosinha mora na varanda. Leve ela pra dentro ou cubra com uma manta antes de dormir, tá? Geada machuca folhinha delicada."), ("echeveria", "Amanhã vai ser um calorão (36 °C)", "A Rosinha ia adorar uma sombrinha à tarde e uma boa regada no friozinho da manhã."), ("peacelily", "Lili", "Tô murchando aqui. Sério mesmo. Uma regada lenta e caprichada me traria de volta à vida."), ("pothos", "Hoje Dourada é com você", ""), ("monstera", "My Tiny Jungle", "Amanhã você viaja. Uma regada caprichada pra todo mundo hoje à noite, e elas vão te esperar felizes.")],
   "lock_alt": "", "lock_date": "quarta-feira, 18 de novembro", "now": "agora", "ntimes": ["agora", "há 25 min", "há 1 h", "8:00", "Ontem"],
-  "know_h": "Lembrete fixo não manja de planta. O My Tiny Jungle manja.",
+  "know_h": "Lembrete fixo não manja de planta. A gente manja.",
   "know_p": "A maioria dos apps pede um intervalo e repete o mesmo aviso pra sempre. Aqui, o cuidado é recalculado todo dia, pra cada planta, com base em tudo o que tá em volta dela.",
   "vs_bell": "Lembrete", "know_vs": (("Apps de lembrete", ["Rega a cada 7 dias, sempre", "Mesmo aviso no verão e no inverno", "Manda regar a varanda em dia de chuva", "Duas pessoas, dois avisos, planta afogada"]), ("My Tiny Jungle", ["Rega quando o vaso vai estar seco de verdade", "Ajusta o cuidado às estações e ao seu hemisfério", "Segura a rega das plantas de fora depois da chuva", "Organiza o rodízio pra ninguém regar duas vezes"])),
   "two_h": "Mesma planta, casas diferentes, cuidados diferentes.",
