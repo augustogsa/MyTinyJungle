@@ -57,7 +57,7 @@ def og_image(L, path, title, desc, dist):
     """1200x630 share card per page and language, cached by content."""
     name = f"{L}-{path.strip('/').replace('/', '-') or 'home'}"
     out = dist / "og" / f"{name}.png"
-    key = hashlib.sha1(f"v9|{L}|{path}|{title}|{desc}".encode()).hexdigest()[:12]
+    key = hashlib.sha1(f"v10|{L}|{path}|{title}|{desc}".encode()).hexdigest()[:12]
     cached = CACHE / f"{name}-{key}.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     if not cached.exists():
