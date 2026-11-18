@@ -30,7 +30,6 @@ struct TodayView: View {
                         header
                         if plants.isEmpty { EmptyJungle { addingPlant = true } }
                         else {
-                            TodayWeekStrip(plants: plants) { _ in selectedTab = 2 }
                             if requests.isEmpty {
                                 Button { selectedTab = 2 } label: { CaughtUpCard(plants: plants) }.buttonStyle(.plain).id("today")
                             } else {
@@ -61,33 +60,16 @@ struct TodayView: View {
                             summary
                             conversations
                         }
-                        if !jungleMessages.isEmpty {
-                            VStack(alignment: .leading, spacing: 10) {
-                                SectionTitle("Jungle chat")
-                                ForEach(jungleMessages) { m in
-                                    Group {
-                                        if m.logCard != nil {
-                                            LoggedCardView(message: m, plants: plants)
-                                        } else {
-                                            MessageBubble(message: m, speaker: m.speakerID.flatMap { id in plants.first { $0.id == id } }) { send($0) }
-                                        }
-                                    }
-                                    .id(m.id)
-                                    .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
-                                }
-                            }
-                        }
                         Color.clear.frame(height: 1).id("bottom")
                     }
                     .padding(.horizontal, 16)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                .onChange(of: allMessages.count) { withAnimation(.snappy) { proxy.scrollTo("bottom") } }
-                .animation(.snappy, value: requests.map(\.1.id))
+                                .animation(.snappy, value: requests.map(\.1.id))
                 .safeAreaInset(edge: .bottom) {
-                    GlassComposer(placeholder: plants.isEmpty ? "Tell me about your plant…" : "What did you do? Ask anything…",
+                    GlassComposer(placeholder: plants.isEmpty ? "Tell me about your first plant…" : "Tell me how your plants are doing…",
                                   showChips: !plants.isEmpty, onChip: { chipKind = $0 }) { text, photo in
-                        JungleBrain.handle(text, photo: photo, plant: nil, plants: plants, in: ctx)
+                        sendFromToday(text, photo)
                     }
                 }
             }
@@ -156,23 +138,40 @@ struct TodayView: View {
         case .health: JungleHealthView()
         case .season: ScrollView { SeasonGuideView(plants: plants).padding(16) }.jungleBackdrop().navigationTitle("Seasons")
         case .learn: GuidesView(plant: guidePlant)
+        case .chat: JungleChatView()
         }
     }
 
     /// Health-app style summary cards. Every card opens something.
     private var summary: some View {
         let waterItems = Agenda.items(plants: plants, tasks: [], days: 30).filter { $0.kind == .soilCheck || $0.kind == .water }
-        let next = waterItems.first
-        let sameDay = next.map { n in waterItems.filter { Calendar.current.isDate($0.date, inSameDayAs: n.date) }.compactMap(\.plant) } ?? []
+
+        var seen = Set<UUID>()
+        let upcoming: [(Plant, Date)] = waterItems.compactMap { i in
+            guard let p = i.plant, seen.insert(p.id).inserted else { return nil }
+            return (p, i.date)
+        }.prefix(3).map { $0 }
                 let season = SeasonGuideView.current()
         return VStack(alignment: .leading, spacing: 10) {
             SectionTitle("At a glance")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                 Button { path.append(TodayRoute.watering) } label: {
-                    SummaryCard(title: "Watering", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
-                        Text(next.map { relativeDay($0.date) } ?? "No plan").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text(sameDay.count > 2 ? "\(sameDay[0].name), \(sameDay[1].name) +\(sameDay.count - 2)" : sameDay.isEmpty ? "Add a plant" : sameDay.map(\.name).joined(separator: ", "))
-                            .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
+                    SummaryCard(title: "Next sips", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
+                        if upcoming.isEmpty {
+                            Text(plants.isEmpty ? "Add a plant and I'll plan its drinks." : "Everyone's had a drink. Relax!")
+                                .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(3, reservesSpace: true)
+                        } else {
+                            VStack(alignment: .leading, spacing: 7) {
+                                ForEach(upcoming, id: \.0.id) { p, d in
+                                    HStack(spacing: 8) {
+                                        PlantAvatar(data: p.photo, size: 24)
+                                        Text(p.name).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text).lineLimit(1)
+                                        Spacer(minLength: 4)
+                                        Text(shortDay(d)).font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle).lineLimit(1)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 Button { path.append(TodayRoute.season) } label: {
@@ -199,12 +198,19 @@ struct TodayView: View {
         }
     }
 
+    private func shortDay(_ d: Date) -> String {
+        let cal = Calendar.current
+        if cal.isDateInToday(d) || d < Date() { return "Today" }
+        if cal.isDateInTomorrow(d) { return "Tomorrow" }
+        return d.formatted(.dateTime.weekday(.abbreviated))
+    }
+
     private func seasonTip(_ s: SeasonGuideView.Season) -> String {
         switch s {
-        case .spring: "Repot root-bound plants and start feeding."
-        case .summer: "Check soil twice a week and watch for mites."
-        case .autumn: "Last feed of the year. Bring outdoor plants in."
-        case .winter: "Water less, pause food, keep off cold glass."
+        case .spring: "Fresh leaves are coming. Time for new pots and their first meal."
+        case .summer: "Long sunny days. Peek at the soil a little more often."
+        case .autumn: "Cozy season. One last meal, then let them rest."
+        case .winter: "Sleepy time. Less water, no food, keep them off cold glass."
         }
     }
 
@@ -217,10 +223,39 @@ struct TodayView: View {
     }
 
     /// Each plant's latest line, like a messages inbox.
+    private func sendFromToday(_ text: String, _ photo: Data?) {
+        JungleBrain.handle(text, photo: photo, plant: nil, plants: plants, in: ctx)
+        path.append(TodayRoute.chat)
+    }
+
     private var conversations: some View {
         VStack(alignment: .leading, spacing: 10) {
             SectionTitle("Conversations")
             VStack(spacing: 0) {
+                Button { path.append(TodayRoute.chat) } label: {
+                    HStack(spacing: 12) {
+                        ZStack {
+                            ForEach(Array(plants.prefix(3).enumerated()), id: \.element.id) { i, p in
+                                PlantAvatar(data: p.photo, size: 26).overlay(Circle().strokeBorder(Jungle.surface, lineWidth: 1.5))
+                                    .offset(x: CGFloat(i - 1) * 9, y: i == 1 ? -7 : 5)
+                            }
+                        }
+                        .frame(width: 44, height: 44)
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack {
+                                Text("Your jungle").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                                Spacer()
+                                if let last = jungleMessages.last { Text(last.date, format: .relative(presentation: .named)).font(.caption).foregroundStyle(Jungle.subtle) }
+                            }
+                            Text(jungleMessages.last.map { $0.text.isEmpty ? "Photo" : $0.text } ?? "Talk to everyone at once")
+                                .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
+                        }
+                        Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
+                    }
+                    .padding(.horizontal, 14).padding(.vertical, 12).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                Divider().padding(.leading, 70)
                 ForEach(plants) { p in
                     let last = (p.messages ?? []).max { $0.date < $1.date }
                     NavigationLink { PlantChatView(plant: p) } label: {
@@ -502,7 +537,7 @@ struct CompactRequestRow: View {
     }
 }
 
-enum TodayRoute: Hashable { case watering, health, season, learn }
+enum TodayRoute: Hashable { case watering, health, season, learn, chat }
 
 /// Everything that needs water or a soil check, grouped by day, with one-tap logging.
 struct WateringListView: View {

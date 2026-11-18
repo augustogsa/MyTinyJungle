@@ -87,8 +87,8 @@ enum JungleBrain {
                 ctx.insert(note)
                 reply("Noted in my journal.", plant: context, in: ctx)
             } else {
-                reply(plants.isEmpty ? "Tell me about your first plant, e.g. \"I have a monstera called Milo in the living room\"."
-                      : "I didn't catch a care action there. Try \"watered Milo and Luna this morning\", or ask a question.", plant: nil, in: ctx)
+                reply(plants.isEmpty ? "I'd love to meet your first plant! Try \"I have a monstera called Milo in the living room\"."
+                      : "Hmm, I'm not sure what you mean. You could say \"watered \(plants.prefix(2).map(\.name).joined(separator: " and "))\", or just ask me anything about them.", plant: nil, in: ctx)
             }
             try? ctx.save()
             return
