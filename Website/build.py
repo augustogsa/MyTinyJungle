@@ -209,7 +209,7 @@ def page(L, path, title, desc, body):
 <a class="lang" href="{other}" hreflang="{T[t['other']]['lang']}">{t['other_label']}</a><a class="btn btn-s" href="https://testflight.apple.com/join/A8YUuUHj" rel="noopener">{n[3]}</a></nav>
 </div></header>
 <main>{body}</main>
-<footer><div class="wrap"><span>© 2026 SimpleAppsCo LLC · {t['made']}</span>
+<footer><div class="wrap"><span>© 2026 SimpleAppsCo LLC <img class="fsep" src="/icons/sprout.png" alt="" width="20" height="20" loading="lazy"> {t['made']}</span>
 <nav><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
 <script src="/site.js?v={CSS_V}" defer></script>
 </body></html>"""
