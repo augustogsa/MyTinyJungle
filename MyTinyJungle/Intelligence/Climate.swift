@@ -1,3 +1,4 @@
+import MapKit
 import Foundation
 import CoreLocation
 import Observation
@@ -20,7 +21,7 @@ final class Climate {
     }
     struct Day: Codable, Hashable { let date: Date; let tMin: Double; let tMax: Double; let rain: Double; let humidity: Double? }
     enum HomeAir: Int, Codable, CaseIterable { case dry, normal, humid
-        var label: String { switch self { case .dry: String(localized: "Dry: static, dry skin or lips", comment: "Home air humidity option in Settings."); case .normal: String(localized: "Normal, nothing special", comment: "Home air humidity option in Settings."); case .humid: String(localized: "Damp: foggy windows, mould spots", comment: "Home air humidity option in Settings.") } }
+        var label: String { switch self { case .dry: Grammar.pt(String(localized: "Dry: static, dry skin or lips", comment: "Home air humidity option in Settings.")); case .normal: Grammar.pt(String(localized: "Normal, nothing special", comment: "Home air humidity option in Settings.")); case .humid: Grammar.pt(String(localized: "Damp: foggy windows, mould spots", comment: "Home air humidity option in Settings.")) } }
     }
 
     private let d = UserDefaults.standard
@@ -96,22 +97,22 @@ final class Climate {
     }
 
     var biome: String {
-        guard let k = koppen else { return String(localized: "Not set yet", comment: "Climate biome when no location is set.") }
+        guard let k = koppen else { return Grammar.pt(String(localized: "Not set yet", comment: "Climate biome when no location is set.")) }
         switch k {
-        case "Af": return String(localized: "Tropical rainforest", comment: "Climate biome name (Köppen class), capitalized.")
-        case "Am": return String(localized: "Tropical monsoon", comment: "Climate biome name (Köppen class), capitalized.")
-        case "Aw": return String(localized: "Tropical savanna", comment: "Climate biome name (Köppen class), capitalized.")
-        case "BWh": return String(localized: "Hot desert", comment: "Climate biome name (Köppen class), capitalized.")
-        case "BWk": return String(localized: "Cold desert", comment: "Climate biome name (Köppen class), capitalized.")
-        case "BSh": return String(localized: "Hot semi-arid", comment: "Climate biome name (Köppen class), capitalized.")
-        case "BSk": return String(localized: "Cold semi-arid", comment: "Climate biome name (Köppen class), capitalized.")
-        case let c where c.hasPrefix("Cs"): return String(localized: "Mediterranean", comment: "Climate biome name (Köppen class), capitalized.")
-        case "Cfa", "Cwa": return String(localized: "Humid subtropical", comment: "Climate biome name (Köppen class), capitalized.")
-        case "Cwb", "Cwc": return String(localized: "Subtropical highland", comment: "Climate biome name (Köppen class), capitalized.")
-        case let c where c.hasPrefix("Cf"): return String(localized: "Temperate oceanic", comment: "Climate biome name (Köppen class), capitalized.")
-        case let c where c.hasPrefix("D"): return String(localized: "Continental", comment: "Climate biome name (Köppen class), capitalized.")
-        case "ET": return String(localized: "Tundra and alpine", comment: "Climate biome name (Köppen class), capitalized.")
-        default: return String(localized: "Polar", comment: "Climate biome name (Köppen class), capitalized.")
+        case "Af": return Grammar.pt(String(localized: "Tropical rainforest", comment: "Climate biome name (Köppen class), capitalized."))
+        case "Am": return Grammar.pt(String(localized: "Tropical monsoon", comment: "Climate biome name (Köppen class), capitalized."))
+        case "Aw": return Grammar.pt(String(localized: "Tropical savanna", comment: "Climate biome name (Köppen class), capitalized."))
+        case "BWh": return Grammar.pt(String(localized: "Hot desert", comment: "Climate biome name (Köppen class), capitalized."))
+        case "BWk": return Grammar.pt(String(localized: "Cold desert", comment: "Climate biome name (Köppen class), capitalized."))
+        case "BSh": return Grammar.pt(String(localized: "Hot semi-arid", comment: "Climate biome name (Köppen class), capitalized."))
+        case "BSk": return Grammar.pt(String(localized: "Cold semi-arid", comment: "Climate biome name (Köppen class), capitalized."))
+        case let c where c.hasPrefix("Cs"): return Grammar.pt(String(localized: "Mediterranean", comment: "Climate biome name (Köppen class), capitalized."))
+        case "Cfa", "Cwa": return Grammar.pt(String(localized: "Humid subtropical", comment: "Climate biome name (Köppen class), capitalized."))
+        case "Cwb", "Cwc": return Grammar.pt(String(localized: "Subtropical highland", comment: "Climate biome name (Köppen class), capitalized."))
+        case let c where c.hasPrefix("Cf"): return Grammar.pt(String(localized: "Temperate oceanic", comment: "Climate biome name (Köppen class), capitalized."))
+        case let c where c.hasPrefix("D"): return Grammar.pt(String(localized: "Continental", comment: "Climate biome name (Köppen class), capitalized."))
+        case "ET": return Grammar.pt(String(localized: "Tundra and alpine", comment: "Climate biome name (Köppen class), capitalized."))
+        default: return Grammar.pt(String(localized: "Polar", comment: "Climate biome name (Köppen class), capitalized."))
         }
     }
     var isTropical: Bool { koppen?.hasPrefix("A") ?? false }
@@ -225,20 +226,21 @@ final class Climate {
     @MainActor func setPlace(named name: String) async {
         busy = true; lastError = nil
         defer { busy = false }
-        guard let mark = try? await CLGeocoder().geocodeAddressString(name).first, let loc = mark.location else {
-            lastError = String(localized: "I couldn't find that place. Try a nearby city.", comment: "Settings: place lookup failed.")
+        guard let item = try? await MKGeocodingRequest(addressString: name)?.mapItems.first else {
+            lastError = Grammar.pt(String(localized: "I couldn't find that place. Try a nearby city.", comment: "Settings: place lookup failed."))
             return
         }
-        await set(loc, mark: mark)
+        await set(item.location, item: item)
     }
 
-    @MainActor func set(_ loc: CLLocation, mark: CLPlacemark? = nil) async {
+    @MainActor func set(_ loc: CLLocation, item: MKMapItem? = nil) async {
         busy = true; lastError = nil
         defer { busy = false }
-        var m = mark
-        if m == nil { m = try? await CLGeocoder().reverseGeocodeLocation(loc).first }
+        var m = item
+        if m == nil { m = try? await MKReverseGeocodingRequest(location: loc)?.mapItems.first }
         let lat = (loc.coordinate.latitude * 10).rounded() / 10, lon = (loc.coordinate.longitude * 10).rounded() / 10
-        profile = Profile(place: m?.locality ?? m?.administrativeArea ?? m?.name ?? String(localized: "Your area", comment: "Fallback place name when the city is unknown."), country: m?.isoCountryCode ?? "", lat: lat, lon: lon)
+        let rep = m?.addressRepresentations
+        profile = Profile(place: rep?.cityName ?? rep?.regionName ?? m?.name ?? Grammar.pt(String(localized: "Your area", comment: "Fallback place name when the city is unknown.")), country: rep?.region?.identifier ?? "", lat: lat, lon: lon)
         await refreshClimate(force: true)
         await refreshForecast(force: true)
     }
@@ -252,7 +254,7 @@ final class Climate {
                         .init(name: "daily", value: "temperature_2m_mean,temperature_2m_min,precipitation_sum"), .init(name: "timezone", value: "auto")]
         struct R: Decodable { struct D: Decodable { let time: [String]; let temperature_2m_mean: [Double?]; let temperature_2m_min: [Double?]; let precipitation_sum: [Double?] }; let daily: D }
         guard let (data, _) = try? await URLSession.shared.data(from: c.url!), let r = try? JSONDecoder().decode(R.self, from: data) else {
-            lastError = String(localized: "Couldn't reach the weather service. I'll try again later.", comment: "Settings: climate download failed.")
+            lastError = Grammar.pt(String(localized: "Couldn't reach the weather service. I'll try again later.", comment: "Settings: climate download failed."))
             return
         }
         var tSum = [Double](repeating: 0, count: 12), tN = [Double](repeating: 0, count: 12), rain = [Double](repeating: 0, count: 12)
@@ -294,7 +296,7 @@ final class Climate {
         busy = true; lastError = nil
         defer { busy = false }
         guard let loc = await LocationOnce.shared.request() else {
-            lastError = String(localized: "Location is off. Type your city instead, that works just as well.", comment: "Settings: location permission off.")
+            lastError = Grammar.pt(String(localized: "Location is off. Type your city instead, that works just as well.", comment: "Settings: location permission off."))
             return
         }
         await set(loc)
@@ -367,33 +369,33 @@ extension Climate {
         let low = days.map(\.tMin).min()!, high = days.map(\.tMax).max()!, rain = days.map(\.rain).max()!
         var out: [WeatherAlert] = []
         func names(_ ps: [Plant]) -> String {
-            ps.count > 3 ? String(localized: "\(ps.prefix(3).map(\.name).formatted(.list(type: .and, width: .narrow))) and friends", comment: "Weather alert: first three plant names, then 'and friends'. %@ = comma list of names.")
+            ps.count > 3 ? Grammar.pt(String(localized: "\(ps.prefix(3).map(\.name).formatted(.list(type: .and, width: .narrow))) and friends", comment: "Weather alert: first three plant names, then 'and friends'. %@ = comma list of names."))
                 : ps.map(\.name).formatted(.list(type: .and))
         }
         let frosty = outside.filter { low < min(2, $0.species?.tempMin ?? 5) }
         if low <= 1, !frosty.isEmpty {
-            out.append(.init(kind: .frost, title: String(localized: "Frost coming (\(Climate.temp(low)))", comment: "Weather alert title. %@ = temperature."),
-                             detail: String(localized: "Please bring \(names(frosty)) inside or wrap them in fleece tonight. Frost hurts tender leaves overnight.", comment: "Weather alert detail. %@ = plant names list. Fleece = manta/TNT de proteção."), plantNames: frosty.map(\.name)))
+            out.append(.init(kind: .frost, title: Grammar.pt(String(localized: "Frost coming (\(Climate.temp(low)))", comment: "Weather alert title. %@ = temperature.")),
+                             detail: Grammar.pt(String(localized: "Please bring \(names(frosty)) inside or wrap them in fleece tonight. Frost hurts tender leaves overnight.", comment: "Weather alert detail. %@ = plant names list. Fleece = manta/TNT de proteção.")), plantNames: frosty.map(\.name)))
         } else {
             let chilly = outside.filter { low < ($0.species?.tempMin ?? 5) }
             if !chilly.isEmpty {
-                out.append(.init(kind: .cold, title: String(localized: "Chilly nights (\(Climate.temp(low)))", comment: "Weather alert title. %@ = temperature."),
-                                 detail: String(localized: "\(names(chilly)) like it warmer than that. A sheltered corner or a night indoors will keep them cosy.", comment: "Weather alert detail. %@ = plant names list (plural subject)."), plantNames: chilly.map(\.name)))
+                out.append(.init(kind: .cold, title: Grammar.pt(String(localized: "Chilly nights (\(Climate.temp(low)))", comment: "Weather alert title. %@ = temperature.")),
+                                 detail: Grammar.pt(String(localized: "\(names(chilly)) like it warmer than that. A sheltered corner or a night indoors will keep them cosy.", comment: "Weather alert detail. %@ = plant names list (plural subject).")), plantNames: chilly.map(\.name)))
             }
         }
         let hot = outside.filter { high > ($0.species?.tempMax ?? 32) }
         if !hot.isEmpty {
-            out.append(.init(kind: .heat, title: String(localized: "Heat on the way (\(Climate.temp(high)))", comment: "Weather alert title. %@ = temperature."),
-                             detail: String(localized: "Water \(names(hot)) early in the morning and give them some afternoon shade. Pots dry out fast now.", comment: "Weather alert detail. %@ = plant names list."), plantNames: hot.map(\.name)))
+            out.append(.init(kind: .heat, title: Grammar.pt(String(localized: "Heat on the way (\(Climate.temp(high)))", comment: "Weather alert title. %@ = temperature.")),
+                             detail: Grammar.pt(String(localized: "Water \(names(hot)) early in the morning and give them some afternoon shade. Pots dry out fast now.", comment: "Weather alert detail. %@ = plant names list.")), plantNames: hot.map(\.name)))
         }
         if rain >= 20 {
             let soggy = outside.filter { $0.species?.waterStyle == .dry || !$0.potHasDrainage }
             if !soggy.isEmpty {
-                out.append(.init(kind: .storm, title: String(localized: "Heavy rain (\(Climate.rain(rain)))", comment: "Weather alert title. %@ = rain amount."),
-                                 detail: String(localized: "\(names(soggy)) hate wet feet. Tuck them under cover or tip out saucers after the rain.", comment: "Weather alert detail. %@ = plant names list. Saucers = pratinhos."), plantNames: soggy.map(\.name)))
+                out.append(.init(kind: .storm, title: Grammar.pt(String(localized: "Heavy rain (\(Climate.rain(rain)))", comment: "Weather alert title. %@ = rain amount.")),
+                                 detail: Grammar.pt(String(localized: "\(names(soggy)) hate wet feet. Tuck them under cover or tip out saucers after the rain.", comment: "Weather alert detail. %@ = plant names list. Saucers = pratinhos.")), plantNames: soggy.map(\.name)))
             }
         } else if days.allSatisfy({ $0.rain < 1 }) && high >= 25 {
-            out.append(.init(kind: .dry, title: String(localized: "Dry, warm days ahead", comment: "Weather alert title."), detail: String(localized: "No rain in sight. Check outdoor pots every morning.", comment: "Weather alert detail."), plantNames: outside.map(\.name)))
+            out.append(.init(kind: .dry, title: Grammar.pt(String(localized: "Dry, warm days ahead", comment: "Weather alert title.")), detail: Grammar.pt(String(localized: "No rain in sight. Check outdoor pots every morning.", comment: "Weather alert detail.")), plantNames: outside.map(\.name)))
         }
         return out
     }
@@ -403,30 +405,30 @@ extension Climate {
         guard let p = profile else { return nil }
         let place = p.place
         if let c = p.coldestNight {
-            if s.tempMin <= c - 2 { return String(localized: "Hardy enough to live outside all year in \(place) (zone \(hardinessZone ?? "?")).", comment: "Climate fit. Args: place, USDA hardiness zone.") }
-            if s.tempMin <= c + 6 { return String(localized: "Can spend most of the year outside in \(place); bring it in on the coldest nights below \(Climate.temp(s.tempMin)).", comment: "Climate fit. Args: place, temperature.") }
+            if s.tempMin <= c - 2 { return Grammar.pt(String(localized: "Hardy enough to live outside all year in \(place) (zone \(hardinessZone ?? "?")).", comment: "Climate fit. Args: place, USDA hardiness zone.")) }
+            if s.tempMin <= c + 6 { return Grammar.pt(String(localized: "Can spend most of the year outside in \(place); bring it in on the coldest nights below \(Climate.temp(s.tempMin)).", comment: "Climate fit. Args: place, temperature.")) }
         }
-        if let w = monthTemp(Date()) , w < s.tempMin { return String(localized: "It's cooler outside than it likes right now. Keep it indoors until nights stay above \(Climate.temp(s.tempMin)).", comment: "Climate fit. %@ = temperature.") }
-        return String(localized: "Happiest indoors in \(place); outside only on warm summer days above \(Climate.temp(s.tempMin)).", comment: "Climate fit. Args: place, temperature.")
+        if let w = monthTemp(Date()) , w < s.tempMin { return Grammar.pt(String(localized: "It's cooler outside than it likes right now. Keep it indoors until nights stay above \(Climate.temp(s.tempMin)).", comment: "Climate fit. %@ = temperature.")) }
+        return Grammar.pt(String(localized: "Happiest indoors in \(place); outside only on warm summer days above \(Climate.temp(s.tempMin)).", comment: "Climate fit. Args: place, temperature."))
     }
 
     /// Season card copy shaped by the real climate and this week's weather.
     func seasonTip(plants: [Plant], now: Date = Date()) -> String? {
-        if let a = alerts(for: plants, now: now).first { return String(localized: "\(a.title). \(a.detail)", comment: "Season card: weather alert title then detail. Keep as is.") }
+        if let a = alerts(for: plants, now: now).first { return Grammar.pt(String(localized: "\(a.title). \(a.detail)", comment: "Season card: weather alert title then detail. Keep as is.")) }
         guard hasClimate else { return nil }
         let place = profile!.place
         if isTropical {
-            return phase(now) == .summer ? String(localized: "Rainy season in \(place). Plants grow fast; feed them and watch for soggy pots.", comment: "Season card. %@ = place.")
-                : String(localized: "Drier season in \(place). Check soil more often and keep humidity up.", comment: "Season card. %@ = place.")
+            return phase(now) == .summer ? Grammar.pt(String(localized: "Rainy season in \(place). Plants grow fast; feed them and watch for soggy pots.", comment: "Season card. %@ = place."))
+                : Grammar.pt(String(localized: "Drier season in \(place). Check soil more often and keep humidity up.", comment: "Season card. %@ = place."))
         }
-        if isDry { return String(localized: "Dry air in \(place). Group plants together and water deeply when the soil is dry.", comment: "Season card. %@ = place.") }
+        if isDry { return Grammar.pt(String(localized: "Dry air in \(place). Group plants together and water deeply when the soil is dry.", comment: "Season card. %@ = place.")) }
         switch phase(now) {
-        case .spring: return String(localized: "Spring is waking up in \(place). Fresh pots and a first gentle meal.", comment: "Season card. %@ = place. Meal = fertilizer.")
-        case .summer: return String(localized: "Warm days in \(place). Peek at the soil a little more often.", comment: "Season card. %@ = place.")
-        case .autumn: return String(localized: "Autumn in \(place). One last meal, then let them rest.", comment: "Season card. %@ = place.")
+        case .spring: return Grammar.pt(String(localized: "Spring is waking up in \(place). Fresh pots and a first gentle meal.", comment: "Season card. %@ = place. Meal = fertilizer."))
+        case .summer: return Grammar.pt(String(localized: "Warm days in \(place). Peek at the soil a little more often.", comment: "Season card. %@ = place."))
+        case .autumn: return Grammar.pt(String(localized: "Autumn in \(place). One last meal, then let them rest.", comment: "Season card. %@ = place."))
         case .winter:
-            return heating ? String(localized: "Winter in \(place) with the heating on. Less water, no food, and keep them away from radiators.", comment: "Season card. %@ = place. Radiators = aquecedores.")
-                : String(localized: "Winter in \(place). Sleepy time: less water, no food, keep them off cold glass.", comment: "Season card. %@ = place.")
+            return heating ? Grammar.pt(String(localized: "Winter in \(place) with the heating on. Less water, no food, and keep them away from radiators.", comment: "Season card. %@ = place. Radiators = aquecedores."))
+                : Grammar.pt(String(localized: "Winter in \(place). Sleepy time: less water, no food, keep them off cold glass.", comment: "Season card. %@ = place."))
         }
     }
 
@@ -441,14 +443,14 @@ extension Climate {
     }
 
     var summary: String {
-        guard let p = profile else { return String(localized: "Tell me where you live and I'll tune care to your climate.", comment: "Climate summary when no location is set.") }
+        guard let p = profile else { return Grammar.pt(String(localized: "Tell me where you live and I'll tune care to your climate.", comment: "Climate summary when no location is set.")) }
         let where_ = p.country.isEmpty ? p.place : "\(p.place), \(p.country)"
         guard hasClimate else { return where_ }
-        var parts = [String(localized: "\(where_): \(biome.lowercased()) climate (Köppen \(koppen ?? "?")).", comment: "Climate summary. Args: place, biome name lowercase, Köppen code.")]
-        if let z = hardinessZone { parts.append(String(localized: "Hardiness zone \(z).", comment: "Climate summary: USDA hardiness zone (pt: zona de rusticidade).")) }
-        parts.append(isSouth ? String(localized: "Southern hemisphere.", comment: "Climate summary sentence.") : String(localized: "Northern hemisphere.", comment: "Climate summary sentence."))
+        var parts = [Grammar.pt(String(localized: "\(where_): \(biome.lowercased()) climate (Köppen \(koppen ?? "?")).", comment: "Climate summary. Args: place, biome name lowercase, Köppen code."))]
+        if let z = hardinessZone { parts.append(Grammar.pt(String(localized: "Hardiness zone \(z).", comment: "Climate summary: USDA hardiness zone (pt: zona de rusticidade)."))) }
+        parts.append(isSouth ? Grammar.pt(String(localized: "Southern hemisphere.", comment: "Climate summary sentence.")) : Grammar.pt(String(localized: "Northern hemisphere.", comment: "Climate summary sentence.")))
         if let pt = p.monthlyTemp.count == 12 ? p.monthlyTemp : nil {
-            parts.append(String(localized: "Months range from about \(Climate.temp(pt.min()!)) to \(Climate.temp(pt.max()!)).", comment: "Climate summary. Args: coldest and warmest monthly mean temperatures."))
+            parts.append(Grammar.pt(String(localized: "Months range from about \(Climate.temp(pt.min()!)) to \(Climate.temp(pt.max()!)).", comment: "Climate summary. Args: coldest and warmest monthly mean temperatures.")))
         }
         return parts.joined(separator: " ")
     }

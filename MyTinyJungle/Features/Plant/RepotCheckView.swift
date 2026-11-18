@@ -41,8 +41,8 @@ struct RepotCheckView: View {
                     Section("Recommended") {
                         LabeledContent("New pot", value: potSize)
                         LabeledContent("Soil", value: s.mixLabel)
-                        LabeledContent("Best time", value: CareEngine.isWinter() ? String(localized: "Spring, unless roots are rotting", comment: "Repot best time in cool season; max 34 chars") : String(localized: "Now: growing season", comment: "Repot best time in growing season; max 24 chars"))
-                        LabeledContent("Material", value: s.waterStyle == .dry ? String(localized: "Terracotta", comment: "Pot material") : String(localized: "Plastic or glazed ceramic", comment: "Pot material recommendation; max 28 chars"))
+                        LabeledContent("Best time", value: CareEngine.isWinter() ? Grammar.pt(String(localized: "Spring, unless roots are rotting", comment: "Repot best time in cool season; max 34 chars")) : Grammar.pt(String(localized: "Now: growing season", comment: "Repot best time in growing season; max 24 chars")))
+                        LabeledContent("Material", value: s.waterStyle == .dry ? Grammar.pt(String(localized: "Terracotta", comment: "Pot material")) : Grammar.pt(String(localized: "Plastic or glazed ceramic", comment: "Pot material recommendation; max 28 chars")))
                     }
                     Section("How") {
                         ForEach(Array(steps.enumerated()), id: \.offset) { i, t in Text(verbatim: "\((i + 1).formatted()). \(t)").font(.subheadline) }
@@ -51,7 +51,7 @@ struct RepotCheckView: View {
                 Section("Plan it") {
                     DatePicker("Repot on", selection: $planDate, in: Date()..., displayedComponents: .date)
                     Button("Plan repotting", systemImage: "calendar.badge.plus") {
-                        ctx.insert(CareTask(title: String(localized: "Repot \(plant.name) (\(potSize))", comment: "Care task title; args plant name, pot size text"), kind: .repot, plantID: plant.id, due: planDate))
+                        ctx.insert(CareTask(title: Grammar.pt(String(localized: "Repot \(plant.name) (\(potSize))", comment: "Care task title; args plant name, pot size text")), kind: .repot, plantID: plant.id, due: planDate))
                         try? ctx.save(); dismiss()
                     }
                 }
@@ -66,7 +66,7 @@ struct RepotCheckView: View {
                         if let newPot { plant.potDiameterCm = newPot }
                         if let s = plant.species, plant.substrate.isEmpty { plant.substrate = s.mixLabel }
                         let m = ChatMessage(text: PlantVoice.thanks(.repot, plant: plant), fromUser: false); m.speakerID = plant.id; ctx.insert(m)
-                        ctx.insert(CareTask(title: String(localized: "Recovery check \(plant.name)", comment: "Care task title after repotting; arg plant name; max 40 chars"), kind: .health, plantID: plant.id, due: Date().addingTimeInterval(7 * 86_400)))
+                        ctx.insert(CareTask(title: Grammar.pt(String(localized: "Recovery check \(plant.name)", comment: "Care task title after repotting; arg plant name; max 40 chars")), kind: .health, plantID: plant.id, due: Date().addingTimeInterval(7 * 86_400)))
                         try? ctx.save(); dismiss()
                     }
                 }
@@ -90,28 +90,28 @@ struct RepotCheckView: View {
         return .notNeeded
     }
     private func title(_ v: Verdict) -> String {
-        switch v { case .recommended: String(localized: "Repotting recommended", comment: "Repot verdict title; max 26 chars"); case .mayBenefit: String(localized: "Repotting may help", comment: "Repot verdict title; max 26 chars"); case .monitor: String(localized: "Monitor the roots", comment: "Repot verdict title; max 26 chars"); case .notNow: String(localized: "Not now", comment: "Repot verdict title; max 26 chars"); case .notNeeded: String(localized: "Not needed yet", comment: "Repot verdict title; max 26 chars") }
+        switch v { case .recommended: Grammar.pt(String(localized: "Repotting recommended", comment: "Repot verdict title; max 26 chars")); case .mayBenefit: Grammar.pt(String(localized: "Repotting may help", comment: "Repot verdict title; max 26 chars")); case .monitor: Grammar.pt(String(localized: "Monitor the roots", comment: "Repot verdict title; max 26 chars")); case .notNow: Grammar.pt(String(localized: "Not now", comment: "Repot verdict title; max 26 chars")); case .notNeeded: Grammar.pt(String(localized: "Not needed yet", comment: "Repot verdict title; max 26 chars")) }
     }
     private func explanation(_ v: Verdict) -> String {
         switch v {
-        case .recommended: staysWet ? String(localized: "Soggy soil risks root rot. Fresh, airy mix now, even in winter.", comment: "Repot verdict explanation") : String(localized: "Roots are running out of room.", comment: "Repot verdict explanation")
-        case .mayBenefit: CareEngine.isWinter() ? String(localized: "There are signs, but it's resting season. Wait for spring if you can.", comment: "Repot verdict explanation, cool season") : String(localized: "Some signs of a crowded pot.", comment: "Repot verdict explanation")
-        case .monitor: String(localized: "Fast drainage alone doesn't mean it needs a new pot. Peek at the roots in a month.", comment: "Repot verdict explanation")
-        case .notNow: String(localized: "\(plant.name) is stressed. Fix the water and light first, since repotting adds stress.", comment: "Repot verdict explanation; arg plant name")
-        case .notNeeded: String(localized: "Happy where it is. Unnecessary repotting does more harm than good.", comment: "Repot verdict explanation")
+        case .recommended: staysWet ? Grammar.pt(String(localized: "Soggy soil risks root rot. Fresh, airy mix now, even in winter.", comment: "Repot verdict explanation")) : Grammar.pt(String(localized: "Roots are running out of room.", comment: "Repot verdict explanation"))
+        case .mayBenefit: CareEngine.isWinter() ? Grammar.pt(String(localized: "There are signs, but it's resting season. Wait for spring if you can.", comment: "Repot verdict explanation, cool season")) : Grammar.pt(String(localized: "Some signs of a crowded pot.", comment: "Repot verdict explanation"))
+        case .monitor: Grammar.pt(String(localized: "Fast drainage alone doesn't mean it needs a new pot. Peek at the roots in a month.", comment: "Repot verdict explanation"))
+        case .notNow: Grammar.pt(String(localized: "\(plant.name) is stressed. Fix the water and light first, since repotting adds stress.", comment: "Repot verdict explanation; arg plant name"))
+        case .notNeeded: Grammar.pt(String(localized: "Happy where it is. Unnecessary repotting does more harm than good.", comment: "Repot verdict explanation"))
         }
     }
     private func icon(_ v: Verdict) -> String { switch v { case .recommended: "arrow.up.bin.fill"; case .mayBenefit: "arrow.up.bin"; case .monitor: "eye"; case .notNow: "hand.raised.fill"; case .notNeeded: "checkmark.circle.fill" } }
     private func color(_ v: Verdict) -> Color { switch v { case .recommended: Jungle.terracotta; case .mayBenefit, .monitor: Jungle.sun; default: Jungle.leaf } }
     private var potSize: String {
-        if let d = plant.potDiameterCm { return String(localized: "Ø \(Int(d + 2))–\(PlantFormat.cm(d + 5)) (2–5 cm larger)", comment: "New pot size range; args low number, high size with unit; max 30 chars") }
-        return String(localized: "2–5 cm wider than now", comment: "New pot size when current size unknown; max 26 chars")
+        if let d = plant.potDiameterCm { return Grammar.pt(String(localized: "Ø \(Int(d + 2))–\(PlantFormat.cm(d + 5)) (2–5 cm larger)", comment: "New pot size range; args low number, high size with unit; max 30 chars")) }
+        return Grammar.pt(String(localized: "2–5 cm wider than now", comment: "New pot size when current size unknown; max 26 chars"))
     }
     private var steps: [String] {
-        [String(localized: "Water a day before so the root ball slides out", comment: "Repotting step; imperative; max 70 chars"),
-         String(localized: "Loosen circling roots gently. Trim any black, mushy ones", comment: "Repotting step; imperative; max 70 chars"),
-         String(localized: "Put fresh mix at the bottom so the plant sits at the same depth", comment: "Repotting step; imperative; max 70 chars"),
-         String(localized: "Fill around it, firm lightly, water until it drains", comment: "Repotting step; imperative; max 70 chars"),
-         String(localized: "Bright indirect light, no fertilizer for 6 weeks", comment: "Repotting step; imperative; max 70 chars")]
+        [Grammar.pt(String(localized: "Water a day before so the root ball slides out", comment: "Repotting step; imperative; max 70 chars")),
+         Grammar.pt(String(localized: "Loosen circling roots gently. Trim any black, mushy ones", comment: "Repotting step; imperative; max 70 chars")),
+         Grammar.pt(String(localized: "Put fresh mix at the bottom so the plant sits at the same depth", comment: "Repotting step; imperative; max 70 chars")),
+         Grammar.pt(String(localized: "Fill around it, firm lightly, water until it drains", comment: "Repotting step; imperative; max 70 chars")),
+         Grammar.pt(String(localized: "Bright indirect light, no fertilizer for 6 weeks", comment: "Repotting step; imperative; max 70 chars"))]
     }
 }

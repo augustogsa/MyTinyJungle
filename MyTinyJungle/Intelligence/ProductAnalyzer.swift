@@ -4,11 +4,11 @@ struct AnalyzedProduct: Equatable {
     enum Category: String { case substrate, fertilizer, pesticide, pot, unknown
         var label: String {
             switch self {
-            case .substrate: String(localized: "Soil / substrate", comment: "Scanned product category. Max 24 chars.")
-            case .fertilizer: String(localized: "Fertilizer / plant food", comment: "Scanned product category. Max 24 chars.")
-            case .pesticide: String(localized: "Pest treatment", comment: "Scanned product category. Max 24 chars.")
-            case .pot: String(localized: "Pot", comment: "Scanned product category. Max 24 chars.")
-            case .unknown: String(localized: "Unknown product", comment: "Scanned product category. Max 24 chars.")
+            case .substrate: Grammar.pt(String(localized: "Soil / substrate", comment: "Scanned product category. Max 24 chars."))
+            case .fertilizer: Grammar.pt(String(localized: "Fertilizer / plant food", comment: "Scanned product category. Max 24 chars."))
+            case .pesticide: Grammar.pt(String(localized: "Pest treatment", comment: "Scanned product category. Max 24 chars."))
+            case .pot: Grammar.pt(String(localized: "Pot", comment: "Scanned product category. Max 24 chars."))
+            case .unknown: Grammar.pt(String(localized: "Unknown product", comment: "Scanned product category. Max 24 chars."))
             }
         }
     }
@@ -99,7 +99,7 @@ enum ProductAnalyzer {
         let line = raw.split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }
             .first { $0.count >= 4 && $0.rangeOfCharacter(from: .letters) != nil } ?? ""
         let head = line.split(separator: ",").first.map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
-        let name = head.count >= 3 ? head.prefix(1).uppercased() + head.dropFirst() : (category == .unknown ? String(localized: "Scanned product", comment: "Fallback name for a scanned product.") : category.label)
+        let name = head.count >= 3 ? head.prefix(1).uppercased() + head.dropFirst() : (category == .unknown ? Grammar.pt(String(localized: "Scanned product", comment: "Fallback name for a scanned product.")) : category.label)
 
         return AnalyzedProduct(name: String(name.prefix(48)), category: category, barcode: barcode, npk: npk,
                                ingredients: found.map(\.0), retention: retention, aeration: aeration,
@@ -130,17 +130,17 @@ enum ProductAnalyzer {
     static func compatibility(_ product: AnalyzedProduct, plants: [Plant], now: Date = Date()) -> [Compatibility] {
         plants.filter { !$0.isArchived }.map { plant in
             guard let s = plant.species else {
-                return .init(plantID: plant.id, plantName: plant.name, verdict: .unknown, reasons: [String(localized: "Set \(plant.name)'s species so I can compare.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")])
+                return .init(plantID: plant.id, plantName: plant.name, verdict: .unknown, reasons: [Grammar.pt(String(localized: "Set \(plant.name)'s species so I can compare.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))])
             }
             switch product.category {
             case .substrate: return substrate(product, plant: plant, s: s)
             case .fertilizer: return fertilizer(product, plant: plant, s: s, now: now)
             case .pesticide:
                 return .init(plantID: plant.id, plantName: plant.name, verdict: .conditions,
-                             reasons: [String(localized: "Only use it if you've confirmed a pest on \(plant.name).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."), String(localized: "Follow the label exactly: dose, protection, and keep pets away.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."), String(localized: "Test on one leaf first and wait 48 h.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")])
+                             reasons: [Grammar.pt(String(localized: "Only use it if you've confirmed a pest on \(plant.name).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")), Grammar.pt(String(localized: "Follow the label exactly: dose, protection, and keep pets away.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")), Grammar.pt(String(localized: "Test on one leaf first and wait 48 h.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))])
             case .pot, .unknown:
                 return .init(plantID: plant.id, plantName: plant.name, verdict: .unknown,
-                             reasons: [String(localized: "Not enough information on the label. Scan the back with ingredients or NPK.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")])
+                             reasons: [Grammar.pt(String(localized: "Not enough information on the label. Scan the back with ingredients or NPK.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))])
             }
         }
         .sorted { order($0.verdict) < order($1.verdict) }
@@ -152,57 +152,57 @@ enum ProductAnalyzer {
 
     private static func substrate(_ p: AnalyzedProduct, plant: Plant, s: Species) -> Compatibility {
         guard let r = p.retention, let a = p.aeration else {
-            return .init(plantID: plant.id, plantName: plant.name, verdict: .unknown, reasons: [String(localized: "No ingredients found. Scan the composition on the back of the bag.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")])
+            return .init(plantID: plant.id, plantName: plant.name, verdict: .unknown, reasons: [Grammar.pt(String(localized: "No ingredients found. Scan the composition on the back of the bag.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))])
         }
         var reasons: [String] = []
         var score = 0
         let dr = r - s.retention, da = a - s.aeration
-        if abs(dr) <= 0.15 { reasons.append(String(localized: "Holds water about right for \(s.commonName).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) } else if dr > 0 {
-            reasons.append(dr > 0.3 ? String(localized: "Holds far too much water for \(s.commonName). Risk of root rot.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.") : String(localized: "Holds a bit more water than \(s.commonName) likes.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
+        if abs(dr) <= 0.15 { reasons.append(Grammar.pt(String(localized: "Holds water about right for \(s.commonName).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))) } else if dr > 0 {
+            reasons.append(dr > 0.3 ? Grammar.pt(String(localized: "Holds far too much water for \(s.commonName). Risk of root rot.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) : Grammar.pt(String(localized: "Holds a bit more water than \(s.commonName) likes.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
             score += dr > 0.3 ? 2 : 1
         } else {
-            reasons.append(dr < -0.3 ? String(localized: "Dries much faster than \(s.commonName) wants.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.") : String(localized: "Dries a little faster than ideal.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
+            reasons.append(dr < -0.3 ? Grammar.pt(String(localized: "Dries much faster than \(s.commonName) wants.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) : Grammar.pt(String(localized: "Dries a little faster than ideal.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
             score += dr < -0.3 ? 2 : 1
         }
-        if da < -0.25 { reasons.append(String(localized: "Too dense. Add perlite or bark for air around the roots.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")); score += 1 }
-        if s.phMax <= 6.0 && p.limed { reasons.append(String(localized: "Contains lime, which is bad for acid-loving \(s.commonName).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")); score += 2 }
-        if s.phMax <= 6.0 && !p.acidic && !p.limed { reasons.append(String(localized: "\(s.commonName) wants acidic soil. Not stated on the label.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")); score += 1 }
-        if p.ingredients.contains("fertilizer charge") && s.feed == "cactus" { reasons.append(String(localized: "Pre-fertilized. Fine, but skip feeding for 6–8 weeks.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) }
-        if !plant.potHasDrainage && r > 0.6 { reasons.append(String(localized: "\(plant.name)'s pot has no drainage, so a moisture-holding mix is risky.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")); score += 1 }
-        if s.mix == "carnivorous" { reasons = [String(localized: "\(s.commonName) needs nutrient-free sphagnum peat and perlite. Ordinary compost burns its roots.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")]; score = 3 }
-        if s.mix == "none" { reasons = [String(localized: "\(s.commonName) lives without soil.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")]; score = 3 }
-        if score > 0, let soil = s.soil { reasons.append(String(localized: "Ideal recipe: \(Knowledge.shared.recipe(soil)).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) }
+        if da < -0.25 { reasons.append(Grammar.pt(String(localized: "Too dense. Add perlite or bark for air around the roots.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))); score += 1 }
+        if s.phMax <= 6.0 && p.limed { reasons.append(Grammar.pt(String(localized: "Contains lime, which is bad for acid-loving \(s.commonName).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))); score += 2 }
+        if s.phMax <= 6.0 && !p.acidic && !p.limed { reasons.append(Grammar.pt(String(localized: "\(s.commonName) wants acidic soil. Not stated on the label.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))); score += 1 }
+        if p.ingredients.contains("fertilizer charge") && s.feed == "cactus" { reasons.append(Grammar.pt(String(localized: "Pre-fertilized. Fine, but skip feeding for 6–8 weeks.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))) }
+        if !plant.potHasDrainage && r > 0.6 { reasons.append(Grammar.pt(String(localized: "\(plant.name)'s pot has no drainage, so a moisture-holding mix is risky.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))); score += 1 }
+        if s.mix == "carnivorous" { reasons = [Grammar.pt(String(localized: "\(s.commonName) needs nutrient-free sphagnum peat and perlite. Ordinary compost burns its roots.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))]; score = 3 }
+        if s.mix == "none" { reasons = [Grammar.pt(String(localized: "\(s.commonName) lives without soil.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))]; score = 3 }
+        if score > 0, let soil = s.soil { reasons.append(Grammar.pt(String(localized: "Ideal recipe: \(Knowledge.shared.recipe(soil)).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))) }
         let verdict: Compatibility.Verdict = score == 0 ? .suitable : score == 1 ? .conditions : .notRecommended
-        if verdict == .conditions, da >= -0.25 { reasons.append(String(localized: "Mixing in ~30% perlite or bark would fix it.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) }
+        if verdict == .conditions, da >= -0.25 { reasons.append(Grammar.pt(String(localized: "Mixing in ~30% perlite or bark would fix it.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))) }
         return .init(plantID: plant.id, plantName: plant.name, verdict: verdict, reasons: reasons)
     }
 
     private static func fertilizer(_ p: AnalyzedProduct, plant: Plant, s: Species, now: Date) -> Compatibility {
         guard p.npk != nil || p.feedType != .unknown else {
-            return .init(plantID: plant.id, plantName: plant.name, verdict: .unknown, reasons: [String(localized: "No NPK found. Scan the back label with the composition.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")])
+            return .init(plantID: plant.id, plantName: plant.name, verdict: .unknown, reasons: [Grammar.pt(String(localized: "No NPK found. Scan the back label with the composition.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))])
         }
         var reasons: [String] = []
         var verdict: Compatibility.Verdict = .suitable
         let want = s.feed
         switch (want, p.feedType) {
-        case ("none", _): verdict = .notRecommended; reasons.append(String(localized: "\(s.commonName) catches its own food. Fertilizer burns its roots.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("bromeliad", _): verdict = .conditions; reasons.append(String(localized: "\(s.commonName) drinks through its leaves. Use at ¼ strength in the soaking water.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("orchid", .orchid), ("cactus", .cactus), ("acid", .acid), ("citrus", .citrus): reasons.append(String(localized: "Made for this kind of plant.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("orchid", _): verdict = .conditions; reasons.append(String(localized: "Orchids need weak feeds. Use at ¼ strength.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("cactus", .highN): verdict = .notRecommended; reasons.append(String(localized: "Too much nitrogen for a succulent. It causes soft, weak growth.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("cactus", _): verdict = .conditions; reasons.append(String(localized: "Use at half strength, only in spring and summer.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("acid", _): verdict = .conditions; reasons.append(String(localized: "\(s.commonName) prefers an ericaceous feed. This works, but won't keep the soil acidic.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("citrus", _): verdict = .conditions; reasons.append(String(localized: "Citrus also needs iron and magnesium. Check the micronutrients.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("bloom", .bloom): reasons.append(String(localized: "High potassium supports flowering.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case (_, .orchid), (_, .cactus), (_, .acid): verdict = .conditions; reasons.append(String(localized: "Made for other plants. It works diluted, but a balanced feed suits \(s.commonName) better.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        case ("light", _): verdict = .conditions; reasons.append(String(localized: "\(s.commonName) is a light feeder. Use half the label dose.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
-        default: reasons.append(String(localized: "Balanced nutrition suits \(s.commonName).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))
+        case ("none", _): verdict = .notRecommended; reasons.append(Grammar.pt(String(localized: "\(s.commonName) catches its own food. Fertilizer burns its roots.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("bromeliad", _): verdict = .conditions; reasons.append(Grammar.pt(String(localized: "\(s.commonName) drinks through its leaves. Use at ¼ strength in the soaking water.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("orchid", .orchid), ("cactus", .cactus), ("acid", .acid), ("citrus", .citrus): reasons.append(Grammar.pt(String(localized: "Made for this kind of plant.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("orchid", _): verdict = .conditions; reasons.append(Grammar.pt(String(localized: "Orchids need weak feeds. Use at ¼ strength.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("cactus", .highN): verdict = .notRecommended; reasons.append(Grammar.pt(String(localized: "Too much nitrogen for a succulent. It causes soft, weak growth.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("cactus", _): verdict = .conditions; reasons.append(Grammar.pt(String(localized: "Use at half strength, only in spring and summer.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("acid", _): verdict = .conditions; reasons.append(Grammar.pt(String(localized: "\(s.commonName) prefers an ericaceous feed. This works, but won't keep the soil acidic.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("citrus", _): verdict = .conditions; reasons.append(Grammar.pt(String(localized: "Citrus also needs iron and magnesium. Check the micronutrients.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("bloom", .bloom): reasons.append(Grammar.pt(String(localized: "High potassium supports flowering.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case (_, .orchid), (_, .cactus), (_, .acid): verdict = .conditions; reasons.append(Grammar.pt(String(localized: "Made for other plants. It works diluted, but a balanced feed suits \(s.commonName) better.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        case ("light", _): verdict = .conditions; reasons.append(Grammar.pt(String(localized: "\(s.commonName) is a light feeder. Use half the label dose.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
+        default: reasons.append(Grammar.pt(String(localized: "Balanced nutrition suits \(s.commonName).", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")))
         }
-        if verdict != .suitable, let f = s.fertilizer { reasons.append(String(localized: "Ideal: \(f.name.lowercased()), \(f.npk). \(f.cadence).", comment: "Product scan reason: ideal fertilizer. Args: fertilizer name lowercase, NPK, how often.")) }
+        if verdict != .suitable, let f = s.fertilizer { reasons.append(Grammar.pt(String(localized: "Ideal: \(f.name.lowercased()), \(f.npk). \(f.cadence).", comment: "Product scan reason: ideal fertilizer. Args: fertilizer name lowercase, NPK, how often."))) }
         if let npk = p.npk { reasons.append("NPK \(fmt(npk.n))-\(fmt(npk.p))-\(fmt(npk.k)).") }
-        if !CareEngine.isGrowingSeason(now) { reasons.append(String(localized: "Not now: pause feeding until spring.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")); if verdict == .suitable { verdict = .conditions } }
-        if let r = plant.lastRepotAt, CareEngine.days(from: r, to: now) < 42 { reasons.append(String(localized: "Recently repotted. Wait until 6 weeks after.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) }
-        if p.isSlowRelease && s.waterStyle == .dry { reasons.append(String(localized: "Slow-release granules build up salts in dry-kept soil. Liquid feed is safer.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers.")) }
+        if !CareEngine.isGrowingSeason(now) { reasons.append(Grammar.pt(String(localized: "Not now: pause feeding until spring.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))); if verdict == .suitable { verdict = .conditions } }
+        if let r = plant.lastRepotAt, CareEngine.days(from: r, to: now) < 42 { reasons.append(Grammar.pt(String(localized: "Recently repotted. Wait until 6 weeks after.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))) }
+        if p.isSlowRelease && s.waterStyle == .dry { reasons.append(Grammar.pt(String(localized: "Slow-release granules build up salts in dry-kept soil. Liquid feed is safer.", comment: "Product scan verdict reason for one plant. Args are plant or species names, numbers."))) }
         return .init(plantID: plant.id, plantName: plant.name, verdict: verdict, reasons: reasons)
     }
 

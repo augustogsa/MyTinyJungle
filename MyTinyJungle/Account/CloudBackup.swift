@@ -8,7 +8,7 @@ import CoreData
 final class CloudBackup {
     static let shared = CloudBackup()
     static let containerID = "iCloud.com.simpleappscompany.mytinyjungle"
-    private static let key = "iCloudBackup"
+    nonisolated private static let key = "iCloudBackup"
 
     /// Read before the store opens; a change applies on next launch.
     nonisolated static var enabled: Bool {
@@ -50,11 +50,11 @@ final class CloudBackup {
 
     var summary: String {
         switch status {
-        case .checking: String(localized: "Checking iCloud…", comment: "Backup status in Settings; max 30 chars")
-        case .on: syncing ? String(localized: "Backing up…", comment: "Backup status; max 30 chars") : lastSync.map { String(localized: "Last backup \($0.formatted(.relative(presentation: .named)))", comment: "Backup status; %@ relative date like 'yesterday' or '5 minutes ago'") } ?? String(localized: "On. Your jungle backs up automatically.", comment: "Backup status, on")
-        case .noAccount: String(localized: "Sign in to iCloud in the Settings app to back up.", comment: "Backup status, no iCloud account")
-        case .off: pendingRestart ? String(localized: "Off after you reopen the app.", comment: "Backup status after turning off") : String(localized: "Off. Your jungle stays on this iPhone.", comment: "Backup status, off")
-        case .unavailable: pendingRestart ? String(localized: "On after you reopen the app.", comment: "Backup status after turning on") : String(localized: "Sign in to iCloud on this iPhone to keep your jungle safe.", comment: "Backup status, iCloud unavailable")
+        case .checking: Grammar.pt(String(localized: "Checking iCloud…", comment: "Backup status in Settings; max 30 chars"))
+        case .on: syncing ? Grammar.pt(String(localized: "Backing up…", comment: "Backup status; max 30 chars")) : lastSync.map { Grammar.pt(String(localized: "Last backup \($0.formatted(.relative(presentation: .named)))", comment: "Backup status; %@ relative date like 'yesterday' or '5 minutes ago'")) } ?? Grammar.pt(String(localized: "On. Your jungle backs up automatically.", comment: "Backup status, on"))
+        case .noAccount: Grammar.pt(String(localized: "Sign in to iCloud in the Settings app to back up.", comment: "Backup status, no iCloud account"))
+        case .off: pendingRestart ? Grammar.pt(String(localized: "Off after you reopen the app.", comment: "Backup status after turning off")) : Grammar.pt(String(localized: "Off. Your jungle stays on this iPhone.", comment: "Backup status, off"))
+        case .unavailable: pendingRestart ? Grammar.pt(String(localized: "On after you reopen the app.", comment: "Backup status after turning on")) : Grammar.pt(String(localized: "Sign in to iCloud on this iPhone to keep your jungle safe.", comment: "Backup status, iCloud unavailable"))
         }
     }
 }

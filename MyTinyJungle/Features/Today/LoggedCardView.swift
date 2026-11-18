@@ -170,8 +170,8 @@ struct LoggedCardView: View {
 
     private func dayLabel(_ d: Date) -> String {
         let cal = Calendar.current
-        if cal.isDateInToday(d) { return String(localized: "Today, \(d.formatted(date: .omitted, time: .shortened))", comment: "Logged card date; %@ time") }
-        if cal.isDateInYesterday(d) { return String(localized: "Yesterday", comment: "Logged card date") }
+        if cal.isDateInToday(d) { return Grammar.pt(String(localized: "Today, \(d.formatted(date: .omitted, time: .shortened))", comment: "Logged card date; %@ time")) }
+        if cal.isDateInYesterday(d) { return Grammar.pt(String(localized: "Yesterday", comment: "Logged card date")) }
         return d.formatted(.dateTime.weekday(.wide).day().month())
     }
 
@@ -182,15 +182,15 @@ struct LoggedCardView: View {
             let days = Int(CareEngine.expectedDryDays(for: p).rounded())
             let since = p.lastEvent(.water).map { CareEngine.days(from: $0.date) } ?? 0
             let left = max(0, days - Int(since.rounded(.down)))
-            return (left == 0 ? String(localized: "Soil check due today", comment: "Next step after watering") : String(localized: "I'll ask for a soil check in ~\(left) days", comment: "Next step after watering; %lld days (plural)"), "hand.point.down")
+            return (left == 0 ? Grammar.pt(String(localized: "Soil check due today", comment: "Next step after watering")) : Grammar.pt(String(localized: "I'll ask for a soil check in ~\(left) days", comment: "Next step after watering; %lld days (plural)")), "hand.point.down")
         }
         if row.kinds.contains(.feed), let s = p.species {
-            return (CareEngine.isGrowingSeason() ? String(localized: "Next feed in about \(Int(s.feedWeeks)) weeks", comment: "Next step after feeding; %lld weeks (plural)") : String(localized: "Next feed in about \(Int(s.feedWeeks)) weeks, but pause in winter", comment: "Next step after feeding in winter; %lld weeks (plural)"), "leaf.arrow.triangle.circlepath")
+            return (CareEngine.isGrowingSeason() ? Grammar.pt(String(localized: "Next feed in about \(Int(s.feedWeeks)) weeks", comment: "Next step after feeding; %lld weeks (plural)")) : Grammar.pt(String(localized: "Next feed in about \(Int(s.feedWeeks)) weeks, but pause in winter", comment: "Next step after feeding in winter; %lld weeks (plural)")), "leaf.arrow.triangle.circlepath")
         }
-        if row.kinds.contains(.repot) { return (String(localized: "Recovery: go easy on water for 2 weeks, and no food for 6 weeks", comment: "Next step after repotting"), "heart.text.square") }
-        if row.kinds.contains(.move) { return (String(localized: "New spot: I'll watch for stress over the next 2–3 weeks", comment: "Next step after moving plant"), "eye") }
-        if row.kinds.contains(.newLeaf) { return (String(localized: "Added to my growth timeline", comment: "Next step after new leaf"), "chart.line.uptrend.xyaxis") }
-        if row.kinds.contains(.mist), let s = p.species { return (String(localized: "I like humidity above \((s.humidityMin / 100).formatted(.percent.precision(.fractionLength(0))))", comment: "Next step after misting; %@ percentage"), "humidity") }
+        if row.kinds.contains(.repot) { return (Grammar.pt(String(localized: "Recovery: go easy on water for 2 weeks, and no food for 6 weeks", comment: "Next step after repotting")), "heart.text.square") }
+        if row.kinds.contains(.move) { return (Grammar.pt(String(localized: "New spot: I'll watch for stress over the next 2–3 weeks", comment: "Next step after moving plant")), "eye") }
+        if row.kinds.contains(.newLeaf) { return (Grammar.pt(String(localized: "Added to my growth timeline", comment: "Next step after new leaf")), "chart.line.uptrend.xyaxis") }
+        if row.kinds.contains(.mist), let s = p.species { return (Grammar.pt(String(localized: "I like humidity above \((s.humidityMin / 100).formatted(.percent.precision(.fractionLength(0))))", comment: "Next step after misting; %@ percentage")), "humidity") }
         return nil
     }
 }

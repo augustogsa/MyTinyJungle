@@ -94,7 +94,7 @@ enum CareEngine {
         // Water: evidence first.
         if let check = lastCheck, check.date > (lastWater ?? .distantPast), days(from: check.date, to: now) < 1.5 {
             if check.soil == .dry {
-                out.append(.init(plantID: plant.id, kind: .water, priority: 0, reason: String(localized: "You felt dry soil \(relative(check.date, now)).", comment: "Care reason under a plant request. %@ = relative day (today, yesterday, 3 days ago).")))
+                out.append(.init(plantID: plant.id, kind: .water, priority: 0, reason: Grammar.pt(String(localized: "You felt dry soil \(relative(check.date, now)).", comment: "Care reason under a plant request. %@ = relative day (today, yesterday, 3 days ago)."))))
             }
         } else if let lastWater {
             let since = days(from: lastWater, to: now)
@@ -102,10 +102,10 @@ enum CareEngine {
             if since >= expected * 0.9 && !rained {
                 let urgent = since >= expected * 1.5 && s?.waterStyle == .moist
                 out.append(.init(plantID: plant.id, kind: .checkSoil, priority: urgent ? 0 : 1,
-                                 reason: String(localized: "Watered \(relative(lastWater, now)). It usually dries in about \(Int(expected.rounded())) days.", comment: "Care reason. Args: relative day, number of days (plural).")))
+                                 reason: Grammar.pt(String(localized: "Watered \(relative(lastWater, now)). It usually dries in about \(Int(expected.rounded())) days.", comment: "Care reason. Args: relative day, number of days (plural)."))))
             }
         } else {
-            out.append(.init(plantID: plant.id, kind: .checkSoil, priority: 1, reason: String(localized: "No watering recorded yet.", comment: "Care reason under a plant request.")))
+            out.append(.init(plantID: plant.id, kind: .checkSoil, priority: 1, reason: Grammar.pt(String(localized: "No watering recorded yet.", comment: "Care reason under a plant request."))))
         }
 
         // Feeding: season, frequency, fresh soil, dormancy.
@@ -115,8 +115,8 @@ enum CareEngine {
             if isGrowingSeason(now) && !freshSoil && s.feed != "none" {
                 if lastFeed == nil || days(from: lastFeed!, to: now) >= s.feedWeeks * 7 {
                     out.append(.init(plantID: plant.id, kind: .feed, priority: 2,
-                                     reason: lastFeed.map { String(localized: "Last fed \(relative($0, now)). \(s.fertilizer?.name ?? String(localized: "Food", comment: "Generic fertilizer name, capitalized, start of a sentence.")) every \(Int(s.feedWeeks)) weeks in the growing season.", comment: "Care reason. Args: relative day, fertilizer name, weeks between feeds (plural).") }
-                                        ?? String(localized: "Growing season, and no feeding recorded yet.", comment: "Care reason under a plant request.")))
+                                     reason: lastFeed.map { Grammar.pt(String(localized: "Last fed \(relative($0, now)). \(s.fertilizer?.name ?? String(localized: "Food", comment: "Generic fertilizer name, capitalized, start of a sentence.")) every \(Int(s.feedWeeks)) weeks in the growing season.", comment: "Care reason. Args: relative day, fertilizer name, weeks between feeds (plural).")) }
+                                        ?? Grammar.pt(String(localized: "Growing season, and no feeding recorded yet.", comment: "Care reason under a plant request."))))
                 }
             }
         }
@@ -126,7 +126,7 @@ enum CareEngine {
             let since = days(from: plant.lastRepotAt ?? plant.acquiredAt, to: now)
             if since > s.repotYears * 365 {
                 out.append(.init(plantID: plant.id, kind: .checkRoots, priority: 3,
-                                 reason: String(localized: "About \(Int(since / 365)) years in the same pot.", comment: "Care reason, first sentence. %lld = years (plural).") + " " + String(localized: "\(s.commonName) usually needs a bigger pot every \(Int(s.repotYears)) years.", comment: "Care reason, second sentence. Args: species common name, years (plural).")))
+                                 reason: Grammar.pt(String(localized: "About \(Int(since / 365)) years in the same pot.", comment: "Care reason, first sentence. %lld = years (plural).")) + " " + Grammar.pt(String(localized: "\(s.commonName) usually needs a bigger pot every \(Int(s.repotYears)) years.", comment: "Care reason, second sentence. Args: species common name, years (plural)."))))
             }
         }
 
@@ -134,13 +134,13 @@ enum CareEngine {
         if let s, (s.toxicCats && settings.hasCats) || (s.toxicDogs && settings.hasDogs),
            !(plant.events ?? []).contains(where: { $0.kind == .note && $0.note == "safety-ack" }) {
             out.append(.init(plantID: plant.id, kind: .safety, priority: 1,
-                             reason: String(localized: "\(s.commonName) is toxic to pets if chewed (ASPCA). Keep it out of reach.", comment: "Care reason: pet safety. %@ = species common name.")))
+                             reason: Grammar.pt(String(localized: "\(s.commonName) is toxic to pets if chewed (ASPCA). Keep it out of reach.", comment: "Care reason: pet safety. %@ = species common name."))))
         }
 
         // Monthly portrait for the growth timeline.
         let lastPhoto = plant.lastEvent(.photo)?.date ?? plant.createdAt
         if days(from: lastPhoto, to: now) > 30 {
-            out.append(.init(plantID: plant.id, kind: .portrait, priority: 3, reason: String(localized: "Monthly photo for the growth timeline.", comment: "Care reason under a plant request.")))
+            out.append(.init(plantID: plant.id, kind: .portrait, priority: 3, reason: Grammar.pt(String(localized: "Monthly photo for the growth timeline.", comment: "Care reason under a plant request."))))
         }
         return out.sorted { $0.priority < $1.priority }
     }
@@ -161,9 +161,9 @@ enum CareEngine {
     static func relative(_ date: Date, _ now: Date = Date()) -> String {
         let d = Int(days(from: date, to: now).rounded(.down))
         switch d {
-        case ..<1: return String(localized: "today", comment: "Relative day, lowercase, used inside sentences ('Watered today').")
-        case 1: return String(localized: "yesterday", comment: "Relative day, lowercase, used inside sentences.")
-        default: return String(localized: "\(d) days ago", comment: "Relative day, used inside sentences ('Watered 3 days ago'). %lld = days (plural).")
+        case ..<1: return Grammar.pt(String(localized: "today", comment: "Relative day, lowercase, used inside sentences ('Watered today')."))
+        case 1: return Grammar.pt(String(localized: "yesterday", comment: "Relative day, lowercase, used inside sentences."))
+        default: return Grammar.pt(String(localized: "\(d) days ago", comment: "Relative day, used inside sentences ('Watered 3 days ago'). %lld = days (plural)."))
         }
     }
 }
@@ -176,13 +176,13 @@ enum PlantStatus: Int, Comparable {
 
     var label: String {
         switch self {
-        case .struggling: String(localized: "Struggling", comment: "Plant status badge. Max 14 chars.")
-        case .thirsty: String(localized: "Thirsty", comment: "Plant status badge. Max 14 chars.")
-        case .checkSoil: String(localized: "Check soil", comment: "Plant status badge. Max 14 chars.")
-        case .petRisk: String(localized: "Pet alert", comment: "Plant status badge. Max 14 chars.")
-        case .hungry: String(localized: "Hungry", comment: "Plant status badge: needs fertilizer. Max 14 chars.")
-        case .repot: String(localized: "Root check", comment: "Plant status badge. Max 14 chars.")
-        case .thriving: String(localized: "Thriving", comment: "Plant status badge. Max 14 chars.")
+        case .struggling: Grammar.pt(String(localized: "Struggling", comment: "Plant status badge. Max 14 chars."))
+        case .thirsty: Grammar.pt(String(localized: "Thirsty", comment: "Plant status badge. Max 14 chars."))
+        case .checkSoil: Grammar.pt(String(localized: "Check soil", comment: "Plant status badge. Max 14 chars."))
+        case .petRisk: Grammar.pt(String(localized: "Pet alert", comment: "Plant status badge. Max 14 chars."))
+        case .hungry: Grammar.pt(String(localized: "Hungry", comment: "Plant status badge: needs fertilizer. Max 14 chars."))
+        case .repot: Grammar.pt(String(localized: "Root check", comment: "Plant status badge. Max 14 chars."))
+        case .thriving: Grammar.pt(String(localized: "Thriving", comment: "Plant status badge. Max 14 chars."))
         }
     }
     var icon: Icon3D {
@@ -238,6 +238,6 @@ struct StatusBadge: View {
         .background(Jungle.surface.opacity(0.95), in: Capsule())
         .overlay(Capsule().strokeBorder(status.tint.opacity(0.7), lineWidth: status.needsAttention ? 1.5 : 0))
         .shadow(color: .black.opacity(0.1), radius: 4, y: 1)
-        .accessibilityLabel(String(localized: "Status: \(status.label)", comment: "VoiceOver label for the plant status badge."))
+        .accessibilityLabel(Grammar.pt(String(localized: "Status: \(status.label)", comment: "VoiceOver label for the plant status badge.")))
     }
 }

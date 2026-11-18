@@ -22,7 +22,7 @@ struct ActionReceipt: View {
         let cal = Calendar.current
         let t = event.date.formatted(date: .omitted, time: .shortened)
         if cal.isDateInToday(event.date) { return t }
-        if cal.isDateInYesterday(event.date) { return String(localized: "Yesterday \(t)", comment: "Chat receipt time; arg time") }
+        if cal.isDateInYesterday(event.date) { return Grammar.pt(String(localized: "Yesterday \(t)", comment: "Chat receipt time; arg time")) }
         return event.date.formatted(.dateTime.day().month(.abbreviated))
     }
 
@@ -33,7 +33,7 @@ struct ActionReceipt: View {
         if showPlant, let p = event.plant { s += " · \(p.name)" }
         if event.source.hasPrefix("house:") {
             let id = String(event.source.dropFirst(6))
-            s = String(localized: "\(Household.shared.name(id)): \(s)", comment: "Chat receipt: housemate did a care action. Args: first name, action like 'Watered'")
+            s = Grammar.pt(String(localized: "\(Household.shared.name(id)): \(s)", comment: "Chat receipt: housemate did a care action. Args: first name, action like 'Watered'"))
         }
         return s
     }

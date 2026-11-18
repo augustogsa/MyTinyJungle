@@ -22,30 +22,30 @@ enum JungleBrain {
                 e.plant = p
                 ctx.insert(e)
                 if p.photo == nil { p.photo = photo }
-                reply(String(localized: "Thanks for the photo! It's in my timeline now.", comment: "Plant chat: the plant thanks the user for a photo added to its growth timeline. Warm, first person (the plant speaks)."), plant: context ?? p, in: ctx)
+                reply(Grammar.pt(String(localized: "Thanks for the photo! It's in my timeline now.", comment: "Plant chat: the plant thanks the user for a photo added to its growth timeline. Warm, first person (the plant speaks).")), plant: context ?? p, in: ctx)
             }
-            if targets.isEmpty { reply(String(localized: "Which plant is in this photo? Tell me its name.", comment: "Jungle chat: user sent a photo without saying which plant it shows."), plant: nil, in: ctx, suggestions: plants.prefix(4).map(\.name)) }
+            if targets.isEmpty { reply(Grammar.pt(String(localized: "Which plant is in this photo? Tell me its name.", comment: "Jungle chat: user sent a photo without saying which plant it shows.")), plant: nil, in: ctx, suggestions: plants.prefix(4).map(\.name)) }
             if trimmed.isEmpty { try? ctx.save(); return }
         }
 
         // New plant by chat: "I got a monstera called Milo".
         if context == nil, mentionsNewPlant(trimmed.folded), !Store.shared.canAddPlant(current: plants.count) {
-            reply(String(localized: "Your jungle has \(plants.count) plants, the free limit. My Tiny Jungle Plus lets it grow without limits.", comment: "Jungle chat: free plan plant limit reached. %lld = number of plants. Keep 'My Tiny Jungle Plus' in English."), plant: nil, in: ctx, suggestions: [String(localized: "See Plus", comment: "Chat suggestion chip: see the Plus subscription. Max 14 chars.")])
+            reply(Grammar.pt(String(localized: "Your jungle has \(plants.count) plants, the free limit. My Tiny Jungle Plus lets it grow without limits.", comment: "Jungle chat: free plan plant limit reached. %lld = number of plants. Keep 'My Tiny Jungle Plus' in English.")), plant: nil, in: ctx, suggestions: [Grammar.pt(String(localized: "See Plus", comment: "Chat suggestion chip: see the Plus subscription. Max 14 chars."))])
             try? ctx.save()
             return
         }
         if context == nil, let created = createPlantIfMentioned(trimmed, plants: plants, in: ctx, now: now) {
             let hello = created.species.map {
-                String(localized: "Hi, I'm \(created.name)! Nice to meet you. I'm a \($0.commonName) (\($0.scientific)). \($0.waterRule) \(askLastWater)",
-                       comment: "Plant chat: a newly added plant introduces itself. Args: plant name, species common name, scientific name, watering rule sentence, then the question 'When did you last water me?'. Cheerful.")
-            } ?? String(localized: "Hi, I'm \(created.name)! Nice to meet you. Tell me what kind of plant I am so I can look after myself properly. \(askLastWater)",
-                        comment: "Plant chat: a newly added plant of unknown species introduces itself. Args: plant name, then the question 'When did you last water me?'.")
+                Grammar.pt(String(localized: "Hi, I'm \(created.name)! Nice to meet you. I'm a \($0.commonName) (\($0.scientific)). \($0.waterRule) \(askLastWater)",
+                       comment: "Plant chat: a newly added plant introduces itself. Args: plant name, species common name, scientific name, watering rule sentence, then the question 'When did you last water me?'. Cheerful."))
+            } ?? Grammar.pt(String(localized: "Hi, I'm \(created.name)! Nice to meet you. Tell me what kind of plant I am so I can look after myself properly. \(askLastWater)",
+                        comment: "Plant chat: a newly added plant of unknown species introduces itself. Args: plant name, then the question 'When did you last water me?'."))
             reply(hello, plant: created, in: ctx, suggestions: [
-                String(localized: "Today", comment: "Chat suggestion chip answering 'when did you last water me?'"),
-                String(localized: "Yesterday", comment: "Chat suggestion chip answering 'when did you last water me?'"),
-                String(localized: "Not sure", comment: "Chat suggestion chip: user doesn't know when they last watered."),
+                Grammar.pt(String(localized: "Today", comment: "Chat suggestion chip answering 'when did you last water me?'")),
+                Grammar.pt(String(localized: "Yesterday", comment: "Chat suggestion chip answering 'when did you last water me?'")),
+                Grammar.pt(String(localized: "Not sure", comment: "Chat suggestion chip: user doesn't know when they last watered.")),
             ])
-            reply(String(localized: "Added \(created.name) to your jungle.", comment: "Jungle chat: confirmation a plant was added. %@ = plant name."), plant: nil, in: ctx)
+            reply(Grammar.pt(String(localized: "Added \(created.name) to your jungle.", comment: "Jungle chat: confirmation a plant was added. %@ = plant name.")), plant: nil, in: ctx)
             try? ctx.save()
             return
         }
@@ -60,13 +60,13 @@ enum JungleBrain {
                 try? ctx.save(); return
             }
             if ChatParser.matches(#"^(not sure|no idea|dont know|don't know|nao sei|sei la|nao lembro|nem ideia|nao tenho ideia)$"#, f) {
-                reply(String(localized: "No problem. Just feel my soil and tell me if it's dry, moist or wet. That's better than a date anyway.", comment: "Plant chat: user doesn't remember last watering; the plant reassures and asks for a soil feel check."), plant: context, in: ctx, suggestions: soilChips)
+                reply(Grammar.pt(String(localized: "No problem. Just feel my soil and tell me if it's dry, moist or wet. That's better than a date anyway.", comment: "Plant chat: user doesn't remember last watering; the plant reassures and asks for a soil feel check.")), plant: context, in: ctx, suggestions: soilChips)
                 try? ctx.save(); return
             }
             if lastAsk.contains(askWhere) || lastAsk.contains("Where do I live"), context.location.isEmpty, trimmed.count < 40, !trimmed.contains("?") {
                 context.location = trimmed
                 if ChatParser.matches(#"\b(balcony|garden|terrace|outside|varanda|jardim|terraco|quintal|sacada|area externa|lado de fora)\b"#, f) { context.isOutdoor = true }
-                reply(String(localized: "\(trimmed.capitalized), noted. I'll remember where I live.", comment: "Plant chat: plant confirms the room/spot it lives in. %@ = place the user typed."), plant: context, in: ctx)
+                reply(Grammar.pt(String(localized: "\(trimmed.capitalized), noted. I'll remember where I live.", comment: "Plant chat: plant confirms the room/spot it lives in. %@ = place the user typed.")), plant: context, in: ctx)
                 try? ctx.save(); return
             }
         }
@@ -93,10 +93,10 @@ enum JungleBrain {
                 let note = CareEvent(kind: .note, date: now, note: trimmed)
                 note.plant = context
                 ctx.insert(note)
-                reply(String(localized: "Noted in my journal.", comment: "Plant chat: the plant saved the user's message as a note in its journal."), plant: context, in: ctx)
+                reply(Grammar.pt(String(localized: "Noted in my journal.", comment: "Plant chat: the plant saved the user's message as a note in its journal.")), plant: context, in: ctx)
             } else {
-                reply(plants.isEmpty ? String(localized: "I'd love to meet your first plant! Try \"I have a monstera called Milo in the living room\".", comment: "Jungle chat: no plants yet; example sentence the user can type to add one (translate the example into natural Portuguese the parser understands, e.g. 'Tenho uma costela-de-adão chamada Milo na sala').")
-                      : String(localized: "Hmm, I'm not sure what you mean. You could say \"watered \(plants.prefix(2).map(\.name).formatted(.list(type: .and)))\", or just ask me anything about them.", comment: "Jungle chat: message not understood. %@ = one or two plant names as a list. Example uses the verb 'watered' (pt: 'reguei')."), plant: nil, in: ctx)
+                reply(plants.isEmpty ? Grammar.pt(String(localized: "I'd love to meet your first plant! Try \"I have a monstera called Milo in the living room\".", comment: "Jungle chat: no plants yet; example sentence the user can type to add one (translate the example into natural Portuguese the parser understands, e.g. 'Tenho uma costela-de-adão chamada Milo na sala')."))
+                      : Grammar.pt(String(localized: "Hmm, I'm not sure what you mean. You could say \"watered \(plants.prefix(2).map(\.name).formatted(.list(type: .and)))\", or just ask me anything about them.", comment: "Jungle chat: message not understood. %@ = one or two plant names as a list. Example uses the verb 'watered' (pt: 'reguei').")), plant: nil, in: ctx)
             }
             try? ctx.save()
             return
@@ -117,7 +117,7 @@ enum JungleBrain {
         }
 
         if summary.isEmpty {
-            reply(String(localized: "Which plant was that? Mention its name.", comment: "Chat: user logged care but no plant could be matched."), plant: context, in: ctx, suggestions: plants.prefix(4).map(\.name))
+            reply(Grammar.pt(String(localized: "Which plant was that? Mention its name.", comment: "Chat: user logged care but no plant could be matched.")), plant: context, in: ctx, suggestions: plants.prefix(4).map(\.name))
         } else if context == nil {
             postCard(entries, date: cardDate, text: summary.joined(separator: "\n"), in: ctx)
         }
@@ -241,20 +241,20 @@ enum JungleBrain {
     static func cardLine(_ kind: CareKind, _ targets: [Plant], date: Date, now: Date) -> String {
         let names = targets.map(\.name).formatted(.list(type: .and))
         if Calendar.current.isDate(date, inSameDayAs: now) {
-            return String(localized: "\(kind.label) · \(names)", comment: "Chat log card: care action and the plants it was done for. Args: care action label, list of plant names.")
+            return Grammar.pt(String(localized: "\(kind.label) · \(names)", comment: "Chat log card: care action and the plants it was done for. Args: care action label, list of plant names."))
         }
-        return String(localized: "\(kind.label) · \(names) (\(CareEngine.relative(date, now)))", comment: "Chat log card for a past day. Args: care action label, list of plant names, relative day like 'yesterday' or '3 days ago'.")
+        return Grammar.pt(String(localized: "\(kind.label) · \(names) (\(CareEngine.relative(date, now)))", comment: "Chat log card for a past day. Args: care action label, list of plant names, relative day like 'yesterday' or '3 days ago'."))
     }
 
     // MARK: localized chat bits that are also matched later
 
-    nonisolated static var askLastWater: String { String(localized: "When did you last water me?", comment: "Plant chat: the plant asks when it was last watered. Must appear identically inside the plant's introduction.") }
-    nonisolated static var askWhere: String { String(localized: "Where do I live: which room or window?", comment: "Plant chat: plant asks which room or window it lives in.") }
-    nonisolated static var wateredChip: String { String(localized: "Watered", comment: "Chat suggestion chip: user confirms they watered (pt: 'Reguei'; the chat parser understands it). Max 14 chars.") }
+    nonisolated static var askLastWater: String { Grammar.pt(String(localized: "When did you last water me?", comment: "Plant chat: the plant asks when it was last watered. Must appear identically inside the plant's introduction.")) }
+    nonisolated static var askWhere: String { Grammar.pt(String(localized: "Where do I live: which room or window?", comment: "Plant chat: plant asks which room or window it lives in.")) }
+    nonisolated static var wateredChip: String { Grammar.pt(String(localized: "Watered", comment: "Chat suggestion chip: user confirms they watered (pt: 'Reguei'; the chat parser understands it). Max 14 chars.")) }
     nonisolated static var soilChips: [String] {
-        [String(localized: "Dry", comment: "Chat suggestion chip: the soil feels dry (pt: 'Seca', refers to a terra)."),
-         String(localized: "Slightly moist", comment: "Chat suggestion chip: the soil feels slightly moist (pt: 'Levemente úmida')."),
-         String(localized: "Wet", comment: "Chat suggestion chip: the soil feels wet (pt: 'Molhada').")]
+        [Grammar.pt(String(localized: "Dry", comment: "Chat suggestion chip: the soil feels dry (pt: 'Seca', refers to a terra).")),
+         Grammar.pt(String(localized: "Slightly moist", comment: "Chat suggestion chip: the soil feels slightly moist (pt: 'Levemente úmida').")),
+         Grammar.pt(String(localized: "Wet", comment: "Chat suggestion chip: the soil feels wet (pt: 'Molhada')."))]
     }
 
     // MARK: onboarding by chat

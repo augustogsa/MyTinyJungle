@@ -24,10 +24,10 @@ struct PaywallView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     hero
                     VStack(alignment: .leading, spacing: 18) {
-                        perk(.pottedPlant, String(localized: "Every plant gets a place", comment: "Paywall benefit title; max 32 chars"), String(localized: "Adopt as many green friends as your windowsills can hold.", comment: "Paywall benefit detail"))
-                        perk(.firstAid, String(localized: "Catch trouble early", comment: "Paywall benefit title; max 32 chars"), String(localized: "A droopy leaf or a yellow tip? You'll know what to do before it gets worse.", comment: "Paywall benefit detail"))
-                        perk(.fertilizer, String(localized: "The right food, every time", comment: "Paywall benefit title; max 32 chars"), String(localized: "Scan a bag of soil or fertilizer and see which plants will love it.", comment: "Paywall benefit detail"))
-                        perk(.careHands, String(localized: "Just you and your plants", comment: "Paywall benefit title; max 32 chars"), String(localized: "No ads. Quiet, calm care, the way it should feel.", comment: "Paywall benefit detail"))
+                        perk(.pottedPlant, Grammar.pt(String(localized: "Every plant gets a place", comment: "Paywall benefit title; max 32 chars")), Grammar.pt(String(localized: "Adopt as many green friends as your windowsills can hold.", comment: "Paywall benefit detail")))
+                        perk(.firstAid, Grammar.pt(String(localized: "Catch trouble early", comment: "Paywall benefit title; max 32 chars")), Grammar.pt(String(localized: "A droopy leaf or a yellow tip? You'll know what to do before it gets worse.", comment: "Paywall benefit detail")))
+                        perk(.fertilizer, Grammar.pt(String(localized: "The right food, every time", comment: "Paywall benefit title; max 32 chars")), Grammar.pt(String(localized: "Scan a bag of soil or fertilizer and see which plants will love it.", comment: "Paywall benefit detail")))
+                        perk(.careHands, Grammar.pt(String(localized: "Just you and your plants", comment: "Paywall benefit title; max 32 chars")), Grammar.pt(String(localized: "No ads. Quiet, calm care, the way it should feel.", comment: "Paywall benefit detail")))
                     }
                     plans
                     footer
@@ -73,10 +73,10 @@ struct PaywallView: View {
 
     private var headline: String {
         switch reason {
-        case .morePlants: String(localized: "Your jungle is ready to grow", comment: "Paywall headline")
-        case .scanCompatibility: String(localized: "Feed them what they love", comment: "Paywall headline")
-        case .inventory: String(localized: "Everything they need, in one place", comment: "Paywall headline")
-        case nil: String(localized: "Give every plant the love it deserves", comment: "Paywall headline")
+        case .morePlants: Grammar.pt(String(localized: "Your jungle is ready to grow", comment: "Paywall headline"))
+        case .scanCompatibility: Grammar.pt(String(localized: "Feed them what they love", comment: "Paywall headline"))
+        case .inventory: Grammar.pt(String(localized: "Everything they need, in one place", comment: "Paywall headline"))
+        case nil: Grammar.pt(String(localized: "Give every plant the love it deserves", comment: "Paywall headline"))
         }
     }
 
@@ -84,13 +84,13 @@ struct PaywallView: View {
         let names = plants.prefix(2).map(\.name)
         if names.count == 2 {
             switch reason {
-            case .morePlants: return String(localized: "\(names[0]), \(names[1]) and the rest of the family would love some company. Plus makes room for all of them.", comment: "Paywall subline; args are two plant names")
-            default: return String(localized: "\(names[0]), \(names[1]) and the rest of the family will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline; args are two plant names")
+            case .morePlants: return Grammar.pt(String(localized: "\(names[0]), \(names[1]) and the rest of the family would love some company. Plus makes room for all of them.", comment: "Paywall subline; args are two plant names"))
+            default: return Grammar.pt(String(localized: "\(names[0]), \(names[1]) and the rest of the family will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline; args are two plant names"))
             }
         }
         switch reason {
-        case .morePlants: return String(localized: "Your plants would love some company. Plus makes room for all of them.", comment: "Paywall subline")
-        default: return String(localized: "Your plants will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline")
+        case .morePlants: return Grammar.pt(String(localized: "Your plants would love some company. Plus makes room for all of them.", comment: "Paywall subline"))
+        default: return Grammar.pt(String(localized: "Your plants will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline"))
         }
     }
 
@@ -125,17 +125,17 @@ struct PaywallView: View {
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(yearly ? String(localized: "Jungle", comment: "Paywall yearly plan name, same as the website") : String(localized: "Greenhouse", comment: "Paywall monthly plan name, same as the website")).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                        Text(yearly ? String(localized: "Yearly", comment: "Paywall plan period") : String(localized: "Monthly", comment: "Paywall plan period")).font(.caption2.weight(.semibold)).foregroundStyle(Jungle.subtle)
+                        Text(yearly ? Grammar.pt(String(localized: "Jungle", comment: "Paywall yearly plan name, same as the website")) : Grammar.pt(String(localized: "Greenhouse", comment: "Paywall monthly plan name, same as the website"))).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                        Text(yearly ? Grammar.pt(String(localized: "Yearly", comment: "Paywall plan period")) : Grammar.pt(String(localized: "Monthly", comment: "Paywall plan period"))).font(.caption2.weight(.semibold)).foregroundStyle(Jungle.subtle)
                     }
                     Spacer()
                     Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.title3).foregroundStyle(on ? Jungle.forest : Jungle.subtle.opacity(0.5))
                 }
                 Text(p.displayPrice).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                Text(yearly ? String(localized: "\((p.price / 12).formatted(p.priceFormatStyle))/month", comment: "Paywall: yearly price per month; arg is price") : String(localized: "per month", comment: "Paywall: monthly plan caption"))
+                Text(yearly ? Grammar.pt(String(localized: "\((p.price / 12).formatted(p.priceFormatStyle))/month", comment: "Paywall: yearly price per month; arg is price")) : Grammar.pt(String(localized: "per month", comment: "Paywall: monthly plan caption")))
                     .font(.caption).foregroundStyle(Jungle.subtle)
                 if let save, save > 0 {
-                    Text(String(localized: "Save \((Double(save) / 100).formatted(.percent))", comment: "Paywall yearly saving badge; arg is percent like 40%")).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                    Text(Grammar.pt(String(localized: "Save \((Double(save) / 100).formatted(.percent))", comment: "Paywall yearly saving badge; arg is percent like 40%"))).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                         .padding(.horizontal, 8).padding(.vertical, 3).background(Jungle.mint, in: Capsule())
                 } else { Text(" ").font(.caption).padding(.vertical, 3) }
             }
@@ -157,15 +157,15 @@ struct PaywallView: View {
                     buying = false
                 }
             } label: {
-                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? String(localized: "Start Jungle · \($0.displayPrice)/year", comment: "Paywall buy button for the yearly plan named Jungle; arg is price") : String(localized: "Start Greenhouse · \($0.displayPrice)/month", comment: "Paywall buy button for the monthly plan named Greenhouse; arg is price") } ?? String(localized: "Grow with Plus", comment: "Paywall buy button")).font(.headline) } }
+                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? Grammar.pt(String(localized: "Start Jungle · \($0.displayPrice)/year", comment: "Paywall buy button for the yearly plan named Jungle; arg is price")) : Grammar.pt(String(localized: "Start Greenhouse · \($0.displayPrice)/month", comment: "Paywall buy button for the monthly plan named Greenhouse; arg is price")) } ?? Grammar.pt(String(localized: "Grow with Plus", comment: "Paywall buy button"))).font(.headline) } }
                     .frame(maxWidth: .infinity).frame(height: 50)
             }
             .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
             .disabled(current == nil || buying)
             HStack(spacing: 16) {
                 Button("Restore") { Task { await Store.shared.restore(); if Store.shared.isPlus { dismiss() } } }
-                Link("Terms", destination: URL(string: "https://www.simpleappscompany.com/mytinyjungle/terms")!)
-                Link("Privacy", destination: URL(string: "https://www.simpleappscompany.com/mytinyjungle/privacy")!)
+                Link("Terms", destination: URL(string: "https://www.mytinyjungle.com/terms")!)
+                Link("Privacy", destination: URL(string: "https://www.mytinyjungle.com/privacy")!)
             }
             .font(.footnote).foregroundStyle(Jungle.subtle)
             Text("Renews automatically. Cancel anytime in Settings, no hard feelings. Your plants stay yours either way.").font(.caption2).foregroundStyle(Jungle.subtle)

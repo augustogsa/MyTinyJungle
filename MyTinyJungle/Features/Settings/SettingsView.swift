@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
@@ -5,7 +6,9 @@ struct SettingsView: View {
     @Bindable private var settings = JungleSettings.shared
     @State private var paywall = false
     @State private var confirmSignOut = false
+    @State private var confirmDelete = false
     @State private var iconPicker = false
+    @State private var appIcon = JungleAppIcon.current
     @Environment(\.modelContext) private var ctx
     private var plus: Bool { Store.shared.isPlus }
     private var auth = AuthManager.shared
@@ -16,73 +19,86 @@ struct SettingsView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     if let a = auth.account {
-                        JungleGroup(title: String(localized: "Account", comment: "Settings title")) {
-                            JungleRow(icon: .profile, title: a.email ?? a.name ?? String(localized: "Signed in", comment: "Settings account row fallback"), subtitle: a.provider == .apple ? String(localized: "Signed in with Apple", comment: "Settings account subtitle") : String(localized: "Signed in with Google", comment: "Settings account subtitle"))
+                        JungleGroup(title: Grammar.pt(String(localized: "Account", comment: "Settings title"))) {
+                            JungleRow(icon: .profile, title: a.email ?? a.name ?? Grammar.pt(String(localized: "Signed in", comment: "Settings account row fallback")), subtitle: a.provider == .apple ? Grammar.pt(String(localized: "Signed in with Apple", comment: "Settings account subtitle")) : Grammar.pt(String(localized: "Signed in with Google", comment: "Settings account subtitle")))
                             JungleDivider()
-                            Button { confirmSignOut = true } label: { JungleRow(icon: .mail, title: String(localized: "Sign out", comment: "Settings title")) }.buttonStyle(.plain)
+                            Button { confirmSignOut = true } label: { JungleRow(icon: .mail, title: Grammar.pt(String(localized: "Sign out", comment: "Settings title"))) }.buttonStyle(.plain)
+                            JungleDivider()
+                            Button { confirmDelete = true } label: { JungleRow(icon: .emptyPot, title: Grammar.pt(String(localized: "Delete account and data", comment: "Settings title"))) }.buttonStyle(.plain)
                         }
                     }
                     SharedJungleSettingsGroup()
-                    SharedJungleSettingsGroup()
-                    JungleGroup(title: String(localized: "iCloud backup", comment: "Settings title"), footer: String(localized: "Your plants, photos and history copy to your private iCloud. Sign in to the same iCloud on a new iPhone and your jungle comes back on its own.", comment: "Settings footer")) {
-                        JungleRow(icon: .weather, title: String(localized: "Back up to iCloud", comment: "Settings title"), subtitle: cloud.summary) {
+                    JungleGroup(title: Grammar.pt(String(localized: "iCloud backup", comment: "Settings title")), footer: Grammar.pt(String(localized: "Your plants, photos and history copy to your private iCloud. Sign in to the same iCloud on a new iPhone and your jungle comes back on its own.", comment: "Settings footer"))) {
+                        JungleRow(icon: .weather, title: Grammar.pt(String(localized: "Back up to iCloud", comment: "Settings title")), subtitle: cloud.summary) {
                             let blocked = cloud.status == .noAccount || (cloud.status == .unavailable && !cloud.pendingRestart)
                             Toggle("", isOn: Binding(get: { CloudBackup.enabled && !blocked }, set: { cloud.setEnabled($0) })).labelsHidden()
                                 .disabled(blocked)
                         }
                     }
-                    JungleGroup(title: String(localized: "Care alerts", comment: "Settings title"), footer: String(localized: "How and when your plants can reach you.", comment: "Settings footer")) {
+                    JungleGroup(title: Grammar.pt(String(localized: "Care alerts", comment: "Settings title")), footer: Grammar.pt(String(localized: "How and when your plants can reach you.", comment: "Settings footer"))) {
                         NavigationLink { ReminderSettingsView() } label: {
-                            JungleRow(icon: .notification, title: String(localized: "Reminders", comment: "Settings title"), subtitle: ReminderSettingsView.summary, chevron: true)
+                            JungleRow(icon: .notification, title: Grammar.pt(String(localized: "Reminders", comment: "Settings title")), subtitle: ReminderSettingsView.summary, chevron: true)
                         }.buttonStyle(.plain)
                     }
-                    JungleGroup(title: String(localized: "You", comment: "Settings title")) {
-                        JungleRow(icon: .profile, title: String(localized: "Name", comment: "Settings title")) {
+                    JungleGroup(title: Grammar.pt(String(localized: "You", comment: "Settings title"))) {
+                        JungleRow(icon: .profile, title: Grammar.pt(String(localized: "Name", comment: "Settings title"))) {
                             TextField("Your name", text: $settings.ownerName).multilineTextAlignment(.trailing).foregroundStyle(Jungle.subtle)
                         }
                         JungleDivider()
                         NavigationLink { ClimateSettingsView() } label: {
-                            JungleRow(icon: .globe, title: String(localized: "Where you grow", comment: "Settings title"), subtitle: Climate.shared.profile.map { String(localized: "\($0.place) · \(Climate.shared.biome)", comment: "Settings row subtitle: city and climate type") } ?? String(localized: "Set your place for local climate and weather", comment: "Settings row subtitle when no place"), chevron: true)
+                            JungleRow(icon: .globe, title: Grammar.pt(String(localized: "Where you grow", comment: "Settings title")), subtitle: Climate.shared.profile.map { Grammar.pt(String(localized: "\($0.place) · \(Climate.shared.biome)", comment: "Settings row subtitle: city and climate type")) } ?? Grammar.pt(String(localized: "Set your place for local climate and weather", comment: "Settings row subtitle when no place")), chevron: true)
                         }.buttonStyle(.plain)
                     }
-                    JungleGroup(title: String(localized: "Home screen", comment: "Settings title")) {
+                    JungleGroup(title: Grammar.pt(String(localized: "Home screen", comment: "Settings title"))) {
                         Button { iconPicker = true } label: {
-                            JungleRow(icon: .shelf, title: String(localized: "App icon", comment: "Settings title"), subtitle: String(localized: JungleAppIcon.current.title), chevron: true)
+                            HStack(spacing: 12) {
+                                Image(appIcon.preview).resizable().scaledToFill()
+                                    .frame(width: 30, height: 30)
+                                    .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+                                    .frame(width: 34)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text("App icon").font(.body).foregroundStyle(Jungle.text)
+                                    Text(appIcon.title).font(.caption).foregroundStyle(Jungle.subtle)
+                                }
+                                Spacer(minLength: 8)
+                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
+                            }
+                            .padding(.vertical, 11).frame(minHeight: 52).contentShape(Rectangle())
                         }.buttonStyle(.plain)
                     }
-                    JungleGroup(title: String(localized: "At home", comment: "Settings title"), footer: String(localized: "We'll gently warn you about plants that could hurt them.", comment: "Settings footer")) {
-                        JungleRow(icon: .shieldCheck, title: String(localized: "Cats", comment: "Settings title")) { Toggle("", isOn: $settings.hasCats).labelsHidden() }
+                    JungleGroup(title: Grammar.pt(String(localized: "At home", comment: "Settings title")), footer: Grammar.pt(String(localized: "We'll gently warn you about plants that could hurt them.", comment: "Settings footer"))) {
+                        JungleRow(icon: .cat, title: Grammar.pt(String(localized: "Cats", comment: "Settings title"))) { Toggle("", isOn: $settings.hasCats).labelsHidden() }
                         JungleDivider()
-                        JungleRow(icon: .shieldLeaf, title: String(localized: "Dogs", comment: "Settings title")) { Toggle("", isOn: $settings.hasDogs).labelsHidden() }
+                        JungleRow(icon: .dog, title: Grammar.pt(String(localized: "Dogs", comment: "Settings title"))) { Toggle("", isOn: $settings.hasDogs).labelsHidden() }
                         JungleDivider()
-                        JungleRow(icon: .heartPin, title: String(localized: "Small children", comment: "Settings title")) { Toggle("", isOn: $settings.hasKids).labelsHidden() }
+                        JungleRow(icon: .kid, title: Grammar.pt(String(localized: "Small children", comment: "Settings title"))) { Toggle("", isOn: $settings.hasKids).labelsHidden() }
                     }
-                    JungleGroup(title: String(localized: "My Tiny Jungle Plus", comment: "Settings title")) {
+                    JungleGroup(title: Grammar.pt(String(localized: "My Tiny Jungle Plus", comment: "Settings title"))) {
                         if plus {
-                            JungleRow(icon: .crown, title: String(localized: "Plus is active", comment: "Settings title"), subtitle: String(localized: "Thank you for growing with us", comment: "Settings subtitle"))
+                            JungleRow(icon: .addPlant, title: Grammar.pt(String(localized: "Plus is active", comment: "Settings title")), subtitle: Grammar.pt(String(localized: "Thank you for growing with us", comment: "Settings subtitle")))
                             JungleDivider()
                             Link(destination: URL(string: "https://apps.apple.com/account/subscriptions")!) {
-                                JungleRow(icon: .calendarClock, title: String(localized: "Manage subscription", comment: "Settings title"), chevron: true)
+                                JungleRow(icon: .calendarClock, title: Grammar.pt(String(localized: "Manage subscription", comment: "Settings title")), chevron: true)
                             }.buttonStyle(.plain)
                         } else {
                             Button { paywall = true } label: {
-                                JungleRow(icon: .crown, title: String(localized: "Get Plus", comment: "Settings title"), subtitle: String(localized: "Room for every plant, and no ads", comment: "Settings subtitle"), chevron: true)
+                                JungleRow(icon: .addPlant, title: Grammar.pt(String(localized: "Get Plus", comment: "Settings title")), subtitle: Grammar.pt(String(localized: "Room for every plant, and no ads", comment: "Settings subtitle")), chevron: true)
                             }.buttonStyle(.plain)
                         }
                         JungleDivider()
                         Button { Task { await Store.shared.restore() } } label: {
-                            JungleRow(icon: .repeat, title: String(localized: "Restore purchases", comment: "Settings title"))
+                            JungleRow(icon: .repeat, title: Grammar.pt(String(localized: "Restore purchases", comment: "Settings title")))
                         }.buttonStyle(.plain)
                     }
                     if !plus {
-                        JungleGroup(title: String(localized: "Privacy", comment: "Settings title"), footer: String(localized: "Your plants' photos and stories stay yours. Ads help keep My Tiny Jungle free for everyone.", comment: "Settings footer")) {
+                        JungleGroup(title: Grammar.pt(String(localized: "Privacy", comment: "Settings title")), footer: Grammar.pt(String(localized: "Your plants' photos and stories stay yours. Ads help keep My Tiny Jungle free for everyone.", comment: "Settings footer"))) {
                             Button { AdsManager.shared.presentPrivacyOptions() } label: {
-                                JungleRow(icon: .shieldStar, title: String(localized: "Privacy and ad choices", comment: "Settings title"), chevron: true)
+                                JungleRow(icon: .shieldStar, title: Grammar.pt(String(localized: "Privacy and ad choices", comment: "Settings title")), chevron: true)
                             }.buttonStyle(.plain)
                         }
                     }
-                    JungleGroup(title: String(localized: "About", comment: "Settings title"), footer: String(localized: "Our care tips come from botanists and trusted plant sources like Kew Gardens and the ASPCA. Every plant is a little different, so trust your fingers in the soil too.", comment: "Settings footer")) {
-                        JungleRow(icon: .leafTag, title: String(localized: "Version", comment: "Settings title")) {
+                    JungleGroup(title: Grammar.pt(String(localized: "About", comment: "Settings title")), footer: Grammar.pt(String(localized: "Our care tips come from botanists and trusted plant sources like Kew Gardens and the ASPCA. Every plant is a little different, so trust your fingers in the soil too.", comment: "Settings footer"))) {
+                        JungleRow(icon: .leafTag, title: Grammar.pt(String(localized: "Version", comment: "Settings title"))) {
                             Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "").foregroundStyle(Jungle.subtle)
                         }
                     }
@@ -93,11 +109,14 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $paywall) { PaywallView() }
-            .sheet(isPresented: $iconPicker) { AppIconPickerView() }
+            .sheet(isPresented: $iconPicker, onDismiss: { appIcon = JungleAppIcon.current }) { AppIconPickerView() }
             .task { await cloud.refresh() }
             .confirmationDialog("Sign out of My Tiny Jungle?", isPresented: $confirmSignOut, titleVisibility: .visible) {
                 Button("Sign out", role: .destructive) { auth.signOut(); dismiss() }
             } message: { Text("Your plants stay on this iPhone and in iCloud.") }
+            .confirmationDialog("Delete your account and all data?", isPresented: $confirmDelete, titleVisibility: .visible) {
+                Button("Delete everything", role: .destructive) { Task { await auth.deleteAccountAndData(ctx); dismiss() } }
+            } message: { Text("This removes your sign-in and erases every plant, photo and care history from this iPhone and iCloud. It can't be undone. Subscriptions are managed in your Apple account.") }
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         }
     }

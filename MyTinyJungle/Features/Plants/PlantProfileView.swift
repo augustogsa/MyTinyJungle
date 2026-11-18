@@ -22,8 +22,19 @@ struct PlantProfileView: View {
                         }
                     }
                 }
+                if Grammar.isPortuguese {
+                    Section {
+                        Picker(Grammar.pt(String(localized: "Refer to as", comment: "Plant profile: grammatical gender of the plant's name (pt only). pt: 'Chamar de'")), selection: Binding(get: { plant.nameGender }, set: { plant.nameGender = $0; Grammar.names[plant.name] = $0 })) {
+                            Text(Grammar.pt(String(localized: "She", comment: "Pronoun option for a plant's name (pt only). pt: 'Ela'"))).tag(Grammar.Gender.feminine)
+                            Text(Grammar.pt(String(localized: "He", comment: "Pronoun option for a plant's name (pt only). pt: 'Ele'"))).tag(Grammar.Gender.masculine)
+                        }
+                        .pickerStyle(.segmented)
+                    } footer: {
+                        Text(Grammar.pt(String(localized: "So the app says “\(plant.nameGender == .feminine ? "da" : "do") \(plant.name)” the way you do.", comment: "Plant profile footer under the she/he picker (pt only). Arg 1 is the article da/do, arg 2 the plant name.")))
+                    }
+                }
                 Section("Identity") {
-                    Button { choosingSpecies = true } label: { LabeledContent("Species", value: plant.species?.commonName ?? String(localized: "Choose", comment: "Species field value when none set; max 12 chars")) }
+                    Button { choosingSpecies = true } label: { LabeledContent("Species", value: plant.species?.commonName ?? Grammar.pt(String(localized: "Choose", comment: "Species field value when none set; max 12 chars"))) }
                     Picker("Personality", selection: Binding(get: { plant.personality }, set: { plant.personality = $0 })) {
                         ForEach(Personality.allCases) { Text($0.label).tag($0) }
                     }
@@ -59,8 +70,8 @@ struct PlantProfileView: View {
                         Text(s.tip).font(.footnote).foregroundStyle(Jungle.subtle)
                     }
                     Section("Learned") {
-                        LabeledContent("Dries in", value: String(localized: "~\(Int(CareEngine.expectedDryDays(for: plant).rounded())) days", comment: "About N days; plural"))
-                        Text(plant.learnedDryDays == nil ? String(localized: "Learning from your soil checks.", comment: "Footnote") : String(localized: "Learned from your soil checks.", comment: "Footnote")).font(.footnote).foregroundStyle(Jungle.subtle)
+                        LabeledContent("Dries in", value: Grammar.pt(String(localized: "~\(Int(CareEngine.expectedDryDays(for: plant).rounded())) days", comment: "About N days; plural")))
+                        Text(plant.learnedDryDays == nil ? Grammar.pt(String(localized: "Learning from your soil checks.", comment: "Footnote")) : Grammar.pt(String(localized: "Learned from your soil checks.", comment: "Footnote"))).font(.footnote).foregroundStyle(Jungle.subtle)
                     }
                 }
                 Section("Timeline") {
@@ -85,7 +96,7 @@ struct PlantProfileView: View {
                     }
                 }
                 Section {
-                    Button("Archive \(plant.name)", role: .destructive) { confirmArchive = true }
+                    Button(Grammar.pt(String(localized: "Archive \(plant.name)")), role: .destructive) { confirmArchive = true }
                 }
             }
             .navigationTitle("Profile")
@@ -103,7 +114,7 @@ struct PlantProfileView: View {
 
     private func title(_ e: CareEvent) -> String {
         var t = e.kind.label
-        if let s = e.soil { t = String(localized: "\(t): \(s.label.lowercased())", comment: "Timeline row: care kind, colon, soil state lowercase") }
+        if let s = e.soil { t = Grammar.pt(String(localized: "\(t): \(s.label.lowercased())", comment: "Timeline row: care kind, colon, soil state lowercase")) }
         if let v = e.value { t += " · " + PlantFormat.cm(v) }
         if !e.note.isEmpty, e.kind != .photo || e.note != "First photo" { t += " · " + PlantFormat.note(e.note) }
         return t

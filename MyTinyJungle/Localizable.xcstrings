@@ -6983,6 +6983,37 @@
         }
       }
     },
+    "Delete account and data": {
+      "comment": "Settings title",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar conta e dados"
+          }
+        }
+      }
+    },
+    "Delete everything": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar tudo"
+          }
+        }
+      }
+    },
+    "Delete your account and all data?": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar sua conta e todos os dados?"
+          }
+        }
+      }
+    },
     "Dilute, never on dry soil": {
       "comment": "Care guide subtitle; short",
       "localizations": {
@@ -9940,6 +9971,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tem um pedido"
+          }
+        }
+      }
+    },
+    "He": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ele"
           }
         }
       }
@@ -17841,6 +17882,16 @@
         }
       }
     },
+    "Refer to as": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chamar de"
+          }
+        }
+      }
+    },
     "Relatives share care and quirks": {
       "comment": "Care guide subtitle; short",
       "localizations": {
@@ -19407,6 +19458,16 @@
         }
       }
     },
+    "She": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ela"
+          }
+        }
+      }
+    },
     "Shelves and hanging pots keep curious mouths away from the rest.": {
       "comment": "Care guide step instruction; warm, practical",
       "localizations": {
@@ -19876,6 +19937,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Para todo mundo crescer reto"
+          }
+        }
+      }
+    },
+    "So the app says “%1$@ %2$@” the way you do.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Assim o app fala “%1$@ %2$@” do jeitinho que você fala."
           }
         }
       }
@@ -22205,6 +22276,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Esta planta"
+          }
+        }
+      }
+    },
+    "This removes your sign-in and erases every plant, photo and care history from this iPhone and iCloud. It can't be undone. Subscriptions are managed in your Apple account.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isso remove seu login e apaga todas as plantas, fotos e histórico de cuidados deste iPhone e do iCloud. Não dá para desfazer. Assinaturas são gerenciadas na sua conta Apple."
           }
         }
       }

@@ -8,18 +8,18 @@ enum HouseKind: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .couple: String(localized: "Couple", comment: "Household type; max 14 chars")
-        case .family: String(localized: "Family", comment: "Household type; max 14 chars")
-        case .housemates: String(localized: "Housemates", comment: "Household type; max 14 chars")
-        case .friends: String(localized: "Friends", comment: "Household type: friends who plant-sit; max 14 chars")
+        case .couple: Grammar.pt(String(localized: "Couple", comment: "Household type; max 14 chars"))
+        case .family: Grammar.pt(String(localized: "Family", comment: "Household type; max 14 chars"))
+        case .housemates: Grammar.pt(String(localized: "Housemates", comment: "Household type; max 14 chars"))
+        case .friends: Grammar.pt(String(localized: "Friends", comment: "Household type: friends who plant-sit; max 14 chars"))
         }
     }
     var blurb: String {
         switch self {
-        case .couple: String(localized: "Two plant parents, one jungle", comment: "Household type description; short")
-        case .family: String(localized: "Everyone at home helps, kids too", comment: "Household type description; short")
-        case .housemates: String(localized: "Shared flat, shared plants, fair turns", comment: "Household type description; short")
-        case .friends: String(localized: "Friends who water while you're away", comment: "Household type description; short")
+        case .couple: Grammar.pt(String(localized: "Two plant parents, one jungle", comment: "Household type description; short"))
+        case .family: Grammar.pt(String(localized: "Everyone at home helps, kids too", comment: "Household type description; short"))
+        case .housemates: Grammar.pt(String(localized: "Shared flat, shared plants, fair turns", comment: "Household type description; short"))
+        case .friends: Grammar.pt(String(localized: "Friends who water while you're away", comment: "Household type description; short"))
         }
     }
     var icon: Icon3D {
@@ -27,10 +27,10 @@ enum HouseKind: String, Codable, CaseIterable, Identifiable {
     }
     var defaultName: String {
         switch self {
-        case .couple: String(localized: "Our jungle", comment: "Default shared jungle name for a couple; max 24 chars")
-        case .family: String(localized: "Family jungle", comment: "Default shared jungle name; max 24 chars")
-        case .housemates: String(localized: "Flat jungle", comment: "Default shared jungle name for housemates; max 24 chars")
-        case .friends: String(localized: "Plant pals", comment: "Default shared jungle name for friends; max 24 chars")
+        case .couple: Grammar.pt(String(localized: "Our jungle", comment: "Default shared jungle name for a couple; max 24 chars"))
+        case .family: Grammar.pt(String(localized: "Family jungle", comment: "Default shared jungle name; max 24 chars"))
+        case .housemates: Grammar.pt(String(localized: "Flat jungle", comment: "Default shared jungle name for housemates; max 24 chars"))
+        case .friends: Grammar.pt(String(localized: "Plant pals", comment: "Default shared jungle name for friends; max 24 chars"))
         }
     }
 }

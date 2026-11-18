@@ -27,7 +27,7 @@ struct ScanView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    TabHeader(title: String(localized: "Scan", comment: "Scan tab title"), subtitle: String(localized: "Labels, new plants and sick leaves", comment: "Scan tab subtitle")) { EmptyView() }
+                    TabHeader(title: Grammar.pt(String(localized: "Scan", comment: "Scan tab title")), subtitle: Grammar.pt(String(localized: "Labels, new plants and sick leaves", comment: "Scan tab subtitle"))) { EmptyView() }
                     hero
                     modes
                     if !shopping.isEmpty { shoppingList }
@@ -121,12 +121,12 @@ struct ScanView: View {
             Text("Also scan").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             HStack(spacing: 10) {
                 Button { Store.shared.canAddPlant(current: plants.count) ? (addingPlant = true) : (paywall = .morePlants) } label: {
-                    modeTile(String(localized: "A new plant", comment: "Scan mode tile title"), String(localized: "Identify it and get its care plan", comment: "Scan mode tile subtitle"), .pottedPlant, Jungle.mint)
+                    modeTile(Grammar.pt(String(localized: "A new plant", comment: "Scan mode tile title")), Grammar.pt(String(localized: "Identify it and get its care plan", comment: "Scan mode tile subtitle")), .pottedPlant, Jungle.mint)
                 }
                 Menu {
                     ForEach(plants) { p in Button(p.name) { checking = p } }
                 } label: {
-                    modeTile(String(localized: "A sick leaf", comment: "Scan mode tile title"), String(localized: "Spots, yellowing or pests", comment: "Scan mode tile subtitle"), .wilted, Jungle.peach.opacity(0.45))
+                    modeTile(Grammar.pt(String(localized: "A sick leaf", comment: "Scan mode tile title")), Grammar.pt(String(localized: "Spots, yellowing or pests", comment: "Scan mode tile subtitle")), .wilted, Jungle.peach.opacity(0.45))
                 }
                 .disabled(plants.isEmpty)
             }
@@ -232,10 +232,10 @@ struct ScanView: View {
 extension Compatibility.Verdict {
     var scanLabel: String {
         switch self {
-        case .suitable: String(localized: "Suitable", comment: "Product verdict for a plant")
-        case .conditions: String(localized: "With conditions", comment: "Product verdict for a plant")
-        case .notRecommended: String(localized: "Not recommended", comment: "Product verdict for a plant")
-        case .unknown: String(localized: "Not enough info", comment: "Product verdict for a plant")
+        case .suitable: Grammar.pt(String(localized: "Suitable", comment: "Product verdict for a plant"))
+        case .conditions: Grammar.pt(String(localized: "With conditions", comment: "Product verdict for a plant"))
+        case .notRecommended: Grammar.pt(String(localized: "Not recommended", comment: "Product verdict for a plant"))
+        case .unknown: Grammar.pt(String(localized: "Not enough info", comment: "Product verdict for a plant"))
         }
     }
 }
@@ -262,7 +262,7 @@ private struct ShelfCard: View {
             Icon3DView(cat.icon, size: 30)
                 .frame(width: 44, height: 44).background(cat.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             Text(product.name).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
-            Text(product.npkN != nil ? String(localized: "NPK \(Int(product.npkN!))-\(Int(product.npkP ?? 0))-\(Int(product.npkK ?? 0))", comment: "Fertilizer NPK ratio, e.g. NPK 3-1-1") : cat.label)
+            Text(product.npkN != nil ? Grammar.pt(String(localized: "NPK \(Int(product.npkN!))-\(Int(product.npkP ?? 0))-\(Int(product.npkK ?? 0))", comment: "Fertilizer NPK ratio, e.g. NPK 3-1-1")) : cat.label)
                 .font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
         }
         .padding(12).frame(width: 150, alignment: .leading).jungleCard()
@@ -358,14 +358,14 @@ private struct ProductResultView: View {
         VStack(spacing: 14) {
             if let npk = product.npk {
                 HStack(spacing: 10) {
-                    nutrient("N", String(localized: "Leaves", comment: "Nitrogen benefit label under N; short"), npk.n, Jungle.leaf)
-                    nutrient("P", String(localized: "Roots and flowers", comment: "Phosphorus benefit label under P; short"), npk.p, Jungle.terracotta)
-                    nutrient("K", String(localized: "Strength", comment: "Potassium benefit label under K; short"), npk.k, Jungle.sun)
+                    nutrient("N", Grammar.pt(String(localized: "Leaves", comment: "Nitrogen benefit label under N; short")), npk.n, Jungle.leaf)
+                    nutrient("P", Grammar.pt(String(localized: "Roots and flowers", comment: "Phosphorus benefit label under P; short")), npk.p, Jungle.terracotta)
+                    nutrient("K", Grammar.pt(String(localized: "Strength", comment: "Potassium benefit label under K; short")), npk.k, Jungle.sun)
                 }
             }
             if let r = product.retention, let a = product.aeration {
-                meter(String(localized: "Holds water", comment: "Substrate trait meter: water retention"), r, "drop.fill")
-                meter(String(localized: "Lets roots breathe", comment: "Substrate trait meter: aeration"), a, "wind")
+                meter(Grammar.pt(String(localized: "Holds water", comment: "Substrate trait meter: water retention")), r, "drop.fill")
+                meter(Grammar.pt(String(localized: "Lets roots breathe", comment: "Substrate trait meter: aeration")), a, "wind")
             }
         }
         .padding(16).jungleCard()
@@ -385,7 +385,7 @@ private struct ProductResultView: View {
             HStack {
                 Label(t, systemImage: s).font(.subheadline).foregroundStyle(Jungle.text)
                 Spacer()
-                Text(v > 0.66 ? String(localized: "High", comment: "Substrate meter level") : v > 0.4 ? String(localized: "Medium", comment: "Substrate meter level") : String(localized: "Low", comment: "Substrate meter level")).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.subtle)
+                Text(v > 0.66 ? Grammar.pt(String(localized: "High", comment: "Substrate meter level")) : v > 0.4 ? Grammar.pt(String(localized: "Medium", comment: "Substrate meter level")) : Grammar.pt(String(localized: "Low", comment: "Substrate meter level"))).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.subtle)
             }
             GeometryReader { g in
                 Capsule().fill(Jungle.mint).overlay(alignment: .leading) { Capsule().fill(Jungle.leaf).frame(width: g.size.width * min(1, max(0.06, v))) }
@@ -407,7 +407,7 @@ private struct ProductResultView: View {
                     }
                     .blur(radius: 1.5)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(String(localized: "See which of your \(plants.count) plants this suits", comment: "Scan result Plus upsell; plural")).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
+                        Text(Grammar.pt(String(localized: "See which of your \(plants.count) plants this suits", comment: "Scan result Plus upsell; plural"))).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                         Text("With My Tiny Jungle Plus").font(.caption).foregroundStyle(Jungle.subtle)
                     }
                     .padding(.leading, 14)
@@ -472,7 +472,7 @@ struct LiveLabelScanner: UIViewControllerRepresentable {
         let vc = DataScannerViewController(recognizedDataTypes: [.text(), .barcode()], qualityLevel: .accurate,
                                            recognizesMultipleItems: true, isHighFrameRateTrackingEnabled: false, isHighlightingEnabled: true)
         vc.delegate = context.coordinator
-        vc.navigationItem.title = String(localized: "Point at the label", comment: "Live label scanner title")
+        vc.navigationItem.title = Grammar.pt(String(localized: "Point at the label", comment: "Live label scanner title"))
         vc.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in onDone() })
         try? vc.startScanning()
         return UINavigationController(rootViewController: vc)

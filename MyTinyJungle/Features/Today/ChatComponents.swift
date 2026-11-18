@@ -272,6 +272,6 @@ struct GlassComposer: View {
 
 extension CareKind {
     var chipTitle: String {
-        switch self { case .soilCheck: String(localized: "Soil", comment: "Chat quick chip: log soil check; max 12 chars"); case .water: String(localized: "Water", comment: "Chat quick chip: log watering; max 12 chars"); case .feed: String(localized: "Feed", comment: "Chat quick chip: log fertilizing; max 12 chars"); case .mist: String(localized: "Mist", comment: "Chat quick chip: log misting; max 12 chars"); case .rotate: String(localized: "Rotate", comment: "Chat quick chip: log rotating pot; max 12 chars"); default: String(localized: "New leaf", comment: "Chat quick chip: log new leaf; max 12 chars") }
+        switch self { case .soilCheck: Grammar.pt(String(localized: "Soil", comment: "Chat quick chip: log soil check; max 12 chars")); case .water: Grammar.pt(String(localized: "Water", comment: "Chat quick chip: log watering; max 12 chars")); case .feed: Grammar.pt(String(localized: "Feed", comment: "Chat quick chip: log fertilizing; max 12 chars")); case .mist: Grammar.pt(String(localized: "Mist", comment: "Chat quick chip: log misting; max 12 chars")); case .rotate: Grammar.pt(String(localized: "Rotate", comment: "Chat quick chip: log rotating pot; max 12 chars")); default: Grammar.pt(String(localized: "New leaf", comment: "Chat quick chip: log new leaf; max 12 chars")) }
     }
 }

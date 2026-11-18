@@ -27,11 +27,11 @@ struct PhotoRead {
 
     var healthSummary: String {
         switch health {
-        case .lush: String(localized: "Leaves look lush and green.", comment: "Photo read: leaf health summary, labelled as an estimate.")
-        case .good: String(localized: "Leaves look healthy overall.", comment: "Photo read: leaf health summary, labelled as an estimate.")
-        case .someStress: yellowShare >= brownShare ? String(localized: "Some yellowing visible, worth a closer look.", comment: "Photo read: leaf health summary, labelled as an estimate.") : String(localized: "Some browning visible, often dry air or uneven watering.", comment: "Photo read: leaf health summary, labelled as an estimate.")
-        case .stressed: yellowShare >= brownShare ? String(localized: "A lot of yellowing. Check the roots and how wet the soil stays.", comment: "Photo read: leaf health summary, labelled as an estimate.") : String(localized: "A lot of browning. Check watering, humidity and sun.", comment: "Photo read: leaf health summary, labelled as an estimate.")
-        case .unknown: String(localized: "I couldn't see enough leaves to judge health.", comment: "Photo read: leaf health summary, labelled as an estimate.")
+        case .lush: Grammar.pt(String(localized: "Leaves look lush and green.", comment: "Photo read: leaf health summary, labelled as an estimate."))
+        case .good: Grammar.pt(String(localized: "Leaves look healthy overall.", comment: "Photo read: leaf health summary, labelled as an estimate."))
+        case .someStress: yellowShare >= brownShare ? Grammar.pt(String(localized: "Some yellowing visible, worth a closer look.", comment: "Photo read: leaf health summary, labelled as an estimate.")) : Grammar.pt(String(localized: "Some browning visible, often dry air or uneven watering.", comment: "Photo read: leaf health summary, labelled as an estimate."))
+        case .stressed: yellowShare >= brownShare ? Grammar.pt(String(localized: "A lot of yellowing. Check the roots and how wet the soil stays.", comment: "Photo read: leaf health summary, labelled as an estimate.")) : Grammar.pt(String(localized: "A lot of browning. Check watering, humidity and sun.", comment: "Photo read: leaf health summary, labelled as an estimate."))
+        case .unknown: Grammar.pt(String(localized: "I couldn't see enough leaves to judge health.", comment: "Photo read: leaf health summary, labelled as an estimate."))
         }
     }
 }
@@ -48,26 +48,20 @@ enum PlantVision {
         guard let cg = image.cgImage else { return [] }
         #if targetEnvironment(simulator)
         return [] // Vision's classifier returns the same junk labels on the simulator; the species list takes over.
-        #endif
+        #else
         return await Task.detached(priority: .userInitiated) {
             func run(cpu: Bool) -> [(String, Float)]? {
                 let req = VNClassifyImageRequest()
-                #if targetEnvironment(simulator)
-                // Simulator has no Neural Engine/GPU inference context: force CPU.
-                if let cpuDevice = MLComputeDevice.allComputeDevices.first(where: { if case .cpu = $0 { true } else { false } }) {
-                    req.setComputeDevice(cpuDevice, for: .main)
-                }
-                #else
                 if cpu, let cpuDevice = MLComputeDevice.allComputeDevices.first(where: { if case .cpu = $0 { true } else { false } }) {
                     req.setComputeDevice(cpuDevice, for: .main)
                 }
-                #endif
                 do { try VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req]) } catch { return nil }
                 return (req.results ?? []).filter { $0.confidence > 0.05 }.prefix(25).map { ($0.identifier, $0.confidence) }
             }
             if let r = run(cpu: false), !r.isEmpty { return r }
             return run(cpu: true) ?? []
         }.value
+        #endif
     }
 
     /// HSV pixel census on a 96×96 thumbnail. Bottom third is checked for soil.

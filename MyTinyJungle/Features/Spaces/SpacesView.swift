@@ -60,7 +60,7 @@ struct SpaceCard: View {
                 Text(space.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Spacer()
                 if !fits.isEmpty {
-                    Text(good == fits.count ? String(localized: "Optimal", comment: "Space card badge; max 12 chars") : String(localized: "\(good)/\(fits.count) happy", comment: "Space card badge: X of Y plants happy; max 12 chars"))
+                    Text(good == fits.count ? Grammar.pt(String(localized: "Optimal", comment: "Space card badge; max 12 chars")) : Grammar.pt(String(localized: "\(good)/\(fits.count) happy", comment: "Space card badge: X of Y plants happy; max 12 chars")))
                         .font(.caption.weight(.semibold)).padding(.horizontal, 8).padding(.vertical, 4)
                         .background((good == fits.count ? Jungle.leaf : Jungle.sun).opacity(0.25), in: Capsule())
                 }
@@ -95,9 +95,9 @@ struct SpaceDetailView: View {
             Section("Conditions") {
                 LabeledContent("Light", value: PlacementEngine.lightLabel(space.light))
                 if !space.windowFacing.isEmpty { LabeledContent("Window faces") { Text(LocalizedStringKey(space.windowFacing)) } }
-                LabeledContent("Temperature", value: space.temperature.map { Climate.temp($0) } ?? String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars"))
-                LabeledContent("Humidity", value: space.humidity.map { PlantFormat.percent($0) } ?? String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars"))
-                LabeledContent("Outdoors", value: space.isOutdoor ? String(localized: "Yes", comment: "Yes/no value") : String(localized: "No", comment: "Yes/no value"))
+                LabeledContent("Temperature", value: space.temperature.map { Climate.temp($0) } ?? Grammar.pt(String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars")))
+                LabeledContent("Humidity", value: space.humidity.map { PlantFormat.percent($0) } ?? Grammar.pt(String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars")))
+                LabeledContent("Outdoors", value: space.isOutdoor ? Grammar.pt(String(localized: "Yes", comment: "Yes/no value")) : Grammar.pt(String(localized: "No", comment: "Yes/no value")))
             }
             Section("Plants here") {
                 if here.isEmpty { Text("Nobody lives here yet.").foregroundStyle(Jungle.subtle) }
@@ -143,12 +143,12 @@ struct SpaceDetailView: View {
 
     private func insight(_ here: [Plant]) -> String {
         let s = here.compactMap(\.species)
-        guard !s.isEmpty else { return String(localized: "Set the light right and I'll suggest plants for this spot.", comment: "Space insight") }
+        guard !s.isEmpty else { return Grammar.pt(String(localized: "Set the light right and I'll suggest plants for this spot.", comment: "Space insight")) }
         let humid = s.filter { $0.humidityMin >= 55 }
         let poor = here.filter { $0.species.map { PlacementEngine.fit($0, in: space).fit < .good } ?? false }
-        if !poor.isEmpty { return String(localized: "\(poor.map(\.name).formatted(.list(type: .and))) would be happier elsewhere. Tap them to see their best place.", comment: "Space insight; arg list of plant names") }
-        if !humid.isEmpty && (space.humidity ?? 45) < 55 { return String(localized: "Conditions are great for \(s.count - humid.count) of \(s.count) plants. Consider a humidifier for the humidity lovers.", comment: "Space insight; X of Y plants") }
-        return String(localized: "Conditions suit all \(s.count) plants here.", comment: "Space insight; plural")
+        if !poor.isEmpty { return Grammar.pt(String(localized: "\(poor.map(\.name).formatted(.list(type: .and))) would be happier elsewhere. Tap them to see their best place.", comment: "Space insight; arg list of plant names")) }
+        if !humid.isEmpty && (space.humidity ?? 45) < 55 { return Grammar.pt(String(localized: "Conditions are great for \(s.count - humid.count) of \(s.count) plants. Consider a humidifier for the humidity lovers.", comment: "Space insight; X of Y plants")) }
+        return Grammar.pt(String(localized: "Conditions suit all \(s.count) plants here.", comment: "Space insight; plural"))
     }
 }
 
@@ -176,7 +176,7 @@ struct SpaceEditor: View {
                 Section {
                     Picker("Window faces", selection: $facing) {
                         Text("Not sure").tag("")
-                        ForEach([("North", String(localized: "North", comment: "Window faces north")), ("East", String(localized: "East", comment: "Window faces east")), ("South", String(localized: "South", comment: "Window faces south")), ("West", String(localized: "West", comment: "Window faces west"))], id: \.0) { Text($0.1).tag($0.0) }
+                        ForEach([("North", Grammar.pt(String(localized: "North", comment: "Window faces north"))), ("East", Grammar.pt(String(localized: "East", comment: "Window faces east"))), ("South", Grammar.pt(String(localized: "South", comment: "Window faces south"))), ("West", Grammar.pt(String(localized: "West", comment: "Window faces west")))], id: \.0) { Text($0.1).tag($0.0) }
                     }
                     Toggle("Outdoors", isOn: $outdoor)
                     LabeledContent(Climate.metricTemp ? "Temperature °C" : "Temperature °F") { TextField("optional", value: $temp, format: .number).keyboardType(.numbersAndPunctuation).multilineTextAlignment(.trailing) }
@@ -225,7 +225,7 @@ struct BestPlaceView: View {
                         Text("\(Climate.tempRange(s.tempMin, s.tempMax)) · humidity \(PlantFormat.percent(s.humidityMin))+").font(.subheadline).foregroundStyle(Jungle.subtle)
                         Text(s.lightRule).font(.subheadline)
                     }
-                } header: { Text("What \(plant.name) needs") }
+                } header: { Text(Grammar.pt(String(localized: "What \(plant.name) needs"))) }
                 if ranked.isEmpty {
                     Section { Button("Add your rooms to compare", systemImage: "plus") { adding = true } }
                 } else {
@@ -242,13 +242,13 @@ struct BestPlaceView: View {
                                 Text(f.reasons.joined(separator: " · ")).font(.caption).foregroundStyle(Jungle.subtle)
                                 if let current, current.id != space.id {
                                     Text(compare(s, from: current, to: space)).font(.caption).foregroundStyle(Jungle.text)
-                                    Button("Move \(plant.name) here") {
+                                    Button(Grammar.pt(String(localized: "Move \(plant.name) here"))) {
                                         JungleBrain.apply(.init(kind: .move, plantIDs: [plant.id], date: Date(), detail: space.name), to: plant, in: ctx, now: Date(), source: "space")
                                         try? ctx.save(); dismiss()
                                     }
                                     .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                                 } else if current == nil {
-                                    Button("\(plant.name) lives here") {
+                                    Button(Grammar.pt(String(localized: "\(plant.name) lives here"))) {
                                         plant.location = space.name; try? ctx.save(); dismiss()
                                     }
                                     .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
@@ -259,10 +259,10 @@ struct BestPlaceView: View {
                     }
                 }
             } else {
-                Text("Set \(plant.name)'s species first.")
+                Text(Grammar.pt(String(localized: "Set \(plant.name)'s species first.")))
             }
         }
-        .navigationTitle("Best place for \(plant.name)")
+        .navigationTitle(Grammar.pt(String(localized: "Best place for \(plant.name)")))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
@@ -275,10 +275,10 @@ struct BestPlaceView: View {
     private func compare(_ s: Species, from a: Space, to b: Space) -> String {
         let dl = PlacementEngine.lightIndex(b.light) - PlacementEngine.lightIndex(a.light)
         var parts: [String] = []
-        if dl > 0 { parts.append(String(localized: "More light, faster growth. Water needs go up slightly", comment: "Move what-if clause; no final period")) }
-        if dl < 0 { parts.append(String(localized: "Less light, slower growth. Water a little less", comment: "Move what-if clause; no final period")) }
-        if b.isOutdoor != a.isOutdoor { parts.append(b.isOutdoor ? String(localized: "Outdoors: dries faster, watch for pests", comment: "Move what-if clause") : String(localized: "Indoors: dries slower", comment: "Move what-if clause")) }
-        if parts.isEmpty { parts.append(String(localized: "Similar conditions", comment: "Move what-if clause")) }
-        return String(localized: "If moved: \(parts.joined(separator: "; ")). Expect 2–3 weeks to adjust.", comment: "Move what-if; arg clauses joined by semicolons")
+        if dl > 0 { parts.append(Grammar.pt(String(localized: "More light, faster growth. Water needs go up slightly", comment: "Move what-if clause; no final period"))) }
+        if dl < 0 { parts.append(Grammar.pt(String(localized: "Less light, slower growth. Water a little less", comment: "Move what-if clause; no final period"))) }
+        if b.isOutdoor != a.isOutdoor { parts.append(b.isOutdoor ? Grammar.pt(String(localized: "Outdoors: dries faster, watch for pests", comment: "Move what-if clause")) : Grammar.pt(String(localized: "Indoors: dries slower", comment: "Move what-if clause"))) }
+        if parts.isEmpty { parts.append(Grammar.pt(String(localized: "Similar conditions", comment: "Move what-if clause"))) }
+        return Grammar.pt(String(localized: "If moved: \(parts.joined(separator: "; ")). Expect 2–3 weeks to adjust.", comment: "Move what-if; arg clauses joined by semicolons"))
     }
 }

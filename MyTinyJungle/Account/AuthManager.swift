@@ -1,3 +1,5 @@
+import UserNotifications
+import SwiftData
 import SwiftUI
 import AuthenticationServices
 import GoogleSignIn
@@ -36,7 +38,7 @@ final class AuthManager {
             let old = Keychain.load()
             save(.init(provider: .apple, id: c.user, name: given ?? (old?.id == c.user ? old?.name : nil), email: c.email ?? (old?.id == c.user ? old?.email : nil)))
         case .failure(let e):
-            if (e as? ASAuthorizationError)?.code != .canceled { error = String(localized: "Apple sign-in didn't finish. Try again.", comment: "Sign-in error under Apple button; calm; max 50 chars") }
+            if (e as? ASAuthorizationError)?.code != .canceled { error = Grammar.pt(String(localized: "Apple sign-in didn't finish. Try again.", comment: "Sign-in error under Apple button; calm; max 50 chars")) }
         }
     }
 
@@ -50,7 +52,7 @@ final class AuthManager {
                 let u = r.user
                 save(.init(provider: .google, id: u.userID ?? UUID().uuidString, name: u.profile?.givenName, email: u.profile?.email))
             } catch {
-                if (error as NSError).code != GIDSignInError.canceled.rawValue { self.error = String(localized: "Google sign-in didn't finish. Try again.", comment: "Sign-in error under Google button; calm; max 50 chars") }
+                if (error as NSError).code != GIDSignInError.canceled.rawValue { self.error = Grammar.pt(String(localized: "Google sign-in didn't finish. Try again.", comment: "Sign-in error under Google button; calm; max 50 chars")) }
             }
         }
     }
@@ -72,6 +74,19 @@ final class AuthManager {
     func signOut() {
         if account?.provider == .google { GIDSignIn.sharedInstance.signOut() }
         Keychain.delete(); account = nil
+    }
+
+    /// Deletes the account and everything it owns: Google access is revoked, the session is wiped,
+    /// and all plants, history and photos are erased here and in iCloud. Nothing is stored on our servers.
+    @MainActor func deleteAccountAndData(_ ctx: ModelContext) async {
+        if account?.provider == .google { try? await GIDSignIn.sharedInstance.disconnect() }
+        for t in [Plant.self, CareEvent.self, ChatMessage.self, OwnedProduct.self, Space.self, CareTask.self, Propagation.self] as [any PersistentModel.Type] {
+            try? ctx.delete(model: t)
+        }
+        try? ctx.save()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        signOut()
     }
 
     private func save(_ a: Account) {

@@ -132,7 +132,7 @@ struct AddPlantFlow: View {
         .scrollDismissesKeyboard(.interactively)
         .safeAreaInset(edge: .bottom) {
             Button(action: save) {
-                Text(species == nil && name.isEmpty ? String(localized: "Pick the species first", comment: "Save button disabled hint") : name.isEmpty ? String(localized: "Welcome home", comment: "Save button; max 24 chars") : String(localized: "Welcome \(name)", comment: "Save button; arg plant name; max 24 chars"))
+                Text(species == nil && name.isEmpty ? Grammar.pt(String(localized: "Pick the species first", comment: "Save button disabled hint")) : name.isEmpty ? Grammar.pt(String(localized: "Welcome home", comment: "Save button; max 24 chars")) : Grammar.pt(String(localized: "Welcome \(name)", comment: "Save button; arg plant name; max 24 chars")))
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
@@ -154,7 +154,7 @@ struct AddPlantFlow: View {
             .clipped()
             LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
             VStack(alignment: .leading, spacing: 2) {
-                Text(species?.commonName ?? String(localized: "New plant", comment: "Hero title before species chosen")).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(.white)
+                Text(species?.commonName ?? Grammar.pt(String(localized: "New plant", comment: "Hero title before species chosen"))).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(.white)
                 if let s = species { Text(s.scientific).font(.subheadline).italic().foregroundStyle(.white.opacity(0.85)) }
             }
             .padding(16)
@@ -178,7 +178,7 @@ struct AddPlantFlow: View {
                         } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(c.species.commonName).font(.subheadline.weight(.semibold))
-                                Text(c.id == candidates.first?.id ? String(localized: "Best match", comment: "Species candidate tag; max 14 chars") : c.source).font(.caption2).opacity(0.8)
+                                Text(c.id == candidates.first?.id ? Grammar.pt(String(localized: "Best match", comment: "Species candidate tag; max 14 chars")) : c.source).font(.caption2).opacity(0.8)
                             }
                             .padding(.horizontal, 14).padding(.vertical, 9)
                             .foregroundStyle(species == c.species ? Color.white : Jungle.text)
@@ -248,12 +248,12 @@ struct AddPlantFlow: View {
     private func factsSection(_ s: Species) -> some View {
         let petsOK = !(s.toxicCats || s.toxicDogs)
         let facts: [(String, String, String, Color)] = [
-            ("drop.fill", String(localized: "Water", comment: "Fact tile label; max 10 chars"), String(localized: "Every \(Int(s.dryMin))–\(Int(s.dryMax)) days", comment: "Watering interval range in days; max 18 chars"), Jungle.leaf),
-            ("sun.max.fill", String(localized: "Light", comment: "Fact tile label; max 10 chars"), PlacementEngine.lightLabel(s.light), Jungle.sun),
-            ("humidity.fill", String(localized: "Humidity", comment: "Fact tile label; max 10 chars"), PlantFormat.percent(s.humidityMin) + "+", Jungle.leaf),
-            ("thermometer.medium", String(localized: "Temp", comment: "Fact tile label: temperature; max 10 chars"), Climate.tempRange(s.tempMin, s.tempMax), Jungle.terracotta),
-            (petsOK ? "pawprint.fill" : "exclamationmark.triangle.fill", String(localized: "Pets", comment: "Fact tile label; max 10 chars"), petsOK ? String(localized: "Safe", comment: "Pet safety value; max 10 chars") : String(localized: "Toxic", comment: "Pet safety value; max 10 chars"), petsOK ? Jungle.leaf : Jungle.terracotta),
-            ("leaf.arrow.triangle.circlepath", String(localized: "Feed", comment: "Fact tile label: fertilize; max 10 chars"), String(localized: "Every \(Int(s.feedWeeks)) wk", comment: "Feeding interval, weeks abbreviated; plural; max 14 chars"), Jungle.leaf),
+            ("drop.fill", Grammar.pt(String(localized: "Water", comment: "Fact tile label; max 10 chars")), Grammar.pt(String(localized: "Every \(Int(s.dryMin))–\(Int(s.dryMax)) days", comment: "Watering interval range in days; max 18 chars")), Jungle.leaf),
+            ("sun.max.fill", Grammar.pt(String(localized: "Light", comment: "Fact tile label; max 10 chars")), PlacementEngine.lightLabel(s.light), Jungle.sun),
+            ("humidity.fill", Grammar.pt(String(localized: "Humidity", comment: "Fact tile label; max 10 chars")), PlantFormat.percent(s.humidityMin) + "+", Jungle.leaf),
+            ("thermometer.medium", Grammar.pt(String(localized: "Temp", comment: "Fact tile label: temperature; max 10 chars")), Climate.tempRange(s.tempMin, s.tempMax), Jungle.terracotta),
+            (petsOK ? "pawprint.fill" : "exclamationmark.triangle.fill", Grammar.pt(String(localized: "Pets", comment: "Fact tile label; max 10 chars")), petsOK ? Grammar.pt(String(localized: "Safe", comment: "Pet safety value; max 10 chars")) : Grammar.pt(String(localized: "Toxic", comment: "Pet safety value; max 10 chars")), petsOK ? Jungle.leaf : Jungle.terracotta),
+            ("leaf.arrow.triangle.circlepath", Grammar.pt(String(localized: "Feed", comment: "Fact tile label: fertilize; max 10 chars")), Grammar.pt(String(localized: "Every \(Int(s.feedWeeks)) wk", comment: "Feeding interval, weeks abbreviated; plural; max 14 chars")), Jungle.leaf),
         ]
         return LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
             ForEach(facts, id: \.1) { f in
@@ -324,7 +324,7 @@ struct AddPlantFlow: View {
     }
 
     private func homeSection(_ plan: WelcomePlan) -> some View {
-        let rooms = (plants.map(\.location).filter { !$0.isEmpty } + [String(localized: "Living room", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Bedroom", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Kitchen", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Bathroom", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Office", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Dining room", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Kids room", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Hallway", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Windowsill", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Balcony", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Terrace", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Garden", comment: "Room suggestion chip; stored as the plant location; max 16 chars"), String(localized: "Greenhouse", comment: "Room suggestion chip; stored as the plant location; max 16 chars")]).uniqued()
+        let rooms = (plants.map(\.location).filter { !$0.isEmpty } + [Grammar.pt(String(localized: "Living room", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Bedroom", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Kitchen", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Bathroom", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Office", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Dining room", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Kids room", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Hallway", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Windowsill", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Balcony", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Terrace", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Garden", comment: "Room suggestion chip; stored as the plant location; max 16 chars")), Grammar.pt(String(localized: "Greenhouse", comment: "Room suggestion chip; stored as the plant location; max 16 chars"))]).uniqued()
         return VStack(alignment: .leading, spacing: 10) {
             Text("Where will I live?").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             TextField("Room or spot", text: Binding(get: { location }, set: { location = $0; locationEdited = true }))
@@ -380,29 +380,29 @@ struct AddPlantFlow: View {
     private func save() {
         guard species != nil || !name.isEmpty else { return }
         let s = species
-        let plant = Plant(name: name.isEmpty ? (s?.commonName ?? String(localized: "Plant", comment: "Default plant name")) : name, speciesID: s?.id, personality: personality, location: location)
+        let plant = Plant(name: name.isEmpty ? (s?.commonName ?? Grammar.pt(String(localized: "Plant", comment: "Default plant name"))) : name, speciesID: s?.id, personality: personality, location: location)
         plant.isOutdoor = outdoor
         plant.photo = photo
         ctx.insert(plant)
-        ErtyCheer.shared.show(.plant, String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name"))
+        ErtyCheer.shared.show(.plant, Grammar.pt(String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name")))
         if let photo {
             let e = CareEvent(kind: .photo, note: "First photo", source: "onboarding"); e.photo = photo; e.plant = plant; ctx.insert(e)
         }
         if let m = read?.soilMoisture {
-            let e = CareEvent(kind: .soilCheck, note: String(localized: "Photo estimate", comment: "Timeline note: soil estimated from photo"), source: "photo"); e.soil = m; e.plant = plant; ctx.insert(e)
+            let e = CareEvent(kind: .soilCheck, note: Grammar.pt(String(localized: "Photo estimate", comment: "Timeline note: soil estimated from photo")), source: "photo"); e.soil = m; e.plant = plant; ctx.insert(e)
         }
         if let s {
             let plan = PlantAdvisor.plan(species: s, read: read, existing: plants.filter { $0.id != plant.id })
-            let hello = String(localized: "Hi, I'm \(plant.name)! I'm a \(s.commonName) (\(s.scientific)).", comment: "Plant voice intro in chat; args plant name, common species name, scientific name")
+            let hello = Grammar.pt(String(localized: "Hi, I'm \(plant.name)! I'm a \(s.commonName) (\(s.scientific)).", comment: "Plant voice intro in chat; args plant name, common species name, scientific name"))
             let tips = [plan.firstWater.title, plan.spot.title, plan.neighbours?.title].compactMap { $0 }.map { "\($0)." }
             let intro = ([hello] + (read.map { [$0.healthSummary] } ?? []) + tips).joined(separator: " ")
-            let sugg = read?.soilMoisture == .dry ? [String(localized: "Watered", comment: "Chat quick reply chip; max 14 chars")] : [String(localized: "Dry", comment: "Chat quick reply chip: soil feels dry; max 14 chars"), String(localized: "Slightly moist", comment: "Chat quick reply chip: soil state; max 14 chars"), String(localized: "Wet", comment: "Chat quick reply chip: soil feels wet; max 14 chars")]
+            let sugg = read?.soilMoisture == .dry ? [Grammar.pt(String(localized: "Watered", comment: "Chat quick reply chip; max 14 chars"))] : [Grammar.pt(String(localized: "Dry", comment: "Chat quick reply chip: soil feels dry; max 14 chars")), Grammar.pt(String(localized: "Slightly moist", comment: "Chat quick reply chip: soil state; max 14 chars")), Grammar.pt(String(localized: "Wet", comment: "Chat quick reply chip: soil feels wet; max 14 chars"))]
             ctx.insert(ChatMessage(text: intro, fromUser: false, plant: plant, suggestions: sugg))
-            let j = ChatMessage(text: String(localized: "Hi everyone! I'm new here. \(plan.spot.title.lowercased().capitalizedFirst).", comment: "Plant voice in group chat; arg sentence about its spot"), fromUser: false)
+            let j = ChatMessage(text: Grammar.pt(String(localized: "Hi everyone! I'm new here. \(plan.spot.title.lowercased().capitalizedFirst).", comment: "Plant voice in group chat; arg sentence about its spot")), fromUser: false)
             j.speakerID = plant.id
             ctx.insert(j)
         } else {
-            ctx.insert(ChatMessage(text: String(localized: "Hi, I'm \(plant.name)! What kind of plant am I?", comment: "Plant voice intro when species unknown; arg plant name"), fromUser: false, plant: plant))
+            ctx.insert(ChatMessage(text: Grammar.pt(String(localized: "Hi, I'm \(plant.name)! What kind of plant am I?", comment: "Plant voice intro when species unknown; arg plant name")), fromUser: false, plant: plant))
         }
         try? ctx.save()
         dismiss()
@@ -431,7 +431,7 @@ struct LeafBar: View {
 
 private struct ReadingSteps: View {
     @State private var step = 0
-    private let steps = [String(localized: "Looking at the leaves…", comment: "Loading step while reading photo; plant voice; max 30 chars"), String(localized: "Working out the species…", comment: "Loading step while reading photo; plant voice; max 30 chars"), String(localized: "Checking the soil…", comment: "Loading step while reading photo; plant voice; max 30 chars"), String(localized: "Writing my care plan…", comment: "Loading step while reading photo; plant voice; max 30 chars")]
+    private let steps = [Grammar.pt(String(localized: "Looking at the leaves…", comment: "Loading step while reading photo; plant voice; max 30 chars")), Grammar.pt(String(localized: "Working out the species…", comment: "Loading step while reading photo; plant voice; max 30 chars")), Grammar.pt(String(localized: "Checking the soil…", comment: "Loading step while reading photo; plant voice; max 30 chars")), Grammar.pt(String(localized: "Writing my care plan…", comment: "Loading step while reading photo; plant voice; max 30 chars"))]
     var body: some View {
         VStack(spacing: 10) {
             ErtyView(mood: .scan, size: 96)

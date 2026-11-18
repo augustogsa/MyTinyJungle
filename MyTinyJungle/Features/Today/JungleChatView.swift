@@ -50,7 +50,7 @@ struct JungleChatView: View {
             .onChange(of: items.count) { withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo("bottom", anchor: .bottom) } }
         }
         .safeAreaInset(edge: .bottom) {
-            GlassComposer(placeholder: String(localized: "Tell me how your plants are doing…", comment: "Chat input placeholder"), showChips: !plants.isEmpty, onChip: { kind in
+            GlassComposer(placeholder: Grammar.pt(String(localized: "Tell me how your plants are doing…", comment: "Chat input placeholder")), showChips: !plants.isEmpty, onChip: { kind in
                 if kind == .soilCheck { soilAsk = true } else { JungleBrain.quick(kind, plants: plants, in: ctx, announce: true) }
             }) { text, photo in
                 JungleBrain.handle(text, photo: photo, plant: nil, plants: plants, in: ctx)

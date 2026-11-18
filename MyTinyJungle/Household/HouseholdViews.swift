@@ -95,12 +95,12 @@ struct HouseholdTodayCard: View {
     private var latest: Activity? { house.state?.activity.first { $0.kind == .care && $0.memberID != house.meID && $0.date > Date().addingTimeInterval(-2 * 86_400) } }
     private var summary: String {
         let needing = plants.filter { CareEngine.needsYou($0) }
-        if needing.isEmpty { return String(localized: "Everyone's plants are happy today", comment: "Shared jungle card: nothing needed") }
+        if needing.isEmpty { return Grammar.pt(String(localized: "Everyone's plants are happy today", comment: "Shared jungle card: nothing needed")) }
         if mine.isEmpty {
             let others = Set(needing.compactMap { house.turn(for: $0.id)?.member.firstName })
-            return others.count == 1 ? String(localized: "\(others.first!) has today's care. Enjoy a day off.", comment: "Shared card: other member's turn; %@ first name") : String(localized: "Others have today's care. Enjoy a day off.", comment: "Shared card: others' turn")
+            return others.count == 1 ? Grammar.pt(String(localized: "\(others.first!) has today's care. Enjoy a day off.", comment: "Shared card: other member's turn; %@ first name")) : Grammar.pt(String(localized: "Others have today's care. Enjoy a day off.", comment: "Shared card: others' turn"))
         }
-        return mine.count == 1 ? String(localized: "\(mine[0].name) is your turn today", comment: "Shared card; %@ plant name") : String(localized: "\(mine.count) plants are your turn today", comment: "Shared card; %lld count")
+        return mine.count == 1 ? Grammar.pt(String(localized: "\(mine[0].name) is your turn today", comment: "Shared card; %@ plant name")) : Grammar.pt(String(localized: "\(mine.count) plants are your turn today", comment: "Shared card; %lld count"))
     }
 }
 
@@ -110,11 +110,10 @@ struct RequestRow: View {
     init(request: CoverRequest) { self.request = request }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Divider()
             HStack(alignment: .bottom, spacing: 8) {
                 if let m = house.member(request.fromID) { MemberAvatar(member: m, size: 28) }
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("\(house.name(request.fromID)) could use a hand", comment: "Cover request title; %@ first name").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText).padding(.leading, 14)
+                    Text(Grammar.pt(String(localized: "\(house.name(request.fromID)) could use a hand", comment: "Cover request title; %@ first name"))).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText).padding(.leading, 14)
                     VStack(alignment: .leading, spacing: 10) {
                         Text(HouseText.askLine(request, plantName: house.state?.plants.first { $0.id == request.plantIDs.first }?.name ?? ""))
                         if !request.note.isEmpty { Text(request.note).foregroundStyle(Jungle.subtle) }
@@ -148,12 +147,12 @@ struct PlantShareSection: View {
     init(plant: Plant) { self.plant = plant }
     var body: some View {
         if house.isShared {
-            JungleGroup(title: String(localized: "Shared care", comment: "Plant page section title")) {
-                JungleRow(icon: .careHands, title: String(localized: "Looked after by", comment: "Plant page row: who cares for this plant")) {
+            JungleGroup(title: Grammar.pt(String(localized: "Shared care", comment: "Plant page section title"))) {
+                JungleRow(icon: .careHands, title: Grammar.pt(String(localized: "Looked after by", comment: "Plant page row: who cares for this plant"))) {
                     Menu {
                         Picker(selection: Binding(get: { house.state?.plans[plant.id] ?? .rotate }, set: { house.setPlan(plant.id, $0) })) {
                             Label { Text("Take turns", comment: "Care plan: rotate between members") } icon: { Image(systemName: "arrow.triangle.2.circlepath") }.tag(CarePlan.rotate)
-                            ForEach(house.members) { m in Text(m.id == house.meID ? String(localized: "Me", comment: "Care plan option: only me") : m.firstName).tag(CarePlan.person(m.id)) }
+                            ForEach(house.members) { m in Text(m.id == house.meID ? Grammar.pt(String(localized: "Me", comment: "Care plan option: only me")) : m.firstName).tag(CarePlan.person(m.id)) }
                         } label: { EmptyView() }
                     } label: {
                         HStack(spacing: 4) { Text(planLabel); Image(systemName: "chevron.up.chevron.down").font(.caption2) }
@@ -181,8 +180,8 @@ struct PlantShareSection: View {
         }
     }
     private var planLabel: String {
-        if case .person(let id)? = house.state?.plans[plant.id] { return id == house.meID ? String(localized: "Me", comment: "Care plan option: only me") : house.name(id) }
-        return String(localized: "Take turns", comment: "Care plan: rotate between members")
+        if case .person(let id)? = house.state?.plans[plant.id] { return id == house.meID ? Grammar.pt(String(localized: "Me", comment: "Care plan option: only me")) : house.name(id) }
+        return Grammar.pt(String(localized: "Take turns", comment: "Care plan: rotate between members"))
     }
 }
 
@@ -205,9 +204,17 @@ struct SharedJungleView: View {
             if house.active { hub } else { HouseSetupView(plants: plants) }
         }
         .jungleBackdrop()
-        .navigationTitle(house.active ? (house.state?.name ?? "") : String(localized: "Shared jungle", comment: "Screen title"))
+        .navigationTitle(house.active ? (house.state?.name ?? "") : Grammar.pt(String(localized: "Shared jungle", comment: "Screen title")))
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { ToolbarItem(placement: .confirmationAction) { Button { dismiss() } label: { Text("Done") } } }
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) { Button { dismiss() } label: { Text("Done") } }
+            if house.active {
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink { ManageJungleView() } label: { Image(systemName: "person.2.badge.gearshape") }
+                        .accessibilityLabel(Text("Manage", comment: "Manage shared jungle screen title"))
+                }
+            }
+        }
         .task { await house.sync(ctx) }
         .refreshable { await house.sync(ctx) }
     }
@@ -217,49 +224,41 @@ struct SharedJungleView: View {
             VStack(alignment: .leading, spacing: 24) {
                 header
                 if !house.openRequestsForMe.isEmpty || !house.myOpenRequests.isEmpty || !house.coveringNow.isEmpty {
-                    JungleGroup(title: String(localized: "Hand-offs", comment: "Hub section: cover requests")) {
+                    JungleGroup(title: Grammar.pt(String(localized: "Hand-offs", comment: "Hub section: cover requests"))) {
                         VStack(spacing: 10) {
                             ForEach(house.openRequestsForMe) { RequestRow(request: $0) }
                             ForEach(house.myOpenRequests) { r in
-                                JungleRow(icon: .careHands, title: String(localized: "Waiting for a yes", comment: "Hub row: my open cover request"), subtitle: HouseText.askLine(r, plantName: plantName(r.plantIDs.first))) {
+                                JungleRow(icon: .careHands, title: Grammar.pt(String(localized: "Waiting for a yes", comment: "Hub row: my open cover request")), subtitle: HouseText.askLine(r, plantName: plantName(r.plantIDs.first))) {
                                     Button { house.withdraw(r.id) } label: { Text("Withdraw", comment: "Cancel my cover request") }.font(.subheadline)
                                 }
                             }
                             ForEach(house.coveringNow) { r in
-                                JungleRow(icon: .calendarHeart, title: r.coverID == house.meID ? String(localized: "You're covering for \(house.name(r.fromID))", comment: "Hub row; %@ name") : String(localized: "\(house.name(r.coverID)) is covering for you", comment: "Hub row; %@ name"),
-                                          subtitle: String(localized: "\(plantName(r.plantIDs.first)) until \(r.until.formatted(.dateTime.weekday(.wide).day()))", comment: "Hub row subtitle; %1$@ plant, %2$@ date"))
+                                JungleRow(icon: .calendarHeart, title: r.coverID == house.meID ? Grammar.pt(String(localized: "You're covering for \(house.name(r.fromID))", comment: "Hub row; %@ name")) : Grammar.pt(String(localized: "\(house.name(r.coverID)) is covering for you", comment: "Hub row; %@ name")),
+                                          subtitle: Grammar.pt(String(localized: "\(plantName(r.plantIDs.first)) until \(r.until.formatted(.dateTime.weekday(.wide).day()))", comment: "Hub row subtitle; %1$@ plant, %2$@ date")))
                             }
                         }.padding(.vertical, 12)
                     }
                 }
-                JungleGroup(title: String(localized: "People", comment: "Hub section: members"), footer: String(localized: "Turns go to whoever didn't do it last, keeping things fair across the month.", comment: "Hub footer explaining turn logic")) {
+                JungleGroup(title: Grammar.pt(String(localized: "People", comment: "Hub section: members")), footer: Grammar.pt(String(localized: "Turns go to whoever didn't do it last, keeping things fair across the month.", comment: "Hub footer explaining turn logic"))) {
                     ForEach(house.members) { m in
                         HStack(spacing: 12) {
                             MemberAvatar(member: m, size: 36)
                             VStack(alignment: .leading, spacing: 1) {
-                                Text(m.id == house.meID ? String(localized: "\(m.name) (you)", comment: "Member row name for yourself") : m.name).foregroundStyle(Jungle.text)
+                                Text(m.id == house.meID ? Grammar.pt(String(localized: "\(m.name) (you)", comment: "Member row name for yourself")) : m.name).foregroundStyle(Jungle.text)
                                 Text(memberLine(m)).font(.caption).foregroundStyle(Jungle.subtle)
                             }
                             Spacer()
-                            Text("\(house.load(m.id))", comment: "Care count this month").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.accentText)
-                                .accessibilityLabel(Text("\(house.load(m.id)) care moments this month", comment: "Accessibility: member's care count"))
                         }
                         .padding(.vertical, 10)
-                        .contextMenu {
-                            if house.isOwner && m.id != house.meID {
-                                Button(role: .destructive) { removing = m } label: { Label { Text("Remove from jungle", comment: "Owner removes member") } icon: { Image(systemName: "person.badge.minus") } }
-                            }
-                        }
-                        .swipeActions { }
-                        if m.id != house.members.last?.id { JungleDivider() }
-                    }
-                    if house.isOwner || house.state?.kind != .couple {
                         JungleDivider()
-                        Button { invite = true } label: { JungleRow(icon: .mail, title: String(localized: "Invite someone", comment: "Hub row"), chevron: true) }.buttonStyle(.plain)
                     }
+                    NavigationLink { ManageJungleView() } label: {
+                        JungleRow(icon: .profile, title: Grammar.pt(String(localized: "Manage people", comment: "Hub row: add, remove members, name, leave")),
+                                  subtitle: Grammar.pt(String(localized: "Invite, remove, rename or stop sharing", comment: "Hub row subtitle")), chevron: true)
+                    }.buttonStyle(.plain)
                 }
-                if house.isShared { balance }
-                JungleGroup(title: String(localized: "Who looks after what", comment: "Hub section: plant assignments")) {
+                if house.isShared { HouseStatsView() }
+                JungleGroup(title: Grammar.pt(String(localized: "Who looks after what", comment: "Hub section: plant assignments"))) {
                     ForEach(plants) { p in
                         HStack(spacing: 12) {
                             PlantAvatar(data: p.photo, size: 36)
@@ -269,34 +268,31 @@ struct SharedJungleView: View {
                             Menu {
                                 Picker(selection: Binding(get: { house.state?.plans[p.id] ?? .rotate }, set: { house.setPlan(p.id, $0) })) {
                                     Text("Take turns", comment: "Care plan: rotate between members").tag(CarePlan.rotate)
-                                    ForEach(house.members) { m in Text(m.id == house.meID ? String(localized: "Me", comment: "Care plan option: only me") : m.firstName).tag(CarePlan.person(m.id)) }
+                                    ForEach(house.members) { m in Text(m.id == house.meID ? Grammar.pt(String(localized: "Me", comment: "Care plan option: only me")) : m.firstName).tag(CarePlan.person(m.id)) }
                                 } label: { EmptyView() }
                             } label: { Image(systemName: "ellipsis.circle").foregroundStyle(Jungle.subtle).frame(width: 30, height: 30) }
-                                .accessibilityLabel(Text("Who looks after \(p.name)", comment: "Accessibility: assignment menu; %@ plant"))
+                                .accessibilityLabel(Text(Grammar.pt(String(localized: "Who looks after \(p.name)", comment: "Accessibility: assignment menu; %@ plant"))))
                         }
                         .padding(.vertical, 8)
                         if p.id != plants.last?.id { JungleDivider() }
                     }
                 }
-                JungleGroup(title: String(localized: "Your part", comment: "Hub section: my actions")) {
-                    Button { ask = true } label: { JungleRow(icon: .careHands, title: String(localized: "Ask someone to cover", comment: "Hub row"), subtitle: String(localized: "Busy day? Pass a plant along.", comment: "Hub row subtitle"), chevron: true) }.buttonStyle(.plain)
+                JungleGroup(title: Grammar.pt(String(localized: "Your part", comment: "Hub section: my actions"))) {
+                    Button { ask = true } label: { JungleRow(icon: .careHands, title: Grammar.pt(String(localized: "Ask someone to cover", comment: "Hub row")), subtitle: Grammar.pt(String(localized: "Busy day? Pass a plant along.", comment: "Hub row subtitle")), chevron: true) }.buttonStyle(.plain)
                     JungleDivider()
                     Button { away = true } label: {
-                        JungleRow(icon: .travel, title: house.me?.isAway() == true ? String(localized: "Away until \(house.me!.awayUntil!.formatted(.dateTime.weekday(.wide).day()))", comment: "Hub row: I'm travelling; %@ date") : String(localized: "Going away", comment: "Hub row: travel hand-off"),
-                                  subtitle: String(localized: "Your turns pass on while you travel", comment: "Hub row subtitle"), chevron: true)
+                        JungleRow(icon: .travel, title: house.me?.isAway() == true ? Grammar.pt(String(localized: "Away until \(house.me!.awayUntil!.formatted(.dateTime.weekday(.wide).day()))", comment: "Hub row: I'm travelling; %@ date")) : Grammar.pt(String(localized: "Going away", comment: "Hub row: travel hand-off")),
+                                  subtitle: Grammar.pt(String(localized: "Your turns pass on while you travel", comment: "Hub row subtitle")), chevron: true)
                     }.buttonStyle(.plain)
                 }
-                activity
-                JungleGroup(footer: String(localized: "Only the people you invite can see this jungle. It lives in iCloud, and members see plant names, photos and care, never your location or account.", comment: "Hub privacy footer")) {
-                    if house.isOwner {
-                        JungleRow(icon: .leafTag, title: String(localized: "Name", comment: "Hub row: jungle name")) {
-                            TextField(house.state?.kind.defaultName ?? "", text: $name).multilineTextAlignment(.trailing).foregroundStyle(Jungle.subtle)
-                                .onSubmit { if !name.isEmpty { house.rename(name) } }
-                        }
+                JungleGroup(title: Grammar.pt(String(localized: "Activity", comment: "Hub section: feed"))) {
+                    HouseTimeline(limit: 8)
+                    if (house.state?.activity.count ?? 0) > 8 {
                         JungleDivider()
-                    }
-                    Button(role: .destructive) { confirmLeave = true } label: {
-                        Text(house.isOwner ? String(localized: "Stop sharing", comment: "Owner ends shared jungle") : String(localized: "Leave this jungle", comment: "Member leaves")).foregroundStyle(.red).frame(maxWidth: .infinity, minHeight: 50)
+                        NavigationLink { HouseTimelineScreen() } label: {
+                            Text("See all activity", comment: "Hub: open full timeline").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText)
+                                .frame(maxWidth: .infinity, minHeight: 44)
+                        }.buttonStyle(.plain)
                     }
                 }
             }
@@ -306,12 +302,12 @@ struct SharedJungleView: View {
         .sheet(isPresented: $invite) { InviteView() }
         .sheet(isPresented: $ask) { AskCoverView(preselected: []).presentationDetents([.medium, .large]) }
         .sheet(isPresented: $away) { AwayView().presentationDetents([.medium]) }
-        .confirmationDialog(house.isOwner ? String(localized: "Stop sharing this jungle?", comment: "Dialog title") : String(localized: "Leave this jungle?", comment: "Dialog title"), isPresented: $confirmLeave, titleVisibility: .visible) {
-            Button(role: .destructive) { Task { await house.leave(); dismiss() } } label: { Text(house.isOwner ? String(localized: "Stop sharing", comment: "Owner ends shared jungle") : String(localized: "Leave", comment: "Member leaves button")) }
+        .confirmationDialog(house.isOwner ? Grammar.pt(String(localized: "Stop sharing this jungle?", comment: "Dialog title")) : Grammar.pt(String(localized: "Leave this jungle?", comment: "Dialog title")), isPresented: $confirmLeave, titleVisibility: .visible) {
+            Button(role: .destructive) { Task { await house.leave(); dismiss() } } label: { Text(house.isOwner ? Grammar.pt(String(localized: "Stop sharing", comment: "Owner ends shared jungle")) : Grammar.pt(String(localized: "Leave", comment: "Member leaves button"))) }
         } message: {
-            Text(house.isOwner ? String(localized: "Everyone else loses access. Your plants and history stay with you.", comment: "Stop sharing explanation") : String(localized: "Plants you already have stay on your iPhone. You can be invited again anytime.", comment: "Leave explanation"))
+            Text(house.isOwner ? Grammar.pt(String(localized: "Everyone else loses access. Your plants and history stay with you.", comment: "Stop sharing explanation")) : Grammar.pt(String(localized: "Plants you already have stay on your iPhone. You can be invited again anytime.", comment: "Leave explanation")))
         }
-        .confirmationDialog(String(localized: "Remove \(removing?.firstName ?? "")?", comment: "Remove member dialog; %@ name"), isPresented: Binding(get: { removing != nil }, set: { if !$0 { removing = nil } }), titleVisibility: .visible) {
+        .confirmationDialog(Grammar.pt(String(localized: "Remove \(removing?.firstName ?? "")?", comment: "Remove member dialog; %@ name")), isPresented: Binding(get: { removing != nil }, set: { if !$0 { removing = nil } }), titleVisibility: .visible) {
             Button(role: .destructive) { if let m = removing { house.remove(m.id) } } label: { Text("Remove", comment: "Confirm remove member") }
         } message: { Text("Their turns go back to the rest of you. They keep their own plants.", comment: "Remove member explanation") }
     }
@@ -321,7 +317,7 @@ struct SharedJungleView: View {
             Icon3DView(house.state?.kind.icon ?? .home, size: 52)
             VStack(alignment: .leading, spacing: 4) {
                 Text(house.state?.kind.label ?? "").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
-                Text(house.isShared ? String(localized: "\(house.members.count) people · \(plants.count) plants", comment: "Hub header; %1$lld people, %2$lld plants") : String(localized: "Just you so far. Invite someone to share the care.", comment: "Hub header when alone"))
+                Text(house.isShared ? Grammar.pt(String(localized: "\(house.members.count) people · \(plants.count) plants", comment: "Hub header; %1$lld people, %2$lld plants")) : Grammar.pt(String(localized: "Just you so far. Invite someone to share the care.", comment: "Hub header when alone")))
                     .font(.subheadline).foregroundStyle(Jungle.subtle)
             }
             Spacer(minLength: 0)
@@ -330,60 +326,12 @@ struct SharedJungleView: View {
         .padding(16).jungleCard()
     }
 
-    private var balance: some View {
-        JungleGroup(title: String(localized: "This month", comment: "Hub section: care balance"), footer: String(localized: "A gentle look at how care is shared. Turns adjust on their own.", comment: "Hub footer: balance")) {
-            VStack(alignment: .leading, spacing: 10) {
-                GeometryReader { g in
-                    HStack(spacing: 2) {
-                        ForEach(house.balance, id: \.0.id) { m, share in
-                            Rectangle().fill(m.color.gradient).frame(width: max(4, g.size.width * share))
-                        }
-                    }.clipShape(Capsule())
-                }.frame(height: 12)
-                HStack(spacing: 14) {
-                    ForEach(house.balance, id: \.0.id) { m, share in
-                        HStack(spacing: 5) {
-                            Circle().fill(m.color).frame(width: 8, height: 8)
-                            Text("\(m.id == house.meID ? String(localized: "You", comment: "Shared jungle: the current user, as a subject; capitalized") : m.firstName) \(share.formatted(.percent.precision(.fractionLength(0))))", comment: "Balance legend; %1$@ name, %2$@ percent").font(.caption).foregroundStyle(Jungle.subtle)
-                        }
-                    }
-                }
-            }.padding(.vertical, 14)
-        }
-    }
-
-    private var activity: some View {
-        JungleGroup(title: String(localized: "Activity", comment: "Hub section: feed")) {
-            let items = Array((house.state?.activity ?? []).prefix(25))
-            if items.isEmpty {
-                Text("Care you all log shows up here.", comment: "Empty activity feed").font(.subheadline).foregroundStyle(Jungle.subtle).padding(.vertical, 14)
-            }
-            ForEach(items) { a in
-                HStack(spacing: 10) {
-                    if let m = house.member(a.memberID) { MemberAvatar(member: m, size: 28) }
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(HouseText.feed(a, house)).font(.subheadline).foregroundStyle(Jungle.text)
-                        Text(a.date.formatted(.relative(presentation: .named))).font(.caption2).foregroundStyle(Jungle.subtle)
-                    }
-                    Spacer(minLength: 0)
-                    if a.kind == .care && a.memberID != house.meID && a.date > Date().addingTimeInterval(-3 * 86_400) {
-                        let thanked = house.state?.activity.contains { $0.kind == .thanks && $0.memberID == house.meID && $0.otherID == a.memberID && $0.plantID == a.plantID && $0.date > a.date } == true
-                        Button { house.thank(a) } label: { Image(systemName: thanked ? "heart.fill" : "heart").foregroundStyle(Jungle.terracotta) }
-                            .buttonStyle(.plain).disabled(thanked)
-                            .accessibilityLabel(Text("Say thanks", comment: "Accessibility: thank member button"))
-                    }
-                }
-                .padding(.vertical, 9)
-            }
-        }
-    }
-
     private func plantName(_ id: UUID?) -> String { plants.first { $0.id == id }?.name ?? house.state?.plants.first { $0.id == id }?.name ?? "" }
     private func memberLine(_ m: Member) -> String {
-        if m.isAway() { return String(localized: "Away until \(m.awayUntil!.formatted(.dateTime.weekday(.wide).day()))", comment: "Member status: travelling; %@ date") }
+        if m.isAway() { return Grammar.pt(String(localized: "Away until \(m.awayUntil!.formatted(.dateTime.weekday(.wide).day()))", comment: "Member status: travelling; %@ date")) }
         let mine = plants.filter { house.turn(for: $0.id)?.member.id == m.id && CareEngine.needsYou($0) }.count
-        let role = m.role == .owner ? String(localized: "Owner", comment: "Member role") : String(localized: "Member", comment: "Member role")
-        return mine == 0 ? role : String(localized: "\(role) · \(mine) to do", comment: "Member status: role and count of plants on their turn")
+        let role = m.role == .owner ? Grammar.pt(String(localized: "Owner", comment: "Member role")) : Grammar.pt(String(localized: "Member", comment: "Member role"))
+        return mine == 0 ? role : Grammar.pt(String(localized: "\(role) · \(mine) to do", comment: "Member status: role and count of plants on their turn"))
     }
 }
 
@@ -407,7 +355,7 @@ struct HouseSetupView: View {
                     Text("Invite the people you live with. Everyone gets reminders on their turn, sees who watered last, and can pass a plant along when life gets busy.", comment: "Shared jungle setup body")
                         .font(.body).foregroundStyle(Jungle.subtle)
                 }
-                JungleGroup(title: String(localized: "Who's sharing?", comment: "Setup section: household type")) {
+                JungleGroup(title: Grammar.pt(String(localized: "Who's sharing?", comment: "Setup section: household type"))) {
                     ForEach(HouseKind.allCases) { k in
                         Button { withAnimation(.snappy) { kind = k } } label: {
                             JungleRow(icon: k.icon, title: k.label, subtitle: k.blurb) {
@@ -417,7 +365,7 @@ struct HouseSetupView: View {
                         if k != HouseKind.allCases.last { JungleDivider() }
                     }
                 }
-                JungleGroup(title: String(localized: "Name", comment: "Setup section: jungle name")) {
+                JungleGroup(title: Grammar.pt(String(localized: "Name", comment: "Setup section: jungle name"))) {
                     TextField(kind.defaultName, text: $name).padding(.vertical, 14)
                 }
                 Button {
@@ -449,7 +397,7 @@ struct InviteView: View {
     private var url: URL? { house.share?.url ?? (Household.demo ? URL(string: "https://www.icloud.com/share/0demo-jungle") : nil) }
     private var message: String {
         let me = house.me?.firstName ?? ""
-        return String(localized: "\(me) invited you to care for \(house.state?.name ?? "our plants") together on My Tiny Jungle. We'll take turns, and the app tells us whose turn it is.", comment: "Invite message text; %1$@ inviter name, %2$@ jungle name")
+        return Grammar.pt(String(localized: "\(me) invited you to care for \(house.state?.name ?? "our plants") together on My Tiny Jungle. We'll take turns, and the app tells us whose turn it is.", comment: "Invite message text; %1$@ inviter name, %2$@ jungle name"))
     }
 
     var body: some View {
@@ -473,7 +421,7 @@ struct InviteView: View {
                                     Label { Text("Email", comment: "Invite by email button") } icon: { Image(systemName: "envelope") }.frame(maxWidth: .infinity, minHeight: 44)
                                 }
                                 Button { UIPasteboard.general.url = url; withAnimation { copied = true } } label: {
-                                    Label { Text(copied ? String(localized: "Copied", comment: "Link copied confirmation") : String(localized: "Copy link", comment: "Invite button")) } icon: { Image(systemName: copied ? "checkmark" : "link") }.frame(maxWidth: .infinity, minHeight: 44)
+                                    Label { Text(copied ? Grammar.pt(String(localized: "Copied", comment: "Link copied confirmation")) : Grammar.pt(String(localized: "Copy link", comment: "Invite button"))) } icon: { Image(systemName: copied ? "checkmark" : "link") }.frame(maxWidth: .infinity, minHeight: 44)
                                 }
                             }
                             .buttonStyle(.bordered).tint(Jungle.forest)
@@ -489,11 +437,12 @@ struct InviteView: View {
                         ErtyLoading(text: "", mood: .idle).padding(20)
                     }
                     VStack(alignment: .leading, spacing: 12) {
-                        step(1, String(localized: "They open the link and get the app", comment: "Invite how-it-works step"))
-                        step(2, String(localized: "They sign in and join with one tap", comment: "Invite how-it-works step"))
-                        step(3, String(localized: "Your plants show up on their iPhone, turns included", comment: "Invite how-it-works step"))
+                        step(1, Grammar.pt(String(localized: "They open the link and get the app", comment: "Invite how-it-works step")))
+                        step(2, Grammar.pt(String(localized: "They sign in and join with one tap", comment: "Invite how-it-works step")))
+                        step(3, Grammar.pt(String(localized: "Your plants show up on their iPhone, turns included", comment: "Invite how-it-works step")))
                     }
                     .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+                    NativeAdCard(slot: "invite")
                 }
                 .padding(.horizontal, 16).padding(.bottom, 20)
             }
@@ -508,10 +457,10 @@ struct InviteView: View {
 
     private var blurb: String {
         switch house.state?.kind ?? .couple {
-        case .couple: String(localized: "Your partner gets reminders on their turn and sees when you've watered. No more double drinks.", comment: "Invite blurb, couple")
-        case .family: String(localized: "Everyone at home can help. Turns rotate fairly, kids included.", comment: "Invite blurb, family")
-        case .housemates: String(localized: "Fair turns for the shared plants, and a heads-up when someone's away.", comment: "Invite blurb, housemates")
-        case .friends: String(localized: "Perfect for plant-sitting. They see exactly what each plant needs.", comment: "Invite blurb, friends")
+        case .couple: Grammar.pt(String(localized: "Your partner gets reminders on their turn and sees when you've watered. No more double drinks.", comment: "Invite blurb, couple"))
+        case .family: Grammar.pt(String(localized: "Everyone at home can help. Turns rotate fairly, kids included.", comment: "Invite blurb, family"))
+        case .housemates: Grammar.pt(String(localized: "Fair turns for the shared plants, and a heads-up when someone's away.", comment: "Invite blurb, housemates"))
+        case .friends: Grammar.pt(String(localized: "Perfect for plant-sitting. They see exactly what each plant needs.", comment: "Invite blurb, friends"))
         }
     }
     private func step(_ n: Int, _ t: String) -> some View {
@@ -574,7 +523,7 @@ struct AskCoverView: View {
                         ForEach(house.others) { Text($0.firstName).tag(Optional($0.id)) }
                     } label: { Text("Ask", comment: "Ask cover: recipient picker label") }
                     DatePicker(selection: $until, in: Date()..., displayedComponents: .date) { Text("Until", comment: "Ask cover: end date") }
-                    TextField(String(localized: "Add a note (optional)", comment: "Ask cover note placeholder"), text: $note)
+                    TextField(Grammar.pt(String(localized: "Add a note (optional)", comment: "Ask cover note placeholder")), text: $note)
                 }
                 Section {
                     ForEach(plants) { p in

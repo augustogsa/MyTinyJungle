@@ -33,7 +33,7 @@ struct TodayWeekStrip: View {
                     .background { if isToday { Capsule().fill(Jungle.surface).shadow(color: .black.opacity(0.06), radius: 8, y: 2) } }
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(done ? String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), care done", comment: "VoiceOver for calendar day; %@ date") : due ? String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), care planned", comment: "VoiceOver for calendar day; %@ date") : String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), nothing planned", comment: "VoiceOver for calendar day; %@ date"))
+                .accessibilityLabel(done ? Grammar.pt(String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), care done", comment: "VoiceOver for calendar day; %@ date")) : due ? Grammar.pt(String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), care planned", comment: "VoiceOver for calendar day; %@ date")) : Grammar.pt(String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), nothing planned", comment: "VoiceOver for calendar day; %@ date")))
             }
         }
     }
@@ -50,14 +50,14 @@ struct CareStoryCard: View {
     private var task: String {
         switch request.kind {
         case .water:
-            if let a = CareEngine.waterAmount(for: plant) { return String(localized: "Water · \(a.lo)–\(a.hi) ml", comment: "Care task; %lld min and max millilitres; max 22 chars") }
-            return String(localized: "Water", comment: "Care task title; max 22 chars")
-        case .checkSoil: return String(localized: "Check the soil", comment: "Care task title; max 22 chars")
-        case .feed: return String(localized: "Feed", comment: "Care task: fertilize; max 22 chars")
-        case .checkRoots: return String(localized: "Check the roots", comment: "Care task title; max 22 chars")
-        case .portrait: return String(localized: "Take a photo", comment: "Care task title; max 22 chars")
-        case .safety: return String(localized: "Keep away from pets", comment: "Care task: toxic plant; max 22 chars")
-        case .pauseFeeding: return String(localized: "Rest from feeding", comment: "Care task: no fertilizer in winter; max 22 chars")
+            if let a = CareEngine.waterAmount(for: plant) { return Grammar.pt(String(localized: "Water · \(a.lo)–\(a.hi) ml", comment: "Care task; %lld min and max millilitres; max 22 chars")) }
+            return Grammar.pt(String(localized: "Water", comment: "Care task title; max 22 chars"))
+        case .checkSoil: return Grammar.pt(String(localized: "Check the soil", comment: "Care task title; max 22 chars"))
+        case .feed: return Grammar.pt(String(localized: "Feed", comment: "Care task: fertilize; max 22 chars"))
+        case .checkRoots: return Grammar.pt(String(localized: "Check the roots", comment: "Care task title; max 22 chars"))
+        case .portrait: return Grammar.pt(String(localized: "Take a photo", comment: "Care task title; max 22 chars"))
+        case .safety: return Grammar.pt(String(localized: "Keep away from pets", comment: "Care task: toxic plant; max 22 chars"))
+        case .pauseFeeding: return Grammar.pt(String(localized: "Rest from feeding", comment: "Care task: no fertilizer in winter; max 22 chars"))
         }
     }
 
@@ -67,8 +67,8 @@ struct CareStoryCard: View {
     }
 
     private var lastLine: String {
-        guard let last = plant.lastEvent(.water)?.date else { return String(localized: "Not watered yet", comment: "Care card subtitle") }
-        return String(localized: "Watered \(last.formatted(.relative(presentation: .named)))", comment: "Care card subtitle; %@ relative date like '2 days ago'")
+        guard let last = plant.lastEvent(.water)?.date else { return Grammar.pt(String(localized: "Not watered yet", comment: "Care card subtitle")) }
+        return Grammar.pt(String(localized: "Watered \(last.formatted(.relative(presentation: .named)))", comment: "Care card subtitle; %@ relative date like '2 days ago'"))
     }
 
     var body: some View {
@@ -99,7 +99,7 @@ struct CareStoryCard: View {
                             .background(Jungle.surface.opacity(0.92), in: Circle())
                             .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
                     }
-                    .accessibilityLabel("Open \(plant.name)")
+                    .accessibilityLabel(Grammar.pt(String(localized: "Open \(plant.name)")))
                 }
                 .padding(12)
                 Spacer(minLength: 0)

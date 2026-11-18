@@ -33,7 +33,7 @@ struct PlantChatView: View {
             .onChange(of: items.count) { withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo("bottom", anchor: .bottom) } }
         }
         .safeAreaInset(edge: .bottom) {
-            GlassComposer(placeholder: String(localized: "Message \(plant.name)…", comment: "Chat composer placeholder; arg plant name; max 30 chars"), onChip: { kind in
+            GlassComposer(placeholder: Grammar.pt(String(localized: "Message \(plant.name)…", comment: "Chat composer placeholder; arg plant name; max 30 chars")), onChip: { kind in
                 if kind == .soilCheck { soilAsk = true } else { JungleBrain.quick(kind, plants: [plant], in: ctx) }
             }) { text, photo in
                 JungleBrain.handle(text, photo: photo, plant: plant, plants: plants, in: ctx)
@@ -43,7 +43,7 @@ struct PlantChatView: View {
         .navigationTitle(plant.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            Button { showProfile = true } label: { Image(systemName: "info.circle") }.accessibilityLabel("\(plant.name)'s profile")
+            Button { showProfile = true } label: { Image(systemName: "info.circle") }.accessibilityLabel(Grammar.pt(String(localized: "\(plant.name)'s profile")))
         }
         .sheet(isPresented: $showProfile) { PlantProfileView(plant: plant) }
         .confirmationDialog("How does the soil feel?", isPresented: $soilAsk, titleVisibility: .visible) {
@@ -57,7 +57,7 @@ struct PlantChatView: View {
         HStack(spacing: 12) {
             PlantAvatar(data: plant.photo, size: 56)
             VStack(alignment: .leading, spacing: 3) {
-                Text(plant.species?.commonName ?? String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars")).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
+                Text(plant.species?.commonName ?? Grammar.pt(String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars"))).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                 Text(statusLine).font(.caption).foregroundStyle(Jungle.subtle)
             }
             Spacer()
@@ -70,8 +70,8 @@ struct PlantChatView: View {
 
     private var statusLine: String {
         var parts: [String] = []
-        if let w = plant.lastEvent(.water) { parts.append(String(localized: "Watered \(CareEngine.relative(w.date))", comment: "Chat status; arg relative date like 2 days ago; max 26 chars")) }
-        parts.append(String(localized: "dries in ~\(Int(CareEngine.expectedDryDays(for: plant).rounded())) d", comment: "Chat status: soil dries in about N days (d = days abbrev); lowercase; max 18 chars"))
+        if let w = plant.lastEvent(.water) { parts.append(Grammar.pt(String(localized: "Watered \(CareEngine.relative(w.date))", comment: "Chat status; arg relative date like 2 days ago; max 26 chars"))) }
+        parts.append(Grammar.pt(String(localized: "dries in ~\(Int(CareEngine.expectedDryDays(for: plant).rounded())) d", comment: "Chat status: soil dries in about N days (d = days abbrev); lowercase; max 18 chars")))
         if !plant.location.isEmpty { parts.append(plant.location) }
         return parts.joined(separator: " · ")
     }

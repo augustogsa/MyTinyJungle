@@ -136,22 +136,22 @@ extension Species {
         let w = winterFactor ?? 1.35, s = summerFactor ?? 0.85
         let sLo = max(1, Int((dryMin * s).rounded())), sHi = max(2, Int((dryMax * s).rounded()))
         if w >= 2.5 {
-            return String(localized: "In summer about every \(sLo)–\(sHi) days, in winter barely at all, a sip once a month. Always feel the soil first.", comment: "Seasonal watering advice; summer day range")
+            return Grammar.pt(String(localized: "In summer about every \(sLo)–\(sHi) days, in winter barely at all, a sip once a month. Always feel the soil first.", comment: "Seasonal watering advice; summer day range"))
         }
         let wLo = Int((dryMin * w).rounded()), wHi = Int((dryMax * w).rounded())
-        return String(localized: "In summer about every \(sLo)–\(sHi) days, in winter about every \(wLo)–\(wHi) days. Always feel the soil first.", comment: "Seasonal watering advice; summer and winter day ranges")
+        return Grammar.pt(String(localized: "In summer about every \(sLo)–\(sHi) days, in winter about every \(wLo)–\(wHi) days. Always feel the soil first.", comment: "Seasonal watering advice; summer and winter day ranges"))
     }
 
     /// Pot-size hint: small pots dry faster, big ones slower.
     func potHint(diameter d: Double?) -> String {
-        guard let d else { return String(localized: "Small pots (under 12 cm) dry about 15% faster, big ones (over 30 cm) about 20% slower.", comment: "Pot size hint when pot size unknown") }
-        if d < 12 { return String(localized: "A \(Int(d)) cm pot dries fast, so check it more often.", comment: "Pot size hint; pot diameter in cm") }
-        if d > 30 { return String(localized: "A \(Int(d)) cm pot holds water a long time; check deeper before watering.", comment: "Pot size hint; pot diameter in cm") }
-        return String(localized: "A \(Int(d)) cm pot is a comfortable middle size.", comment: "Pot size hint; pot diameter in cm")
+        guard let d else { return Grammar.pt(String(localized: "Small pots (under 12 cm) dry about 15% faster, big ones (over 30 cm) about 20% slower.", comment: "Pot size hint when pot size unknown")) }
+        if d < 12 { return Grammar.pt(String(localized: "A \(Int(d)) cm pot dries fast, so check it more often.", comment: "Pot size hint; pot diameter in cm")) }
+        if d > 30 { return Grammar.pt(String(localized: "A \(Int(d)) cm pot holds water a long time; check deeper before watering.", comment: "Pot size hint; pot diameter in cm")) }
+        return Grammar.pt(String(localized: "A \(Int(d)) cm pot is a comfortable middle size.", comment: "Pot size hint; pot diameter in cm"))
     }
 
     var feedPlan: String {
-        guard let f = fertilizer else { return String(localized: "A gentle balanced feed in the growing season.", comment: "Default fertilizer plan") }
+        guard let f = fertilizer else { return Grammar.pt(String(localized: "A gentle balanced feed in the growing season.", comment: "Default fertilizer plan")) }
         if feed == "none" { return f.cadence + ". " + f.note }
         return "\(f.name) (\(f.npk)). \(f.cadence), \(f.dilution.lowercased()). \(f.rest)."
     }
@@ -164,27 +164,27 @@ extension Species {
 
     var difficultyLabel: String {
         switch min(3, max(1, difficulty ?? 2)) {
-        case 1: String(localized: "Easy-going", comment: "Plant care level")
-        case 2: String(localized: "Needs a little attention", comment: "Plant care level")
-        default: String(localized: "For experienced plant parents", comment: "Plant care level")
+        case 1: Grammar.pt(String(localized: "Easy-going", comment: "Plant care level"))
+        case 2: Grammar.pt(String(localized: "Needs a little attention", comment: "Plant care level"))
+        default: Grammar.pt(String(localized: "For experienced plant parents", comment: "Plant care level"))
         }
     }
     var goodFor: String? {
         let c: StaticString = "What a plant is good for, lowercase list item"
-        let names = ["beginner": String(localized: "beginners", comment: c), "lowLight": String(localized: "lower light", comment: c),
-                     "petSafe": String(localized: "homes with pets", comment: c), "bathroom": String(localized: "bathrooms", comment: c),
-                     "drought": String(localized: "forgetful waterers", comment: c), "edible": String(localized: "the kitchen", comment: c),
-                     "trailing": String(localized: "shelves and hanging pots", comment: c), "outdoor": String(localized: "balconies and gardens", comment: c)]
+        let names = ["beginner": Grammar.pt(String(localized: "beginners", comment: c)), "lowLight": Grammar.pt(String(localized: "lower light", comment: c)),
+                     "petSafe": Grammar.pt(String(localized: "homes with pets", comment: c)), "bathroom": Grammar.pt(String(localized: "bathrooms", comment: c)),
+                     "drought": Grammar.pt(String(localized: "forgetful waterers", comment: c)), "edible": Grammar.pt(String(localized: "the kitchen", comment: c)),
+                     "trailing": Grammar.pt(String(localized: "shelves and hanging pots", comment: c)), "outdoor": Grammar.pt(String(localized: "balconies and gardens", comment: c))]
         let l = (tags ?? []).compactMap { names[$0] }
         return l.isEmpty ? nil : l.formatted(.list(type: .and)).sentenceCased
     }
 
     var toxicityLine: String {
         switch (toxicCats, toxicDogs) {
-        case (true, true): String(localized: "Toxic to cats and dogs if chewed (ASPCA)", comment: "Pet toxicity line for a plant")
-        case (true, false): String(localized: "Toxic to cats if chewed (ASPCA)", comment: "Pet toxicity line for a plant")
-        case (false, true): String(localized: "Toxic to dogs if chewed (ASPCA)", comment: "Pet toxicity line for a plant")
-        default: String(localized: "Non-toxic to cats and dogs (ASPCA)", comment: "Pet toxicity line for a plant")
+        case (true, true): Grammar.pt(String(localized: "Toxic to cats and dogs if chewed (ASPCA)", comment: "Pet toxicity line for a plant"))
+        case (true, false): Grammar.pt(String(localized: "Toxic to cats if chewed (ASPCA)", comment: "Pet toxicity line for a plant"))
+        case (false, true): Grammar.pt(String(localized: "Toxic to dogs if chewed (ASPCA)", comment: "Pet toxicity line for a plant"))
+        default: Grammar.pt(String(localized: "Non-toxic to cats and dogs (ASPCA)", comment: "Pet toxicity line for a plant"))
         }
     }
 }
@@ -194,27 +194,27 @@ enum PlantKnowledgeRows {
     struct Row { let symbol, title, value: String }
     static func rows(for s: Species, plant: Plant?) -> [Row] {
         var r: [Row] = []
-        r.append(.init(symbol: "gauge.with.dots.needle.33percent", title: String(localized: "Care level", comment: "Plant passport row title; short"), value: s.difficultyLabel))
-        if let b = s.bloom { r.append(.init(symbol: "camera.macro", title: String(localized: "Flowers", comment: "Plant passport row title; short"), value: b)) }
-        if let g = s.goodFor { r.append(.init(symbol: "hand.thumbsup", title: String(localized: "Good for", comment: "Plant passport row title; short"), value: g)) }
-        if let fit = Climate.shared.fit(s) { r.append(.init(symbol: "globe.europe.africa", title: String(localized: "In your climate", comment: "Plant passport row title; short"), value: fit)) }
+        r.append(.init(symbol: "gauge.with.dots.needle.33percent", title: Grammar.pt(String(localized: "Care level", comment: "Plant passport row title; short")), value: s.difficultyLabel))
+        if let b = s.bloom { r.append(.init(symbol: "camera.macro", title: Grammar.pt(String(localized: "Flowers", comment: "Plant passport row title; short")), value: b)) }
+        if let g = s.goodFor { r.append(.init(symbol: "hand.thumbsup", title: Grammar.pt(String(localized: "Good for", comment: "Plant passport row title; short")), value: g)) }
+        if let fit = Climate.shared.fit(s) { r.append(.init(symbol: "globe.europe.africa", title: Grammar.pt(String(localized: "In your climate", comment: "Plant passport row title; short")), value: fit)) }
         if let g = s.group.flatMap({ Knowledge.shared.groups[$0] }) {
-            r.append(.init(symbol: "face.smiling", title: String(localized: "A happy one looks like", comment: "Plant passport row title; short"), value: g.happy))
-            r.append(.init(symbol: "exclamationmark.triangle", title: String(localized: "Common mistakes", comment: "Plant passport row title; short"), value: g.mistakes.joined(separator: ". ") + "."))
-            r.append(.init(symbol: "star", title: String(localized: "Quick wins", comment: "Plant passport row title; short"), value: g.wins.joined(separator: ". ") + "."))
+            r.append(.init(symbol: "face.smiling", title: Grammar.pt(String(localized: "A happy one looks like", comment: "Plant passport row title; short")), value: g.happy))
+            r.append(.init(symbol: "exclamationmark.triangle", title: Grammar.pt(String(localized: "Common mistakes", comment: "Plant passport row title; short")), value: g.mistakes.joined(separator: ". ") + "."))
+            r.append(.init(symbol: "star", title: Grammar.pt(String(localized: "Quick wins", comment: "Plant passport row title; short")), value: g.wins.joined(separator: ". ") + "."))
         }
-        if let f = Knowledge.shared.family(named: s.family) { r.append(.init(symbol: "tree", title: String(localized: "Family", comment: "Plant passport row title; short"), value: "\(f.name), \(f.common). \(f.traits)")) }
-        if let a = s.about { r.append(.init(symbol: "book", title: String(localized: "About", comment: "Plant passport row title; short"), value: a)) }
-        if let o = s.origin { r.append(.init(symbol: "globe.americas", title: String(localized: "Home in the wild", comment: "Plant passport row title; short"), value: o + (s.habit.map { " · \($0)" } ?? ""))) }
-        r.append(.init(symbol: "drop", title: String(localized: "Water by season", comment: "Plant passport row title; short"), value: s.seasonalWater + " " + s.potHint(diameter: plant?.potDiameterCm)))
-        r.append(.init(symbol: "square.stack.3d.down.right", title: String(localized: "Ideal soil", comment: "Plant passport row title; short"), value: s.soilPlan))
-        r.append(.init(symbol: "leaf.arrow.triangle.circlepath", title: String(localized: "Food", comment: "Plant passport row title; short"), value: s.feedPlan))
-        if let p = s.propagation, !p.isEmpty { r.append(.init(symbol: "scissors", title: String(localized: "More plants", comment: "Plant passport row title; short"), value: p.joined(separator: ". ") + ".")) }
-        if let n = s.repotNotes { r.append(.init(symbol: "arrow.up.bin", title: String(localized: "Repotting", comment: "Plant passport row title; short"), value: n)) }
+        if let f = Knowledge.shared.family(named: s.family) { r.append(.init(symbol: "tree", title: Grammar.pt(String(localized: "Family", comment: "Plant passport row title; short")), value: "\(f.name), \(f.common). \(f.traits)")) }
+        if let a = s.about { r.append(.init(symbol: "book", title: Grammar.pt(String(localized: "About", comment: "Plant passport row title; short")), value: a)) }
+        if let o = s.origin { r.append(.init(symbol: "globe.americas", title: Grammar.pt(String(localized: "Home in the wild", comment: "Plant passport row title; short")), value: o + (s.habit.map { " · \($0)" } ?? ""))) }
+        r.append(.init(symbol: "drop", title: Grammar.pt(String(localized: "Water by season", comment: "Plant passport row title; short")), value: s.seasonalWater + " " + s.potHint(diameter: plant?.potDiameterCm)))
+        r.append(.init(symbol: "square.stack.3d.down.right", title: Grammar.pt(String(localized: "Ideal soil", comment: "Plant passport row title; short")), value: s.soilPlan))
+        r.append(.init(symbol: "leaf.arrow.triangle.circlepath", title: Grammar.pt(String(localized: "Food", comment: "Plant passport row title; short")), value: s.feedPlan))
+        if let p = s.propagation, !p.isEmpty { r.append(.init(symbol: "scissors", title: Grammar.pt(String(localized: "More plants", comment: "Plant passport row title; short")), value: p.joined(separator: ". ") + ".")) }
+        if let n = s.repotNotes { r.append(.init(symbol: "arrow.up.bin", title: Grammar.pt(String(localized: "Repotting", comment: "Plant passport row title; short")), value: n)) }
         let pests = s.pestList
-        if !pests.isEmpty { r.append(.init(symbol: "ant", title: String(localized: "Watch for", comment: "Plant passport row title; short"), value: pests.map(\.name).formatted(.list(type: .and)))) }
+        if !pests.isEmpty { r.append(.init(symbol: "ant", title: Grammar.pt(String(localized: "Watch for", comment: "Plant passport row title; short")), value: pests.map(\.name).formatted(.list(type: .and)))) }
         if let probs = s.problems, !probs.isEmpty {
-            r.append(.init(symbol: "stethoscope", title: String(localized: "If something's off", comment: "Plant passport row title; short"), value: probs.map { "\($0.sign): \($0.fix)" }.joined(separator: "\n")))
+            r.append(.init(symbol: "stethoscope", title: Grammar.pt(String(localized: "If something's off", comment: "Plant passport row title; short")), value: probs.map { "\($0.sign): \($0.fix)" }.joined(separator: "\n")))
         }
         return r
     }
@@ -264,9 +264,9 @@ extension Knowledge {
 extension Knowledge.Crop {
     var card: String {
         let temp = Climate.temp(Double(minTemp))
-        var t = String(localized: "\(name) in a pot: \(sun). Pot at least \(potLitres) L and \(depthCm) cm deep, \(spacingCm) cm apart.\n• When: \(start)\n• Sprouts in \(germDays) days, harvest in about \(harvestDays) days.\n• Keep above \(temp).\n• \(tip)", comment: "Crop growing card; keep the line breaks and bullets")
-        if !companions.isEmpty { t += String(localized: "\n• Good neighbours: \(companions.formatted(.list(type: .and))).", comment: "Crop card line: companion plants list; keep the leading line break and bullet") }
-        if !avoid.isEmpty { t += String(localized: " Keep away from: \(avoid.formatted(.list(type: .and))).", comment: "Crop card: plants to keep away; keep the leading space") }
+        var t = Grammar.pt(String(localized: "\(name) in a pot: \(sun). Pot at least \(potLitres) L and \(depthCm) cm deep, \(spacingCm) cm apart.\n• When: \(start)\n• Sprouts in \(germDays) days, harvest in about \(harvestDays) days.\n• Keep above \(temp).\n• \(tip)", comment: "Crop growing card; keep the line breaks and bullets"))
+        if !companions.isEmpty { t += Grammar.pt(String(localized: "\n• Good neighbours: \(companions.formatted(.list(type: .and))).", comment: "Crop card line: companion plants list; keep the leading line break and bullet")) }
+        if !avoid.isEmpty { t += Grammar.pt(String(localized: " Keep away from: \(avoid.formatted(.list(type: .and))).", comment: "Crop card: plants to keep away; keep the leading space")) }
         return t
     }
 }

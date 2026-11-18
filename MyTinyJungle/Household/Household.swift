@@ -36,7 +36,7 @@ final class Household {
     var members: [Member] { state?.activeMembers ?? [] }
     var others: [Member] { members.filter { $0.id != meID } }
     func member(_ id: String?) -> Member? { state?.member(id) }
-    func name(_ id: String?) -> String { id == meID ? String(localized: "You", comment: "Shared jungle: the current user, as a subject; capitalized") : member(id)?.firstName ?? String(localized: "Someone", comment: "Shared jungle: unknown member") }
+    func name(_ id: String?) -> String { id == meID ? Grammar.pt(String(localized: "You", comment: "Shared jungle: the current user, as a subject; capitalized")) : member(id)?.firstName ?? Grammar.pt(String(localized: "Someone", comment: "Shared jungle: unknown member")) }
 
     struct Turn: Equatable {
         enum Why { case assigned, rotation, covering, away }
@@ -107,7 +107,7 @@ final class Household {
     // MARK: changing
 
     func create(kind: HouseKind, name: String, plants: [Plant]) async {
-        let myName = JungleSettings.shared.ownerName.isEmpty ? String(localized: "Me", comment: "Shared jungle: fallback member name for yourself") : JungleSettings.shared.ownerName
+        let myName = JungleSettings.shared.ownerName.isEmpty ? Grammar.pt(String(localized: "Me", comment: "Shared jungle: fallback member name for yourself")) : JungleSettings.shared.ownerName
         if let id = await HouseholdCloud.myID() { adoptMeID(id) }
         var s = HouseState(name: name.isEmpty ? kind.defaultName : name, kind: kind)
         s.members = [Member(id: meID, name: myName, role: .owner, colorIndex: 0)]
@@ -122,7 +122,7 @@ final class Household {
     func prepareShare() async {
         guard let s = state, !Self.demo else { return }
         guard await HouseholdCloud.available() else {
-            lastError = String(localized: "Sign in to iCloud in the Settings app to invite people. Your shared jungle is ready the moment you do.", comment: "Shared jungle: invite needs iCloud")
+            lastError = Grammar.pt(String(localized: "Sign in to iCloud in the Settings app to invite people. Your shared jungle is ready the moment you do.", comment: "Shared jungle: invite needs iCloud"))
             return
         }
         do {
@@ -131,7 +131,7 @@ final class Household {
             setLocation(.init(zoneOwner: CKCurrentUserDefaultName, shared: false))
             lastError = nil
         } catch {
-            lastError = String(localized: "iCloud is taking a moment. Try the invite again in a little while.", comment: "Shared jungle: share creation failed")
+            lastError = Grammar.pt(String(localized: "iCloud is taking a moment. Try the invite again in a little while.", comment: "Shared jungle: share creation failed"))
         }
     }
 
@@ -143,7 +143,7 @@ final class Household {
             await sync()
             guard var s = state else { return }
             if s.member(meID) == nil || s.member(meID)?.removed == true {
-                let myName = JungleSettings.shared.ownerName.isEmpty ? (metadata.share.currentUserParticipant?.userIdentity.nameComponents.map { PersonNameComponentsFormatter.localizedString(from: $0, style: .default) } ?? String(localized: "Me", comment: "Shared jungle: fallback member name for yourself")) : JungleSettings.shared.ownerName
+                let myName = JungleSettings.shared.ownerName.isEmpty ? (metadata.share.currentUserParticipant?.userIdentity.nameComponents.map { PersonNameComponentsFormatter.localizedString(from: $0, style: .default) } ?? Grammar.pt(String(localized: "Me", comment: "Shared jungle: fallback member name for yourself"))) : JungleSettings.shared.ownerName
                 s.members.removeAll { $0.id == meID }
                 s.members.append(Member(id: meID, name: myName, colorIndex: s.members.count))
                 s.activity.insert(Activity(kind: .joined, memberID: meID), at: 0)
@@ -153,7 +153,7 @@ final class Household {
             UserDefaults.standard.set(2, forKey: "selectedTab")
             UserDefaults.standard.set(true, forKey: "house.openHub")
         } catch {
-            lastError = String(localized: "That invite didn't open. Ask for a fresh link.", comment: "Shared jungle: accepting invite failed")
+            lastError = Grammar.pt(String(localized: "That invite didn't open. Ask for a fresh link.", comment: "Shared jungle: accepting invite failed"))
         }
     }
 
@@ -325,7 +325,7 @@ final class Household {
     static func registerCategory() async {
         let c = UNUserNotificationCenter.current()
         var cats = await c.notificationCategories()
-        let yes = UNNotificationAction(identifier: acceptAction, title: String(localized: "I've got it", comment: "Notification action: accept covering plant care; max 20 chars"), options: [], icon: .init(systemImageName: "hand.thumbsup.fill"))
+        let yes = UNNotificationAction(identifier: acceptAction, title: Grammar.pt(String(localized: "I've got it", comment: "Notification action: accept covering plant care; max 20 chars")), options: [], icon: .init(systemImageName: "hand.thumbsup.fill"))
         cats.insert(UNNotificationCategory(identifier: coverCategory, actions: [yes], intentIdentifiers: []))
         c.setNotificationCategories(cats)
     }
@@ -347,13 +347,13 @@ final class Household {
             case .care: body = HouseText.careLine(who, a.care ?? .water, a.plantName ?? "")
             case .askCover where a.otherID == nil || a.otherID == meID:
                 if let r = new.requests.first(where: { $0.fromID == a.memberID && $0.state == .open }) {
-                    title = String(localized: "\(who) could use a hand", comment: "Notification title: member asks for help; %@ first name")
+                    title = Grammar.pt(String(localized: "\(who) could use a hand", comment: "Notification title: member asks for help; %@ first name"))
                     body = HouseText.askLine(r, plantName: a.plantName ?? "")
                     cat = Self.coverCategory; info["request"] = r.id
                 }
-            case .coverYes where a.otherID == meID: body = String(localized: "\(who) has got \(a.plantName ?? "it"). Enjoy the break.", comment: "Notification: member accepted covering; %1$@ name, %2$@ plant name")
-            case .thanks where a.otherID == meID: body = String(localized: "\(who) says thank you for caring for \(a.plantName ?? "the jungle").", comment: "Notification: thanks from member; %1$@ name, %2$@ plant")
-            case .joined: body = String(localized: "\(who) joined. Turns are now shared fairly.", comment: "Notification: new member joined the shared jungle; %@ name")
+            case .coverYes where a.otherID == meID: body = Grammar.pt(String(localized: "\(who) has got \(a.plantName ?? "it"). Enjoy the break.", comment: "Notification: member accepted covering; %1$@ name, %2$@ plant name"))
+            case .thanks where a.otherID == meID: body = Grammar.pt(String(localized: "\(who) says thank you for caring for \(a.plantName ?? "the jungle").", comment: "Notification: thanks from member; %1$@ name, %2$@ plant"))
+            case .joined: body = Grammar.pt(String(localized: "\(who) joined. Turns are now shared fairly.", comment: "Notification: new member joined the shared jungle; %@ name"))
             default: break
             }
             guard let body else { continue }
@@ -372,7 +372,7 @@ final class Household {
         guard Self.demo, !ProcessInfo.processInfo.arguments.contains("-householdSetup") else { return }
         let plants = ((try? ctx.fetch(FetchDescriptor<Plant>(predicate: #Predicate { !$0.isArchived }))) ?? []).sorted { $0.name < $1.name }
         let me = JungleSettings.shared.ownerName.isEmpty ? "Sam" : JungleSettings.shared.ownerName
-        var s = HouseState(name: String(localized: "Our jungle", comment: "Default shared jungle name for a couple; max 24 chars"), kind: .couple)
+        var s = HouseState(name: Grammar.pt(String(localized: "Our jungle", comment: "Default shared jungle name for a couple; max 24 chars")), kind: .couple)
         let now = Date()
         s.members = [Member(id: meID, name: me, role: .owner, colorIndex: 0, joinedAt: now.addingTimeInterval(-90 * 86_400)),
                      Member(id: "ana", name: "Ana", colorIndex: 1, joinedAt: now.addingTimeInterval(-60 * 86_400)),
@@ -388,7 +388,7 @@ final class Household {
             acts.append(Activity(kind: .care, memberID: "ana", date: now.addingTimeInterval(-40 * 60), plantID: first.id, plantName: first.name, careRaw: CareKind.water.rawValue, eventID: UUID()))
             if plants.count > 1 { s.plans[plants[1].id] = .person("ana") }
             if plants.count > 2 {
-                s.requests = [CoverRequest(fromID: "leo", toID: nil, plantIDs: [plants[2].id], until: now.addingTimeInterval(3 * 86_400), note: String(localized: "Away this weekend", comment: "Demo cover request note"))]
+                s.requests = [CoverRequest(fromID: "leo", toID: nil, plantIDs: [plants[2].id], until: now.addingTimeInterval(3 * 86_400), note: Grammar.pt(String(localized: "Away this weekend", comment: "Demo cover request note")))]
                 acts.append(Activity(kind: .askCover, memberID: "leo", date: now.addingTimeInterval(-2 * 3600), plantID: plants[2].id, plantName: plants[2].name))
             }
         }
@@ -405,41 +405,41 @@ final class Household {
 enum HouseText {
     static func careLine(_ who: String, _ k: CareKind, _ plant: String, recent: Bool = true) -> String {
         switch k {
-        case .water where !recent: String(localized: "\(who) watered \(plant).", comment: "Shared jungle feed, older entry; %1$@ member name, %2$@ plant name")
-        case .water: String(localized: "\(who) just watered \(plant).", comment: "Shared jungle feed/notification; %1$@ member name, %2$@ plant name")
-        case .feed: String(localized: "\(who) fed \(plant).", comment: "Shared jungle feed; %1$@ member, %2$@ plant")
-        case .mist: String(localized: "\(who) misted \(plant).", comment: "Shared jungle feed; %1$@ member, %2$@ plant")
-        case .repot: String(localized: "\(who) repotted \(plant).", comment: "Shared jungle feed; %1$@ member, %2$@ plant")
-        default: String(localized: "\(who) cared for \(plant).", comment: "Shared jungle feed, generic care; %1$@ member, %2$@ plant")
+        case .water where !recent: Grammar.pt(String(localized: "\(who) watered \(plant).", comment: "Shared jungle feed, older entry; %1$@ member name, %2$@ plant name"))
+        case .water: Grammar.pt(String(localized: "\(who) just watered \(plant).", comment: "Shared jungle feed/notification; %1$@ member name, %2$@ plant name"))
+        case .feed: Grammar.pt(String(localized: "\(who) fed \(plant).", comment: "Shared jungle feed; %1$@ member, %2$@ plant"))
+        case .mist: Grammar.pt(String(localized: "\(who) misted \(plant).", comment: "Shared jungle feed; %1$@ member, %2$@ plant"))
+        case .repot: Grammar.pt(String(localized: "\(who) repotted \(plant).", comment: "Shared jungle feed; %1$@ member, %2$@ plant"))
+        default: Grammar.pt(String(localized: "\(who) cared for \(plant).", comment: "Shared jungle feed, generic care; %1$@ member, %2$@ plant"))
         }
     }
     static func askLine(_ r: CoverRequest, plantName: String) -> String {
         let day = r.until.formatted(.dateTime.weekday(.wide))
         return r.plantIDs.count > 1
-            ? String(localized: "Could you look after \(r.plantIDs.count) plants until \(day)?", comment: "Cover request text; %1$lld plant count, %2$@ weekday")
-            : String(localized: "Could you look after \(plantName) until \(day)?", comment: "Cover request text; %1$@ plant name, %2$@ weekday")
+            ? Grammar.pt(String(localized: "Could you look after \(r.plantIDs.count) plants until \(day)?", comment: "Cover request text; %1$lld plant count, %2$@ weekday"))
+            : Grammar.pt(String(localized: "Could you look after \(plantName) until \(day)?", comment: "Cover request text; %1$@ plant name, %2$@ weekday"))
     }
     static func turnLabel(_ t: Household.Turn) -> String {
         if t.isMe {
-            return t.why == .covering ? String(localized: "You're covering", comment: "Turn pill; short, max 18 chars") : String(localized: "Your turn", comment: "Turn pill: it's your turn to care; max 18 chars")
+            return t.why == .covering ? Grammar.pt(String(localized: "You're covering", comment: "Turn pill; short, max 18 chars")) : Grammar.pt(String(localized: "Your turn", comment: "Turn pill: it's your turn to care; max 18 chars"))
         }
         let n = t.member.firstName
-        return t.why == .covering ? String(localized: "\(n) is covering", comment: "Turn pill; %@ first name") : String(localized: "\(n)'s turn", comment: "Turn pill: it's this person's turn; %@ first name")
+        return t.why == .covering ? Grammar.pt(String(localized: "\(n) is covering", comment: "Turn pill; %@ first name")) : Grammar.pt(String(localized: "\(n)'s turn", comment: "Turn pill: it's this person's turn; %@ first name"))
     }
     static func feed(_ a: Activity, _ h: Household) -> String {
         let who = h.name(a.memberID), other = h.name(a.otherID)
         let plant = a.plantName ?? ""
         switch a.kind {
         case .care: return careLine(who, a.care ?? .water, plant, recent: a.date > Date().addingTimeInterval(-6 * 3600))
-        case .joined: return String(localized: "\(who) joined the jungle.", comment: "Feed: member joined; %@ name")
-        case .left: return String(localized: "\(who) left the jungle.", comment: "Feed: member left; %@ name")
-        case .removed: return String(localized: "\(other) is no longer in the jungle.", comment: "Feed: member removed by owner; %@ name. Neutral, no blame")
-        case .askCover: return a.otherID == nil ? String(localized: "\(who) asked for a hand with \(plant).", comment: "Feed: cover request to everyone; %1$@ name, %2$@ plant") : String(localized: "\(who) asked \(other) to take \(plant).", comment: "Feed: cover request to one member; %1$@ name, %2$@ other name, %3$@ plant")
-        case .coverYes: return String(localized: "\(who) is covering \(plant) for \(other).", comment: "Feed: member accepted cover; %1$@ name, %2$@ plant, %3$@ other name")
-        case .away: return a.otherID == nil ? String(localized: "\(who) is away. Turns are shared meanwhile.", comment: "Feed: member travelling; %@ name") : String(localized: "\(who) is away. \(other) is covering.", comment: "Feed: member travelling, other covers; %1$@ name, %2$@ cover name")
-        case .back: return String(localized: "\(who) is back home.", comment: "Feed: member back from trip; %@ name")
-        case .thanks: return String(localized: "\(who) thanked \(other) for \(plant).", comment: "Feed: thanks; %1$@ name, %2$@ other, %3$@ plant")
-        case .created: return String(localized: "\(who) started the shared jungle.", comment: "Feed: jungle created; %@ name")
+        case .joined: return Grammar.pt(String(localized: "\(who) joined the jungle.", comment: "Feed: member joined; %@ name"))
+        case .left: return Grammar.pt(String(localized: "\(who) left the jungle.", comment: "Feed: member left; %@ name"))
+        case .removed: return Grammar.pt(String(localized: "\(other) is no longer in the jungle.", comment: "Feed: member removed by owner; %@ name. Neutral, no blame"))
+        case .askCover: return a.otherID == nil ? Grammar.pt(String(localized: "\(who) asked for a hand with \(plant).", comment: "Feed: cover request to everyone; %1$@ name, %2$@ plant")) : Grammar.pt(String(localized: "\(who) asked \(other) to take \(plant).", comment: "Feed: cover request to one member; %1$@ name, %2$@ other name, %3$@ plant"))
+        case .coverYes: return Grammar.pt(String(localized: "\(who) is covering \(plant) for \(other).", comment: "Feed: member accepted cover; %1$@ name, %2$@ plant, %3$@ other name"))
+        case .away: return a.otherID == nil ? Grammar.pt(String(localized: "\(who) is away. Turns are shared meanwhile.", comment: "Feed: member travelling; %@ name")) : Grammar.pt(String(localized: "\(who) is away. \(other) is covering.", comment: "Feed: member travelling, other covers; %1$@ name, %2$@ cover name"))
+        case .back: return Grammar.pt(String(localized: "\(who) is back home.", comment: "Feed: member back from trip; %@ name"))
+        case .thanks: return Grammar.pt(String(localized: "\(who) thanked \(other) for \(plant).", comment: "Feed: thanks; %1$@ name, %2$@ other, %3$@ plant"))
+        case .created: return Grammar.pt(String(localized: "\(who) started the shared jungle.", comment: "Feed: jungle created; %@ name"))
         }
     }
 }

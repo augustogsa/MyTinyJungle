@@ -12,10 +12,10 @@ struct PlantsView: View {
         case all = "All", needs = "Needs you", indoors = "Indoors", outdoors = "Outdoors"
         var label: String {
             switch self {
-            case .all: String(localized: "All", comment: "Plants filter chip; max 10 chars")
-            case .needs: String(localized: "Needs you", comment: "Plants filter chip; max 12 chars")
-            case .indoors: String(localized: "Indoors", comment: "Plants filter chip; max 12 chars")
-            case .outdoors: String(localized: "Outdoors", comment: "Plants filter chip; max 12 chars")
+            case .all: Grammar.pt(String(localized: "All", comment: "Plants filter chip; max 10 chars"))
+            case .needs: Grammar.pt(String(localized: "Needs you", comment: "Plants filter chip; max 12 chars"))
+            case .indoors: Grammar.pt(String(localized: "Indoors", comment: "Plants filter chip; max 12 chars"))
+            case .outdoors: Grammar.pt(String(localized: "Outdoors", comment: "Plants filter chip; max 12 chars"))
             }
         }
     }
@@ -40,16 +40,16 @@ struct PlantsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    TabHeader(title: String(localized: "My plants", comment: "Tab header title; max 16 chars"), subtitle: headerLine, dot: plants.isEmpty ? nil : (needCount == 0 ? Jungle.leaf : Jungle.terracotta)) {
+                    TabHeader(title: Grammar.pt(String(localized: "My plants", comment: "Tab header title; max 16 chars")), subtitle: headerLine, dot: plants.isEmpty ? nil : (needCount == 0 ? Jungle.leaf : Jungle.terracotta)) {
                         HStack(spacing: 8) {
                             if !plants.isEmpty {
-                                HeaderButton(symbol: "magnifyingglass", label: String(localized: "Search plants", comment: "Accessibility label for search button")) {
+                                HeaderButton(symbol: "magnifyingglass", label: Grammar.pt(String(localized: "Search plants", comment: "Accessibility label for search button"))) {
                                     withAnimation(.snappy) { searching.toggle() }
                                     searchFocused = searching
                                     if !searching { query = "" }
                                 }
                             }
-                            HeaderButton(symbol: "plus", label: String(localized: "Add plant", comment: "Accessibility label for add button")) { addTapped() }
+                            HeaderButton(symbol: "plus", label: Grammar.pt(String(localized: "Add plant", comment: "Accessibility label for add button"))) { addTapped() }
                         }
                     }
                     if searching {
@@ -120,10 +120,10 @@ struct PlantsView: View {
 
     private var needCount: Int { plants.filter { CareEngine.needsYou($0) }.count }
     private var headerLine: String {
-        if plants.isEmpty { return String(localized: "Your jungle starts here", comment: "Header subtitle with no plants") }
+        if plants.isEmpty { return Grammar.pt(String(localized: "Your jungle starts here", comment: "Header subtitle with no plants")) }
         return needCount == 0
-            ? String(localized: "\(plants.count) plants · everyone's happy", comment: "Header subtitle; plural plants")
-            : String(localized: "\(plants.count) plants · \(needCount) need you", comment: "Header subtitle; two plurals: plants count, count needing care")
+            ? Grammar.pt(String(localized: "\(plants.count) plants · everyone's happy", comment: "Header subtitle; plural plants"))
+            : Grammar.pt(String(localized: "\(plants.count) plants · \(needCount) need you", comment: "Header subtitle; two plurals: plants count, count needing care"))
     }
     private func addTapped() { if Store.shared.canAddPlant(current: plants.count) { adding = true } else { paywall = true } }
 
@@ -132,12 +132,12 @@ struct PlantsView: View {
         let moods = plants.map { CareEngine.mood(for: $0) }
         let need = plants.filter { CareEngine.mood(for: $0) == .needsYou }
         let happy = moods.filter { $0 != .needsYou }.count
-        let title = plants.isEmpty ? String(localized: "Your jungle starts here", comment: "Header subtitle with no plants")
-            : need.isEmpty ? String(localized: "All \(plants.count) plants are happy", comment: "Summary title; plural")
-            : need.count == 1 ? String(localized: "\(need[0].name) needs you", comment: "Summary title; arg plant name") : String(localized: "\(need.count) plants need you", comment: "Summary title; plural")
-        let detail = plants.isEmpty ? String(localized: "Bring home your first plant and we'll help it thrive.", comment: "Summary detail with no plants")
-            : need.isEmpty ? String(localized: "\(happy) of \(plants.count) are doing well. Nothing to do right now.", comment: "Summary detail; X of Y plants")
-            : String(localized: "\(happy) of \(plants.count) are doing well. Tap \"Needs you\" to see what to do.", comment: "Summary detail; X of Y plants; Needs you is the filter chip")
+        let title = plants.isEmpty ? Grammar.pt(String(localized: "Your jungle starts here", comment: "Header subtitle with no plants"))
+            : need.isEmpty ? Grammar.pt(String(localized: "All \(plants.count) plants are happy", comment: "Summary title; plural"))
+            : need.count == 1 ? Grammar.pt(String(localized: "\(need[0].name) needs you", comment: "Summary title; arg plant name")) : Grammar.pt(String(localized: "\(need.count) plants need you", comment: "Summary title; plural"))
+        let detail = plants.isEmpty ? Grammar.pt(String(localized: "Bring home your first plant and we'll help it thrive.", comment: "Summary detail with no plants"))
+            : need.isEmpty ? Grammar.pt(String(localized: "\(happy) of \(plants.count) are doing well. Nothing to do right now.", comment: "Summary detail; X of Y plants"))
+            : Grammar.pt(String(localized: "\(happy) of \(plants.count) are doing well. Tap \"Needs you\" to see what to do.", comment: "Summary detail; X of Y plants; Needs you is the filter chip"))
         return HStack(spacing: 14) {
             Icon3DView(need.isEmpty ? .sprout : .wilted, size: 56)
             VStack(alignment: .leading, spacing: 4) {
@@ -166,7 +166,7 @@ struct PlantTile: View {
                         if let d = plant.photo, let img = UIImage(data: d) {
                             Image(uiImage: img).resizable().scaledToFill()
                         } else {
-                            ZStack { Jungle.mint; Icon3DView(plant.species.map(PlantsIcon.for) ?? .pottedPlant, size: 72) }
+                            ZStack { Jungle.mint; Icon3DView(plant.species.map { PlantsIcon.for($0) } ?? .pottedPlant, size: 72) }
                         }
                     }
                     .clipped()
@@ -174,7 +174,7 @@ struct PlantTile: View {
             }
             VStack(alignment: .leading, spacing: 3) {
                 Text(plant.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)
-                Text(plant.species?.commonName ?? String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars")).font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
+                Text(plant.species?.commonName ?? Grammar.pt(String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars"))).font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
                 HStack(spacing: 4) {
                     Image(systemName: "drop").font(.caption2).foregroundStyle(Jungle.leaf)
                     Text(nextWater).font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
@@ -189,10 +189,10 @@ struct PlantTile: View {
     }
 
     private var nextWater: String {
-        guard let last = plant.lastEvent(.water)?.date else { return String(localized: "Check soil", comment: "Tile next-water line; max 18 chars") }
+        guard let last = plant.lastEvent(.water)?.date else { return Grammar.pt(String(localized: "Check soil", comment: "Tile next-water line; max 18 chars")) }
         let due = last.addingTimeInterval(CareEngine.expectedDryDays(for: plant) * 86_400)
         let d = Int((due.timeIntervalSinceNow / 86_400).rounded())
-        return d <= 0 ? String(localized: "Check soil today", comment: "Tile next-water line; max 18 chars") : String(localized: "Check in \(d) days", comment: "Tile next-water line; plural; max 18 chars")
+        return d <= 0 ? Grammar.pt(String(localized: "Check soil today", comment: "Tile next-water line; max 18 chars")) : Grammar.pt(String(localized: "Check in \(d) days", comment: "Tile next-water line; plural; max 18 chars"))
     }
 }
 

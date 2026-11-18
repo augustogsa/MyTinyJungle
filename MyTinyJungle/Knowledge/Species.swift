@@ -54,30 +54,30 @@ struct Species: Codable, Identifiable, Hashable {
 
     var waterRule: String {
         switch waterStyle {
-        case .dry: String(localized: "Water only when the soil is completely dry.", comment: "Watering rule for a plant species; one sentence")
-        case .half: String(localized: "Water when the top half of the soil is dry.", comment: "Watering rule for a plant species; one sentence")
-        case .top: String(localized: "Water when the top 2–3 cm are dry.", comment: "Watering rule for a plant species; one sentence")
-        case .moist: String(localized: "Keep the soil lightly moist, never soggy.", comment: "Watering rule for a plant species; one sentence")
+        case .dry: Grammar.pt(String(localized: "Water only when the soil is completely dry.", comment: "Watering rule for a plant species; one sentence"))
+        case .half: Grammar.pt(String(localized: "Water when the top half of the soil is dry.", comment: "Watering rule for a plant species; one sentence"))
+        case .top: Grammar.pt(String(localized: "Water when the top 2–3 cm are dry.", comment: "Watering rule for a plant species; one sentence"))
+        case .moist: Grammar.pt(String(localized: "Keep the soil lightly moist, never soggy.", comment: "Watering rule for a plant species; one sentence"))
         }
     }
     var lightRule: String {
         switch light {
-        case .low: String(localized: "Tolerates low light. Happier in medium light.", comment: "Light need for a plant species; one sentence")
-        case .medium: String(localized: "Medium, indirect light.", comment: "Light need for a plant species; one sentence")
-        case .bright: String(localized: "Bright, indirect light. A little gentle morning sun is fine.", comment: "Light need for a plant species; one sentence")
-        case .direct: String(localized: "Lots of light, including direct sun.", comment: "Light need for a plant species; one sentence")
+        case .low: Grammar.pt(String(localized: "Tolerates low light. Happier in medium light.", comment: "Light need for a plant species; one sentence"))
+        case .medium: Grammar.pt(String(localized: "Medium, indirect light.", comment: "Light need for a plant species; one sentence"))
+        case .bright: Grammar.pt(String(localized: "Bright, indirect light. A little gentle morning sun is fine.", comment: "Light need for a plant species; one sentence"))
+        case .direct: Grammar.pt(String(localized: "Lots of light, including direct sun.", comment: "Light need for a plant species; one sentence"))
         }
     }
     var mixLabel: String {
         if let soil = Knowledge.shared.soil(mix) { return soil.short }
         return switch mix {
-        case "aroid": String(localized: "chunky aroid mix (bark, perlite, coco coir)", comment: "Soil mix name, lowercase, used inside a sentence")
-        case "cactus": String(localized: "gritty cactus & succulent mix", comment: "Soil mix name, lowercase, used inside a sentence")
-        case "orchid": String(localized: "orchid bark mix", comment: "Soil mix name, lowercase, used inside a sentence")
-        case "acid": String(localized: "acidic (ericaceous) mix", comment: "Soil mix name, lowercase, used inside a sentence")
-        case "citrus": String(localized: "citrus mix", comment: "Soil mix name, lowercase, used inside a sentence")
-        case "vegetable": String(localized: "vegetable / herb potting mix", comment: "Soil mix name, lowercase, used inside a sentence")
-        default: String(localized: "good universal potting mix with extra perlite", comment: "Soil mix name, lowercase, used inside a sentence")
+        case "aroid": Grammar.pt(String(localized: "chunky aroid mix (bark, perlite, coco coir)", comment: "Soil mix name, lowercase, used inside a sentence"))
+        case "cactus": Grammar.pt(String(localized: "gritty cactus & succulent mix", comment: "Soil mix name, lowercase, used inside a sentence"))
+        case "orchid": Grammar.pt(String(localized: "orchid bark mix", comment: "Soil mix name, lowercase, used inside a sentence"))
+        case "acid": Grammar.pt(String(localized: "acidic (ericaceous) mix", comment: "Soil mix name, lowercase, used inside a sentence"))
+        case "citrus": Grammar.pt(String(localized: "citrus mix", comment: "Soil mix name, lowercase, used inside a sentence"))
+        case "vegetable": Grammar.pt(String(localized: "vegetable / herb potting mix", comment: "Soil mix name, lowercase, used inside a sentence"))
+        default: Grammar.pt(String(localized: "good universal potting mix with extra perlite", comment: "Soil mix name, lowercase, used inside a sentence"))
         }
     }
 }

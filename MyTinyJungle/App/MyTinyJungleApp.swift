@@ -83,6 +83,7 @@ struct RootView: View {
     }
     private var tabs: some View {
         tabView
+            .background(GrammarSync())
             .modifier(PlanLinkSheet())
             .task {
                 guard ProcessInfo.processInfo.arguments.contains("-notifyDemo") else { return }
@@ -129,9 +130,28 @@ struct RootView: View {
             Tab(value: 3) { ScanView() } label: { tabLabel("Scan", "scan", 3) }
             Tab(value: 4) { MeView() } label: { tabLabel("Me", "me", 4) }
         }
+        // Plant names in any message open that plant (Today pushes inside its own stack).
+        .plantLinks()
     }
     /// 3D tab icon: full colour when selected, faded grey when not.
     private func tabLabel(_ title: LocalizedStringKey, _ key: String, _ value: Int) -> some View {
         Label { Text(title) } icon: { Image("TabIcons/\(key)\(tab == value ? "On" : "Off")").renderingMode(.original) }
+    }
+}
+
+
+/// Keeps `Grammar.names` in sync with the plants and housemates, so Portuguese sentences get "da Dourada" / "do Sargento".
+private struct GrammarSync: View {
+    @Query private var plants: [Plant]
+    var body: some View {
+        Color.clear
+            .onAppear(perform: sync)
+            .onChange(of: plants.map { "\($0.name)|\($0.nameGenderRaw)" }) { sync() }
+    }
+    private func sync() {
+        var m: [String: Grammar.Gender] = [:]
+        for member in Household.shared.members { m[member.firstName] = Grammar.infer(member.firstName) }
+        for p in plants where !p.name.isEmpty { m[p.name] = p.nameGender }
+        Grammar.names = m
     }
 }

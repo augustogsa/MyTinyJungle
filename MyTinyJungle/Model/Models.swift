@@ -6,22 +6,22 @@ enum Personality: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .cheerful: String(localized: "Cheerful", comment: "Plant personality name")
-        case .calm: String(localized: "Calm", comment: "Plant personality name")
-        case .dramatic: String(localized: "Dramatic", comment: "Plant personality name")
-        case .curious: String(localized: "Curious", comment: "Plant personality name")
-        case .independent: String(localized: "Independent", comment: "Plant personality name")
-        case .chatty: String(localized: "Chatty", comment: "Plant personality name")
+        case .cheerful: Grammar.pt(String(localized: "Cheerful", comment: "Plant personality name"))
+        case .calm: Grammar.pt(String(localized: "Calm", comment: "Plant personality name"))
+        case .dramatic: Grammar.pt(String(localized: "Dramatic", comment: "Plant personality name"))
+        case .curious: Grammar.pt(String(localized: "Curious", comment: "Plant personality name"))
+        case .independent: Grammar.pt(String(localized: "Independent", comment: "Plant personality name"))
+        case .chatty: Grammar.pt(String(localized: "Chatty", comment: "Plant personality name"))
         }
     }
     var blurb: String {
         switch self {
-        case .cheerful: String(localized: "Positive and playful", comment: "Plant personality description; short")
-        case .calm: String(localized: "Gentle and reassuring", comment: "Plant personality description; short")
-        case .dramatic: String(localized: "Expressive, a little theatrical", comment: "Plant personality description; short")
-        case .curious: String(localized: "Asks you questions", comment: "Plant personality description; short")
-        case .independent: String(localized: "Speaks only when needed", comment: "Plant personality description; short")
-        case .chatty: String(localized: "Loves to talk", comment: "Plant personality description; short")
+        case .cheerful: Grammar.pt(String(localized: "Positive and playful", comment: "Plant personality description; short"))
+        case .calm: Grammar.pt(String(localized: "Gentle and reassuring", comment: "Plant personality description; short"))
+        case .dramatic: Grammar.pt(String(localized: "Expressive, a little theatrical", comment: "Plant personality description; short"))
+        case .curious: Grammar.pt(String(localized: "Asks you questions", comment: "Plant personality description; short"))
+        case .independent: Grammar.pt(String(localized: "Speaks only when needed", comment: "Plant personality description; short"))
+        case .chatty: Grammar.pt(String(localized: "Loves to talk", comment: "Plant personality description; short"))
         }
     }
 }
@@ -30,23 +30,23 @@ enum CareKind: String, Codable, CaseIterable {
     case water, feed, mist, repot, prune, move, rotate, clean, soilCheck, photo, note, measure, newLeaf, flower, treat, health, propagate
     var label: String {
         switch self {
-        case .water: String(localized: "Watered", comment: "Care log entry label, past tense; short")
-        case .feed: String(localized: "Fed", comment: "Care log entry label, past tense; short")
-        case .mist: String(localized: "Misted", comment: "Care log entry label, past tense; short")
-        case .repot: String(localized: "Repotted", comment: "Care log entry label, past tense; short")
-        case .prune: String(localized: "Pruned", comment: "Care log entry label, past tense; short")
-        case .move: String(localized: "Moved", comment: "Care log entry label, past tense; short")
-        case .rotate: String(localized: "Rotated", comment: "Care log entry label, past tense; short")
-        case .clean: String(localized: "Cleaned leaves", comment: "Care log entry label, past tense; short")
-        case .soilCheck: String(localized: "Soil check", comment: "Care log entry label, past tense; short")
-        case .photo: String(localized: "Photo", comment: "Care log entry label, past tense; short")
-        case .note: String(localized: "Note", comment: "Care log entry label, past tense; short")
-        case .measure: String(localized: "Measured", comment: "Care log entry label, past tense; short")
-        case .newLeaf: String(localized: "New leaf", comment: "Care log entry label, past tense; short")
-        case .flower: String(localized: "Flowering", comment: "Care log entry label, past tense; short")
-        case .treat: String(localized: "Treated", comment: "Care log entry label, past tense; short")
-        case .health: String(localized: "Health check", comment: "Care log entry label, past tense; short")
-        case .propagate: String(localized: "Propagation", comment: "Care log entry label, past tense; short")
+        case .water: Grammar.pt(String(localized: "Watered", comment: "Care log entry label, past tense; short"))
+        case .feed: Grammar.pt(String(localized: "Fed", comment: "Care log entry label, past tense; short"))
+        case .mist: Grammar.pt(String(localized: "Misted", comment: "Care log entry label, past tense; short"))
+        case .repot: Grammar.pt(String(localized: "Repotted", comment: "Care log entry label, past tense; short"))
+        case .prune: Grammar.pt(String(localized: "Pruned", comment: "Care log entry label, past tense; short"))
+        case .move: Grammar.pt(String(localized: "Moved", comment: "Care log entry label, past tense; short"))
+        case .rotate: Grammar.pt(String(localized: "Rotated", comment: "Care log entry label, past tense; short"))
+        case .clean: Grammar.pt(String(localized: "Cleaned leaves", comment: "Care log entry label, past tense; short"))
+        case .soilCheck: Grammar.pt(String(localized: "Soil check", comment: "Care log entry label, past tense; short"))
+        case .photo: Grammar.pt(String(localized: "Photo", comment: "Care log entry label, past tense; short"))
+        case .note: Grammar.pt(String(localized: "Note", comment: "Care log entry label, past tense; short"))
+        case .measure: Grammar.pt(String(localized: "Measured", comment: "Care log entry label, past tense; short"))
+        case .newLeaf: Grammar.pt(String(localized: "New leaf", comment: "Care log entry label, past tense; short"))
+        case .flower: Grammar.pt(String(localized: "Flowering", comment: "Care log entry label, past tense; short"))
+        case .treat: Grammar.pt(String(localized: "Treated", comment: "Care log entry label, past tense; short"))
+        case .health: Grammar.pt(String(localized: "Health check", comment: "Care log entry label, past tense; short"))
+        case .propagate: Grammar.pt(String(localized: "Propagation", comment: "Care log entry label, past tense; short"))
         }
     }
     var symbol: String {
@@ -76,9 +76,9 @@ enum SoilState: String, Codable, CaseIterable {
     case dry, slightlyMoist, wet
     var label: String {
         switch self {
-        case .dry: String(localized: "Dry", comment: "Soil moisture state")
-        case .slightlyMoist: String(localized: "Slightly moist", comment: "Soil moisture state")
-        case .wet: String(localized: "Wet", comment: "Soil moisture state")
+        case .dry: Grammar.pt(String(localized: "Dry", comment: "Soil moisture state"))
+        case .slightlyMoist: Grammar.pt(String(localized: "Slightly moist", comment: "Soil moisture state"))
+        case .wet: Grammar.pt(String(localized: "Wet", comment: "Soil moisture state"))
         }
     }
 }
@@ -88,15 +88,15 @@ enum PotMaterial: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .plastic: String(localized: "Plastic", comment: "Pot material")
-        case .terracotta: String(localized: "Terracotta", comment: "Pot material")
-        case .ceramic: String(localized: "Ceramic", comment: "Pot material")
-        case .glass: String(localized: "Glass", comment: "Pot material")
-        case .concrete: String(localized: "Concrete", comment: "Pot material")
-        case .fabric: String(localized: "Fabric", comment: "Pot material")
-        case .metal: String(localized: "Metal", comment: "Pot material")
-        case .wood: String(localized: "Wood", comment: "Pot material")
-        case .other: String(localized: "Other", comment: "Pot material")
+        case .plastic: Grammar.pt(String(localized: "Plastic", comment: "Pot material"))
+        case .terracotta: Grammar.pt(String(localized: "Terracotta", comment: "Pot material"))
+        case .ceramic: Grammar.pt(String(localized: "Ceramic", comment: "Pot material"))
+        case .glass: Grammar.pt(String(localized: "Glass", comment: "Pot material"))
+        case .concrete: Grammar.pt(String(localized: "Concrete", comment: "Pot material"))
+        case .fabric: Grammar.pt(String(localized: "Fabric", comment: "Pot material"))
+        case .metal: Grammar.pt(String(localized: "Metal", comment: "Pot material"))
+        case .wood: Grammar.pt(String(localized: "Wood", comment: "Pot material"))
+        case .other: Grammar.pt(String(localized: "Other", comment: "Pot material"))
         }
     }
     /// How much faster the substrate dries than in plastic.
@@ -114,6 +114,12 @@ enum PotMaterial: String, Codable, CaseIterable, Identifiable {
 final class Plant {
     var id: UUID = UUID()
     var name: String = ""
+    /// Grammatical gender of the name for languages that need it (pt: "da Dourada" / "do Sargento"). Empty = inferred.
+    var nameGenderRaw: String = ""
+    var nameGender: Grammar.Gender {
+        get { Grammar.Gender(rawValue: nameGenderRaw) ?? Grammar.infer(name) }
+        set { nameGenderRaw = newValue.rawValue }
+    }
     var speciesID: String?
     var personalityRaw: String = Personality.cheerful.rawValue
     var location: String = ""
@@ -216,7 +222,7 @@ final class ChatMessage {
 }
 
 /// A logged-care card: which events were recorded, so the card can undo, re-date and add photos.
-struct LogCard: Codable, Equatable {
+nonisolated struct LogCard: Codable, Equatable {
     struct Entry: Codable, Equatable {
         var plantID: UUID
         var eventID: UUID
@@ -296,11 +302,11 @@ final class Propagation {
     enum Stage: Int, CaseIterable { case cutting, rooting, potting, growing, done
         var label: String {
             switch self {
-            case .cutting: String(localized: "Cutting taken", comment: "Propagation stage; short")
-            case .rooting: String(localized: "Roots forming", comment: "Propagation stage; short")
-            case .potting: String(localized: "Ready to pot", comment: "Propagation stage; short")
-            case .growing: String(localized: "Growing", comment: "Propagation stage; short")
-            case .done: String(localized: "New plant", comment: "Propagation stage; short")
+            case .cutting: Grammar.pt(String(localized: "Cutting taken", comment: "Propagation stage; short"))
+            case .rooting: Grammar.pt(String(localized: "Roots forming", comment: "Propagation stage; short"))
+            case .potting: Grammar.pt(String(localized: "Ready to pot", comment: "Propagation stage; short"))
+            case .growing: Grammar.pt(String(localized: "Growing", comment: "Propagation stage; short"))
+            case .done: Grammar.pt(String(localized: "New plant", comment: "Propagation stage; short"))
             }
         }
     }

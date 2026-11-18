@@ -13,10 +13,10 @@ struct PlantHomeView: View {
         case overview = "Overview", story = "Timeline", care = "Care", about = "About"
         var label: String {
             switch self {
-            case .overview: String(localized: "Overview", comment: "Plant page segment; max 10 chars")
-            case .story: String(localized: "Timeline", comment: "Plant page segment; max 10 chars")
-            case .care: String(localized: "Care", comment: "Plant page segment; max 10 chars")
-            case .about: String(localized: "About", comment: "Plant page segment; max 10 chars")
+            case .overview: Grammar.pt(String(localized: "Overview", comment: "Plant page segment; max 10 chars"))
+            case .story: Grammar.pt(String(localized: "Timeline", comment: "Plant page segment; max 10 chars"))
+            case .care: Grammar.pt(String(localized: "Care", comment: "Plant page segment; max 10 chars"))
+            case .about: Grammar.pt(String(localized: "About", comment: "Plant page segment; max 10 chars"))
             }
         }
     }
@@ -56,7 +56,7 @@ struct PlantHomeView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 NavigationLink { PlantChatView(plant: plant) } label: { Image(systemName: "bubble.left.and.bubble.right") }
-                    .accessibilityLabel("Talk to \(plant.name)")
+                    .accessibilityLabel(Grammar.pt(String(localized: "Talk to \(plant.name)")))
                 Menu {
                     Button("Edit details", systemImage: "pencil") { sheet = .edit }
                     Button("Best place", systemImage: "house") { sheet = .place }
@@ -105,7 +105,7 @@ struct PlantHomeView: View {
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Color.white : Jungle.text)
-                    Text(plant.species?.scientific ?? String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars")).font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
+                    Text(plant.species?.scientific ?? Grammar.pt(String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars"))).font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
                     StatusBadge(status: CareEngine.status(for: plant)).padding(.top, 8)
                 }
                 Spacer(minLength: 0)
@@ -116,12 +116,12 @@ struct PlantHomeView: View {
 
     private var actions: some View {
         HStack(spacing: 10) {
-            ActionTile(title: String(localized: "Water", comment: "Quick action tile; verb; max 10 chars"), symbol: "drop.fill", tint: Jungle.forest) { sheet = .water }
-            ActionTile(title: String(localized: "Feed", comment: "Quick action tile: fertilize; verb; max 10 chars"), symbol: "leaf.arrow.triangle.circlepath", tint: Jungle.leaf) {
+            ActionTile(title: Grammar.pt(String(localized: "Water", comment: "Quick action tile; verb; max 10 chars")), symbol: "drop.fill", tint: Jungle.forest) { sheet = .water }
+            ActionTile(title: Grammar.pt(String(localized: "Feed", comment: "Quick action tile: fertilize; verb; max 10 chars")), symbol: "leaf.arrow.triangle.circlepath", tint: Jungle.leaf) {
                 withAnimation { JungleBrain.quick(.feed, plants: [plant], in: ctx, announce: true) }
             }
-            ActionTile(title: String(localized: "Repot", comment: "Quick action tile; verb; max 10 chars"), symbol: "arrow.up.bin", tint: Jungle.terracotta) { sheet = .repot }
-            ActionTile(title: String(localized: "Check", comment: "Quick action tile: health check; max 10 chars"), symbol: "stethoscope", tint: Jungle.leaf) { sheet = .health }
+            ActionTile(title: Grammar.pt(String(localized: "Repot", comment: "Quick action tile; verb; max 10 chars")), symbol: "arrow.up.bin", tint: Jungle.terracotta) { sheet = .repot }
+            ActionTile(title: Grammar.pt(String(localized: "Check", comment: "Quick action tile: health check; max 10 chars")), symbol: "stethoscope", tint: Jungle.leaf) { sheet = .health }
         }
         .padding(.horizontal, 16).padding(.top, 16)
     }
@@ -130,7 +130,7 @@ struct PlantHomeView: View {
         VStack(alignment: .leading, spacing: 14) {
             PlantForecastSection(plant: plant)
             VStack(alignment: .leading, spacing: 10) {
-                SectionTitle(String(localized: "How-to for \(plant.name)", comment: "Section title: guides for this plant; arg plant name"), action: String(localized: "All", comment: "Section action: see all; max 8 chars")) { showGuides = true }
+                SectionTitle(Grammar.pt(String(localized: "How-to for \(plant.name)", comment: "Section title: guides for this plant; arg plant name")), action: Grammar.pt(String(localized: "All", comment: "Section action: see all; max 8 chars"))) { showGuides = true }
                 let picks = Array(GuideLibrary.suggested(for: plant).prefix(3))
                 VStack(spacing: 0) {
                     ForEach(picks) { g in
@@ -147,8 +147,8 @@ struct PlantHomeView: View {
                     HStack(spacing: 10) {
                         PlantAvatar(data: plant.photo, size: 36)
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("\(plant.name) says").font(.caption.weight(.semibold)).foregroundStyle(Jungle.warmText)
-                            Text(mood == .needsYou ? String(localized: "Needs you today", comment: "Plant mood headline; max 22 chars") : mood == .fine ? String(localized: "Has a small request", comment: "Plant mood headline; max 22 chars") : String(localized: "Feeling good", comment: "Plant mood headline; max 22 chars"))
+                            Text(Grammar.pt(String(localized: "\(plant.name) says"))).font(.caption.weight(.semibold)).foregroundStyle(moodInk)
+                            Text(mood == .needsYou ? Grammar.pt(String(localized: "Needs you today", comment: "Plant mood headline; max 22 chars")) : mood == .fine ? Grammar.pt(String(localized: "Has a small request", comment: "Plant mood headline; max 22 chars")) : Grammar.pt(String(localized: "Feeling good", comment: "Plant mood headline; max 22 chars")))
                                 .font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         }
                         Spacer(minLength: 0)
@@ -166,49 +166,56 @@ struct PlantHomeView: View {
                     }
                 }
                 .padding(14)
-                .background(Jungle.mist, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                .background(moodTint.opacity(0.35), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(moodTint.opacity(0.8), lineWidth: 1))
+                .animation(.smooth, value: mood)
             }
             .buttonStyle(.plain)
 
             VStack(spacing: 0) {
-                InfoRow(symbol: "sparkles", title: String(localized: "Personality", comment: "Info row title"), value: String(localized: "\(plant.personality.label) · \(plant.personality.blurb)", comment: "Personality name · short description"))
-                Divider().padding(.leading, 44)
+                InfoRow(symbol: "sparkles", title: Grammar.pt(String(localized: "Personality", comment: "Info row title")), value: Grammar.pt(String(localized: "\(plant.personality.label) · \(plant.personality.blurb)", comment: "Personality name · short description")))
+                Divider().padding(.leading, 62)
                 Button { sheet = .place } label: {
-                    InfoRow(symbol: "house", title: String(localized: "Location", comment: "Info row title"), value: locationLine, chevron: true, icon: plant.location.isEmpty ? .homeLeaf : .room(plant.location))
+                    InfoRow(symbol: "house", title: Grammar.pt(String(localized: "Location", comment: "Info row title")), value: locationLine, chevron: true, icon: plant.location.isEmpty ? .homeLeaf : .room(plant.location))
                 }.buttonStyle(.plain)
-                Divider().padding(.leading, 44)
+                Divider().padding(.leading, 62)
                 Button { sheet = .edit } label: {
-                    InfoRow(symbol: "cylinder", title: String(localized: "Pot", comment: "Info row title"), value: potLine, chevron: true)
+                    InfoRow(symbol: "cylinder", title: Grammar.pt(String(localized: "Pot", comment: "Info row title")), value: potLine, chevron: true)
                 }.buttonStyle(.plain)
-                Divider().padding(.leading, 44)
-                InfoRow(symbol: "square.stack.3d.down.right", title: String(localized: "Soil", comment: "Info row title"), value: plant.substrate.isEmpty ? (plant.species.map { String(localized: "Ideal: \($0.mixLabel)", comment: "Ideal soil mix; arg mix description") } ?? String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars")) : plant.substrate)
-                Divider().padding(.leading, 44)
-                InfoRow(symbol: "calendar", title: String(localized: "Next care", comment: "Info row title"), value: nextCare)
+                Divider().padding(.leading, 62)
+                InfoRow(symbol: "square.stack.3d.down.right", title: Grammar.pt(String(localized: "Soil", comment: "Info row title")), value: plant.substrate.isEmpty ? (plant.species.map { Grammar.pt(String(localized: "Ideal: \($0.mixLabel)", comment: "Ideal soil mix; arg mix description")) } ?? Grammar.pt(String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars"))) : plant.substrate)
+                Divider().padding(.leading, 62)
+                InfoRow(symbol: "calendar", title: Grammar.pt(String(localized: "Next care", comment: "Info row title")), value: nextCare)
             }
             .jungleCard()
             NativeAdCard(slot: "plant-\(plant.id)")
         }
     }
 
+    /// The card wears the plant's mood: green when happy, sun when it has a small ask, warm peach when it needs you.
+    private var moodTint: Color { mood == .needsYou ? Jungle.peach : mood == .fine ? Jungle.sun : Jungle.sage }
+    private var moodInk: Color { mood == .needsYou || mood == .fine ? Jungle.warmText : Jungle.accentText }
+
     /// The facts behind the voice line, so the message never stands alone.
     private var statusFacts: [(Icon3D, String)] {
         var out: [(Icon3D, String)] = []
         if let w = plant.lastEvent(.water)?.date {
-            let d = Int(CareEngine.days(from: w)); out.append((.waterDrops, d == 0 ? String(localized: "Watered today", comment: "Status fact; max 18 chars") : String(localized: "Watered \(d)d ago", comment: "Status fact; N days ago, short; plural; max 18 chars")))
-        } else { out.append((.waterDrops, String(localized: "No water logged", comment: "Status fact; max 18 chars"))) }
+            let d = Int(CareEngine.days(from: w)); out.append((.waterDrops, d == 0 ? Grammar.pt(String(localized: "Watered today", comment: "Status fact; max 18 chars")) : Grammar.pt(String(localized: "Watered \(d)d ago", comment: "Status fact; N days ago, short; plural; max 18 chars"))))
+        } else { out.append((.waterDrops, Grammar.pt(String(localized: "No water logged", comment: "Status fact; max 18 chars")))) }
         out.append((.soilTest, nextCare))
         return out
     }
 
     private var currentLine: String {
         if let r = CareEngine.requests(for: plant).first(where: { $0.priority <= 2 }) { return PlantVoice.say(r, plant: plant) }
-        if let leaf = plant.lastEvent(.newLeaf), CareEngine.days(from: leaf.date) < 14 { return String(localized: "I'm growing really well! I just pushed a new leaf.", comment: "Plant voice, first person, proud and happy") }
+        if let leaf = plant.lastEvent(.newLeaf), CareEngine.days(from: leaf.date) < 14 { return Grammar.pt(String(localized: "I'm growing really well! I just pushed a new leaf.", comment: "Plant voice, first person, proud and happy")) }
         return PlantVoice.happy(plant)
     }
     private var locationLine: String {
-        guard !plant.location.isEmpty else { return String(localized: "Tap to find my best spot", comment: "Location row value, plant voice; max 30 chars") }
+        guard !plant.location.isEmpty else { return Grammar.pt(String(localized: "Tap to find my best spot", comment: "Location row value, plant voice; max 30 chars")) }
         if let sp = spaces.first(where: { $0.name.folded == plant.location.folded }) {
-            return String(localized: "\(plant.location.capitalized) · \(PlacementEngine.lightLabel(sp.light))", comment: "Room name · light level")
+            return Grammar.pt(String(localized: "\(plant.location.capitalized) · \(PlacementEngine.lightLabel(sp.light))", comment: "Room name · light level"))
         }
         return plant.location.capitalized
     }
@@ -216,14 +223,14 @@ struct PlantHomeView: View {
         var parts: [String] = []
         if let d = plant.potDiameterCm { parts.append("Ø " + PlantFormat.cm(d)) }
         if let m = plant.potMaterial { parts.append(m.label) }
-        parts.append(plant.potHasDrainage ? String(localized: "Drainage", comment: "Pot has drainage holes; max 12 chars") : String(localized: "No drainage", comment: "Pot without drainage holes; max 14 chars"))
+        parts.append(plant.potHasDrainage ? Grammar.pt(String(localized: "Drainage", comment: "Pot has drainage holes; max 12 chars")) : Grammar.pt(String(localized: "No drainage", comment: "Pot without drainage holes; max 14 chars")))
         return parts.joined(separator: " · ")
     }
     private var nextCare: String {
         let expected = CareEngine.expectedDryDays(for: plant)
-        guard let w = plant.lastEvent(.water)?.date else { return String(localized: "Soil check today", comment: "Next care; max 24 chars") }
+        guard let w = plant.lastEvent(.water)?.date else { return Grammar.pt(String(localized: "Soil check today", comment: "Next care; max 24 chars")) }
         let left = Int((expected - CareEngine.days(from: w)).rounded())
-        return left <= 0 ? String(localized: "Soil check today", comment: "Next care; max 24 chars") : String(localized: "Soil check in \(left) days", comment: "Next care; plural; max 24 chars")
+        return left <= 0 ? Grammar.pt(String(localized: "Soil check today", comment: "Next care; max 24 chars")) : Grammar.pt(String(localized: "Soil check in \(left) days", comment: "Next care; plural; max 24 chars"))
     }
 }
 
@@ -231,9 +238,9 @@ struct MoodPill: View {
     let mood: CareEngine.Mood
     var body: some View {
         let (text, symbol, color): (String, String, Color) = switch mood {
-        case .thriving: (String(localized: "Thriving", comment: "Mood pill; max 14 chars"), "leaf.fill", Jungle.leaf)
-        case .fine: (String(localized: "Has a request", comment: "Mood pill; max 16 chars"), "hand.wave.fill", Jungle.sun)
-        case .needsYou: (String(localized: "Needs you", comment: "Mood pill / status; max 12 chars"), "drop.fill", Jungle.terracotta)
+        case .thriving: (Grammar.pt(String(localized: "Thriving", comment: "Mood pill; max 14 chars")), "leaf.fill", Jungle.leaf)
+        case .fine: (Grammar.pt(String(localized: "Has a request", comment: "Mood pill; max 16 chars")), "hand.wave.fill", Jungle.sun)
+        case .needsYou: (Grammar.pt(String(localized: "Needs you", comment: "Mood pill / status; max 12 chars")), "drop.fill", Jungle.terracotta)
         }
         HStack(spacing: 5) {
             Image(systemName: symbol).foregroundStyle(color)
@@ -271,16 +278,17 @@ struct InfoRow: View {
     var chevron = false
     var icon: Icon3D? = nil
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Group { if let icon { Icon3DView(icon, size: 30) } else { SmartIcon(symbol: symbol, size: 26) } }.frame(width: 30)
+        HStack(alignment: .center, spacing: 12) {
+            Group { if let icon { Icon3DView(icon, size: 30) } else { SmartIcon(symbol: symbol, size: 26) } }
+                .frame(width: 34, height: 34).clipped()
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                 Text(value).font(.subheadline).foregroundStyle(Jungle.subtle)
             }
             Spacer(minLength: 0)
-            if chevron { Image(systemName: "chevron.right").font(.caption).foregroundStyle(Jungle.subtle) }
+            if chevron { Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7)) }
         }
-        .padding(12)
+        .padding(.horizontal, 16).padding(.vertical, 11).frame(minHeight: 52)
         .contentShape(Rectangle())
     }
 }
@@ -295,11 +303,11 @@ struct PlantStoryView: View {
         case all = "All", photos = "Photos", care = "Care", growth = "Growth", health = "Health"
         var label: String {
             switch self {
-            case .all: String(localized: "All", comment: "Timeline filter chip; max 10 chars")
-            case .photos: String(localized: "Photos", comment: "Timeline filter chip; max 10 chars")
-            case .care: String(localized: "Care", comment: "Timeline filter chip; max 10 chars")
-            case .growth: String(localized: "Growth", comment: "Timeline filter chip; max 10 chars")
-            case .health: String(localized: "Health", comment: "Timeline filter chip; max 10 chars")
+            case .all: Grammar.pt(String(localized: "All", comment: "Timeline filter chip; max 10 chars"))
+            case .photos: Grammar.pt(String(localized: "Photos", comment: "Timeline filter chip; max 10 chars"))
+            case .care: Grammar.pt(String(localized: "Care", comment: "Timeline filter chip; max 10 chars"))
+            case .growth: Grammar.pt(String(localized: "Growth", comment: "Timeline filter chip; max 10 chars"))
+            case .health: Grammar.pt(String(localized: "Health", comment: "Timeline filter chip; max 10 chars"))
             }
         }
     }
@@ -328,16 +336,16 @@ struct PlantStoryView: View {
             let photos = events.filter { $0.photo != nil }
             if photos.count >= 2, let first = photos.last, let last = photos.first {
                 VStack(alignment: .leading, spacing: 8) {
-                    SectionTitle(String(localized: "Then and now", comment: "Section title: first vs latest photo"))
+                    SectionTitle(Grammar.pt(String(localized: "Then and now", comment: "Section title: first vs latest photo")))
                     HStack(spacing: 8) {
                         compare(first, label: first.date.formatted(.dateTime.month(.abbreviated).year()))
-                        compare(last, label: String(localized: "Now", comment: "Label on latest photo; max 8 chars"))
+                        compare(last, label: Grammar.pt(String(localized: "Now", comment: "Label on latest photo; max 8 chars")))
                     }
                 }
             }
             if heights.count >= 2 { growthChart }
             PhotosPicker(selection: $pick, matching: .images) {
-                Label(photos.isEmpty ? String(localized: "Add the first photo", comment: "Button; max 24 chars") : String(localized: "Add this month's photo", comment: "Button; max 26 chars"), systemImage: "camera.fill").frame(maxWidth: .infinity)
+                Label(photos.isEmpty ? Grammar.pt(String(localized: "Add the first photo", comment: "Button; max 24 chars")) : Grammar.pt(String(localized: "Add this month's photo", comment: "Button; max 26 chars")), systemImage: "camera.fill").frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.forest).controlSize(.large)
 
@@ -367,12 +375,12 @@ struct PlantStoryView: View {
         let offspring = props.filter { $0.parentID == plant.id }.count
         let days = max(0, Int(CareEngine.days(from: born)))
         return LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 14) {
-            fact("leaf", String(localized: "Species", comment: "Fact label; max 14 chars"), plant.species?.commonName ?? String(localized: "Unknown", comment: "Fact value; max 12 chars"))
-            fact("calendar", String(localized: "Days with you", comment: "Fact label; max 14 chars"), days.formatted())
-            fact("drop", String(localized: "Last watered", comment: "Fact label; max 14 chars"), plant.lastEvent(.water).map { $0.date.formatted(.dateTime.day().month(.abbreviated)) } ?? String(localized: "Not yet", comment: "Fact value; max 12 chars"))
-            fact("list.bullet", String(localized: "Moments", comment: "Fact label: number of timeline events; max 14 chars"), events.count.formatted())
-            fact("arrow.up.forward", String(localized: "Parent", comment: "Fact label: mother plant; max 14 chars"), parent == nil ? String(localized: "None", comment: "Fact value; max 12 chars") : String(localized: "Cutting", comment: "Fact value: grown from a cutting; max 12 chars"))
-            fact("arrow.triangle.branch", String(localized: "Offspring", comment: "Fact label: cuttings taken; max 14 chars"), offspring == 0 ? String(localized: "None", comment: "Fact value; max 12 chars") : offspring.formatted())
+            fact("leaf", Grammar.pt(String(localized: "Species", comment: "Fact label; max 14 chars")), plant.species?.commonName ?? Grammar.pt(String(localized: "Unknown", comment: "Fact value; max 12 chars")))
+            fact("calendar", Grammar.pt(String(localized: "Days with you", comment: "Fact label; max 14 chars")), days.formatted())
+            fact("drop", Grammar.pt(String(localized: "Last watered", comment: "Fact label; max 14 chars")), plant.lastEvent(.water).map { $0.date.formatted(.dateTime.day().month(.abbreviated)) } ?? Grammar.pt(String(localized: "Not yet", comment: "Fact value; max 12 chars")))
+            fact("list.bullet", Grammar.pt(String(localized: "Moments", comment: "Fact label: number of timeline events; max 14 chars")), events.count.formatted())
+            fact("arrow.up.forward", Grammar.pt(String(localized: "Parent", comment: "Fact label: mother plant; max 14 chars")), parent == nil ? Grammar.pt(String(localized: "None", comment: "Fact value; max 12 chars")) : Grammar.pt(String(localized: "Cutting", comment: "Fact value: grown from a cutting; max 12 chars")))
+            fact("arrow.triangle.branch", Grammar.pt(String(localized: "Offspring", comment: "Fact label: cuttings taken; max 14 chars")), offspring == 0 ? Grammar.pt(String(localized: "None", comment: "Fact value; max 12 chars")) : offspring.formatted())
         }
         .padding(16).jungleCard()
     }
@@ -390,7 +398,7 @@ struct PlantStoryView: View {
     private var careRecords: some View {
         let kinds: [CareKind] = [.water, .feed, .prune, .repot, .treat, .clean]
         return VStack(alignment: .leading, spacing: 10) {
-            SectionTitle(String(localized: "Care records", comment: "Section title"))
+            SectionTitle(Grammar.pt(String(localized: "Care records", comment: "Section title")))
             HStack(spacing: 0) {
                 ForEach(kinds, id: \.self) { k in
                     let last = plant.lastEvent(k)
@@ -409,7 +417,7 @@ struct PlantStoryView: View {
     }
 
     private func short(_ k: CareKind) -> String {
-        switch k { case .water: String(localized: "Water", comment: "Care record short label under icon; max 8 chars"); case .feed: String(localized: "Feed", comment: "Care record short label under icon; max 8 chars"); case .prune: String(localized: "Prune", comment: "Care record short label under icon; max 8 chars"); case .repot: String(localized: "Repot", comment: "Care record short label under icon; max 8 chars"); case .treat: String(localized: "Pests", comment: "Care record short label under icon; max 8 chars"); case .clean: String(localized: "Dust", comment: "Care record short label under icon; max 8 chars"); default: k.label }
+        switch k { case .water: Grammar.pt(String(localized: "Water", comment: "Care record short label under icon; max 8 chars")); case .feed: Grammar.pt(String(localized: "Feed", comment: "Care record short label under icon; max 8 chars")); case .prune: Grammar.pt(String(localized: "Prune", comment: "Care record short label under icon; max 8 chars")); case .repot: Grammar.pt(String(localized: "Repot", comment: "Care record short label under icon; max 8 chars")); case .treat: Grammar.pt(String(localized: "Pests", comment: "Care record short label under icon; max 8 chars")); case .clean: Grammar.pt(String(localized: "Dust", comment: "Care record short label under icon; max 8 chars")); default: k.label }
     }
 
     // MARK: Growth chart from measurements
@@ -422,7 +430,7 @@ struct PlantStoryView: View {
         let h = heights
         let maxV = h.map(\.1).max() ?? 1
         return VStack(alignment: .leading, spacing: 10) {
-            SectionTitle(String(localized: "Growth", comment: "Section title: height chart"))
+            SectionTitle(Grammar.pt(String(localized: "Growth", comment: "Section title: height chart")))
             HStack(alignment: .bottom, spacing: 8) {
                 ForEach(Array(h.suffix(10).enumerated()), id: \.offset) { _, p in
                     VStack(spacing: 4) {
@@ -493,22 +501,22 @@ struct PlantStoryView: View {
 
     private func storyLine(_ e: CareEvent) -> String {
         switch e.kind {
-        case .water: e.value.map { String(localized: "Watered, \(PlantFormat.ml(Int($0))).", comment: "Timeline line; arg amount with unit") } ?? String(localized: "Watered.", comment: "Timeline line")
-        case .feed: e.productName.map { String(localized: "Fed with \($0).", comment: "Timeline line; arg fertilizer product name") } ?? String(localized: "Fed.", comment: "Timeline line: fertilized")
-        case .soilCheck: e.soil.map { String(localized: "Soil felt \($0.label.lowercased()).", comment: "Timeline line; arg soil state lowercase") } ?? String(localized: "Soil checked.", comment: "Timeline line")
-        case .mist: String(localized: "Misted.", comment: "Timeline line")
-        case .rotate: String(localized: "Turned toward the light.", comment: "Timeline line")
-        case .clean: String(localized: "Leaves cleaned.", comment: "Timeline line")
-        case .newLeaf: String(localized: "I grew a new leaf!", comment: "Timeline line, plant voice, proud")
-        case .flower: String(localized: "I flowered!", comment: "Timeline line, plant voice, proud")
-        case .repot: e.value.map { String(localized: "You repotted me into a \(PlantFormat.cm($0)) pot.", comment: "Timeline line, plant voice; arg pot size with unit") } ?? String(localized: "You repotted me.", comment: "Timeline line, plant voice")
-        case .move: e.note.isEmpty ? String(localized: "Moved to a new spot.", comment: "Timeline line") : String(localized: "Moved to \(e.note).", comment: "Timeline line; arg room name")
-        case .health: String(localized: "Health check: \(e.note)", comment: "Timeline line; arg summary")
-        case .treat: e.note.isEmpty ? String(localized: "Treated.", comment: "Timeline line") : String(localized: "Treated for \(e.note).", comment: "Timeline line; arg pest/problem")
-        case .measure: String(localized: "\(PlantFormat.cm(e.value ?? 0)) tall.", comment: "Timeline line; arg height with unit")
-        case .propagate: String(localized: "A cutting of me started a new life.", comment: "Timeline line, plant voice, tender")
-        case .prune: String(localized: "Fresh haircut.", comment: "Timeline line after pruning, playful")
-        case .photo: e.note.isEmpty ? String(localized: "New portrait.", comment: "Timeline line for a new photo, playful") : PlantFormat.note(e.note)
+        case .water: e.value.map { Grammar.pt(String(localized: "Watered, \(PlantFormat.ml(Int($0))).", comment: "Timeline line; arg amount with unit")) } ?? Grammar.pt(String(localized: "Watered.", comment: "Timeline line"))
+        case .feed: e.productName.map { Grammar.pt(String(localized: "Fed with \($0).", comment: "Timeline line; arg fertilizer product name")) } ?? Grammar.pt(String(localized: "Fed.", comment: "Timeline line: fertilized"))
+        case .soilCheck: e.soil.map { Grammar.pt(String(localized: "Soil felt \($0.label.lowercased()).", comment: "Timeline line; arg soil state lowercase")) } ?? Grammar.pt(String(localized: "Soil checked.", comment: "Timeline line"))
+        case .mist: Grammar.pt(String(localized: "Misted.", comment: "Timeline line"))
+        case .rotate: Grammar.pt(String(localized: "Turned toward the light.", comment: "Timeline line"))
+        case .clean: Grammar.pt(String(localized: "Leaves cleaned.", comment: "Timeline line"))
+        case .newLeaf: Grammar.pt(String(localized: "I grew a new leaf!", comment: "Timeline line, plant voice, proud"))
+        case .flower: Grammar.pt(String(localized: "I flowered!", comment: "Timeline line, plant voice, proud"))
+        case .repot: e.value.map { Grammar.pt(String(localized: "You repotted me into a \(PlantFormat.cm($0)) pot.", comment: "Timeline line, plant voice; arg pot size with unit")) } ?? Grammar.pt(String(localized: "You repotted me.", comment: "Timeline line, plant voice"))
+        case .move: e.note.isEmpty ? Grammar.pt(String(localized: "Moved to a new spot.", comment: "Timeline line")) : Grammar.pt(String(localized: "Moved to \(e.note).", comment: "Timeline line; arg room name"))
+        case .health: Grammar.pt(String(localized: "Health check: \(e.note)", comment: "Timeline line; arg summary"))
+        case .treat: e.note.isEmpty ? Grammar.pt(String(localized: "Treated.", comment: "Timeline line")) : Grammar.pt(String(localized: "Treated for \(e.note).", comment: "Timeline line; arg pest/problem"))
+        case .measure: Grammar.pt(String(localized: "\(PlantFormat.cm(e.value ?? 0)) tall.", comment: "Timeline line; arg height with unit"))
+        case .propagate: Grammar.pt(String(localized: "A cutting of me started a new life.", comment: "Timeline line, plant voice, tender"))
+        case .prune: Grammar.pt(String(localized: "Fresh haircut.", comment: "Timeline line after pruning, playful"))
+        case .photo: e.note.isEmpty ? Grammar.pt(String(localized: "New portrait.", comment: "Timeline line for a new photo, playful")) : PlantFormat.note(e.note)
         default: e.note.isEmpty ? e.kind.label : PlantFormat.note(e.note)
         }
     }
@@ -536,15 +544,15 @@ struct PlantCarePlanView: View {
         let expected = Int(CareEngine.expectedDryDays(for: plant).rounded())
         VStack(alignment: .leading, spacing: 12) {
             VStack(spacing: 0) {
-                row(.water, String(localized: "Water", comment: "Care plan row title"), waterLine(s, expected), plant.learnedDryDays != nil ? String(localized: "Learned from your checks", comment: "Care plan hint; max 30 chars") : String(localized: "Adapts to your home", comment: "Care plan hint; max 30 chars"))
-                Divider().padding(.leading, 44)
-                row(.feed, String(localized: "Feed", comment: "Care plan row title: fertilize"), s.map { CareEngine.isGrowingSeason() ? String(localized: "Every \(Int($0.feedWeeks)) weeks", comment: "Feeding interval; plural") : String(localized: "Paused until spring", comment: "Feeding paused in cool season; max 26 chars") } ?? String(localized: "Set species", comment: "Prompt to set species; max 16 chars"), s.map { PlantAdvisor.feedPhrase($0.feed).capitalized } ?? "")
-                Divider().padding(.leading, 44)
-                row(.rotate, String(localized: "Rotate", comment: "Care plan row title"), String(localized: "A quarter turn every 2 weeks", comment: "Care plan value"), String(localized: "Even growth toward the light", comment: "Care plan hint"))
-                Divider().padding(.leading, 44)
-                row(.clean, String(localized: "Clean leaves", comment: "Care plan row title"), String(localized: "Every month", comment: "Care plan value"), String(localized: "Dusty leaves catch less light", comment: "Care plan hint"))
-                Divider().padding(.leading, 44)
-                row(.repot, String(localized: "Repot", comment: "Care plan row title"), repotLine, s.map { String(localized: "Usually every \(Int($0.repotYears)) years", comment: "Repot interval; plural") } ?? "")
+                row(.water, Grammar.pt(String(localized: "Water", comment: "Care plan row title")), waterLine(s, expected), plant.learnedDryDays != nil ? Grammar.pt(String(localized: "Learned from your checks", comment: "Care plan hint; max 30 chars")) : Grammar.pt(String(localized: "Adapts to your home", comment: "Care plan hint; max 30 chars")))
+                Divider().padding(.leading, 62)
+                row(.feed, Grammar.pt(String(localized: "Feed", comment: "Care plan row title: fertilize")), s.map { CareEngine.isGrowingSeason() ? Grammar.pt(String(localized: "Every \(Int($0.feedWeeks)) weeks", comment: "Feeding interval; plural")) : Grammar.pt(String(localized: "Paused until spring", comment: "Feeding paused in cool season; max 26 chars")) } ?? Grammar.pt(String(localized: "Set species", comment: "Prompt to set species; max 16 chars")), s.map { PlantAdvisor.feedPhrase($0.feed).capitalized } ?? "")
+                Divider().padding(.leading, 62)
+                row(.rotate, Grammar.pt(String(localized: "Rotate", comment: "Care plan row title")), Grammar.pt(String(localized: "A quarter turn every 2 weeks", comment: "Care plan value")), Grammar.pt(String(localized: "Even growth toward the light", comment: "Care plan hint")))
+                Divider().padding(.leading, 62)
+                row(.clean, Grammar.pt(String(localized: "Clean leaves", comment: "Care plan row title")), Grammar.pt(String(localized: "Every month", comment: "Care plan value")), Grammar.pt(String(localized: "Dusty leaves catch less light", comment: "Care plan hint")))
+                Divider().padding(.leading, 62)
+                row(.repot, Grammar.pt(String(localized: "Repot", comment: "Care plan row title")), repotLine, s.map { Grammar.pt(String(localized: "Usually every \(Int($0.repotYears)) years", comment: "Repot interval; plural")) } ?? "")
             }
             .jungleCard()
             let mine = tasks.filter { $0.plantID == plant.id && !$0.done }.sorted { $0.due < $1.due }
@@ -568,20 +576,20 @@ struct PlantCarePlanView: View {
 
     private func waterLine(_ s: Species?, _ expected: Int) -> String {
         switch s?.waterStyle {
-        case .dry?: String(localized: "When the soil is fully dry, about every \(expected) days", comment: "Care plan watering; plural days")
-        case .moist?: String(localized: "When the soil is just drying on top, about every \(expected) days", comment: "Care plan watering; plural days")
-        case .some: String(localized: "When the soil is half dry, about every \(expected) days", comment: "Care plan watering; plural days")
-        case nil: String(localized: "When the soil is dry, about every \(expected) days", comment: "Care plan watering; plural days")
+        case .dry?: Grammar.pt(String(localized: "When the soil is fully dry, about every \(expected) days", comment: "Care plan watering; plural days"))
+        case .moist?: Grammar.pt(String(localized: "When the soil is just drying on top, about every \(expected) days", comment: "Care plan watering; plural days"))
+        case .some: Grammar.pt(String(localized: "When the soil is half dry, about every \(expected) days", comment: "Care plan watering; plural days"))
+        case nil: Grammar.pt(String(localized: "When the soil is dry, about every \(expected) days", comment: "Care plan watering; plural days"))
         }
     }
 
     private var repotLine: String {
-        guard let s = plant.species else { return String(localized: "When roots fill the pot", comment: "Repot plan value") }
+        guard let s = plant.species else { return Grammar.pt(String(localized: "When roots fill the pot", comment: "Repot plan value")) }
         let since = CareEngine.days(from: plant.lastRepotAt ?? plant.acquiredAt)
         let left = s.repotYears * 365 - since
-        if left <= 0 { return CareEngine.isWinter() ? String(localized: "Check the roots this spring", comment: "Repot plan value") : String(localized: "Check the roots this season", comment: "Repot plan value") }
+        if left <= 0 { return CareEngine.isWinter() ? Grammar.pt(String(localized: "Check the roots this spring", comment: "Repot plan value")) : Grammar.pt(String(localized: "Check the roots this season", comment: "Repot plan value")) }
         let months = Int(left / 30)
-        return months <= 1 ? String(localized: "Check in a few weeks", comment: "Repot plan value") : String(localized: "Check in ~\(months) months", comment: "Repot plan value; plural")
+        return months <= 1 ? Grammar.pt(String(localized: "Check in a few weeks", comment: "Repot plan value")) : Grammar.pt(String(localized: "Check in ~\(months) months", comment: "Repot plan value; plural"))
     }
 
     private func row(_ kind: CareKind, _ title: String, _ value: String, _ hint: String) -> some View {
@@ -591,7 +599,7 @@ struct PlantCarePlanView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                 Text(value).font(.subheadline).foregroundStyle(Jungle.text)
-                Text(last.map { String(localized: "\(hint) · last \(CareEngine.relative($0.date))", comment: "Care plan hint · last done relative date") } ?? hint).font(.caption).foregroundStyle(Jungle.subtle)
+                Text(last.map { Grammar.pt(String(localized: "\(hint) · last \(CareEngine.relative($0.date))", comment: "Care plan hint · last done relative date")) } ?? hint).font(.caption).foregroundStyle(Jungle.subtle)
             }
             Spacer()
         }
@@ -611,29 +619,29 @@ struct PlantAboutView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 10) {
-                stat(String(localized: "Health", comment: "Stat label; max 10 chars"), healthValue, "heart.fill")
-                stat(String(localized: "Growth", comment: "Stat label; max 10 chars"), String(localized: "\(recent(.newLeaf)) new", comment: "N new leaves in 30 days; plural; max 10 chars"), "leaf.fill")
-                stat(String(localized: "Checks", comment: "Stat label: soil checks; max 10 chars"), recent(.soilCheck).formatted(), "hand.point.down.fill")
+                stat(Grammar.pt(String(localized: "Health", comment: "Stat label; max 10 chars")), healthValue, "heart.fill")
+                stat(Grammar.pt(String(localized: "Growth", comment: "Stat label; max 10 chars")), Grammar.pt(String(localized: "\(recent(.newLeaf)) new", comment: "N new leaves in 30 days; plural; max 10 chars")), "leaf.fill")
+                stat(Grammar.pt(String(localized: "Checks", comment: "Stat label: soil checks; max 10 chars")), recent(.soilCheck).formatted(), "hand.point.down.fill")
             }
             VStack(spacing: 0) {
-                InfoRow(symbol: "calendar", title: String(localized: "Joined home", comment: "Info row title: date plant arrived"), value: plant.acquiredAt.formatted(.dateTime.day().month().year()))
-                Divider().padding(.leading, 44)
-                InfoRow(symbol: "hourglass", title: String(localized: "With you", comment: "Info row title: time with owner"), value: age)
+                InfoRow(symbol: "calendar", title: Grammar.pt(String(localized: "Joined home", comment: "Info row title: date plant arrived")), value: plant.acquiredAt.formatted(.dateTime.day().month().year()))
+                Divider().padding(.leading, 62)
+                InfoRow(symbol: "hourglass", title: Grammar.pt(String(localized: "With you", comment: "Info row title: time with owner")), value: age)
                 if let s = plant.species {
-                    Divider().padding(.leading, 44)
-                    InfoRow(symbol: "leaf", title: String(localized: "Species", comment: "Info row title"), value: "\(s.commonName) · \(s.scientific)")
-                    Divider().padding(.leading, 44)
-                    InfoRow(symbol: "tree", title: String(localized: "Family", comment: "Info row title: botanical family"), value: s.family)
-                    Divider().padding(.leading, 44)
-                    InfoRow(symbol: "sun.max", title: String(localized: "Light", comment: "Info row title"), value: s.lightRule)
-                    Divider().padding(.leading, 44)
-                    InfoRow(symbol: "thermometer.medium", title: String(localized: "Comfort", comment: "Info row title: temperature and humidity"), value: String(localized: "\(Climate.tempRange(s.tempMin, s.tempMax)) · humidity \(PlantFormat.percent(s.humidityMin))+", comment: "Temperature range · humidity minimum percent and up"))
-                    Divider().padding(.leading, 44)
-                    InfoRow(symbol: "pawprint", title: String(localized: "Toxicity", comment: "Info row title: pet safety"), value: s.toxicityLine)
-                    Divider().padding(.leading, 44)
-                    InfoRow(symbol: "lightbulb", title: String(localized: "Good to know", comment: "Info row title: tip"), value: s.tip)
+                    Divider().padding(.leading, 62)
+                    InfoRow(symbol: "leaf", title: Grammar.pt(String(localized: "Species", comment: "Info row title")), value: "\(s.commonName) · \(s.scientific)")
+                    Divider().padding(.leading, 62)
+                    InfoRow(symbol: "tree", title: Grammar.pt(String(localized: "Family", comment: "Info row title: botanical family")), value: s.family)
+                    Divider().padding(.leading, 62)
+                    InfoRow(symbol: "sun.max", title: Grammar.pt(String(localized: "Light", comment: "Info row title")), value: s.lightRule)
+                    Divider().padding(.leading, 62)
+                    InfoRow(symbol: "thermometer.medium", title: Grammar.pt(String(localized: "Comfort", comment: "Info row title: temperature and humidity")), value: Grammar.pt(String(localized: "\(Climate.tempRange(s.tempMin, s.tempMax)) · humidity \(PlantFormat.percent(s.humidityMin))+", comment: "Temperature range · humidity minimum percent and up")))
+                    Divider().padding(.leading, 62)
+                    InfoRow(symbol: "pawprint", title: Grammar.pt(String(localized: "Toxicity", comment: "Info row title: pet safety")), value: s.toxicityLine)
+                    Divider().padding(.leading, 62)
+                    InfoRow(symbol: "lightbulb", title: Grammar.pt(String(localized: "Good to know", comment: "Info row title: tip")), value: s.tip)
                     ForEach(PlantKnowledgeRows.rows(for: s, plant: plant), id: \.title) { r in
-                        Divider().padding(.leading, 44)
+                        Divider().padding(.leading, 62)
                         InfoRow(symbol: r.symbol, title: r.title, value: r.value)
                     }
                 }
@@ -645,7 +653,7 @@ struct PlantAboutView: View {
 
     private func recent(_ k: CareKind) -> Int { plant.sortedEvents.filter { $0.kind == k && CareEngine.days(from: $0.date) < 30 }.count }
     private var healthValue: String {
-        switch CareEngine.mood(for: plant) { case .thriving: String(localized: "Great", comment: "Health stat value; max 10 chars"); case .fine: String(localized: "Good", comment: "Health stat value; max 10 chars"); case .needsYou: String(localized: "Needs you", comment: "Mood pill / status; max 12 chars") }
+        switch CareEngine.mood(for: plant) { case .thriving: Grammar.pt(String(localized: "Great", comment: "Health stat value; max 10 chars")); case .fine: Grammar.pt(String(localized: "Good", comment: "Health stat value; max 10 chars")); case .needsYou: Grammar.pt(String(localized: "Needs you", comment: "Mood pill / status; max 12 chars")) }
     }
     private var age: String {
         let d = Int(CareEngine.days(from: plant.acquiredAt))
@@ -685,16 +693,16 @@ struct WaterSheet: View {
                                 .padding(10).background(.regularMaterial, in: Circle()).offset(x: 10, y: -6)
                         }
                     VStack(spacing: 6) {
-                        Text(needsWater ? String(localized: "\(plant.name) needs water", comment: "Water sheet title; arg plant name") : String(localized: "Watering \(plant.name)", comment: "Water sheet title; arg plant name")).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text(needsWater ? String(localized: "My soil is dry and it's time for a drink.", comment: "Water sheet, plant voice") : String(localized: "Feel the soil 3–4 cm deep first. If it's still moist, wait.", comment: "Water sheet advice"))
+                        Text(needsWater ? Grammar.pt(String(localized: "\(plant.name) needs water", comment: "Water sheet title; arg plant name")) : Grammar.pt(String(localized: "Watering \(plant.name)", comment: "Water sheet title; arg plant name"))).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                        Text(needsWater ? Grammar.pt(String(localized: "My soil is dry and it's time for a drink.", comment: "Water sheet, plant voice")) : Grammar.pt(String(localized: "Feel the soil 3–4 cm deep first. If it's still moist, wait.", comment: "Water sheet advice")))
                             .multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
                     }
                     VStack(spacing: 0) {
-                        InfoRow(symbol: "drop", title: String(localized: "Amount", comment: "Water sheet row title"), value: amount)
-                        Divider().padding(.leading, 44)
-                        InfoRow(symbol: "arrow.down.to.line", title: String(localized: "Method", comment: "Water sheet row title"), value: method(s))
-                        Divider().padding(.leading, 44)
-                        InfoRow(symbol: "calendar", title: String(localized: "Next watering", comment: "Water sheet row title"), value: String(localized: "In about \(expected) days. I'll ask for a soil check first.", comment: "Water sheet; plural days; plant voice"))
+                        InfoRow(symbol: "drop", title: Grammar.pt(String(localized: "Amount", comment: "Water sheet row title")), value: amount)
+                        Divider().padding(.leading, 62)
+                        InfoRow(symbol: "arrow.down.to.line", title: Grammar.pt(String(localized: "Method", comment: "Water sheet row title")), value: method(s))
+                        Divider().padding(.leading, 62)
+                        InfoRow(symbol: "calendar", title: Grammar.pt(String(localized: "Next watering", comment: "Water sheet row title")), value: Grammar.pt(String(localized: "In about \(expected) days. I'll ask for a soil check first.", comment: "Water sheet; plural days; plant voice")))
                     }
                     .jungleCard()
                 }
@@ -725,22 +733,22 @@ struct WaterSheet: View {
     private var needsWater: Bool { CareEngine.requests(for: plant).contains { $0.kind == .water } }
 
     private var amount: String {
-        guard let d = plant.potDiameterCm else { return String(localized: "Until water runs out of the drainage holes, then empty the saucer.", comment: "Water amount advice") }
+        guard let d = plant.potDiameterCm else { return Grammar.pt(String(localized: "Until water runs out of the drainage holes, then empty the saucer.", comment: "Water amount advice")) }
         let litres = 0.75 * Double.pi * pow(d / 2, 2) * d * 0.9 / 1000
         let share = plant.species?.waterStyle == .dry ? 0.12 : plant.species?.waterStyle == .moist ? 0.25 : 0.2
         let ml = litres * share * 1000
         let lo = Int((ml * 0.8 / 50).rounded() * 50), hi = Int((ml * 1.2 / 50).rounded() * 50)
-        return String(localized: "About \(max(lo, 50))–\(PlantFormat.ml(max(hi, 100))) for a \(PlantFormat.cm(d)) pot, until it just drains.", comment: "Water amount; args low number, high amount with unit, pot size with unit")
+        return Grammar.pt(String(localized: "About \(max(lo, 50))–\(PlantFormat.ml(max(hi, 100))) for a \(PlantFormat.cm(d)) pot, until it just drains.", comment: "Water amount; args low number, high amount with unit, pot size with unit"))
     }
     private func method(_ s: Species?) -> String {
         switch s?.waterStyle {
-        case .dry?: String(localized: "Soak deeply, drain fully, then leave it dry. Never leave it sitting in water.", comment: "Watering method")
-        case .moist?: s?.humidityMin ?? 0 >= 55 ? String(localized: "Water evenly around the pot with room-temperature water. Rain or filtered water is best.", comment: "Watering method") : String(localized: "Water evenly around the pot with room-temperature water.", comment: "Watering method")
-        default: String(localized: "Slowly, until a little drains out, then empty the saucer.", comment: "Watering method")
+        case .dry?: Grammar.pt(String(localized: "Soak deeply, drain fully, then leave it dry. Never leave it sitting in water.", comment: "Watering method"))
+        case .moist?: s?.humidityMin ?? 0 >= 55 ? Grammar.pt(String(localized: "Water evenly around the pot with room-temperature water. Rain or filtered water is best.", comment: "Watering method")) : Grammar.pt(String(localized: "Water evenly around the pot with room-temperature water.", comment: "Watering method"))
+        default: Grammar.pt(String(localized: "Slowly, until a little drains out, then empty the saucer.", comment: "Watering method"))
         }
     }
     private func remind(hours: Double) {
-        ctx.insert(CareTask(title: String(localized: "Water \(plant.name)", comment: "Care task title; arg plant name"), kind: .water, plantID: plant.id, due: Date().addingTimeInterval(hours * 3600)))
+        ctx.insert(CareTask(title: Grammar.pt(String(localized: "Water \(plant.name)", comment: "Care task title; arg plant name")), kind: .water, plantID: plant.id, due: Date().addingTimeInterval(hours * 3600)))
         try? ctx.save()
         dismiss()
     }
@@ -759,6 +767,6 @@ enum PlantFormat {
     static func percent(_ v: Double) -> String { (v / 100).formatted(.percent.precision(.fractionLength(0))) }
     /// Stored English sentinel notes shown translated.
     static func note(_ n: String) -> String {
-        n == "First photo" ? String(localized: "First photo", comment: "Timeline note for the first photo of a plant") : n
+        n == "First photo" ? Grammar.pt(String(localized: "First photo", comment: "Timeline note for the first photo of a plant")) : n
     }
 }

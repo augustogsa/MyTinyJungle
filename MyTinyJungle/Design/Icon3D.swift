@@ -11,6 +11,8 @@ enum Icon3D: String, CaseIterable, Identifiable {
     case flower, flowerPot, bouquet, rainFlower, garden, blossomTree, tulips, lotus, hummingbird
     case pin, home, globe, heartPin, pushPin, park
     case shieldCheck, shieldLeaf, firstAid, shieldStar, profile, crown, bug
+    /// cat, dog, kid: Microsoft Fluent Emoji 3D (MIT).
+    case cat, dog, kid
     case gift, box, celebrate
     case mail, notification, chat, share
     case sun, hill, summit, waterfall
