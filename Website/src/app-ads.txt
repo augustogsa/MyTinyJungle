@@ -1,0 +1,2 @@
+# app-ads.txt for My Tiny Jungle (Simple Apps Company)
+# AdMob publisher line is added once AdMob verifies the account.
