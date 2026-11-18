@@ -67,7 +67,11 @@ H = {
            ("In the app", [("Add your first plant with a photo", "40 s")])],
   "slip_end": ("Your jungle starts talking", "2 min"),
   "free": ("Free", "For your first little jungle.", "€0", "forever", "Up to 5 plants with chat, care requests, reminders and the soil-check ritual. Supported by ads."),
-  "plus": ("Plus", "For every plant you love, and quiet care with no ads.", "€11.99", "a year", "Unlimited plants, no ads, label verdicts and health checks. Or €1.99 a month. The yearly plan works out at €1 a month."),
+  "monthly": ("Plus monthly", "Try everything, month by month.", "€1.99", "a month", "Unlimited plants, no ads, label verdicts and health checks. Cancel any time."),
+  "plus": ("Plus yearly", "For every plant you love, all year.", "€11.99", "a year", "Everything in Plus for just €1 a month. Half the price of paying monthly."),
+  "best": "Best value", "feat_p": "Every tool a plant parent could wish for, in four little groups.",
+  "close_names": [("monstera", "Monty", "Monstera"), ("basil", "Pesto", "Basil"), ("orchid", "Pearl", "Orchid"), ("pothos", "Goldie", "Pothos"), ("echeveria", "Rosetta", "Echeveria"), ("peacelily", "Lily", "Peace lily"), ("snake", "Sergeant", "Snake plant"), ("zz", "Zeke", "ZZ plant")],
+  "close_k": "8 plants waiting to say hello", "prev": "Previous screen", "next": "Next screen",
   "plus_btn": "Get Plus in the app",
   "fine": "Prices in euros; local prices may vary. Subscriptions renew automatically until cancelled in your Apple account settings.",
   "faq_h": "Good to know",
@@ -129,7 +133,11 @@ H = {
            ("No app", [("Adicione a primeira planta com uma foto", "40 s")])],
   "slip_end": ("Sua selva começa a falar", "2 min"),
   "free": ("Grátis", "Para a sua primeira mini selva.", "0 €", "para sempre", "Até 5 plantas com bate-papo, pedidos de cuidado, lembretes e o ritual da terra. Com anúncios."),
-  "plus": ("Plus", "Para todas as plantas que você ama, com cuidado sem pressa e sem anúncios.", "11,99 €", "por ano", "Plantas ilimitadas, sem anúncios, vereditos de rótulos e checagens de saúde. Ou 1,99 € por mês. No plano anual, sai por 1 € por mês."),
+  "monthly": ("Plus mensal", "Experimente tudo, mês a mês.", "1,99 €", "por mês", "Plantas ilimitadas, sem anúncios, vereditos de rótulos e checagens de saúde. Cancele quando quiser."),
+  "plus": ("Plus anual", "Para todas as plantas que você ama, o ano inteiro.", "11,99 €", "por ano", "Tudo do Plus por só 1 € por mês. Metade do preço do plano mensal."),
+  "best": "Melhor valor", "feat_p": "Todas as ferramentas que quem cuida de plantas pode querer, em quatro grupinhos.",
+  "close_names": [("monstera", "Monty", "Costela-de-adão"), ("basil", "Pesto", "Manjericão"), ("orchid", "Pearl", "Orquídea"), ("pothos", "Goldie", "Jiboia"), ("echeveria", "Rosetta", "Echeveria"), ("peacelily", "Lily", "Lírio-da-paz"), ("snake", "Sergeant", "Espada-de-são-jorge"), ("zz", "Zeke", "Zamioculca")],
+  "close_k": "8 plantas esperando para dizer olá", "prev": "Tela anterior", "next": "Próxima tela",
   "plus_btn": "Assinar o Plus no app",
   "fine": "Preços em euros; podem variar de acordo com o país. As assinaturas são renovadas automaticamente até serem canceladas nos ajustes da sua conta Apple.",
   "faq_h": "Bom saber",
@@ -160,7 +168,10 @@ def render_home(L, t, page, phone, apple_icon):
         return '<ul class="ilist">' + "".join(f"<li>{I(i)}<span>{x}</span></li>" for i, x in items) + "</ul>"
 
     def thumbs(items):
-        return '<div class="thumbs">' + "".join(f'<figure>{screen(n, c)}<figcaption>{c}</figcaption></figure>' for n, c in items) + "</div>"
+        cards = "".join(f'<figure class="slide">{phone("app/" + n + ".jpg", c)}<figcaption>{c}</figcaption></figure>' for n, c in items)
+        nav = (f'<div class="snav"><button type="button" class="sbtn prev" aria-label="{h["prev"]}">&larr;</button>'
+               f'<button type="button" class="sbtn next" aria-label="{h["next"]}">&rarr;</button></div>')
+        return f'<div class="slider"><div class="track" tabindex="0">{cards}</div>{nav}</div>'
 
     layers = "".join(
         f'<div class="layer{" on" if k == 0 else ""}" data-scene="{k}"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400"{LAZY[k == 0]}>'
@@ -189,15 +200,16 @@ def render_home(L, t, page, phone, apple_icon):
         chapters += f'<section class="chapter" id="{c["id"]}" data-scene="{k}">{inner}</section>'
 
     feats = "".join(
-        f'<div class="frow{" flip" if j % 2 else ""}"><h3>{title}</h3><div class="frow-body"><img class="fphoto" src="/assets/plants/{ph}.jpg" alt="" width="660" height="880" loading="lazy">{ilist(items)}</div></div>'
-        for j, (ph, title, items) in enumerate(h["feat"]))
+        f'<article class="fblock"><img class="fphoto" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="800" loading="lazy"><h3>{title}</h3>{ilist(items)}</article>'
+        for ph, title, items in h["feat"])
 
     slip = "".join(f'<h3>{g}</h3>' + "".join(f'<p class="row"><span>{a}</span><i></i><span>{b}</span></p>' for a, b in rows) for g, rows in h["slip"])
     se = h["slip_end"]
 
-    def field(cls, d, btn):
+    def field(cls, d, btn, tag=""):
         name, who, price, per, inc = d
-        return (f'<div class="field {cls}"><h3>{name}</h3><p class="who">{who}</p><p>{inc}</p>'
+        tg = f'<span class="tag">{tag}</span>' if tag else ""
+        return (f'<div class="field {cls}">{tg}<h3>{name}</h3><p class="who">{who}</p><p>{inc}</p>'
                 f'<div class="pfoot"><p class="price">{price}<small>{per}</small></p>{btn}</div></div>')
 
     faq = "".join(f"<p><b>{q}</b> {a}</p>" for q, a in h["faq"])
@@ -211,15 +223,18 @@ def render_home(L, t, page, phone, apple_icon):
 </div>
 <div class="stage" aria-hidden="true">{layers}</div>
 </div>
-<section class="features" id="features"><div class="wrap fgrid"><h2>{h['feat_h']}</h2><div class="frows">{feats}</div></div></section>
+<section class="features" id="features"><div class="wrap"><div class="fhead"><h2>{h['feat_h']}</h2><p>{h['feat_p']}</p></div><div class="fgrid">{feats}</div></div></section>
 <section class="beta" id="beta"><div class="wrap bgrid"><div><h2>{h['slip_h']}</h2><p>{h['slip_p']}</p>{cta}</div>
 <div class="slip">{slip}<p class="row end"><span>{se[0]}</span><span>{se[1]}</span></p></div></div></section>
-<section class="pricing" id="pricing"><h2 class="vh">Plus</h2>
+<section class="pricing" id="pricing"><h2 class="vh">Plus</h2><div class="wrap fields">
 {field("free", h["free"], f'<a class="btn ghost" href="{TESTFLIGHT_URL}" rel="noopener">{h["cta"]}</a>')}
-{field("plus", h["plus"], f'<a class="btn light" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>')}
-</section>
+{field("monthly", h["monthly"], f'<a class="btn" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>')}
+{field("plus", h["plus"], f'<a class="btn light" href="{TESTFLIGHT_URL}" rel="noopener">{h["plus_btn"]}</a>', h["best"])}
+</div></section>
 <p class="wrap fine">{h['fine']}</p>
 <section class="faq" id="faq"><div class="wrap qgrid"><h2>{h['faq_h']}</h2><div class="qtext">{faq}</div></div></section>
-<section class="closing"><img src="/assets/plants/pothos.jpg" alt="A golden pothos trailing from its pot" width="1100" height="730" loading="lazy">
-<div class="ctext"><h2>{h['c_h']}</h2><p>{h['c_p']}</p>{cta.replace('class="btn"', 'class="btn light"')}</div></section>"""
+<section class="closing"><div class="wrap cgrid">
+<div class="ctext"><img class="appicon" src="/assets/apple-touch-icon.png" alt="" width="88" height="88" loading="lazy"><h2>{h['c_h']}</h2><p>{h['c_p']}</p>{cta.replace('class="btn"', 'class="btn light"')}<p class="note">{h['note']}</p></div>
+<div class="mosaic"><p class="mk">{h['close_k']}</p>{"".join(f'<figure><img src="/assets/plants/{ph}.jpg" alt="{kind}" width="400" height="400" loading="lazy"><figcaption><b>{nm}</b>{kind}</figcaption></figure>' for ph, nm, kind in h["close_names"])}</div>
+</div></section>"""
     return page(L, "/", t["home_title"], t["home_desc"], body)

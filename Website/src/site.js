@@ -15,7 +15,7 @@
   }
 
   // Entrances: heading, text, then pictures, staggered.
-  var parts = d.querySelectorAll(".chapter > *, .features h2, .frow, .beta .bgrid > *, .field > *, .faq h2, .qtext p, .ctext > *");
+  var parts = d.querySelectorAll(".chapter > *, .fhead > *, .fblock, .field, .mosaic figure, .beta .bgrid > *, .faq h2, .qtext p, .ctext > *");
   if (io && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var ro = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); ro.unobserve(e.target); } });
@@ -25,6 +25,16 @@
       p.classList.add("rv"); p.style.transitionDelay = Math.min(i, 6) * 75 + "ms"; ro.observe(p);
     });
   }
+
+  // Screen sliders.
+  d.querySelectorAll(".slider").forEach(function (sl) {
+    var tr = sl.querySelector(".track"), pv = sl.querySelector(".prev"), nx = sl.querySelector(".next");
+    var step = function () { var f = tr.querySelector(".slide"); return f ? f.getBoundingClientRect().width + 22 : 240; };
+    var upd = function () { pv.disabled = tr.scrollLeft < 4; nx.disabled = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 4; sl.querySelector(".snav").hidden = tr.scrollWidth <= tr.clientWidth + 4; };
+    pv.addEventListener("click", function () { tr.scrollBy({ left: -step() }); });
+    nx.addEventListener("click", function () { tr.scrollBy({ left: step() }); });
+    tr.addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+  });
 
   // Ask a plant.
   var talk = d.querySelector(".talk");
