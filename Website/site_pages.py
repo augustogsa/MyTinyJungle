@@ -171,8 +171,9 @@ GENERAL = {
 
 UI = {
  "en": {"gk_title": "Good to know", "gk_desc": "Every question about My Tiny Jungle, from getting started to each feature.", "gk_intro": "Everything people ask about My Tiny Jungle, in one place. Still curious? Write to us from the Support page.",
-        "by_feature": "Feature by feature", "how": "How it works", "q": "Questions", "all_q": "All questions", "more": "Learn more", "features": "All features", "plus_badge": "Plus"},
+        "by_feature": "Feature by feature", "how": "How it works", "q": "Questions", "all_q": "All questions", "more": "Learn more", "features": "All features", "feat_desc": "Everything My Tiny Jungle does for your plants. Tap a feature to see how it works.", "plus_badge": "Plus"},
  "pt": {"gk_title": "Bom saber", "gk_desc": "Todas as dúvidas sobre o My Tiny Jungle, dos primeiros passos a cada recurso.", "gk_intro": "Tudo o que o pessoal pergunta sobre o My Tiny Jungle, num lugar só. Ainda ficou com dúvida? Fala com a gente na página de Ajuda.",
-        "by_feature": "Recurso por recurso", "how": "Como funciona", "q": "Perguntas", "all_q": "Ver todas as perguntas", "more": "Saiba mais", "features": "Todos os recursos", "plus_badge": "Plus"},
+        "by_feature": "Recurso por recurso", "how": "Como funciona", "q": "Perguntas", "all_q": "Ver todas as perguntas", "more": "Saiba mais", "features": "Todos os recursos", "feat_desc": "Tudo o que o My Tiny Jungle faz pelas suas plantas. Toca num recurso pra ver como funciona.",
+  "feat_desc": "Tudo o que o My Tiny Jungle faz pelas suas plantas. Toca num recurso pra ver como funciona.", "plus_badge": "Plus"},
 }
 PLUS = {"firstAid", "fertilizer", "travel", "seedling", "sun"}

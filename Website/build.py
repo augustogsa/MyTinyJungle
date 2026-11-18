@@ -27,7 +27,7 @@ T = {
  "en": {
   "lang": "en", "prefix": "", "other": "pt", "other_label": "PT",
   "nav": ["Inside the app", "Plus", "Support", "Join the beta"],
-  "foot": ["Support", "Privacy", "Terms", "Good to know"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
+  "foot": ["Support", "Privacy", "Terms", "Good to know","Features"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Coming soon on the App Store",
   "home_title": "My Tiny Jungle: plant care that knows your home",
   "home_desc": "Not a watering timer. My Tiny Jungle works out each plant's care from your weather, heating, room light, pot and soil, and your plants tell you in their own words.",
@@ -108,7 +108,7 @@ T = {
  "pt": {
   "lang": "pt-BR", "prefix": "/pt", "other": "en", "other_label": "EN",
   "nav": ["O app", "Plus", "Ajuda", "Quero testar"],
-  "foot": ["Ajuda", "Privacidade", "Termos", "Bom saber"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
+  "foot": ["Ajuda", "Privacidade", "Termos", "Bom saber","Recursos"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Em breve na App Store",
   "home_title": "My Tiny Jungle: suas plantas cuidadas do jeito certo",
   "home_desc": "Chega de lembrete genérico. O My Tiny Jungle olha o clima da sua cidade, a luz de cada cômodo, o vaso e a terra pra te dizer do que cada planta precisa, na hora certa.",
@@ -219,7 +219,7 @@ def page(L, path, title, desc, body):
 </div></header>
 <main>{body}</main>
 <footer><div class="wrap"><span>© 2026 SimpleAppsCo LLC <img class="fsep" src="/icons/sprout.png" alt="" width="20" height="20" loading="lazy"> {t['made']}</span>
-<nav><a href="{p}/good-to-know">{f[3]}</a><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
+<nav><a href="{p}/features">{f[4]}</a><a href="{p}/good-to-know">{f[3]}</a><a href="{p}/support">{f[0]}</a><a href="{p}/privacy">{f[1]}</a><a href="{p}/terms">{f[2]}</a></nav></div></footer>
 <script src="/site.js?v={CSS_V}" defer></script>
 </body></html>"""
 
@@ -264,6 +264,11 @@ def feature_pages(L):
                  f'<h2>{u["q"]}</h2><div class="faq">' + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in qs) + "</div>"
                  f'<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a><a href="{p}/features/{nxt[1]}">{nxt[2]} →</a></div>')
         out[f"features/{slug}"] = doc(L, f"/features/{slug}", title, short, inner, meta=False)
+    grid = '<div class="fgrid">' + "".join(
+        f'<a class="fcard" href="{p}/features/{slug}"><img class="i3d" src="/icons/{ic}.png" alt="" width="56" height="56">'
+        f'<span class="ft">{title}' + (f' <span class="fbadge">{u["plus_badge"]}</span>' if ic in PLUS else "") + f'</span><span class="fs">{short}</span></a>'
+        for ic, slug, title, short, _ in rows) + "</div>"
+    out["features"] = doc(L, "/features", u["features"], u["feat_desc"], f'<p class="flead">{u["feat_desc"]}</p>{grid}<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a></div>', meta=False)
     return out
 
 
@@ -317,7 +322,7 @@ def build():
     (DIST / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
                                       + "".join(f"<url><loc>{u}</loc></url>" for u in urls) + "</urlset>\n")
     (DIST / ".htaccess").write_text(
-        "DirectorySlash Off\nErrorDocument 404 /\n"
+        "Options -Indexes\nDirectorySlash Off\nErrorDocument 404 /\nErrorDocument 403 /\n"
         "RewriteEngine On\nRewriteCond %{REQUEST_FILENAME} -d\nRewriteCond %{REQUEST_FILENAME}/index.html -f\nRewriteRule ^(.*[^/])$ $1/index.html [L]\n"
         "<IfModule mod_headers.c>\n<FilesMatch \"\\.(jpg|png)$\">\nHeader set Cache-Control \"public, max-age=604800\"\n</FilesMatch>\n"
         "<Files \"apple-app-site-association\">\nHeader set Content-Type application/json\n</Files>\nHeader always set X-Content-Type-Options nosniff\nHeader always set Referrer-Policy strict-origin-when-cross-origin\n</IfModule>\n")
