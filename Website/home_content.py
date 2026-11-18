@@ -21,8 +21,8 @@ SCENES = [("monstera", "today1"), ("echeveria", "today-ring"), ("pothos", "plant
 
 H = {
  "en": {
-  "h1": "Your plants talk back.",
-  "lead": "My Tiny Jungle is a cosy iPhone app for every plant you love. Tell it what you did in your own words. Your plants answer, ask gently for what they need, and grow happier with you.",
+  "h1": "Plant care that knows your home.",
+  "lead": "Other apps water on a timer. My Tiny Jungle works out each plant's care from your weather, your heating, the light in each room, its pot and how its soil really dries. Then your plants tell you, in their own words.",
   "cta": "Join the beta on TestFlight",
   "note": "Free for up to 5 plants. Your photos stay on your phone.",
   "stage_alt": "My Tiny Jungle on iPhone",
@@ -84,6 +84,15 @@ H = {
   "plus_btn": "Get Plus in the app",
   "fine": "Prices in euros; local prices may vary. Subscriptions renew automatically until cancelled in your Apple account settings.",
   "faq_h": "Good to know",
+  "know_h": "Not a timer. Care that knows your home.",
+  "know_p": "Most plant apps ask how often to water, then count down: every 7 days, forever. My Tiny Jungle works it out for each plant, every day, from everything around it.",
+  "know_vs": (("A reminder app", ["Water every 7 days", "The same in July and January", "Waters the balcony in the rain", "Two people, two reminders, one drowned fern"]), ("My Tiny Jungle", ["Water when that pot will be dry", "Shifts with your seasons and hemisphere", "Skips outdoor plants after rain", "Shares turns, so nobody double-waters"])),
+  "two_h": "Same monstera, two homes",
+  "two_p": "One week in July. Same plant, same species. Different lives.",
+  "homes": [("Lisbon", "Balcony, terracotta pot, highs around 28 °C", "About every 5 days", "Warm days and a terracotta pot dry the soil fast. If it rains, the reminder waits."), ("Berlin", "Bright living room, plastic pot, 19 °C outside", "About every 8 days", "Indoors, plastic holds water longer. In winter, with the heating on, the sums change again.")],
+  "two_timer": "A fixed timer says every 7 days for both: too little in Lisbon, too much in Berlin.",
+  "in_h": "What it takes into account",
+  "inputs": [("sun", "Your city and climate", "Climate type, the local forecast, rain, the seasons and your hemisphere."), ("homeLeaf", "Your home", "Heating in winter, air conditioning in summer, and whether the air is dry or damp."), ("livingRoom", "Light, room by room", "The light you set for each room, matched to what each plant likes."), ("pot", "The pot", "Size, material and drainage. Terracotta dries faster than glass."), ("soilTest", "Its own rhythm", "Species data first, then your soil checks and care history teach it how fast that pot really dries."), ("balcony", "Inside or out", "Outdoor plants follow the real weather. Indoor plants follow your home."), ("shieldLeaf", "Pets and kids", "Clear warnings for plants that are toxic to cats, dogs or little ones."), ("careHands", "Your household", "Whose turn it is, cover while someone travels, and shared care so nobody waters twice.")],
   "smart_h": "Quietly very clever",
   "smart_p": "Behind the friendly chat is real plant knowledge. Every answer is tuned to the plant, your home and the weather outside your window.",
   "smart": [("628", "species", "Known by name, each with its own care rhythm"), ("27", "pests", "Spotted early, with a calm plan for each"), ("45", "symptoms", "Yellow leaves, brown tips, droop: read and explained"),
@@ -99,8 +108,8 @@ H = {
   "c_h": "Give your plants a voice", "c_p": "My Tiny Jungle is in beta on iPhone. Join today and bring a friend.",
  },
  "pt": {
-  "h1": "Suas plantas respondem.",
-  "lead": "O My Tiny Jungle é um app aconchegante para iPhone, cultivado para todas as plantas que você ama. Conte o que fez, do seu jeito. Elas respondem, pedem com carinho o que precisam e ficam mais felizes com você.",
+  "h1": "O cuidado que conhece a sua casa.",
+  "lead": "Outros apps regam no cronômetro. O My Tiny Jungle descobre o cuidado de cada planta pelo tempo na sua cidade, o aquecedor, a luz de cada cômodo, o vaso e o jeito que a terra seca de verdade. E as plantas te contam tudo, do jeito delas.",
   "cta": "Entrar no beta pelo TestFlight",
   "note": "Grátis para até 5 plantas. Suas fotos ficam no seu celular.",
   "stage_alt": "My Tiny Jungle no iPhone",
@@ -162,6 +171,15 @@ H = {
   "plus_btn": "Assinar o Plus no app",
   "fine": "Preços em euros; podem variar de acordo com o país. As assinaturas são renovadas automaticamente até serem canceladas nos ajustes da sua conta Apple.",
   "faq_h": "Bom saber",
+  "know_h": "Não é um alarme. É um cuidado que conhece a sua casa.",
+  "know_p": "A maioria dos apps de plantas pergunta de quanto em quanto tempo regar e começa a contagem: a cada 7 dias, para sempre. O My Tiny Jungle calcula para cada planta, todo dia, olhando tudo o que está em volta dela.",
+  "know_vs": (("Um app de lembrete", ["Regar a cada 7 dias", "Igualzinho em julho e em janeiro", "Manda regar a varanda debaixo de chuva", "Duas pessoas, dois lembretes, uma samambaia afogada"]), ("My Tiny Jungle", ["Rega quando aquele vaso vai estar seco", "Acompanha as estações e o seu hemisfério", "Pula as plantas de fora depois da chuva", "Divide a vez para ninguém regar em dobro"])),
+  "two_h": "A mesma costela-de-adão, duas casas",
+  "two_p": "Uma semana de julho. A mesma planta, a mesma espécie. Vidas bem diferentes.",
+  "homes": [("Lisboa", "Varanda, vaso de barro, máximas de 28 °C", "Mais ou menos a cada 5 dias", "Dias quentes e vaso de barro secam a terra rapidinho. Se chover, o lembrete espera."), ("Berlim", "Sala bem iluminada, vaso de plástico, 19 °C lá fora", "Mais ou menos a cada 8 dias", "Dentro de casa, o plástico segura a água por mais tempo. No inverno, com o aquecedor ligado, a conta muda de novo.")],
+  "two_timer": "Um alarme fixo mandaria regar as duas a cada 7 dias: pouca água em Lisboa, água demais em Berlim.",
+  "in_h": "Tudo o que ele leva em conta",
+  "inputs": [("sun", "Sua cidade e o clima", "O tipo de clima, a previsão do tempo, a chuva, as estações e o seu hemisfério."), ("homeLeaf", "Sua casa", "Aquecedor no inverno, ar-condicionado no verão e se o ar é seco ou úmido."), ("livingRoom", "A luz de cada cômodo", "A luz que você marca em cada cômodo, combinada com o que cada planta gosta."), ("pot", "O vaso", "Tamanho, material e furo de drenagem. Vaso de barro seca mais rápido que o de vidro."), ("soilTest", "O ritmo de cada uma", "Começa pelos dados da espécie. Depois, os seus testes de terra e o histórico de cuidados ensinam quanto tempo aquele vaso leva para secar."), ("balcony", "Dentro ou fora de casa", "As plantas de fora seguem o tempo de verdade. As de dentro seguem a sua casa."), ("shieldLeaf", "Pets e crianças", "Avisos claros sobre plantas tóxicas para gatos, cachorros e os pequenos."), ("careHands", "Quem mora com você", "De quem é a vez, quem cobre quando alguém viaja e cuidados sincronizados para ninguém regar duas vezes.")],
   "smart_h": "Discreto e muito esperto",
   "smart_p": "Por trás da conversa carinhosa tem conhecimento de verdade sobre plantas. Cada resposta leva em conta a planta, a sua casa e o tempo lá fora.",
   "smart": [("628", "espécies", "Reconhecidas pelo nome, cada uma com seu ritmo de cuidado"), ("27", "pragas", "Identificadas cedo, com um plano tranquilo para cada uma"), ("45", "sintomas", "Folha amarela, ponta marrom, murchinha: tudo explicado"),
@@ -266,6 +284,15 @@ def render_home(L, t, page, phone, apple_icon):
 </div>
 <div class="stage">{layers}</div>
 </div>
+<section class="know" id="smart-care"><div class="wrap">
+<div class="ktop"><div class="khead">{E("scan", 120)}<h2>{h['know_h']}</h2><p>{h['know_p']}</p>
+<div class="vs">{"".join(f'<div class="vcol{" us" if j else ""}"><h3>{t}</h3><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for j, (t, xs) in enumerate(h["know_vs"]))}</div></div>
+{phone(A + "/care-season.jpg", h["in_h"], "kphone")}</div>
+<div class="two"><div class="ttext"><h3>{h['two_h']}</h3><p>{h['two_p']}</p></div>
+<div class="homes">{"".join(f'<div class="home"><p class="city">{c}</p><p class="spot">{sp}</p><p class="every">{ev}</p><p>{why}</p></div>' for c, sp, ev, why in h["homes"])}</div>
+<p class="timer">{h['two_timer']}</p></div>
+<div class="inputs"><h3>{h['in_h']}</h3><div class="igrid">{"".join(f'<div class="inp">{I(ic, 48)}<h4>{t}</h4><p>{d}</p></div>' for ic, t, d in h["inputs"])}</div></div>
+</div></section>
 <section class="pills-band" aria-label="Why"><div class="wrap pills">{"".join(f'<p class="pill">{I(i, 48)}{x}</p>' for i, x in h["pills"])}</div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
 <section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
