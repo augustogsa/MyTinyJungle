@@ -327,3 +327,24 @@ p,li,.bcard span{text-wrap:pretty}
 .ktop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:64px;align-items:center}
 .khead{max-width:none}.kphone{width:min(300px,70vw)}
 @media (max-width:900px){.ktop{grid-template-columns:1fr}.kphone{margin:0 auto}}
+/* Plant voices */
+.voices{padding:140px 0;background:var(--mint)}
+.vhead h2{font-size:var(--t-l);line-height:1.05;max-width:14em;text-wrap:balance}.vhead p{margin-top:20px;color:var(--muted);max-width:34em}
+.vgrid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;margin-top:56px;align-items:start}
+.msgs{display:grid;gap:22px}
+.msg{display:flex;gap:12px;align-items:flex-end}
+.msg .av{width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;margin-bottom:26px}
+.msg .who{margin:0 0 4px 14px;font-size:14px;color:var(--muted)}.msg .who b{color:var(--ink);margin-right:8px}
+.msg .who span{font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--sage);color:var(--forest)}
+.bub{position:relative;margin:0;background:var(--paper);padding:12px 16px;border-radius:20px;max-width:30em;line-height:1.4;box-shadow:0 1px 0 rgba(36,51,31,.06)}
+.bub::before{content:"";position:absolute;left:-6px;bottom:0;width:18px;height:18px;background:var(--paper);border-bottom-right-radius:16px 14px}
+.bub::after{content:"";position:absolute;left:-10px;bottom:0;width:10px;height:20px;background:var(--mint);border-bottom-right-radius:10px}
+.whyl{margin:6px 0 0 14px;font-size:13px;color:var(--forest);font-weight:600}
+.lock h3{font-size:var(--t-m);margin:0 0 20px}
+.lockphone{border-radius:44px;padding:56px 14px 28px;background:linear-gradient(160deg,#5a4a3c,#2b2622 55%,#3b3129);box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+.ltime{margin:0 0 28px;text-align:center;color:rgba(255,255,255,.85);font-size:64px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.ncard{display:flex;gap:10px;align-items:flex-start;background:rgba(245,240,235,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:20px;padding:11px 13px;margin-top:8px;font-size:14px;line-height:1.35;color:#1d1d1f}
+.ncard img{width:38px;height:38px;border-radius:9px;object-fit:cover;flex:none}
+.ncard b{display:block}.ncard span{display:block}
+.lockshot{width:min(280px,70%);margin:28px auto 0;border-radius:36px;box-shadow:0 30px 60px -30px rgba(0,0,0,.4)}
+@media (max-width:900px){.vgrid{grid-template-columns:1fr}.voices{padding:96px 0}}

@@ -84,6 +84,13 @@ H = {
   "plus_btn": "Get Plus in the app",
   "fine": "Prices in euros; local prices may vary. Subscriptions renew automatically until cancelled in your Apple account settings.",
   "faq_h": "Good to know",
+  "voice_h": "Funny, because it's true",
+  "voice_p": "Every plant has a personality, and every nudge has a reason. The jokes come from the real weather, your home and whose turn it is.",
+  "why": "Why now",
+  "voices": [("peacelily", "Lily", "Dramatic", "Water. Now. I'm begging you, with my whole leaves.", "Heating's on, so her pot dries sooner"), ("echeveria", "Rosetta", "Independent", "Dry. Water when you can.", "Balcony, sunny week, no rain"), ("monstera", "Monty", "Calm", "My soil is dry now. A slow, deep drink would be lovely.", "Timed from his own soil checks"), ("pothos", "Goldie", "Chatty", "Hi hi! Could you stick a finger in my soil and tell me how it feels? I think I might be getting dry!", "Bright kitchen, small pot"), ("basil", "Pesto", "Dramatic", "Growing season and no snacks? Tragic.", "Growing season where you live"), ("orchid", "Pearl", "Curious", "Dry soil… does that mean drink time?", "You told it the soil felt dry")],
+  "lock_h": "And when you're away from the app",
+  "notifs": [("echeveria", "Frost tonight (0°C)", "Rosetta lives on the balcony. Please bring her inside or wrap her in fleece before bed. Frost hurts tender leaves."), ("echeveria", "A hot one tomorrow (36°C)", "Rosetta would love some afternoon shade and a deep drink in the cool of the morning."), ("peacelily", "Lily", "I'm wilting over here. Truly. One slow, deep drink would bring me back to life."), ("pothos", "Goldie is your turn today", ""), ("monstera", "My Tiny Jungle", "Tomorrow you travel. A deep, slow drink for everyone tonight, and they'll wait happily for you.")],
+  "lock_alt": "Lily's notification, expanded on the lock screen, with Watered, Still wet, Remind me tonight and Open chat",
   "know_h": "Not a timer. Care that knows your home.",
   "know_p": "Most plant apps ask how often to water, then count down: every 7 days, forever. My Tiny Jungle works it out for each plant, every day, from everything around it.",
   "know_vs": (("A reminder app", ["Water every 7 days", "The same in July and January", "Waters the balcony in the rain", "Two people, two reminders, one drowned fern"]), ("My Tiny Jungle", ["Water when that pot will be dry", "Shifts with your seasons and hemisphere", "Skips outdoor plants after rain", "Shares turns, so nobody double-waters"])),
@@ -171,6 +178,13 @@ H = {
   "plus_btn": "Assinar o Plus no app",
   "fine": "Preços em euros; podem variar de acordo com o país. As assinaturas são renovadas automaticamente até serem canceladas nos ajustes da sua conta Apple.",
   "faq_h": "Bom saber",
+  "voice_h": "Engraçado, porque é verdade",
+  "voice_p": "Cada planta tem sua personalidade, e cada recadinho tem um motivo. As piadas vêm do tempo de verdade, da sua casa e de quem é a vez.",
+  "why": "Por que agora",
+  "voices": [("peacelily", "Lili", "Dramática", "Água. Agora. Te imploro com todas as minhas folhas.", "Aquecedor ligado, o vaso seca mais rápido"), ("echeveria", "Rosinha", "Independente", "Seca. Rega quando puder.", "Varanda, semana de sol, nada de chuva"), ("monstera", "Costelinha", "Tranquila", "Minha terra secou. Uma rega lenta e caprichada seria uma delícia.", "Calculado pelos testes de terra dela"), ("pothos", "Dourada", "Tagarela", "Oiê! Pode enfiar o dedinho na minha terra e me contar como está? Acho que estou ficando seca!", "Cozinha clara, vaso pequeno"), ("basil", "Pesto", "Dramática", "Época de crescer e nada de lanchinho? Que tragédia.", "Época de crescimento onde você mora"), ("orchid", "Pérola", "Curiosa", "Terra seca… quer dizer que é hora de beber?", "Você contou que a terra estava seca")],
+  "lock_h": "E quando você está longe do app",
+  "notifs": [("echeveria", "Geada hoje à noite (0 °C)", "A Rosinha mora na varanda. Leve ela pra dentro ou cubra com uma manta antes de dormir, tá? Geada machuca folhinha delicada."), ("echeveria", "Amanhã vai ser um calorão (36 °C)", "A Rosinha ia adorar uma sombrinha à tarde e uma boa regada no friozinho da manhã."), ("peacelily", "Lili", "Tô murchando aqui. Sério mesmo. Uma regada lenta e caprichada me traria de volta à vida."), ("pothos", "Hoje Dourada é com você", ""), ("monstera", "My Tiny Jungle", "Amanhã você viaja. Uma regada caprichada pra todo mundo hoje à noite, e elas vão te esperar felizes.")],
+  "lock_alt": "",
   "know_h": "Não é um alarme. É um cuidado que conhece a sua casa.",
   "know_p": "A maioria dos apps de plantas pergunta de quanto em quanto tempo regar e começa a contagem: a cada 7 dias, para sempre. O My Tiny Jungle calcula para cada planta, todo dia, olhando tudo o que está em volta dela.",
   "know_vs": (("Um app de lembrete", ["Regar a cada 7 dias", "Igualzinho em julho e em janeiro", "Manda regar a varanda debaixo de chuva", "Duas pessoas, dois lembretes, uma samambaia afogada"]), ("My Tiny Jungle", ["Rega quando aquele vaso vai estar seco", "Acompanha as estações e o seu hemisfério", "Pula as plantas de fora depois da chuva", "Divide a vez para ninguém regar em dobro"])),
@@ -292,6 +306,12 @@ def render_home(L, t, page, phone, apple_icon):
 <div class="homes">{"".join(f'<div class="home"><p class="city">{c}</p><p class="spot">{sp}</p><p class="every">{ev}</p><p>{why}</p></div>' for c, sp, ev, why in h["homes"])}</div>
 <p class="timer">{h['two_timer']}</p></div>
 <div class="inputs"><h3>{h['in_h']}</h3><div class="igrid">{"".join(f'<div class="inp">{I(ic, 48)}<h4>{t}</h4><p>{d}</p></div>' for ic, t, d in h["inputs"])}</div></div>
+</div></section>
+<section class="voices" id="voices"><div class="wrap">
+<div class="vhead"><h2>{h['voice_h']}</h2><p>{h['voice_p']}</p></div>
+<div class="vgrid"><div class="msgs">{"".join(f'<div class="msg"><img class="av" src="/assets/plants/{ph}.jpg" alt="" width="44" height="44" loading="lazy"><div><p class="who"><b>{nm}</b><span>{pers}</span></p><p class="bub">{line}</p><p class="whyl">{h["why"]}: {why}</p></div></div>' for ph, nm, pers, line, why in h["voices"])}</div>
+<div class="lock"><h3>{h['lock_h']}</h3><div class="lockphone"><p class="ltime">9:41</p>{"".join(f'<div class="ncard"><img src="/assets/plants/{ph}.jpg" alt="" width="38" height="38" loading="lazy"><div><b>{t}</b>{f"<span>{b}</span>" if b else ""}</div></div>' for ph, t, b in h["notifs"])}</div>
+{f'<img class="lockshot" src="/assets/notif/lily-expanded.jpg" alt="{h["lock_alt"]}" width="550" height="1196" loading="lazy">' if h["lock_alt"] else ""}</div></div>
 </div></section>
 <section class="pills-band" aria-label="Why"><div class="wrap pills">{"".join(f'<p class="pill">{I(i, 48)}{x}</p>' for i, x in h["pills"])}</div></section>
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<div class="acard">{I(i, 64)}<h3>{x}</h3><p>{y}</p></div>' for i, x, y in h["all"])}</div></div></section>
