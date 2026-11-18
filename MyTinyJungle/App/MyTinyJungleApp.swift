@@ -117,7 +117,7 @@ struct RootView: View {
         }
     }
     /// 3D tab icon: full colour when selected, faded grey when not.
-    private func tabLabel(_ title: String, _ key: String, _ value: Int) -> some View {
+    private func tabLabel(_ title: LocalizedStringKey, _ key: String, _ value: Int) -> some View {
         Label { Text(title) } icon: { Image("TabIcons/\(key)\(tab == value ? "On" : "Off")").renderingMode(.original) }
     }
 }

@@ -10,7 +10,16 @@ struct CareGuide: Identifiable, Hashable {
         var tip: String? = nil
         var seconds: Int? = nil
     }
-    enum Level: String { case easy = "Easy", medium = "Medium", careful = "Take care" }
+    enum Level: String {
+        case easy = "Easy", medium = "Medium", careful = "Take care"
+        var label: String {
+            switch self {
+            case .easy: String(localized: "Easy", comment: "Care guide difficulty level")
+            case .medium: String(localized: "Medium", comment: "Care guide difficulty level")
+            case .careful: String(localized: "Take care", comment: "Care guide difficulty level; needs extra care")
+            }
+        }
+    }
     let id: String
     let title: String
     let subtitle: String
@@ -40,71 +49,71 @@ extension CareEngine {
 enum GuideLibrary {
     static let all: [CareGuide] = core + lessons + knowledgeLessons
     static let core: [CareGuide] = [
-        CareGuide(id: "water", title: "Water the right amount", subtitle: "Deep, slow, then drain", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72), minutes: 3, level: .easy,
-                  tools: ["Watering can", "Measuring jug", "Saucer"], when: "Only when the top of the soil is dry for most plants.", logs: .water, steps: [
-            .init(title: "Check first", detail: "Push a finger 2–3 cm into the soil. Dry? Water. Still cool and damp? Wait a day or two.", symbol: "hand.point.down.fill", tip: "Lift the pot: a dry pot feels surprisingly light."),
-            .init(title: "Measure", detail: "Use about a fifth of the pot's volume. I'll show the exact amount for your pot.", symbol: "drop.halffull"),
-            .init(title: "Pour slowly", detail: "Circle the base, not the leaves, so all the soil gets wet evenly.", symbol: "arrow.trianglehead.clockwise", seconds: 30),
-            .init(title: "Let it drain", detail: "Wait until water runs out of the holes, then empty the saucer.", symbol: "water.waves", tip: "Standing water rots roots.", seconds: 60),
+        CareGuide(id: "water", title: String(localized: "Water the right amount", comment: "Care guide title; short"), subtitle: String(localized: "Deep, slow, then drain", comment: "Care guide subtitle; short"), symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72), minutes: 3, level: .easy,
+                  tools: [String(localized: "Watering can", comment: "Tool needed for a care guide"), String(localized: "Measuring jug", comment: "Tool needed for a care guide"), String(localized: "Saucer", comment: "Tool needed for a care guide")], when: String(localized: "Only when the top of the soil is dry for most plants.", comment: "When to do this care guide"), logs: .water, steps: [
+            .init(title: String(localized: "Check first", comment: "Care guide step title; short"), detail: String(localized: "Push a finger 2–3 cm into the soil. Dry? Water. Still cool and damp? Wait a day or two.", comment: "Care guide step instruction; warm, practical"), symbol: "hand.point.down.fill", tip: String(localized: "Lift the pot: a dry pot feels surprisingly light.", comment: "Care guide step tip")),
+            .init(title: String(localized: "Measure", comment: "Care guide step title; short"), detail: String(localized: "Use about a fifth of the pot's volume. I'll show the exact amount for your pot.", comment: "Care guide step instruction; warm, practical"), symbol: "drop.halffull"),
+            .init(title: String(localized: "Pour slowly", comment: "Care guide step title; short"), detail: String(localized: "Circle the base, not the leaves, so all the soil gets wet evenly.", comment: "Care guide step instruction; warm, practical"), symbol: "arrow.trianglehead.clockwise", seconds: 30),
+            .init(title: String(localized: "Let it drain", comment: "Care guide step title; short"), detail: String(localized: "Wait until water runs out of the holes, then empty the saucer.", comment: "Care guide step instruction; warm, practical"), symbol: "water.waves", tip: String(localized: "Standing water rots roots.", comment: "Care guide step tip"), seconds: 60),
         ]),
-        CareGuide(id: "soil", title: "Read the soil", subtitle: "The finger test", symbol: "hand.point.down.fill", tint: Jungle.terracotta, minutes: 1, level: .easy,
-                  tools: ["Your finger", "Optional: wooden skewer"], when: "Before every watering.", logs: .soilCheck, steps: [
-            .init(title: "Go in 2–3 cm", detail: "Push one finger in near the edge of the pot, away from the stem.", symbol: "hand.point.down.fill"),
-            .init(title: "Feel", detail: "Dry and crumbly: water. Cool and slightly damp: wait. Wet or muddy: definitely wait.", symbol: "hand.raised.fill"),
-            .init(title: "For deep pots", detail: "Slide a wooden skewer to the bottom for 10 s. Damp soil sticks to it.", symbol: "line.diagonal", seconds: 10),
+        CareGuide(id: "soil", title: String(localized: "Read the soil", comment: "Care guide title; short"), subtitle: String(localized: "The finger test", comment: "Care guide subtitle; short"), symbol: "hand.point.down.fill", tint: Jungle.terracotta, minutes: 1, level: .easy,
+                  tools: [String(localized: "Your finger", comment: "Tool needed for a care guide"), String(localized: "Optional: wooden skewer", comment: "Tool needed for a care guide")], when: String(localized: "Before every watering.", comment: "When to do this care guide"), logs: .soilCheck, steps: [
+            .init(title: String(localized: "Go in 2–3 cm", comment: "Care guide step title; short"), detail: String(localized: "Push one finger in near the edge of the pot, away from the stem.", comment: "Care guide step instruction; warm, practical"), symbol: "hand.point.down.fill"),
+            .init(title: String(localized: "Feel", comment: "Care guide step title; short"), detail: String(localized: "Dry and crumbly: water. Cool and slightly damp: wait. Wet or muddy: definitely wait.", comment: "Care guide step instruction; warm, practical"), symbol: "hand.raised.fill"),
+            .init(title: String(localized: "For deep pots", comment: "Care guide step title; short"), detail: String(localized: "Slide a wooden skewer to the bottom for 10 s. Damp soil sticks to it.", comment: "Care guide step instruction; warm, practical"), symbol: "line.diagonal", seconds: 10),
         ]),
-        CareGuide(id: "prune", title: "Prune a leaf or stem", subtitle: "Clean cuts heal fast", symbol: "scissors", tint: Jungle.leaf, minutes: 5, level: .easy,
-                  tools: ["Sharp scissors or pruners", "Alcohol wipe"], when: "Spring or summer. Remove yellow or brown leaves any time.", logs: .prune, steps: [
-            .init(title: "Clean your blades", detail: "Wipe scissors with alcohol so you don't spread disease.", symbol: "sparkles", seconds: 15),
-            .init(title: "Find the node", detail: "A node is the small bump where a leaf meets the stem. New growth starts there.", symbol: "smallcircle.filled.circle"),
-            .init(title: "Cut above it", detail: "Cut about 1 cm above a node at a slight angle. For a dead leaf, cut its stalk at the base.", symbol: "scissors", tip: "Never remove more than a quarter of the plant at once."),
-            .init(title: "Tidy up", detail: "Remove fallen leaves from the soil to keep pests away.", symbol: "leaf"),
+        CareGuide(id: "prune", title: String(localized: "Prune a leaf or stem", comment: "Care guide title; short"), subtitle: String(localized: "Clean cuts heal fast", comment: "Care guide subtitle; short"), symbol: "scissors", tint: Jungle.leaf, minutes: 5, level: .easy,
+                  tools: [String(localized: "Sharp scissors or pruners", comment: "Tool needed for a care guide"), String(localized: "Alcohol wipe", comment: "Tool needed for a care guide")], when: String(localized: "Spring or summer. Remove yellow or brown leaves any time.", comment: "When to do this care guide"), logs: .prune, steps: [
+            .init(title: String(localized: "Clean your blades", comment: "Care guide step title; short"), detail: String(localized: "Wipe scissors with alcohol so you don't spread disease.", comment: "Care guide step instruction; warm, practical"), symbol: "sparkles", seconds: 15),
+            .init(title: String(localized: "Find the node", comment: "Care guide step title; short"), detail: String(localized: "A node is the small bump where a leaf meets the stem. New growth starts there.", comment: "Care guide step instruction; warm, practical"), symbol: "smallcircle.filled.circle"),
+            .init(title: String(localized: "Cut above it", comment: "Care guide step title; short"), detail: String(localized: "Cut about 1 cm above a node at a slight angle. For a dead leaf, cut its stalk at the base.", comment: "Care guide step instruction; warm, practical"), symbol: "scissors", tip: String(localized: "Never remove more than a quarter of the plant at once.", comment: "Care guide step tip")),
+            .init(title: String(localized: "Tidy up", comment: "Care guide step title; short"), detail: String(localized: "Remove fallen leaves from the soil to keep pests away.", comment: "Care guide step instruction; warm, practical"), symbol: "leaf"),
         ]),
-        CareGuide(id: "cutting", title: "Take a cutting", subtitle: "Make a new plant", symbol: "scissors.badge.ellipsis", tint: Jungle.forest, minutes: 10, level: .medium,
-                  tools: ["Clean scissors", "Glass jar", "Room-temperature water"], when: "Spring to late summer, from a healthy stem.", logs: .propagate, steps: [
-            .init(title: "Pick a stem", detail: "Choose a healthy stem with 1–3 leaves and at least one node (and an aerial root if it has one).", symbol: "leaf.fill"),
-            .init(title: "Cut below the node", detail: "Cut 1 cm below the node. The node is where roots will grow.", symbol: "scissors"),
-            .init(title: "Into water", detail: "Put it in a jar so the node is under water but the leaves stay dry.", symbol: "drop.fill"),
-            .init(title: "Bright and warm", detail: "Bright indirect light, no direct sun. Change the water every week.", symbol: "sun.max", tip: "Roots appear in 1–3 weeks. Pot it once they're 2–5 cm long."),
+        CareGuide(id: "cutting", title: String(localized: "Take a cutting", comment: "Care guide title; short"), subtitle: String(localized: "Make a new plant", comment: "Care guide subtitle; short"), symbol: "scissors.badge.ellipsis", tint: Jungle.forest, minutes: 10, level: .medium,
+                  tools: [String(localized: "Clean scissors", comment: "Tool needed for a care guide"), String(localized: "Glass jar", comment: "Tool needed for a care guide"), String(localized: "Room-temperature water", comment: "Tool needed for a care guide")], when: String(localized: "Spring to late summer, from a healthy stem.", comment: "When to do this care guide"), logs: .propagate, steps: [
+            .init(title: String(localized: "Pick a stem", comment: "Care guide step title; short"), detail: String(localized: "Choose a healthy stem with 1–3 leaves and at least one node (and an aerial root if it has one).", comment: "Care guide step instruction; warm, practical"), symbol: "leaf.fill"),
+            .init(title: String(localized: "Cut below the node", comment: "Care guide step title; short"), detail: String(localized: "Cut 1 cm below the node. The node is where roots will grow.", comment: "Care guide step instruction; warm, practical"), symbol: "scissors"),
+            .init(title: String(localized: "Into water", comment: "Care guide step title; short"), detail: String(localized: "Put it in a jar so the node is under water but the leaves stay dry.", comment: "Care guide step instruction; warm, practical"), symbol: "drop.fill"),
+            .init(title: String(localized: "Bright and warm", comment: "Care guide step title; short"), detail: String(localized: "Bright indirect light, no direct sun. Change the water every week.", comment: "Care guide step instruction; warm, practical"), symbol: "sun.max", tip: String(localized: "Roots appear in 1–3 weeks. Pot it once they're 2–5 cm long.", comment: "Care guide step tip")),
         ]),
-        CareGuide(id: "repot", title: "Repot a plant", subtitle: "Bigger home, fresh soil", symbol: "arrow.up.bin.fill", tint: Jungle.terracotta, minutes: 20, level: .medium,
-                  tools: ["New pot 2–4 cm wider with drainage", "Fresh mix", "Newspaper", "Gloves"], when: "Spring, when roots circle the pot or poke out of the holes.", logs: .repot, steps: [
-            .init(title: "Water the day before", detail: "Moist roots slide out easier and suffer less.", symbol: "drop"),
-            .init(title: "Ease it out", detail: "Tip the pot sideways, hold the base of the stems and squeeze or tap the pot.", symbol: "hand.raised.fill"),
-            .init(title: "Loosen the roots", detail: "Gently tease circling roots. Trim any black, mushy ones with clean scissors.", symbol: "scissors", tip: "Healthy roots are firm and white or tan."),
-            .init(title: "Set the height", detail: "Add mix to the new pot so the plant sits at the same depth as before.", symbol: "ruler"),
-            .init(title: "Fill and firm", detail: "Fill around the sides, tap the pot to settle. Don't pack it hard.", symbol: "square.stack.3d.down.forward"),
-            .init(title: "Water and rest", detail: "Water until it drains. Keep it out of direct sun for a week and don't feed for a month.", symbol: "moon.zzz"),
+        CareGuide(id: "repot", title: String(localized: "Repot a plant", comment: "Care guide title; short"), subtitle: String(localized: "Bigger home, fresh soil", comment: "Care guide subtitle; short"), symbol: "arrow.up.bin.fill", tint: Jungle.terracotta, minutes: 20, level: .medium,
+                  tools: [String(localized: "New pot 2–4 cm wider with drainage", comment: "Tool needed for a care guide"), String(localized: "Fresh mix", comment: "Tool needed for a care guide"), String(localized: "Newspaper", comment: "Tool needed for a care guide"), String(localized: "Gloves", comment: "Tool needed for a care guide")], when: String(localized: "Spring, when roots circle the pot or poke out of the holes.", comment: "When to do this care guide"), logs: .repot, steps: [
+            .init(title: String(localized: "Water the day before", comment: "Care guide step title; short"), detail: String(localized: "Moist roots slide out easier and suffer less.", comment: "Care guide step instruction; warm, practical"), symbol: "drop"),
+            .init(title: String(localized: "Ease it out", comment: "Care guide step title; short"), detail: String(localized: "Tip the pot sideways, hold the base of the stems and squeeze or tap the pot.", comment: "Care guide step instruction; warm, practical"), symbol: "hand.raised.fill"),
+            .init(title: String(localized: "Loosen the roots", comment: "Care guide step title; short"), detail: String(localized: "Gently tease circling roots. Trim any black, mushy ones with clean scissors.", comment: "Care guide step instruction; warm, practical"), symbol: "scissors", tip: String(localized: "Healthy roots are firm and white or tan.", comment: "Care guide step tip")),
+            .init(title: String(localized: "Set the height", comment: "Care guide step title; short"), detail: String(localized: "Add mix to the new pot so the plant sits at the same depth as before.", comment: "Care guide step instruction; warm, practical"), symbol: "ruler"),
+            .init(title: String(localized: "Fill and firm", comment: "Care guide step title; short"), detail: String(localized: "Fill around the sides, tap the pot to settle. Don't pack it hard.", comment: "Care guide step instruction; warm, practical"), symbol: "square.stack.3d.down.forward"),
+            .init(title: String(localized: "Water and rest", comment: "Care guide step title; short"), detail: String(localized: "Water until it drains. Keep it out of direct sun for a week and don't feed for a month.", comment: "Care guide step instruction; warm, practical"), symbol: "moon.zzz"),
         ]),
-        CareGuide(id: "feed", title: "Feed with fertilizer", subtitle: "Dilute, never on dry soil", symbol: "leaf.arrow.triangle.circlepath", tint: Jungle.leaf, minutes: 3, level: .easy,
-                  tools: ["Liquid fertilizer", "Measuring cap", "Watering can"], when: "Spring and summer, every 2–6 weeks. Pause in winter.", logs: .feed, steps: [
-            .init(title: "Water first if dry", detail: "Fertilizer on dry roots can burn them.", symbol: "drop"),
-            .init(title: "Half strength", detail: "Mix at half the dose on the label. Houseplants prefer little and often.", symbol: "drop.halffull"),
-            .init(title: "Pour on the soil", detail: "Water it in like a normal watering and let it drain.", symbol: "drop.fill"),
+        CareGuide(id: "feed", title: String(localized: "Feed with fertilizer", comment: "Care guide title; short"), subtitle: String(localized: "Dilute, never on dry soil", comment: "Care guide subtitle; short"), symbol: "leaf.arrow.triangle.circlepath", tint: Jungle.leaf, minutes: 3, level: .easy,
+                  tools: [String(localized: "Liquid fertilizer", comment: "Tool needed for a care guide"), String(localized: "Measuring cap", comment: "Tool needed for a care guide"), String(localized: "Watering can", comment: "Tool needed for a care guide")], when: String(localized: "Spring and summer, every 2–6 weeks. Pause in winter.", comment: "When to do this care guide"), logs: .feed, steps: [
+            .init(title: String(localized: "Water first if dry", comment: "Care guide step title; short"), detail: String(localized: "Fertilizer on dry roots can burn them.", comment: "Care guide step instruction; warm, practical"), symbol: "drop"),
+            .init(title: String(localized: "Half strength", comment: "Care guide step title; short"), detail: String(localized: "Mix at half the dose on the label. Houseplants prefer little and often.", comment: "Care guide step instruction; warm, practical"), symbol: "drop.halffull"),
+            .init(title: String(localized: "Pour on the soil", comment: "Care guide step title; short"), detail: String(localized: "Water it in like a normal watering and let it drain.", comment: "Care guide step instruction; warm, practical"), symbol: "drop.fill"),
         ]),
-        CareGuide(id: "clean", title: "Clean the leaves", subtitle: "More light, fewer pests", symbol: "sparkles", tint: Color(red: 0.25, green: 0.55, blue: 0.55), minutes: 5, level: .easy,
-                  tools: ["Soft damp cloth", "Lukewarm water"], when: "Once a month or when dust is visible.", logs: .clean, steps: [
-            .init(title: "Support the leaf", detail: "Hold each leaf from underneath with one hand.", symbol: "hand.raised"),
-            .init(title: "Wipe gently", detail: "Wipe from stem to tip, top and underside. Check for pests while you're there.", symbol: "sparkles", seconds: 60),
-            .init(title: "No leaf shine", detail: "Skip shine sprays and oils: they block the leaf's pores.", symbol: "xmark.circle"),
+        CareGuide(id: "clean", title: String(localized: "Clean the leaves", comment: "Care guide title; short"), subtitle: String(localized: "More light, fewer pests", comment: "Care guide subtitle; short"), symbol: "sparkles", tint: Color(red: 0.25, green: 0.55, blue: 0.55), minutes: 5, level: .easy,
+                  tools: [String(localized: "Soft damp cloth", comment: "Tool needed for a care guide"), String(localized: "Lukewarm water", comment: "Tool needed for a care guide")], when: String(localized: "Once a month or when dust is visible.", comment: "When to do this care guide"), logs: .clean, steps: [
+            .init(title: String(localized: "Support the leaf", comment: "Care guide step title; short"), detail: String(localized: "Hold each leaf from underneath with one hand.", comment: "Care guide step instruction; warm, practical"), symbol: "hand.raised"),
+            .init(title: String(localized: "Wipe gently", comment: "Care guide step title; short"), detail: String(localized: "Wipe from stem to tip, top and underside. Check for pests while you're there.", comment: "Care guide step instruction; warm, practical"), symbol: "sparkles", seconds: 60),
+            .init(title: String(localized: "No leaf shine", comment: "Care guide step title; short"), detail: String(localized: "Skip shine sprays and oils: they block the leaf's pores.", comment: "Care guide step instruction; warm, practical"), symbol: "xmark.circle"),
         ]),
-        CareGuide(id: "pests", title: "Treat common pests", subtitle: "Mites, mealybugs, gnats", symbol: "ant.fill", tint: Color(red: 0.75, green: 0.33, blue: 0.27), minutes: 15, level: .careful,
-                  tools: ["Shower or spray bottle", "Insecticidal soap or neem", "Cotton buds", "Alcohol"], when: "As soon as you see webs, white fluff, sticky leaves or tiny flies.", logs: .treat, steps: [
-            .init(title: "Isolate", detail: "Move it away from other plants straight away.", symbol: "arrow.left.and.right"),
-            .init(title: "Rinse", detail: "Shower the leaves, especially undersides, with lukewarm water.", symbol: "shower.fill", seconds: 60),
-            .init(title: "Spot-treat", detail: "Dab mealybugs with alcohol on a cotton bud. Spray soap or neem on the rest, following the label.", symbol: "drop.triangle"),
-            .init(title: "Repeat weekly", detail: "Treat again every 5–7 days for 3–4 weeks to catch new hatchlings.", symbol: "calendar", tip: "Fungus gnats: let the top soil dry out fully between waterings."),
+        CareGuide(id: "pests", title: String(localized: "Treat common pests", comment: "Care guide title; short"), subtitle: String(localized: "Mites, mealybugs, gnats", comment: "Care guide subtitle; short"), symbol: "ant.fill", tint: Color(red: 0.75, green: 0.33, blue: 0.27), minutes: 15, level: .careful,
+                  tools: [String(localized: "Shower or spray bottle", comment: "Tool needed for a care guide"), String(localized: "Insecticidal soap or neem", comment: "Tool needed for a care guide"), String(localized: "Cotton buds", comment: "Tool needed for a care guide"), String(localized: "Alcohol", comment: "Tool needed for a care guide")], when: String(localized: "As soon as you see webs, white fluff, sticky leaves or tiny flies.", comment: "When to do this care guide"), logs: .treat, steps: [
+            .init(title: String(localized: "Isolate", comment: "Care guide step title; short"), detail: String(localized: "Move it away from other plants straight away.", comment: "Care guide step instruction; warm, practical"), symbol: "arrow.left.and.right"),
+            .init(title: String(localized: "Rinse", comment: "Care guide step title; short"), detail: String(localized: "Shower the leaves, especially undersides, with lukewarm water.", comment: "Care guide step instruction; warm, practical"), symbol: "shower.fill", seconds: 60),
+            .init(title: String(localized: "Spot-treat", comment: "Care guide step title; short"), detail: String(localized: "Dab mealybugs with alcohol on a cotton bud. Spray soap or neem on the rest, following the label.", comment: "Care guide step instruction; warm, practical"), symbol: "drop.triangle"),
+            .init(title: String(localized: "Repeat weekly", comment: "Care guide step title; short"), detail: String(localized: "Treat again every 5–7 days for 3–4 weeks to catch new hatchlings.", comment: "Care guide step instruction; warm, practical"), symbol: "calendar", tip: String(localized: "Fungus gnats: let the top soil dry out fully between waterings.", comment: "Care guide step tip")),
         ]),
-        CareGuide(id: "measure", title: "Measure growth", subtitle: "See progress over months", symbol: "ruler.fill", tint: Color(red: 0.4, green: 0.42, blue: 0.68), minutes: 2, level: .easy,
-                  tools: ["Tape measure", "Phone camera"], when: "Once a month, same spot, same angle.", logs: .measure, steps: [
-            .init(title: "Soil to tip", detail: "Measure from the soil line to the tallest growing point.", symbol: "ruler"),
-            .init(title: "Count new leaves", detail: "Note new leaves since last month.", symbol: "leaf"),
-            .init(title: "Same photo", detail: "Take a photo from the same place each month. Your timeline will show the growth.", symbol: "camera.fill"),
+        CareGuide(id: "measure", title: String(localized: "Measure growth", comment: "Care guide title; short"), subtitle: String(localized: "See progress over months", comment: "Care guide subtitle; short"), symbol: "ruler.fill", tint: Color(red: 0.4, green: 0.42, blue: 0.68), minutes: 2, level: .easy,
+                  tools: [String(localized: "Tape measure", comment: "Tool needed for a care guide"), String(localized: "Phone camera", comment: "Tool needed for a care guide")], when: String(localized: "Once a month, same spot, same angle.", comment: "When to do this care guide"), logs: .measure, steps: [
+            .init(title: String(localized: "Soil to tip", comment: "Care guide step title; short"), detail: String(localized: "Measure from the soil line to the tallest growing point.", comment: "Care guide step instruction; warm, practical"), symbol: "ruler"),
+            .init(title: String(localized: "Count new leaves", comment: "Care guide step title; short"), detail: String(localized: "Note new leaves since last month.", comment: "Care guide step instruction; warm, practical"), symbol: "leaf"),
+            .init(title: String(localized: "Same photo", comment: "Care guide step title; short"), detail: String(localized: "Take a photo from the same place each month. Your timeline will show the growth.", comment: "Care guide step instruction; warm, practical"), symbol: "camera.fill"),
         ]),
-        CareGuide(id: "rotate", title: "Rotate for even growth", subtitle: "Stop the lean", symbol: "arrow.clockwise", tint: Color(red: 0.72, green: 0.56, blue: 0.2), minutes: 1, level: .easy,
-                  tools: [], when: "Every 2 weeks for plants near a window.", logs: .rotate, steps: [
-            .init(title: "Quarter turn", detail: "Turn the pot a quarter turn in the same direction every time.", symbol: "arrow.clockwise"),
-            .init(title: "Mark it", detail: "A small mark on the pot helps you remember which way you turned.", symbol: "pencil"),
+        CareGuide(id: "rotate", title: String(localized: "Rotate for even growth", comment: "Care guide title; short"), subtitle: String(localized: "Stop the lean", comment: "Care guide subtitle; short"), symbol: "arrow.clockwise", tint: Color(red: 0.72, green: 0.56, blue: 0.2), minutes: 1, level: .easy,
+                  tools: [], when: String(localized: "Every 2 weeks for plants near a window.", comment: "When to do this care guide"), logs: .rotate, steps: [
+            .init(title: String(localized: "Quarter turn", comment: "Care guide step title; short"), detail: String(localized: "Turn the pot a quarter turn in the same direction every time.", comment: "Care guide step instruction; warm, practical"), symbol: "arrow.clockwise"),
+            .init(title: String(localized: "Mark it", comment: "Care guide step title; short"), detail: String(localized: "A small mark on the pot helps you remember which way you turned.", comment: "Care guide step instruction; warm, practical"), symbol: "pencil"),
         ]),
     ]
 
@@ -147,7 +156,7 @@ struct GuidesView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 if let plant {
-                    SectionTitle("Picked for \(plant.name)")
+                    SectionTitle(String(localized: "Picked for \(plant.name)", comment: "Section title: guides suggested for this plant"))
                     VStack(spacing: 0) {
                         let picks = Array(GuideLibrary.suggested(for: plant).prefix(3))
                         ForEach(picks) { g in
@@ -157,7 +166,7 @@ struct GuidesView: View {
                     }
                     .jungleCard()
                 }
-                SectionTitle("All guides")
+                SectionTitle(String(localized: "All guides", comment: "Section title above the list of every care guide"))
                 VStack(spacing: 0) {
                     ForEach(Array(GuideLibrary.all.enumerated()), id: \.element.id) { i, g in
                         Button { open = g } label: { GuideRow(guide: g) }.buttonStyle(.plain)
@@ -195,7 +204,7 @@ struct GuideRow: View {
             GuideIcon(guide: guide)
             VStack(alignment: .leading, spacing: 2) {
                 Text(guide.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                Text("\(guide.steps.count) steps · \(guide.minutes) min · \(guide.level.rawValue)").font(.subheadline).foregroundStyle(Jungle.subtle)
+                Text("\(guide.steps.count) steps · \(guide.minutes) min · \(guide.level.label)", comment: "Guide row meta: step count, minutes, difficulty").font(.subheadline).foregroundStyle(Jungle.subtle)
             }
             Spacer()
             Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
@@ -261,17 +270,17 @@ struct GuidePlayerView: View {
                         Capsule().fill(i <= index ? guide.tint : Jungle.border).frame(height: 5)
                     }
                 }
-                .accessibilityLabel(index < 0 ? "Overview" : "Step \(index + 1) of \(guide.steps.count)")
+                .accessibilityLabel(index < 0 ? String(localized: "Overview", comment: "Care guide overview page") : String(localized: "Step \(index + 1) of \(guide.steps.count)", comment: "Care guide progress"))
                 if let step { stepBody(step) } else { overview }
                 Spacer(minLength: 0)
                 HStack(spacing: 12) {
                     Button { go(index - 1) } label: { Text("Back").frame(maxWidth: .infinity) }
                         .buttonStyle(.bordered).fontDesign(.rounded).tint(Jungle.forest).disabled(index < 0)
                     if index == guide.steps.count - 1 {
-                        Button { finish() } label: { Text(logged ? "Logged" : finishLabel).frame(maxWidth: .infinity) }
+                        Button { finish() } label: { Text(logged ? String(localized: "Logged", comment: "Care guide finished and logged") : finishLabel).frame(maxWidth: .infinity) }
                             .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest).disabled(logged)
                     } else {
-                        Button { go(index + 1) } label: { Text(index < 0 ? "Start" : "Next").frame(maxWidth: .infinity) }
+                        Button { go(index + 1) } label: { Text(index < 0 ? String(localized: "Start", comment: "Start a care guide") : String(localized: "Next", comment: "Next care guide step")).frame(maxWidth: .infinity) }
                             .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest)
                     }
                 }
@@ -293,21 +302,21 @@ struct GuidePlayerView: View {
     }
 
     private var finishLabel: String {
-        guard let plant, guide.logs != nil else { return "Done" }
-        return "Done, log for \(plant.name)"
+        guard let plant, guide.logs != nil else { return String(localized: "Done", comment: "Button finishing a care guide") }
+        return String(localized: "Done, log for \(plant.name)", comment: "Button finishing a care guide and logging it for the plant; max 28 chars")
     }
 
     private var overview: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(guide.title).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             HStack(spacing: 8) {
-                StatusPill(text: "\(guide.minutes) min", symbol: "clock", tint: guide.tint)
-                StatusPill(text: "\(guide.steps.count) steps", symbol: "list.number", tint: guide.tint)
-                StatusPill(text: guide.level.rawValue, tint: guide.tint)
+                StatusPill(text: String(localized: "\(guide.minutes) min", comment: "Guide duration in minutes"), symbol: "clock", tint: guide.tint)
+                StatusPill(text: String(localized: "\(guide.steps.count) steps", comment: "Number of steps in a care guide"), symbol: "list.number", tint: guide.tint)
+                StatusPill(text: guide.level.label, tint: guide.tint)
             }
             Label(guide.when, systemImage: "calendar").font(.subheadline).foregroundStyle(Jungle.text)
             if let plant, guide.id == "water", let a = CareEngine.waterAmount(for: plant) {
-                Label("For \(plant.name): about \(a.lo)–\(a.hi) ml", systemImage: "drop.fill").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                Label("For \(plant.name): about \(a.lo.formatted())–\(a.hi.formatted()) ml", systemImage: "drop.fill").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
             }
             if !guide.tools.isEmpty {
                 Text("You'll need").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).padding(.top, 4)
@@ -331,7 +340,7 @@ struct GuidePlayerView: View {
                     Text(timeString(running || remaining > 0 ? remaining : secs)).font(.system(size: 40, weight: .semibold, design: .rounded).monospacedDigit())
                         .foregroundStyle(Jungle.text).contentTransition(.numericText(countsDown: true))
                     Spacer()
-                    Button(running ? "Pause" : "Start timer", systemImage: running ? "pause.fill" : "play.fill") {
+                    Button(running ? String(localized: "Pause", comment: "Pause step timer") : String(localized: "Start timer", comment: "Start step timer"), systemImage: running ? "pause.fill" : "play.fill") {
                         if remaining == 0 { remaining = secs }
                         running.toggle()
                     }
@@ -343,13 +352,13 @@ struct GuidePlayerView: View {
     }
 
     private func detail(_ s: CareGuide.Step) -> String {
-        if guide.id == "water", s.title == "Measure", let plant, let a = CareEngine.waterAmount(for: plant) {
-            return "\(plant.name)'s pot needs about \(a.lo)–\(a.hi) ml. Fill a jug to that line so you don't guess."
+        if guide.id == "water", s.symbol == "drop.halffull", let plant, let a = CareEngine.waterAmount(for: plant) {
+            return String(localized: "\(plant.name)'s pot needs about \(a.lo.formatted())–\(a.hi.formatted()) ml. Fill a jug to that line so you don't guess.", comment: "Water guide step with exact water amount range in millilitres for the plant")
         }
         return s.detail
     }
 
-    private func timeString(_ s: Int) -> String { String(format: "%d:%02d", s / 60, s % 60) }
+    private func timeString(_ s: Int) -> String { Duration.seconds(s).formatted(.time(pattern: .minuteSecond)) }
 
     private func go(_ i: Int) {
         running = false; remaining = 0

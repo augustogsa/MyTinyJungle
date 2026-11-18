@@ -60,7 +60,7 @@ struct SpaceCard: View {
                 Text(space.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Spacer()
                 if !fits.isEmpty {
-                    Text(good == fits.count ? "Optimal" : "\(good)/\(fits.count) happy")
+                    Text(good == fits.count ? String(localized: "Optimal", comment: "Space card badge; max 12 chars") : String(localized: "\(good)/\(fits.count) happy", comment: "Space card badge: X of Y plants happy; max 12 chars"))
                         .font(.caption.weight(.semibold)).padding(.horizontal, 8).padding(.vertical, 4)
                         .background((good == fits.count ? Jungle.leaf : Jungle.sun).opacity(0.25), in: Capsule())
                 }
@@ -68,7 +68,7 @@ struct SpaceCard: View {
             HStack(spacing: 14) {
                 Label { Text(PlacementEngine.lightLabel(space.light)) } icon: { SmartIcon(symbol: PlacementEngine.lightSymbol(space.light), size: 16) }
                 if let t = space.temperature { Label { Text(Climate.temp(t)) } icon: { Icon3DView(t < 15 ? .cold : t > 26 ? .hot : .thermometer, size: 16) } }
-                if let h = space.humidity { Label("\(Int(h))%", systemImage: "humidity") }
+                if let h = space.humidity { Label(PlantFormat.percent(h), systemImage: "humidity") }
             }
             .font(.caption).foregroundStyle(Jungle.subtle)
             HStack(spacing: -10) {
@@ -94,10 +94,10 @@ struct SpaceDetailView: View {
         List {
             Section("Conditions") {
                 LabeledContent("Light", value: PlacementEngine.lightLabel(space.light))
-                if !space.windowFacing.isEmpty { LabeledContent("Window faces", value: space.windowFacing) }
-                LabeledContent("Temperature", value: space.temperature.map { Climate.temp($0) } ?? "Not set")
-                LabeledContent("Humidity", value: space.humidity.map { "\(Int($0))%" } ?? "Not set")
-                LabeledContent("Outdoors", value: space.isOutdoor ? "Yes" : "No")
+                if !space.windowFacing.isEmpty { LabeledContent("Window faces") { Text(LocalizedStringKey(space.windowFacing)) } }
+                LabeledContent("Temperature", value: space.temperature.map { Climate.temp($0) } ?? String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars"))
+                LabeledContent("Humidity", value: space.humidity.map { PlantFormat.percent($0) } ?? String(localized: "Not set", comment: "Value placeholder when nothing set; max 12 chars"))
+                LabeledContent("Outdoors", value: space.isOutdoor ? String(localized: "Yes", comment: "Yes/no value") : String(localized: "No", comment: "Yes/no value"))
             }
             Section("Plants here") {
                 if here.isEmpty { Text("Nobody lives here yet.").foregroundStyle(Jungle.subtle) }
@@ -143,12 +143,12 @@ struct SpaceDetailView: View {
 
     private func insight(_ here: [Plant]) -> String {
         let s = here.compactMap(\.species)
-        guard !s.isEmpty else { return "Set the light right and I'll suggest plants for this spot." }
+        guard !s.isEmpty else { return String(localized: "Set the light right and I'll suggest plants for this spot.", comment: "Space insight") }
         let humid = s.filter { $0.humidityMin >= 55 }
         let poor = here.filter { $0.species.map { PlacementEngine.fit($0, in: space).fit < .good } ?? false }
-        if !poor.isEmpty { return "\(poor.map(\.name).joined(separator: ", ")) would be happier elsewhere. Tap them to see their best place." }
-        if !humid.isEmpty && (space.humidity ?? 45) < 55 { return "Conditions are great for \(s.count - humid.count) of \(s.count) plants. Consider a humidifier for the humidity lovers." }
-        return "Conditions suit all \(s.count) plant\(s.count == 1 ? "" : "s") here."
+        if !poor.isEmpty { return String(localized: "\(poor.map(\.name).formatted(.list(type: .and))) would be happier elsewhere. Tap them to see their best place.", comment: "Space insight; arg list of plant names") }
+        if !humid.isEmpty && (space.humidity ?? 45) < 55 { return String(localized: "Conditions are great for \(s.count - humid.count) of \(s.count) plants. Consider a humidifier for the humidity lovers.", comment: "Space insight; X of Y plants") }
+        return String(localized: "Conditions suit all \(s.count) plants here.", comment: "Space insight; plural")
     }
 }
 
@@ -176,7 +176,7 @@ struct SpaceEditor: View {
                 Section {
                     Picker("Window faces", selection: $facing) {
                         Text("Not sure").tag("")
-                        ForEach(["North", "East", "South", "West"], id: \.self) { Text($0).tag($0) }
+                        ForEach([("North", String(localized: "North", comment: "Window faces north")), ("East", String(localized: "East", comment: "Window faces east")), ("South", String(localized: "South", comment: "Window faces south")), ("West", String(localized: "West", comment: "Window faces west"))], id: \.0) { Text($0.1).tag($0.0) }
                     }
                     Toggle("Outdoors", isOn: $outdoor)
                     LabeledContent(Climate.metricTemp ? "Temperature °C" : "Temperature °F") { TextField("optional", value: $temp, format: .number).keyboardType(.numbersAndPunctuation).multilineTextAlignment(.trailing) }
@@ -222,7 +222,7 @@ struct BestPlaceView: View {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         Label(PlacementEngine.lightLabel(s.light), systemImage: PlacementEngine.lightSymbol(s.light)).font(.system(.headline, design: .rounded))
-                        Text("\(Climate.tempRange(s.tempMin, s.tempMax)) · humidity \(Int(s.humidityMin))%+").font(.subheadline).foregroundStyle(Jungle.subtle)
+                        Text("\(Climate.tempRange(s.tempMin, s.tempMax)) · humidity \(PlantFormat.percent(s.humidityMin))+").font(.subheadline).foregroundStyle(Jungle.subtle)
                         Text(s.lightRule).font(.subheadline)
                     }
                 } header: { Text("What \(plant.name) needs") }
@@ -275,10 +275,10 @@ struct BestPlaceView: View {
     private func compare(_ s: Species, from a: Space, to b: Space) -> String {
         let dl = PlacementEngine.lightIndex(b.light) - PlacementEngine.lightIndex(a.light)
         var parts: [String] = []
-        if dl > 0 { parts.append("More light, faster growth. Water needs go up slightly") }
-        if dl < 0 { parts.append("Less light, slower growth. Water a little less") }
-        if b.isOutdoor != a.isOutdoor { parts.append(b.isOutdoor ? "Outdoors: dries faster, watch for pests" : "Indoors: dries slower") }
-        if parts.isEmpty { parts.append("Similar conditions") }
-        return "If moved: " + parts.joined(separator: "; ") + ". Expect 2–3 weeks to adjust."
+        if dl > 0 { parts.append(String(localized: "More light, faster growth. Water needs go up slightly", comment: "Move what-if clause; no final period")) }
+        if dl < 0 { parts.append(String(localized: "Less light, slower growth. Water a little less", comment: "Move what-if clause; no final period")) }
+        if b.isOutdoor != a.isOutdoor { parts.append(b.isOutdoor ? String(localized: "Outdoors: dries faster, watch for pests", comment: "Move what-if clause") : String(localized: "Indoors: dries slower", comment: "Move what-if clause")) }
+        if parts.isEmpty { parts.append(String(localized: "Similar conditions", comment: "Move what-if clause")) }
+        return String(localized: "If moved: \(parts.joined(separator: "; ")). Expect 2–3 weeks to adjust.", comment: "Move what-if; arg clauses joined by semicolons")
     }
 }

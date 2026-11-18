@@ -22,10 +22,10 @@ struct PaywallView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     hero
                     VStack(alignment: .leading, spacing: 18) {
-                        perk(.pottedPlant, "Every plant gets a place", "Adopt as many green friends as your windowsills can hold.")
-                        perk(.firstAid, "Catch trouble early", "A droopy leaf or a yellow tip? You'll know what to do before it gets worse.")
-                        perk(.fertilizer, "The right food, every time", "Scan a bag of soil or fertilizer and see which plants will love it.")
-                        perk(.careHands, "Just you and your plants", "No ads. Quiet, calm care, the way it should feel.")
+                        perk(.pottedPlant, String(localized: "Every plant gets a place", comment: "Paywall benefit title; max 32 chars"), String(localized: "Adopt as many green friends as your windowsills can hold.", comment: "Paywall benefit detail"))
+                        perk(.firstAid, String(localized: "Catch trouble early", comment: "Paywall benefit title; max 32 chars"), String(localized: "A droopy leaf or a yellow tip? You'll know what to do before it gets worse.", comment: "Paywall benefit detail"))
+                        perk(.fertilizer, String(localized: "The right food, every time", comment: "Paywall benefit title; max 32 chars"), String(localized: "Scan a bag of soil or fertilizer and see which plants will love it.", comment: "Paywall benefit detail"))
+                        perk(.careHands, String(localized: "Just you and your plants", comment: "Paywall benefit title; max 32 chars"), String(localized: "No ads. Quiet, calm care, the way it should feel.", comment: "Paywall benefit detail"))
                     }
                     plans
                     footer
@@ -70,19 +70,24 @@ struct PaywallView: View {
 
     private var headline: String {
         switch reason {
-        case .morePlants: "Your jungle is ready to grow"
-        case .scanCompatibility: "Feed them what they love"
-        case .inventory: "Everything they need, in one place"
-        case nil: "Give every plant the love it deserves"
+        case .morePlants: String(localized: "Your jungle is ready to grow", comment: "Paywall headline")
+        case .scanCompatibility: String(localized: "Feed them what they love", comment: "Paywall headline")
+        case .inventory: String(localized: "Everything they need, in one place", comment: "Paywall headline")
+        case nil: String(localized: "Give every plant the love it deserves", comment: "Paywall headline")
         }
     }
 
     private var subline: String {
         let names = plants.prefix(2).map(\.name)
-        let family = names.count == 2 ? "\(names[0]), \(names[1]) and the rest of the family" : "Your plants"
+        if names.count == 2 {
+            switch reason {
+            case .morePlants: return String(localized: "\(names[0]), \(names[1]) and the rest of the family would love some company. Plus makes room for all of them.", comment: "Paywall subline; args are two plant names")
+            default: return String(localized: "\(names[0]), \(names[1]) and the rest of the family will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline; args are two plant names")
+            }
+        }
         switch reason {
-        case .morePlants: return "\(family) would love some company. Plus makes room for all of them."
-        default: return "\(family) will thank you. Plus gives you everything to keep them happy."
+        case .morePlants: return String(localized: "Your plants would love some company. Plus makes room for all of them.", comment: "Paywall subline")
+        default: return String(localized: "Your plants will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline")
         }
     }
 
@@ -116,15 +121,15 @@ struct PaywallView: View {
         return Button { selected = p.id } label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    Text(yearly ? "Yearly" : "Monthly").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                    Text(yearly ? String(localized: "Yearly", comment: "Paywall plan name") : String(localized: "Monthly", comment: "Paywall plan name")).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     Spacer()
                     Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.title3).foregroundStyle(on ? Jungle.forest : Jungle.subtle.opacity(0.5))
                 }
                 Text(p.displayPrice).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                Text(yearly ? "\((p.price / 12).formatted(p.priceFormatStyle))/month" : "per month")
+                Text(yearly ? String(localized: "\((p.price / 12).formatted(p.priceFormatStyle))/month", comment: "Paywall: yearly price per month; arg is price") : String(localized: "per month", comment: "Paywall: monthly plan caption"))
                     .font(.caption).foregroundStyle(Jungle.subtle)
                 if let save, save > 0 {
-                    Text("Save \(save)%").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                    Text(String(localized: "Save \((Double(save) / 100).formatted(.percent))", comment: "Paywall yearly saving badge; arg is percent like 40%")).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                         .padding(.horizontal, 8).padding(.vertical, 3).background(Jungle.mint, in: Capsule())
                 } else { Text(" ").font(.caption).padding(.vertical, 3) }
             }
@@ -146,7 +151,7 @@ struct PaywallView: View {
                     buying = false
                 }
             } label: {
-                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? "Grow with Plus · \($0.displayPrice)/year" : "Grow with Plus · \($0.displayPrice)/month" } ?? "Grow with Plus").font(.headline) } }
+                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? String(localized: "Grow with Plus · \($0.displayPrice)/year", comment: "Paywall buy button; arg is price") : String(localized: "Grow with Plus · \($0.displayPrice)/month", comment: "Paywall buy button; arg is price") } ?? String(localized: "Grow with Plus", comment: "Paywall buy button")).font(.headline) } }
                     .frame(maxWidth: .infinity).frame(height: 50)
             }
             .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)

@@ -19,7 +19,7 @@ struct JungleChatView: View {
                         }
                     }
                     .frame(maxWidth: .infinity).padding(.top, 8)
-                    Text(messages.isEmpty ? "Tell your plants what you did today, or ask them anything. They'll answer." : "Everyone's listening.")
+                    Text(messages.isEmpty ? "Tell your plants what you did today, or ask them anything. They'll answer." : "Everyone's listening." as LocalizedStringKey)
                         .font(.subheadline).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity).padding(.bottom, 6)
                     ForEach(messages) { m in
@@ -39,7 +39,7 @@ struct JungleChatView: View {
             .onChange(of: messages.count) { withAnimation(.snappy) { proxy.scrollTo("bottom") } }
         }
         .safeAreaInset(edge: .bottom) {
-            GlassComposer(placeholder: "Tell me how your plants are doing…", showChips: !plants.isEmpty, onChip: { kind in
+            GlassComposer(placeholder: String(localized: "Tell me how your plants are doing…", comment: "Chat input placeholder"), showChips: !plants.isEmpty, onChip: { kind in
                 if kind == .soilCheck { soilAsk = true } else { JungleBrain.quick(kind, plants: plants, in: ctx) }
             }) { text, photo in
                 JungleBrain.handle(text, photo: photo, plant: nil, plants: plants, in: ctx)

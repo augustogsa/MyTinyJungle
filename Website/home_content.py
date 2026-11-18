@@ -1,4 +1,4 @@
-"""Landing page for mytinyjungle.com (EN + PT-PT).
+"""Landing page for mytinyjungle.com (EN + PT-BR).
 
 Layout: a split stage. The reading column scrolls through the app tab by tab while the stage on the
 right holds one of the project's real plant photos with the phone on top; both change as each chapter

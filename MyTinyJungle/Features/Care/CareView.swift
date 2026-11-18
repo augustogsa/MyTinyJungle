@@ -6,7 +6,16 @@ struct CareView: View {
     @Environment(\.modelContext) private var ctx
     @Query(filter: #Predicate<Plant> { !$0.isArchived }, sort: \Plant.createdAt) private var plants: [Plant]
     @Query private var tasks: [CareTask]
-    enum Range: String, CaseIterable { case week = "Week", month = "Month", calendar = "Calendar", season = "Season" }
+    enum Range: String, CaseIterable { case week = "Week", month = "Month", calendar = "Calendar", season = "Season"
+        var label: String {
+            switch self {
+            case .week: String(localized: "Week", comment: "Care range segment; max 8 chars")
+            case .month: String(localized: "Month", comment: "Care range segment; max 8 chars")
+            case .calendar: String(localized: "Calendar", comment: "Care range segment; max 10 chars")
+            case .season: String(localized: "Season", comment: "Care range segment; max 8 chars")
+            }
+        }
+    }
     @State private var range: Range = .week
     @State private var adding = false
     /// Day picked in the week strip; nil shows every day.
@@ -17,15 +26,15 @@ struct CareView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    TabHeader(title: "Care", subtitle: stripMonth) {
-                        HeaderButton(symbol: "plus", label: "Add care task") { adding = true }
+                    TabHeader(title: String(localized: "Care", comment: "Care tab title"), subtitle: stripMonth) {
+                        HeaderButton(symbol: "plus", label: String(localized: "Add care task", comment: "Accessibility label for add task button")) { adding = true }
                     }
                     WeekStrip(plants: plants, tasks: tasks, selected: $selectedDay, offset: $weekOffset)
-                    Picker("Range", selection: $range) { ForEach(Range.allCases, id: \.self) { Text($0.rawValue) } }.pickerStyle(.segmented)
+                    Picker("Range", selection: $range) { ForEach(Range.allCases, id: \.self) { Text($0.label) } }.pickerStyle(.segmented)
                     HStack(spacing: 10) {
-                        NavigationLink { TravelPlanView() } label: { shortcut("Travel care", "airplane") }
-                        NavigationLink { PropagationListView() } label: { shortcut("Propagate", "scissors") }
-                        NavigationLink { GuidesView() } label: { shortcut("How-to", "book.fill") }
+                        NavigationLink { TravelPlanView() } label: { shortcut(String(localized: "Travel care", comment: "Care shortcut tile; max 12 chars"), "airplane") }
+                        NavigationLink { PropagationListView() } label: { shortcut(String(localized: "Propagate", comment: "Care shortcut tile: propagation cuttings; max 12 chars"), "scissors") }
+                        NavigationLink { GuidesView() } label: { shortcut(String(localized: "How-to", comment: "Care shortcut tile: guides; max 12 chars"), "book.fill") }
                     }
                     .buttonStyle(.plain)
                     switch range {
@@ -64,7 +73,7 @@ struct CareView: View {
         let grouped = Dictionary(grouping: items) { cal.startOfDay(for: $0.date) }
         return VStack(alignment: .leading, spacing: 14) {
             if items.isEmpty {
-                Text(plants.isEmpty ? "Add a plant and its care shows up here." : selectedDay != nil ? "Nothing planned this day." : "Nothing planned. Your jungle is relaxing.").foregroundStyle(Jungle.subtle)
+                Text(plants.isEmpty ? String(localized: "Add a plant and its care shows up here.", comment: "Care agenda empty state with no plants") : selectedDay != nil ? String(localized: "Nothing planned this day.", comment: "Care agenda empty for selected day") : String(localized: "Nothing planned. Your jungle is relaxing.", comment: "Care agenda empty state; playful")).foregroundStyle(Jungle.subtle)
             }
             let days = grouped.keys.sorted()
             ForEach(days, id: \.self) { day in
@@ -97,8 +106,8 @@ struct CareView: View {
 
     private func dayTitle(_ d: Date) -> String {
         let cal = Calendar.current
-        if cal.isDateInToday(d) { return "Today" }
-        if cal.isDateInTomorrow(d) { return "Tomorrow" }
+        if cal.isDateInToday(d) { return String(localized: "Today", comment: "Care agenda day header") }
+        if cal.isDateInTomorrow(d) { return String(localized: "Tomorrow", comment: "Care agenda day header") }
         return d.formatted(.dateTime.weekday(.wide).day().month())
     }
 
@@ -114,14 +123,30 @@ struct CareView: View {
     }
     private func openSoil(_ p: Plant) {
         // Soil checks need an answer: ask in the plant's thread.
-        JungleBrain.reply("How does my soil feel?", plant: p, in: ctx, suggestions: ["Dry", "Slightly moist", "Wet"])
-        let m = ChatMessage(text: "Feel my soil and tell me in my chat: dry, moist or wet?", fromUser: false); m.speakerID = p.id
+        JungleBrain.reply(String(localized: "How does my soil feel?", comment: "Chat message from plant asking user about soil moisture"), plant: p, in: ctx, suggestions: [String(localized: "Dry", comment: "Soil moisture quick reply chip"), String(localized: "Slightly moist", comment: "Soil moisture quick reply chip"), String(localized: "Wet", comment: "Soil moisture quick reply chip")])
+        let m = ChatMessage(text: String(localized: "Feel my soil and tell me in my chat: dry, moist or wet?", comment: "Plant speaks in first person in chat; playful"), fromUser: false); m.speakerID = p.id
         ctx.insert(m)
         try? ctx.save()
     }
 }
 
 struct AddTaskView: View {
+    static func defaultTitle(_ kind: CareKind, _ name: String?) -> String {
+        let verb: String = switch kind {
+        case .water: String(localized: "Water", comment: "Care task verb (imperative)")
+        case .feed: String(localized: "Feed", comment: "Care task verb (imperative): fertilize")
+        case .mist: String(localized: "Mist", comment: "Care task verb (imperative)")
+        case .rotate: String(localized: "Rotate", comment: "Care task verb (imperative): turn the pot")
+        case .clean: String(localized: "Clean leaves of", comment: "Care task verb (imperative), followed by plant name")
+        case .prune: String(localized: "Prune", comment: "Care task verb (imperative)")
+        case .repot: String(localized: "Repot", comment: "Care task verb (imperative)")
+        case .health: String(localized: "Health check", comment: "Care task title")
+        default: kind.label
+        }
+        guard let name else { return verb }
+        return String(localized: "\(verb) \(name)", comment: "Care task title: verb then plant name, e.g. Water Monstera")
+    }
+
     @Environment(\.modelContext) private var ctx
     @Environment(\.dismiss) private var dismiss
     let plants: [Plant]
@@ -150,7 +175,7 @@ struct AddTaskView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
                         let name = plants.first { $0.id == plantID }?.name
-                        let t = title.isEmpty ? "\(kind.label.replacingOccurrences(of: "ed", with: ""))\(name.map { " \($0)" } ?? "")" : title
+                        let t = title.isEmpty ? Self.defaultTitle(kind, name) : title
                         ctx.insert(CareTask(title: t, kind: kind, plantID: plantID, due: due)); try? ctx.save(); dismiss()
                     }
                 }
@@ -165,6 +190,14 @@ struct SeasonGuideView: View {
     @AppStorage("seasonChecks") private var checksRaw = ""
 
     enum Season: String, CaseIterable { case spring = "Spring", summer = "Summer", autumn = "Autumn", winter = "Winter"
+        var label: String {
+            switch self {
+            case .spring: String(localized: "Spring", comment: "Season name")
+            case .summer: String(localized: "Summer", comment: "Season name")
+            case .autumn: String(localized: "Autumn", comment: "Season name (fall)")
+            case .winter: String(localized: "Winter", comment: "Season name")
+            }
+        }
         var symbol: String { switch self { case .spring: "camera.macro"; case .summer: "sun.max.fill"; case .autumn: "leaf.fill"; case .winter: "snowflake" } }
     }
 
@@ -192,7 +225,7 @@ struct SeasonGuideView: View {
             HStack(spacing: 8) {
                 ForEach(Season.allCases, id: \.self) { s in
                     Button { season = s } label: {
-                        VStack(spacing: 4) { Image(systemName: s.symbol).frame(height: 22); Text(s.rawValue).font(.caption) }
+                        VStack(spacing: 4) { Image(systemName: s.symbol).frame(height: 22); Text(s.label).font(.caption) }
                             .frame(maxWidth: .infinity).frame(height: 64)
                             .foregroundStyle(season == s ? Color.white : Jungle.text)
                             .background(season == s ? Jungle.leaf : Jungle.mist, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -200,7 +233,7 @@ struct SeasonGuideView: View {
                     .buttonStyle(.plain)
                 }
             }
-            Text("\(season.rawValue) for your plants").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+            Text(String(localized: "\(season.label) for your plants", comment: "Season guide title, e.g. Summer for your plants")).font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             ForEach(items, id: \.self) { item in
                 if item == items.dropFirst(3).first { NativeAdCard(slot: "agenda") }
                 Button { toggle(item) } label: {
@@ -217,25 +250,25 @@ struct SeasonGuideView: View {
     }
 
     private var items: [String] {
-        let names = { (f: (Species) -> Bool) in plants.filter { $0.species.map(f) ?? false }.map(\.name).joined(separator: ", ") }
+        let names = { (f: (Species) -> Bool) in plants.filter { $0.species.map(f) ?? false }.map(\.name).formatted(.list(type: .and)) }
         var out: [String]
         switch season {
         case .spring:
-            out = ["Resume regular feeding", "Check every plant for new growth", "Repot the ones that are root-bound", "Increase watering gradually as days get longer", "Clean leaves and rotate toward the light"]
+            out = [String(localized: "Resume regular feeding", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Check every plant for new growth", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Repot the ones that are root-bound", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Increase watering gradually as days get longer", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Clean leaves and rotate toward the light", comment: "Seasonal plant care to-do; short imperative")]
             let repot = plants.filter { p in p.species.map { CareEngine.days(from: p.lastRepotAt ?? p.acquiredAt) > $0.repotYears * 365 } ?? false }.map(\.name)
-            if !repot.isEmpty { out.append("Root check: \(repot.joined(separator: ", "))") }
+            if !repot.isEmpty { out.append(String(localized: "Root check: \(repot.formatted(.list(type: .and)))", comment: "Seasonal to-do; arg is list of plant names")) }
         case .summer:
-            out = ["Water more often and check soil twice a week", "Move sun-sensitive plants back from hot windows", "Watch for spider mites in dry heat", "Plan holiday care (Travel care)"]
+            out = [String(localized: "Water more often and check soil twice a week", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Move sun-sensitive plants back from hot windows", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Watch for spider mites in dry heat", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Plan holiday care (Travel care)", comment: "Seasonal plant care to-do; short imperative")]
             let humid = names { $0.humidityMin >= 55 }
-            if !humid.isEmpty { out.append("Extra humidity for \(humid)") }
+            if !humid.isEmpty { out.append(String(localized: "Extra humidity for \(humid)", comment: "Seasonal to-do; arg is list of plant names")) }
         case .autumn:
-            out = ["Taper feeding, last feed of the year", "Bring outdoor plants in before nights drop below \(Climate.temp(10))", "Inspect for pests before moving plants inside", "Water less as growth slows"]
+            out = [String(localized: "Taper feeding, last feed of the year", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Bring outdoor plants in before nights drop below \(Climate.temp(10))", comment: "Seasonal to-do; arg is a temperature like 10°C"), String(localized: "Inspect for pests before moving plants inside", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Water less as growth slows", comment: "Seasonal plant care to-do; short imperative")]
             let outdoor = plants.filter(\.isOutdoor).map(\.name)
-            if !outdoor.isEmpty { out.append("Plan where \(outdoor.joined(separator: ", ")) will overwinter") }
+            if !outdoor.isEmpty { out.append(String(localized: "Plan where \(outdoor.formatted(.list(type: .and))) will overwinter", comment: "Seasonal to-do; arg is list of outdoor plant names")) }
         case .winter:
-            out = ["Pause feeding until spring", "Water less: soil dries slower", "Keep plants away from radiators and cold glass", "Wipe dust off leaves to catch more light", "Don't repot unless roots are rotting"]
+            out = [String(localized: "Pause feeding until spring", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Water less: soil dries slower", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Keep plants away from radiators and cold glass", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Wipe dust off leaves to catch more light", comment: "Seasonal plant care to-do; short imperative"), String(localized: "Don't repot unless roots are rotting", comment: "Seasonal plant care to-do; short imperative")]
             let cold = names { $0.tempMin >= 16 }
-            if !cold.isEmpty { out.append("Keep \(cold) above \(Climate.temp(16))") }
+            if !cold.isEmpty { out.append(String(localized: "Keep \(cold) above \(Climate.temp(16))", comment: "Seasonal to-do; args: plant names list, temperature")) }
         }
         return out
     }
@@ -263,27 +296,27 @@ struct TravelPlanView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                JungleGroup(title: "Dates") {
-                    JungleRow(icon: .calendar, title: "Leaving") { DatePicker("", selection: $leave, in: Date()..., displayedComponents: .date).labelsHidden() }
+                JungleGroup(title: String(localized: "Dates", comment: "Travel plan section title")) {
+                    JungleRow(icon: .calendar, title: String(localized: "Leaving", comment: "Travel plan: departure date row")) { DatePicker("", selection: $leave, in: Date()..., displayedComponents: .date).labelsHidden() }
                     JungleDivider()
-                    JungleRow(icon: .calendarCheck, title: "Back") { DatePicker("", selection: $back, in: leave..., displayedComponents: .date).labelsHidden() }
+                    JungleRow(icon: .calendarCheck, title: String(localized: "Back", comment: "Travel plan: return date row")) { DatePicker("", selection: $back, in: leave..., displayedComponents: .date).labelsHidden() }
                 }
                 HStack(spacing: 14) {
                     Icon3DView(.travel, size: 56)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("\(days) days away").font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                        Text(atRisk == 0 ? "Everyone copes with a deep water before you go." : "\(atRisk) plant\(atRisk == 1 ? "" : "s") \(atRisk == 1 ? "needs" : "need") a sitter or self-watering.")
+                        Text(String(localized: "\(days) days away", comment: "Travel plan: trip length")).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                        Text(atRisk == 0 ? String(localized: "Everyone copes with a deep water before you go.", comment: "Travel plan: all plants fine") : String(localized: "\(atRisk) plants need a sitter or self-watering.", comment: "Travel plan: number of plants at risk; plural"))
                             .font(.subheadline).foregroundStyle(atRisk == 0 ? Jungle.accentText : Jungle.warmText)
                     }
                 }
-                JungleGroup(title: "Your plants") {
+                JungleGroup(title: String(localized: "Your plants", comment: "Travel plan section title")) {
                     ForEach(plants) { p in
                         let copes = Int(CareEngine.expectedDryDays(for: p) * 1.3)
                         HStack(spacing: 12) {
                             PlantAvatar(data: p.photo, size: 36)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(p.name).foregroundStyle(Jungle.text)
-                                Text(copes >= days ? "Fine for \(copes) days after a deep water" : "Copes about \(copes) days. Needs a sitter or a wick")
+                                Text(copes >= days ? String(localized: "Fine for \(copes) days after a deep water", comment: "Travel plan per plant; plural") : String(localized: "Copes about \(copes) days. Needs a sitter or a wick", comment: "Travel plan per plant at risk; plural"))
                                     .font(.caption).foregroundStyle(copes >= days ? Jungle.accentText : Jungle.warmText)
                             }
                             Spacer()
@@ -293,7 +326,7 @@ struct TravelPlanView: View {
                         if p.id != plants.last?.id { Divider().padding(.leading, 48) }
                     }
                 }
-                JungleGroup(title: "Before you go") {
+                JungleGroup(title: String(localized: "Before you go", comment: "Travel plan prep section title")) {
                     ForEach(Array(prep.enumerated()), id: \.offset) { i, item in
                         JungleRow(icon: item.0, title: item.1)
                         if i < prep.count - 1 { JungleDivider() }
@@ -302,12 +335,12 @@ struct TravelPlanView: View {
                 VStack(spacing: 10) {
                     Button {
                         let dayBefore = leave.addingTimeInterval(-86_400)
-                        for p in plants { ctx.insert(CareTask(title: "Deep water \(p.name) before the trip", kind: .water, plantID: p.id, due: dayBefore)) }
+                        for p in plants { ctx.insert(CareTask(title: String(localized: "Deep water \(p.name) before the trip", comment: "Care task title; arg is plant name"), kind: .water, plantID: p.id, due: dayBefore)) }
                         CarePrefs.trip = (leave, back)
                         try? ctx.save(); saved = true
-                    } label: { Text(saved ? "We'll remind you before you go" : "Remind me to get everyone ready").font(.headline).frame(maxWidth: .infinity).frame(height: 48) }
+                    } label: { Text(saved ? String(localized: "We'll remind you before you go", comment: "Travel plan button after saving") : String(localized: "Remind me to get everyone ready", comment: "Travel plan primary button")).font(.headline).frame(maxWidth: .infinity).frame(height: 48) }
                     .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest).disabled(saved)
-                    ShareLink(item: sitterNote, subject: Text("Plant care while I'm away"), message: Text("Thank you for looking after my plants")) {
+                    ShareLink(item: sitterNote, subject: Text("Plant care while I'm away", comment: "Share subject for plant-sitter note"), message: Text("Thank you for looking after my plants", comment: "Share message for plant-sitter note")) {
                         Text("Send plant-sitter instructions").font(.headline).frame(maxWidth: .infinity).frame(height: 48)
                     }
                     .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(Jungle.forest)
@@ -321,23 +354,26 @@ struct TravelPlanView: View {
 
     private var atRisk: Int { plants.filter { Int(CareEngine.expectedDryDays(for: $0) * 1.3) < days }.count }
     private let prep: [(Icon3D, String)] = [
-        (.waterDrops, "Water everyone deeply the day before"),
-        (.hot, "Move plants back from hot windows"),
-        (.humidity, "Group humidity lovers together"),
-        (.waterTray, "Wick or self-watering spike for thirsty plants"),
-        (.fertilizer, "Skip fertilizer the week before"),
+        (.waterDrops, String(localized: "Water everyone deeply the day before", comment: "Travel prep item")),
+        (.hot, String(localized: "Move plants back from hot windows", comment: "Travel prep item")),
+        (.humidity, String(localized: "Group humidity lovers together", comment: "Travel prep item")),
+        (.waterTray, String(localized: "Wick or self-watering spike for thirsty plants", comment: "Travel prep item")),
+        (.fertilizer, String(localized: "Skip fertilizer the week before", comment: "Travel prep item")),
     ]
 
     private var sitterNote: String {
-        var t = " My Tiny Jungle: plant care from \(leave.formatted(date: .abbreviated, time: .omitted)) to \(back.formatted(date: .abbreviated, time: .omitted))\n\n"
+        let from = leave.formatted(date: .abbreviated, time: .omitted), to = back.formatted(date: .abbreviated, time: .omitted)
+        var lines = [String(localized: "My Tiny Jungle: plant care from \(from) to \(to)", comment: "Plant-sitter note heading; args are dates. Keep brand in English")]
+        lines.append("")
         for p in plants {
             let every = Int(CareEngine.expectedDryDays(for: p).rounded())
-            t += "• \(p.name)\(p.species.map { " (\($0.en))" } ?? "")\(p.location.isEmpty ? "" : ", \(p.location)"): "
-            t += p.species?.waterRule ?? "Water when the soil is dry."
-            t += " Roughly every \(every) days. Feel the soil first.\n"
+            let rule = p.species?.waterRule ?? String(localized: "Water when the soil is dry.", comment: "Plant-sitter note default watering rule")
+            let label = p.location.isEmpty ? p.name : String(localized: "\(p.name), \(p.location)", comment: "Plant-sitter note: plant name, room")
+            lines.append("• " + String(localized: "\(label): \(rule) Roughly every \(every) days. Feel the soil first.", comment: "Plant-sitter note line; args: plant, watering rule sentence, day count"))
         }
-        t += "\nIf a plant looks droopy and the soil is dry, give it a slow, deep drink. Thank you!"
-        return t
+        lines.append("")
+        lines.append(String(localized: "If a plant looks droopy and the soil is dry, give it a slow, deep drink. Thank you!", comment: "Plant-sitter note closing"))
+        return lines.joined(separator: "\n")
     }
 }
 
@@ -351,7 +387,7 @@ struct PropagationListView: View {
     var body: some View {
         List {
             if props.isEmpty {
-                Text("Take a cutting from one of your plants and track it here, from water to new plant.").foregroundStyle(Jungle.subtle)
+                Text("Take a cutting from one of your plants and track it here, from water to new plant.", comment: "Propagation empty state").foregroundStyle(Jungle.subtle)
             }
             ForEach(props) { pr in
                 let parent = plants.first { $0.id == pr.parentID }
@@ -359,8 +395,8 @@ struct PropagationListView: View {
                     HStack {
                         PlantAvatar(data: parent?.photo, size: 36)
                         VStack(alignment: .leading) {
-                            Text("\(parent?.name ?? "Cutting") cutting").font(.system(.headline, design: .rounded))
-                            Text("\(pr.method) · day \(Int(CareEngine.days(from: pr.startedAt)) + 1)").font(.caption).foregroundStyle(Jungle.subtle)
+                            Text(parent.map { String(localized: "\($0.name) cutting", comment: "Propagation row title; arg is parent plant name") } ?? String(localized: "Cutting", comment: "Propagation row title when parent plant is gone")).font(.system(.headline, design: .rounded))
+                            Text(String(localized: "\(Propagation.methodLabel(pr.method)) · day \(Int(CareEngine.days(from: pr.startedAt)) + 1)", comment: "Propagation row subtitle: method and day number")).font(.caption).foregroundStyle(Jungle.subtle)
                         }
                     }
                     ForEach(Propagation.Stage.allCases.filter { $0 != .done }, id: \.self) { st in
@@ -373,7 +409,7 @@ struct PropagationListView: View {
                         }
                     }
                     if pr.stage != .done {
-                        Button(pr.stage == .growing ? "It's a plant now! Add to jungle" : "Next: \(Propagation.Stage(rawValue: pr.stage.rawValue + 1)?.label ?? "")") { advance(pr, parent: parent) }
+                        Button(pr.stage == .growing ? String(localized: "It's a plant now! Add to jungle", comment: "Propagation button on final stage") : (Propagation.Stage(rawValue: pr.stage.rawValue + 1)?.label).map { String(localized: "Next: \($0)", comment: "Propagation advance button; arg is next stage name") } ?? "") { advance(pr, parent: parent) }
                             .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                     } else {
                         Label("Joined your jungle", systemImage: "leaf.fill").foregroundStyle(Jungle.accentText)
@@ -392,9 +428,9 @@ struct PropagationListView: View {
     private func hint(_ st: Propagation.Stage, _ pr: Propagation) -> String {
         switch st {
         case .cutting: pr.startedAt.formatted(.dateTime.day().month())
-        case .rooting: pr.method == "Water" ? "7–21 days" : "2–4 weeks"
-        case .potting: "Roots 2–5 cm"
-        case .growing: "First new leaf"
+        case .rooting: pr.method == "Water" ? String(localized: "7–21 days", comment: "Propagation rooting time hint") : String(localized: "2–4 weeks", comment: "Propagation rooting time hint")
+        case .potting: String(localized: "Roots 2–5 cm", comment: "Propagation potting hint: root length")
+        case .growing: String(localized: "First new leaf", comment: "Propagation growing stage hint")
         case .done: ""
         }
     }
@@ -402,11 +438,11 @@ struct PropagationListView: View {
     private func advance(_ pr: Propagation, parent: Plant?) {
         guard let next = Propagation.Stage(rawValue: pr.stage.rawValue + 1) else { return }
         if next == .done, let parent {
-            let child = Plant(name: "\(parent.name) Jr.", speciesID: parent.speciesID, personality: parent.personality, location: parent.location)
+            let child = Plant(name: String(localized: "\(parent.name) Jr.", comment: "Default name for plant grown from a cutting; arg parent name"), speciesID: parent.speciesID, personality: parent.personality, location: parent.location)
             child.photo = parent.photo
             ctx.insert(child)
             pr.childID = child.id
-            ctx.insert(ChatMessage(text: "Hi! I'm \(child.name), grown from a cutting of \(parent.name).", fromUser: false, plant: child))
+            ctx.insert(ChatMessage(text: String(localized: "Hi! I'm \(child.name), grown from a cutting of \(parent.name).", comment: "First chat message from new plant, first person; playful"), fromUser: false, plant: child))
         }
         pr.stage = next
         try? ctx.save()
@@ -428,7 +464,7 @@ struct StartPropagationView: View {
                 ForEach(plants) { Text($0.name).tag(Optional($0.id)) }
             }
             Picker("Method", selection: $method) {
-                ForEach(["Water", "Soil", "Sphagnum moss", "Division", "Leaf"], id: \.self) { Text($0) }
+                ForEach(["Water", "Soil", "Sphagnum moss", "Division", "Leaf"], id: \.self) { Text(Propagation.methodLabel($0)) }
             }
             Section("How") {
                 Text("Cut just below a node (the bump where a leaf meets the stem), with 1–2 leaves. Keep it warm, in bright indirect light. Change the water weekly.").font(.subheadline)
@@ -506,9 +542,23 @@ struct WeekStrip: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("\(d.formatted(date: .complete, time: .omitted)), \(count) planned, \(done) done")
+                .accessibilityLabel(String(localized: "\(d.formatted(date: .complete, time: .omitted)), \(count) planned, \(done) done", comment: "Accessibility for week strip day: date, planned tasks, done tasks"))
                 .accessibilityAddTraits(isSel ? .isSelected : [])
             }
+        }
+    }
+}
+
+extension Propagation {
+    /// Display name for the stored (English id) propagation method.
+    static func methodLabel(_ m: String) -> String {
+        switch m {
+        case "Water": String(localized: "propagation.method.water", defaultValue: "Water", comment: "Propagation method: rooting in water")
+        case "Soil": String(localized: "Soil", comment: "Propagation method")
+        case "Sphagnum moss": String(localized: "Sphagnum moss", comment: "Propagation method")
+        case "Division": String(localized: "Division", comment: "Propagation method: splitting the plant")
+        case "Leaf": String(localized: "Leaf", comment: "Propagation method: leaf cutting")
+        default: m
         }
     }
 }

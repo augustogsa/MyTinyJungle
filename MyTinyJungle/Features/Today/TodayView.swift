@@ -35,7 +35,7 @@ struct TodayView: View {
                                 Button { selectedTab = 2 } label: { CaughtUpCard(plants: plants) }.buttonStyle(.plain).id("today")
                             } else {
                                 VStack(alignment: .leading, spacing: 12) {
-                                    SectionTitle(requests.count > 1 ? "Today's care · \(requests.count)" : "Today's care", action: requests.count > 1 ? "See all" : nil) { path.append(TodayRoute.watering) }
+                                    SectionTitle(requests.count > 1 ? String(localized: "Today's care · \(requests.count)", comment: "Section title; %lld number of tasks") : String(localized: "Today's care", comment: "Section title"), action: requests.count > 1 ? String(localized: "See all", comment: "Section action; max 12 chars") : nil) { path.append(TodayRoute.watering) }
                                     if requests.count == 1, let (p, r) = requests.first {
                                         CareStoryCard(plant: p, request: r, onAction: { handle($0, plant: p) }, onOpen: { path.append(p.id) }, fullWidth: true)
                                     } else {
@@ -56,7 +56,7 @@ struct TodayView: View {
                             ComingUpCard(plants: plants, propagations: propagations) { path.append($0) }
                             Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants, needIDs: Set(plants.filter { CareEngine.needsYou($0) }.map(\.id))) }.buttonStyle(.plain)
                             VStack(alignment: .leading, spacing: 10) {
-                                SectionTitle("Your plants", action: "See all") { selectedTab = 1 }
+                                SectionTitle(String(localized: "Your plants", comment: "Section title"), action: String(localized: "See all", comment: "Section action; max 12 chars")) { selectedTab = 1 }
                                 carousel
                             }
                             summary
@@ -69,7 +69,7 @@ struct TodayView: View {
                 .scrollDismissesKeyboard(.interactively)
                                 .animation(.snappy, value: requests.map(\.1.id))
                 .safeAreaInset(edge: .bottom) {
-                    GlassComposer(placeholder: plants.isEmpty ? "Tell me about your first plant…" : "Tell me how your plants are doing…",
+                    GlassComposer(placeholder: plants.isEmpty ? String(localized: "Tell me about your first plant…", comment: "Chat input placeholder, no plants yet") : String(localized: "Tell me how your plants are doing…", comment: "Chat input placeholder"),
                                   showChips: !plants.isEmpty, onChip: { chipKind = $0 }) { text, photo in
                         sendFromToday(text, photo)
                     }
@@ -97,7 +97,7 @@ struct TodayView: View {
                     }
                 }
             }
-            .confirmationDialog("How does \(soilPlant?.name ?? "the") soil feel?", isPresented: Binding(get: { soilPlant != nil }, set: { if !$0 { soilPlant = nil } }), titleVisibility: .visible) {
+            .confirmationDialog(soilPlant.map { String(localized: "How does \($0.name)'s soil feel?", comment: "Dialog title; %@ plant name") } ?? String(localized: "How does the soil feel?", comment: "Dialog title"), isPresented: Binding(get: { soilPlant != nil }, set: { if !$0 { soilPlant = nil } }), titleVisibility: .visible) {
                 ForEach(SoilState.allCases, id: \.self) { s in
                     Button(s.label) { if let p = soilPlant { JungleBrain.quick(.soilCheck, soil: s, plants: [p], in: ctx, announce: true) } }
                 }
@@ -155,12 +155,12 @@ struct TodayView: View {
         }.prefix(3).map { $0 }
                 let season = SeasonGuideView.current()
         return VStack(alignment: .leading, spacing: 10) {
-            SectionTitle("At a glance")
+            SectionTitle(String(localized: "At a glance", comment: "Section title"))
             HStack(alignment: .top, spacing: 12) {
                 Button { path.append(TodayRoute.watering) } label: {
-                    SummaryCard(title: "Next sips", symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
+                    SummaryCard(title: String(localized: "Next sips", comment: "Card title: upcoming waterings; playful; max 16 chars"), symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
                         if upcoming.isEmpty {
-                            Text(plants.isEmpty ? "Add a plant and I'll plan its drinks." : "Everyone's had a drink. Relax!")
+                            Text(plants.isEmpty ? "Add a plant and I'll plan its drinks." : "Everyone's had a drink. Relax!" as LocalizedStringKey)
                                 .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(3, reservesSpace: true)
                         } else {
                             VStack(alignment: .leading, spacing: 7) {
@@ -204,27 +204,27 @@ struct TodayView: View {
 
     private func shortDay(_ d: Date) -> String {
         let cal = Calendar.current
-        if cal.isDateInToday(d) || d < Date() { return "Today" }
-        if cal.isDateInTomorrow(d) { return "Tomorrow" }
+        if cal.isDateInToday(d) || d < Date() { return String(localized: "Today", comment: "Short day label; max 10 chars") }
+        if cal.isDateInTomorrow(d) { return String(localized: "Tomorrow", comment: "Short day label; max 10 chars") }
         return d.formatted(.dateTime.weekday(.abbreviated))
     }
 
     private func seasonTip(_ s: SeasonGuideView.Season) -> String {
         if let local = Climate.shared.seasonTip(plants: plants) { return local }
         return switch s {
-        case .spring: "Fresh leaves are coming. Time for new pots and their first meal."
-        case .summer: "Long sunny days. Peek at the soil a little more often."
-        case .autumn: "Cozy season. One last meal, then let them rest."
-        case .winter: "Sleepy time. Less water, no food, keep them off cold glass."
+        case .spring: String(localized: "Fresh leaves are coming. Time for new pots and their first meal.", comment: "Spring tip")
+        case .summer: String(localized: "Long sunny days. Peek at the soil a little more often.", comment: "Summer tip")
+        case .autumn: String(localized: "Cozy season. One last meal, then let them rest.", comment: "Autumn tip")
+        case .winter: String(localized: "Sleepy time. Less water, no food, keep them off cold glass.", comment: "Winter tip; Brazilian winter is mild/dry")
         }
     }
 
     private func relativeDay(_ d: Date) -> String {
         let cal = Calendar.current
-        if cal.isDateInToday(d) { return "Today" }
-        if cal.isDateInTomorrow(d) { return "Tomorrow" }
+        if cal.isDateInToday(d) { return String(localized: "Today", comment: "Short day label; max 10 chars") }
+        if cal.isDateInTomorrow(d) { return String(localized: "Tomorrow", comment: "Short day label; max 10 chars") }
         let n = cal.dateComponents([.day], from: cal.startOfDay(for: Date()), to: cal.startOfDay(for: d)).day ?? 0
-        return n < 7 ? d.formatted(.dateTime.weekday(.wide)) : "In \(n) days"
+        return n < 7 ? d.formatted(.dateTime.weekday(.wide)) : String(localized: "In \(n) days", comment: "Relative day; %lld days (plural)")
     }
 
     /// Each plant's latest line, like a messages inbox.
@@ -235,7 +235,7 @@ struct TodayView: View {
 
     private var conversations: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionTitle("Conversations")
+            SectionTitle(String(localized: "Conversations", comment: "Section title: chats with plants"))
             VStack(spacing: 0) {
                 Button { path.append(TodayRoute.chat) } label: {
                     HStack(spacing: 12) {
@@ -252,7 +252,7 @@ struct TodayView: View {
                                 Spacer()
                                 if let last = jungleMessages.last { Text(last.date, format: .relative(presentation: .named)).font(.caption).foregroundStyle(Jungle.subtle) }
                             }
-                            Text(jungleMessages.last.map { $0.text.isEmpty ? "Photo" : $0.text } ?? "Talk to everyone at once")
+                            Text(jungleMessages.last.map { $0.text.isEmpty ? String(localized: "Photo", comment: "Last message preview when it's a photo") : $0.text } ?? String(localized: "Talk to everyone at once", comment: "Group chat preview"))
                                 .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(1)
                         }
                         Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
@@ -289,35 +289,35 @@ struct TodayView: View {
 
     private var chipTitle: String {
         switch chipKind {
-        case .water: "Who did you water?"
-        case .feed: "Who did you feed?"
-        case .soilCheck: "Whose soil did you check?"
-        default: "Which plant?"
+        case .water: String(localized: "Who did you water?", comment: "Plant picker title")
+        case .feed: String(localized: "Who did you feed?", comment: "Plant picker title")
+        case .soilCheck: String(localized: "Whose soil did you check?", comment: "Plant picker title")
+        default: String(localized: "Which plant?", comment: "Plant picker title")
         }
     }
 
     private var header: some View {
         TabHeader(title: greeting, subtitle: contextLine, dot: plants.isEmpty ? nil : (requests.isEmpty ? Jungle.leaf : Jungle.terracotta)) {
-            HeaderButton(symbol: "gearshape", label: "Settings") { showSettings = true }
+            HeaderButton(symbol: "gearshape", label: String(localized: "Settings", comment: "Accessibility label")) { showSettings = true }
         }
     }
 
     /// One calm line that ties the day, season and plants together.
     private var contextLine: String {
-        if plants.isEmpty { return "Let's grow your little jungle." }
-        if requests.isEmpty { return "Everyone's happy today" }
-        return "\(requests.count) plant\(requests.count == 1 ? " needs" : "s need") you today"
+        if plants.isEmpty { return String(localized: "Let's grow your little jungle.", comment: "Today subtitle, no plants") }
+        if requests.isEmpty { return String(localized: "Everyone's happy today", comment: "Today subtitle, nothing due") }
+        return String(localized: "\(requests.count) plants need you today", comment: "Today subtitle; %lld count (plural)")
     }
 
     private var greeting: String {
         let h = Calendar.current.component(.hour, from: Date())
         let name = JungleSettings.shared.ownerName
-        let base = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"
-        return name.isEmpty ? base : "\(base), \(name)"
+        if name.isEmpty { return h < 12 ? String(localized: "Good morning", comment: "Greeting") : h < 18 ? String(localized: "Good afternoon", comment: "Greeting") : String(localized: "Good evening", comment: "Greeting") }
+        return h < 12 ? String(localized: "Good morning, \(name)", comment: "Greeting; %@ user name") : h < 18 ? String(localized: "Good afternoon, \(name)", comment: "Greeting; %@ user name") : String(localized: "Good evening, \(name)", comment: "Greeting; %@ user name")
     }
 
     private func send(_ text: String) {
-        if text == "See Plus" { paywall = true; return }
+        if text == String(localized: "See Plus", comment: "Chat suggestion chip opening paywall; max 14 chars") { paywall = true; return }
         JungleBrain.handle(text, plant: nil, plants: plants, in: ctx) }
 
     private func handle(_ action: RequestCard.Action, plant: Plant) {
@@ -343,12 +343,12 @@ struct RequestCard: View {
                 PlantAvatar(data: plant.photo, size: 40)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(plant.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                    Text(plant.species?.commonName ?? "Unknown species").font(.caption).foregroundStyle(Jungle.subtle)
+                    Text(plant.species?.commonName ?? String(localized: "Unknown species", comment: "Plant card subtitle when species unknown")).font(.caption).foregroundStyle(Jungle.subtle)
                 }
                 Spacer()
                 Image(systemName: icon).foregroundStyle(request.priority == 0 ? Jungle.terracotta : Jungle.leaf).accessibilityHidden(true)
             }
-            Text("“\(PlantVoice.say(request, plant: plant))”").font(.body).foregroundStyle(Jungle.text)
+            Text("“\(PlantVoice.say(request, plant: plant))”", comment: "Quoted plant speech; use pt-BR quotes")
             Text(request.reason).font(.caption).foregroundStyle(Jungle.subtle)
             HStack(spacing: 8) { buttons }
         }
@@ -379,7 +379,7 @@ struct RequestCard: View {
         switch request.kind {
         case .checkSoil:
             ForEach(SoilState.allCases, id: \.self) { s in
-                Button(s == .slightlyMoist ? "Moist" : s.label) { onAction(.soil(s)) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
+                Button(s == .slightlyMoist ? String(localized: "Moist", comment: "Soil feel button; max 10 chars") : s.label) { onAction(.soil(s)) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
             }
         case .water:
             Button("Watered", systemImage: "drop.fill") { onAction(.care(.water)) }.buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule)
@@ -425,7 +425,7 @@ struct PlantShelfCard: View {
                     else { ZStack { Jungle.mint; Image(systemName: "leaf.fill").font(.system(size: 44)).foregroundStyle(Jungle.leaf) } }
                 }
                 .frame(width: 150, height: 130).clipped()
-                Text(mood == .needsYou ? "Needs you" : mood == .fine ? "Okay" : "Thriving")
+                Text(mood == .needsYou ? "Needs you" : mood == .fine ? "Okay" : "Thriving" as LocalizedStringKey)
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(mood == .needsYou ? Color.white : Jungle.forest)
                     .padding(.horizontal, 8).padding(.vertical, 4)
@@ -434,7 +434,7 @@ struct PlantShelfCard: View {
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(plant.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)
-                Text(plant.species?.commonName ?? "Plant").font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
+                Text(plant.species?.commonName ?? String(localized: "Plant", comment: "Plant tile subtitle when species unknown")).font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
             }
             .padding(12)
         }
@@ -442,7 +442,7 @@ struct PlantShelfCard: View {
         .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
         .jungleCard()
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(plant.name), \(mood == .needsYou ? "needs you" : mood == .fine ? "doing fine" : "thriving")")
+        .accessibilityLabel(mood == .needsYou ? String(localized: "\(plant.name), needs you", comment: "VoiceOver; %@ plant name") : mood == .fine ? String(localized: "\(plant.name), doing fine", comment: "VoiceOver; %@ plant name") : String(localized: "\(plant.name), thriving", comment: "VoiceOver; %@ plant name"))
     }
 }
 
@@ -511,10 +511,10 @@ struct CaughtUpCard: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text("Everyone's happy").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-                Text(doneToday > 0 ? "\(doneToday) care moment\(doneToday == 1 ? "" : "s") logged today." : "No plant needs you today. Just enjoy them.")
+                Text(doneToday > 0 ? String(localized: "\(doneToday) care moments logged today.", comment: "%lld count (plural)") : String(localized: "No plant needs you today. Just enjoy them.", comment: "Caught-up card"))
                     .font(.subheadline).foregroundStyle(Jungle.subtle)
                 if let next {
-                    Text("\(next.date.formatted(.dateTime.weekday(.wide))): \(next.title)").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText)
+                    Text("\(next.date.formatted(.dateTime.weekday(.wide))): \(next.title)", comment: "%1$@ weekday, %2$@ task").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText)
                 }
             }
             Spacer(minLength: 0)
@@ -562,10 +562,10 @@ struct WateringListView: View {
                     .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
                 }
                 if days.isEmpty {
-                    JungleGroup { JungleRow(icon: .shieldCheck, title: "No one's thirsty for the next two weeks") }
+                    JungleGroup { JungleRow(icon: .shieldCheck, title: String(localized: "No one's thirsty for the next two weeks", comment: "Watering list empty state")) }
                 }
                 ForEach(days, id: \.key) { day, list in
-                    JungleGroup(title: dayTitle(day) + " · \(list.count)") {
+                    JungleGroup(title: String(localized: "\(dayTitle(day)) · \(list.count)", comment: "Group header; %@ day, %lld plant count")) {
                         ForEach(Array(list.enumerated()), id: \.element.id) { i, item in
                             if let p = item.plant {
                                 HStack(spacing: 12) {
@@ -582,7 +582,7 @@ struct WateringListView: View {
                                     Button { withAnimation { JungleBrain.quick(.water, plants: [p], in: ctx, announce: true) } } label: {
                                         Icon3DView(.waterDrops, size: 22).frame(width: 40, height: 40).background(Jungle.mint, in: Circle())
                                     }
-                                    .buttonStyle(.plain).accessibilityLabel("Log water for \(p.name)")
+                                    .buttonStyle(.plain).accessibilityLabel(String(localized: "Log water for \(p.name)", comment: "VoiceOver; %@ plant name"))
                                 }
                                 .padding(.vertical, 10)
                                 if i < list.count - 1 { Divider().padding(.leading, 52) }
@@ -599,14 +599,14 @@ struct WateringListView: View {
 
     private func dayTitle(_ d: Date) -> String {
         let c = Calendar.current
-        if c.isDateInToday(d) { return "Today" }
-        if c.isDateInTomorrow(d) { return "Tomorrow" }
+        if c.isDateInToday(d) { return String(localized: "Today", comment: "Short day label; max 10 chars") }
+        if c.isDateInTomorrow(d) { return String(localized: "Tomorrow", comment: "Short day label; max 10 chars") }
         return d.formatted(.dateTime.weekday(.wide).day().month())
     }
     private func waterLine(_ p: Plant) -> String {
-        guard let w = p.lastEvent(.water)?.date else { return "Feel the soil first" }
+        guard let w = p.lastEvent(.water)?.date else { return String(localized: "Feel the soil first", comment: "Watering list subtitle") }
         let d = Int(CareEngine.days(from: w))
-        return "Last water \(d == 0 ? "today" : "\(d) days ago") · feel the soil first"
+        return d == 0 ? String(localized: "Last water today · feel the soil first", comment: "Watering list subtitle") : String(localized: "Last water \(d) days ago · feel the soil first", comment: "%lld days (plural)")
     }
 }
 
@@ -622,7 +622,7 @@ struct JungleHealthView: View {
                 HStack(spacing: 16) {
                     JungleHealthCard(plants: plants, needIDs: need)
                 }
-                JungleGroup(title: "Your plants") {
+                JungleGroup(title: String(localized: "Your plants", comment: "Group title")) {
                     ForEach(Array(sorted.enumerated()), id: \.element.id) { i, p in
                         NavigationLink(value: p.id) {
                             HStack(spacing: 12) {
@@ -650,6 +650,6 @@ struct JungleHealthView: View {
     private func rank(_ m: CareEngine.Mood) -> Int { m == .needsYou ? 0 : m == .fine ? 1 : 2 }
     private func reason(_ p: Plant) -> String {
         if let r = CareEngine.requests(for: p).first { return PlantVoice.say(r, plant: p) }
-        return "Everyone's feeling good"
+        return String(localized: "Everyone's feeling good", comment: "Health list reason")
     }
 }

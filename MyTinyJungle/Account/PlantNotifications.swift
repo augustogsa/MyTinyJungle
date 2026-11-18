@@ -20,21 +20,21 @@ enum PlantNote {
         func a(_ id: Action, _ title: String, _ symbol: String, _ opts: UNNotificationActionOptions = []) -> UNNotificationAction {
             UNNotificationAction(identifier: id.rawValue, title: title, options: opts, icon: .init(systemImageName: symbol))
         }
-        let watered = a(.watered, "Watered", "drop.fill")
-        let wet = a(.wet, "Still wet", "hand.point.down.fill")
-        let dry = a(.dry, "Feels dry", "sun.max.fill")
-        let fed = a(.fed, "Fed", "leaf.fill")
-        let moved = a(.movedIn, "Tucked in safe", "house.fill")
-        let tonight = a(.tonight, "Remind me tonight", "moon.stars.fill")
-        let snooze = a(.snooze, "Snooze to tomorrow", "moon.zzz.fill")
-        let chat = a(.openChat, "Open chat", "bubble.left.and.bubble.right.fill", [.foreground])
-        let reply = UNTextInputNotificationAction(identifier: Action.reply.rawValue, title: "Reply", options: [],
+        let watered = a(.watered, String(localized: "Watered", comment: "Notification action button: I watered it; max 20 chars"), "drop.fill")
+        let wet = a(.wet, String(localized: "Still wet", comment: "Notification action: soil is still wet; max 20 chars"), "hand.point.down.fill")
+        let dry = a(.dry, String(localized: "Feels dry", comment: "Notification action: soil feels dry; max 20 chars"), "sun.max.fill")
+        let fed = a(.fed, String(localized: "Fed", comment: "Notification action: I fertilized it; max 20 chars"), "leaf.fill")
+        let moved = a(.movedIn, String(localized: "Tucked in safe", comment: "Notification action: plant moved inside from cold; max 22 chars"), "house.fill")
+        let tonight = a(.tonight, String(localized: "Remind me tonight", comment: "Notification action; max 24 chars"), "moon.stars.fill")
+        let snooze = a(.snooze, String(localized: "Snooze to tomorrow", comment: "Notification action; max 24 chars"), "moon.zzz.fill")
+        let chat = a(.openChat, String(localized: "Open chat", comment: "Notification action: opens chat with plant; max 20 chars"), "bubble.left.and.bubble.right.fill", [.foreground])
+        let reply = UNTextInputNotificationAction(identifier: Action.reply.rawValue, title: String(localized: "Reply", comment: "Notification text reply action; max 15 chars"), options: [],
                                                   icon: .init(systemImageName: "arrowshape.turn.up.left.fill"),
-                                                  textInputButtonTitle: "Send", textInputPlaceholder: "Say something sweet…")
+                                                  textInputButtonTitle: String(localized: "Send", comment: "Send button for notification reply; max 10 chars"), textInputPlaceholder: String(localized: "Say something sweet…", comment: "Placeholder for reply to a plant; playful"))
         func cat(_ k: Kind, _ actions: [UNNotificationAction]) -> UNNotificationCategory {
             UNNotificationCategory(identifier: k.category, actions: actions, intentIdentifiers: ["INSendMessageIntent"],
-                                   hiddenPreviewsBodyPlaceholder: "A plant is thinking of you",
-                                   categorySummaryFormat: "%u notes from %@", options: [.customDismissAction])
+                                   hiddenPreviewsBodyPlaceholder: String(localized: "A plant is thinking of you", comment: "Notification body when previews hidden"),
+                                   categorySummaryFormat: String(localized: "%u notes from %@", comment: "Grouped notification summary; %u count, %@ plant names. Keep %u and %@"), options: [.customDismissAction])
         }
         UNUserNotificationCenter.current().setNotificationCategories([
             cat(.water, [watered, wet, tonight, reply, chat]),
@@ -64,11 +64,11 @@ enum PlantNote {
             "names": plants.map(\.name),
             "status": plants.map { p in
                 switch kind {
-                case .water: "Thirsty"
-                case .soil: "Check my soil"
-                case .feed: "Hungry"
-                case .struggling: "Needs a drink"
-                case .weather: title?.lowercased().contains("hot") == true ? "Heat ahead" : "Cold ahead"
+                case .water: String(localized: "Thirsty", comment: "Status pill on notification; max 16 chars")
+                case .soil: String(localized: "Check my soil", comment: "Status pill, plant speaking; max 16 chars")
+                case .feed: String(localized: "Hungry", comment: "Status pill: needs fertilizer; max 16 chars")
+                case .struggling: String(localized: "Needs a drink", comment: "Status pill: very dry; max 16 chars")
+                case .weather: title?.lowercased().contains("hot") == true ? String(localized: "Heat ahead", comment: "Status pill: hot weather coming; max 16 chars") : String(localized: "Cold ahead", comment: "Status pill: cold weather coming; max 16 chars")
                 default: CareEngine.status(for: p, now: now).label
                 }
             },
@@ -110,18 +110,18 @@ enum PlantNote {
     }
 
     static func defaultTitle(_ k: Kind, _ ps: [Plant]) -> String {
-        let n = ps.first?.name ?? "Your jungle"
+        let n = ps.first?.name ?? String(localized: "Your jungle", comment: "Notification title fallback when no plant; brand Jungle stays")
         switch k {
         case .water, .soil, .feed, .chat, .struggling: return n
-        case .many: return "\(ps.count) plants would love a visit"
-        case .weather: return "Keep \(n) cosy tonight"
-        case .travel: return "Before your trip"
+        case .many: return String(localized: "\(ps.count) plants would love a visit", comment: "Notification title; %lld plant count (plural)")
+        case .weather: return String(localized: "Keep \(n) cosy tonight", comment: "Notification title; %@ plant name; cold night")
+        case .travel: return String(localized: "Before your trip", comment: "Notification title before user travels")
         }
     }
 
     /// The plant's own words, in its personality.
     static func voice(_ k: Kind, plants: [Plant], now: Date = Date()) -> String {
-        guard let p = plants.first else { return "Your plants are thinking of you." }
+        guard let p = plants.first else { return String(localized: "Your plants are thinking of you.", comment: "Notification body fallback") }
         func say(_ r: PlantRequest.Kind) -> String { PlantVoice.say(.init(plantID: p.id, kind: r, priority: 1, reason: ""), plant: p) }
         switch k {
         case .water: return say(.water)
@@ -130,16 +130,20 @@ enum PlantNote {
         case .chat: return ProactiveVoice.voice(InsightEngine.pattern(for: p, now: now) ?? .init(id: "x-missed", plantID: p.id, tone: .pattern, icon: .heartPin, text: ""), plant: p)
         case .struggling:
             switch p.personality {
-            case .dramatic: return "I'm wilting over here. Truly. One slow, deep drink would bring me back to life."
-            case .independent: return "It's been a long time. Please check my soil today."
-            case .calm: return "I'm feeling quite dry. Whenever you can today, a slow drink would help me so much."
-            default: return "I miss you! It's been ages since my last drink. Could you feel my soil today?"
+            case .dramatic: return String(localized: "I'm wilting over here. Truly. One slow, deep drink would bring me back to life.", comment: "Plant speaking, dramatic personality, very dry; theatrical")
+            case .independent: return String(localized: "It's been a long time. Please check my soil today.", comment: "Plant speaking, independent personality, very dry; terse")
+            case .calm: return String(localized: "I'm feeling quite dry. Whenever you can today, a slow drink would help me so much.", comment: "Plant speaking, calm personality, very dry; gentle")
+            default: return String(localized: "I miss you! It's been ages since my last drink. Could you feel my soil today?", comment: "Plant speaking, default personality, very dry; affectionate")
             }
         case .many:
-            let names = ListFormatter.localizedString(byJoining: plants.prefix(3).map(\.name)) + (plants.count > 3 ? " and \(plants.count - 3) more" : "")
-            return "\(names) are ready for a little love today."
-        case .weather: return "A cold night is coming. Please bring \(p.name) inside or wrap it in fleece before bed."
-        case .travel: return "Tomorrow you travel. A deep, slow drink for everyone tonight, and they'll wait happily for you."
+            if plants.count > 3 {
+                let shown = plants.prefix(3).map(\.name).joined(separator: ", ")
+                return String(localized: "\(shown) and \(plants.count - 3) more are ready for a little love today.", comment: "Notification body; %@ three plant names, %lld how many more (plural)")
+            }
+            let names = plants.map(\.name).formatted(.list(type: .and))
+            return String(localized: "\(names) are ready for a little love today.", comment: "Notification body; %@ list of 2-3 plant names")
+        case .weather: return String(localized: "A cold night is coming. Please bring \(p.name) inside or wrap it in fleece before bed.", comment: "Notification body; %@ plant name; frost warning")
+        case .travel: return String(localized: "Tomorrow you travel. A deep, slow drink for everyone tonight, and they'll wait happily for you.", comment: "Notification body before trip")
         }
     }
 
@@ -211,7 +215,7 @@ enum PlantNote {
     static func demo(_ ctx: ModelContext) async {
         let plants = (try? ctx.fetch(FetchDescriptor<Plant>(predicate: #Predicate { !$0.isArchived }, sortBy: [SortDescriptor(\.createdAt)]))) ?? []
         guard plants.count >= 4 else { return }
-        func named(_ n: String) -> Plant { plants.first { $0.name == n } ?? plants[0] }
+        func named(_ n: String) -> Plant { let local = String(localized: String.LocalizationValue(n)); return plants.first { $0.name == local || $0.name == n } ?? plants[0] }
         let start = Double(ProcessInfo.processInfo.environment["NOTIFY_DELAY"] ?? "") ?? 10
         let gap = Double(ProcessInfo.processInfo.environment["NOTIFY_GAP"] ?? "") ?? 8
         let only = ProcessInfo.processInfo.environment["NOTIFY_ONLY"]
@@ -221,10 +225,10 @@ enum PlantNote {
             (.soil, [named("Goldie")], nil, nil),
             (.feed, [named("Pesto")], nil, nil),
             (.struggling, [named("Lily")], nil, nil),
-            (.weather, [named("Rosetta")], "Frost tonight (0°C)", "Rosetta lives on the balcony. Please bring her inside or wrap her in fleece before bed. Frost hurts tender leaves."),
-            (.weather, [named("Rosetta")], "A hot one tomorrow (36°C)", "Rosetta would love some afternoon shade and a deep drink in the cool of the morning."),
+            (.weather, [named("Rosetta")], String(localized: "Frost tonight (0°C)", comment: "Demo notification title"), String(localized: "Rosetta lives on the balcony. Please bring her inside or wrap her in fleece before bed. Frost hurts tender leaves.", comment: "Demo frost notification body in the plant's voice")),
+            (.weather, [named("Rosetta")], String(localized: "A hot one tomorrow (36°C)", comment: "Demo notification title"), String(localized: "Rosetta would love some afternoon shade and a deep drink in the cool of the morning.", comment: "Demo heat notification body")),
             (.travel, plants, nil, nil),
-            (.chat, [named("Pearl")], nil, "Hey, it's me. I haven't seen you in a few days. How does my soil feel?"),
+            (.chat, [named("Pearl")], nil, String(localized: "Hey, it's me. I haven't seen you in a few days. How does my soil feel?", comment: "Demo chat notification body, plant missing its owner")),
         ]
         let center = UNUserNotificationCenter.current()
         for (i, n) in notes.enumerated() where only == nil || only == "\(i)" {

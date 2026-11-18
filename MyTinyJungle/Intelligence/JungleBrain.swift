@@ -22,22 +22,30 @@ enum JungleBrain {
                 e.plant = p
                 ctx.insert(e)
                 if p.photo == nil { p.photo = photo }
-                reply("Thanks for the photo! It's in my timeline now.", plant: context ?? p, in: ctx)
+                reply(String(localized: "Thanks for the photo! It's in my timeline now.", comment: "Plant chat: the plant thanks the user for a photo added to its growth timeline. Warm, first person (the plant speaks)."), plant: context ?? p, in: ctx)
             }
-            if targets.isEmpty { reply("Which plant is in this photo? Tell me its name.", plant: nil, in: ctx, suggestions: plants.prefix(4).map(\.name)) }
+            if targets.isEmpty { reply(String(localized: "Which plant is in this photo? Tell me its name.", comment: "Jungle chat: user sent a photo without saying which plant it shows."), plant: nil, in: ctx, suggestions: plants.prefix(4).map(\.name)) }
             if trimmed.isEmpty { try? ctx.save(); return }
         }
 
         // New plant by chat: "I got a monstera called Milo".
         if context == nil, mentionsNewPlant(trimmed.folded), !Store.shared.canAddPlant(current: plants.count) {
-            reply("Your jungle has \(plants.count) plants, the free limit. Tiny Jungle Plus lets it grow without limits.", plant: nil, in: ctx, suggestions: ["See Plus"])
+            reply(String(localized: "Your jungle has \(plants.count) plants, the free limit. Tiny Jungle Plus lets it grow without limits.", comment: "Jungle chat: free plan plant limit reached. %lld = number of plants. Keep 'Tiny Jungle Plus' in English."), plant: nil, in: ctx, suggestions: [String(localized: "See Plus", comment: "Chat suggestion chip: see the Plus subscription. Max 14 chars.")])
             try? ctx.save()
             return
         }
         if context == nil, let created = createPlantIfMentioned(trimmed, plants: plants, in: ctx, now: now) {
-            let s = created.species.map { " I'm a \($0.en) (\($0.scientific)). \($0.waterRule)" } ?? " Tell me what kind of plant I am so I can look after myself properly."
-            reply("Hi, I'm \(created.name)! Nice to meet you.\(s) When did you last water me?", plant: created, in: ctx, suggestions: ["Today", "Yesterday", "Not sure"])
-            reply("Added \(created.name) to your jungle.", plant: nil, in: ctx)
+            let hello = created.species.map {
+                String(localized: "Hi, I'm \(created.name)! Nice to meet you. I'm a \($0.commonName) (\($0.scientific)). \($0.waterRule) \(askLastWater)",
+                       comment: "Plant chat: a newly added plant introduces itself. Args: plant name, species common name, scientific name, watering rule sentence, then the question 'When did you last water me?'. Cheerful.")
+            } ?? String(localized: "Hi, I'm \(created.name)! Nice to meet you. Tell me what kind of plant I am so I can look after myself properly. \(askLastWater)",
+                        comment: "Plant chat: a newly added plant of unknown species introduces itself. Args: plant name, then the question 'When did you last water me?'.")
+            reply(hello, plant: created, in: ctx, suggestions: [
+                String(localized: "Today", comment: "Chat suggestion chip answering 'when did you last water me?'"),
+                String(localized: "Yesterday", comment: "Chat suggestion chip answering 'when did you last water me?'"),
+                String(localized: "Not sure", comment: "Chat suggestion chip: user doesn't know when they last watered."),
+            ])
+            reply(String(localized: "Added \(created.name) to your jungle.", comment: "Jungle chat: confirmation a plant was added. %@ = plant name."), plant: nil, in: ctx)
             try? ctx.save()
             return
         }
@@ -46,19 +54,19 @@ enum JungleBrain {
         if let context {
             let f = trimmed.folded
             let lastAsk = (context.messages ?? []).filter { !$0.fromUser }.max { $0.date < $1.date }?.text ?? ""
-            if lastAsk.contains("last water"), ChatParser.matches(#"^(today|yesterday|hoje|ontem|anteontem|\d+ days? ago|ha \d+ dias?|last week)$"#, f) {
+            if lastAsk.contains(askLastWater) || lastAsk.contains("last water"), ChatParser.matches(#"^(today|yesterday|hoje|ontem|anteontem|\d+ days? ago|ha \d+ dias?|faz \d+ dias?|\d+ dias? atras|last week|semana passada)$"#, f) {
                 apply(.init(kind: .water, plantIDs: [context.id], date: ChatParser.parseDate(f, now: now)), to: context, in: ctx, now: now)
-                if context.location.isEmpty { reply("Where do I live: which room or window?", plant: context, in: ctx) }
+                if context.location.isEmpty { reply(askWhere, plant: context, in: ctx) }
                 try? ctx.save(); return
             }
-            if ChatParser.matches(#"^(not sure|no idea|dont know|don't know|nao sei|sei la)$"#, f) {
-                reply("No problem. Just feel my soil and tell me if it's dry, moist or wet. That's better than a date anyway.", plant: context, in: ctx, suggestions: ["Dry", "Slightly moist", "Wet"])
+            if ChatParser.matches(#"^(not sure|no idea|dont know|don't know|nao sei|sei la|nao lembro|nem ideia|nao tenho ideia)$"#, f) {
+                reply(String(localized: "No problem. Just feel my soil and tell me if it's dry, moist or wet. That's better than a date anyway.", comment: "Plant chat: user doesn't remember last watering; the plant reassures and asks for a soil feel check."), plant: context, in: ctx, suggestions: soilChips)
                 try? ctx.save(); return
             }
-            if lastAsk.contains("Where do I live"), context.location.isEmpty, trimmed.count < 40, !trimmed.contains("?") {
+            if lastAsk.contains(askWhere) || lastAsk.contains("Where do I live"), context.location.isEmpty, trimmed.count < 40, !trimmed.contains("?") {
                 context.location = trimmed
-                if ChatParser.matches(#"\b(balcony|garden|terrace|outside|varanda|jardim|terraco|quintal)\b"#, f) { context.isOutdoor = true }
-                reply("\(trimmed.capitalized), noted. I'll remember where I live.", plant: context, in: ctx)
+                if ChatParser.matches(#"\b(balcony|garden|terrace|outside|varanda|jardim|terraco|quintal|sacada|area externa|lado de fora)\b"#, f) { context.isOutdoor = true }
+                reply(String(localized: "\(trimmed.capitalized), noted. I'll remember where I live.", comment: "Plant chat: plant confirms the room/spot it lives in. %@ = place the user typed."), plant: context, in: ctx)
                 try? ctx.save(); return
             }
         }
@@ -85,10 +93,10 @@ enum JungleBrain {
                 let note = CareEvent(kind: .note, date: now, note: trimmed)
                 note.plant = context
                 ctx.insert(note)
-                reply("Noted in my journal.", plant: context, in: ctx)
+                reply(String(localized: "Noted in my journal.", comment: "Plant chat: the plant saved the user's message as a note in its journal."), plant: context, in: ctx)
             } else {
-                reply(plants.isEmpty ? "I'd love to meet your first plant! Try \"I have a monstera called Milo in the living room\"."
-                      : "Hmm, I'm not sure what you mean. You could say \"watered \(plants.prefix(2).map(\.name).joined(separator: " and "))\", or just ask me anything about them.", plant: nil, in: ctx)
+                reply(plants.isEmpty ? String(localized: "I'd love to meet your first plant! Try \"I have a monstera called Milo in the living room\".", comment: "Jungle chat: no plants yet; example sentence the user can type to add one (translate the example into natural Portuguese the parser understands, e.g. 'Tenho uma costela-de-adão chamada Milo na sala').")
+                      : String(localized: "Hmm, I'm not sure what you mean. You could say \"watered \(plants.prefix(2).map(\.name).formatted(.list(type: .and)))\", or just ask me anything about them.", comment: "Jungle chat: message not understood. %@ = one or two plant names as a list. Example uses the verb 'watered' (pt: 'reguei')."), plant: nil, in: ctx)
             }
             try? ctx.save()
             return
@@ -105,11 +113,11 @@ enum JungleBrain {
                 entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
             }
             cardDate = action.date
-            summary.append("\(action.kind.label) · \(targets.map(\.name).joined(separator: ", "))\(dayNote(action.date, now))")
+            summary.append(cardLine(action.kind, targets, date: action.date, now: now))
         }
 
         if summary.isEmpty {
-            reply("Which plant was that? Mention its name.", plant: context, in: ctx, suggestions: plants.prefix(4).map(\.name))
+            reply(String(localized: "Which plant was that? Mention its name.", comment: "Chat: user logged care but no plant could be matched."), plant: context, in: ctx, suggestions: plants.prefix(4).map(\.name))
         } else if context == nil {
             postCard(entries, date: cardDate, text: summary.joined(separator: "\n"), in: ctx)
         }
@@ -124,7 +132,7 @@ enum JungleBrain {
             entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
         }
         if announce, !entries.isEmpty {
-            postCard(entries, date: now, text: "\(kind.label) · \(targets.map(\.name).joined(separator: ", "))", in: ctx)
+            postCard(entries, date: now, text: cardLine(kind, targets, date: now, now: now), in: ctx)
         }
         try? ctx.save()
     }
@@ -191,7 +199,7 @@ enum JungleBrain {
                 CareEngine.learn(from: soil, plant: plant, at: action.date)
                 ctx.insert(e)
                 let reply = PlantVoice.soilReply(soil, plant: plant, expected: CareEngine.expectedDryDays(for: plant, at: now))
-                self.reply(reply, plant: plant, in: ctx, suggestions: soil == .dry ? ["Watered"] : [])
+                self.reply(reply, plant: plant, in: ctx, suggestions: soil == .dry ? [wateredChip] : [])
                 return e
             }
         case .water:
@@ -225,32 +233,48 @@ enum JungleBrain {
         }
     }
 
-    static func dayNote(_ date: Date, _ now: Date) -> String {
-        Calendar.current.isDate(date, inSameDayAs: now) ? "" : " (\(CareEngine.relative(date, now)))"
+    /// Log card line: "Water · Milo and Fern (yesterday)".
+    static func cardLine(_ kind: CareKind, _ targets: [Plant], date: Date, now: Date) -> String {
+        let names = targets.map(\.name).formatted(.list(type: .and))
+        if Calendar.current.isDate(date, inSameDayAs: now) {
+            return String(localized: "\(kind.label) · \(names)", comment: "Chat log card: care action and the plants it was done for. Args: care action label, list of plant names.")
+        }
+        return String(localized: "\(kind.label) · \(names) (\(CareEngine.relative(date, now)))", comment: "Chat log card for a past day. Args: care action label, list of plant names, relative day like 'yesterday' or '3 days ago'.")
+    }
+
+    // MARK: localized chat bits that are also matched later
+
+    nonisolated static var askLastWater: String { String(localized: "When did you last water me?", comment: "Plant chat: the plant asks when it was last watered. Must appear identically inside the plant's introduction.") }
+    nonisolated static var askWhere: String { String(localized: "Where do I live: which room or window?", comment: "Plant chat: plant asks which room or window it lives in.") }
+    nonisolated static var wateredChip: String { String(localized: "Watered", comment: "Chat suggestion chip: user confirms they watered (pt: 'Reguei'; the chat parser understands it). Max 14 chars.") }
+    nonisolated static var soilChips: [String] {
+        [String(localized: "Dry", comment: "Chat suggestion chip: the soil feels dry (pt: 'Seca', refers to a terra)."),
+         String(localized: "Slightly moist", comment: "Chat suggestion chip: the soil feels slightly moist (pt: 'Levemente úmida')."),
+         String(localized: "Wet", comment: "Chat suggestion chip: the soil feels wet (pt: 'Molhada').")]
     }
 
     // MARK: onboarding by chat
 
     static func mentionsNewPlant(_ t: String) -> Bool {
-        ChatParser.matches(#"\b(new plant|got a|got an|bought|i have a|i have an|adopted|comprei|tenho uma?|nova planta|ganhei)\b"#, t)
+        ChatParser.matches(#"\b(new plant|got a|got an|bought|i have a|i have an|adopted|comprei|tenho uma?|nova planta|planta nova|ganhei|adotei|chegou uma?)\b"#, t)
     }
 
     static func createPlantIfMentioned(_ text: String, plants: [Plant], in ctx: ModelContext, now: Date) -> Plant? {
         let t = text.folded
         guard mentionsNewPlant(t) else { return nil }
         let species = SpeciesLibrary.shared.mentioned(in: t)
-        var name = ChatParser.capture(#"\b(?:called|named|chamad[ao]|nome) ([a-z][a-z0-9' -]{0,20})"#, t)?
+        var name = ChatParser.capture(#"\b(?:called|named|chamad[ao]|se chama|nome e|nome) ([a-z][a-z0-9' -]{0,20})"#, t)?
             .components(separatedBy: CharacterSet(charactersIn: ",.!")).first?
             .components(separatedBy: " ").prefix(2).joined(separator: " ")
-        name = name.flatMap { $0.replacingOccurrences(of: #"\b(in|on|na|no|em|and|e)$"#, with: "", options: .regularExpression).trimmingCharacters(in: .whitespaces) }
+        name = name.flatMap { $0.replacingOccurrences(of: #"\b(in|on|na|no|em|and|e|que|da|do)$"#, with: "", options: .regularExpression).trimmingCharacters(in: .whitespaces) }
         guard species != nil || name != nil else { return nil }
-        let finalName = (name?.isEmpty == false ? name! : species!.en).capitalized
+        let finalName = (name?.isEmpty == false ? name! : species!.commonName).capitalized
         if plants.contains(where: { $0.name.folded == finalName.folded }) { return nil }
         let plant = Plant(name: finalName, speciesID: species?.id, personality: Personality.allCases.randomElement() ?? .cheerful)
         if let place = ChatParser.capture(#"\b(?:in the|in my|on the|by the|na|no) ([a-z ]{3,25})"#, t) {
             plant.location = place.trimmingCharacters(in: .whitespaces)
         }
-        if ChatParser.matches(#"\b(balcony|garden|terrace|outside|outdoor|varanda|jardim|terraco|quintal)\b"#, t) { plant.isOutdoor = true }
+        if ChatParser.matches(#"\b(balcony|garden|terrace|outside|outdoor|varanda|jardim|terraco|quintal|sacada|area externa)\b"#, t) { plant.isOutdoor = true }
         plant.acquiredAt = now
         ctx.insert(plant)
         return plant

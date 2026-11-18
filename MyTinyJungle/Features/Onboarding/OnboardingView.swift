@@ -45,7 +45,7 @@ struct OnboardingView: View {
                 Text("We'll gently warn you about any plant that could hurt them.").font(.footnote).foregroundStyle(Jungle.subtle)
             }
             Spacer()
-            Button(step == 0 ? "Get started" : step == 1 ? "Next" : "Start my jungle") {
+            Button(step == 0 ? "Get started" : step == 1 ? "Next" : "Start my jungle" as LocalizedStringKey) {
                 if step < 2 { withAnimation(.snappy) { step += 1 } } else { finish() }
             }
             .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large).frame(maxWidth: .infinity)
@@ -54,7 +54,7 @@ struct OnboardingView: View {
         .jungleBackdrop()
     }
 
-    private func feature(_ s: String, _ t: String) -> some View {
+    private func feature(_ s: String, _ t: LocalizedStringKey) -> some View {
         HStack(spacing: 14) { Image(systemName: s).font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.leaf).frame(width: 36); Text(t).foregroundStyle(Jungle.text) }
     }
 

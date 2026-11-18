@@ -23,7 +23,7 @@ struct PlantProfileView: View {
                     }
                 }
                 Section("Identity") {
-                    Button { choosingSpecies = true } label: { LabeledContent("Species", value: plant.species?.commonName ?? "Choose") }
+                    Button { choosingSpecies = true } label: { LabeledContent("Species", value: plant.species?.commonName ?? String(localized: "Choose", comment: "Species field value when none set; max 12 chars")) }
                     Picker("Personality", selection: Binding(get: { plant.personality }, set: { plant.personality = $0 })) {
                         ForEach(Personality.allCases) { Text($0.label).tag($0) }
                     }
@@ -53,14 +53,14 @@ struct PlantProfileView: View {
                     Section("What \(plant.name) needs") {
                         Label(s.waterRule, systemImage: "drop")
                         Label(s.lightRule, systemImage: "sun.max")
-                        Label("Humidity above \(Int(s.humidityMin))%", systemImage: "humidity")
+                        Label("Humidity above \(PlantFormat.percent(s.humidityMin))", systemImage: "humidity")
                         Label(Climate.tempRange(s.tempMin, s.tempMax), systemImage: "thermometer.medium")
                         if s.toxicCats || s.toxicDogs { Label("Toxic to pets if chewed", systemImage: "pawprint").foregroundStyle(Jungle.warmText) }
                         Text(s.tip).font(.footnote).foregroundStyle(Jungle.subtle)
                     }
                     Section("Learned") {
-                        LabeledContent("Dries in", value: "~\(Int(CareEngine.expectedDryDays(for: plant).rounded())) days")
-                        Text(plant.learnedDryDays == nil ? "Learning from your soil checks." : "Learned from your soil checks.").font(.footnote).foregroundStyle(Jungle.subtle)
+                        LabeledContent("Dries in", value: String(localized: "~\(Int(CareEngine.expectedDryDays(for: plant).rounded())) days", comment: "About N days; plural"))
+                        Text(plant.learnedDryDays == nil ? String(localized: "Learning from your soil checks.", comment: "Footnote") : String(localized: "Learned from your soil checks.", comment: "Footnote")).font(.footnote).foregroundStyle(Jungle.subtle)
                     }
                 }
                 Section("Timeline") {
@@ -103,9 +103,9 @@ struct PlantProfileView: View {
 
     private func title(_ e: CareEvent) -> String {
         var t = e.kind.label
-        if let s = e.soil { t += ": \(s.label.lowercased())" }
-        if let v = e.value { t += " · \(Int(v)) cm" }
-        if !e.note.isEmpty, e.kind != .photo || e.note != "First photo" { t += " · \(e.note)" }
+        if let s = e.soil { t = String(localized: "\(t): \(s.label.lowercased())", comment: "Timeline row: care kind, colon, soil state lowercase") }
+        if let v = e.value { t += " · " + PlantFormat.cm(v) }
+        if !e.note.isEmpty, e.kind != .photo || e.note != "First photo" { t += " · " + PlantFormat.note(e.note) }
         return t
     }
 

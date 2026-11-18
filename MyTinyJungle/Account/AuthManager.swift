@@ -36,7 +36,7 @@ final class AuthManager {
             let old = Keychain.load()
             save(.init(provider: .apple, id: c.user, name: given ?? (old?.id == c.user ? old?.name : nil), email: c.email ?? (old?.id == c.user ? old?.email : nil)))
         case .failure(let e):
-            if (e as? ASAuthorizationError)?.code != .canceled { error = "Apple sign-in didn't finish. Try again." }
+            if (e as? ASAuthorizationError)?.code != .canceled { error = String(localized: "Apple sign-in didn't finish. Try again.", comment: "Sign-in error under Apple button; calm; max 50 chars") }
         }
     }
 
@@ -50,7 +50,7 @@ final class AuthManager {
                 let u = r.user
                 save(.init(provider: .google, id: u.userID ?? UUID().uuidString, name: u.profile?.givenName, email: u.profile?.email))
             } catch {
-                if (error as NSError).code != GIDSignInError.canceled.rawValue { self.error = "Google sign-in didn't finish. Try again." }
+                if (error as NSError).code != GIDSignInError.canceled.rawValue { self.error = String(localized: "Google sign-in didn't finish. Try again.", comment: "Sign-in error under Google button; calm; max 50 chars") }
             }
         }
     }

@@ -88,7 +88,7 @@ struct LoggedCardView: View {
                 .foregroundStyle(card.undone ? Jungle.subtle : Jungle.leaf)
                 .font(.system(.title3, design: .rounded))
                 .contentTransition(.symbolEffect(.replace))
-            Text(card.undone ? "Undone" : "Logged").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+            Text(card.undone ? "Undone" : "Logged" as LocalizedStringKey).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
             Spacer()
             Text(dayLabel(card.date)).font(.subheadline).foregroundStyle(Jungle.subtle)
         }
@@ -113,7 +113,7 @@ struct LoggedCardView: View {
                     Spacer()
                     if !undone { Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle) }
                 }
-                Text(row.kinds.map(\.label).joined(separator: " · "))
+                Text(row.kinds.map(\.label).formatted(.list(type: .and)))
                     .font(.subheadline).foregroundStyle(Jungle.text)
                     .strikethrough(undone)
                 if !undone, let next = nextStep(row) {
@@ -170,8 +170,8 @@ struct LoggedCardView: View {
 
     private func dayLabel(_ d: Date) -> String {
         let cal = Calendar.current
-        if cal.isDateInToday(d) { return "Today, " + d.formatted(date: .omitted, time: .shortened) }
-        if cal.isDateInYesterday(d) { return "Yesterday" }
+        if cal.isDateInToday(d) { return String(localized: "Today, \(d.formatted(date: .omitted, time: .shortened))", comment: "Logged card date; %@ time") }
+        if cal.isDateInYesterday(d) { return String(localized: "Yesterday", comment: "Logged card date") }
         return d.formatted(.dateTime.weekday(.wide).day().month())
     }
 
@@ -182,15 +182,15 @@ struct LoggedCardView: View {
             let days = Int(CareEngine.expectedDryDays(for: p).rounded())
             let since = p.lastEvent(.water).map { CareEngine.days(from: $0.date) } ?? 0
             let left = max(0, days - Int(since.rounded(.down)))
-            return (left == 0 ? "Soil check due today" : "I'll ask for a soil check in ~\(left) day\(left == 1 ? "" : "s")", "hand.point.down")
+            return (left == 0 ? String(localized: "Soil check due today", comment: "Next step after watering") : String(localized: "I'll ask for a soil check in ~\(left) days", comment: "Next step after watering; %lld days (plural)"), "hand.point.down")
         }
         if row.kinds.contains(.feed), let s = p.species {
-            return ("Next feed in about \(Int(s.feedWeeks)) weeks" + (CareEngine.isGrowingSeason() ? "" : ", but pause in winter"), "leaf.arrow.triangle.circlepath")
+            return (CareEngine.isGrowingSeason() ? String(localized: "Next feed in about \(Int(s.feedWeeks)) weeks", comment: "Next step after feeding; %lld weeks (plural)") : String(localized: "Next feed in about \(Int(s.feedWeeks)) weeks, but pause in winter", comment: "Next step after feeding in winter; %lld weeks (plural)"), "leaf.arrow.triangle.circlepath")
         }
-        if row.kinds.contains(.repot) { return ("Recovery: go easy on water for 2 weeks, and no food for 6 weeks", "heart.text.square") }
-        if row.kinds.contains(.move) { return ("New spot: I'll watch for stress over the next 2–3 weeks", "eye") }
-        if row.kinds.contains(.newLeaf) { return ("Added to my growth timeline", "chart.line.uptrend.xyaxis") }
-        if row.kinds.contains(.mist), let s = p.species { return ("I like humidity above \(Int(s.humidityMin))%", "humidity") }
+        if row.kinds.contains(.repot) { return (String(localized: "Recovery: go easy on water for 2 weeks, and no food for 6 weeks", comment: "Next step after repotting"), "heart.text.square") }
+        if row.kinds.contains(.move) { return (String(localized: "New spot: I'll watch for stress over the next 2–3 weeks", comment: "Next step after moving plant"), "eye") }
+        if row.kinds.contains(.newLeaf) { return (String(localized: "Added to my growth timeline", comment: "Next step after new leaf"), "chart.line.uptrend.xyaxis") }
+        if row.kinds.contains(.mist), let s = p.species { return (String(localized: "I like humidity above \((s.humidityMin / 100).formatted(.percent.precision(.fractionLength(0))))", comment: "Next step after misting; %@ percentage"), "humidity") }
         return nil
     }
 }

@@ -50,11 +50,11 @@ final class CloudBackup {
 
     var summary: String {
         switch status {
-        case .checking: "Checking iCloud…"
-        case .on: syncing ? "Backing up…" : lastSync.map { "Last backup \($0.formatted(.relative(presentation: .named)))" } ?? "On. Your jungle backs up automatically."
-        case .noAccount: "Sign in to iCloud in the Settings app to back up."
-        case .off: pendingRestart ? "Off after you reopen the app." : "Off. Your jungle stays on this iPhone."
-        case .unavailable: pendingRestart ? "On after you reopen the app." : "Sign in to iCloud on this iPhone to keep your jungle safe."
+        case .checking: String(localized: "Checking iCloud…", comment: "Backup status in Settings; max 30 chars")
+        case .on: syncing ? String(localized: "Backing up…", comment: "Backup status; max 30 chars") : lastSync.map { String(localized: "Last backup \($0.formatted(.relative(presentation: .named)))", comment: "Backup status; %@ relative date like 'yesterday' or '5 minutes ago'") } ?? String(localized: "On. Your jungle backs up automatically.", comment: "Backup status, on")
+        case .noAccount: String(localized: "Sign in to iCloud in the Settings app to back up.", comment: "Backup status, no iCloud account")
+        case .off: pendingRestart ? String(localized: "Off after you reopen the app.", comment: "Backup status after turning off") : String(localized: "Off. Your jungle stays on this iPhone.", comment: "Backup status, off")
+        case .unavailable: pendingRestart ? String(localized: "On after you reopen the app.", comment: "Backup status after turning on") : String(localized: "Sign in to iCloud on this iPhone to keep your jungle safe.", comment: "Backup status, iCloud unavailable")
         }
     }
 }

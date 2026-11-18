@@ -33,7 +33,7 @@ struct TodayWeekStrip: View {
                     .background { if isToday { Capsule().fill(Jungle.surface).shadow(color: .black.opacity(0.06), radius: 8, y: 2) } }
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("\(d.formatted(.dateTime.weekday(.wide).day())), \(done ? "care done" : due ? "care planned" : "nothing planned")")
+                .accessibilityLabel(done ? String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), care done", comment: "VoiceOver for calendar day; %@ date") : due ? String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), care planned", comment: "VoiceOver for calendar day; %@ date") : String(localized: "\(d.formatted(.dateTime.weekday(.wide).day())), nothing planned", comment: "VoiceOver for calendar day; %@ date"))
             }
         }
     }
@@ -50,14 +50,14 @@ struct CareStoryCard: View {
     private var task: String {
         switch request.kind {
         case .water:
-            if let a = CareEngine.waterAmount(for: plant) { return "Water · \(a.lo)–\(a.hi) ml" }
-            return "Water"
-        case .checkSoil: return "Check the soil"
-        case .feed: return "Feed"
-        case .checkRoots: return "Check the roots"
-        case .portrait: return "Take a photo"
-        case .safety: return "Keep away from pets"
-        case .pauseFeeding: return "Rest from feeding"
+            if let a = CareEngine.waterAmount(for: plant) { return String(localized: "Water · \(a.lo)–\(a.hi) ml", comment: "Care task; %lld min and max millilitres; max 22 chars") }
+            return String(localized: "Water", comment: "Care task title; max 22 chars")
+        case .checkSoil: return String(localized: "Check the soil", comment: "Care task title; max 22 chars")
+        case .feed: return String(localized: "Feed", comment: "Care task: fertilize; max 22 chars")
+        case .checkRoots: return String(localized: "Check the roots", comment: "Care task title; max 22 chars")
+        case .portrait: return String(localized: "Take a photo", comment: "Care task title; max 22 chars")
+        case .safety: return String(localized: "Keep away from pets", comment: "Care task: toxic plant; max 22 chars")
+        case .pauseFeeding: return String(localized: "Rest from feeding", comment: "Care task: no fertilizer in winter; max 22 chars")
         }
     }
 
@@ -67,8 +67,8 @@ struct CareStoryCard: View {
     }
 
     private var lastLine: String {
-        guard let last = plant.lastEvent(.water)?.date else { return "Not watered yet" }
-        return "Watered " + last.formatted(.relative(presentation: .named))
+        guard let last = plant.lastEvent(.water)?.date else { return String(localized: "Not watered yet", comment: "Care card subtitle") }
+        return String(localized: "Watered \(last.formatted(.relative(presentation: .named)))", comment: "Care card subtitle; %@ relative date like '2 days ago'")
     }
 
     var body: some View {
@@ -172,7 +172,7 @@ struct JungleHealthCard: View {
             }
             .frame(width: 104, height: 104)
             VStack(alignment: .leading, spacing: 10) {
-                Text(needs == 0 ? (fine == 0 ? "Your jungle is thriving" : "Your jungle is doing well") : "\(needs) \(needs == 1 ? "plant would" : "plants would") love some attention")
+                Text(needs == 0 ? (fine == 0 ? "Your jungle is thriving" : "Your jungle is doing well" as LocalizedStringKey) : "\(needs) plants would love some attention" as LocalizedStringKey)
                     .font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 14) {
                     stat(thriving, "Thriving", Jungle.leaf)
@@ -180,7 +180,7 @@ struct JungleHealthCard: View {
                     stat(needs, "Need you", Jungle.terracotta)
                 }
                 if caredToday > 0 {
-                    Text("\(caredToday) care moment\(caredToday == 1 ? "" : "s") today").font(.caption).foregroundStyle(Jungle.accentText)
+                    Text("\(caredToday) care moments today").font(.caption).foregroundStyle(Jungle.accentText)
                 }
             }
             Spacer(minLength: 0)
@@ -190,7 +190,7 @@ struct JungleHealthCard: View {
         .accessibilityElement(children: .combine)
     }
 
-    private func stat(_ n: Int, _ label: String, _ c: Color) -> some View {
+    private func stat(_ n: Int, _ label: LocalizedStringKey, _ c: Color) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("\(n)").font(.system(.title3, design: .rounded, weight: .semibold)).monospacedDigit().foregroundStyle(Jungle.text)
             HStack(spacing: 4) { Circle().fill(c).frame(width: 6, height: 6); Text(label).font(.caption2).foregroundStyle(Jungle.subtle) }

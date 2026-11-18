@@ -122,7 +122,7 @@ struct QuickChips: View {
             HStack(spacing: 8) {
                 ForEach(Self.kinds, id: \.self) { kind in
                     Button { onTap(kind) } label: {
-                        Label { Text(kind == .soilCheck ? "Soil" : kind == .water ? "Water" : kind == .feed ? "Feed" : kind == .mist ? "Mist" : kind == .rotate ? "Rotate" : "New leaf") }
+                        Label { Text(kind.chipTitle) }
                               icon: { Icon3DView(Icon3D.care(kind), size: 20) }
                             .font(.subheadline.weight(.medium))
                             .foregroundStyle(Jungle.text)
@@ -232,6 +232,6 @@ struct GlassComposer: View {
 
 extension CareKind {
     var chipTitle: String {
-        switch self { case .soilCheck: "Soil"; case .water: "Water"; case .feed: "Feed"; case .mist: "Mist"; case .rotate: "Rotate"; default: "New leaf" }
+        switch self { case .soilCheck: String(localized: "Soil", comment: "Chat quick chip: log soil check; max 12 chars"); case .water: String(localized: "Water", comment: "Chat quick chip: log watering; max 12 chars"); case .feed: String(localized: "Feed", comment: "Chat quick chip: log fertilizing; max 12 chars"); case .mist: String(localized: "Mist", comment: "Chat quick chip: log misting; max 12 chars"); case .rotate: String(localized: "Rotate", comment: "Chat quick chip: log rotating pot; max 12 chars"); default: String(localized: "New leaf", comment: "Chat quick chip: log new leaf; max 12 chars") }
     }
 }

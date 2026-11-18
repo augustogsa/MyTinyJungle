@@ -9,8 +9,10 @@ struct MeView: View {
     @State private var settings = false
     @State private var paywall: PlusFeature?
     private var store = Store.shared
-    private var name: String { JungleSettings.shared.ownerName.isEmpty ? "Plant parent" : JungleSettings.shared.ownerName }
+    private var name: String { JungleSettings.shared.ownerName.isEmpty ? String(localized: "Plant parent", comment: "Me tab header fallback when owner has no name; max 20 chars") : JungleSettings.shared.ownerName }
 
+    private var sinceText: String { since.formatted(.dateTime.month(.abbreviated).year()) }
+    private var roomCount: Int { Set(plants.map(\.location).filter { !$0.isEmpty }).count }
     private var since: Date { plants.map(\.acquiredAt).min() ?? Date() }
     private var daysTogether: Int { max(1, Int(CareEngine.days(from: since))) }
     private var careCount: Int { events.filter { ![.photo, .note].contains($0.kind) }.count }
@@ -20,29 +22,29 @@ struct MeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    TabHeader(title: name, subtitle: (store.isPlus ? "Plus · " : "") + "Growing since \(since.formatted(.dateTime.month(.abbreviated).year()))") {
-                        HeaderButton(symbol: "gearshape", label: "Settings") { settings = true }
+                    TabHeader(title: name, subtitle: store.isPlus ? String(localized: "Plus · Growing since \(sinceText)", comment: "Me header subtitle for Plus members; arg is month+year") : String(localized: "Growing since \(sinceText)", comment: "Me header subtitle; arg is month+year like Mar 2025")) {
+                        HeaderButton(symbol: "gearshape", label: String(localized: "Settings", comment: "Accessibility label for settings button")) { settings = true }
                     }
                     header
                     HStack(spacing: 10) {
-                        NavigationLink { SpacesView() } label: { shortcut(.home, "Spaces", "\(Set(plants.map(\.location).filter { !$0.isEmpty }).count) rooms") }
-                        NavigationLink { PropagationListView() } label: { shortcut(.seedling, "Cuttings", props.isEmpty ? "Start one" : "\(props.count) growing") }
+                        NavigationLink { SpacesView() } label: { shortcut(.home, String(localized: "Spaces", comment: "Me shortcut title: rooms in the home"), String(localized: "\(roomCount) rooms", comment: "Me shortcut subtitle: number of rooms with plants")) }
+                        NavigationLink { PropagationListView() } label: { shortcut(.seedling, String(localized: "Cuttings", comment: "Me shortcut title: propagation cuttings"), props.isEmpty ? String(localized: "Start one", comment: "Me cuttings shortcut subtitle when none") : String(localized: "\(props.count) growing", comment: "Me cuttings shortcut subtitle: number of cuttings growing")) }
                     }
                     .buttonStyle(.plain)
                     milestones
                     if !store.isPlus { plusCard }
-                    JungleGroup(title: "Your jungle") {
-                        NavigationLink { GuidesView() } label: { JungleRow(icon: .tools, title: "How-to guides", chevron: true) }
+                    JungleGroup(title: String(localized: "Your jungle", comment: "Me section title")) {
+                        NavigationLink { GuidesView() } label: { JungleRow(icon: .tools, title: String(localized: "How-to guides", comment: "Me row title"), chevron: true) }
                         JungleDivider()
-                        NavigationLink { TravelPlanView() } label: { JungleRow(icon: .travel, title: "Going away", subtitle: "Plan care for a trip", chevron: true) }
+                        NavigationLink { TravelPlanView() } label: { JungleRow(icon: .travel, title: String(localized: "Going away", comment: "Me row title: travel plan"), subtitle: String(localized: "Plan care for a trip", comment: "Me row subtitle"), chevron: true) }
                     }
                     .buttonStyle(.plain)
-                    JungleGroup(title: "Account") {
+                    JungleGroup(title: String(localized: "Account", comment: "Me section title")) {
                         Button { if store.isPlus { settings = true } else { paywall = .morePlants } } label: {
                             JungleRow(icon: .crown, title: "Tiny Jungle Plus", chevron: true) { Text(store.isPlus ? "Active" : "Free").foregroundStyle(Jungle.subtle) }
                         }
                         JungleDivider()
-                        Button { settings = true } label: { JungleRow(icon: .profile, title: "Settings", chevron: true) }
+                        Button { settings = true } label: { JungleRow(icon: .profile, title: String(localized: "Settings", comment: "Me row title"), chevron: true) }
                     }
                     .buttonStyle(.plain)
                 }
@@ -72,19 +74,19 @@ struct MeView: View {
                     }
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Your jungle").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                        Text(happy == plants.count ? "Everyone's happy" : "\(plants.count - happy) would love some attention")
+                        Text(happy == plants.count ? String(localized: "Everyone's happy", comment: "Me header: all plants are fine") : String(localized: "\(plants.count - happy) would love some attention", comment: "Me header: number of plants needing care"))
                             .font(.subheadline).foregroundStyle(Jungle.subtle)
                     }
                     Spacer(minLength: 0)
                 }
                 HStack(spacing: 0) {
-                    stat("\(plants.count)", plants.count == 1 ? "plant" : "plants")
+                    stat(plants.count.formatted(), plants.count == 1 ? String(localized: "plant", comment: "Me stat caption under a count of 1 plant") : String(localized: "plants", comment: "Me stat caption under a plant count"))
                     Divider().frame(height: 30)
-                    stat("\(happy)", "happy")
+                    stat(happy.formatted(), String(localized: "happy", comment: "Me stat caption under number of happy plants; lowercase, short"))
                     Divider().frame(height: 30)
-                    stat("\(careCount)", "care moments")
+                    stat(careCount.formatted(), String(localized: "care moments", comment: "Me stat caption under number of care actions logged; short"))
                     Divider().frame(height: 30)
-                    stat(daysTogether >= 365 ? "\(daysTogether / 365)" : "\(daysTogether)", daysTogether >= 730 ? "years" : daysTogether >= 365 ? "year" : "days")
+                    stat(daysTogether >= 365 ? (daysTogether / 365).formatted() : daysTogether.formatted(), daysTogether >= 730 ? String(localized: "years", comment: "Me stat caption: years together") : daysTogether >= 365 ? String(localized: "year", comment: "Me stat caption: one year together") : String(localized: "days", comment: "Me stat caption: days together"))
                 }
                 .padding(.vertical, 10)
                 .background(Jungle.mint.opacity(0.6), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -95,7 +97,7 @@ struct MeView: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
-        .accessibilityHint("Opens jungle health")
+        .accessibilityHint(Text("Opens jungle health", comment: "Accessibility hint on Me header card"))
     }
 
     private func stat(_ v: String, _ l: String) -> some View {
@@ -129,20 +131,20 @@ struct MeView: View {
         let leaves = events.filter { $0.kind == .newLeaf }.count
         func r(_ a: Int, _ b: Int) -> Double { b == 0 ? 0 : min(1, Double(a) / Double(b)) }
         return [
-            .init(id: "first", icon: .pottedSprout, title: "First plant", progress: r(plants.count, 1), detail: "Add your first plant"),
-            .init(id: "five", icon: .plantStand, title: "Little jungle", progress: r(plants.count, 5), detail: "\(min(plants.count, 5)) of 5 plants"),
-            .init(id: "leaf", icon: .sprout, title: "New growth", progress: r(leaves, 3), detail: "\(min(leaves, 3)) of 3 new leaves logged"),
-            .init(id: "prop", icon: .seedling, title: "Propagator", progress: r(props.count, 1), detail: "Start your first cutting"),
-            .init(id: "happy", icon: .award, title: "All happy", progress: plants.isEmpty ? 0 : r(happy, plants.count), detail: "\(happy) of \(plants.count) plants happy"),
-            .init(id: "water", icon: .waterDrops, title: "Hydration hero", progress: r(waters, 50), detail: "\(min(waters, 50)) of 50 waterings"),
-            .init(id: "year", icon: .blossomTree, title: "One year", progress: r(daysTogether, 365), detail: "\(min(daysTogether, 365)) of 365 days"),
+            .init(id: "first", icon: .pottedSprout, title: String(localized: "First plant", comment: "Milestone title"), progress: r(plants.count, 1), detail: String(localized: "Add your first plant", comment: "Milestone detail")),
+            .init(id: "five", icon: .plantStand, title: String(localized: "Little jungle", comment: "Milestone title: have 5 plants"), progress: r(plants.count, 5), detail: String(localized: "\(min(plants.count, 5)) of 5 plants", comment: "Milestone progress detail")),
+            .init(id: "leaf", icon: .sprout, title: String(localized: "New growth", comment: "Milestone title"), progress: r(leaves, 3), detail: String(localized: "\(min(leaves, 3)) of 3 new leaves logged", comment: "Milestone progress detail")),
+            .init(id: "prop", icon: .seedling, title: String(localized: "Propagator", comment: "Milestone title: started a cutting"), progress: r(props.count, 1), detail: String(localized: "Start your first cutting", comment: "Milestone detail")),
+            .init(id: "happy", icon: .award, title: String(localized: "All happy", comment: "Milestone title"), progress: plants.isEmpty ? 0 : r(happy, plants.count), detail: String(localized: "\(happy) of \(plants.count) plants happy", comment: "Milestone progress detail")),
+            .init(id: "water", icon: .waterDrops, title: String(localized: "Hydration hero", comment: "Milestone title: 50 waterings"), progress: r(waters, 50), detail: String(localized: "\(min(waters, 50)) of 50 waterings", comment: "Milestone progress detail")),
+            .init(id: "year", icon: .blossomTree, title: String(localized: "One year", comment: "Milestone title"), progress: r(daysTogether, 365), detail: String(localized: "\(min(daysTogether, 365)) of 365 days", comment: "Milestone progress detail")),
         ]
     }
 
     private var milestones: some View {
         let list = milestoneList
         let next = list.filter { !$0.done }.max { $0.progress < $1.progress }
-        return JungleGroup(title: "Milestones · \(list.filter(\.done).count) of \(list.count)") {
+        return JungleGroup(title: String(localized: "Milestones · \(list.filter(\.done).count) of \(list.count)", comment: "Me section title with earned/total milestones")) {
             if let next {
                 HStack(spacing: 12) {
                     Icon3DView(next.icon, size: 40)
@@ -150,7 +152,7 @@ struct MeView: View {
                         HStack {
                             Text("Next: \(next.title)").font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
                             Spacer()
-                            Text("\(Int(next.progress * 100))%").font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                            Text(next.progress.formatted(.percent.precision(.fractionLength(0)))).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                         }
                         ProgressView(value: next.progress).tint(Jungle.leaf)
                         Text(next.detail).font(.caption).foregroundStyle(Jungle.subtle)
@@ -164,7 +166,7 @@ struct MeView: View {
                     Icon3DView(m.icon, size: 30)
                         .saturation(m.done ? 1 : 0).opacity(m.done ? 1 : 0.35)
                         .frame(maxWidth: .infinity)
-                        .accessibilityLabel("\(m.title), \(m.done ? "earned" : m.detail)")
+                        .accessibilityLabel(m.done ? String(localized: "\(m.title), earned", comment: "Accessibility: milestone earned; arg is title") : String(localized: "\(m.title), \(m.detail)", comment: "Accessibility: milestone title then progress detail"))
                 }
             }
             .padding(.vertical, 12)

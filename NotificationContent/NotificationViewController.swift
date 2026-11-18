@@ -87,7 +87,7 @@ struct NoteCard: View {
     private var heading: String { names.count == 1 ? names[0] : title }
     private var pill: String? {
         if names.count == 1 { return status.first }
-        return names.isEmpty ? nil : "\(names.count) plants"
+        return names.isEmpty ? nil : String(localized: "\(names.count) plants", comment: "Pill on expanded notification; %lld plant count (plural); max 14 chars")
     }
 
     var body: some View {
@@ -112,7 +112,7 @@ struct NoteCard: View {
                         .shadow(color: .black.opacity(0.35), radius: 6, y: 1)
                         .lineLimit(2)
                     if names.count > 1 {
-                        Text(names.count > 4 ? names.prefix(3).joined(separator: ", ") + " and \(names.count - 3) more" : ListFormatter.localizedString(byJoining: names))
+                        Text(names.count > 4 ? String(localized: "\(names.prefix(3).joined(separator: ", ")) and \(names.count - 3) more", comment: "Plant names on notification; %@ three names, %lld how many more (plural)") : names.formatted(.list(type: .and)))
                             .font(.system(.subheadline, design: .rounded, weight: .medium))
                             .foregroundStyle(.white.opacity(0.92))
                             .shadow(color: .black.opacity(0.35), radius: 4, y: 1)

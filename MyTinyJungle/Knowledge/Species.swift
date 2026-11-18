@@ -45,37 +45,39 @@ struct Species: Codable, Identifiable, Hashable {
     var difficulty: Int? = nil
     var bloom: String? = nil
     var tags: [String]? = nil
+    /// Local common name injected by L10nData for the current language.
+    var local: String? = nil
 
     struct Problem: Codable, Hashable { let sign: String; let cause: String; let fix: String }
 
-    var commonName: String { Locale.current.language.languageCode?.identifier == "pt" ? pt : en }
+    var commonName: String { local ?? en }
 
     var waterRule: String {
         switch waterStyle {
-        case .dry: "Water only when the soil is completely dry."
-        case .half: "Water when the top half of the soil is dry."
-        case .top: "Water when the top 2–3 cm are dry."
-        case .moist: "Keep the soil lightly moist, never soggy."
+        case .dry: String(localized: "Water only when the soil is completely dry.", comment: "Watering rule for a plant species; one sentence")
+        case .half: String(localized: "Water when the top half of the soil is dry.", comment: "Watering rule for a plant species; one sentence")
+        case .top: String(localized: "Water when the top 2–3 cm are dry.", comment: "Watering rule for a plant species; one sentence")
+        case .moist: String(localized: "Keep the soil lightly moist, never soggy.", comment: "Watering rule for a plant species; one sentence")
         }
     }
     var lightRule: String {
         switch light {
-        case .low: "Tolerates low light. Happier in medium light."
-        case .medium: "Medium, indirect light."
-        case .bright: "Bright, indirect light. A little gentle morning sun is fine."
-        case .direct: "Lots of light, including direct sun."
+        case .low: String(localized: "Tolerates low light. Happier in medium light.", comment: "Light need for a plant species; one sentence")
+        case .medium: String(localized: "Medium, indirect light.", comment: "Light need for a plant species; one sentence")
+        case .bright: String(localized: "Bright, indirect light. A little gentle morning sun is fine.", comment: "Light need for a plant species; one sentence")
+        case .direct: String(localized: "Lots of light, including direct sun.", comment: "Light need for a plant species; one sentence")
         }
     }
     var mixLabel: String {
         if let soil = Knowledge.shared.soil(mix) { return soil.short }
         return switch mix {
-        case "aroid": "chunky aroid mix (bark, perlite, coco coir)"
-        case "cactus": "gritty cactus & succulent mix"
-        case "orchid": "orchid bark mix"
-        case "acid": "acidic (ericaceous) mix"
-        case "citrus": "citrus mix"
-        case "vegetable": "vegetable / herb potting mix"
-        default: "good universal potting mix with extra perlite"
+        case "aroid": String(localized: "chunky aroid mix (bark, perlite, coco coir)", comment: "Soil mix name, lowercase, used inside a sentence")
+        case "cactus": String(localized: "gritty cactus & succulent mix", comment: "Soil mix name, lowercase, used inside a sentence")
+        case "orchid": String(localized: "orchid bark mix", comment: "Soil mix name, lowercase, used inside a sentence")
+        case "acid": String(localized: "acidic (ericaceous) mix", comment: "Soil mix name, lowercase, used inside a sentence")
+        case "citrus": String(localized: "citrus mix", comment: "Soil mix name, lowercase, used inside a sentence")
+        case "vegetable": String(localized: "vegetable / herb potting mix", comment: "Soil mix name, lowercase, used inside a sentence")
+        default: String(localized: "good universal potting mix with extra perlite", comment: "Soil mix name, lowercase, used inside a sentence")
         }
     }
 }
@@ -88,7 +90,7 @@ final class SpeciesLibrary {
     init(bundle: Bundle = .main) {
         if let url = bundle.url(forResource: "species", withExtension: "json"),
            let data = try? Data(contentsOf: url),
-           let list = try? JSONDecoder().decode([Species].self, from: data) {
+           let list = try? JSONDecoder().decode([Species].self, from: L10nData.localize(data)) {
             all = list.sorted { $0.en < $1.en }
         } else {
             all = []
@@ -101,7 +103,7 @@ final class SpeciesLibrary {
     func search(_ query: String) -> [Species] {
         let q = query.folded
         guard !q.isEmpty else { return all }
-        return all.filter { ([$0.en, $0.pt, $0.scientific, $0.family] + ($0.aliases ?? [])).contains { $0.folded.contains(q) } }
+        return all.filter { ([$0.en, $0.pt, $0.local ?? "", $0.scientific, $0.family] + ($0.aliases ?? [])).contains { $0.folded.contains(q) } }
     }
 
     /// Best match of a species mentioned inside free text ("my new monstera").
@@ -109,7 +111,7 @@ final class SpeciesLibrary {
         let t = " " + text.folded.replacingOccurrences(of: #"[^a-z0-9' ]"#, with: " ", options: .regularExpression) + " "
         var best: (Species, Int)?
         for s in all {
-            for name in [s.en, s.pt, s.scientific] + (s.aliases ?? []) + s.scientific.split(separator: " ").prefix(1).map(String.init) {
+            for name in [s.en, s.pt, s.local ?? "", s.scientific] + (s.aliases ?? []) + s.scientific.split(separator: " ").prefix(1).map(String.init) {
                 let n = name.folded
                 if n.count >= 4, t.contains(" " + n), n.count > (best?.1 ?? 0) { best = (s, n.count) }
             }

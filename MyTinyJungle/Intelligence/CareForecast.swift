@@ -7,36 +7,36 @@ enum ReminderKind: String, CaseIterable, Identifiable, Codable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .water: "Drinks"
-        case .soilCheck: "Soil hellos"
-        case .feed: "Plant snacks"
-        case .mist: "Misty mornings"
-        case .rotate: "Little turns"
-        case .repot: "Roomier pots"
-        case .prune: "Trims"
-        case .clean: "Leaf baths"
-        case .pests: "Bug peeks"
-        case .propagation: "Baby plants"
-        case .seasonal: "Seasonal moves"
-        case .travel: "Trip prep"
-        case .weather: "Frost and heat"
+        case .water: String(localized: "Drinks", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .soilCheck: String(localized: "Soil hellos", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .feed: String(localized: "Plant snacks", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .mist: String(localized: "Misty mornings", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .rotate: String(localized: "Little turns", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .repot: String(localized: "Roomier pots", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .prune: String(localized: "Trims", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .clean: String(localized: "Leaf baths", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .pests: String(localized: "Bug peeks", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .propagation: String(localized: "Baby plants", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .seasonal: String(localized: "Seasonal moves", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .travel: String(localized: "Trip prep", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
+        case .weather: String(localized: "Frost and heat", comment: "Reminder kind title in Settings, playful. Max 22 chars.")
         }
     }
     var blurb: String {
         switch self {
-        case .water: "When someone's thirsty"
-        case .soilCheck: "A quick finger in the soil"
-        case .feed: "Food in the growing months"
-        case .mist: "For the humidity lovers"
-        case .rotate: "So everyone grows straight"
-        case .repot: "When roots want more room"
-        case .prune: "A tidy-up in spring"
-        case .clean: "Dust off so leaves can breathe"
-        case .pests: "A gentle look under leaves"
-        case .propagation: "Checking on your cuttings"
-        case .seasonal: "Moving in or out with the seasons"
-        case .travel: "Getting everyone ready before you go"
-        case .weather: "Heads-ups for plants outside"
+        case .water: String(localized: "When someone's thirsty", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .soilCheck: String(localized: "A quick finger in the soil", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .feed: String(localized: "Food in the growing months", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .mist: String(localized: "For the humidity lovers", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .rotate: String(localized: "So everyone grows straight", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .repot: String(localized: "When roots want more room", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .prune: String(localized: "A tidy-up in spring", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .clean: String(localized: "Dust off so leaves can breathe", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .pests: String(localized: "A gentle look under leaves", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .propagation: String(localized: "Checking on your cuttings", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .seasonal: String(localized: "Moving in or out with the seasons", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .travel: String(localized: "Getting everyone ready before you go", comment: "Reminder kind subtitle in Settings, short and warm.")
+        case .weather: String(localized: "Heads-ups for plants outside", comment: "Reminder kind subtitle in Settings, short and warm.")
         }
     }
     var icon: Icon3D {
@@ -165,13 +165,13 @@ enum CareForecast {
             var next = w.addingTimeInterval(expected * 86_400)
             if let c = p.lastEvent(.soilCheck), c.date > w, c.soil != .dry { next = max(next, c.date.addingTimeInterval(max(1, expected * 0.3) * 86_400)) }
             let first = max(next, now)
-            add(first, .water, "\(p.name) will be thirsty \(dayWord(first, now))")
+            add(first, .water, String(localized: "\(p.name) will be thirsty \(dayWord(first, now))", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday, next weekday, in N weeks)."))
             let hello = first.addingTimeInterval(-86_400)
-            if hello > now { add(hello, .soilCheck, "A quick soil hello for \(p.name)") }
+            if hello > now { add(hello, .soilCheck, String(localized: "A quick soil hello for \(p.name)", comment: "Forecast line on Today/agenda, warm, no final period. Playful: check the soil. %@ = plant name.")) }
             var again = first.addingTimeInterval(expected * 86_400)
-            while again <= end { add(again, .water, "\(p.name) will be thirsty again \(dayWord(again, now))"); again += expected * 86_400 }
+            while again <= end { add(again, .water, String(localized: "\(p.name) will be thirsty again \(dayWord(again, now))", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when.")); again += expected * 86_400 }
         } else {
-            add(now, .soilCheck, "Say hello to \(p.name)'s soil so we can learn its rhythm")
+            add(now, .soilCheck, String(localized: "Say hello to \(p.name)'s soil so we can learn its rhythm", comment: "Forecast line on Today/agenda, warm, no final period. %@ = plant name."))
         }
 
         // Feed in the growing season only, skipping fresh soil.
@@ -180,7 +180,7 @@ enum CareForecast {
             let fresh = p.lastRepotAt.map { $0.addingTimeInterval(42 * 86_400) } ?? .distantPast
             if f < fresh { f = fresh }
             while f <= end {
-                if CareEngine.isGrowingSeason(f) { add(f, .feed, "\(p.name) would love a little snack \(dayWord(max(f, now), now))"); break }
+                if CareEngine.isGrowingSeason(f) { add(f, .feed, String(localized: "\(p.name) would love a little snack \(dayWord(max(f, now), now))", comment: "Forecast line on Today/agenda, warm, no final period. Snack = fertilizer, playful. Args: plant name, when.")); break }
                 f += 7 * 86_400
             }
         }
@@ -189,13 +189,13 @@ enum CareForecast {
         if let s, s.humidityMin >= 60, !p.isOutdoor {
             let every: Double = Climate.shared.indoorFactor(now) < 1 || CareEngine.isWinter(now) ? 2 : 4
             let m = p.lastEvent(.mist).map { $0.date.addingTimeInterval(every * 86_400) } ?? now
-            add(m, .mist, "\(p.name) is dreaming of a misty morning")
+            add(m, .mist, String(localized: "\(p.name) is dreaming of a misty morning", comment: "Forecast line on Today/agenda, warm, no final period. Misting reminder. %@ = plant name."))
         }
 
         // Rotate every two weeks for even growth (not for plants outside).
         if !p.isOutdoor {
             let r = p.lastEvent(.rotate).map { $0.date.addingTimeInterval(14 * 86_400) } ?? now.addingTimeInterval(3 * 86_400)
-            add(r, .rotate, "Give \(p.name) a little turn toward the light")
+            add(r, .rotate, String(localized: "Give \(p.name) a little turn toward the light", comment: "Forecast line on Today/agenda, warm, no final period. %@ = plant name."))
         }
 
         // Clean leaves monthly; big leaves gather dust.
@@ -206,19 +206,19 @@ enum CareForecast {
             return now.addingTimeInterval(Double(off) * 86_400)
         }
         let c = p.lastEvent(.clean).map { $0.date.addingTimeInterval(30 * 86_400) } ?? slot(30, 0)
-        add(c, .clean, "\(p.name)'s leaves would love a soft wipe")
+        add(c, .clean, String(localized: "\(p.name)'s leaves would love a soft wipe", comment: "Forecast line on Today/agenda, warm, no final period. %@ = plant name."))
 
         // Pest peek every three weeks, weekly for species prone to pests in dry warm rooms.
         let prone = !(s?.pests ?? []).isEmpty
         let pestEvery: Double = prone && Climate.shared.indoorFactor(now) < 1 ? 10 : 21
         let pk = (p.lastEvent(.health)?.date ?? p.lastEvent(.treat)?.date).map { $0.addingTimeInterval(pestEvery * 86_400) } ?? slot(21, 5)
-        add(pk, .pests, prone ? "A gentle peek under \(p.name)'s leaves for \(s!.pests!.first!.lowercased().replacingOccurrences(of: "-", with: " "))" : "A gentle peek under \(p.name)'s leaves")
+        add(pk, .pests, prone ? String(localized: "A gentle peek under \(p.name)'s leaves for \(s!.pestList.first?.name.lowercased() ?? s!.pests!.first!.lowercased().replacingOccurrences(of: "-", with: " "))", comment: "Forecast line on Today/agenda, warm, no final period. Pest check. Args: plant name, pest name lowercase.") : String(localized: "A gentle peek under \(p.name)'s leaves", comment: "Forecast line on Today/agenda, warm, no final period. Pest check. %@ = plant name."))
 
         // Prune: early growing season, once a year.
         if let s, s.growth != "slow" {
             let lastPrune = p.lastEvent(.prune)?.date ?? .distantPast
             if let start = nextSeasonStart(.spring, from: now), CareEngine.days(from: lastPrune, to: start) > 300 {
-                add(start, .prune, "\(p.name) will be ready for a spring trim \(dayWord(start, now))")
+                add(start, .prune, String(localized: "\(p.name) will be ready for a spring trim \(dayWord(start, now))", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when."))
             }
         }
 
@@ -227,7 +227,7 @@ enum CareForecast {
             let since = CareEngine.days(from: p.lastRepotAt ?? p.acquiredAt, to: now)
             if since > s.repotYears * 365 - 30 {
                 let when = CareEngine.isGrowingSeason(now) ? now.addingTimeInterval(2 * 86_400) : (nextSeasonStart(.spring, from: now) ?? now)
-                add(when, .repot, "\(p.name) could use a roomier pot \(when > end ? "in spring" : dayWord(when, now))")
+                add(when, .repot, String(localized: "\(p.name) could use a roomier pot \(when > end ? String(localized: "in spring", comment: "Time phrase used inside a forecast line.") : dayWord(when, now))", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when."))
             }
         }
 
@@ -235,9 +235,9 @@ enum CareForecast {
         if let s, s.outdoor == true || p.isOutdoor {
             let days14 = Climate.shared.upcoming(now, days: days)
             if p.isOutdoor, let cold = days14.first(where: { $0.tMin < s.tempMin + 2 }) {
-                add(cold.date.addingTimeInterval(-86_400), .seasonal, "Time to bring \(p.name) inside before nights drop to \(Climate.temp(cold.tMin))")
+                add(cold.date.addingTimeInterval(-86_400), .seasonal, String(localized: "Time to bring \(p.name) inside before nights drop to \(Climate.temp(cold.tMin))", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, formatted temperature."))
             } else if !p.isOutdoor, CareEngine.isGrowingSeason(now), !days14.isEmpty, days14.allSatisfy({ $0.tMin >= s.tempMin + 4 }) {
-                add(now.addingTimeInterval(86_400), .seasonal, "Nights are soft now. \(p.name) could enjoy some summer outside")
+                add(now.addingTimeInterval(86_400), .seasonal, String(localized: "Nights are soft now. \(p.name) could enjoy some summer outside", comment: "Forecast line on Today/agenda, warm, no final period. Mild nights. %@ = plant name."))
             }
         }
         return out
@@ -246,15 +246,15 @@ enum CareForecast {
     static func propagationItems(_ props: [Propagation], plants: [Plant], now: Date, days: Int) -> [ForecastItem] {
         props.compactMap { pr in
             guard pr.stage != .done else { return nil }
-            let parent = plants.first { $0.id == pr.parentID }?.name ?? "your cutting"
+            let parent = plants.first { $0.id == pr.parentID }?.name ?? String(localized: "your cutting", comment: "Fallback for a parent plant name in propagation reminders.")
             let weeks: Double = pr.stage == .cutting ? 1 : pr.stage == .rooting ? 3 : 2
             let d = max(now, pr.startedAt.addingTimeInterval(weeks * 7 * 86_400))
             guard d <= now.addingTimeInterval(Double(days) * 86_400) else { return nil }
             let line = switch pr.stage {
-            case .cutting: "Peek at \(parent)'s cutting and freshen its water"
-            case .rooting: "\(parent)'s baby might have roots long enough to pot"
-            case .potting: "Time to tuck \(parent)'s baby into its own pot"
-            default: "See how \(parent)'s little one is growing"
+            case .cutting: String(localized: "Peek at \(parent)'s cutting and freshen its water", comment: "Forecast line on Today/agenda, warm, no final period. %@ = parent plant name.")
+            case .rooting: String(localized: "\(parent)'s baby might have roots long enough to pot", comment: "Forecast line on Today/agenda, warm, no final period. Baby = cutting (pt: mudinha). %@ = parent plant name.")
+            case .potting: String(localized: "Time to tuck \(parent)'s baby into its own pot", comment: "Forecast line on Today/agenda, warm, no final period. %@ = parent plant name.")
+            default: String(localized: "See how \(parent)'s little one is growing", comment: "Forecast line on Today/agenda, warm, no final period. %@ = parent plant name.")
             }
             return ForecastItem(plantID: pr.parentID, plantName: parent, date: d, kind: .propagation, line: line)
         }
@@ -264,9 +264,9 @@ enum CareForecast {
         guard let trip = CarePrefs.trip, trip.leave > now.addingTimeInterval(-86_400) else { return [] }
         let away = trip.back.timeIntervalSince(trip.leave) / 86_400
         let eve = max(now, trip.leave.addingTimeInterval(-86_400))
-        var out = [ForecastItem(plantID: nil, plantName: "", date: eve, kind: .travel, line: "Tomorrow you travel. Give everyone a deep, slow drink tonight")]
+        var out = [ForecastItem(plantID: nil, plantName: "", date: eve, kind: .travel, line: String(localized: "Tomorrow you travel. Give everyone a deep, slow drink tonight", comment: "Forecast line on Today/agenda, warm, no final period. Trip prep."))]
         for p in plants where CareEngine.expectedDryDays(for: p) * 1.3 < away {
-            out.append(.init(plantID: p.id, plantName: p.name, date: max(now, trip.leave.addingTimeInterval(-2 * 86_400)), kind: .travel, line: "\(p.name) will need a sitter or a wick while you're away"))
+            out.append(.init(plantID: p.id, plantName: p.name, date: max(now, trip.leave.addingTimeInterval(-2 * 86_400)), kind: .travel, line: String(localized: "\(p.name) will need a sitter or a wick while you're away", comment: "Forecast line on Today/agenda, warm, no final period. Trip prep. %@ = plant name.")))
         }
         return out
     }
@@ -290,13 +290,14 @@ enum CareForecast {
     }
 
     static func dayWord(_ d: Date, _ now: Date = Date()) -> String {
-        if cal.isDate(d, inSameDayAs: now) { return "today" }
-        if cal.isDate(d, inSameDayAs: now.addingTimeInterval(86_400)) { return "tomorrow" }
+        if cal.isDate(d, inSameDayAs: now) { return String(localized: "today", comment: "Time phrase at the end of a forecast line ('Milo will be thirsty today').") }
+        if cal.isDate(d, inSameDayAs: now.addingTimeInterval(86_400)) { return String(localized: "tomorrow", comment: "Time phrase at the end of a forecast line.") }
         let n = cal.dateComponents([.day], from: cal.startOfDay(for: now), to: cal.startOfDay(for: d)).day ?? 0
-        if n < 7 { return d.formatted(.dateTime.weekday(.wide)) }
-        if n < 14 { return "next " + d.formatted(.dateTime.weekday(.wide)) }
-        if n < 60 { return "in \(n / 7) weeks" }
-        return "in " + d.formatted(.dateTime.month(.wide))
+        let weekday = d.formatted(.dateTime.weekday(.wide))
+        if n < 7 { return String(localized: "on \(weekday)", comment: "Time phrase at the end of a forecast line. %@ = weekday name (e.g. 'Friday'). pt: just the weekday, no preposition.") }
+        if n < 14 { return String(localized: "next \(weekday)", comment: "Time phrase at the end of a forecast line. %@ = weekday name. pt: use '%@ que vem' to avoid gender agreement.") }
+        if n < 60 { return String(localized: "in \(n / 7) weeks", comment: "Time phrase at the end of a forecast line. %lld = weeks (plural).") }
+        return String(localized: "in \(d.formatted(.dateTime.month(.wide)))", comment: "Time phrase at the end of a forecast line. %@ = month name.")
     }
 }
 
@@ -321,24 +322,24 @@ enum InsightEngine {
             let key = f.plantID?.uuidString ?? f.kind.rawValue
             guard !seen.contains(key), [.water, .repot, .feed, .weather, .travel, .seasonal, .propagation, .prune].contains(f.kind) else { continue }
             seen.insert(key)
-            out.append(.init(id: f.id, plantID: f.plantID, tone: .comingUp, icon: f.kind.icon, text: f.line + "."))
+            out.append(.init(id: f.id, plantID: f.plantID, tone: .comingUp, icon: f.kind.icon, text: String(localized: "\(f.line).", comment: "Insight card: a forecast line as a sentence, adds the final period. Keep as is.")))
         }
         for p in live {
             // Missed checks already show as Today's care; only patterns go here.
             if let pat = pattern(for: p, now: now), !pat.id.hasSuffix("-missed") { out.append(pat) }
             let streak = careStreak(p, now: now)
             if streak >= 3 {
-                out.append(.init(id: "\(p.id)-streak", plantID: p.id, tone: .streak, icon: .award, text: "\(streak) waterings in a row right on time for \(p.name). You two have a rhythm."))
+                out.append(.init(id: "\(p.id)-streak", plantID: p.id, tone: .streak, icon: .award, text: String(localized: "\(streak) waterings in a row right on time for \(p.name). You two have a rhythm.", comment: "Insight: care streak. Args: count (plural), plant name.")))
             }
             let age = Int(CareEngine.days(from: p.acquiredAt, to: now))
             for m in [30, 100, 180, 365, 730] where age >= m && age < m + 7 {
-                out.append(.init(id: "\(p.id)-age\(m)", plantID: p.id, tone: .milestone, icon: .celebrate, text: m >= 365 ? "\(m / 365) year\(m >= 730 ? "s" : "") together with \(p.name) this week. Happy plantiversary!" : "\(p.name) has been with you \(m) days. Look how far you've come."))
+                out.append(.init(id: "\(p.id)-age\(m)", plantID: p.id, tone: .milestone, icon: .celebrate, text: m >= 365 ? String(localized: "\(m / 365) years together with \(p.name) this week. Happy plantiversary!", comment: "Insight: anniversary. Args: years (plural), plant name. Plantiversary = playful 'plant anniversary' (pt: plantiversário).") : String(localized: "\(p.name) has been with you \(m) days. Look how far you've come.", comment: "Insight: milestone. Args: plant name, days (plural).")))
             }
             let leaves = (p.events ?? []).filter { $0.kind == .newLeaf && CareEngine.days(from: $0.date, to: now) < 30 }.count
-            if leaves >= 2 { out.append(.init(id: "\(p.id)-leaves", plantID: p.id, tone: .milestone, icon: .growth, text: "\(leaves) new leaves on \(p.name) this month. It's happy with you.")) }
+            if leaves >= 2 { out.append(.init(id: "\(p.id)-leaves", plantID: p.id, tone: .milestone, icon: .growth, text: String(localized: "\(leaves) new leaves on \(p.name) this month. It's happy with you.", comment: "Insight. Args: count (plural), plant name."))) }
             let last = p.sortedEvents.first?.date ?? p.createdAt
             if CareEngine.days(from: last, to: now) > 10 {
-                out.append(.init(id: "\(p.id)-miss", plantID: p.id, tone: .missYou, icon: .heartPin, text: "\(p.name) hasn't had a visit in a while. A quick hello would make its day."))
+                out.append(.init(id: "\(p.id)-miss", plantID: p.id, tone: .missYou, icon: .heartPin, text: String(localized: "\(p.name) hasn't had a visit in a while. A quick hello would make its day.", comment: "Insight: plant misses you. %@ = plant name.")))
             }
         }
         let order: [JungleInsight.Tone] = [.pattern, .comingUp, .milestone, .streak, .missYou]
@@ -355,12 +356,12 @@ enum InsightEngine {
             let gaps = zip(waters.dropFirst(), waters).map { CareEngine.days(from: $1, to: $0) }
             let avg = gaps.reduce(0, +) / Double(gaps.count)
             if avg < expected * 0.55 || wetChecks >= 2 {
-                return .init(id: "\(p.id)-over", plantID: p.id, tone: .pattern, icon: .puddle, text: "\(p.name) has been getting drinks closer together than it dries. Let it rest a few days and feel the soil first.")
+                return .init(id: "\(p.id)-over", plantID: p.id, tone: .pattern, icon: .puddle, text: String(localized: "\(p.name) has been getting drinks closer together than it dries. Let it rest a few days and feel the soil first.", comment: "Insight: overwatering pattern. %@ = plant name."))
             }
         }
         if let w = p.lastEvent(.water)?.date, CareEngine.days(from: w, to: now) > expected * 1.6,
            (p.lastEvent(.soilCheck)?.date ?? .distantPast) < w {
-            return .init(id: "\(p.id)-missed", plantID: p.id, tone: .pattern, icon: .wilted, text: "It's been a while since anyone checked on \(p.name). It may be quietly thirsty.")
+            return .init(id: "\(p.id)-missed", plantID: p.id, tone: .pattern, icon: .wilted, text: String(localized: "It's been a while since anyone checked on \(p.name). It may be quietly thirsty.", comment: "Insight: missed check. %@ = plant name."))
         }
         return nil
     }
@@ -395,10 +396,10 @@ enum ProactiveVoice {
             var chips: [String] = []
             if let pat = InsightEngine.pattern(for: p, now: now) {
                 text = voice(pat, plant: p)
-                chips = ["Dry", "Slightly moist", "Wet"]
+                chips = JungleBrain.soilChips
             } else if let r = CareEngine.requests(for: p, now: now).first(where: { $0.priority <= 1 && ($0.kind == .water || $0.kind == .checkSoil) }) {
                 text = PlantVoice.say(r, plant: p)
-                chips = r.kind == .water ? ["Watered"] : ["Dry", "Slightly moist", "Wet"]
+                chips = r.kind == .water ? [JungleBrain.wateredChip] : JungleBrain.soilChips
             } else if let f = CareForecast.plant(for: p, now: now).first(where: { [.feed, .mist, .repot, .prune].contains($0.kind) && Calendar.current.isDate($0.date, inSameDayAs: now) && CarePrefs.isOn($0.kind) }) {
                 text = nudge(f.kind, plant: p)
             }
@@ -412,17 +413,17 @@ enum ProactiveVoice {
 
     static func voice(_ i: JungleInsight, plant p: Plant) -> String {
         i.id.hasSuffix("-over")
-            ? PlantVoice.pick(["I've been feeling a bit soggy lately. Could you check my soil before the next drink?", "My roots like a little breathing room between drinks. Feel me first?"], seed: p.name)
-            : PlantVoice.pick(["Hey, it's me. Haven't seen you in a few days. How does my soil feel?", "Just checking in. Could you give my soil a little poke?"], seed: p.name)
+            ? PlantVoice.pick([String(localized: "I've been feeling a bit soggy lately. Could you check my soil before the next drink?", comment: "Plant speaks up on its own in chat: overwatered. Gentle, first person."), String(localized: "My roots like a little breathing room between drinks. Feel me first?", comment: "Plant speaks up on its own in chat: overwatered. Gentle, first person.")], seed: p.name)
+            : PlantVoice.pick([String(localized: "Hey, it's me. Haven't seen you in a few days. How does my soil feel?", comment: "Plant speaks up on its own in chat: nobody checked in a while. Friendly, first person."), String(localized: "Just checking in. Could you give my soil a little poke?", comment: "Plant speaks up on its own in chat: asks for a soil check. Friendly, first person.")], seed: p.name)
     }
 
     static func nudge(_ k: ReminderKind, plant p: Plant) -> String {
         switch k {
-        case .feed: "I'm growing so much. A little snack this week would be lovely."
-        case .mist: "The air feels a bit dry. A soft mist would feel like home."
-        case .repot: "My roots are getting snug. Maybe a roomier pot soon?"
-        case .prune: "Spring's here. A light trim would help me grow fuller."
-        default: "Thinking of you. Come say hi."
+        case .feed: String(localized: "I'm growing so much. A little snack this week would be lovely.", comment: "Plant speaks up on its own in chat with a gentle care nudge. First person, warm.")
+        case .mist: String(localized: "The air feels a bit dry. A soft mist would feel like home.", comment: "Plant speaks up on its own in chat with a gentle care nudge. First person, warm.")
+        case .repot: String(localized: "My roots are getting snug. Maybe a roomier pot soon?", comment: "Plant speaks up on its own in chat with a gentle care nudge. First person, warm.")
+        case .prune: String(localized: "Spring's here. A light trim would help me grow fuller.", comment: "Plant speaks up on its own in chat with a gentle care nudge. First person, warm.")
+        default: String(localized: "Thinking of you. Come say hi.", comment: "Plant speaks up on its own in chat with a gentle care nudge. First person, warm.")
         }
     }
 }

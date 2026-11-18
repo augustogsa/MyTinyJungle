@@ -84,10 +84,10 @@ struct CareCalendarView: View {
 
     @ViewBuilder private func dayDetail(done: [CareEvent], planned: [AgendaItem]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(cal.isDateInToday(selected) ? "Today" : selected.formatted(.dateTime.weekday(.wide).day().month(.wide)))
+            Text(cal.isDateInToday(selected) ? String(localized: "Today", comment: "Care agenda day header") : selected.formatted(.dateTime.weekday(.wide).day().month(.wide)))
                 .font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             if done.isEmpty && planned.isEmpty {
-                Text(selected > Date() ? "Nothing planned." : "Nothing logged this day.").foregroundStyle(Jungle.subtle)
+                Text(selected > Date() ? String(localized: "Nothing planned.", comment: "Care calendar: empty future day") : String(localized: "Nothing logged this day.", comment: "Care calendar: empty past day")).foregroundStyle(Jungle.subtle)
                     .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
             }
             if !done.isEmpty {
@@ -96,7 +96,7 @@ struct CareCalendarView: View {
                         HStack(spacing: 12) {
                             PlantAvatar(data: e.plant?.photo, size: 36)
                             VStack(alignment: .leading, spacing: 1) {
-                                Text("\(e.kind.label) · \(e.plant?.name ?? "")").foregroundStyle(Jungle.text)
+                                Text(String(localized: "\(e.kind.label) · \(e.plant?.name ?? String())", comment: "Care calendar row: care action and plant name")).foregroundStyle(Jungle.text)
                                 Text(e.date.formatted(date: .omitted, time: .shortened)).font(.caption).foregroundStyle(Jungle.subtle)
                             }
                             Spacer()
@@ -172,7 +172,7 @@ private struct DayCell: View {
         }
         .frame(height: 50)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(date.formatted(date: .complete, time: .omitted)), \(done.count) done, \(planned) planned")
+        .accessibilityLabel(String(localized: "\(date.formatted(date: .complete, time: .omitted)), \(done.count) done, \(planned) planned", comment: "Accessibility for calendar day: date, done count, planned count"))
         .accessibilityAddTraits(selected ? .isSelected : [])
     }
 

@@ -1,0 +1,96 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "CFBundleDisplayName": {
+      "comment": "Home-screen app name; brand, keep in English; max 12 chars",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiny Jungle"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiny Jungle"
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription": {
+      "comment": "Camera permission prompt; warm, one sentence",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan soil, fertilizer and plant food labels, and take photos of your plants."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escaneie rótulos de substrato e adubo e tire fotos das suas plantinhas."
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription": {
+      "comment": "Location permission prompt; mention climate tuning and weather alerts",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your rough area helps tune watering and feeding to your local climate and warns you about frost and heat for outdoor plants."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saber mais ou menos onde você mora ajusta a rega e o adubo ao seu clima e avisa sobre calorão, chuva forte e frio para as plantas da varanda e do quintal."
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryUsageDescription": {
+      "comment": "Photo library permission prompt",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose photos of your plants and product labels."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha fotos das suas plantas e dos rótulos dos produtos."
+          }
+        }
+      }
+    },
+    "NSUserTrackingUsageDescription": {
+      "comment": "App Tracking Transparency prompt; honest, reassuring",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ads keep My Tiny Jungle free. Allowing this lets them be about things you might actually like, instead of random ones. Your plants and notes are never shared."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os anúncios mantêm o My Tiny Jungle gratuito. Se você permitir, eles mostram coisas que têm mais a ver com você, em vez de qualquer coisa. Suas plantas e anotações nunca são compartilhadas."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

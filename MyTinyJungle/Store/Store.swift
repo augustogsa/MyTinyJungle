@@ -52,9 +52,9 @@ enum PlusFeature: String, Identifiable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .morePlants: "Room for more than \(Store.freePlantLimit) green friends"
-        case .scanCompatibility: "See what suits each plant"
-        case .inventory: "Keep your growing inventory"
+        case .morePlants: String(localized: "Room for more than \(Store.freePlantLimit) green friends", comment: "Plus feature title; arg is free plant limit")
+        case .scanCompatibility: String(localized: "See what suits each plant", comment: "Plus feature title")
+        case .inventory: String(localized: "Keep your growing inventory", comment: "Plus feature title")
         }
     }
 }

@@ -23,20 +23,20 @@ enum ChatParser {
     struct PlantRef { let id: UUID; let name: String; let speciesID: String? }
 
     private static let lexicon: [(CareKind, [String])] = [
-        (.water, [#"\bwater(ed|ing)?\b"#, #"\bgave .{0,20}(a )?drink\b"#, #"\bdrink\b"#, #"\bregu?(ei|ou|amos|ar|ado)\b"#, #"\bdei agua\b"#, #"\bagua\b"#]),
-        (.feed, [#"\bfed\b"#, #"\bfeed(ing)?\b"#, #"\bfertili[sz](ed|er|ing|e)\b"#, #"\bplant food\b"#, #"\badub(ei|ou|o|ar|ado)\b"#, #"\bfertilizei\b"#, #"\bnutrient"#]),
+        (.water, [#"\bwater(ed|ing)?\b"#, #"\bgave .{0,20}(a )?drink\b"#, #"\bdrink\b"#, #"\bregu?(ei|ou|amos|ar|ado)\b"#, #"\bregad[ao]\b"#, #"\bmolhei\b"#, #"\bdei (um pouco de )?agua\b"#, #"\bagua\b"#]),
+        (.feed, [#"\bfed\b"#, #"\bfeed(ing)?\b"#, #"\bfertili[sz](ed|er|ing|e)\b"#, #"\bplant food\b"#, #"\badub(ei|ou|o|ar|ado|amos)\b"#, #"\bfertilizei\b"#, #"\bfertilizante\b"#, #"\bnutrient"#]),
         (.mist, [#"\bmist(ed|ing)?\b"#, #"\bspray(ed)?\b"#, #"\bborrif"#, #"\bpulveriz"#]),
-        (.repot, [#"\brepott?(ed|ing)?\b"#, #"\bnew pot\b"#, #"\btransplant"#, #"\bmudei de vaso\b"#, #"\btroquei (o )?vaso\b"#, #"\btransplantei\b"#, #"\bbigger pot\b"#]),
-        (.prune, [#"\bprun(ed|ing|e)\b"#, #"\btrimm?(ed|ing)?\b"#, #"\bcut back\b"#, #"\bpod(ei|ar|ou)\b"#]),
-        (.rotate, [#"\brotat(ed|e|ing)\b"#, #"\bturned (it|him|her)\b"#, #"\brodei\b"#]),
-        (.clean, [#"\bwip(ed|e)\b"#, #"\bclean(ed)? (the )?leaves\b"#, #"\blimpei\b"#, #"\bdusted\b"#]),
-        (.treat, [#"\btreat(ed)?\b"#, #"\bneem\b"#, #"\binsecticid"#, #"\btratei\b"#, #"\bsoap spray\b"#]),
-        (.newLeaf, [#"\bnew leaf\b"#, #"\bnew leaves\b"#, #"\bfolhas? novas?\b"#, #"\bnova folha\b"#, #"\bunfurl"#]),
-        (.flower, [#"\bflower(ing|ed|s)?\b"#, #"\bbloom(ing|ed|s)?\b"#, #"\bflor(es|iu|ir)?\b"#]),
+        (.repot, [#"\brepott?(ed|ing)?\b"#, #"\bnew pot\b"#, #"\btransplant"#, #"\bmudei de vaso\b"#, #"\btroquei (o |de )?vaso\b"#, #"\bvaso (novo|maior)\b"#, #"\breplantei\b"#, #"\btransplantei\b"#, #"\bbigger pot\b"#]),
+        (.prune, [#"\bprun(ed|ing|e)\b"#, #"\btrimm?(ed|ing)?\b"#, #"\bcut back\b"#, #"\bpod(ei|ar|ou|amos)\b"#, #"\bdei uma podada\b"#]),
+        (.rotate, [#"\brotat(ed|e|ing)\b"#, #"\bturned (it|him|her)\b"#, #"\brodei\b"#, #"\bgirei\b"#, #"\bvirei (ela|ele|o vaso|a planta)\b"#]),
+        (.clean, [#"\bwip(ed|e)\b"#, #"\bclean(ed)? (the )?leaves\b"#, #"\blimpei\b"#, #"\btirei a poeira\b"#, #"\bdusted\b"#]),
+        (.treat, [#"\btreat(ed)?\b"#, #"\bneem\b"#, #"\binsecticid"#, #"\btratei\b"#, #"\binseticid"#, #"\bapliquei\b"#, #"\bsoap spray\b"#]),
+        (.newLeaf, [#"\bnew leaf\b"#, #"\bnew leaves\b"#, #"\bfolhas? novas?\b"#, #"\bnova folha\b"#, #"\bbrot(ou|aram|o novo)\b"#, #"\bunfurl"#]),
+        (.flower, [#"\bflower(ing|ed|s)?\b"#, #"\bbloom(ing|ed|s)?\b"#, #"\bflor(es|iu|ir)?\b"#, #"\bfloresceu\b"#]),
     ]
 
     private static let questionStarts = ["why", "how", "when", "what", "which", "should", "can", "could", "is", "are", "does", "do", "will",
-                                         "porque", "por que", "como", "quando", "qual", "quais", "devo", "posso", "sera", "o que", "e normal", "esta"]
+                                         "porque", "por que", "como", "quando", "qual", "quais", "devo", "posso", "sera", "o que", "e normal", "esta", "pode", "preciso", "tenho que", "onde", "quanto", "quantos", "quantas", "e verdade", "da pra", "vale a pena"]
 
     static func parse(_ raw: String, plants: [PlantRef], context: UUID? = nil, now: Date = Date()) -> ParseResult {
         let text = raw.folded.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -62,7 +62,7 @@ enum ChatParser {
         }
 
         for (kind, patterns) in lexicon where patterns.contains(where: { matches($0, text) }) {
-            if kind == .water, result.actions.contains(where: { $0.kind == .soilCheck }), !matches(#"\b(watered|reguei|regou|gave)\b"#, text) { continue }
+            if kind == .water, result.actions.contains(where: { $0.kind == .soilCheck }), !matches(#"\b(watered|reguei|regou|molhei|gave|dei)\b"#, text) { continue }
             if negated(kind: kind, text: text) { continue }
             result.actions.append(.init(kind: kind, plantIDs: targets, date: date))
         }
@@ -70,7 +70,7 @@ enum ChatParser {
         if let place = parseMove(text) {
             result.actions.append(.init(kind: .move, plantIDs: targets, date: date, detail: place))
         }
-        if let cm = firstNumber(#"(\d+(?:[.,]\d+)?)\s?cm"#, text), matches(#"\b(tall|height|high|mede|altura|grew|cresceu)\b"#, text) || !text.contains("pot") {
+        if let cm = firstNumber(#"(\d+(?:[.,]\d+)?)\s?cm"#, text), matches(#"\b(tall|height|high|mede|altura|grew|cresceu|tem|esta com)\b"#, text) || !text.contains("pot") {
             if !matches(#"\bpot|vaso\b"#, text) {
                 result.actions.append(.init(kind: .measure, plantIDs: targets, date: date, value: cm))
             }
@@ -85,7 +85,7 @@ enum ChatParser {
     // MARK: pieces
 
     static func resolvePlants(_ text: String, plants: [PlantRef], context: UUID?, species: Species?) -> [UUID] {
-        if matches(#"\b(all|everyone|everybody|every plant|all of them|todas|todos)\b"#, text) { return plants.map(\.id) }
+        if matches(#"\b(all|everyone|everybody|every plant|all of them|todas|todos|todo mundo)\b"#, text) { return plants.map(\.id) }
         let named = plants.filter { p in
             let n = NSRegularExpression.escapedPattern(for: p.name.folded)
             return !n.isEmpty && matches(#"\b"# + n + #"\b"#, text)
@@ -104,18 +104,19 @@ enum ChatParser {
         let soilWord = #"(soil|substrate|earth|dirt|terra|substrato|it|she|he|is|feels|esta|ta)"#
         if matches(#"^(dry|bone dry|seco|seca|sequinha)$"#, text) || matches(soilWord + #".{0,15}\b(bone )?dry\b"#, text) || matches(#"\b(terra|substrato) .{0,10}sec[oa]\b"#, text) { return .dry }
         if matches(#"^(wet|soggy|encharcad[oa]|molhad[oa])$"#, text) || matches(soilWord + #".{0,15}\b(wet|soggy|encharcad|molhad)"#, text) { return .wet }
-        if matches(#"^(moist|damp|slightly moist|humid[oa]|umid[oa])$"#, text) || matches(soilWord + #".{0,15}\b(moist|damp|humid|umid)"#, text) { return .slightlyMoist }
+        if matches(#"^(moist|damp|slightly moist|humid[oa]|umid[oa]|levemente umid[oa]|um pouco umid[oa]|umidinh[oa])$"#, text) || matches(soilWord + #".{0,15}\b(moist|damp|humid|umid)"#, text) { return .slightlyMoist }
         return nil
     }
 
     static func parseMove(_ text: String) -> String? {
         let patterns = [#"\bmoved? (?:[a-z]+ (?:and [a-z]+ )?)?(?:to|into|onto|next to|by) (?:the )?([a-z ]{3,30})"#,
                         #"\bput (?:it|him|her|them) (?:in|on|by|near) (?:the )?([a-z ]{3,30})"#,
-                        #"\bmudei (?:[a-z]+ )?para (?:a |o )?([a-z ]{3,30})"#]
+                        #"\bmudei (?:[a-z]+ )?para (?:a |o )?([a-z ]{3,30})"#,
+                        #"\b(?:coloquei|levei|botei) (?:ela |ele |a planta |o vaso )?(?:na|no|para a|para o|pra|perto da|perto do) ([a-z ]{3,30})"#]
         for p in patterns {
             if let m = capture(p, text) {
                 let cleaned = m.components(separatedBy: CharacterSet(charactersIn: ".,!;")).first?
-                    .replacingOccurrences(of: #"\b(today|yesterday|this morning|hoje|ontem)\b.*"#, with: "", options: .regularExpression)
+                    .replacingOccurrences(of: #"\b(today|yesterday|this morning|hoje|ontem|de manha|agora)\b.*"#, with: "", options: .regularExpression)
                     .trimmingCharacters(in: .whitespaces) ?? m
                 if !cleaned.isEmpty { return cleaned }
             }
@@ -128,8 +129,8 @@ enum ChatParser {
         func back(_ d: Int) -> Date { cal.date(byAdding: .day, value: -d, to: now) ?? now }
         if matches(#"\b(day before yesterday|anteontem)\b"#, text) { return back(2) }
         if matches(#"\b(yesterday|last night|ontem)\b"#, text) { return back(1) }
-        if let n = firstNumber(#"(\d+) days? ago"#, text) ?? firstNumber(#"ha (\d+) dias?"#, text) { return back(Int(n)) }
-        if matches(#"\b(last week|semana passada)\b"#, text) { return back(7) }
+        if let n = firstNumber(#"(\d+) days? ago"#, text) ?? firstNumber(#"ha (\d+) dias?"#, text) ?? firstNumber(#"faz (\d+) dias?"#, text) ?? firstNumber(#"(\d+) dias? atras"#, text) { return back(Int(n)) }
+        if matches(#"\b(last week|semana passada|semana retrasada)\b"#, text) { return back(7) }
         let weekdays = [("sunday", 1), ("monday", 2), ("tuesday", 3), ("wednesday", 4), ("thursday", 5), ("friday", 6), ("saturday", 7),
                         ("domingo", 1), ("segunda", 2), ("terca", 3), ("quarta", 4), ("quinta", 5), ("sexta", 6), ("sabado", 7)]
         let today = cal.component(.weekday, from: now)
@@ -142,7 +143,7 @@ enum ChatParser {
     }
 
     static func negated(kind: CareKind, text: String) -> Bool {
-        matches(#"\b(didn'?t|did not|haven'?t|have not|not|never|nao|forgot to|esqueci)\b .{0,12}\b(water|fed|feed|mist|repot|prun|regu|adub)"#, text)
+        matches(#"\b(didn'?t|did not|haven'?t|have not|not|never|nao|nunca|nem|forgot to|esqueci)\b .{0,12}\b(water|fed|feed|mist|repot|prun|regu|adub|borrif|pod|transplant|molhei)"#, text)
     }
 
     // MARK: regex helpers

@@ -7,12 +7,12 @@ struct JungleGroup<Content: View>: View {
     @ViewBuilder var content: Content
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let title { Text(title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).padding(.leading, 4) }
+            if let title { Text(title.uiLocalized).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).padding(.leading, 4) }
             VStack(spacing: 0) { content }
                 .padding(.horizontal, 14)
                 .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
-            if let footer { Text(footer).font(.footnote).foregroundStyle(Jungle.subtle).padding(.horizontal, 4) }
+            if let footer { Text(footer.uiLocalized).font(.footnote).foregroundStyle(Jungle.subtle).padding(.horizontal, 4) }
         }
     }
 }
@@ -28,8 +28,8 @@ struct JungleRow<Trailing: View>: View {
         HStack(spacing: 12) {
             Icon3DView(icon, size: 30).frame(width: 34)
             VStack(alignment: .leading, spacing: 1) {
-                Text(title).font(.body).foregroundStyle(Jungle.text)
-                if let subtitle { Text(subtitle).font(.caption).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true) }
+                Text(title.uiLocalized).font(.body).foregroundStyle(Jungle.text)
+                if let subtitle { Text(subtitle.uiLocalized).font(.caption).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true) }
             }
             Spacer(minLength: 8)
             trailing
@@ -56,12 +56,12 @@ struct TabHeader<Trailing: View>: View {
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(title).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+                Text(title.uiLocalized).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                     .lineLimit(1).minimumScaleFactor(0.7)
                 if let subtitle {
                     HStack(spacing: 6) {
                         if let dot { Circle().fill(dot).frame(width: 7, height: 7) }
-                        Text(subtitle).font(.subheadline).foregroundStyle(Jungle.subtle)
+                        Text(subtitle.uiLocalized).font(.subheadline).foregroundStyle(Jungle.subtle)
                     }
                 }
             }

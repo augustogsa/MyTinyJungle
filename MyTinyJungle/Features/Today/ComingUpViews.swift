@@ -12,7 +12,7 @@ struct ComingUpCard: View {
         let all = InsightEngine.insights(plants: plants, propagations: propagations)
         if !all.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
-                SectionTitle("Coming up", action: all.count > 4 ? (expanded ? "Less" : "More") : nil) { withAnimation(.snappy) { expanded.toggle() } }
+                SectionTitle(String(localized: "Coming up", comment: "Section title for upcoming care"), action: all.count > 4 ? (expanded ? String(localized: "Less", comment: "Collapse list button; max 10 chars") : String(localized: "More", comment: "Expand list button; max 10 chars")) : nil) { withAnimation(.snappy) { expanded.toggle() } }
                 VStack(spacing: 0) {
                     let shown = Array(all.prefix(expanded ? 12 : 4))
                     ForEach(Array(shown.enumerated()), id: \.element.id) { i, insight in
@@ -57,7 +57,7 @@ struct PlantForecastSection: View {
             .filter { $0.plantID == plant.id }
         let insights = InsightEngine.insights(plants: [plant]).filter { $0.tone != .comingUp }.prefix(2)
         VStack(alignment: .leading, spacing: 10) {
-            SectionTitle("The next two weeks")
+            SectionTitle(String(localized: "The next two weeks", comment: "Section title, care calendar"))
             VStack(spacing: 0) {
                 ForEach(Array(insights)) { i in
                     InsightRow(insight: i, plant: nil)
@@ -109,8 +109,8 @@ struct ReminderSettingsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                JungleGroup(title: "Your daily note", footer: "Everything your plants need, gathered into one gentle note at the time you choose. Never a flood.") {
-                    JungleRow(icon: .notification, title: "Little nudges from your plants") {
+                JungleGroup(title: String(localized: "Your daily note", comment: "Settings group title for daily notification"), footer: String(localized: "Everything your plants need, gathered into one gentle note at the time you choose. Never a flood.", comment: "Settings footer")) {
+                    JungleRow(icon: .notification, title: String(localized: "Little nudges from your plants", comment: "Settings row: daily reminders toggle")) {
                         Toggle("", isOn: Binding(get: { on }, set: { v in
                             on = v; CareReminders.enabled = v
                             Task { if v { denied = !(await CareReminders.requestPermission()) }; await CareReminders.reschedule(ctx) }
@@ -118,7 +118,7 @@ struct ReminderSettingsView: View {
                     }
                     if on {
                         JungleDivider()
-                        JungleRow(icon: .sunny, title: "Visit me at") {
+                        JungleRow(icon: .sunny, title: String(localized: "Visit me at", comment: "Settings row: reminder time, plant speaking; max 20 chars")) {
                             DatePicker("", selection: Binding(get: { time }, set: { t in
                                 time = t
                                 let c = Calendar.current.dateComponents([.hour, .minute], from: t)
@@ -133,18 +133,18 @@ struct ReminderSettingsView: View {
                         .font(.footnote).foregroundStyle(Jungle.warmText).padding(.horizontal, 4)
                 }
                 if on {
-                    JungleGroup(title: "Quiet hours", footer: "Your plants are patient. Anything that would arrive during quiet hours waits until morning.") {
-                        JungleRow(icon: .moon, title: "Let me rest") {
+                    JungleGroup(title: String(localized: "Quiet hours", comment: "Settings group title"), footer: String(localized: "Your plants are patient. Anything that would arrive during quiet hours waits until morning.", comment: "Settings footer")) {
+                        JungleRow(icon: .moon, title: String(localized: "Let me rest", comment: "Settings row: quiet hours toggle; max 20 chars")) {
                             Toggle("", isOn: Binding(get: { quietOn }, set: { quietOn = $0; CarePrefs.quietOn = $0; changed() })).labelsHidden()
                         }
                         if quietOn {
                             JungleDivider()
-                            JungleRow(icon: .moon, title: "From") { hourPicker($quietStart) { CarePrefs.quietStart = $0 } }
+                            JungleRow(icon: .moon, title: String(localized: "From", comment: "Quiet hours start; max 10 chars")) { hourPicker($quietStart) { CarePrefs.quietStart = $0 } }
                             JungleDivider()
-                            JungleRow(icon: .sun, title: "Until") { hourPicker($quietEnd) { CarePrefs.quietEnd = $0 } }
+                            JungleRow(icon: .sun, title: String(localized: "Until", comment: "Quiet hours end; max 10 chars")) { hourPicker($quietEnd) { CarePrefs.quietEnd = $0 } }
                         }
                     }
-                    JungleGroup(title: "What your plants can ask for", footer: "Turn off anything you'd rather handle on your own. We'll still keep an eye on it in the app.") {
+                    JungleGroup(title: String(localized: "What your plants can ask for", comment: "Settings group title: reminder kinds"), footer: String(localized: "Turn off anything you'd rather handle on your own. We'll still keep an eye on it in the app.", comment: "Settings footer")) {
                         ForEach(Array(ReminderKind.allCases.enumerated()), id: \.element) { i, k in
                             JungleRow(icon: k.icon, title: k.title, subtitle: k.blurb) {
                                 Toggle("", isOn: Binding(get: { kinds[k] ?? true }, set: { kinds[k] = $0; CarePrefs.set(k, $0); changed() })).labelsHidden()
@@ -153,8 +153,8 @@ struct ReminderSettingsView: View {
                         }
                     }
                 }
-                JungleGroup(title: "In the chat", footer: "Your plants will say hello on their own when something's due or they notice a pattern. At most once a day each.") {
-                    JungleRow(icon: .chat, title: "Plants speak up") {
+                JungleGroup(title: String(localized: "In the chat", comment: "Settings group title"), footer: String(localized: "Your plants will say hello on their own when something's due or they notice a pattern. At most once a day each.", comment: "Settings footer")) {
+                    JungleRow(icon: .chat, title: String(localized: "Plants speak up", comment: "Settings row: proactive chat toggle; max 22 chars")) {
                         Toggle("", isOn: Binding(get: { chat }, set: { chat = $0; CarePrefs.chatNudges = $0 })).labelsHidden()
                     }
                 }
@@ -175,8 +175,8 @@ struct ReminderSettingsView: View {
     private func changed() { Task { await CareReminders.reschedule(ctx) } }
 
     static var summary: String {
-        guard CareReminders.enabled else { return "Resting for now" }
+        guard CareReminders.enabled else { return String(localized: "Resting for now", comment: "Reminder summary when off; max 24 chars") }
         let t = Calendar.current.date(bySettingHour: CareReminders.hour, minute: CarePrefs.minute, second: 0, of: Date())!.formatted(date: .omitted, time: .shortened)
-        return "One gentle note at \(t)"
+        return String(localized: "One gentle note at \(t)", comment: "Reminder summary; %@ time like 9:00")
     }
 }

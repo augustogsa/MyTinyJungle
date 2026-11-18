@@ -61,7 +61,7 @@ struct SignInView: View {
         }
     }
 
-    private func promise(_ icon: Icon3D, _ title: String, _ detail: String) -> some View {
+    private func promise(_ icon: Icon3D, _ title: LocalizedStringKey, _ detail: LocalizedStringKey) -> some View {
         HStack(spacing: 14) {
             Icon3DView(icon, size: 36).frame(width: 40)
             VStack(alignment: .leading, spacing: 2) {

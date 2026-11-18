@@ -27,11 +27,11 @@ struct PhotoRead {
 
     var healthSummary: String {
         switch health {
-        case .lush: "Leaves look lush and green."
-        case .good: "Leaves look healthy overall."
-        case .someStress: yellowShare >= brownShare ? "Some yellowing visible, worth a closer look." : "Some browning visible, often dry air or uneven watering."
-        case .stressed: yellowShare >= brownShare ? "A lot of yellowing. Check the roots and how wet the soil stays." : "A lot of browning. Check watering, humidity and sun."
-        case .unknown: "I couldn't see enough leaves to judge health."
+        case .lush: String(localized: "Leaves look lush and green.", comment: "Photo read: leaf health summary, labelled as an estimate.")
+        case .good: String(localized: "Leaves look healthy overall.", comment: "Photo read: leaf health summary, labelled as an estimate.")
+        case .someStress: yellowShare >= brownShare ? String(localized: "Some yellowing visible, worth a closer look.", comment: "Photo read: leaf health summary, labelled as an estimate.") : String(localized: "Some browning visible, often dry air or uneven watering.", comment: "Photo read: leaf health summary, labelled as an estimate.")
+        case .stressed: yellowShare >= brownShare ? String(localized: "A lot of yellowing. Check the roots and how wet the soil stays.", comment: "Photo read: leaf health summary, labelled as an estimate.") : String(localized: "A lot of browning. Check watering, humidity and sun.", comment: "Photo read: leaf health summary, labelled as an estimate.")
+        case .unknown: String(localized: "I couldn't see enough leaves to judge health.", comment: "Photo read: leaf health summary, labelled as an estimate.")
         }
     }
 }

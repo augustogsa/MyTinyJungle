@@ -27,7 +27,7 @@ struct ScanView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    TabHeader(title: "Scan", subtitle: "Labels, new plants and sick leaves") { EmptyView() }
+                    TabHeader(title: String(localized: "Scan", comment: "Scan tab title"), subtitle: String(localized: "Labels, new plants and sick leaves", comment: "Scan tab subtitle")) { EmptyView() }
                     hero
                     modes
                     if !shopping.isEmpty { shoppingList }
@@ -121,12 +121,12 @@ struct ScanView: View {
             Text("Also scan").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             HStack(spacing: 10) {
                 Button { Store.shared.canAddPlant(current: plants.count) ? (addingPlant = true) : (paywall = .morePlants) } label: {
-                    modeTile("A new plant", "Identify it and get its care plan", .pottedPlant, Jungle.mint)
+                    modeTile(String(localized: "A new plant", comment: "Scan mode tile title"), String(localized: "Identify it and get its care plan", comment: "Scan mode tile subtitle"), .pottedPlant, Jungle.mint)
                 }
                 Menu {
                     ForEach(plants) { p in Button(p.name) { checking = p } }
                 } label: {
-                    modeTile("A sick leaf", "Spots, yellowing or pests", .wilted, Jungle.peach.opacity(0.45))
+                    modeTile(String(localized: "A sick leaf", comment: "Scan mode tile title"), String(localized: "Spots, yellowing or pests", comment: "Scan mode tile subtitle"), .wilted, Jungle.peach.opacity(0.45))
                 }
                 .disabled(plants.isEmpty)
             }
@@ -154,10 +154,10 @@ struct ScanView: View {
             HStack {
                 Text("Shopping list").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
                 Spacer()
-                ShareLink(item: shopping.map { "• \($0.name)" }.joined(separator: "\n"), subject: Text("Plant shopping list")) {
+                ShareLink(item: shopping.map { "• \($0.name)" }.joined(separator: "\n"), subject: Text("Plant shopping list", comment: "Share subject for shopping list")) {
                     Image(systemName: "square.and.arrow.up")
                 }
-                .accessibilityLabel("Share shopping list")
+                .accessibilityLabel(Text("Share shopping list", comment: "Accessibility label for share button"))
             }
             VStack(spacing: 0) {
                 ForEach(shopping) { o in
@@ -229,6 +229,17 @@ struct ScanView: View {
     }
 }
 
+extension Compatibility.Verdict {
+    var scanLabel: String {
+        switch self {
+        case .suitable: String(localized: "Suitable", comment: "Product verdict for a plant")
+        case .conditions: String(localized: "With conditions", comment: "Product verdict for a plant")
+        case .notRecommended: String(localized: "Not recommended", comment: "Product verdict for a plant")
+        case .unknown: String(localized: "Not enough info", comment: "Product verdict for a plant")
+        }
+    }
+}
+
 private struct IdentifiedProduct: Identifiable { let product: AnalyzedProduct; var id: String { product.name + (product.barcode ?? "") } }
 
 extension AnalyzedProduct.Category {
@@ -251,7 +262,7 @@ private struct ShelfCard: View {
             Icon3DView(cat.icon, size: 30)
                 .frame(width: 44, height: 44).background(cat.tint.opacity(0.3), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             Text(product.name).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text).lineLimit(2, reservesSpace: true)
-            Text(product.npkN != nil ? "NPK \(Int(product.npkN!))-\(Int(product.npkP ?? 0))-\(Int(product.npkK ?? 0))" : cat.label)
+            Text(product.npkN != nil ? String(localized: "NPK \(Int(product.npkN!))-\(Int(product.npkP ?? 0))-\(Int(product.npkK ?? 0))", comment: "Fertilizer NPK ratio, e.g. NPK 3-1-1") : cat.label)
                 .font(.caption).foregroundStyle(Jungle.subtle).lineLimit(1)
         }
         .padding(12).frame(width: 150, alignment: .leading).jungleCard()
@@ -347,14 +358,14 @@ private struct ProductResultView: View {
         VStack(spacing: 14) {
             if let npk = product.npk {
                 HStack(spacing: 10) {
-                    nutrient("N", "Leaves", npk.n, Jungle.leaf)
-                    nutrient("P", "Roots and flowers", npk.p, Jungle.terracotta)
-                    nutrient("K", "Strength", npk.k, Jungle.sun)
+                    nutrient("N", String(localized: "Leaves", comment: "Nitrogen benefit label under N; short"), npk.n, Jungle.leaf)
+                    nutrient("P", String(localized: "Roots and flowers", comment: "Phosphorus benefit label under P; short"), npk.p, Jungle.terracotta)
+                    nutrient("K", String(localized: "Strength", comment: "Potassium benefit label under K; short"), npk.k, Jungle.sun)
                 }
             }
             if let r = product.retention, let a = product.aeration {
-                meter("Holds water", r, "drop.fill")
-                meter("Lets roots breathe", a, "wind")
+                meter(String(localized: "Holds water", comment: "Substrate trait meter: water retention"), r, "drop.fill")
+                meter(String(localized: "Lets roots breathe", comment: "Substrate trait meter: aeration"), a, "wind")
             }
         }
         .padding(16).jungleCard()
@@ -362,7 +373,7 @@ private struct ProductResultView: View {
 
     private func nutrient(_ l: String, _ sub: String, _ v: Double, _ c: Color) -> some View {
         VStack(spacing: 4) {
-            Text(v == v.rounded() ? String(Int(v)) : String(format: "%.1f", v)).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
+            Text(v.formatted(.number.precision(.fractionLength(0...1)))).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
             Text(l).font(.caption.weight(.bold)).foregroundStyle(.white).frame(width: 22, height: 22).background(c, in: Circle())
             Text(sub).font(.caption2).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
         }
@@ -374,7 +385,7 @@ private struct ProductResultView: View {
             HStack {
                 Label(t, systemImage: s).font(.subheadline).foregroundStyle(Jungle.text)
                 Spacer()
-                Text(v > 0.66 ? "High" : v > 0.4 ? "Medium" : "Low").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.subtle)
+                Text(v > 0.66 ? String(localized: "High", comment: "Substrate meter level") : v > 0.4 ? String(localized: "Medium", comment: "Substrate meter level") : String(localized: "Low", comment: "Substrate meter level")).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.subtle)
             }
             GeometryReader { g in
                 Capsule().fill(Jungle.mint).overlay(alignment: .leading) { Capsule().fill(Jungle.leaf).frame(width: g.size.width * min(1, max(0.06, v))) }
@@ -396,7 +407,7 @@ private struct ProductResultView: View {
                     }
                     .blur(radius: 1.5)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("See which of your \(plants.count) plants this suits").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
+                        Text(String(localized: "See which of your \(plants.count) plants this suits", comment: "Scan result Plus upsell; plural")).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
                         Text("With Tiny Jungle Plus").font(.caption).foregroundStyle(Jungle.subtle)
                     }
                     .padding(.leading, 14)
@@ -414,7 +425,7 @@ private struct ProductResultView: View {
                             HStack {
                                 Text(c.plantName).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                                 Spacer()
-                                Label(c.verdict.rawValue, systemImage: icon(c.verdict)).font(.caption.weight(.semibold))
+                                Label(c.verdict.scanLabel, systemImage: icon(c.verdict)).font(.caption.weight(.semibold))
                                     .foregroundStyle(Jungle.text)
                                     .padding(.horizontal, 9).padding(.vertical, 4)
                                     .background(color(c.verdict).opacity(0.3), in: Capsule())
@@ -445,7 +456,7 @@ enum OCR {
                 cont.resume(returning: lines.joined(separator: "\n"))
             }
             req.recognitionLevel = .accurate
-            req.recognitionLanguages = ["en-US", "pt-PT", "es-ES", "fr-FR", "de-DE"]
+            req.recognitionLanguages = Locale.current.language.languageCode == .portuguese ? ["pt-BR", "en-US", "pt-PT", "es-ES", "fr-FR", "de-DE"] : ["en-US", "pt-BR", "pt-PT", "es-ES", "fr-FR", "de-DE"]
             req.usesLanguageCorrection = true
             do { try VNImageRequestHandler(cgImage: cg).perform([req]) } catch { cont.resume(returning: "") }
         }
@@ -461,7 +472,7 @@ struct LiveLabelScanner: UIViewControllerRepresentable {
         let vc = DataScannerViewController(recognizedDataTypes: [.text(), .barcode()], qualityLevel: .accurate,
                                            recognizesMultipleItems: true, isHighFrameRateTrackingEnabled: false, isHighlightingEnabled: true)
         vc.delegate = context.coordinator
-        vc.navigationItem.title = "Point at the label"
+        vc.navigationItem.title = String(localized: "Point at the label", comment: "Live label scanner title")
         vc.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in onDone() })
         try? vc.startScanning()
         return UINavigationController(rootViewController: vc)

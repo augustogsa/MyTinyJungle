@@ -100,7 +100,7 @@ enum CareReminders {
         let ctx = NotificationDelegate.shared.container?.mainContext
         let ps = ((try? ctx?.fetch(FetchDescriptor<Plant>())) ?? []).filter { ids.contains($0.id) }
         if ps.count == 1, planned.allSatisfy({ $0.kind == .feed }) { return await PlantNote.make(.feed, plants: ps) }
-        let c = (await PlantNote.make(.many, plants: ps, title: "A gentle plan for today", body: extras.joined(separator: " "))).mutableCopy() as! UNMutableNotificationContent
+        let c = (await PlantNote.make(.many, plants: ps, title: String(localized: "A gentle plan for today", comment: "Daily notification title listing upcoming care; warm; max 40 chars"), body: extras.joined(separator: " "))).mutableCopy() as! UNMutableNotificationContent
         c.interruptionLevel = .passive
         c.relevanceScore = 0.3
         return c
@@ -110,11 +110,11 @@ enum CareReminders {
 
     private static func line(_ s: PlantStatus, name: String) -> String {
         switch s {
-        case .struggling: "It's been a long while since \(name)'s last drink. A slow, deep sip would mean the world."
-        case .thirsty: "\(name)'s soil should be dry by now. A little drink would feel wonderful."
-        case .checkSoil: "Pop a finger in \(name)'s soil and see how it feels."
-        case .petRisk: "\(name) can upset furry friends if nibbled. Maybe a higher shelf?"
-        default: "\(name) would love a quick hello today."
+        case .struggling: String(localized: "It's been a long while since \(name)'s last drink. A slow, deep sip would mean the world.", comment: "Notification line; %@ plant name; plant very dry; tender")
+        case .thirsty: String(localized: "\(name)'s soil should be dry by now. A little drink would feel wonderful.", comment: "Notification line; %@ plant name; time to water")
+        case .checkSoil: String(localized: "Pop a finger in \(name)'s soil and see how it feels.", comment: "Notification line; %@ plant name; check soil moisture with finger")
+        case .petRisk: String(localized: "\(name) can upset furry friends if nibbled. Maybe a higher shelf?", comment: "Notification line; %@ plant name; toxic to pets; playful")
+        default: String(localized: "\(name) would love a quick hello today.", comment: "Notification line; %@ plant name; generic nudge")
         }
     }
 

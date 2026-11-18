@@ -1,0 +1,11 @@
+# Literals the checker flags that are not user-facing (one per line, exact text).
+Off
+On
+Store failed to open: %arg
+Cfa
+Cwa
+Cwb
+Cwc
+Where do I live
+What a plant is good for, lowercase list item
+Locales

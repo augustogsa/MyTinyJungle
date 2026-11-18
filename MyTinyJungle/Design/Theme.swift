@@ -87,9 +87,9 @@ struct SectionTitle: View {
     init(_ title: String, action: String? = nil, onAction: @escaping () -> Void = {}) { self.title = title; self.action = action; self.onAction = onAction }
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
-            Text(title).font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+            Text(title.uiLocalized).font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
             Spacer()
-            if let action { Button(action, action: onAction).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText) }
+            if let action { Button(action.uiLocalized, action: onAction).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.accentText) }
         }
         .accessibilityAddTraits(.isHeader)
     }
@@ -106,7 +106,7 @@ struct StatTile: View {
             Image(systemName: symbol).font(.subheadline.weight(.semibold)).foregroundStyle(tint)
                 .frame(width: 30, height: 30).background(tint.opacity(0.16), in: Circle())
             Text(value).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).contentTransition(.numericText())
-            Text(label).font(.footnote).foregroundStyle(Jungle.subtle).lineLimit(1).minimumScaleFactor(0.8)
+            Text(label.uiLocalized).font(.footnote).foregroundStyle(Jungle.subtle).lineLimit(1).minimumScaleFactor(0.8)
         }
         .frame(maxWidth: .infinity, alignment: .leading).padding(12).jungleCard()
         .accessibilityElement(children: .combine)
@@ -121,10 +121,16 @@ struct StatusPill: View {
     var body: some View {
         HStack(spacing: 4) {
             if let symbol { Image(systemName: symbol) }
-            Text(text)
+            Text(text.uiLocalized)
         }
         .font(.caption.weight(.semibold)).foregroundStyle(Jungle.text)
         .padding(.horizontal, 9).padding(.vertical, 4)
         .background(tint.opacity(0.22), in: Capsule())
     }
+}
+
+extension String {
+    /// Runtime catalog lookup for strings handed to shared components as plain `String` literals.
+    /// Already-localized or user text has no catalog entry and comes back unchanged.
+    var uiLocalized: String { Bundle.main.localizedString(forKey: self, value: self, table: nil) }
 }

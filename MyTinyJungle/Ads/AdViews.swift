@@ -71,7 +71,7 @@ struct NativeAdCard: View {
                 }
             }
         }
-        .accessibilityLabel("Sponsored")
+        .accessibilityLabel(String(localized: "Sponsored", comment: "Ad badge label; pt-BR Patrocinado"))
     }
 }
 
@@ -121,7 +121,7 @@ private struct NativeAdCardView: UIViewRepresentable {
         return v
     }
     private static func badge() -> UILabel {
-        let b = UILabel(); b.text = "  Sponsored  "; b.font = .systemFont(ofSize: 11, weight: .semibold)
+        let b = UILabel(); b.text = "  \(String(localized: "Sponsored", comment: "Ad badge label; pt-BR Patrocinado"))  "; b.font = .systemFont(ofSize: 11, weight: .semibold)
         b.textColor = UIColor(Jungle.text); b.backgroundColor = UIColor(Jungle.surface).withAlphaComponent(0.92)
         b.layer.cornerRadius = 9; b.clipsToBounds = true
         b.heightAnchor.constraint(equalToConstant: 18).isActive = true
@@ -131,7 +131,7 @@ private struct NativeAdCardView: UIViewRepresentable {
         let v = NativeAdView()
         v.backgroundColor = style == .row ? .clear : UIColor(Jungle.surface)
         let icon = UIImageView(); icon.layer.cornerRadius = 12; icon.layer.cornerCurve = .continuous; icon.clipsToBounds = true; icon.contentMode = .scaleAspectFill
-        let badge = UILabel(); badge.text = " Sponsored "; badge.font = .systemFont(ofSize: 10, weight: .semibold)
+        let badge = UILabel(); badge.text = " \(String(localized: "Sponsored", comment: "Ad badge label; pt-BR Patrocinado")) "; badge.font = .systemFont(ofSize: 10, weight: .semibold)
         badge.textColor = UIColor(Jungle.subtle); badge.backgroundColor = UIColor(Jungle.subtle).withAlphaComponent(0.12)
         badge.layer.cornerRadius = 4; badge.clipsToBounds = true
         let headline = UILabel(); headline.font = Self.rounded(.subheadline); headline.textColor = UIColor(Jungle.text); headline.numberOfLines = 1
@@ -163,7 +163,7 @@ private struct NativeAdCardView: UIViewRepresentable {
         v.iconView?.isHidden = ad.icon == nil
         v.mediaView?.mediaContent = ad.mediaContent
         v.mediaView?.contentMode = .scaleAspectFill
-        (v.callToActionView as? UIButton)?.configuration?.title = ad.callToAction ?? "Open"
+        (v.callToActionView as? UIButton)?.configuration?.title = ad.callToAction ?? String(localized: "Open", comment: "Ad call-to-action fallback button")
         v.nativeAd = ad
     }
     static func rounded(_ s: UIFont.TextStyle) -> UIFont {
