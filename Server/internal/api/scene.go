@@ -724,3 +724,33 @@ func (x extras) into(sit situation) situation {
 	}
 	return sit
 }
+
+// bioclip: species candidates only (batch identify crops).
+func bioclip(ctx context.Context, jpegB64 string) []bioCand { return askID(ctx, jpegB64).Candidates }
+
+// seeWith: a free-form prompt to the local vision model (batch identify boxes).
+func seeWith(ctx context.Context, jpegB64, prompt string, maxTokens int) string {
+	body, _ := json.Marshal(map[string]any{
+		"max_tokens": maxTokens, "temperature": 0.1,
+		"messages": []any{map[string]any{"role": "user", "content": []any{
+			map[string]any{"type": "image_url", "image_url": map[string]string{"url": "data:image/jpeg;base64," + jpegB64}},
+			map[string]any{"type": "text", "text": prompt},
+		}}},
+	})
+	cctx, cancel := context.WithTimeout(ctx, 45*time.Second)
+	defer cancel()
+	req, _ := http.NewRequestWithContext(cctx, "POST", "http://127.0.0.1:8091/v1/chat/completions", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return ""
+	}
+	defer res.Body.Close()
+	var out struct {
+		Choices []struct{ Message struct{ Content string } }
+	}
+	if json.NewDecoder(res.Body).Decode(&out) != nil || len(out.Choices) == 0 {
+		return ""
+	}
+	return strings.TrimSpace(out.Choices[0].Message.Content)
+}
