@@ -76,6 +76,22 @@ enum JungleBrain {
 
         if result.isQuestion {
             let targets = result.questionPlantIDs.compactMap { byID[$0] }
+            let asked: Plant? = context ?? (targets.count == 1 ? targets[0] : nil)
+            if JungleAPI.shared.hasSession {
+                // The server brain answers first; the on-device answerer is the fallback.
+                try? ctx.save()
+                Task { @MainActor in
+                    let answers = await Brain.ask(trimmed, plant: asked)
+                    if !answers.isEmpty {
+                        Brain.replyCards(answers, plant: asked, in: ctx, alsoJungle: context == nil && asked != nil)
+                    } else {
+                        let a = Answerer.answer(trimmed, plant: asked, plants: plants, now: now)
+                        reply(a.text, plant: asked, in: ctx, suggestions: a.suggestions, alsoJungle: context == nil && asked != nil)
+                    }
+                    try? ctx.save()
+                }
+                return
+            }
             if targets.count == 1 || context != nil {
                 let p = context ?? targets[0]
                 let a = Answerer.answer(trimmed, plant: p, plants: plants, now: now)

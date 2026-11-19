@@ -365,8 +365,10 @@ struct AddPlantFlow: View {
             guard let img = UIImage(data: data) else { return }
             async let local = PlantVision.read(img)
             async let remote = PlantIdentifier.remote(data)
+            async let ours = Brain.identify(data)
             let r = await local
-            let rem = await remote
+            var rem = await ours
+            for cand in await remote where !rem.contains(where: { $0.species == cand.species }) { rem.append(cand) }
             let minimum = Task { try? await Task.sleep(for: .seconds(1.6)) }
             _ = await minimum.value
             read = r

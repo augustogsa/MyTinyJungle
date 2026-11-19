@@ -139,6 +139,8 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
             await MainActor.run { Household.shared.handleNotification(response) }
             return
         }
+        // Frost & heatwave alerts just open the app.
+        if response.notification.request.content.userInfo["kind"] as? String == "weather" { return }
         guard let container else { return }
         await PlantNote.handle(response, ctx: container.mainContext)
     }
@@ -152,6 +154,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         Diagnostics.shared.start()
         Task { await AppAttest.ensure() }
+        Task { await WeatherWatch.sync() }
         Analytics.track("app_open")
         Task { await Analytics.flush() }
         return true

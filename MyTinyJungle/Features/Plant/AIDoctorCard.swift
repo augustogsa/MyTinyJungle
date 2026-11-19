@@ -9,6 +9,7 @@ struct AIDoctorCard: View {
     @State private var working = false
     @State private var failed: String?
     @State private var paywall = false
+    @State private var helped: Bool?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -20,9 +21,13 @@ struct AIDoctorCard: View {
                     if a.urgent { Text(Grammar.pt(String(localized: "Act soon", comment: "AI doctor urgency badge; max 12 chars"))).font(.caption.weight(.bold)).foregroundStyle(.white).padding(.horizontal, 8).padding(.vertical, 3).background(.orange, in: Capsule()) }
                 }
                 Text(a.why).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
+                if let c = a.context, !c.isEmpty {
+                    Text(c).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
+                }
                 ForEach(Array(a.steps.enumerated()), id: \.offset) { i, s in
                     Label { Text(s).font(.subheadline) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.forest) }
                 }
+                if let ref = a.ref, !ref.isEmpty { feedback(ref) }
             } else if working {
                 ErtyLoading(text: Grammar.pt(String(localized: "Asking the plant doctor…", comment: "AI doctor loading text")))
             } else {
@@ -43,6 +48,30 @@ struct AIDoctorCard: View {
         .sheet(isPresented: $paywall) { PaywallView() }
     }
 
+    @ViewBuilder private func feedback(_ ref: String) -> some View {
+        if let helped {
+            Text(helped ? Grammar.pt(String(localized: "Glad it helped!", comment: "AI doctor: thanks after 'Yes' feedback"))
+                        : Grammar.pt(String(localized: "Thanks, that helps us improve.", comment: "AI doctor: thanks after 'No' feedback")))
+                .font(.caption).foregroundStyle(Jungle.subtle)
+        } else {
+            HStack(spacing: 10) {
+                Text(Grammar.pt(String(localized: "Did this help?", comment: "AI doctor: feedback question; max 20 chars"))).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
+                Spacer(minLength: 0)
+                ForEach([true, false], id: \.self) { yes in
+                    Button {
+                        helped = yes
+                        Task { await Brain.feedback(ref: ref, helped: yes) }
+                    } label: {
+                        Text(yes ? Grammar.pt(String(localized: "Yes", comment: "AI doctor feedback button; short")) : Grammar.pt(String(localized: "No", comment: "AI doctor feedback button; short")))
+                            .font(.subheadline.weight(.semibold)).padding(.horizontal, 14).padding(.vertical, 6)
+                    }
+                    .buttonStyle(.bordered).tint(Jungle.forest)
+                }
+            }
+            .padding(.top, 4)
+        }
+    }
+
     private func ask() {
         guard Store.shared.isPlus else { paywall = true; return }
         guard JungleAPI.shared.hasSession else { failed = Grammar.pt(String(localized: "Sign in to use the AI plant doctor.", comment: "AI doctor: needs account")); return }
@@ -52,7 +81,7 @@ struct AIDoctorCard: View {
         Task {
             defer { working = false }
             do {
-                answer = try await AIDiagnosis.ask(photo: jpeg, species: species, note: plant.name)
+                answer = try await AIDiagnosis.ask(photo: jpeg, species: species, note: plant.name, plant: plant)
                 Analytics.track("ai_doctor")
             } catch JungleAPI.APIError.http(429, _) {
                 failed = Grammar.pt(String(localized: "That's today's limit. Try again tomorrow.", comment: "AI doctor: daily cap reached"))
@@ -63,16 +92,22 @@ struct AIDoctorCard: View {
     }
 }
 
-struct AIDiagnosis: Decodable {
+nonisolated struct AIDiagnosis: Decodable {
     var problem: String
     var confidence: String
     var why: String
     var steps: [String]
     var urgent: Bool
+    var source: String?
+    var context: String?
+    var ref: String?
 
-    static func ask(photo: Data, species: String, note: String) async throws -> AIDiagnosis {
-        struct B: Encodable { let photo, species, note, lang: String }
-        let lang = Bundle.main.preferredLocalizations.first ?? "en"
-        return try await JungleAPI.shared.send("POST", "/v1/diagnose", body: B(photo: photo.base64EncodedString(), species: species, note: note, lang: lang))
+    @MainActor static func ask(photo: Data, species: String, note: String, plant: Plant?) async throws -> AIDiagnosis {
+        nonisolated struct B: Encodable { let photo, species, note, lang: String; let situation: [String: [String]]?; let lat, lon: Double? }
+        let sit = PlantSituation.build(plant)
+        let at = PlantSituation.coords
+        let body = B(photo: photo.base64EncodedString(), species: species, note: note, lang: PlantSituation.lang,
+                     situation: sit.isEmpty ? nil : sit, lat: at?.lat, lon: at?.lon)
+        return try await JungleAPI.shared.send("POST", "/v1/diagnose", body: body)
     }
 }

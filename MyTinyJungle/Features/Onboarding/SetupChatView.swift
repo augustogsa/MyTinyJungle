@@ -18,7 +18,7 @@ struct SetupChatView: View {
     struct Line: Identifiable, Equatable { let id = UUID(); let fromUser: Bool; let text: String }
 
     enum Step: Equatable {
-        case name, place, heating, aircon, air, drafts, outside, family, rooms, light(String), plant, finished
+        case name, place, heating, aircon, air, drafts, outside, weather, family, rooms, light(String), plant, finished
     }
 
     struct Chip: Identifiable { let id: String; let title: String; var icon: Icon3D? = nil; var multi = false }
@@ -168,7 +168,7 @@ struct SetupChatView: View {
             return [Chip(id: "here", title: Grammar.pt(String(localized: "Use my location", comment: "Setup chat chip: use device location")), icon: .pin)]
         case .heating, .aircon, .drafts:
             return yesNo.prefix(1) + [Chip(id: "sometimes", title: Grammar.pt(String(localized: "Sometimes", comment: "Setup chat chip answer between yes and no")))] + yesNo.suffix(1)
-        case .outside:
+        case .outside, .weather:
             return yesNo
         case .air:
             return Climate.HomeAir.allCases.map { Chip(id: "air\($0.rawValue)", title: $0.label) }
@@ -232,6 +232,7 @@ struct SetupChatView: View {
         case .air: Grammar.pt(String(localized: "Is the air at home dry or damp?", comment: "Setup chat: mascot asks about indoor humidity"))
         case .drafts: Grammar.pt(String(localized: "Any draughty windows or doors?", comment: "Setup chat: mascot asks about drafts"))
         case .outside: Grammar.pt(String(localized: "Do you grow plants outside too, on a balcony, terrace or in a garden?", comment: "Setup chat: mascot asks about outdoor plants"))
+        case .weather: Grammar.pt(String(localized: "Want a heads-up before frost or a heatwave? I'll warn you so you can protect your outdoor plants.", comment: "Setup chat: mascot offers frost and heatwave push alerts for outdoor plants"))
         case .family: Grammar.pt(String(localized: "Who else lives with you? I'll warn you about any plant that could hurt them.", comment: "Setup chat: mascot asks about pets and small kids; multi-select"))
         case .rooms: Grammar.pt(String(localized: "Which rooms will have plants? Pick all that apply.", comment: "Setup chat: mascot asks which rooms; multi-select"))
         case .light(let room): Grammar.pt(String(localized: "How much light is there \(Self.roomPhrase(room))?", comment: "Setup chat: mascot asks light level of a room. Arg is a place phrase with preposition, e.g. 'in the living room' / 'na sala'"))
@@ -331,6 +332,9 @@ struct SetupChatView: View {
         case .outside:
             climate.growsOutside = chip.id == "yes"
             await say(Grammar.pt(String(localized: "Thanks! That tells me how fast pots dry out at your place.", comment: "Setup chat: mascot thanks after home conditions")))
+            await next(climate.growsOutside ? .weather : .family)
+        case .weather:
+            if chip.id == "yes" { await WeatherWatch.set(true) }
             await next(.family)
         case .family:
             do {

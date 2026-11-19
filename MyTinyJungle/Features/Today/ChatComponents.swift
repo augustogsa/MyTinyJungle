@@ -24,6 +24,7 @@ struct MessageBubble: View {
                             .overlay { Image(uiImage: img).resizable().scaledToFill() }
                             .clipShape(RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
                     }
+                    if !message.brainAnswers.isEmpty { BrainAnswerCards(answers: message.brainAnswers) }
                     if !message.text.isEmpty {
                         Text(message.text)
                             .font(.body)

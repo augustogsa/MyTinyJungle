@@ -22068,6 +22068,41 @@
         }
       }
     },
+    "Did this help?": {
+      "comment": "AI doctor: feedback question; max 20 chars",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajudou?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Te sirvió?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça vous a aidé ?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hat das geholfen?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "役に立ちましたか？"
+          }
+        }
+      }
+    },
     "Didn't sync. Tap to try again.": {
       "extractionState": "manual",
       "localizations": {
@@ -25938,108 +25973,36 @@
       }
     },
     "Feed every %lld weeks": {
-      "comment": "Welcome care plan for a newly added plant: card title. %lld = weeks (plural).",
+      "comment": "Care plan row; arg weeks",
       "localizations": {
         "de": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Jede %lld Woche düngen"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Alle %lld Wochen düngen"
-                }
-              }
-            }
-          }
-        },
-        "en": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Feed every %lld week"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Feed every %lld weeks"
-                }
-              }
-            }
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %lld Wochen düngen"
           }
         },
         "es": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Abona cada %lld semana"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Abona cada %lld semanas"
-                }
-              }
-            }
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abona cada %lld semanas"
           }
         },
         "fr": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Engrais toutes les %lld semaine"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Engrais toutes les %lld semaines"
-                }
-              }
-            }
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nourrir toutes les %lld semaines"
           }
         },
         "ja": {
-          "variations": {
-            "plural": {
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%lld週間ごとに肥料"
-                }
-              }
-            }
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld週間ごとに肥料"
           }
         },
         "pt-BR": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Adubar a cada %lld semana"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Adubar a cada %lld semanas"
-                }
-              }
-            }
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adubar a cada %lld semanas"
           }
         }
       }
@@ -28523,6 +28486,41 @@
         }
       }
     },
+    "Frost & heatwave alerts": {
+      "comment": "Settings toggle title; max 30 chars",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertas de geada e calorão"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertas de helada y calor"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes gel et canicule"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frost- und Hitzewarnungen"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "霜・猛暑アラート"
+          }
+        }
+      }
+    },
     "Frost and heat": {
       "comment": "Reminder kind title in Settings, playful. Max 22 chars.",
       "localizations": {
@@ -29359,6 +29357,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ar úmido para plantas tropicais"
+          }
+        }
+      }
+    },
+    "Glad it helped!": {
+      "comment": "AI doctor: thanks after 'Yes' feedback",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que bom que ajudou!"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Qué bueno que te sirvió!"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ravi que ça vous aide !"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schön, dass es geholfen hat!"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お役に立ててよかったです！"
           }
         }
       }
@@ -39065,7 +39098,7 @@
       }
     },
     "Keep away from pets": {
-      "comment": "Care task: toxic plant; max 22 chars",
+      "comment": "Care plan row: toxic to cats or dogs",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -39076,25 +39109,25 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lejos de las mascotas"
+            "value": "Mantenla lejos de las mascotas"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hors de portée des animaux"
+            "value": "À tenir loin des animaux"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ペットから離して"
+            "value": "ペットから離して置く"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Longe dos pets"
+            "value": "Mantenha longe dos pets"
           }
         }
       }
@@ -70122,6 +70155,41 @@
         }
       }
     },
+    "Thanks, that helps us improve.": {
+      "comment": "AI doctor: thanks after 'No' feedback",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valeu, isso ajuda a gente a melhorar."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gracias, eso nos ayuda a mejorar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Merci, ça nous aide à progresser."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danke, das hilft uns, besser zu werden."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ありがとうございます。改善に役立てます。"
+          }
+        }
+      }
+    },
     "Thanks.": {
       "comment": "Plant thanks the user after care action 'water'. If the line is short and dry it is the independent (terse) personality; if theatrical it is the dramatic one; otherwise warm and cheerful.",
       "localizations": {
@@ -75629,6 +75697,41 @@
         }
       }
     },
+    "Want a heads-up before frost or a heatwave? I'll warn you so you can protect your outdoor plants.": {
+      "comment": "Setup chat: mascot offers frost and heatwave push alerts for outdoor plants",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quer um aviso antes de geada ou calorão? Eu te aviso pra você proteger as plantas de fora."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quieres un aviso antes de una helada o una ola de calor? Te aviso para que protejas tus plantas de afuera."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un petit avertissement avant le gel ou la canicule ? Je vous préviens pour protéger vos plantes d'extérieur."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soll ich dir vor Frost oder Hitzewellen Bescheid geben? Dann kannst du deine Pflanzen draußen schützen."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "霜や猛暑の前にお知らせしましょうか？外の植物を守れるようにお伝えします。"
+          }
+        }
+      }
+    },
     "Warm days in %@. Peek at the soil a little more often.": {
       "comment": "Season card. %@ = place.",
       "localizations": {
@@ -77754,6 +77857,41 @@
         }
       }
     },
+    "We need your rough location to send alerts. You can allow it in the Settings app.": {
+      "comment": "Settings footer: location missing for weather alerts",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pra mandar os alertas, a gente precisa da sua localização aproximada. Dá pra liberar no app Ajustes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para enviarte alertas necesitamos tu ubicación aproximada. Puedes permitirla en la app Configuración."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour envoyer des alertes, il nous faut votre position approximative. Vous pouvez l'autoriser dans l'app Réglages."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Warnungen brauchen wir deinen ungefähren Standort. Du kannst ihn in der Einstellungen-App erlauben."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラートを送るにはおおよその位置情報が必要です。設定アプリで許可できます。"
+          }
+        }
+      }
+    },
     "We'll gently warn you about plants that could hurt them.": {
       "comment": "Settings footer",
       "localizations": {
@@ -77820,6 +77958,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vamos lembrar você antes da viagem"
+          }
+        }
+      }
+    },
+    "We'll send a heads-up before frost or a heatwave hits your area.": {
+      "comment": "Settings footer for frost and heatwave alerts",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A gente te avisa antes de uma geada ou onda de calor chegar aí."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te avisamos antes de que llegue una helada o una ola de calor a tu zona."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On vous prévient avant qu'une gelée ou une canicule n'arrive chez vous."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wir sagen dir Bescheid, bevor Frost oder eine Hitzewelle deine Gegend erreicht."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お住まいの地域に霜や猛暑が来る前にお知らせします。"
           }
         }
       }
@@ -77931,6 +78104,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pouco, toda semana"
+          }
+        }
+      }
+    },
+    "Weather": {
+      "comment": "Settings section title",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clima"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clima"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Météo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wetter"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "天気"
           }
         }
       }
@@ -87605,6 +87813,216 @@
           "stringUnit": {
             "state": "translated",
             "value": "“%@”"
+          }
+        }
+      }
+    },
+    "Care plan for where it lives": {
+      "comment": "Plant screen section title: care plan adapted to the plant's room and climate; max 32 chars",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pflege für ihren Standort"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuidados según dónde vive"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soins selon son coin"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "置き場所に合わせたケア"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuidados pro cantinho dela"
+          }
+        }
+      }
+    },
+    "Water about every %lld days": {
+      "comment": "Care plan row; arg days",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwa alle %lld Tage gießen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riega más o menos cada %lld días"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arroser environ tous les %lld jours"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "約%lld日ごとに水やり"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regar mais ou menos a cada %lld dias"
+          }
+        }
+      }
+    },
+    "Water every %lld–%lld days": {
+      "comment": "Care plan row; args min and max days",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %1$lld–%2$lld Tage gießen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riega cada %1$lld–%2$lld días"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arroser tous les %1$lld à %2$lld jours"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld〜%2$lld日ごとに水やり"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regar a cada %1$lld–%2$lld dias"
+          }
+        }
+      }
+    },
+    "No feeding for now, it's resting": {
+      "comment": "Care plan row: no fertilizer this season",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerade nicht düngen, sie ruht"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin abono por ahora, está descansando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas d'engrais pour l'instant, elle se repose"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今は休眠中なので肥料はお休み"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem adubo por enquanto, ela tá descansando"
+          }
+        }
+      }
+    },
+    "Humidity at least %lld%%": {
+      "comment": "Care plan row; arg percent",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luftfeuchte mindestens %lld %%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Humedad de al menos %lld%%"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Humidité d'au moins %lld %%"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "湿度%lld%%以上"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umidade de pelo menos %lld%%"
+          }
+        }
+      }
+    },
+    "Repot every %lld years": {
+      "comment": "Care plan row; arg years",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %lld Jahre umtopfen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trasplanta cada %lld años"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rempoter tous les %lld ans"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld年ごとに植え替え"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trocar de vaso a cada %lld anos"
           }
         }
       }

@@ -5,6 +5,8 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable private var settings = JungleSettings.shared
     @State private var paywall = false
+    @State private var weatherWatch = WeatherWatch.isOn
+    @State private var weatherNote: String?
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
     @State private var iconPicker = false
@@ -97,6 +99,18 @@ struct SettingsView: View {
                         JungleRow(icon: .dog, title: Grammar.pt(String(localized: "Dogs", comment: "Settings title"))) { Toggle("", isOn: $settings.hasDogs).labelsHidden() }
                         JungleDivider()
                         JungleRow(icon: .kid, title: Grammar.pt(String(localized: "Small children", comment: "Settings title"))) { Toggle("", isOn: $settings.hasKids).labelsHidden() }
+                    }
+                    JungleGroup(title: Grammar.pt(String(localized: "Weather", comment: "Settings section title")), footer: weatherNote ?? Grammar.pt(String(localized: "We'll send a heads-up before frost or a heatwave hits your area.", comment: "Settings footer for frost and heatwave alerts"))) {
+                        JungleRow(icon: .frost, title: Grammar.pt(String(localized: "Frost & heatwave alerts", comment: "Settings toggle title; max 30 chars"))) {
+                            Toggle("", isOn: Binding(get: { weatherWatch }, set: { on in
+                                weatherWatch = on; weatherNote = nil
+                                Task {
+                                    let now = await WeatherWatch.set(on)
+                                    weatherWatch = now
+                                    if on && !now { weatherNote = Grammar.pt(String(localized: "We need your rough location to send alerts. You can allow it in the Settings app.", comment: "Settings footer: location missing for weather alerts")) }
+                                }
+                            })).labelsHidden()
+                        }
                     }
                     JungleGroup(title: Grammar.pt(String(localized: "Your plan", comment: "Settings title"))) {
                         if plus {

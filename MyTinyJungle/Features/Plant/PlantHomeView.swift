@@ -160,6 +160,7 @@ struct PlantHomeView: View {
     private var overview: some View {
         VStack(alignment: .leading, spacing: 14) {
             PlantForecastSection(plant: plant)
+            CarePlanCard(plant: plant)
             VStack(alignment: .leading, spacing: 10) {
                 SectionTitle(Grammar.pt(String(localized: "How-to for \(plant.name)", comment: "Section title: guides for this plant; arg plant name")), action: Grammar.pt(String(localized: "All", comment: "Section action: see all; max 8 chars"))) { showGuides = true }
                 let picks = Array(GuideLibrary.suggested(for: plant).prefix(3))
