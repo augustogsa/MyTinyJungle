@@ -33,6 +33,7 @@ type diagnosis struct {
 	Why        string   `json:"why"`
 	Steps      []string `json:"steps"`
 	Urgent     bool     `json:"urgent"`
+	Source     string   `json:"source,omitempty"` // library | internal | free | claude
 }
 
 func (s *Server) aiClient() *anthropic.Client {
@@ -45,11 +46,6 @@ func (s *Server) aiClient() *anthropic.Client {
 }
 
 func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
-	client := s.aiClient()
-	if client == nil {
-		s.fail(w, r, apiError{http.StatusServiceUnavailable, "ai_unavailable"})
-		return
-	}
 	var in struct {
 		Photo   string `json:"photo"` // base64 JPEG, ≤ 1.5 MB
 		Species string `json:"species"`
@@ -88,40 +84,9 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, err)
 		return
 	}
-	note := "lang: " + in.Lang + "\nspecies: " + in.Species + "\nowner's note: " + in.Note
-	cctx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 100*time.Second)
-	defer cancel()
-	resp, err := client.Messages.New(cctx, anthropic.MessageNewParams{
-		Model:     diagnoseModel,
-		MaxTokens: 16000,
-		System:    []anthropic.TextBlockParam{{Text: diagnoseSystem}},
-		Messages: []anthropic.MessageParam{anthropic.NewUserMessage(
-			anthropic.NewImageBlockBase64("image/jpeg", in.Photo),
-			anthropic.NewTextBlock(note),
-		)},
-	})
+	d, err := s.think(context.WithoutCancel(ctx), in.Photo, in.Species, in.Note, in.Lang)
 	if err != nil {
-		s.log.Error("diagnose", "err", err)
-		s.fail(w, r, apiError{http.StatusBadGateway, "ai_failed"})
-		return
-	}
-	if resp.StopReason == anthropic.StopReasonRefusal {
-		s.fail(w, r, apiError{http.StatusUnprocessableEntity, "ai_declined"})
-		return
-	}
-	var text strings.Builder
-	for _, b := range resp.Content {
-		if t, ok := b.AsAny().(anthropic.TextBlock); ok {
-			text.WriteString(t.Text)
-		}
-	}
-	raw := text.String()
-	if i, j := strings.Index(raw, "{"), strings.LastIndex(raw, "}"); i >= 0 && j > i {
-		raw = raw[i : j+1]
-	}
-	var d diagnosis
-	if json.Unmarshal([]byte(raw), &d) != nil || d.Problem == "" {
-		s.fail(w, r, apiError{http.StatusBadGateway, "ai_failed"})
+		s.fail(w, r, err)
 		return
 	}
 	if len(d.Steps) > 4 {
@@ -130,3 +95,51 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, d)
 }
 
+// askClaude is the last resort: Claude sees the photo plus our best knowledge-base candidates.
+func (s *Server) askClaude(ctx context.Context, photo, note string) (diagnosis, error) {
+	client := s.aiClient()
+	if client == nil {
+		return diagnosis{}, apiError{http.StatusServiceUnavailable, "ai_unavailable"}
+	}
+	cctx, cancel := context.WithTimeout(ctx, 100*time.Second)
+	defer cancel()
+	resp, err := client.Messages.New(cctx, anthropic.MessageNewParams{
+		Model:     diagnoseModel,
+		MaxTokens: 16000,
+		System:    []anthropic.TextBlockParam{{Text: diagnoseSystem}},
+		Messages: []anthropic.MessageParam{anthropic.NewUserMessage(
+			anthropic.NewImageBlockBase64("image/jpeg", photo),
+			anthropic.NewTextBlock(note),
+		)},
+	})
+	if err != nil {
+		s.log.Error("diagnose", "err", err)
+		return diagnosis{}, apiError{http.StatusBadGateway, "ai_failed"}
+	}
+	if resp.StopReason == anthropic.StopReasonRefusal {
+		return diagnosis{}, apiError{http.StatusUnprocessableEntity, "ai_declined"}
+	}
+	var text strings.Builder
+	for _, b := range resp.Content {
+		if t, ok := b.AsAny().(anthropic.TextBlock); ok {
+			text.WriteString(t.Text)
+		}
+	}
+	d, ok := parseDiagnosis(text.String())
+	if !ok {
+		return diagnosis{}, apiError{http.StatusBadGateway, "ai_failed"}
+	}
+	d.Source = "claude"
+	return d, nil
+}
+
+func parseDiagnosis(raw string) (diagnosis, bool) {
+	if i, j := strings.Index(raw, "{"), strings.LastIndex(raw, "}"); i >= 0 && j > i {
+		raw = raw[i : j+1]
+	}
+	var d diagnosis
+	if json.Unmarshal([]byte(raw), &d) != nil || d.Problem == "" {
+		return d, false
+	}
+	return d, true
+}

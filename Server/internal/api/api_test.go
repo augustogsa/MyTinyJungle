@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -166,5 +167,25 @@ func TestCBORAndAttestRejects(t *testing.T) {
 	}
 	if _, _, err := cborDecode([]byte{0x5b, 0xff}, 0); err == nil {
 		t.Fatal("accepted truncated cbor")
+	}
+}
+
+func TestBrainMatchesKnowledge(t *testing.T) {
+	dir := t.TempDir()
+	kb := `{"symptoms":[{"id":"yellow-lower","name":"Yellow lower leaves","looks":"Older leaves near the base turn yellow.","causes":["Too much water"],"fixes":["Water less."],"keywords":["yellow","bottom leaves"]}],
+"pests":[{"id":"spider-mites","name":"Spider mites","signs":"Fine webbing, dusty speckled leaves.","fix":"Shower the plant. Repeat weekly."}]}`
+	loc := `{"text":{"Spider mites":"Ácaros","Shower the plant.":"Dale una ducha."}}`
+	os.MkdirAll(filepath.Join(dir, "b"), 0o755)
+	os.WriteFile(filepath.Join(dir, "b", "k.json"), []byte(kb), 0o644)
+	os.WriteFile(filepath.Join(dir, "b", "l.json"), []byte(loc), 0o644)
+	os.WriteFile(filepath.Join(dir, "manifest.json"), []byte(`{"files":{"data/knowledge.json":{"h":"k.json"},"data/locales/es.json":{"h":"l.json"}}}`), 0o644)
+	b := &brain{dir: dir}
+	ms := b.rank("there is fine webbing under the leaves and they look dusty", "no yellow leaves, healthy")
+	if len(ms) == 0 || ms[0].e.ID != "spider-mites" {
+		t.Fatalf("rank: %+v", ms)
+	}
+	d := b.answerFrom(ms[0], "es")
+	if d.Problem != "Ácaros" || d.Steps[0] != "Dale una ducha." || !d.Urgent {
+		t.Fatalf("answer: %+v", d)
 	}
 }

@@ -17,4 +17,9 @@ wal=$(ls -t /var/backups/mtj/wal/*.gpg 2>/dev/null | head -1)
 [[ -n $wal && $(( $(date +%s) - $(stat -c %Y "$wal") )) -lt 3600 ]] || $A "WAL shipping stalled" "Newest: ${wal:-none}"
 errs=$(journalctl -u mtj-api --since "-5min" -o cat --no-pager 2>/dev/null | grep '"level":"ERROR"' | tail -20)
 [[ -z $errs ]] || $A "API errors in the last 5 minutes" "$errs"
+ai=$(curl -s -m 5 http://127.0.0.1:8091/health || true)
+if [[ $ai != *'"ok"'* ]]; then
+  (cd /var/lib/mtj-db/home && sudo -u mtj XDG_RUNTIME_DIR=/run/user/$(id -u mtj) systemctl --user restart mtj-ai) || true
+  $A "plant vision model restarted" "Health: ${ai:-no answer}. Diagnoses fall back to the knowledge base meanwhile."
+fi
 exit 0

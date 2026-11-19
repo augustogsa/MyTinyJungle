@@ -76,7 +76,10 @@ st=$(c $A -o /dev/null -w '%{http_code}' http://x/v1/attest/challenge -X POST); 
 st=$(c $A -o /dev/null -w '%{http_code}' http://x/v1/attest -d '{"keyId":"'$(head -c32 /dev/urandom|base64)'","attestation":"oA=="}'); [[ $st == 400 ]] && ok "bogus attestation refused"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/events -d '{"platform":"ios","appVersion":"itest","counts":{"itest_event":2,"BAD NAME":1}}'); [[ $st == 200 ]] && [[ $(psqlq "select sum(n) from event_counts where app_version='itest'") == 2 ]] && ok "anonymous event counts"
 psqlq "delete from event_counts where app_version='itest'" >/dev/null
-st=$(c $A -o /dev/null -w '%{http_code}' http://x/v1/diagnose -d '{"photo":"/9j/AA==","species":"","note":"","lang":"en"}'); [[ $st == 503 || $st == 502 || $st == 200 ]] && ok "AI diagnosis gated ($st)"
+leaf=$(python3 -c 'import json;m=json.load(open("/var/lib/mtj/content/manifest.json"));print(m["files"]["art/signin-leaves.jpg"]["h"])')
+python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"species":"Monstera","note":"fine webbing and tiny moving dots under the leaves, dusty speckles","lang":"es"}))' /var/lib/mtj/content/b/$leaf > /tmp/mtj-dx.json
+dx=$(c $A -m 120 http://x/v1/diagnose -d @/tmp/mtj-dx.json); rm -f /tmp/mtj-dx.json
+echo "$dx" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["source"] in ("internal","library") and d["problem"] and d["steps"],d' && ok "brain answers internally ($(echo "$dx" | python3 -c 'import json,sys;d=json.load(sys.stdin);print(d["source"],"·",d["problem"])'))"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
 st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/me); [[ $st == 200 ]] && ok "account deletion"
 echo "passed $pass checks"
