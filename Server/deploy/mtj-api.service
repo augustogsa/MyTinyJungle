@@ -1,0 +1,21 @@
+[Unit]
+Description=My Tiny Jungle API (loopback 3300, behind Apache + Cloudflare)
+After=network-online.target mdm-postgres.service
+Wants=mdm-postgres.service
+
+[Service]
+User=mtj-api
+WorkingDirectory=/opt/mtj/api
+EnvironmentFile=/opt/mtj/secrets/api.env
+Environment=DENO_DIR=/var/cache/mtj-api/deno
+ExecStart=/usr/local/bin/deno run --cached-only --no-prompt --allow-env --allow-net --allow-read=/opt/mtj/api main.ts
+Restart=always
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/cache/mtj-api
+
+[Install]
+WantedBy=multi-user.target
