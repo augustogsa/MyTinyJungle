@@ -123,12 +123,14 @@ var weatherText = map[string][2][2]string{ // lang → {frost, heat} → {title,
 	"ja":    {{"今夜は霜の予報", "暗くなる前に、寒さに弱い植物を室内に入れるか覆ってあげましょう。"}, {"猛暑がやってきます", "朝のうちに水やりをして、鉢を日陰に。弱い植物は真昼の日差しから避難させましょう。"}},
 }
 
-// weatherLoop checks every watched cell every three hours and warns once a day per device.
+// weatherLoop checks every watched cell every three hours: frost/heat tonight once a day per device, and
+// multi-day patterns over the 16-day forecast once a week per device and pattern.
 func (s *Server) weatherLoop(ctx context.Context) {
 	t := time.NewTicker(3 * time.Hour)
 	defer t.Stop()
 	for {
 		s.weatherRound(ctx)
+		s.weatherPatternsRound(ctx) // multi-day patterns (weatherpatterns.go)
 		select {
 		case <-ctx.Done():
 			return

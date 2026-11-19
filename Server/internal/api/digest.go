@@ -23,11 +23,11 @@ const digestURL = "mytinyjungle://digest"
 type digestItem struct {
 	PlantID string     `json:"plantId,omitempty"`
 	Plant   string     `json:"plant,omitempty"`
-	Kind    string     `json:"kind"`             // due: water|feed|task; watch: overdue_water|problem|quiet|repot; grew: newLeaf|flower|measure|propagate; photos: care event kind
-	Date    *time.Time `json:"date,omitempty"`   // due date, or when it happened
+	Kind    string     `json:"kind"`              // due: water|feed|task; watch: overdue_water|problem|quiet|repot; grew: newLeaf|flower|measure|propagate; photos: care event kind
+	Date    *time.Time `json:"date,omitempty"`    // due date, or when it happened
 	Overdue bool       `json:"overdue,omitempty"` // due items past their date
-	Title   string     `json:"title,omitempty"`  // task title
-	Value   *float64   `json:"value,omitempty"`  // measure value
+	Title   string     `json:"title,omitempty"`   // task title
+	Value   *float64   `json:"value,omitempty"`   // measure value
 	EventID string     `json:"eventId,omitempty"`
 	Media   string     `json:"media,omitempty"` // GET path of the photo
 }
@@ -38,6 +38,13 @@ type digest struct {
 	Watch  []digestItem `json:"watch"`
 	Grew   []digestItem `json:"grew"`
 	Photos []digestItem `json:"photos"`
+	Next   *digestNext  `json:"next"` // the week after this one
+}
+
+type digestNext struct {
+	Week    string           `json:"week"`    // Monday of next week, YYYY-MM-DD
+	Due     []digestItem     `json:"due"`     // projected water, feed and open tasks
+	Weather []weatherPattern `json:"weather"` // multi-day patterns for your watched places overlapping that week
 }
 
 func (d digest) empty() bool { return len(d.Due)+len(d.Watch)+len(d.Grew) == 0 }
@@ -77,7 +84,11 @@ func (s *Server) loadDigest(ctx context.Context, q querier, uid string, now time
 	if err := rows.Err(); err != nil {
 		return digest{}, err
 	}
-	return buildDigest(recs, now, s.speciesLookup()), nil
+	d := buildDigest(recs, now, s.speciesLookup())
+	if from, err := time.Parse("2006-01-02", d.Next.Week); err == nil {
+		d.Next.Weather = s.userPatterns(ctx, q, uid, now, from.AddDate(0, 0, 7))
+	}
+	return d, nil
 }
 
 type speciesCare struct{ dry, feedWeeks, repotYears float64 }
@@ -100,15 +111,14 @@ func (s *Server) speciesLookup() func(string) speciesCare {
 func buildDigest(recs []rec, now time.Time, care func(string) speciesCare) digest {
 	wd := (int(now.Weekday()) + 6) % 7
 	d := digest{Week: now.AddDate(0, 0, -wd).Format("2006-01-02"), Due: []digestItem{}, Watch: []digestItem{}, Grew: []digestItem{}, Photos: []digestItem{}}
-	plants := map[string]map[string]any{}
-	for _, r := range recs {
-		if r.entity == "plant" && !boolean(r.data, "isArchived") {
-			plants[r.id] = r.data
-		}
-	}
-	lastWater, lastFeed, lastEvent := map[string]time.Time{}, map[string]time.Time{}, map[string]time.Time{}
+	plants := schedules(recs, now, care)
 	weekAgo, horizon := now.Add(-7*24*time.Hour), now.Add(7*24*time.Hour)
-	name := func(pid string) string { return str(plants[pid], "name") }
+	name := func(pid string) string {
+		if p := plants[pid]; p != nil {
+			return p.Name
+		}
+		return ""
+	}
 	for _, r := range recs {
 		if r.entity != "care_event" {
 			continue
@@ -120,19 +130,6 @@ func buildDigest(recs []rec, now time.Time, care func(string) speciesCare) diges
 		f, _ := num(r.data, "date")
 		at := epoch(f)
 		kind := str(r.data, "kind")
-		if at.After(lastEvent[pid]) {
-			lastEvent[pid] = at
-		}
-		switch kind {
-		case "water":
-			if at.After(lastWater[pid]) {
-				lastWater[pid] = at
-			}
-		case "feed":
-			if at.After(lastFeed[pid]) {
-				lastFeed[pid] = at
-			}
-		}
 		if at.Before(weekAgo) || at.After(now.Add(time.Hour)) {
 			continue
 		}
@@ -152,57 +149,56 @@ func buildDigest(recs []rec, now time.Time, care func(string) speciesCare) diges
 		}
 	}
 	for pid, p := range plants {
-		sc := care(str(p, "speciesID"))
-		interval := sc.dry
-		if v, ok := num(p, "learnedDryDays"); ok && v > 0 {
-			interval = v
-		}
-		if interval <= 0 {
-			interval = 7
-		}
-		created := now
-		if f, ok := num(p, "createdAt"); ok {
-			created = epoch(f)
-		}
-		base := lastWater[pid]
-		if base.IsZero() {
-			base = created
-		}
-		next := base.Add(time.Duration(interval * 24 * float64(time.Hour)))
-		if next.Before(horizon) {
+		iv := time.Duration(p.Interval * 24 * float64(time.Hour))
+		if next := p.NextWater; next.Before(horizon) {
 			n := next
-			d.Due = append(d.Due, digestItem{PlantID: pid, Plant: name(pid), Kind: "water", Date: &n, Overdue: next.Before(now)})
-			if now.Sub(next) > time.Duration(interval*24*float64(time.Hour)) {
-				d.Watch = append(d.Watch, digestItem{PlantID: pid, Plant: name(pid), Kind: "overdue_water", Date: &n})
+			d.Due = append(d.Due, digestItem{PlantID: pid, Plant: p.Name, Kind: "water", Date: &n, Overdue: next.Before(now)})
+			if now.Sub(next) > iv {
+				d.Watch = append(d.Watch, digestItem{PlantID: pid, Plant: p.Name, Kind: "overdue_water", Date: &n})
 			}
 		}
-		if lf := lastFeed[pid]; !lf.IsZero() && sc.feedWeeks > 0 {
-			if nf := lf.AddDate(0, 0, int(sc.feedWeeks*7)); nf.Before(horizon) {
-				d.Due = append(d.Due, digestItem{PlantID: pid, Plant: name(pid), Kind: "feed", Date: &nf, Overdue: nf.Before(now)})
+		if lf := p.LastFeed; !lf.IsZero() && p.FeedWeeks > 0 {
+			if nf := lf.AddDate(0, 0, int(p.FeedWeeks*7)); nf.Before(horizon) {
+				d.Due = append(d.Due, digestItem{PlantID: pid, Plant: p.Name, Kind: "feed", Date: &nf, Overdue: nf.Before(now)})
 			}
 		}
-		if le := lastEvent[pid]; created.Before(now.AddDate(0, 0, -30)) && (le.IsZero() || le.Before(now.AddDate(0, 0, -30))) {
-			d.Watch = append(d.Watch, digestItem{PlantID: pid, Plant: name(pid), Kind: "quiet"})
+		if le := p.LastEvent; p.Created.Before(now.AddDate(0, 0, -30)) && (le.IsZero() || le.Before(now.AddDate(0, 0, -30))) {
+			d.Watch = append(d.Watch, digestItem{PlantID: pid, Plant: p.Name, Kind: "quiet"})
 		}
-		if f, ok := num(p, "lastRepotAt"); ok && sc.repotYears > 0 && epoch(f).Before(now.AddDate(0, 0, -int(sc.repotYears*365))) {
-			d.Watch = append(d.Watch, digestItem{PlantID: pid, Plant: name(pid), Kind: "repot"})
+		if f, ok := num(p.Data, "lastRepotAt"); ok && p.RepotYears > 0 && epoch(f).Before(now.AddDate(0, 0, -int(p.RepotYears*365))) {
+			d.Watch = append(d.Watch, digestItem{PlantID: pid, Plant: p.Name, Kind: "repot"})
 		}
 	}
-	for _, r := range recs {
-		if r.entity != "care_task" || boolean(r.data, "done") {
-			continue
+	d.Due = append(d.Due, tasksBetween(recs, name, now.AddDate(0, 0, -30), horizon, now)...)
+	// Next week (Monday to Sunday after this one): projected waterings, feedings and open tasks.
+	from := now.Truncate(24*time.Hour).AddDate(0, 0, 7-wd)
+	to := from.AddDate(0, 0, 7)
+	nx := digestNext{Week: from.Format("2006-01-02"), Due: []digestItem{}, Weather: []weatherPattern{}}
+	for pid, p := range plants {
+		iv := time.Duration(p.Interval * 24 * float64(time.Hour))
+		next := p.NextWater
+		for next.Before(from) {
+			if next.Before(now) {
+				next = now
+			}
+			next = next.Add(iv)
 		}
-		f, ok := num(r.data, "due")
-		if !ok {
-			continue
+		for ; next.Before(to); next = next.Add(iv) {
+			n := next
+			nx.Due = append(nx.Due, digestItem{PlantID: pid, Plant: p.Name, Kind: "water", Date: &n})
 		}
-		due := epoch(f)
-		if due.After(horizon) || due.Before(now.AddDate(0, 0, -30)) {
-			continue
+		if lf := p.LastFeed; !lf.IsZero() && p.FeedWeeks > 0 {
+			nf := lf.AddDate(0, 0, int(p.FeedWeeks*7))
+			for nf.Before(from) {
+				nf = nf.AddDate(0, 0, int(max(p.FeedWeeks, 1)*7))
+			}
+			if nf.Before(to) {
+				nx.Due = append(nx.Due, digestItem{PlantID: pid, Plant: p.Name, Kind: "feed", Date: &nf})
+			}
 		}
-		pid := str(r.data, "plantID")
-		d.Due = append(d.Due, digestItem{PlantID: pid, Plant: name(pid), Kind: "task", Title: str(r.data, "title"), Date: &due, Overdue: due.Before(now)})
 	}
+	nx.Due = append(nx.Due, tasksBetween(recs, name, from, to, now)...)
+	d.Next = &nx
 	byDate := func(items []digestItem) {
 		sort.SliceStable(items, func(i, j int) bool {
 			a, b := items[i].Date, items[j].Date
@@ -216,10 +212,32 @@ func buildDigest(recs []rec, now time.Time, care func(string) speciesCare) diges
 	byDate(d.Watch)
 	byDate(d.Grew)
 	byDate(d.Photos)
+	byDate(d.Next.Due)
 	if len(d.Photos) > 12 {
 		d.Photos = d.Photos[len(d.Photos)-12:]
 	}
 	return d
+}
+
+// tasksBetween returns open care tasks due in [from, to).
+func tasksBetween(recs []rec, name func(string) string, from, to, now time.Time) []digestItem {
+	var out []digestItem
+	for _, r := range recs {
+		if r.entity != "care_task" || boolean(r.data, "done") {
+			continue
+		}
+		f, ok := num(r.data, "due")
+		if !ok {
+			continue
+		}
+		due := epoch(f)
+		if !due.Before(to) || due.Before(from) {
+			continue
+		}
+		pid := str(r.data, "plantID")
+		out = append(out, digestItem{PlantID: pid, Plant: name(pid), Kind: "task", Title: str(r.data, "title"), Date: &due, Overdue: due.Before(now)})
+	}
+	return out
 }
 
 // GET /v1/me/digest

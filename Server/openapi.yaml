@@ -7,7 +7,7 @@ info:
     One account across iOS, Android and web. Clients (Swift, Kotlin) are generated from this file.
     Auth: `Authorization: Bearer <accessToken>` (EdDSA JWT, 30 min). Refresh tokens rotate on every use;
     reusing an old one revokes every session of the account.
-    Daily limits per user and per device: /v1/brain/scene and /v1/brain/identify 60, /v1/brain/ask 300,
+    Daily limits per user and per device: /v1/brain/scene and /v1/brain/identify 60 (identify-batch: one per crop, shared with identify), /v1/brain/ask 300,
     /v1/diagnose 20. Over the limit: 429 {"error":"daily_limit"} (resets at 00:00 UTC). When the photo models
     are saturated: 503 {"error":"busy"}; retry later.
 servers:
@@ -182,7 +182,7 @@ paths:
       summary: Redeem invite
       parameters: [{ name: code, in: path, required: true, schema: { type: string } }]
       responses:
-        "200": { description: Joined, content: { application/json: { schema: { type: object, required: [jungleId], properties: { jungleId: { type: string, format: uuid } } } } } }
+        "200": { description: "Joined. The same codes join households (householdId is then set).", content: { application/json: { schema: { type: object, required: [jungleId], properties: { jungleId: { type: string, format: uuid }, householdId: { type: string, format: uuid } } } } } }
         "404": { $ref: "#/components/responses/Error" }
   /v1/jungles/{id}/members/{uid}:
     parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: uid, in: path, required: true, schema: { type: string, format: uuid } }]
@@ -326,6 +326,217 @@ paths:
         required: true
         content: { application/json: { schema: { type: object, required: [on, deviceId], properties: { on: { type: boolean }, deviceId: { type: string, format: uuid }, lang: { type: string, description: "en, pt-BR, es, fr, de or ja; kept for the push text" } } } } }
       responses: { "200": { $ref: "#/components/responses/Ok" }, "400": { $ref: "#/components/responses/Error" }, "404": { $ref: "#/components/responses/Error" } }
+  /v1/brain/identify-batch:
+    post:
+      operationId: brainIdentifyBatch
+      summary: Name every plant in one photo of a shelf (each crop counts against the identify daily limit)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte, description: "JPEG or PNG, base64, up to 1.8 MB encoded" }, lang: { type: string } } } } }
+      responses:
+        "200":
+          description: One item per plant found
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, detector, charged, truncated]
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/BatchItem" } }
+                  detector: { type: string, enum: [model, grid] }
+                  charged: { type: integer, description: crops identified (quota used) }
+                  truncated: { type: boolean, description: the daily limit stopped the batch early }
+        "400": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/brain/identify/feedback:
+    post:
+      operationId: identifyFeedback
+      summary: "Owner's pick after identify: kept our top guess, chose another species, or none"
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [suggested], properties: { suggested: { type: string, description: our top species id }, chosen: { type: string, description: species id the owner kept; empty when none } } } } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { type: object, properties: { ok: { type: boolean }, outcome: { type: string, enum: [confirmed, corrected, rejected] } } } } } }
+        "400": { $ref: "#/components/responses/Error" }
+  /v1/households:
+    get:
+      operationId: households
+      summary: Households you belong to
+      responses:
+        "200": { description: Households, content: { application/json: { schema: { type: object, required: [households], properties: { households: { type: array, items: { $ref: "#/components/schemas/Household" } } } } } } }
+        "401": { $ref: "#/components/responses/Error" }
+    post:
+      operationId: createHousehold
+      summary: Create a household on a jungle you own, or on a new shared jungle
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, properties: { name: { type: string, maxLength: 60 }, jungleId: { type: string, format: uuid } } } } }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { type: object, required: [id, jungleId, name], properties: { id: { type: string, format: uuid }, jungleId: { type: string, format: uuid }, name: { type: string } } } } } }
+        "403": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+  /v1/households/{id}:
+    delete:
+      operationId: deleteHousehold
+      summary: End the household (creator only; the jungle stays)
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "404": { $ref: "#/components/responses/Error" } }
+  /v1/households/{id}/invites:
+    post:
+      operationId: createHouseholdInvite
+      summary: Single-use invite code (7 days), owners only
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      requestBody:
+        content: { application/json: { schema: { type: object, properties: { role: { type: string, enum: [carer, owner], default: carer } } } } }
+      responses:
+        "201": { description: Invite, content: { application/json: { schema: { type: object, required: [code, url, expiresAt], properties: { code: { type: string }, url: { type: string }, expiresAt: { type: string, format: date-time } } } } } }
+        "403": { $ref: "#/components/responses/Error" }
+  /v1/household-invites/{code}/redeem:
+    post:
+      operationId: redeemHouseholdInvite
+      summary: Join a household (and its jungle) by code
+      parameters: [{ name: code, in: path, required: true, schema: { type: string } }]
+      responses:
+        "200": { description: Joined, content: { application/json: { schema: { type: object, required: [householdId, jungleId], properties: { householdId: { type: string, format: uuid }, jungleId: { type: string, format: uuid } } } } } }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/households/{id}/members/{uid}:
+    patch:
+      operationId: updateHouseholdMember
+      summary: Change a member's role (owners only; not the creator)
+      parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: uid, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [role], properties: { role: { type: string, enum: [carer, owner] } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "404": { $ref: "#/components/responses/Error" } }
+    delete:
+      operationId: removeHouseholdMember
+      summary: Remove a member (owners) or leave (your own id); also leaves the jungle
+      parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: uid, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "404": { $ref: "#/components/responses/Error" }, "409": { $ref: "#/components/responses/Error" } }
+  /v1/households/{id}/assignments:
+    put:
+      operationId: putAssignment
+      summary: Pin a plant to a member (null clears), owners only
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [plantId], properties: { plantId: { type: string, format: uuid }, userId: { type: [string, "null"], format: uuid } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "403": { $ref: "#/components/responses/Error" }, "404": { $ref: "#/components/responses/Error" } }
+  /v1/households/{id}/rotation:
+    get:
+      operationId: householdRotation
+      summary: Fair watering rotation for the next days
+      parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: days, in: query, schema: { type: integer, minimum: 1, maximum: 28, default: 7 } }]
+      responses:
+        "200":
+          description: Rotation
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [householdId, from, to, members, turns]
+                properties:
+                  householdId: { type: string, format: uuid }
+                  from: { type: string, format: date-time }
+                  to: { type: string, format: date-time }
+                  members:
+                    type: array
+                    items: { type: object, properties: { userId: { type: string, format: uuid }, displayName: { type: [string, "null"] }, role: { type: string }, waterings30d: { type: integer }, upcoming: { type: integer } } }
+                  turns:
+                    type: array
+                    items: { type: object, properties: { plantId: { type: string }, plant: { type: string }, due: { type: string, format: date-time }, overdue: { type: boolean }, userId: { type: string, format: uuid }, assigned: { type: boolean } } }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/plants/{id}/passport:
+    post:
+      operationId: createPassport
+      summary: Share a plant's public care card (same token on re-share; the card is refreshed)
+      parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: lang, in: query, schema: { type: string } }]
+      requestBody:
+        content: { application/json: { schema: { type: object, properties: { notes: { type: string, maxLength: 600, description: "owner's care notes shown on the card" } } } } }
+      responses:
+        "200": { description: Shared, content: { application/json: { schema: { type: object, required: [token, url, card], properties: { token: { type: string }, url: { type: string, description: "https page, QR-able" }, card: { $ref: "#/components/schemas/PassportCard" } } } } } }
+        "404": { $ref: "#/components/responses/Error" }
+        "422": { $ref: "#/components/responses/Error" }
+    delete:
+      operationId: deletePassport
+      summary: Stop sharing (the link stops working)
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "401": { $ref: "#/components/responses/Error" } }
+  /v1/passports/{token}:
+    get:
+      operationId: getPassport
+      summary: Public care card (no sign-in)
+      security: []
+      parameters: [{ name: token, in: path, required: true, schema: { type: string } }, { name: lang, in: query, schema: { type: string } }]
+      responses:
+        "200": { description: Card, content: { application/json: { schema: { $ref: "#/components/schemas/PassportCard" } } } }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/passports/{token}/import:
+    post:
+      operationId: importPassport
+      summary: Add the shared plant to your jungle (personal by default)
+      parameters: [{ name: token, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        content: { application/json: { schema: { type: object, properties: { jungleId: { type: string, format: uuid }, lang: { type: string } } } } }
+      responses:
+        "201": { description: Imported, content: { application/json: { schema: { type: object, required: [plantId, jungleId, version], properties: { plantId: { type: string, format: uuid }, jungleId: { type: string, format: uuid }, version: { type: integer, format: int64 } } } } } }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /p/{token}:
+    get:
+      operationId: passportPage
+      summary: Public passport page (HTML)
+      security: []
+      parameters: [{ name: token, in: path, required: true, schema: { type: string } }, { name: lang, in: query, schema: { type: string } }]
+      responses:
+        "200": { description: Page, content: { text/html: { schema: { type: string } } } }
+        "404": { description: Not shared }
+  /v1/plants/{id}/supplies:
+    get:
+      operationId: plantSupplies
+      summary: Soil mix, pot and fertiliser for this plant's species
+      parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: lang, in: query, schema: { type: string } }]
+      responses:
+        "200":
+          description: Recommendations
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [plantId, species, soil, pot, fertiliser, items]
+                properties:
+                  plantId: { type: string }
+                  species: { type: string }
+                  soil: { type: object, properties: { code: { type: string }, name: { type: string }, recipe: { type: string } } }
+                  pot: { type: object, properties: { material: { type: string, enum: [terracotta, plastic, orchid] }, name: { type: string }, diameterCm: { type: [integer, "null"] }, repotEveryYears: { type: number }, note: { type: string } } }
+                  fertiliser: { type: object, properties: { code: { type: string }, name: { type: string }, everyWeeks: { type: number }, note: { type: string } } }
+                  items:
+                    type: array
+                    items: { type: object, properties: { kind: { type: string, enum: [soil, pot, fertiliser] }, name: { type: string }, why: { type: string }, affiliate: { type: [string, "null"] }, have: { type: boolean } } }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/me/supplies:
+    get:
+      operationId: mySupplies
+      summary: Your supplies stock
+      responses:
+        "200": { description: Supplies, content: { application/json: { schema: { type: object, required: [supplies], properties: { supplies: { type: array, items: { $ref: "#/components/schemas/Supply" } } } } } } }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/me/supplies/{id}:
+    put:
+      operationId: putSupply
+      summary: Create or replace a supply (client-made uuid); at or under lowAt one push per drop
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [kind, name, qty], properties: { kind: { type: string, enum: [soil, fertiliser, pot, pesticide, other] }, name: { type: string, maxLength: 80 }, qty: { type: number, minimum: 0 }, unit: { type: string, maxLength: 16 }, lowAt: { type: [number, "null"], minimum: 0 } } } } }
+      responses:
+        "200": { description: Saved, content: { application/json: { schema: { $ref: "#/components/schemas/Supply" } } } }
+        "400": { $ref: "#/components/responses/Error" }
+    delete:
+      operationId: deleteSupply
+      summary: Remove a supply
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "401": { $ref: "#/components/responses/Error" } }
 components:
   securitySchemes:
     bearer: { type: http, scheme: bearer, bearerFormat: JWT }
@@ -340,6 +551,64 @@ components:
       content: { application/json: { schema: { type: object, required: [plus, entitlements], properties: { plus: { type: boolean }, entitlements: { type: array, items: { $ref: "#/components/schemas/Entitlement" } } } } } }
   schemas:
     Error: { type: object, required: [error], properties: { error: { type: string } } }
+    WeatherPattern:
+      type: object
+      required: [kind, from, to]
+      properties:
+        kind: { type: string, enum: [hot_dry_week, first_frost, heavy_rain] }
+        from: { type: string, format: date-time }
+        to: { type: string, format: date-time }
+    BatchItem:
+      type: object
+      required: [box, candidates, confident]
+      properties:
+        box: { type: object, description: fractions of the photo, properties: { x: { type: number }, y: { type: number }, w: { type: number }, h: { type: number } } }
+        candidates: { type: array, items: { type: object, properties: { id: { type: string }, scientific: { type: string }, name: { type: string }, score: { type: number } } } }
+        confident: { type: boolean }
+    Household:
+      type: object
+      required: [id, jungleId, name, role, members, assignments]
+      properties:
+        id: { type: string, format: uuid }
+        jungleId: { type: string, format: uuid }
+        name: { type: string }
+        role: { type: string, enum: [owner, carer] }
+        members: { type: array, items: { type: object, properties: { userId: { type: string, format: uuid }, displayName: { type: [string, "null"] }, role: { type: string, enum: [owner, carer] }, joinedAt: { type: string, format: date-time } } } }
+        assignments: { type: array, items: { type: object, properties: { plantId: { type: string, format: uuid }, userId: { type: string, format: uuid } } } }
+    PassportCard:
+      type: object
+      description: Species and care only; never names, photos, people or places
+      properties:
+        species: { type: object, properties: { id: { type: string }, scientific: { type: string }, name: { type: string }, family: { type: string } } }
+        light: { type: string, enum: [low, medium, bright, direct] }
+        waterEveryDays: { type: number }
+        waterStyle: { type: string }
+        humidityMin: { type: number }
+        tempMin: { type: number }
+        tempMax: { type: number }
+        soil: { type: object, properties: { code: { type: string }, name: { type: string }, recipe: { type: string } } }
+        substrate: { type: string }
+        potMaterial: { type: string }
+        potDiameterCm: { type: [number, "null"] }
+        potHasDrainage: { type: [boolean, "null"] }
+        outdoor: { type: boolean }
+        feedEveryWeeks: { type: number }
+        toxicCats: { type: boolean }
+        toxicDogs: { type: boolean }
+        tip: { type: string }
+        notes: { type: string }
+    Supply:
+      type: object
+      required: [id, kind, name, qty, unit, low, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        kind: { type: string, enum: [soil, fertiliser, pot, pesticide, other] }
+        name: { type: string }
+        qty: { type: number }
+        unit: { type: string }
+        lowAt: { type: [number, "null"] }
+        low: { type: boolean }
+        updatedAt: { type: string, format: date-time }
     Digest:
       type: object
       required: [week, due, watch, grew, photos]
@@ -349,6 +618,14 @@ components:
         watch: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "kind overdue_water | problem | quiet | repot" }
         grew: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "kind newLeaf | flower | measure | propagate, last 7 days" }
         photos: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "journal photos of the last 7 days (up to 12); media is the GET path" }
+        next:
+          type: object
+          required: [week, due, weather]
+          description: The week after this one
+          properties:
+            week: { type: string, format: date, description: Monday of next week }
+            due: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "projected water and feed, and open tasks" }
+            weather: { type: array, items: { $ref: "#/components/schemas/WeatherPattern" }, description: "multi-day patterns for your watched places, from now to the end of next week" }
     DigestItem:
       type: object
       required: [kind]

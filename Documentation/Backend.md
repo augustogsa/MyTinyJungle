@@ -16,7 +16,7 @@ One My Tiny Jungle account across iPhone, iPad, Android and web: same plants, sa
 
 - Direct hits on the origin fail during the TLS handshake; plain HTTP returns 403.
 - Source: `Server/` (`cmd/mtj-api`, `internal/api`, `internal/jwt`, `migrations`). Contract: `Server/openapi.yaml`.
-- Deploy: `Server/deploy/deploy.sh` (tests, static linux build, ship, provision, migrate, restart, health check). End-to-end: `Server/deploy/integration.sh` (53 checks, run as root on the VPS, cleans up after itself).
+- Deploy: `Server/deploy/deploy.sh` (tests, static linux build, ship, provision, migrate, restart, health check). End-to-end: `Server/deploy/integration.sh` (76 checks, run as root on the VPS, cleans up after itself).
 
 ## Security
 | Layer | What |
@@ -51,7 +51,7 @@ MTJ shares nothing with other apps on the VPS: own system users (`mtj-api` for t
 2. Put back `/opt/mtj/secrets` (api.env, owner.env, keys/, backup.key, pg-superuser) from `~/.config/mydigitalmagnets/mytinyjungle/` and the Cloudflare origin certificate.
 3. `Server/deploy/deploy.sh`: creates users, Postgres, units and timers, runs migrations.
 4. Restore data: `gpg -d --passphrase-file backup.key base-….tar.gpg | tar -x` into `/var/lib/mtj-db/postgres`, copy `wal/` decrypted into the archive, set `restore_command` and `recovery_target_time`, touch `recovery.signal`, start `mtj-postgres`. Or logical: `gpg -d … db-….dump.gpg | mtj-psql pg_restore -d mytinyjungle`. Photos: decrypt and untar `media-….tar.gpg` into `/var/lib/mtj/media`.
-5. `Server/deploy/integration.sh` (53 checks), then point Cloudflare DNS at the new host.
+5. `Server/deploy/integration.sh` (76 checks), then point Cloudflare DNS at the new host.
 Keep copies of the latest `/var/backups/mtj` on the Mac with `rsync -a mdm-ovh:/var/backups/mtj/ ~/Backups/mtj/` when the owner wants a second place.
 
 ## App Attest
@@ -104,6 +104,19 @@ What the app knows that isn't the user's lives in `Content/` and is served by th
 - Members: the owner removes someone with `DELETE /v1/jungles/{id}/members/{uid}` (access ends at once, photos included); a member leaves the same way with their own id; the owner ends the jungle with `DELETE /v1/jungles/{id}` (records and photos erased). A device that finds itself no longer a member drops the local copy.
 - Member ids are server user ids, so iPhone and Android share one household. Beta households made on iCloud are moved up by the owner on first sync; members join again with a new link.
 
+- Households (`households.go`, tables `households`, `household_members`, `household_invites`, `household_assignments`, RLS): a household sits on one jungle its creator owns (or a new shared jungle). Roles owner / carer. `POST /v1/households/{id}/invites` codes work at the same `https://mytinyjungle.com/join/<code>` link (`/v1/invites/{code}/redeem` falls back to household invites and returns `householdId`) or `POST /v1/household-invites/{code}/redeem`; joining also joins the jungle so plants sync. Owners pin plants (`PUT .../assignments`); `GET .../rotation?days=7` lists every watering due and who does it: pinned plants go to their carer, the rest to whoever has the fewest waterings logged in 30 days plus turns already given. Leaving (`DELETE .../members/{uid}`, `mtj_household_drop`) also drops assignments and the jungle seat; the creator can't leave, only end it (`DELETE /v1/households/{id}`, jungle stays).
+
+## Plant passport
+- `POST /v1/plants/{id}/passport {notes?}` → `{token, url: https://api.mytinyjungle.com/p/<token>, card}` (22-char random token, one per plant, re-share refreshes the card). The card holds species id, watering rhythm, substrate, pot, outdoor flag and the owner's care notes; the public view adds species facts in the reader's language. Never the plant's name, photos, people or places.
+- Public: `GET /v1/passports/{token}` JSON, `GET /p/{token}` page (no tracking, noindex, button `mytinyjungle://passport/<token>`). `POST /v1/passports/{token}/import {jungleId?}` adds the plant to the caller's jungle (personal by default). `DELETE /v1/plants/{id}/passport` stops sharing. Views and imports are counted.
+
+## Supplies
+- `GET /v1/plants/{id}/supplies?lang=` soil mix, pot (terracotta for dry/succulent, clear for orchids, else plastic/glazed; next size = current + 3 cm) and fertiliser from the species, `items[]` with `affiliate: null` (no partner shops yet) and `have` from stock. 6 languages.
+- Stock: `GET /v1/me/supplies`, `PUT /v1/me/supplies/{id} {kind, name, qty, unit?, lowAt?}`, `DELETE`. `suppliesLoop` (hourly) sends one push per drop to or under `lowAt` (`kind: supplies`, `url: mytinyjungle://supplies`); refilling above re-arms it.
+
+## North-star metrics
+- `GET /v1/admin/metrics` and the dashboard's North star tab: plant survival (plants older than 30 days not archived as `passed`, overall and per-user distribution), care adherence (per plant over 30 days, waterings logged ÷ expected, capped at 1, plants older than 14 days, per-user distribution), identify correction rate (30 days of identify feedback), diagnosis helpful rate (library votes).
+
 ## Push
 
 - `PUT /v1/me/push-token` per device. After every accepted house write the server wakes the other members' devices: iOS gets a silent `content-available` push (collapse id per jungle) and the app syncs and writes its own local notification in the user's language; Android gets an FCM data message `{jungle}`. Pushes carry no names or plant data.
@@ -116,7 +129,7 @@ What the app knows that isn't the user's lives in `Content/` and is served by th
 
 ## Data export
 
-- `GET /v1/me/export`: account, sign-in providers, devices, entitlements, jungles and roles, every record you wrote or own, and the photo list with paths. Settings > Account > Download my data saves it as JSON through the share sheet. Account deletion was already there (`DELETE /v1/me`).
+- `GET /v1/me/export`: account, sign-in providers, devices, entitlements, jungles and roles, households, supplies, plant passports, every record you wrote or own, and the photo list with paths. Settings > Account > Download my data saves it as JSON through the share sheet. Account deletion was already there (`DELETE /v1/me`).
 
 ## Brain (plant intelligence, mostly internal)
 Cheapest first; paid models only when our own can't answer.
@@ -128,12 +141,16 @@ Cheapest first; paid models only when our own can't answer.
 - `POST /v1/brain/ask` care Q&A (problems, topics, glossary, soils, scenarios), free, never paid.
 - `POST /v1/brain/identify` names a plant with BioCLIP (MIT, `mtj-id` on 127.0.0.1:8092, rootless podman as `mtj`, `deploy/mtj-id-setup.sh`), zero-shot over our 600+ species with a houseplant prior; below 0.35 it asks Gemini (free) then Claude when keys are set. Returns top 3 + `confident`.
 - `POST /v1/brain/care-plan` watering rhythm, feeding, light, repotting, toxicity and warnings for the plant's real conditions.
-- `PUT /v1/me/weather-watch` frost/heatwave alert push per ~10 km cell, once a day max.
+- `PUT /v1/me/weather-watch` frost/heatwave alert push per ~10 km cell, once a day max. The same loop reads the 16-day forecast (+7 past days) for multi-day patterns (`weatherpatterns.go`): `hot_dry_week` (≥ 4 of the next 7 days at ≥ 30 °C, < 5 mm rain), `first_frost` (≤ 0 °C within 5 days after a frost-free week), `heavy_rain` (≥ 3 days in a row ≥ 10 mm). One push per device per pattern per ISO week (`weather_pattern_sent`, kept 5 weeks), 6 languages, `kind: weather_<pattern>`, `url: mytinyjungle://digest`. Forecasts cached 3 h per cell.
+- `POST /v1/brain/identify-batch {photo, lang}` one shelf photo → `{items:[{box:{x,y,w,h} fractions, candidates[], confident}], detector: model|grid, charged, truncated}`. Boxes from the local vision model (photo sent at ≤ 756 px, `bbox_2d` pixels, fractions or 0–1000 accepted, NMS, max 8); no boxes → 3×2 / 2×3 / 2×2 grid, cells under 0.15 dropped. Each crop goes to BioCLIP (internal only, never paid). Each crop counts against the identify quota (`chargeQuota`); over the limit the rest is skipped (`truncated`).
+- `POST /v1/brain/identify/feedback {suggested, chosen?}` daily counts in `identify_feedback` (confirmed / corrected / rejected), no ids.
 - Gaps (`brain_gaps`): daily counts of knowledge words we couldn't answer, nothing personal; `GET /v1/admin/brain` shows them with library stats so content grows where owners ask.
 - Think time is capped at 90 s (Apache 100 s, Cloudflare 100 s).
 
 ## Weekly jungle digest
 - `GET /v1/me/digest` → `{week, due[], watch[], grew[], photos[]}` from synced records of every jungle you can reach (plants, care events of the last 120 days, care tasks). due: water (learned dry days, else species `dryMax`, else 7), feed (species `feedWeeks` after the last feeding), open tasks, next 7 days and overdue. watch: very overdue water, health/treat logged this week, no care for 30 days, repot due. grew: new leaf, flower, measure, propagate this week. photos: journal photos of the week with their `/v1/media` path (up to 12).
+- `next`: the week after this one `{week, due[], weather[]}`: projected waterings (every one in the week) and feedings, open tasks, and the multi-day weather patterns for the user's watched cells from now to the end of next week.
+- Moisture calibration: care events may carry `moisture {method: meter|finger, value}` (meter 1–10: 1–3 dry, 4–7 slightly moist, 8–10 wet; finger 0 dry / 1 slightly moist / 2 wet; validated on sync push, invalid → `invalid`). A soilCheck's `soil` counts as a finger reading. The newest reading after the last watering moves the server's due date (`schedule.go`, used by digest, rotation and metrics): dry → due at the reading, slightly moist → reading + ¼ interval, wet → no earlier than reading + ½ interval.
 - `PUT /v1/me/digest {on, deviceId, lang?}` per-device opt-out, default on (`devices.digest_on`, `digest_lang`).
 - `digestLoop` (in-process, hourly): Sunday from 17:00 UTC, each opted-in device with a push token gets one visible push a week (`digest_sent_at`), counts only, in en, pt-BR, es, fr, de or ja (digest_lang, else weather_lang, else account locale). APNs payload and FCM data carry `kind: digest`, `url: mytinyjungle://digest`. Empty digests send nothing.
 

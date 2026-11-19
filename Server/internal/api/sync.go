@@ -112,7 +112,8 @@ func (s *Server) push(w http.ResponseWriter, r *http.Request) {
 			res := pushResult{ID: ch.ID, Entity: ch.Entity}
 			switch {
 			case !isUUID(ch.ID) || !slices.Contains(entities, ch.Entity) || len(ch.Data) == 0 || len(ch.Data) > 256<<10 ||
-				ch.ClientUpdatedAt.IsZero() || ch.ClientUpdatedAt.After(future) || ch.Data[0] != '{':
+				ch.ClientUpdatedAt.IsZero() || ch.ClientUpdatedAt.After(future) || ch.Data[0] != '{' ||
+				(ch.Entity == "care_event" && !validMoisture(ch.Data)):
 				res.Status = "invalid"
 			case !slices.Contains(mine, ch.JungleID):
 				res.Status = "forbidden"

@@ -24,10 +24,11 @@ var dailyQuota = map[string]struct {
 	kind string
 	n    int
 }{
-	"/v1/brain/scene":    {"scene", 60},
-	"/v1/brain/identify": {"identify", 60},
-	"/v1/brain/ask":      {"ask", 300},
-	"/v1/diagnose":       {"diagnose", 20},
+	"/v1/brain/scene":          {"scene", 60},
+	"/v1/brain/identify":       {"identify", 60},
+	"/v1/brain/identify-batch": {"identify", 60}, // plus one per extra crop (chargeQuota)
+	"/v1/brain/ask":            {"ask", 300},
+	"/v1/diagnose":             {"diagnose", 20},
 }
 
 var (

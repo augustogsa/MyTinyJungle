@@ -16,7 +16,7 @@ pre{background:var(--card);border:1px solid var(--line);border-radius:10px;paddi
 nav{display:flex;gap:16px;margin-bottom:16px}nav a{color:var(--acc);text-decoration:none}
 </style></head><body><main>
 <h1>My Tiny Jungle</h1>
-<nav><a href="#">Overview</a><a href="#store">Store events</a></nav>
+<nav><a href="#">Overview</a><a href="#metrics">North star</a><a href="#store">Store events</a></nav>
 <div id="view"></div></main>
 <script>
 const $=s=>document.querySelector(s);
@@ -39,6 +39,17 @@ async function users(){
 async function user(id){const u=await api('/users/'+encodeURIComponent(id));$('#view').innerHTML=`<h2>User</h2><pre>${esc(JSON.stringify(u,null,2))}</pre>`}
 async function store(){const {events:e}=await api('/store-events');
   $('#view').innerHTML=`<div class="wrap"><table><thead><tr><th>#</th><th>Store</th><th>Type</th><th>Verified</th><th>Received</th></tr></thead><tbody>${e.map(x=>`<tr><td>${x.id}</td><td>${esc(x.store)}</td><td>${esc(x.notification_type)}</td><td>${x.verified?'Yes':'No'}</td><td>${d(x.received_at)}</td></tr>`).join('')}</tbody></table></div>`}
-function route(){const h=location.hash.slice(1);(h.startsWith('user/')?user(h.slice(5)):h==='store'?store():overview()).catch(e=>$('#view').textContent='Error '+e.message)}
+const pct=v=>v==null?'—':Math.round(v*1000)/10+'%';
+const distRow=(l,x)=>`<tr><td>${l}</td><td>${x.users}</td><td>${pct(x.mean)}</td><td>${pct(x.p25)}</td><td>${pct(x.median)}</td><td>${pct(x.p75)}</td></tr>`;
+async function metrics(){const m=await api('/metrics');
+  $('#view').innerHTML=`<div class="grid"><div class="k"><b>${pct(m.survival.overall)}</b><span>Plant survival (30d+ plants)</span></div>
+  <div class="k"><b>${pct(m.adherence.perUser.mean)}</b><span>Care adherence, mean per user</span></div>
+  <div class="k"><b>${pct(m.identify.correctionRate)}</b><span>Identify correction rate, 30d</span></div>
+  <div class="k"><b>${pct(m.diagnosis.helpfulRate)}</b><span>Diagnoses rated helpful</span></div></div>
+  <h2>Per user</h2><div class="wrap"><table><thead><tr><th>Metric</th><th>Users</th><th>Mean</th><th>P25</th><th>Median</th><th>P75</th></tr></thead><tbody>
+  ${distRow('Survival',m.survival.perUser)}${distRow('Adherence',m.adherence.perUser)}</tbody></table></div>
+  <h2>Counts</h2><div class="grid"><div class="k"><b>${m.survival.plants}</b><span>Plants 30d+</span></div><div class="k"><b>${m.survival.passed}</b><span>Passed away</span></div>
+  <div class="k"><b>${m.identify.confirmed}</b><span>IDs confirmed</span></div><div class="k"><b>${m.identify.corrected}</b><span>IDs corrected</span></div><div class="k"><b>${m.identify.rejected}</b><span>IDs rejected</span></div></div>`}
+function route(){const h=location.hash.slice(1);(h.startsWith('user/')?user(h.slice(5)):h==='store'?store():h==='metrics'?metrics():overview()).catch(e=>$('#view').textContent='Error '+e.message)}
 addEventListener('hashchange',route);route();
 </script></body></html>

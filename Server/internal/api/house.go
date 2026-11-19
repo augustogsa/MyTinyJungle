@@ -95,6 +95,9 @@ func (s *Server) export(w http.ResponseWriter, r *http.Request) {
 			{"entitlements", `select store, product_id, status, expires_at, updated_at from entitlements where user_id = $1`},
 			{"jungles", `select j.id, j.name, j.is_personal, m.role, m.until, m.joined_at from jungles j join jungle_members m on m.jungle_id = j.id where m.user_id = $1`},
 			{"records", `select jungle_id, entity, id, data, updated_at from records where not deleted and (updated_by = $1 or jungle_id in (select id from jungles where owner_id = $1)) order by jungle_id, entity, updated_at`},
+			{"households", `select h.id, h.name, h.jungle_id, m.role, m.joined_at from households h join household_members m on m.household_id = h.id where m.user_id = $1`},
+			{"supplies", `select id, kind, name, qty, unit, low_at, updated_at from supplies where user_id = $1`},
+			{"passports", `select token, plant_id, card, views, imports, created_at from plant_passports where user_id = $1`},
 			{"photos", `select jungle_id, id, content_type, bytes, created_at, '/v1/media/' || jungle_id || '/' || id as path from media where created_by = $1 or jungle_id in (select id from jungles where owner_id = $1)`},
 		} {
 			var v json.RawMessage

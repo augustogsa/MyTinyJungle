@@ -152,6 +152,16 @@ func (s *Server) redeemInvite(w http.ResponseWriter, r *http.Request) {
 	})
 	var pe *pgconn.PgError
 	if errors.As(err, &pe) && pe.Message == "invite_invalid" {
+		// The same join link carries household invites.
+		hid, hj, ok, herr := s.redeemHouseholdCode(ctx, c.Sub, r.PathValue("code"))
+		if herr != nil {
+			s.fail(w, r, herr)
+			return
+		}
+		if ok {
+			writeJSON(w, http.StatusOK, map[string]string{"jungleId": hj, "householdId": hid})
+			return
+		}
 		writeErr(w, http.StatusNotFound, "invite_invalid")
 		return
 	}

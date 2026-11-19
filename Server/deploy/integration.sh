@@ -107,6 +107,45 @@ psqlq "insert into media (jungle_id, id, content_type, bytes, created_at) values
 install -o mtj-api -m 600 /dev/null /var/lib/mtj/media/$JA/$O
 systemctl start mtj-purge.service
 [[ $(psqlq "select count(*) from media where id='$O'") == 0 && ! -e /var/lib/mtj/media/$JA/$O && -e /var/lib/mtj/media/$JA/$M ]] && ok "unattached photo older than 30 days purged, new one kept"
+# Moisture calibration, next week in the digest, households, plant passport, supplies, batch identify, metrics.
+UB=$(c $B http://x/v1/me | python3 -c 'import json,sys;print(json.load(sys.stdin)["id"])')
+jq1() { python3 -c "import json,sys;d=json.load(sys.stdin);print($1)"; }
+pushone() { c $1 http://x/v1/sync/push -d "{\"changes\":[{\"jungleId\":\"$2\",\"entity\":\"$3\",\"id\":\"$4\",\"data\":$5,\"baseVersion\":null,\"clientUpdatedAt\":\"$now\"}]}" | jq1 'd["results"][0]["status"]'; }
+[[ $(pushone $A $JA care_event 66666666-6666-4666-8666-$(openssl rand -hex 6) "{\"kind\":\"soilCheck\",\"date\":$ep,\"plantID\":\"$P\",\"moisture\":{\"method\":\"finger\",\"value\":5}}") == invalid ]] && ok "bad moisture reading refused"
+[[ $(pushone $A $JA care_event 66666666-6666-4666-8666-$(openssl rand -hex 6) "{\"kind\":\"soilCheck\",\"date\":$ep,\"plantID\":\"$P\",\"moisture\":{\"method\":\"meter\",\"value\":2}}") == ok ]] && \
+  c $A http://x/v1/me/digest | python3 -c 'import json,sys;d=json.load(sys.stdin);n=d["next"];assert n["week"]>d["week"] and isinstance(n["weather"],list) and any(i["kind"]=="water" and i["plantId"]==sys.argv[1] and i["date"][:10]<=__import__("datetime").datetime.utcnow().strftime("%Y-%m-%d") for i in d["due"]),d' $P && ok "dry meter reading makes water due now; digest has next week"
+H=$(c $A http://x/v1/households -d "{\"name\":\"Flat\",\"jungleId\":\"$JA\"}" | jq1 'd["id"]') && ok "household created on own jungle"
+[[ $(c $B -o /dev/null -w '%{http_code}' http://x/v1/households -d "{\"name\":\"X\",\"jungleId\":\"$JA\"}") == 403 ]] && ok "household only on a jungle you own"
+hc=$(c $A http://x/v1/households/$H/invites -d '{}' | jq1 'd["code"]')
+[[ $(c $B -X POST http://x/v1/invites/$hc/redeem | jq1 'd.get("householdId","")') == "$H" ]] && ok "carer joins household with the jungle join link"
+[[ $(c $B "http://x/v1/sync/pull?since=0" | jq1 'len([x for x in d["changes"] if x["entity"]=="plant"])') -ge 1 ]] && ok "carer syncs the household plants"
+[[ $(c $B http://x/v1/households | jq1 'd["households"][0]["role"]+str(len(d["households"][0]["members"]))') == carer2 ]] && ok "household members and roles"
+[[ $(c $B -o /dev/null -w '%{http_code}' -X PUT http://x/v1/households/$H/assignments -d "{\"plantId\":\"$P\",\"userId\":\"$UB\"}") == 403 ]] && ok "carer cannot assign plants"
+[[ $(c $A -o /dev/null -w '%{http_code}' -X PUT http://x/v1/households/$H/assignments -d "{\"plantId\":\"$P\",\"userId\":\"$UB\"}") == 200 ]] && \
+  c $A "http://x/v1/households/$H/rotation?days=14" | python3 -c 'import json,sys;d=json.load(sys.stdin);t=[x for x in d["turns"] if x["plantId"]==sys.argv[1]];assert t and all(x["userId"]==sys.argv[2] and x["assigned"] for x in t) and len(d["members"])==2,d' $P $UB && ok "rotation gives the assigned plant to its carer"
+[[ $(c $B -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/households/$H/members/$UB) == 200 && $(c $B http://x/v1/households | jq1 'len(d["households"])') == 0 && $(c $B "http://x/v1/sync/pull?since=0" | jq1 'len(d["changes"])') == 0 ]] && ok "carer leaves household and its jungle"
+P2=77777777-7777-4777-8777-$(openssl rand -hex 6)
+pushone $A $JA plant $P2 "{\"name\":\"Bob the Monstera\",\"speciesID\":\"monstera-deliciosa\",\"learnedDryDays\":9,\"potDiameterCm\":17,\"potMaterial\":\"plastic\",\"createdAt\":$ep}" >/dev/null
+pp=$(c $A http://x/v1/plants/$P2/passport -d '{"notes":"Likes a moss pole"}')
+TK=$(echo "$pp" | jq1 'd["token"]'); echo "$pp" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["url"].startswith("https://") and d["url"].endswith(d["token"]),d' && ok "plant passport link"
+pub=$(curl -sS --unix-socket $S "http://x/v1/passports/$TK?lang=pt-BR")
+echo "$pub" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["species"]["id"]=="monstera-deliciosa" and d["waterEveryDays"]==9 and d["notes"]=="Likes a moss pole",d' && ! grep -q "Bob" <<<"$pub" && ok "public card has care, no personal name"
+[[ $(curl -sS --unix-socket $S -o /tmp/itest.p -w '%{http_code}' http://x/p/$TK) == 200 ]] && grep -q "Monstera" /tmp/itest.p && ! grep -q "Bob" /tmp/itest.p && ok "public passport page"; rm -f /tmp/itest.p
+ip=$(c $B http://x/v1/passports/$TK/import -d '{"lang":"en"}' | jq1 'd["plantId"]')
+[[ $(c $B "http://x/v1/sync/pull?since=0" | python3 -c 'import json,sys;print([x["data"]["speciesID"] for x in json.load(sys.stdin)["changes"] if x["id"]==sys.argv[1]][0])' $ip) == monstera-deliciosa ]] && ok "passport imported into another account"
+c $A -X DELETE http://x/v1/plants/$P2/passport >/dev/null; [[ $(curl -sS --unix-socket $S -o /dev/null -w '%{http_code}' http://x/v1/passports/$TK) == 404 ]] && ok "unshared passport is gone"
+c $A "http://x/v1/plants/$P2/supplies?lang=pt-BR" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["soil"]["code"]=="aroid" and d["pot"]["diameterCm"]==20 and len(d["items"])==3 and all(i["affiliate"] is None for i in d["items"]),d' && ok "supplies for the species"
+SU=88888888-8888-4888-8888-$(openssl rand -hex 6)
+[[ $(c $A -X PUT http://x/v1/me/supplies/$SU -d '{"kind":"soil","name":"Aroid mix","qty":1,"unit":"L","lowAt":2}' | jq1 'd["low"]') == True && $(c $A http://x/v1/me/supplies | jq1 'len(d["supplies"])') == 1 ]] && ok "supply stock with low mark"
+[[ $(c $B -o /dev/null -w '%{http_code}' -X PUT http://x/v1/me/supplies/$SU -d '{"kind":"soil","name":"Mine","qty":5}') != 200 && $(c $A http://x/v1/me/supplies | jq1 'd["supplies"][0]["name"]') == "Aroid mix" ]] && ok "supplies are private"
+python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"lang":"en"}))' /tmp/idcheck/monstera-deliciosa.jpg > /tmp/mtj-id.json
+c $A -m 100 http://x/v1/brain/identify-batch -d @/tmp/mtj-id.json | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["items"] and d["charged"]>=1 and any("monstera-deliciosa" in [c["id"] for c in i["candidates"]] for i in d["items"]),d' && ok "batch identify finds the plant"
+psqlq "update api_quota set n = 59 where subject = 'u:$UA' and kind = 'identify' and day = current_date" >/dev/null
+[[ $(c $A -m 100 http://x/v1/brain/identify-batch -d @/tmp/mtj-id.json | jq1 'd["charged"]') == 1 ]] && ok "batch identify stops at the daily limit"; rm -f /tmp/mtj-id.json
+psqlq "delete from api_quota where subject in ('u:$UA', 'd:$did')" >/dev/null
+[[ $(c $A http://x/v1/brain/identify/feedback -d '{"suggested":"monstera-deliciosa","chosen":"philodendron-hederaceum"}' | jq1 'd["outcome"]') == corrected ]] && ok "identify correction counted"
+st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/metrics); [[ $st == 403 ]] && ok "admin metrics refuses without Access"
+[[ $(psqlq "select count(*) from information_schema.tables where table_name='weather_pattern_sent'") == 1 ]] && ok "weather pattern dedupe table"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/limits); [[ $st == 403 ]] && ok "admin limits refuses without Access"
 st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/me); [[ $st == 200 ]] && ok "account deletion"

@@ -82,6 +82,28 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("POST /v1/brain/ask", s.user(s.brainAsk))
 	m.Handle("POST /v1/brain/identify", s.user(s.brainIdentify))
 	m.Handle("POST /v1/brain/care-plan", s.user(s.brainCarePlan))
+	m.Handle("POST /v1/brain/identify-batch", s.user(s.brainIdentifyBatch))
+	m.Handle("POST /v1/brain/identify/feedback", s.user(s.identifyFeedback))
+
+	m.Handle("GET /v1/households", s.user(s.households))
+	m.Handle("POST /v1/households", s.user(s.createHousehold))
+	m.Handle("DELETE /v1/households/{id}", s.user(s.deleteHousehold))
+	m.Handle("POST /v1/households/{id}/invites", s.user(s.createHouseholdInvite))
+	m.Handle("POST /v1/household-invites/{code}/redeem", s.user(s.redeemHouseholdInvite))
+	m.Handle("PATCH /v1/households/{id}/members/{uid}", s.user(s.updateHouseholdMember))
+	m.Handle("DELETE /v1/households/{id}/members/{uid}", s.user(s.removeHouseholdMember))
+	m.Handle("PUT /v1/households/{id}/assignments", s.user(s.putAssignment))
+	m.Handle("GET /v1/households/{id}/rotation", s.user(s.householdRotation))
+
+	m.Handle("POST /v1/plants/{id}/passport", s.user(s.createPassport))
+	m.Handle("DELETE /v1/plants/{id}/passport", s.user(s.deletePassport))
+	m.Handle("GET /v1/passports/{token}", s.ipLimit(rateAuthIP*3, s.getPassport))
+	m.Handle("POST /v1/passports/{token}/import", s.user(s.importPassport))
+	m.Handle("GET /p/{token}", s.ipLimit(rateAuthIP*3, s.passportHTML))
+	m.Handle("GET /v1/plants/{id}/supplies", s.user(s.plantSupplies))
+	m.Handle("GET /v1/me/supplies", s.user(s.mySupplies))
+	m.Handle("PUT /v1/me/supplies/{id}", s.user(s.putSupply))
+	m.Handle("DELETE /v1/me/supplies/{id}", s.user(s.deleteSupply))
 	m.Handle("PUT /v1/me/weather-watch", s.user(s.weatherWatch))
 	m.Handle("GET /v1/me/digest", s.user(s.getDigest))
 	m.Handle("PUT /v1/me/digest", s.user(s.putDigest))
@@ -122,6 +144,7 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/admin/events", s.admin(s.adminEvents))
 	m.Handle("GET /v1/admin/brain", s.admin(s.adminBrain))
 	m.Handle("GET /v1/admin/limits", s.admin(s.adminLimits))
+	m.Handle("GET /v1/admin/metrics", s.admin(s.adminMetrics))
 
 	return s.wrap(m)
 }
@@ -266,4 +289,8 @@ func (l *Limiter) Allow(key string, perMin int) bool {
 }
 
 // StartJobs runs the background work of a serving process (weather watch).
-func (s *Server) StartJobs(ctx context.Context) { go s.weatherLoop(ctx); go s.digestLoop(ctx) }
+func (s *Server) StartJobs(ctx context.Context) {
+	go s.weatherLoop(ctx)
+	go s.digestLoop(ctx)
+	go s.suppliesLoop(ctx)
+}
