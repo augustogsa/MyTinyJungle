@@ -1,0 +1,29 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+concurrency: { group: ci-${{ github.ref }}, cancel-in-progress: true }
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: Server } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version-file: Server/go.mod, cache-dependency-path: Server/go.sum }
+      - run: go vet ./...
+      - run: go test -race ./...
+      - run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -o /tmp/mtj-api ./cmd/mtj-api
+      - name: OpenAPI is valid
+        run: npx --yes @redocly/cli@1.25.11 lint --format=summary openapi.yaml
+      - name: Shell scripts parse
+        run: for f in deploy/*.sh deploy/mtj-psql; do bash -n "$f"; done
+  ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build (simulator, unsigned)
+        run: |
+          xcodebuild -project MyTinyJungle.xcodeproj -scheme MyTinyJungle \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/ci \
+            CODE_SIGNING_ALLOWED=NO build | tail -20
