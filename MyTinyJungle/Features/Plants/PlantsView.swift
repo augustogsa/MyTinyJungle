@@ -8,6 +8,7 @@ struct PlantsView: View {
     @State private var adding = false
     @State private var paywall = false
     @State private var query = ""
+    @State private var path: [UUID] = []
     enum Filter: String, CaseIterable {
         case all = "All", needs = "Needs you", indoors = "Indoors", outdoors = "Outdoors"
         var label: String {
@@ -22,7 +23,6 @@ struct PlantsView: View {
     @State private var filter: Filter = .all
     @State private var searching = false
     @FocusState private var searchFocused: Bool
-    private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
 
     private var shown: [Plant] {
         plants.filter { p in
@@ -37,7 +37,7 @@ struct PlantsView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     TabHeader(title: Grammar.pt(String(localized: "My plants", comment: "Tab header title; max 16 chars")), subtitle: headerLine, dot: plants.isEmpty ? nil : (needCount == 0 ? Jungle.leaf : Jungle.terracotta)) {
@@ -81,14 +81,16 @@ struct PlantsView: View {
                                 }
                             }
                         }
-                        .scrollClipDisabled()
+                        .pageRail()
                         if shown.isEmpty {
                             Text(query.isEmpty ? "No plants here." : "No plant called \"\(query)\".").foregroundStyle(Jungle.subtle).frame(maxWidth: .infinity).padding(.top, 30)
                         }
+                        WithPageSpread { spread in
+                        let columns = spread.gridColumns(minimum: 150)
                         // Ads never leave holes: a tile only when it completes a row, else a full-width card between rows.
                         let perRow = columns.count
                         let tileAd = AdPool.shared.ad(for: "plants-grid") != nil && shown.count % perRow != 0 && shown.count > perRow
-                        let rowAd = !tileAd && AdPool.shared.ad(for: "plants-row") != nil && shown.count > perRow * 2
+                        let rowAd = spread.book == nil && !tileAd && AdPool.shared.ad(for: "plants-row") != nil && shown.count > perRow * 2
                         let split = rowAd ? perRow * 2 : shown.count
                         LazyVGrid(columns: columns, spacing: 12) {
                             ForEach(shown[0..<(tileAd ? shown.count : split)]) { p in
@@ -104,10 +106,12 @@ struct PlantsView: View {
                                 }
                             }
                         }
+                        }
                     }
                 }
                 .padding(16)
             }
+            .measuresPageSpread()
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: UUID.self) { id in
@@ -115,6 +119,13 @@ struct PlantsView: View {
             }
             .sheet(isPresented: $adding) { AddPlantFlow() }
             .sheet(isPresented: $paywall) { PaywallView(reason: .morePlants) }
+            .task {
+                // Store screenshots: `-demoOpen plant` opens the first plant's page.
+                guard DemoSeeder.demoOpen == "plant" else { return }
+                for _ in 0..<60 where plants.count < 8 { try? await Task.sleep(for: .seconds(0.5)) }
+                try? await Task.sleep(for: .seconds(1.5))
+                if let p = plants.first(where: { $0.photo != nil }) { path = [p.id] }
+            }
         }
     }
 

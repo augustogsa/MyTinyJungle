@@ -28,14 +28,22 @@ struct ScanView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     TabHeader(title: Grammar.pt(String(localized: "Scan", comment: "Scan tab title")), subtitle: Grammar.pt(String(localized: "Labels, new plants and sick leaves", comment: "Scan tab subtitle"))) { EmptyView() }
+                    WithPageSpread { spread in
+                    TwoPage(spacing: 24) {
                     hero
                     modes
+                    } trailing: {
                     if !shopping.isEmpty { shoppingList }
                     if shelf.count + shopping.count >= 2 { NativeAdCard(slot: "scan") }
                     shelfSection
+                    // Room to spare (Duo, iPad): what each plant wants, so a label can be judged at a glance.
+                    if spread.isWide && !plants.isEmpty { JungleDietCard(plants: plants) }
+                    }
+                    }
                 }
                 .padding(.horizontal, 16).padding(.bottom, 32)
             }
+            .measuresPageSpread()
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
             .task { if DemoSeeder.wantsScan, product == nil { try? await Task.sleep(for: .seconds(1)); product = ProductAnalyzer.analyze(text: DemoSeeder.sampleLabel) } }
@@ -203,7 +211,7 @@ struct ScanView: View {
                     }
                     .padding(.vertical, 2)
                 }
-                .scrollClipDisabled()
+                .pageRail()
             }
         }
     }
@@ -408,7 +416,7 @@ private struct ProductResultView: View {
                     .blur(radius: 1.5)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(Grammar.pt(String(localized: "See which of your \(plants.count) plants this suits", comment: "Scan result Plus upsell; plural"))).font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.text)
-                        Text("With My Tiny Jungle Plus").font(.caption).foregroundStyle(Jungle.subtle)
+                        Text("With Greenhouse or Jungle").font(.caption).foregroundStyle(Jungle.subtle)
                     }
                     .padding(.leading, 14)
                     Spacer()
@@ -492,6 +500,37 @@ struct LiveLabelScanner: UIViewControllerRepresentable {
                 default: break
                 }
             }
+        }
+    }
+}
+
+/// Soil and food each plant wants, for a page with room beside the scanner.
+private struct JungleDietCard: View {
+    let plants: [Plant]
+    var body: some View {
+        let known = plants.filter { $0.species != nil }
+        VStack(alignment: .leading, spacing: 10) {
+            Text(Grammar.pt(String(localized: "What your jungle eats", comment: "Scan section title: soil and feed each plant wants"))).font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+            VStack(spacing: 0) {
+                ForEach(Array(known.enumerated()), id: \.element.id) { i, p in
+                    if i > 0 { Divider().padding(.leading, 60) }
+                    HStack(spacing: 12) {
+                        PlantAvatar(data: p.photo, size: 44)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(p.name).font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+                            if let s = p.species {
+                                let line = [s.soil?.short, s.feed == "none" ? Grammar.pt(String(localized: "no feed", comment: "Scan diet row: plant must never be fertilized")) : s.fertilizer?.name].compactMap { $0 }.joined(separator: " · ")
+                                Text(line.prefix(1).uppercased() + line.dropFirst())
+                                    .font(.footnote).foregroundStyle(Jungle.subtle).lineLimit(2)
+                            }
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.vertical, 10)
+                    .accessibilityElement(children: .combine)
+                }
+            }
+            .padding(.horizontal, 14).jungleCard()
         }
     }
 }

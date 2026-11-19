@@ -12,10 +12,18 @@ struct PlantChatView: View {
     private var items: [ThreadItem] { ThreadItem.merge(messages, plant.events ?? []) }
 
     var body: some View {
+        SideBySide {
+            VStack(spacing: 18) {
+                PlantAvatar(data: plant.photo, size: 168)
+                    .shadow(color: .black.opacity(0.08), radius: 16, y: 6)
+                statusCard
+            }
+            .frame(maxWidth: 380).padding(.horizontal, 28)
+        } main: { paged in
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    statusCard
+                    if !paged { statusCard }
                     ForEach(items) { item in
                         switch item {
                         case .message(let m): MessageBubble(message: m, showAvatar: false) { send($0) }.id(m.id)
@@ -38,6 +46,7 @@ struct PlantChatView: View {
             }) { text, photo in
                 JungleBrain.handle(text, photo: photo, plant: plant, plants: plants, in: ctx)
             }
+        }
         }
         .jungleBackdrop()
         .navigationTitle(plant.name)

@@ -8,6 +8,12 @@ struct CareCalendarView: View {
     let tasks: [CareTask]
     /// Day picked in the Care tab's week strip; drives this calendar.
     var day: Date? = nil
+    /// False on a wide page, where the agenda beside the calendar already shows the picked day.
+    var showsDetail = true
+    /// False when only the picked day's detail is wanted (the wide Care page's trailing page).
+    var showsGrid = true
+    /// Reports a tapped day to the page (the wide Care page filters its agenda with it).
+    var onSelect: ((Date) -> Void)? = nil
     @Query(sort: \CareEvent.date, order: .reverse) private var events: [CareEvent]
     @State private var month = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Date()))!
     @State private var selected = Calendar.current.startOfDay(for: Date())
@@ -22,6 +28,7 @@ struct CareCalendarView: View {
     var body: some View {
         let done = doneByDay, planned = plannedByDay
         VStack(alignment: .leading, spacing: 16) {
+            if showsGrid {
             VStack(spacing: 12) {
                 HStack {
                     Button { shift(-1) } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }
@@ -39,7 +46,7 @@ struct CareCalendarView: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 7), spacing: 10) {
                     ForEach(Array(days.enumerated()), id: \.offset) { _, d in
                         if let d {
-                            Button { withAnimation(.snappy) { selected = d } } label: {
+                            Button { withAnimation(.snappy) { selected = d }; onSelect?(d) } label: {
                                 DayCell(date: d, done: done[d] ?? [], planned: planned[d]?.count ?? 0, selected: cal.isDate(d, inSameDayAs: selected))
                             }
                             .buttonStyle(.plain)
@@ -48,7 +55,8 @@ struct CareCalendarView: View {
                 }
             }
             .padding(12).jungleCard()
-            dayDetail(done: done[selected] ?? [], planned: planned[selected] ?? [])
+            }
+            if showsDetail { dayDetail(done: done[selected] ?? [], planned: planned[selected] ?? []) }
         }
         .sensoryFeedback(.selection, trigger: selected)
         .onChange(of: day, initial: true) { _, d in

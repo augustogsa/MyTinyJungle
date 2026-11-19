@@ -33,7 +33,8 @@
 - Display name "My Tiny Jungle Plus" + description in en-US and pt-PT; review notes set (scanner, Plant Doctor, memory insights, plant-sitter link, unlimited plants; free = 5 plants).
 - Sold in 174 territories (not China mainland); a China price exists because ASC requires one for every territory.
 - App Store only, no multiseat, no Family Sharing, no 12-month-commitment plan.
-- Review screenshot: plain Forest/Cream placeholder (1290×2796). Replace it with a real paywall screenshot from the first build before submitting for review.
+- Review screenshot: real paywall (Assets/AppStore/paywall-review.png), uploaded 2026-11-19 to both plans.
+- pt-BR subscription and group localizations cannot be added while the plans are in their current state; add them after the first approval (pt-PT text serves Brazil meanwhile).
 - Both are in the draft submission. They go to review together with version 1.0 once the build is attached.
 - App Store Server Notifications V2: production and sandbox URL `https://api.mytinyjungle.com/storekit/notifications` (set in ASC web UI). The API backend on the VPS (127.0.0.1:3300) is not deployed yet; until it is, the route answers 503 and Apple retries.
 
@@ -48,3 +49,13 @@
 - External group "Friends & testers" (7d6eed3d-159c-4780-84d6-16ac222e3f51), public link https://testflight.apple.com/join/A8YUuUHj, limit 100.
 - Beta review notes: no demo account; sign-in optional (Apple/Google with own account).
 - Link is on mytinyjungle.com (hero button + Join the beta section, EN + PT).
+
+## Release readiness (2026-11-19)
+- iPhone only (TARGETED_DEVICE_FAMILY 1), portrait only. Build 1.0 (4) archives and exports clean for App Store (aps-environment production, no warnings, iOS 27.2 SDK). Profile refreshed to include Associated Domains.
+- App Store screenshots (2026-11-19): iPhone 6.9" (APP_IPHONE_67, 1320×2868, iPhone 18 Pro Max) and iPhone Duo (APP_IPHONE_DUO, 2853×2007, open flat), ten features each, en-US, pt-BR and pt-PT (pt-PT uses pt-BR). Capture: `Tools/appstore/capture.sh <iphone69|duo> <udid> <app>` (Duo: set the posture to open first; inner display is --display=3). Upload: `node Tools/appstore/shots.mjs --apply` (replaces the sets). Sources in Assets/AppStore/screenshots.
+- TestFlight build 1.0 (5), uploaded 2026-11-19, in Friends & testers, submitted to Beta App Review. Test info + What to Test in en-US, pt-BR, pt-PT; review notes say sign-in is required (Apple/Google only, no demo account possible). Script: `node Tools/appstore/beta.mjs <build> --apply`.
+- Review notes rewritten to match the build (optional sign-in, account deletion, no calendar/contacts, shared jungle, iPhone only).
+- In-app: Settings has Privacy Policy, Terms of Use, Help and support links and "Delete account and data". Privacy policy covers sign-in, Open-Meteo weather lookups, camera/photos, shared jungles and LGPD.
+- Not submitted. To submit: archive build 4, upload, attach it to version 1.0 with both subscriptions, submit for review.
+- Plans are named as on the website, never "Plus": Greenhouse / Estufa (monthly), Jungle / Selva (yearly). App, site, StoreKit config, ASC descriptions and review notes updated 2026-11-19. ASC subscription display names still read "Tiny Jungle Plus" because the plans sit in the draft submission (locked); renaming them and uploading the new Assets/AppStore/paywall-review.png need the plans out of the draft first, which only the owner does.
+- Never submit or edit draft submissions; the owner does that.

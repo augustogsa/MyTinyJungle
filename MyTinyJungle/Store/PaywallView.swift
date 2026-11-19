@@ -19,6 +19,10 @@ struct PaywallView: View {
     private var current: Product? { ordered.first { $0.id == selected } ?? ordered.first }
 
     var body: some View {
+        DuoCompanion(mood: .award, title: "Grow without limits", detail: "Every plant, every tool, all in one place.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
@@ -84,13 +88,13 @@ struct PaywallView: View {
         let names = plants.prefix(2).map(\.name)
         if names.count == 2 {
             switch reason {
-            case .morePlants: return Grammar.pt(String(localized: "\(names[0]), \(names[1]) and the rest of the family would love some company. Plus makes room for all of them.", comment: "Paywall subline; args are two plant names"))
-            default: return Grammar.pt(String(localized: "\(names[0]), \(names[1]) and the rest of the family will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline; args are two plant names"))
+            case .morePlants: return Grammar.pt(String(localized: "\(names[0]), \(names[1]) and the rest of the family would love some company. Greenhouse and Jungle make room for all of them.", comment: "Paywall subline; args are two plant names"))
+            default: return Grammar.pt(String(localized: "\(names[0]), \(names[1]) and the rest of the family will thank you. Greenhouse and Jungle give you everything to keep them happy.", comment: "Paywall subline; args are two plant names"))
             }
         }
         switch reason {
-        case .morePlants: return Grammar.pt(String(localized: "Your plants would love some company. Plus makes room for all of them.", comment: "Paywall subline"))
-        default: return Grammar.pt(String(localized: "Your plants will thank you. Plus gives you everything to keep them happy.", comment: "Paywall subline"))
+        case .morePlants: return Grammar.pt(String(localized: "Your plants would love some company. Greenhouse and Jungle make room for all of them.", comment: "Paywall subline"))
+        default: return Grammar.pt(String(localized: "Your plants will thank you. Greenhouse and Jungle give you everything to keep them happy.", comment: "Paywall subline"))
         }
     }
 
@@ -153,11 +157,11 @@ struct PaywallView: View {
                 guard let p = current else { return }
                 buying = true
                 Task {
-                    if case .success(.verified) = try? await purchase(p) { await Store.shared.refresh(); dismiss() }
+                    if case .success(.verified) = try? await purchase(p, options: Store.shared.accountToken.map { [.appAccountToken($0)] } ?? []) { await Store.shared.refresh(); dismiss() }
                     buying = false
                 }
             } label: {
-                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? Grammar.pt(String(localized: "Start Jungle · \($0.displayPrice)/year", comment: "Paywall buy button for the yearly plan named Jungle; arg is price")) : Grammar.pt(String(localized: "Start Greenhouse · \($0.displayPrice)/month", comment: "Paywall buy button for the monthly plan named Greenhouse; arg is price")) } ?? Grammar.pt(String(localized: "Grow with Plus", comment: "Paywall buy button"))).font(.headline) } }
+                Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? Grammar.pt(String(localized: "Start Jungle · \($0.displayPrice)/year", comment: "Paywall buy button for the yearly plan named Jungle; arg is price")) : Grammar.pt(String(localized: "Start Greenhouse · \($0.displayPrice)/month", comment: "Paywall buy button for the monthly plan named Greenhouse; arg is price")) } ?? Grammar.pt(String(localized: "Choose a plan", comment: "Paywall buy button"))).font(.headline) } }
                     .frame(maxWidth: .infinity).frame(height: 50)
             }
             .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)

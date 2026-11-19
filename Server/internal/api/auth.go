@@ -222,8 +222,13 @@ func (s *Server) refresh(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return err
 		}
+		if used != nil && s.now().Sub(*used) < 30*time.Second {
+			// Network retry of the same refresh (lost response, replay): rotate again in the same family.
+			out, err = s.newSession(ctx, tx, uid, dev, family)
+			return err
+		}
 		if used != nil {
-			// A rotated token came back: someone else has a copy. Revoke every session of this user.
+			// A rotated token came back later: someone else has a copy. Revoke every session of this user.
 			if _, err := tx.Exec(ctx, `delete from sessions where user_id = $1`, uid); err != nil {
 				return err
 			}

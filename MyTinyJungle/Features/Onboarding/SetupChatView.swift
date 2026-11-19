@@ -29,10 +29,13 @@ struct SetupChatView: View {
 
     var body: some View {
         NavigationStack {
+            SideBySide {
+                header(erty: 150).padding(.horizontal, 32)
+            } main: { paged in
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 10) {
-                        header
+                        if !paged { header(erty: 112) }
                         ForEach(Array(lines.enumerated()), id: \.element.id) { i, line in
                             // Avatar only on the last bubble of a run, like Messages.
                             bubble(line, avatar: !typing && i == lines.count - 1 || i < lines.count - 1 && lines[i + 1].fromUser).id(line.id)
@@ -54,7 +57,8 @@ struct SetupChatView: View {
                     Task { try? await Task.sleep(for: .milliseconds(150)); withAnimation(.snappy) { proxy.scrollTo("bottom", anchor: .bottom) } }
                 }
             }
-            .safeAreaInset(edge: .bottom) { answerBar }
+            .safeAreaInset(edge: .bottom) { answerBar(paged: paged) }
+            }
             .jungleBackdrop()
             .navigationTitle(Grammar.pt(String(localized: "Getting set up", comment: "Setup chat navigation title")))
             .navigationBarTitleDisplayMode(.inline)
@@ -65,9 +69,9 @@ struct SetupChatView: View {
 
     // MARK: Views
 
-    private var header: some View {
+    private func header(erty: CGFloat) -> some View {
         VStack(spacing: 8) {
-            ErtyView(mood: step == .finished ? .love : .wave, size: 112)
+            ErtyView(mood: step == .finished ? .love : .wave, size: erty)
             Text(Grammar.pt(String(localized: "A few quick questions so your plants get care that fits your home.", comment: "Setup chat intro under the mascot")))
                 .font(.subheadline).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
         }
@@ -90,7 +94,7 @@ struct SetupChatView: View {
         Image("erty-idle").resizable().scaledToFit().frame(width: 32, height: 32).accessibilityHidden(true)
     }
 
-    @ViewBuilder private var answerBar: some View {
+    @ViewBuilder private func answerBar(paged: Bool) -> some View {
         if step != .finished && !typing {
             VStack(alignment: .leading, spacing: 8) {
                 SetupChips(chips: chips, picked: picked) { tap($0) }
@@ -113,7 +117,9 @@ struct SetupChatView: View {
                 }
             }
             .padding(.horizontal, 12).padding(.top, 10).padding(.bottom, 6)
-            .background { Rectangle().fill(.ultraThinMaterial).mask(LinearGradient(stops: [.init(color: .clear, location: 0), .init(color: .black, location: 0.15)], startPoint: .top, endPoint: .bottom)).ignoresSafeArea() }
+            // On a phone the bar sits on a soft material band; on its own page (Duo, wide) the band's hard
+            // leading edge would cut the page, so the field floats on the backdrop instead.
+            .background { if !paged { Rectangle().fill(.ultraThinMaterial).mask(LinearGradient(stops: [.init(color: .clear, location: 0), .init(color: .black, location: 0.15)], startPoint: .top, endPoint: .bottom)).ignoresSafeArea() } }
             .transition(.opacity)
         }
     }

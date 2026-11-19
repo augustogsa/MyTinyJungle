@@ -16,6 +16,10 @@ struct ManageJungleView: View {
     private var house = Household.shared
 
     var body: some View {
+        DuoCompanion(mood: .love, title: "Your shared jungle", detail: "Who helps, and how.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 JungleGroup(title: Grammar.pt(String(localized: "People", comment: "Manage section: members")),

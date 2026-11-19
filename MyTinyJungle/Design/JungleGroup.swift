@@ -52,6 +52,11 @@ struct TabHeader<Trailing: View>: View {
     var subtitle: String? = nil
     var dot: Color? = nil
     @ViewBuilder var trailing: Trailing
+    /// Top safe area at the header. Near zero in landscape and on the open Duo, where the title
+    /// would otherwise sit right in the display's rounded corner.
+    @State private var topInset: CGFloat = 60
+
+    private var cornerClear: Bool { topInset < 20 }
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
@@ -67,10 +72,12 @@ struct TabHeader<Trailing: View>: View {
             }
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
+            .padding(.leading, cornerClear ? 10 : 0)
             Spacer(minLength: 0)
             trailing
         }
-        .padding(.top, 8)
+        .padding(.top, cornerClear ? 26 : 8)
+        .onGeometryChange(for: CGFloat.self) { $0.safeAreaInsets.top } action: { topInset = $0 }
     }
 }
 

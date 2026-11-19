@@ -272,7 +272,7 @@ components:
       type: object
       required: [code, url, expiresAt]
       properties: { code: { type: string }, url: { type: string }, expiresAt: { type: string, format: date-time } }
-    Entity: { type: string, enum: [plant, care_event, chat_message, owned_product, space, care_task, observation, badge] }
+    Entity: { type: string, enum: [plant, care_event, chat_message, owned_product, space, care_task, observation, badge, propagation] }
     Record:
       type: object
       required: [jungleId, entity, id, data, deleted, version, updatedAt]

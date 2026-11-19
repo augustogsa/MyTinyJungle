@@ -3,6 +3,7 @@ import SwiftData
 
 /// Me: your jungle at a glance, milestones, places and account.
 struct MeView: View {
+    @State private var demoDest: String?
     @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
     @Query private var props: [Propagation]
     @Query private var events: [CareEvent]
@@ -22,9 +23,11 @@ struct MeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    TabHeader(title: name, subtitle: store.isPlus ? Grammar.pt(String(localized: "Plus · Growing since \(sinceText)", comment: "Me header subtitle for Plus members; arg is month+year")) : Grammar.pt(String(localized: "Growing since \(sinceText)", comment: "Me header subtitle; arg is month+year like Mar 2025"))) {
+                    TabHeader(title: name, subtitle: store.isPlus ? Grammar.pt(String(localized: "\(store.planName) · Growing since \(sinceText)", comment: "Me header subtitle for Plus members; arg is month+year")) : Grammar.pt(String(localized: "Growing since \(sinceText)", comment: "Me header subtitle; arg is month+year like Mar 2025"))) {
                         HeaderButton(symbol: "gearshape", label: Grammar.pt(String(localized: "Settings", comment: "Accessibility label for settings button"))) { settings = true }
                     }
+                    WithPageSpread { spread in
+                    TwoPage(spacing: 24) {
                     header
                     HStack(spacing: 10) {
                         NavigationLink { SpacesView() } label: { shortcut(.home, Grammar.pt(String(localized: "Spaces", comment: "Me shortcut title: rooms in the home")), Grammar.pt(String(localized: "\(roomCount) rooms", comment: "Me shortcut subtitle: number of rooms with plants"))) }
@@ -32,6 +35,9 @@ struct MeView: View {
                     }
                     .buttonStyle(.plain)
                     SharedJungleRow()
+                    // Room to spare (Duo, iPad): every room at a glance.
+                    if spread.isWide && roomCount > 0 { RoomsCard(plants: plants) }
+                    } trailing: {
                     milestones
                     if !store.isPlus { plusCard }
                     JungleGroup(title: Grammar.pt(String(localized: "Your jungle", comment: "Me section title"))) {
@@ -48,15 +54,28 @@ struct MeView: View {
                         Button { settings = true } label: { JungleRow(icon: .profile, title: Grammar.pt(String(localized: "Settings", comment: "Me row title")), chevron: true) }
                     }
                     .buttonStyle(.plain)
+                    }
+                    }
                 }
                 .padding(.horizontal, 16).padding(.vertical, 8)
             }
+            .measuresPageSpread()
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: UUID.self) { id in
                 if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
             }
             .sheet(isPresented: $settings) { SettingsView() }
+            .navigationDestination(isPresented: Binding(get: { demoDest != nil }, set: { if !$0 { demoDest = nil } })) {
+                if demoDest == "guides" { GuidesView() } else { TravelPlanView() }
+            }
+            .task {
+                // Store screenshots: `-demoOpen guides|away` opens that screen.
+                guard ["guides", "away"].contains(DemoSeeder.demoOpen ?? "") else { return }
+                for _ in 0..<60 where plants.count < 8 { try? await Task.sleep(for: .seconds(0.5)) }
+                try? await Task.sleep(for: .seconds(1.5))
+                demoDest = DemoSeeder.demoOpen
+            }
             .sheet(item: $paywall) { PaywallView(reason: $0) }
         }
     }
@@ -180,10 +199,10 @@ struct MeView: View {
         Button { paywall = .morePlants } label: {
             HStack(alignment: .center, spacing: 14) {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("My Tiny Jungle Plus").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                    Text("Greenhouse or Jungle").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     Text("Room for every plant you love, early help when one struggles, and the right food for each.").font(.subheadline).foregroundStyle(Jungle.text.opacity(0.75))
                         .fixedSize(horizontal: false, vertical: true)
-                    Text("See Plus").font(.subheadline.weight(.semibold)).foregroundStyle(.white)
+                    Text("See plans").font(.subheadline.weight(.semibold)).foregroundStyle(.white)
                         .padding(.horizontal, 14).padding(.vertical, 7)
                         .background(Jungle.leaf, in: Capsule())
                         .padding(.top, 4)
@@ -207,6 +226,7 @@ struct MilestonesView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
+                ErtyView(mood: .award, size: 104).frame(maxWidth: .infinity)
                 JungleGroup(title: Grammar.pt(String(localized: "\(list.filter(\.done).count) of \(list.count) earned", comment: "Milestones screen section title"))) {
                     ForEach(Array(sorted.enumerated()), id: \.element.id) { i, m in
                         if i > 0 { JungleDivider() }
@@ -238,5 +258,34 @@ struct MilestonesView: View {
         .jungleBackdrop()
         .navigationTitle(Text("Milestones", comment: "Milestones screen title"))
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+/// Each room with its plants, for a page with room beside the profile.
+private struct RoomsCard: View {
+    let plants: [Plant]
+    var body: some View {
+        let rooms = Dictionary(grouping: plants.filter { !$0.location.isEmpty }, by: \.location).sorted { $0.value.count == $1.value.count ? $0.key < $1.key : $0.value.count > $1.value.count }
+        JungleGroup(title: Grammar.pt(String(localized: "Rooms", comment: "Me section title: rooms with plants"))) {
+            ForEach(Array(rooms.enumerated()), id: \.element.key) { i, room in
+                if i > 0 { JungleDivider() }
+                NavigationLink { SpacesView() } label: {
+                    HStack(spacing: 12) {
+                        Text(room.key).font(.system(.body, design: .rounded)).foregroundStyle(Jungle.text).lineLimit(1)
+                        Spacer(minLength: 8)
+                        HStack(spacing: -10) {
+                            ForEach(room.value.prefix(4)) { p in
+                                PlantAvatar(data: p.photo, size: 32).overlay(Circle().strokeBorder(Jungle.surface, lineWidth: 2))
+                            }
+                        }
+                        Text("\(room.value.count)").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.subtle).monospacedDigit()
+                        Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle)
+                    }
+                    .padding(.vertical, 10)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }
     }
 }

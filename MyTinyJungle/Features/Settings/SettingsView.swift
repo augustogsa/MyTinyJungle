@@ -13,8 +13,23 @@ struct SettingsView: View {
     private var plus: Bool { Store.shared.isPlus }
     private var auth = AuthManager.shared
     private var cloud = CloudBackup.shared
+    private var sync = JungleSync.shared
+
+    private static var legalLinks: [(path: String, icon: Icon3D, title: String)] {
+        [("privacy", .shieldCheck, Grammar.pt(String(localized: "Privacy Policy", comment: "Settings link to the privacy policy"))),
+         ("terms", .leafTag, Grammar.pt(String(localized: "Terms of Use", comment: "Settings link to the terms of use"))),
+         ("support", .chat, Grammar.pt(String(localized: "Help and support", comment: "Settings link to the support page")))]
+    }
+
+    private static func site(_ path: String) -> URL {
+        URL(string: "https://mytinyjungle.com/\(Grammar.isPortuguese ? "pt/" : "")\(path)")!
+    }
 
     var body: some View {
+        DuoCompanion(mood: .notes, title: "Settings", detail: "Make the jungle yours.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
@@ -22,18 +37,24 @@ struct SettingsView: View {
                         JungleGroup(title: Grammar.pt(String(localized: "Account", comment: "Settings title"))) {
                             JungleRow(icon: .profile, title: a.email ?? a.name ?? Grammar.pt(String(localized: "Signed in", comment: "Settings account row fallback")), subtitle: a.provider == .apple ? Grammar.pt(String(localized: "Signed in with Apple", comment: "Settings account subtitle")) : Grammar.pt(String(localized: "Signed in with Google", comment: "Settings account subtitle")))
                             JungleDivider()
+                            Button { Task { await sync.sync() } } label: { JungleRow(icon: .repeat, title: Grammar.pt(String(localized: "Sync", comment: "Settings title")), subtitle: sync.summary) }.buttonStyle(.plain)
+                            JungleDivider()
+                            NavigationLink { DevicesView() } label: { JungleRow(icon: .calendarClock, title: Grammar.pt(String(localized: "Your devices", comment: "Settings title")), chevron: true) }.buttonStyle(.plain)
+                            JungleDivider()
                             Button { confirmSignOut = true } label: { JungleRow(icon: .mail, title: Grammar.pt(String(localized: "Sign out", comment: "Settings title"))) }.buttonStyle(.plain)
                             JungleDivider()
                             Button { confirmDelete = true } label: { JungleRow(icon: .emptyPot, title: Grammar.pt(String(localized: "Delete account and data", comment: "Settings title"))) }.buttonStyle(.plain)
                         }
                     }
                     SharedJungleSettingsGroup()
+                    if !JungleAPI.shared.hasSession {
                     JungleGroup(title: Grammar.pt(String(localized: "iCloud backup", comment: "Settings title")), footer: Grammar.pt(String(localized: "Your plants, photos and history copy to your private iCloud. Sign in to the same iCloud on a new iPhone and your jungle comes back on its own.", comment: "Settings footer"))) {
                         JungleRow(icon: .weather, title: Grammar.pt(String(localized: "Back up to iCloud", comment: "Settings title")), subtitle: cloud.summary) {
                             let blocked = cloud.status == .noAccount || (cloud.status == .unavailable && !cloud.pendingRestart)
                             Toggle("", isOn: Binding(get: { CloudBackup.enabled && !blocked }, set: { cloud.setEnabled($0) })).labelsHidden()
                                 .disabled(blocked)
                         }
+                    }
                     }
                     JungleGroup(title: Grammar.pt(String(localized: "Care alerts", comment: "Settings title")), footer: Grammar.pt(String(localized: "How and when your plants can reach you.", comment: "Settings footer"))) {
                         NavigationLink { ReminderSettingsView() } label: {
@@ -73,16 +94,16 @@ struct SettingsView: View {
                         JungleDivider()
                         JungleRow(icon: .kid, title: Grammar.pt(String(localized: "Small children", comment: "Settings title"))) { Toggle("", isOn: $settings.hasKids).labelsHidden() }
                     }
-                    JungleGroup(title: Grammar.pt(String(localized: "My Tiny Jungle Plus", comment: "Settings title"))) {
+                    JungleGroup(title: Grammar.pt(String(localized: "Your plan", comment: "Settings title"))) {
                         if plus {
-                            JungleRow(icon: .addPlant, title: Grammar.pt(String(localized: "Plus is active", comment: "Settings title")), subtitle: Grammar.pt(String(localized: "Thank you for growing with us", comment: "Settings subtitle")))
+                            JungleRow(icon: .addPlant, title: Grammar.pt(String(localized: "\(Store.shared.planName) is active", comment: "Settings title")), subtitle: Grammar.pt(String(localized: "Thank you for growing with us", comment: "Settings subtitle")))
                             JungleDivider()
                             Link(destination: URL(string: "https://apps.apple.com/account/subscriptions")!) {
                                 JungleRow(icon: .calendarClock, title: Grammar.pt(String(localized: "Manage subscription", comment: "Settings title")), chevron: true)
                             }.buttonStyle(.plain)
                         } else {
                             Button { paywall = true } label: {
-                                JungleRow(icon: .addPlant, title: Grammar.pt(String(localized: "Get Plus", comment: "Settings title")), subtitle: Grammar.pt(String(localized: "Room for every plant, and no ads", comment: "Settings subtitle")), chevron: true)
+                                JungleRow(icon: .addPlant, title: Grammar.pt(String(localized: "See plans", comment: "Settings title")), subtitle: Grammar.pt(String(localized: "Room for every plant, and no ads", comment: "Settings subtitle")), chevron: true)
                             }.buttonStyle(.plain)
                         }
                         JungleDivider()
@@ -101,6 +122,12 @@ struct SettingsView: View {
                         JungleRow(icon: .leafTag, title: Grammar.pt(String(localized: "Version", comment: "Settings title"))) {
                             Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "").foregroundStyle(Jungle.subtle)
                         }
+                        ForEach(Self.legalLinks, id: \.path) { l in
+                            JungleDivider()
+                            Link(destination: Self.site(l.path)) {
+                                JungleRow(icon: l.icon, title: l.title, chevron: true)
+                            }.buttonStyle(.plain)
+                        }
                     }
                 }
                 .padding(.horizontal, 16).padding(.vertical, 12)
@@ -113,10 +140,10 @@ struct SettingsView: View {
             .task { await cloud.refresh() }
             .confirmationDialog("Sign out of My Tiny Jungle?", isPresented: $confirmSignOut, titleVisibility: .visible) {
                 Button("Sign out", role: .destructive) { auth.signOut(); dismiss() }
-            } message: { Text("Your plants stay on this iPhone and in iCloud.") }
+            } message: { Text("Your plants stay on this iPhone and in your account. Sign in again to keep syncing.") }
             .confirmationDialog("Delete your account and all data?", isPresented: $confirmDelete, titleVisibility: .visible) {
-                Button("Delete everything", role: .destructive) { Task { await auth.deleteAccountAndData(ctx); dismiss() } }
-            } message: { Text("This removes your sign-in and erases every plant, photo and care history from this iPhone and iCloud. It can't be undone. Subscriptions are managed in your Apple account.") }
+                Button("Delete everything", role: .destructive) { Task { if await auth.deleteAccountAndData(ctx) { dismiss() } } }
+            } message: { Text("This deletes your account and erases every plant, photo and care history on every device. It can't be undone. Subscriptions are managed in your Apple account.") }
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         }
     }

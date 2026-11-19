@@ -29,23 +29,48 @@ struct CareView: View {
                     TabHeader(title: Grammar.pt(String(localized: "Care", comment: "Care tab title")), subtitle: stripMonth) {
                         HeaderButton(symbol: "plus", label: Grammar.pt(String(localized: "Add care task", comment: "Accessibility label for add task button"))) { adding = true }
                     }
-                    WeekStrip(plants: plants, tasks: tasks, selected: $selectedDay, offset: $weekOffset)
-                    HouseholdTodayCard(plants: plants)
-                    Picker("Range", selection: $range) { ForEach(Range.allCases, id: \.self) { Text($0.label) } }.pickerStyle(.segmented)
+                    WithPageSpread { spread in
+                    TwoPage(spacing: 14) {
+                    if spread.isWide {
+                        // Room for the whole month: the calendar drives the agenda on the other page.
+                        CareCalendarView(plants: plants, tasks: tasks, day: selectedDay, showsDetail: false) { d in
+                            withAnimation(.snappy) {
+                                selectedDay = Calendar.current.isDate(d, inSameDayAs: selectedDay ?? .distantPast) ? nil : d
+                                if range == .calendar || range == .season { range = .week }
+                            }
+                        }
+                        CareStatsCard(plants: plants, tasks: tasks)
+                        HouseholdTodayCard(plants: plants)
+                    } else {
+                        WeekStrip(plants: plants, tasks: tasks, selected: $selectedDay, offset: $weekOffset)
+                        HouseholdTodayCard(plants: plants)
+                        Picker("Range", selection: $range) { ForEach(Range.allCases, id: \.self) { Text($0.label) } }.pickerStyle(.segmented)
+                    }
                     HStack(spacing: 10) {
                         NavigationLink { TravelPlanView() } label: { shortcut(Grammar.pt(String(localized: "Travel care", comment: "Care shortcut tile; max 12 chars")), "airplane") }
                         NavigationLink { PropagationListView() } label: { shortcut(Grammar.pt(String(localized: "Propagate", comment: "Care shortcut tile: propagation cuttings; max 12 chars")), "scissors") }
                         NavigationLink { GuidesView() } label: { shortcut(Grammar.pt(String(localized: "How-to", comment: "Care shortcut tile: guides; max 12 chars")), "book.fill") }
                     }
                     .buttonStyle(.plain)
+                    } trailing: {
+                    if spread.isWide {
+                        Picker("Range", selection: Binding(get: { range }, set: { r in withAnimation(.snappy) { range = r; selectedDay = nil } })) { ForEach(Range.allCases.filter { $0 != .calendar }, id: \.self) { Text($0.label) } }.pickerStyle(.segmented)
+                    }
+                    if spread.isWide, let d = selectedDay, range != .season {
+                        CareCalendarView(plants: plants, tasks: tasks, day: d, showsGrid: false)
+                    } else {
                     switch range {
                     case .season: SeasonGuideView(plants: plants)
-                    case .calendar: CareCalendarView(plants: plants, tasks: tasks, day: selectedDay)
+                    case .calendar: if spread.isWide { agenda } else { CareCalendarView(plants: plants, tasks: tasks, day: selectedDay) }
                     default: agenda
+                    }
+                    }
+                    }
                     }
                 }
                 .padding(16)
             }
+            .measuresPageSpread()
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $adding) { AddTaskView(plants: plants) }
@@ -226,6 +251,8 @@ struct SeasonGuideView: View {
             }
             .pickerStyle(.segmented)
             .padding(.top, 6)
+            ErtyView(mood: season == .winter ? .sleep : season == .autumn ? .rain : season == .spring ? .soil : .mist, size: 88)
+                .frame(maxWidth: .infinity)
             if let line = Climate.shared.shortSummary {
                 Label(line, systemImage: "location.fill").font(.footnote).foregroundStyle(Jungle.subtle).labelStyle(.titleAndIcon).lineLimit(1).minimumScaleFactor(0.85)
             }
@@ -562,5 +589,46 @@ extension Propagation {
         case "Leaf": Grammar.pt(String(localized: "Leaf", comment: "Propagation method: leaf cutting"))
         default: m
         }
+    }
+}
+
+/// The month at a glance, for a page with room beside the agenda (Duo, iPad).
+private struct CareStatsCard: View {
+    let plants: [Plant]
+    let tasks: [CareTask]
+    @Query(sort: \CareEvent.date, order: .reverse) private var events: [CareEvent]
+
+    var body: some View {
+        let cal = Calendar.current
+        let monthStart = cal.dateInterval(of: .month, for: Date())?.start ?? Date()
+        let done = events.filter { $0.plant != nil && $0.note != "safety-ack" && $0.date >= monthStart }
+        let week = Agenda.items(plants: plants, tasks: tasks, days: 7).count
+        let needs = plants.filter { CareEngine.needsYou($0) }.count
+        let thriving = plants.filter { CareEngine.mood(for: $0) == .thriving }.count
+        let activeDays = Set(done.map { cal.startOfDay(for: $0.date) }).count
+        VStack(alignment: .leading, spacing: 12) {
+            Text(Grammar.pt(String(localized: "This month", comment: "Care stats card title"))).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+            Grid(horizontalSpacing: 10, verticalSpacing: 10) {
+                GridRow {
+                    stat("\(done.count)", Grammar.pt(String(localized: "care moments", comment: "Care stat label")), Jungle.leaf)
+                    stat("\(activeDays)", Grammar.pt(String(localized: "days you showed up", comment: "Care stat label: days with care this month")), Jungle.forest)
+                }
+                GridRow {
+                    stat("\(week)", Grammar.pt(String(localized: "due this week", comment: "Care stat label")), Jungle.accentText)
+                    stat(needs == 0 ? "\(thriving)" : "\(needs)", needs == 0 ? Grammar.pt(String(localized: "thriving", comment: "Care stat label")) : Grammar.pt(String(localized: "need you today", comment: "Care stat label")), needs == 0 ? Jungle.leaf : Jungle.terracotta)
+                }
+            }
+        }
+        .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+    }
+
+    private func stat(_ value: String, _ label: String, _ tint: Color) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(value).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(tint).contentTransition(.numericText())
+            Text(label).font(.footnote).foregroundStyle(Jungle.subtle).lineLimit(1).minimumScaleFactor(0.8)
+        }
+        .padding(12).frame(maxWidth: .infinity, alignment: .leading)
+        .background(Jungle.mint.opacity(0.45), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .combine)
     }
 }

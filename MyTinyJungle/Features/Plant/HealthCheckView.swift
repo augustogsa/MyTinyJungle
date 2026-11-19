@@ -17,6 +17,10 @@ struct HealthCheckView: View {
     @State private var pest: Pest?
 
     var body: some View {
+        DuoCompanion(mood: .scan, title: "Health check", detail: "Snap a photo and learn what it needs.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {

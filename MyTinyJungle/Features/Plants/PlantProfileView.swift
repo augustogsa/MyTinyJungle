@@ -11,6 +11,10 @@ struct PlantProfileView: View {
     @State private var confirmArchive = false
 
     var body: some View {
+        DuoCompanion(mood: .love, title: "Plant profile", detail: "The little details that make it yours.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         NavigationStack {
             Form {
                 Section {

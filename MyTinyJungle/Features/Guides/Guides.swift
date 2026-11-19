@@ -154,8 +154,13 @@ struct GuidesView: View {
     @State private var open: CareGuide?
 
     var body: some View {
+        DuoCompanion(mood: .learn, title: "How-to guides", detail: "Short, friendly and made for real homes.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
+                InlineErty(mood: .learn, size: 104)
                 if let plant {
                     SectionTitle(Grammar.pt(String(localized: "Picked for \(plant.name)", comment: "Section title: guides suggested for this plant")))
                     VStack(spacing: 0) {

@@ -142,6 +142,10 @@ struct MemberProfileView: View {
     init(member: Member) { self.member = member }
 
     var body: some View {
+        DuoCompanion(mood: .award, title: "Care profile", detail: "Badges, levels and the care that earned them.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         let p = house.profile(member)
         ScrollView {
             VStack(spacing: 22) {

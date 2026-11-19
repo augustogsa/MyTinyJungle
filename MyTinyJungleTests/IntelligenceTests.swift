@@ -119,11 +119,12 @@ import Testing
 @testable import MyTinyJungle
 
 struct AdSlotTests {
-    @Test func gridBreaksAfterRow4ThenEvery8() {
+    @Test func gridBreaksAfterFirstRowsThenEvery() {
+        let first = AdsConfig.gridFirstRow * 2, every = AdsConfig.gridEvery * 2
         let c = AdSlots.chunks(50, perRow: 2)
-        #expect(c.first == 0..<8)
-        #expect(c.dropFirst().first == 8..<24)
-        #expect(AdSlots.chunks(8, perRow: 2).count == 1)
+        #expect(c.first == 0..<first)
+        #expect(c.dropFirst().first == first..<(first + every))
+        #expect(AdSlots.chunks(first, perRow: 2).count == 1)
     }
     @Test func agendaNeverFirst() {
         #expect(!AdSlots.agendaAd(before: 0))

@@ -5,13 +5,17 @@ import Observation
 /// Erty, the app's mascot. Short transparent loops (HEVC with alpha) for greetings, loading,
 /// empty states and little celebrations. Falls back to a still frame when Reduce Motion is on.
 enum ErtyMood: String, CaseIterable {
-    case wave, idle, happy, love, water, plant, scan, notes
+    case wave, idle, happy, love, water, plant, scan, notes, rain, sleep, soil, learn, award, celebrate, soilbag, mist
 
     /// The mood that fits a logged care action.
     static func forCare(_ k: CareKind) -> ErtyMood {
         switch k {
-        case .water, .mist: .water
-        case .repot, .propagate, .prune: .plant
+        case .water: .water
+        case .mist: .mist
+        case .feed: .soilbag
+        case .repot: .soil
+        case .newLeaf, .flower: .celebrate
+        case .propagate, .prune: .plant
         case .soilCheck, .health, .treat, .measure: .scan
         case .note, .photo: .notes
         default: .love

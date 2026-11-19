@@ -21,7 +21,7 @@ struct ClimateForm: View {
                 }
                 if climate.busy {
                     JungleDivider()
-                    ErtyLoading(text: Grammar.pt(String(localized: "Reading your climate…", comment: "Climate lookup in progress")), mood: .notes, size: 72).padding(14)
+                    ErtyLoading(text: Grammar.pt(String(localized: "Reading your climate…", comment: "Climate lookup in progress")), mood: .rain, size: 72).padding(14)
                 } else if let e = climate.lastError {
                     JungleDivider()
                     Text(e).font(.footnote).foregroundStyle(Jungle.terracotta).padding(14)

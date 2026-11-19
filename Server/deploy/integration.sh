@@ -51,6 +51,8 @@ R1=itest-refresh-$(openssl rand -hex 16)
 H=$(printf %s "$R1" | sha256sum | cut -d' ' -f1)
 psqlq "insert into sessions (token_hash, family_id, user_id, device_id, expires_at) values (decode('$H','hex'), gen_random_uuid(), '$UA', gen_random_uuid(), now() + interval '1 day')"
 R2=$(c x http://x/v1/auth/refresh -d "{\"refreshToken\":\"$R1\"}" | python3 -c 'import json,sys;print(json.load(sys.stdin)["refreshToken"])') && ok "refresh rotates"
+st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/auth/refresh -d "{\"refreshToken\":\"$R1\"}"); [[ $st == 200 ]] && ok "immediate retry of a refresh is tolerated"
+psqlq "update sessions set used_at = now() - interval '1 minute' where token_hash = decode('$H','hex')"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/auth/refresh -d "{\"refreshToken\":\"$R1\"}"); [[ $st == 401 ]] && ok "reused refresh token refused"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/auth/refresh -d "{\"refreshToken\":\"$R2\"}"); [[ $st == 401 ]] && ok "reuse revoked the whole account"
 

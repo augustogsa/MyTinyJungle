@@ -31,6 +31,7 @@ struct TodayView: View {
                         header
                         if plants.isEmpty { EmptyJungle { addingPlant = true } }
                         else {
+                            TwoPage {
                             HouseholdTodayCard(plants: plants)
                             if requests.isEmpty {
                                 Button { selectedTab = 2 } label: { CaughtUpCard(plants: plants) }.buttonStyle(.plain).id("today")
@@ -49,12 +50,13 @@ struct TodayView: View {
                                         .scrollTargetLayout()
                                     }
                                     .scrollTargetBehavior(.viewAligned)
-                                    .scrollClipDisabled()
+                                    .pageRail()
                                     }
                                 }
                                 .id("today")
                             }
                             ComingUpCard(plants: plants, propagations: propagations) { path.append($0) }
+                            } trailing: {
                             Button { path.append(TodayRoute.health) } label: { JungleHealthCard(plants: plants, needIDs: Set(plants.filter { CareEngine.needsYou($0) }.map(\.id))) }.buttonStyle(.plain)
                             VStack(alignment: .leading, spacing: 10) {
                                 SectionTitle(Grammar.pt(String(localized: "Your plants", comment: "Section title")), action: Grammar.pt(String(localized: "See all", comment: "Section action; max 12 chars"))) { selectedTab = 1 }
@@ -62,6 +64,7 @@ struct TodayView: View {
                             }
                             summary
                             conversations
+                            }
                         }
                         Color.clear.frame(height: 1).id("bottom")
                     }
@@ -74,7 +77,9 @@ struct TodayView: View {
                                   showChips: !plants.isEmpty, onChip: { chipKind = $0 }) { text, photo in
                         sendFromToday(text, photo)
                     }
+                    .trailingPageInBook()
                 }
+                .measuresPageSpread()
             }
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
@@ -126,7 +131,7 @@ struct TodayView: View {
             }
             .padding(.vertical, 4)
         }
-        .scrollClipDisabled()
+        .pageRail()
     }
 
     private var guidePlant: Plant? { plants.first { CareEngine.mood(for: $0) == .needsYou } ?? plants.first }
@@ -319,7 +324,7 @@ struct TodayView: View {
     }
 
     private func send(_ text: String) {
-        if text == Grammar.pt(String(localized: "See Plus", comment: "Chat suggestion chip opening paywall; max 14 chars")) { paywall = true; return }
+        if text == Grammar.pt(String(localized: "See plans", comment: "Chat suggestion chip opening paywall; max 14 chars")) { paywall = true; return }
         JungleBrain.handle(text, plant: nil, plants: plants, in: ctx) }
 
     private func handle(_ action: RequestCard.Action, plant: Plant) {

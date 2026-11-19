@@ -15,6 +15,8 @@ enum DemoSeeder {
         guard let i = a.firstIndex(of: "-demoDue"), i + 1 < a.count else { return nil }
         return Int(a[i + 1])
     }
+    /// `-demoOpen plant|chat|guides|away` (demo jungle only) opens that screen for store shots.
+    static var demoOpen: String? { photoDir == nil ? nil : UserDefaults.standard.string(forKey: "demoOpen") }
     static var wantsScan: Bool { ProcessInfo.processInfo.arguments.contains("-demoScan") }
     static let sampleLabel = Grammar.pt(String(localized: "GreenGrow Houseplant Feed, liquid\nNPK 7-3-6\nNitrogen 7%, Phosphorus 3%, Potassium 6%\nWith magnesium and iron\nDilute 5 ml per litre every 2 weeks in spring and summer", comment: "Demo product label text read by the scanner; write it like a real local fertilizer label, keep the NPK numbers and line breaks"))
 
@@ -71,6 +73,19 @@ enum DemoSeeder {
             let m = ChatMessage(text: t.0, fromUser: t.1); m.date = Date().addingTimeInterval(Double(i - talk.count) * 600)
             if let n = t.2 { m.speakerID = (try? ctx.fetch(FetchDescriptor<Plant>()))?.first { $0.name == n }?.id }
             ctx.insert(m)
+        }
+        // A one-to-one chat with Monty for the plant chat screen.
+        if let m = (try? ctx.fetch(FetchDescriptor<Plant>()))?.first(where: { $0.name == monty }) {
+            let lines: [(String, Bool)] = [
+                (Grammar.pt(String(localized: "Morning \(monty)! How are you feeling?", comment: "Demo plant chat: user greets the plant; arg plant nickname")), true),
+                (Grammar.pt(String(localized: "Happy and a little proud: my newest leaf just split! 🌿", comment: "Demo plant chat: Monstera reply")), false),
+                (Grammar.pt(String(localized: "I saw it! Do you need water?", comment: "Demo plant chat: user question")), true),
+                (Grammar.pt(String(localized: "Check my soil first. If the top 3 cm feel dry, go for it. If not, see you on Friday.", comment: "Demo plant chat: Monstera watering advice")), false),
+            ]
+            for (i, l) in lines.enumerated() {
+                let c = ChatMessage(text: l.0, fromUser: l.1); c.date = Date().addingTimeInterval(Double(i - lines.count) * 240); c.plant = m
+                ctx.insert(c)
+            }
         }
         try? ctx.save()
     }

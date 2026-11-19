@@ -23,7 +23,8 @@ enum CareReminders {
 
     @discardableResult
     static func requestPermission() async -> Bool {
-        (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+        if DemoSeeder.photoDir != nil { return false } // screenshot demo: no system prompt over the UI
+        return (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
     }
 
     /// Snoozed plants stay quiet until this date.

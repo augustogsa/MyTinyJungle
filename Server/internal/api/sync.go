@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-var entities = []string{"plant", "care_event", "chat_message", "owned_product", "space", "care_task", "observation", "badge"}
+var entities = []string{"plant", "care_event", "chat_message", "owned_product", "space", "care_task", "observation", "badge", "propagation"}
 
 type change struct {
 	JungleID        string          `json:"jungleId"`

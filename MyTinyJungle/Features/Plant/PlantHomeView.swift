@@ -26,31 +26,38 @@ struct PlantHomeView: View {
     @State private var showGuides = false
     @State private var pick: PhotosPickerItem?
 
+    @State private var fold: CGRect?
+    @State private var width: CGFloat = 0
+    @State private var height: CGFloat = 0
+
     enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate, share; var id: String { rawValue } }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                hero
-                actions
-                PlantShareSection(plant: plant).padding(.horizontal, 16)
-                Picker("Section", selection: $tab) { ForEach(Tab.allCases, id: \.self) { Text($0.label) } }
-                    .pickerStyle(.segmented).padding(.horizontal, 16)
-                Group {
-                    switch tab {
-                    case .overview: overview
-                    case .story: PlantStoryView(plant: plant, pick: $pick)
-                    case .care: PlantCarePlanView(plant: plant)
-                    case .about: PlantAboutView(plant: plant)
+        Group {
+            if let spine = fold?.bookSpine(in: width) {
+                // Book pose: the photo is the leading page, the details the trailing one.
+                HStack(spacing: spine.width) {
+                    hero(fill: true).frame(width: spine.minX).ignoresSafeArea()
+                    ScrollView { details.padding(.top, 8) }
+                }
+            } else if width >= PageSpread.wideThreshold && width > height {
+                // Any other wide, sideways window (Duo flat open, iPad): the same spread without a spine.
+                HStack(spacing: 0) {
+                    hero(fill: true).frame(width: width * 0.46).ignoresSafeArea()
+                    ScrollView { details.padding(.top, 8) }
+                }
+            } else {
+                ScrollView {
+                    VStack(spacing: 16) {
+                        hero(fill: false)
+                        details
                     }
                 }
-                .padding(.horizontal, 16)
-                .transition(.opacity)
+                .ignoresSafeArea(edges: .top)
             }
-            .padding(.bottom, 32)
-            .animation(.snappy, value: tab)
         }
-        .ignoresSafeArea(edges: .top)
+        .onGeometryChange(for: CGSize.self) { $0.size } action: { width = $0.width; height = $0.height }
+        .onFoldDivisionChange { fold = $0 }
         .jungleBackdrop()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -95,9 +102,30 @@ struct PlantHomeView: View {
 
     private var mood: CareEngine.Mood { CareEngine.mood(for: plant) }
 
-    private var hero: some View {
+    private var details: some View {
+        VStack(spacing: 16) {
+            actions
+            PlantShareSection(plant: plant).padding(.horizontal, 16)
+            Picker("Section", selection: $tab) { ForEach(Tab.allCases, id: \.self) { Text($0.label) } }
+                .pickerStyle(.segmented).padding(.horizontal, 16)
+            Group {
+                switch tab {
+                case .overview: overview
+                case .story: PlantStoryView(plant: plant, pick: $pick)
+                case .care: PlantCarePlanView(plant: plant)
+                case .about: PlantAboutView(plant: plant)
+                }
+            }
+            .padding(.horizontal, 16)
+            .transition(.opacity)
+        }
+        .padding(.bottom, 32)
+        .animation(.snappy, value: tab)
+    }
+
+    private func hero(fill: Bool) -> some View {
         ZStack(alignment: .bottomLeading) {
-            Color.clear.frame(height: 380).frame(maxWidth: .infinity)
+            Color.clear.frame(height: fill ? nil : 380).frame(maxWidth: .infinity, maxHeight: fill ? .infinity : nil)
                 .overlay {
                     if let d = plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
                     else { ZStack { Jungle.mint; Icon3DView(.pottedPlant, size: 120) } }
@@ -366,7 +394,7 @@ struct PlantStoryView: View {
                     }
                 }
             }
-            .scrollClipDisabled()
+            .pageRail()
             timeline
         }
     }

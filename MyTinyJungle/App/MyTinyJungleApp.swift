@@ -9,10 +9,14 @@ struct MyTinyJungleApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     let container: ModelContainer = MyTinyJungleApp.shared
     static let shared: ModelContainer = {
+        #if DEBUG
+        AuthManager.applyTestSession()
+        #endif
         let schema = Schema([Plant.self, CareEvent.self, ChatMessage.self, OwnedProduct.self, Space.self, CareTask.self, Propagation.self])
         let inMemory = ProcessInfo.processInfo.arguments.contains("-uiTesting")
-        // iCloud backup: mirror to the private CloudKit database. Never for tests or demo data.
-        if CloudBackup.enabled && !inMemory && DemoSeeder.photoDir == nil,
+        // iCloud backup: mirror to the private CloudKit database until the account syncs through the API
+        // (then the server is the backup, and two mirrors would deliver every record twice). Never for tests or demo data.
+        if CloudBackup.enabled && !JungleAPI.shared.hasSession && !inMemory && DemoSeeder.photoDir == nil,
            let c = try? ModelContainer(for: schema, configurations: ModelConfiguration(cloudKitDatabase: .private(CloudBackup.containerID))) {
             CloudBackup.activeThisLaunch = true
             return c
@@ -56,7 +60,12 @@ struct MyTinyJungleApp: App {
                 .tint(Jungle.forest)
                 .task { DemoSeeder.seedIfAsked(container.mainContext) }
                 .task { try? await Task.sleep(for: .seconds(2)); AdPool.shared.start() }
-                .task { await AuthManager.shared.refresh(); await CloudBackup.shared.refresh() }
+                .task {
+                    JungleSync.shared.start(container)
+                    await AuthManager.shared.refresh(); await CloudBackup.shared.refresh()
+                    await Store.shared.refresh()
+                    await JungleSync.shared.sync()
+                }
                 .onOpenURL { if !PlanLink.handle($0) { GIDSignIn.sharedInstance.handle($0) } }
         }
         .modelContainer(container)
@@ -97,7 +106,8 @@ struct RootView: View {
                 }
             }
             .onChange(of: phase) { _, p in
-                if p == .background { Task { await CareReminders.reschedule(ctx) } }
+                if p == .background { Task { await CareReminders.reschedule(ctx) }; Task { await JungleSync.shared.sync() } }
+                if p == .active { Task { await JungleSync.shared.sync() } }
                 if p == .active { Task { await Household.shared.sync(ctx); if UserDefaults.standard.bool(forKey: "house.openHub") { UserDefaults.standard.set(false, forKey: "house.openHub"); openHouse = true } }; Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); ProactiveVoice.speak(ctx); await CareReminders.reschedule(ctx) } }
             }
             // Reschedule on every change to the care log.
@@ -110,13 +120,16 @@ struct RootView: View {
                 if Household.demo { try? await Task.sleep(for: .seconds(1.5)); Household.shared.seedDemo(ctx) }
                 await Household.shared.sync(ctx)
                 if ProcessInfo.processInfo.arguments.contains("-openSharedJungle") { openHouse = true }
+                if DemoSeeder.demoOpen == "chat" {
+                    for _ in 0..<60 { if let p = (try? ctx.fetch(FetchDescriptor<Plant>()))?.first(where: { !($0.messages ?? []).isEmpty }) { try? await Task.sleep(for: .seconds(1.5)); openChat = p.id.uuidString; break }; try? await Task.sleep(for: .seconds(0.5)) }
+                }
             }
             .task {
                 JungleRooms.sync((try? ctx.fetch(FetchDescriptor<Space>())) ?? [])
                 await Climate.shared.refreshClimate()
                 await Climate.shared.refreshForecast()
                 ProactiveVoice.speak(ctx)
-                if CareReminders.enabled, await UNUserNotificationCenter.current().notificationSettings().authorizationStatus == .notDetermined {
+                if CareReminders.enabled, DemoSeeder.photoDir == nil, await UNUserNotificationCenter.current().notificationSettings().authorizationStatus == .notDetermined {
                     await CareReminders.requestPermission()
                 }
                 await CareReminders.reschedule(ctx)

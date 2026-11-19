@@ -9,6 +9,10 @@ struct SpacesView: View {
     @State private var adding = false
 
     var body: some View {
+        DuoCompanion(mood: .plant, title: "Spaces", detail: "Room by room, the right light for each plant.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         ScrollView {
             VStack(spacing: 14) {
                 if spaces.isEmpty {

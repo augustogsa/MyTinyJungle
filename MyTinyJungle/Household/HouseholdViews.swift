@@ -200,6 +200,10 @@ struct SharedJungleView: View {
     private var house = Household.shared
 
     var body: some View {
+        DuoCompanion(mood: .love, title: "Shared jungle", detail: "Take turns, never double-water.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         Group {
             if house.active { hub } else { HouseSetupView(plants: plants) }
         }
@@ -413,6 +417,10 @@ struct InviteView: View {
     }
 
     var body: some View {
+        DuoCompanion(mood: .wave, title: "Invite someone", detail: "Partner, family or housemates.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 22) {
@@ -586,6 +594,10 @@ struct AwayView: View {
     @State private var cover: String?
     private var house = Household.shared
     var body: some View {
+        DuoCompanion(mood: .sleep, title: "Going away", detail: "Holiday plans so every plant stays fine.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         NavigationStack {
             Form {
                 Section {

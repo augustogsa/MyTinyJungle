@@ -25,6 +25,10 @@ struct AddPlantFlow: View {
     @State private var locationEdited = false
 
     var body: some View {
+        DuoCompanion(mood: .plant, title: "A new green friend", detail: "Snap it, meet it, and it moves in.") { duoContent }
+    }
+
+    @ViewBuilder private var duoContent: some View {
         NavigationStack {
             Group {
                 switch stage {
@@ -384,7 +388,7 @@ struct AddPlantFlow: View {
         plant.isOutdoor = outdoor
         plant.photo = photo
         ctx.insert(plant)
-        ErtyCheer.shared.show(.plant, Grammar.pt(String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name")))
+        ErtyCheer.shared.show(.celebrate, Grammar.pt(String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name")))
         if let photo {
             let e = CareEvent(kind: .photo, note: "First photo", source: "onboarding"); e.photo = photo; e.plant = plant; ctx.insert(e)
         }
