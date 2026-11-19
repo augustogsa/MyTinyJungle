@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"net/http"
 	"regexp"
@@ -90,7 +91,7 @@ func (s *Server) newSession(ctx context.Context, tx pgx.Tx, uid, dev, family str
 	return tokens{uid, access, refresh, int(s.cfg.AccessTTL.Seconds())}, err
 }
 
-type providerID struct{ Subject, Email string }
+type providerID struct{ Subject, Email, nonce string }
 
 func (s *Server) verifyProvider(provider, token string) (providerID, error) {
 	var (
@@ -115,11 +116,12 @@ func (s *Server) verifyProvider(provider, token string) (providerID, error) {
 	var c struct {
 		jwt.Std
 		Email string `json:"email"`
+		Nonce string `json:"nonce"`
 	}
 	if json.Unmarshal(p, &c) != nil || c.Check(iss, aud, s.now()) != nil || c.Sub == "" {
 		return providerID{}, apiError{http.StatusUnauthorized, "invalid_identity_token"}
 	}
-	return providerID{c.Sub, strings.ToLower(c.Email)}, nil
+	return providerID{c.Sub, strings.ToLower(c.Email), c.Nonce}, nil
 }
 
 type deviceIn struct {
@@ -140,6 +142,7 @@ func (s *Server) signIn(w http.ResponseWriter, r *http.Request) {
 		Provider string `json:"provider"`
 		IDToken  string `json:"idToken"`
 		Name     string `json:"name"`
+		Nonce    string `json:"nonce"` // raw nonce; the token must carry it as is or as its SHA-256 hex
 	}
 	if err := decode(r, &in); err != nil {
 		s.fail(w, r, err)
@@ -150,6 +153,12 @@ func (s *Server) signIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	id, err := s.verifyProvider(in.Provider, in.IDToken)
+	if err == nil && in.Nonce != "" {
+		h := sha256.Sum256([]byte(in.Nonce))
+		if id.nonce != in.Nonce && id.nonce != hex.EncodeToString(h[:]) {
+			err = apiError{http.StatusUnauthorized, "invalid_identity_token"}
+		}
+	}
 	if err != nil {
 		s.fail(w, r, err)
 		return

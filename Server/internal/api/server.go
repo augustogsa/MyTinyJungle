@@ -63,6 +63,8 @@ func (s *Server) Handler() http.Handler {
 	m.HandleFunc("GET /v1/content/b/{name}", s.contentBlob)
 
 	m.Handle("POST /v1/auth/signin", s.ipLimit(rateAuthIP, s.signIn))
+	m.Handle("GET /v1/auth/apple/start", s.ipLimit(rateAuthIP, s.appleStart))
+	m.Handle("POST /v1/auth/apple/callback", s.ipLimit(rateAuthIP, s.appleCallback))
 	m.Handle("POST /v1/auth/refresh", s.ipLimit(rateAuthIP, s.refresh))
 	m.Handle("POST /v1/auth/signout", s.user(s.signOut))
 	m.Handle("POST /v1/auth/link", s.user(s.link))
