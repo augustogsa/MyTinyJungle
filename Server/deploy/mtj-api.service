@@ -34,7 +34,6 @@ RestrictRealtime=yes
 RestrictSUIDSGID=yes
 LockPersonality=yes
 MemoryDenyWriteExecute=yes
-RemoveIPC=yes
 CapabilityBoundingSet=
 AmbientCapabilities=
 SystemCallArchitectures=native

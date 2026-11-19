@@ -30,6 +30,9 @@ One My Tiny Jungle account across iPhone, iPad, Android and web: same plants, sa
 | Service | systemd sandbox: no capabilities, seccomp `@system-service`, read-only system, private /tmp and devices, write access only to `/var/lib/mtj/media`, 512 MB memory cap. |
 | Store | App Store JWS verified against the pinned Apple Root CA G3 plus Apple's marker OIDs. Google RTDN needs a verified Google OIDC token from the configured service account, then the Play Developer API is called. |
 
+## Never on this VPS
+- `RemoveIPC=yes` in the mtj-api unit. The service's primary group is `nobody` (so it can own the socket), and RemoveIPC deletes every IPC object owned by that group when the service stops, including Apache's accept lock. On 2026-11-19 a restart this way took every site on the box offline for a few minutes (`AH00272 apr_proc_mutex_lock failed`); `/scripts/restartsrv_httpd` brought them back.
+
 ## Secrets (VPS, root-only)
 `/opt/mtj/secrets/api.env` (DSNs, signing kid, media key, Access team/AUD, admin emails, Play settings), `owner.env` (migration DSN), `keys/*.key` (Ed25519 seeds), `backup.key`. Copies of `backup.key` and the origin certificate are in `~/.config/mydigitalmagnets/mytinyjungle/`.
 
