@@ -167,3 +167,29 @@ func parseDiagnosis(raw string) (diagnosis, bool) {
 	}
 	return d, true
 }
+
+// claudeText sends a photo and prompt to Claude; false when no key or no answer.
+func (s *Server) claudeText(ctx context.Context, photo, prompt string) (string, bool) {
+	client := s.aiClient()
+	if client == nil {
+		return "", false
+	}
+	resp, err := client.Messages.New(ctx, anthropic.MessageNewParams{
+		Model:     diagnoseModel,
+		MaxTokens: 1000,
+		Messages: []anthropic.MessageParam{anthropic.NewUserMessage(
+			anthropic.NewImageBlockBase64("image/jpeg", photo),
+			anthropic.NewTextBlock(prompt),
+		)},
+	})
+	if err != nil {
+		return "", false
+	}
+	var text strings.Builder
+	for _, b := range resp.Content {
+		if t, ok := b.AsAny().(anthropic.TextBlock); ok {
+			text.WriteString(t.Text)
+		}
+	}
+	return text.String(), text.Len() > 0
+}

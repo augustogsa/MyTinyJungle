@@ -22,4 +22,10 @@ if [[ $ai != *'"ok"'* ]]; then
   (cd /var/lib/mtj-db/home && sudo -u mtj XDG_RUNTIME_DIR=/run/user/$(id -u mtj) systemctl --user restart mtj-ai) || true
   $A "plant vision model restarted" "Health: ${ai:-no answer}. Diagnoses fall back to the knowledge base meanwhile."
 fi
+bash /opt/mtj/bin/mtj-id-setup.sh --species-only >/dev/null 2>&1 || true
+idh=$(curl -s -m 5 http://127.0.0.1:8092/ || true)
+if [[ $idh != *'"ok"'* ]]; then
+  (cd /var/lib/mtj-db/home && sudo -u mtj XDG_RUNTIME_DIR=/run/user/$(id -u mtj) systemctl --user restart mtj-id) || true
+  $A "plant ID service restarted" "Health: ${idh:-no answer}."
+fi
 exit 0

@@ -1,9 +1,11 @@
 package api
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
 	"net/http"
 	"sort"
 	"strings"
@@ -213,7 +215,6 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	}
 	ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 60*time.Second)
 	defer cancel()
-	said := ask(ctx, in.Photo, "What houseplant is this? Answer with the most likely scientific name and common name only, like: Monstera deliciosa (Swiss cheese plant). If unsure give two options separated by ' or '.", 40)
 	theBrain.species()
 	type cand struct {
 		ID         string  `json:"id"`
@@ -222,47 +223,77 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		Score      float64 `json:"score"`
 	}
 	var out []cand
-	low := strings.ToLower(said)
-	speciesDB.RLock()
-	for _, sp := range speciesDB.list {
-		sc := 0.0
-		sci := strings.ToLower(sp.Scientific)
-		switch {
-		case sci != "" && strings.Contains(low, sci):
-			sc = 1
-		case sp.En != "" && strings.Contains(low, strings.ToLower(sp.En)):
-			sc = 0.7
-		case func() bool {
-			for _, a := range sp.Aliases {
-				if len(a) > 5 && strings.Contains(low, a) {
-					return true
-				}
-			}
-			return false
-		}():
-			sc = 0.6
-		default:
-			if g := strings.Fields(sci); len(g) > 0 && len(g[0]) > 3 && strings.Contains(low, g[0]) {
-				sc = 0.4
+	add := func(id string, score float64) {
+		speciesDB.RLock()
+		sp := speciesDB.byID[id]
+		speciesDB.RUnlock()
+		if sp == nil {
+			return
+		}
+		for _, c := range out {
+			if c.ID == id {
+				return
 			}
 		}
-		if sc > 0 {
-			name := sp.En
-			if strings.HasPrefix(in.Lang, "pt") && sp.Pt != "" {
-				name = sp.Pt
-			}
-			out = append(out, cand{sp.ID, sp.Scientific, name, sc})
+		name := sp.En
+		if strings.HasPrefix(in.Lang, "pt") && sp.Pt != "" {
+			name = sp.Pt
+		}
+		out = append(out, cand{sp.ID, sp.Scientific, name, math.Round(score*100) / 100})
+	}
+	// 1. Our own species model (BioCLIP over our list).
+	source := "internal"
+	for _, c := range bioclip(ctx, in.Photo) {
+		if c.Score >= 0.05 {
+			add(c.ID, c.Score)
 		}
 	}
-	speciesDB.RUnlock()
-	sort.Slice(out, func(i, j int) bool { return out[i].Score > out[j].Score })
+	// 2. Not confident: a free external model, then Claude, named against our list.
+	if len(out) == 0 || out[0].Score < 0.35 {
+		prompt := "Identify this plant. Answer only with JSON: {\"candidates\":[{\"scientific\":\"...\",\"common\":\"...\",\"confidence\":0.0}]} with up to three guesses, most likely first."
+		var raw string
+		if t, ok := geminiText(ctx, in.Photo, prompt); ok {
+			raw, source = t, "free"
+		} else if t, ok := s.claudeText(ctx, in.Photo, prompt); ok {
+			raw, source = t, "claude"
+		}
+		if i, j := strings.Index(raw, "{"), strings.LastIndex(raw, "}"); i >= 0 && j > i {
+			var g struct {
+				Candidates []struct {
+					Scientific, Common string
+					Confidence         float64
+				}
+			}
+			if json.Unmarshal([]byte(raw[i:j+1]), &g) == nil {
+				var ext []cand
+				for _, c := range g.Candidates {
+					if sp := theBrain.findSpecies(c.Scientific); sp != nil {
+						ext = append(ext, cand{ID: sp.ID, Score: c.Confidence})
+					} else if sp := theBrain.findSpecies(c.Common); sp != nil {
+						ext = append(ext, cand{ID: sp.ID, Score: c.Confidence})
+					}
+				}
+				if len(ext) > 0 {
+					prev := out
+					out = nil
+					for _, c := range ext {
+						add(c.ID, c.Score)
+					}
+					for _, c := range prev {
+						add(c.ID, c.Score*0.5)
+					}
+				}
+			}
+		}
+	}
 	if len(out) > 3 {
 		out = out[:3]
 	}
 	if len(out) == 0 {
-		s.gap(ctx, "identify", said)
+		s.gap(ctx, "identify", "unknown plant")
 	}
-	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "seen": said})
+	confident := len(out) > 0 && out[0].Score >= 0.5
+	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "confident": confident, "source": source})
 }
 
 // POST /v1/brain/care-plan {species, situation, lat?, lon?}: watering rhythm, light, feeding, repotting and
@@ -366,7 +397,23 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// ask is a free-form prompt to our own vision model.
-func ask(ctx context.Context, jpegB64, prompt string, maxTokens int) string {
-	return seeWith(ctx, jpegB64, prompt, maxTokens)
+type bioCand struct {
+	ID    string  `json:"id"`
+	Score float64 `json:"score"`
+}
+
+// bioclip asks our plant ID service (127.0.0.1:8092) for its top species.
+func bioclip(ctx context.Context, jpegB64 string) []bioCand {
+	body, _ := json.Marshal(map[string]string{"photo": jpegB64})
+	cctx, cancel := context.WithTimeout(ctx, 20*time.Second)
+	defer cancel()
+	req, _ := http.NewRequestWithContext(cctx, "POST", "http://127.0.0.1:8092/", bytes.NewReader(body))
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil
+	}
+	defer res.Body.Close()
+	var out struct{ Candidates []bioCand }
+	json.NewDecoder(res.Body).Decode(&out)
+	return out.Candidates
 }

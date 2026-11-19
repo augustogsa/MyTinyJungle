@@ -461,15 +461,25 @@ func (s *Server) remember(ctx context.Context, sig, lang string, d diagnosis) {
 
 // askGemini uses Google's free tier when MTJ_GEMINI_KEY is set.
 func askGemini(ctx context.Context, photo, note string) (diagnosis, bool) {
-	key := os.Getenv("MTJ_GEMINI_KEY")
-	if key == "" {
+	t, ok := geminiText(ctx, photo, diagnoseSystem+"\n\n"+note)
+	if !ok {
 		return diagnosis{}, false
 	}
+	d, ok := parseDiagnosis(t)
+	d.Source = "free"
+	return d, ok
+}
+
+// geminiText sends a photo and prompt to Gemini's free tier; false when no key or no answer.
+func geminiText(ctx context.Context, photo, prompt string) (string, bool) {
+	key := os.Getenv("MTJ_GEMINI_KEY")
+	if key == "" {
+		return "", false
+	}
 	body, _ := json.Marshal(map[string]any{
-		"systemInstruction": map[string]any{"parts": []any{map[string]string{"text": diagnoseSystem}}},
 		"contents": []any{map[string]any{"parts": []any{
 			map[string]any{"inline_data": map[string]string{"mime_type": "image/jpeg", "data": photo}},
-			map[string]string{"text": note},
+			map[string]string{"text": prompt},
 		}}},
 		"generationConfig": map[string]any{"responseMimeType": "application/json"},
 	})
@@ -480,7 +490,7 @@ func askGemini(ctx context.Context, photo, note string) (diagnosis, bool) {
 	req.Header.Set("x-goog-api-key", key)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return diagnosis{}, false
+		return "", false
 	}
 	defer res.Body.Close()
 	var out struct {
@@ -489,11 +499,9 @@ func askGemini(ctx context.Context, photo, note string) (diagnosis, bool) {
 		}
 	}
 	if res.StatusCode != 200 || json.NewDecoder(res.Body).Decode(&out) != nil || len(out.Candidates) == 0 || len(out.Candidates[0].Content.Parts) == 0 {
-		return diagnosis{}, false
+		return "", false
 	}
-	d, ok := parseDiagnosis(out.Candidates[0].Content.Parts[0].Text)
-	d.Source = "free"
-	return d, ok
+	return out.Candidates[0].Content.Parts[0].Text, true
 }
 
 // withSituation adds the advice of the most specific scenario that explains this problem (the library stays

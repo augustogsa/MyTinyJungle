@@ -121,12 +121,12 @@ What the app knows that isn't the user's lives in `Content/` and is served by th
 ## Brain (plant intelligence, mostly internal)
 Cheapest first; paid models only when our own can't answer.
 1. **Library** (`ai_library`): answers already given, keyed by species + top knowledge matches + language. Text only. Owners rate answers (`POST /v1/diagnose/feedback`); poorly rated ones are dropped.
-2. **Own model + knowledge base**: llama.cpp + SmolVLM2 2.2B (Apache-2.0) on 127.0.0.1:8091 (`mtj-ai`, rootless podman as `mtj`, 2.5 GB cap, set up by `deploy/mtj-ai-setup.sh`, restarted by the watchdog). It describes the photo; negated clauses are dropped; the owner's note weighs more. Evidence is ranked against `knowledge.json` (symptoms, pests, diseases, deficiencies) plus the species' own problems from `species.json`, boosted by **scenarios** (room, season, weather, soil, pot, care events), by **clashes** between the plant's needs and its situation, and by pests the species is known for. Answers come from our vetted fixes, translated with the content locale tables.
+2. **Own model + knowledge base**: llama.cpp + Qwen2.5-VL 3B on 127.0.0.1:8091 (`mtj-ai`, rootless podman as `mtj`, 3.5 GB cap, set up by `deploy/mtj-ai-setup.sh`, restarted by the watchdog). It describes the photo; negated clauses are dropped; the owner's note weighs more. Evidence is ranked against `knowledge.json` (symptoms, pests, diseases, deficiencies) plus the species' own problems from `species.json`, boosted by **scenarios** (room, season, weather, soil, pot, care events), by **clashes** between the plant's needs and its situation, and by pests the species is known for. Answers come from our vetted fixes, translated with the content locale tables.
 3. **Free model**: Gemini free tier when `MTJ_GEMINI_KEY` is set.
 4. **Claude** (`MTJ_AI_KEY`), last resort, given our candidates; saved to the library. With no key, our best guess is returned with low confidence.
 - Weather: Open-Meteo (free, no key), coordinates rounded to ~10 km, cached an hour, never stored.
 - `POST /v1/brain/ask` care Q&A (problems, topics, glossary, soils, scenarios), free, never paid.
-- `POST /v1/brain/identify` names a plant from a photo with our model, matched to our 600+ species.
+- `POST /v1/brain/identify` names a plant with BioCLIP (MIT, `mtj-id` on 127.0.0.1:8092, rootless podman as `mtj`, `deploy/mtj-id-setup.sh`), zero-shot over our 600+ species with a houseplant prior; below 0.35 it asks Gemini (free) then Claude when keys are set. Returns top 3 + `confident`.
 - `POST /v1/brain/care-plan` watering rhythm, feeding, light, repotting, toxicity and warnings for the plant's real conditions.
 - `PUT /v1/me/weather-watch` frost/heatwave alert push per ~10 km cell, once a day max.
 - Gaps (`brain_gaps`): daily counts of knowledge words we couldn't answer, nothing personal; `GET /v1/admin/brain` shows them with library stats so content grows where owners ask.
