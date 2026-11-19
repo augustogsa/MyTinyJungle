@@ -12,6 +12,26 @@ final class HouseholdSceneDelegate: NSObject, UIWindowSceneDelegate {
 }
 
 /// Me tab entry: invite when alone, people and your turns when shared.
+/// Me tab: your care level and badges from caring together.
+struct MyCareProfileCard: View {
+    let profile: CareProfile
+    var body: some View {
+        HStack(spacing: 14) {
+            LevelAvatar(profile: profile, size: 56)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(profile.level.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                Text(Grammar.pt(String(localized: "\(profile.points) points · \(profile.earned.count) badges", comment: "Me care profile card; %1$lld points, %2$lld badges"))).font(.subheadline).foregroundStyle(Jungle.subtle)
+                HStack(spacing: 4) { ForEach(profile.earned.suffix(6)) { Icon3DView($0.icon, size: 22) } }
+            }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
+        }
+        .padding(16)
+        .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
+    }
+}
+
 struct SharedJungleRow: View {
     @State private var open = false
     private var house = Household.shared
@@ -32,6 +52,9 @@ struct SharedJungleRow: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $open) { NavigationStack { SharedJungleView() } }
+        if house.isShared, let me = house.me {
+            NavigationLink { MemberProfileView(member: me) } label: { MyCareProfileCard(profile: house.profile(me)) }.buttonStyle(.plain)
+        }
     }
     private var subtitle: String {
         guard house.isShared else {

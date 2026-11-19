@@ -241,15 +241,22 @@ struct SharedJungleView: View {
                 }
                 JungleGroup(title: Grammar.pt(String(localized: "People", comment: "Hub section: members")), footer: Grammar.pt(String(localized: "Turns go to whoever didn't do it last, keeping things fair across the month.", comment: "Hub footer explaining turn logic"))) {
                     ForEach(house.members) { m in
-                        HStack(spacing: 12) {
-                            MemberAvatar(member: m, size: 36)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(m.id == house.meID ? Grammar.pt(String(localized: "\(m.name) (you)", comment: "Member row name for yourself")) : m.name).foregroundStyle(Jungle.text)
-                                Text(memberLine(m)).font(.caption).foregroundStyle(Jungle.subtle)
+                        NavigationLink { MemberProfileView(member: m) } label: {
+                            HStack(spacing: 12) {
+                                LevelAvatar(profile: house.profile(m), size: 44)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    HStack(spacing: 4) {
+                                        Text(m.id == house.meID ? Grammar.pt(String(localized: "\(m.name) (you)", comment: "Member row name for yourself")) : m.name).foregroundStyle(Jungle.text)
+                                        if house.star?.id == m.id { Image(systemName: "star.fill").font(.caption2).foregroundStyle(Jungle.sun) }
+                                    }
+                                    Text(memberLine(m)).font(.caption).foregroundStyle(Jungle.subtle)
+                                    ProfileStrip(profile: house.profile(m))
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
                             }
-                            Spacer()
-                        }
-                        .padding(.vertical, 10)
+                            .padding(.vertical, 10).contentShape(Rectangle())
+                        }.buttonStyle(.plain)
                         JungleDivider()
                     }
                     NavigationLink { ManageJungleView() } label: {
@@ -330,7 +337,7 @@ struct SharedJungleView: View {
     private func memberLine(_ m: Member) -> String {
         if m.isAway() { return Grammar.pt(String(localized: "Away until \(m.awayUntil!.formatted(.dateTime.weekday(.wide).day()))", comment: "Member status: travelling; %@ date")) }
         let mine = plants.filter { house.turn(for: $0.id)?.member.id == m.id && CareEngine.needsYou($0) }.count
-        let role = m.role == .owner ? Grammar.pt(String(localized: "Owner", comment: "Member role")) : Grammar.pt(String(localized: "Member", comment: "Member role"))
+        let role = house.profile(m).roleLine
         return mine == 0 ? role : Grammar.pt(String(localized: "\(role) · \(mine) to do", comment: "Member status: role and count of plants on their turn"))
     }
 }
@@ -392,11 +399,16 @@ struct InviteView: View {
     @State private var mail = false
     @State private var system = false
     @State private var copied = false
+    @State private var sitter = Household.shared.state?.sitterInviteUntil.map { $0 > Date() } ?? false
+    @State private var sitterUntil = Household.shared.state?.sitterInviteUntil ?? Calendar.current.date(byAdding: .day, value: 7, to: Date())!
     private var house = Household.shared
 
     private var url: URL? { house.share?.url ?? (Household.demo ? URL(string: "https://www.icloud.com/share/0demo-jungle") : nil) }
     private var message: String {
         let me = house.me?.firstName ?? ""
+        if sitter {
+            return Grammar.pt(String(localized: "\(me) asked you to plant-sit \(house.state?.name ?? "our plants") until \(sitterUntil.formatted(.dateTime.weekday(.wide).day().month())). My Tiny Jungle shows you exactly what each plant needs, and you'll earn a Plant sitter badge.", comment: "Sitter invite message; %1$@ inviter, %2$@ jungle name, %3$@ date"))
+        }
         return Grammar.pt(String(localized: "\(me) invited you to care for \(house.state?.name ?? "our plants") together on My Tiny Jungle. We'll take turns, and the app tells us whose turn it is.", comment: "Invite message text; %1$@ inviter name, %2$@ jungle name"))
     }
 
@@ -410,6 +422,23 @@ struct InviteView: View {
                         Text(blurb).font(.subheadline).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
                     }
                     .padding(.top, 8)
+                    VStack(spacing: 12) {
+                        Picker(selection: $sitter) {
+                            Text("Someone at home", comment: "Invite mode: regular member").tag(false)
+                            Text("A plant sitter", comment: "Invite mode: temporary plant sitter").tag(true)
+                        } label: { EmptyView() }
+                        .pickerStyle(.segmented)
+                        if sitter {
+                            DatePicker(selection: $sitterUntil, in: Date()..., displayedComponents: .date) {
+                                Label { Text("Sitting until", comment: "Invite: sitter end date") } icon: { Image(systemName: "calendar") }.foregroundStyle(Jungle.text)
+                            }
+                            Text("They get your plants' turns while you're away, earn a Plant sitter badge on their profile, and step back on their own when it ends.", comment: "Invite: sitter explanation")
+                                .font(.footnote).foregroundStyle(Jungle.subtle).frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    .padding(14).jungleCard()
+                    .onChange(of: sitter) { _, on in house.setSitterInvite(on ? sitterUntil : nil) }
+                    .onChange(of: sitterUntil) { _, d in if sitter { house.setSitterInvite(d) } }
                     if let url {
                         VStack(spacing: 10) {
                             ShareLink(item: url, subject: Text(house.state?.name ?? ""), message: Text(message)) {
@@ -456,7 +485,8 @@ struct InviteView: View {
     }
 
     private var blurb: String {
-        switch house.state?.kind ?? .couple {
+        if sitter { return Grammar.pt(String(localized: "Going away? Invite a friend or neighbour to plant-sit. They see what each plant needs and get reminders until you're back.", comment: "Invite blurb, plant sitter")) }
+        return switch house.state?.kind ?? .couple {
         case .couple: Grammar.pt(String(localized: "Your partner gets reminders on their turn and sees when you've watered. No more double drinks.", comment: "Invite blurb, couple"))
         case .family: Grammar.pt(String(localized: "Everyone at home can help. Turns rotate fairly, kids included.", comment: "Invite blurb, family"))
         case .housemates: Grammar.pt(String(localized: "Fair turns for the shared plants, and a heads-up when someone's away.", comment: "Invite blurb, housemates"))

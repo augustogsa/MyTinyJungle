@@ -126,6 +126,18 @@
         }
       }
     },
+    "%@ asked you to plant-sit %@ until %@. My Tiny Jungle shows you exactly what each plant needs, and you'll earn a Plant sitter badge.": {
+      "comment": "Sitter invite message; %1$@ inviter, %2$@ jungle name, %3$@ date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ te chamou para ser babá de %2$@ até %3$@. O My Tiny Jungle mostra direitinho o que cada planta precisa, e você ganha a conquista Babá de plantas."
+          }
+        }
+      }
+    },
     "%@ Harvest in about %@ days. %@": {
       "comment": "Crop step: how to start, days to harvest, tip",
       "localizations": {
@@ -150,6 +162,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ Se eu ficar me esticando pra janela ou as folhas novas saírem pequenininhas, é que preciso de mais luz. Manchas desbotadas ou queimadas são sol direto demais."
+          }
+        }
+      }
+    },
+    "%@ joined as plant sitter.": {
+      "comment": "Feed: plant sitter joined; %@ name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entrou como babá de plantas."
           }
         }
       }
@@ -1220,6 +1244,18 @@
         }
       }
     },
+    "%@ · joined %@": {
+      "comment": "Manage member subtitle; %1$@ role, %2$@ date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · entrou em %2$@"
+          }
+        }
+      }
+    },
     "%@ · last %@": {
       "comment": "Care plan hint · last done relative date",
       "localizations": {
@@ -2185,6 +2221,30 @@
         }
       }
     },
+    "%lld of 10 sitter visits": {
+      "comment": "Badge progress",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de 10 visitas de babá"
+          }
+        }
+      }
+    },
+    "%lld of 20 waterings": {
+      "comment": "Badge progress",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de 20 regas"
+          }
+        }
+      }
+    },
     "%lld of 3 new leaves logged": {
       "comment": "Milestone progress detail",
       "localizations": {
@@ -2207,6 +2267,18 @@
         }
       }
     },
+    "%lld of 5 covers": {
+      "comment": "Badge progress",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de 5 coberturas"
+          }
+        }
+      }
+    },
     "%lld of 5 plants": {
       "comment": "Milestone progress detail",
       "localizations": {
@@ -2214,6 +2286,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld de 5 plantas"
+          }
+        }
+      }
+    },
+    "%lld of 5 thank-yous": {
+      "comment": "Badge progress",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de 5 agradecimentos"
           }
         }
       }
@@ -2612,6 +2696,30 @@
         }
       }
     },
+    "%lld points to %@": {
+      "comment": "Profile: points to next level; %1$lld points, %2$@ level name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld pontos para %2$@"
+          }
+        }
+      }
+    },
+    "%lld points · %lld badges": {
+      "comment": "Me care profile card; %1$lld points, %2$lld badges",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld pontos · %2$lld conquistas"
+          }
+        }
+      }
+    },
     "%lld rooms": {
       "comment": "Me shortcut subtitle: number of rooms with plants",
       "localizations": {
@@ -2874,6 +2982,18 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%lld · %@": {
+      "comment": "Member stat: care count and share; %1$lld count, %2$@ percent",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld · %2$@"
           }
         }
       }
@@ -3468,6 +3588,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uma plantinha está pensando em você"
+          }
+        }
+      }
+    },
+    "A plant sitter": {
+      "comment": "Invite mode: temporary plant sitter",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma babá de plantas"
           }
         }
       }
@@ -4591,6 +4723,18 @@
         }
       }
     },
+    "Badges · %lld of %lld": {
+      "comment": "Profile section; earned of total",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conquistas · %1$lld de %2$lld"
+          }
+        }
+      }
+    },
     "BEHOLD. A new leaf.": {
       "comment": "Plant thanks the user after care action 'newLeaf'. If the line is short and dry it is the independent (terse) personality; if theatrical it is the dramatic one; otherwise warm and cheerful.",
       "localizations": {
@@ -5401,6 +5545,30 @@
         }
       }
     },
+    "Care for 5 different plants": {
+      "comment": "Badge goal",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuide de 5 plantas diferentes"
+          }
+        }
+      }
+    },
+    "Care for a jungle while its people are away": {
+      "comment": "Badge goal",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuide de uma selva enquanto o pessoal viaja"
+          }
+        }
+      }
+    },
     "Care for your plants together": {
       "comment": "Shared jungle setup headline",
       "extractionState": "manual",
@@ -5453,6 +5621,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cuidados"
+          }
+        }
+      }
+    },
+    "Care on %lld of 7 days in two weeks": {
+      "comment": "Badge progress",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuide em %lld de 7 dias em duas semanas"
           }
         }
       }
@@ -6706,6 +6886,42 @@
         }
       }
     },
+    "Cover for someone once": {
+      "comment": "Badge goal",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cubra alguém uma vez"
+          }
+        }
+      }
+    },
+    "Cover hero": {
+      "comment": "Badge title: covered 5 times",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herói da cobertura"
+          }
+        }
+      }
+    },
+    "covers": {
+      "comment": "Profile stat caption: times covered for someone",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "coberturas"
+          }
+        }
+      }
+    },
     "Cozy season. One last meal, then let them rest.": {
       "comment": "Autumn tip",
       "localizations": {
@@ -7150,6 +7366,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Você liga o aquecedor no inverno?"
+          }
+        }
+      }
+    },
+    "Do your fair share this month": {
+      "comment": "Badge goal",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faça sua parte este mês"
           }
         }
       }
@@ -8071,6 +8299,18 @@
         }
       }
     },
+    "Extend sitting a week": {
+      "comment": "Manage: extend sitter",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estender por uma semana"
+          }
+        }
+      }
+    },
     "Extra humidity for %@": {
       "comment": "Seasonal to-do; arg is list of plant names",
       "localizations": {
@@ -8100,6 +8340,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tecido"
+          }
+        }
+      }
+    },
+    "Fair and square": {
+      "comment": "Badge title: shared care evenly",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo justo"
           }
         }
       }
@@ -8547,6 +8799,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Teias finas"
+          }
+        }
+      }
+    },
+    "First drop": {
+      "comment": "Badge title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primeira gota"
           }
         }
       }
@@ -9403,6 +9667,18 @@
         }
       }
     },
+    "Going away? Invite a friend or neighbour to plant-sit. They see what each plant needs and get reminders until you're back.": {
+      "comment": "Invite blurb, plant sitter",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vai viajar? Chame um amigo ou vizinho para ser babá das plantas. A pessoa vê o que cada uma precisa e recebe lembretes até você voltar."
+          }
+        }
+      }
+    },
     "Going on holiday": {
       "comment": "Care guide title; short",
       "localizations": {
@@ -9524,6 +9800,18 @@
         }
       }
     },
+    "Good neighbour": {
+      "comment": "Badge title: covered for someone",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bom vizinho"
+          }
+        }
+      }
+    },
     "Good to know": {
       "comment": "Info row title: tip",
       "localizations": {
@@ -9614,6 +9902,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bolinhos verdes"
+          }
+        }
+      }
+    },
+    "Green thumb": {
+      "comment": "Care level 3 title; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dedo verde"
           }
         }
       }
@@ -12269,6 +12569,30 @@
         }
       }
     },
+    "Jungle keeper": {
+      "comment": "Care level 5 title; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardião da selva"
+          }
+        }
+      }
+    },
+    "Jungle legend": {
+      "comment": "Care level 6 title; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lenda da selva"
+          }
+        }
+      }
+    },
     "Just checking in. Could you give my soil a little poke?": {
       "comment": "Plant speaks up on its own in chat: asks for a soil check. Friendly, first person.",
       "localizations": {
@@ -12546,6 +12870,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Conheça o jeito da sua planta"
+          }
+        }
+      }
+    },
+    "Knows every leaf": {
+      "comment": "Badge title: cared for every plant",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conhece cada folha"
           }
         }
       }
@@ -13414,6 +13750,18 @@
         }
       }
     },
+    "Log your first care": {
+      "comment": "Badge goal",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registre seu primeiro cuidado"
+          }
+        }
+      }
+    },
     "Logged": {
       "comment": "Care guide finished and logged",
       "localizations": {
@@ -13664,6 +14012,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Faça uma muda nova"
+          }
+        }
+      }
+    },
+    "Make a regular member": {
+      "comment": "Manage: sitter becomes member",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tornar membro fixo"
           }
         }
       }
@@ -14534,6 +14894,18 @@
         }
       }
     },
+    "Much loved": {
+      "comment": "Badge title: received thanks",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muito querido"
+          }
+        }
+      }
+    },
     "My Spaces": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -14691,6 +15063,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Minha terra ainda tá fresquinha do replantio e cheia de nutrientes. Vamos esperar umas 6 semanas pra adubar."
+          }
+        }
+      }
+    },
+    "New badge: %@": {
+      "comment": "Notification title; %@ badge name",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nova conquista: %@"
           }
         }
       }
@@ -17110,6 +17494,30 @@
         }
       }
     },
+    "Plant sitter": {
+      "comment": "Badge title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Babá de plantas"
+          }
+        }
+      }
+    },
+    "Plant sitter until %@": {
+      "comment": "Member role line; %@ date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Babá de plantas até %@"
+          }
+        }
+      }
+    },
     "Plant snacks": {
       "comment": "Reminder kind title in Settings, playful. Max 22 chars.",
       "localizations": {
@@ -17121,6 +17529,18 @@
         }
       }
     },
+    "Plant whisperer": {
+      "comment": "Care level 4 title; short",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encantador de plantas"
+          }
+        }
+      }
+    },
     "Plant words, gently explained": {
       "comment": "Care guide title; short",
       "localizations": {
@@ -17128,6 +17548,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Termos de jardinagem sem complicação"
+          }
+        }
+      }
+    },
+    "Plant-sit for a week": {
+      "comment": "Manage: make member a sitter for 7 days",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Babá por uma semana"
           }
         }
       }
@@ -17311,6 +17743,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aponte pro rótulo"
+          }
+        }
+      }
+    },
+    "points": {
+      "comment": "Profile stat caption",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pontos"
           }
         }
       }
@@ -19769,6 +20213,18 @@
         }
       }
     },
+    "Sitting until": {
+      "comment": "Invite: sitter end date",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Babá até"
+          }
+        }
+      }
+    },
     "Size, holes and material": {
       "comment": "Care guide subtitle; short",
       "localizations": {
@@ -20469,6 +20925,18 @@
         }
       }
     },
+    "Someone at home": {
+      "comment": "Invite mode: regular member",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alguém de casa"
+          }
+        }
+      }
+    },
     "Something else": {
       "comment": "UI text in plant/plants/spaces screens; keep short like English",
       "localizations": {
@@ -21060,6 +21528,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Status: %@"
+          }
+        }
+      }
+    },
+    "Steady hands": {
+      "comment": "Badge title: cared on many days",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mãos firmes"
           }
         }
       }
@@ -21863,6 +22343,18 @@
         }
       }
     },
+    "thanks": {
+      "comment": "Profile stat caption: thank-yous received",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "agradecimentos"
+          }
+        }
+      }
+    },
     "Thanks for checking! My soil is dry, so I'd love a drink.": {
       "comment": "Plant speaking in chat, request water, default voice (cheerful/any personality): warm and friendly.",
       "localizations": {
@@ -22190,6 +22682,18 @@
         }
       }
     },
+    "They get your plants' turns while you're away, earn a Plant sitter badge on their profile, and step back on their own when it ends.": {
+      "comment": "Invite: sitter explanation",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pessoa assume a vez das suas plantas enquanto você viaja, ganha a conquista Babá de plantas no perfil e sai sozinha quando acabar."
+          }
+        }
+      }
+    },
     "They open the link and get the app": {
       "comment": "Invite how-it-works step",
       "extractionState": "manual",
@@ -22344,6 +22848,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Este mês, dentro de casa: %1$@\nAo ar livre: %2$@"
+          }
+        }
+      }
+    },
+    "This month's jungle star": {
+      "comment": "Profile: most care this month",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estrela da selva do mês"
           }
         }
       }
@@ -23014,6 +23530,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Savana tropical"
+          }
+        }
+      }
+    },
+    "Trusted sitter": {
+      "comment": "Badge title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Babá de confiança"
           }
         }
       }
@@ -24259,6 +24787,18 @@
         }
       }
     },
+    "Watering buddy": {
+      "comment": "Badge title",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parceiro de rega"
+          }
+        }
+      }
+    },
     "Watering can": {
       "comment": "Tool needed for a care guide",
       "localizations": {
@@ -25054,6 +25594,17 @@
         }
       }
     },
+    "Who": {
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem"
+          }
+        }
+      }
+    },
     "Who did you feed?": {
       "comment": "Plant picker title",
       "localizations": {
@@ -25817,6 +26368,18 @@
         }
       }
     },
+    "Your care profile": {
+      "comment": "Profile screen title, own",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu perfil de cuidados"
+          }
+        }
+      }
+    },
     "Your climate": {
       "comment": "Climate settings section title",
       "localizations": {
@@ -25986,6 +26549,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sua selva começa aqui"
+          }
+        }
+      }
+    },
+    "Your jungle thanks you. See it on your care profile.": {
+      "comment": "Notification body for a new badge",
+      "extractionState": "manual",
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua selva agradece. Veja no seu perfil de cuidados."
           }
         }
       }

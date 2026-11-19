@@ -25,15 +25,20 @@ struct ManageJungleView: View {
                             MemberAvatar(member: m, size: 40)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(m.id == house.meID ? Grammar.pt(String(localized: "\(m.name) (you)", comment: "Member row name for yourself")) : m.name).foregroundStyle(Jungle.text)
-                                Text(Grammar.pt(String(localized: "\(m.role == .owner ? String(localized: "Owner", comment: "Member role") : String(localized: "Member", comment: "Member role")) · joined \(m.joinedAt.formatted(.dateTime.day().month(.abbreviated).year()))", comment: "Manage member subtitle; %1$@ role, %2$@ date")))
+                                Text(Grammar.pt(String(localized: "\(house.profile(m).roleLine) · joined \(m.joinedAt.formatted(.dateTime.day().month(.abbreviated).year()))", comment: "Manage member subtitle; %1$@ role, %2$@ date")))
                                     .font(.caption).foregroundStyle(Jungle.subtle)
                             }
                             Spacer(minLength: 0)
                             if house.isOwner && m.id != house.meID {
-                                Button(role: .destructive) { removing = m } label: {
-                                    Text("Remove", comment: "Remove member button").font(.subheadline.weight(.medium))
-                                }
-                                .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(.red).controlSize(.small)
+                                Menu {
+                                    if m.isSitting() {
+                                        Button { house.setSitting(m.id, until: nil) } label: { Label { Text("Make a regular member", comment: "Manage: sitter becomes member") } icon: { Image(systemName: "person.crop.circle.badge.checkmark") } }
+                                        Button { house.setSitting(m.id, until: (m.sittingUntil ?? Date()).addingTimeInterval(7 * 86_400)) } label: { Label { Text("Extend sitting a week", comment: "Manage: extend sitter") } icon: { Image(systemName: "calendar.badge.plus") } }
+                                    } else {
+                                        Button { house.setSitting(m.id, until: Date().addingTimeInterval(7 * 86_400)) } label: { Label { Text("Plant-sit for a week", comment: "Manage: make member a sitter for 7 days") } icon: { Image(systemName: "airplane") } }
+                                    }
+                                    Button(role: .destructive) { removing = m } label: { Label { Text("Remove", comment: "Remove member button") } icon: { Image(systemName: "person.badge.minus") } }
+                                } label: { Image(systemName: "ellipsis.circle").font(.title3).foregroundStyle(Jungle.subtle).frame(width: 36, height: 36) }
                             }
                         }
                         .padding(.vertical, 10)

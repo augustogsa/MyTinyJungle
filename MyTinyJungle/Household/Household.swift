@@ -48,14 +48,14 @@ final class Household {
     /// Who should care for this plant next: the plan, travel and cover first, then fairness.
     func turn(for plantID: UUID, now: Date = Date()) -> Turn? {
         guard let s = state, isShared else { return nil }
-        let eligible = s.activeMembers.filter { !$0.isAway(now) }
+        let eligible = s.activeMembers.filter { $0.canCare(now) }
         guard !eligible.isEmpty else { return nil }
         // An accepted cover beats everything while it lasts.
         if let r = s.requests.first(where: { $0.state == .accepted && $0.until > now && $0.plantIDs.contains(plantID) }),
            let c = s.member(r.coverID), !c.removed { return Turn(member: c, why: .covering) }
         if case .person(let id)? = s.plans[plantID], let m = s.member(id), !m.removed {
-            if !m.isAway(now) { return Turn(member: m, why: .assigned) }
-            if let c = s.member(m.awayCoverID), !c.removed, !c.isAway(now) { return Turn(member: c, why: .away) }
+            if m.canCare(now) { return Turn(member: m, why: .assigned) }
+            if let c = s.member(m.awayCoverID), c.canCare(now) { return Turn(member: c, why: .away) }
             return rotation(plantID, among: eligible.filter { $0.id != m.id }, s, now).map { Turn(member: $0, why: .away) }
         }
         return rotation(plantID, among: eligible, s, now).map { Turn(member: $0, why: .rotation) }
@@ -145,7 +145,9 @@ final class Household {
             if s.member(meID) == nil || s.member(meID)?.removed == true {
                 let myName = JungleSettings.shared.ownerName.isEmpty ? (metadata.share.currentUserParticipant?.userIdentity.nameComponents.map { PersonNameComponentsFormatter.localizedString(from: $0, style: .default) } ?? Grammar.pt(String(localized: "Me", comment: "Shared jungle: fallback member name for yourself"))) : JungleSettings.shared.ownerName
                 s.members.removeAll { $0.id == meID }
-                s.members.append(Member(id: meID, name: myName, colorIndex: s.members.count))
+                var newbie = Member(id: meID, name: myName, colorIndex: s.members.count)
+                if let u = s.sitterInviteUntil, u > Date() { newbie.sittingUntil = u; s.sitterInviteUntil = nil }
+                s.members.append(newbie)
                 s.activity.insert(Activity(kind: .joined, memberID: meID), at: 0)
                 state = s
                 await commit()
@@ -158,6 +160,12 @@ final class Household {
     }
 
     func rename(_ name: String) { mutate { $0.name = name } }
+    /// Invite mode: the next person who joins is a plant sitter until `until` (nil = a regular member).
+    func setSitterInvite(_ until: Date?) { mutate { $0.sitterInviteUntil = until } }
+    /// Owner turns someone into a sitter for a while, or back into a member.
+    func setSitting(_ memberID: String, until: Date?) {
+        mutate { s in if let i = s.members.firstIndex(where: { $0.id == memberID }) { s.members[i].sittingUntil = until } }
+    }
     func setPlan(_ plantID: UUID, _ plan: CarePlan) { mutate { $0.plans[plantID] = plan == .rotate ? nil : plan } }
 
     /// "Can you take this one?" — to one person or to everyone.
@@ -242,6 +250,7 @@ final class Household {
         s.updatedAt = Date(); state = s
         persist()
         await commit()
+        await celebrateNewBadges()
     }
 
     func sync(_ ctx: ModelContext? = nil) async {
@@ -259,6 +268,7 @@ final class Household {
         persist()
         if let ctx { apply(ctx) }
         await notifyNews(old: old, new: s)
+        await celebrateNewBadges()
         await HouseholdCloud.subscribe(loc)
     }
 
@@ -392,6 +402,19 @@ final class Household {
                 acts.append(Activity(kind: .askCover, memberID: "leo", date: now.addingTimeInterval(-2 * 3600), plantID: plants[2].id, plantName: plants[2].name))
             }
         }
+        // A plant sitter on duty this week, with a few visits, a cover and some thank-yous.
+        var bia = Member(id: "bia", name: "Bia Costa", colorIndex: 4, joinedAt: now.addingTimeInterval(-4 * 86_400))
+        bia.sittingUntil = now.addingTimeInterval(5 * 86_400)
+        s.members.append(bia)
+        for (d, p) in plants.prefix(4).enumerated() {
+            acts.append(Activity(kind: .care, memberID: "bia", date: now.addingTimeInterval(-Double(d + 1) * 86_400 + 3600), plantID: p.id, plantName: p.name, careRaw: CareKind.water.rawValue))
+        }
+        if let p = plants.first {
+            acts.append(Activity(kind: .thanks, memberID: meID, date: now.addingTimeInterval(-86_400), plantID: p.id, plantName: p.name, otherID: "bia"))
+            acts.append(Activity(kind: .coverYes, memberID: meID, date: now.addingTimeInterval(-9 * 86_400), plantID: p.id, plantName: p.name, otherID: "ana"))
+            acts.append(Activity(kind: .thanks, memberID: "ana", date: now.addingTimeInterval(-9 * 86_400 + 3600), plantID: p.id, plantName: p.name, otherID: meID))
+        }
+        acts.append(Activity(kind: .joined, memberID: "bia", date: bia.joinedAt))
         acts.append(Activity(kind: .joined, memberID: "leo", date: s.members[2].joinedAt))
         acts.append(Activity(kind: .joined, memberID: "ana", date: s.members[1].joinedAt))
         s.activity = acts.sorted { $0.date > $1.date }
@@ -431,6 +454,7 @@ enum HouseText {
         let plant = a.plantName ?? ""
         switch a.kind {
         case .care: return careLine(who, a.care ?? .water, plant, recent: a.date > Date().addingTimeInterval(-6 * 3600))
+        case .joined where h.member(a.memberID)?.isSitter == true: return Grammar.pt(String(localized: "\(who) joined as plant sitter.", comment: "Feed: plant sitter joined; %@ name"))
         case .joined: return Grammar.pt(String(localized: "\(who) joined the jungle.", comment: "Feed: member joined; %@ name"))
         case .left: return Grammar.pt(String(localized: "\(who) left the jungle.", comment: "Feed: member left; %@ name"))
         case .removed: return Grammar.pt(String(localized: "\(other) is no longer in the jungle.", comment: "Feed: member removed by owner; %@ name. Neutral, no blame"))

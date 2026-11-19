@@ -47,6 +47,12 @@ struct Member: Codable, Identifiable, Hashable {
     var awayUntil: Date?
     var awayCoverID: String?
     var removed = false
+    /// Plant sitter: a guest who cares for the jungle until this date, then steps back.
+    var sittingUntil: Date?
+    var isSitter: Bool { sittingUntil != nil }
+    func isSitting(_ now: Date = Date()) -> Bool { sittingUntil.map { $0 > now } ?? false }
+    /// Can take turns right now: home, and if a sitter, still on duty.
+    func canCare(_ now: Date = Date()) -> Bool { !removed && !isAway(now) && (!isSitter || isSitting(now)) }
 
     var firstName: String { name.split(separator: " ").first.map(String.init) ?? name }
     var initials: String {
@@ -110,6 +116,8 @@ struct HouseState: Codable {
     var requests: [CoverRequest] = []
     var plants: [SharedPlant] = []
     var updatedAt = Date()
+    /// The next person to join through the link arrives as a plant sitter until this date.
+    var sitterInviteUntil: Date?
 
     var activeMembers: [Member] { members.filter { !$0.removed } }
     func member(_ id: String?) -> Member? { members.first { $0.id == id } }
