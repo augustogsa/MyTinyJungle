@@ -2,6 +2,7 @@ openapi: 3.1.0
 info:
   title: My Tiny Jungle API
   version: 1.0.0
+  license: { name: Proprietary, url: "https://mytinyjungle.com/terms" }
   description: |
     One account across iOS, Android and web. Clients (Swift, Kotlin) are generated from this file.
     Auth: `Authorization: Bearer <accessToken>` (EdDSA JWT, 30 min). Refresh tokens rotate on every use;
@@ -14,12 +15,14 @@ paths:
   /health:
     get:
       operationId: health
+      summary: Health
       security: []
       responses:
         "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
   /v1/auth/signin:
     post:
       operationId: signIn
+      summary: Sign in
       security: []
       requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/SignInRequest" } } } }
       responses:
@@ -30,6 +33,7 @@ paths:
   /v1/auth/refresh:
     post:
       operationId: refresh
+      summary: Refresh
       security: []
       requestBody:
         required: true
@@ -40,10 +44,12 @@ paths:
   /v1/auth/signout:
     post:
       operationId: signOut
+      summary: Sign out
       responses: { "200": { $ref: "#/components/responses/Ok" } }
   /v1/auth/link:
     post:
       operationId: linkProvider
+      summary: Link provider
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, required: [provider, idToken], properties: { provider: { $ref: "#/components/schemas/Provider" }, idToken: { type: string } } } } }
@@ -53,25 +59,30 @@ paths:
   /v1/me:
     get:
       operationId: getMe
+      summary: Get me
       responses: { "200": { description: Me, content: { application/json: { schema: { $ref: "#/components/schemas/Me" } } } } }
     patch:
       operationId: updateMe
+      summary: Update me
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, properties: { displayName: { type: string, maxLength: 60 }, locale: { type: string, maxLength: 12 } } } } }
       responses: { "200": { $ref: "#/components/responses/Ok" } }
     delete:
       operationId: deleteMe
+      summary: Delete me
       description: Signs out everywhere; data is erased after 30 days unless the user signs in again.
       responses: { "200": { $ref: "#/components/responses/Ok" } }
   /v1/me/export:
     get:
       operationId: exportMe
+      summary: Export me
       description: Everything stored about the caller as one JSON file (GDPR art. 15/20, LGPD art. 18). Photos are listed with their media path.
       responses: { "200": { description: Export, content: { application/json: { schema: { type: object } } } } }
   /v1/content/manifest:
     get:
       operationId: getContentManifest
+      summary: Get content manifest
       security: []
       description: Content pack index (logical path to hashed blob). ETag; 304 when unchanged; max-age 300.
       responses:
@@ -80,6 +91,7 @@ paths:
   /v1/content/b/{name}:
     get:
       operationId: getContentBlob
+      summary: Get content blob
       security: []
       description: Immutable content blob named by its SHA-256 prefix; cached for a year.
       parameters: [{ name: name, in: path, required: true, schema: { type: string, pattern: "^[0-9a-f]{32}\\.(json|png|jpg|mov|webp)$" } }]
@@ -87,6 +99,7 @@ paths:
   /v1/me/push-token:
     put:
       operationId: setPushToken
+      summary: Set push token
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, required: [token], properties: { token: { type: string, maxLength: 400 } } } } }
@@ -94,11 +107,13 @@ paths:
   /v1/attest/challenge:
     post:
       operationId: attestChallenge
+      summary: Attest challenge
       description: One-time App Attest challenge for this device, valid 5 minutes.
       responses: { "200": { description: Challenge, content: { application/json: { schema: { type: object, required: [challenge], properties: { challenge: { type: string, format: byte } } } } } } }
   /v1/attest:
     post:
       operationId: attest
+      summary: Attest
       description: iOS App Attest attestation; verified against Apple's App Attestation Root CA, then the device is marked attested.
       requestBody:
         required: true
@@ -107,6 +122,7 @@ paths:
   /v1/jungles:
     get:
       operationId: listJungles
+      summary: List jungles
       description: Creates the personal jungle on first call.
       responses:
         "200":
@@ -114,6 +130,7 @@ paths:
           content: { application/json: { schema: { type: object, required: [jungles], properties: { jungles: { type: array, items: { $ref: "#/components/schemas/Jungle" } } } } } }
     post:
       operationId: createJungle
+      summary: Create jungle
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, required: [name], properties: { name: { type: string, maxLength: 60 } } } } }
@@ -122,6 +139,7 @@ paths:
   /v1/jungles/{id}:
     delete:
       operationId: deleteJungle
+      summary: Delete jungle
       description: Owner ends a shared jungle; members lose access, its records and photos are erased. The personal jungle cannot be deleted.
       parameters: [{ $ref: "#/components/parameters/JungleID" }]
       responses: { "200": { $ref: "#/components/responses/Ok" }, "404": { $ref: "#/components/responses/Error" } }
@@ -129,22 +147,25 @@ paths:
     parameters: [{ $ref: "#/components/parameters/JungleID" }]
     get:
       operationId: getHouse
+      summary: Get house
       description: Shared-jungle household state (members' turns, cover asks, activity, plant roster), merged on devices.
       responses:
         "200": { description: House, content: { application/json: { schema: { $ref: "#/components/schemas/House" } } } }
         "404": { $ref: "#/components/responses/Error" }
     put:
       operationId: putHouse
+      summary: Put house
       description: Compare-and-swap on version (baseVersion null creates). Success wakes other members' devices (silent APNs / FCM data push).
       requestBody:
         required: true
-        content: { application/json: { schema: { type: object, required: [data], properties: { data: { type: object }, baseVersion: { type: integer, format: int64, nullable: true } } } } }
+        content: { application/json: { schema: { type: object, required: [data], properties: { data: { type: object }, baseVersion: { type: [integer, "null"], format: int64 } } } } }
       responses:
         "200": { description: Saved, content: { application/json: { schema: { type: object, required: [version], properties: { version: { type: integer, format: int64 } } } } } }
         "409": { description: Stale; merge this copy and retry, content: { application/json: { schema: { $ref: "#/components/schemas/House" } } } }
   /v1/jungles/{id}/invites:
     post:
       operationId: createInvite
+      summary: Create invite
       parameters: [{ $ref: "#/components/parameters/JungleID" }]
       requestBody:
         required: true
@@ -155,6 +176,7 @@ paths:
   /v1/invites/{code}/redeem:
     post:
       operationId: redeemInvite
+      summary: Redeem invite
       parameters: [{ name: code, in: path, required: true, schema: { type: string } }]
       responses:
         "200": { description: Joined, content: { application/json: { schema: { type: object, required: [jungleId], properties: { jungleId: { type: string, format: uuid } } } } } }
@@ -163,16 +185,19 @@ paths:
     parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: uid, in: path, required: true, schema: { type: string, format: uuid } }]
     patch:
       operationId: updateMember
+      summary: Update member
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, required: [role], properties: { role: { type: string, enum: [member, sitter] }, until: { type: string, format: date-time } } } } }
       responses: { "200": { $ref: "#/components/responses/Ok" } }
     delete:
       operationId: removeMember
+      summary: Remove member
       responses: { "200": { $ref: "#/components/responses/Ok" } }
   /v1/sync/pull:
     get:
       operationId: pull
+      summary: Pull
       parameters:
         - { name: since, in: query, schema: { type: integer, format: int64, default: 0 } }
         - { name: limit, in: query, schema: { type: integer, maximum: 1000, default: 500 } }
@@ -191,6 +216,7 @@ paths:
   /v1/sync/push:
     post:
       operationId: push
+      summary: Push
       requestBody:
         required: true
         content:
@@ -206,6 +232,7 @@ paths:
       - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
     put:
       operationId: putMedia
+      summary: Put media
       requestBody:
         required: true
         content:
@@ -216,15 +243,18 @@ paths:
       responses: { "201": { $ref: "#/components/responses/Ok" }, "403": { $ref: "#/components/responses/Error" } }
     get:
       operationId: getMedia
+      summary: Get media
       responses:
         "200": { description: Image, content: { image/*: { schema: { type: string, format: binary } } } }
         "404": { $ref: "#/components/responses/Error" }
     delete:
       operationId: deleteMedia
+      summary: Delete media
       responses: { "200": { $ref: "#/components/responses/Ok" } }
   /v1/store/apple/transactions:
     post:
       operationId: postAppleTransaction
+      summary: Post apple transaction
       description: Send Transaction.jwsRepresentation after purchase/restore. Purchases must set appAccountToken = userId.
       requestBody:
         required: true
@@ -233,11 +263,52 @@ paths:
   /v1/store/play/purchases:
     post:
       operationId: postPlayPurchase
+      summary: Post play purchase
       description: Send the purchase token. Purchases must set obfuscatedAccountId = userId.
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, required: [purchaseToken], properties: { purchaseToken: { type: string } } } } }
       responses: { "200": { $ref: "#/components/responses/Entitlements" }, "422": { $ref: "#/components/responses/Error" } }
+  /v1/diagnose/feedback:
+    post:
+      operationId: diagnoseFeedback
+      summary: Rate a diagnosis (teaches the library)
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [ref, helped], properties: { ref: { type: string }, helped: { type: boolean } } } } }
+      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
+  /v1/brain/ask:
+    post:
+      operationId: brainAsk
+      summary: Care question answered from our own knowledge
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [q], properties: { q: { type: string }, lang: { type: string }, species: { type: string }, situation: { type: object, additionalProperties: { type: array, items: { type: string } } } } } } }
+      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
+  /v1/brain/identify:
+    post:
+      operationId: brainIdentify
+      summary: Name a plant from a photo with our own model
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte }, lang: { type: string } } } } }
+      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
+  /v1/brain/care-plan:
+    post:
+      operationId: brainCarePlan
+      summary: Care plan for a species in its real conditions
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [species], properties: { species: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, situation: { type: object, additionalProperties: { type: array, items: { type: string } } } } } } }
+      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" }, "404": { $ref: "#/components/responses/Error" } }
+  /v1/me/weather-watch:
+    put:
+      operationId: weatherWatch
+      summary: Frost and heatwave alerts for this device
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [lat, lon, on, deviceId], properties: { lat: { type: number }, lon: { type: number }, lang: { type: string }, on: { type: boolean }, deviceId: { type: string, format: uuid } } } } }
+      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
 components:
   securitySchemes:
     bearer: { type: http, scheme: bearer, bearerFormat: JWT }

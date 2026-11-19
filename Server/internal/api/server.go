@@ -77,6 +77,8 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("POST /v1/diagnose", s.user(s.diagnose))
 	m.Handle("POST /v1/diagnose/feedback", s.user(s.diagnoseFeedback))
 	m.Handle("POST /v1/brain/ask", s.user(s.brainAsk))
+	m.Handle("POST /v1/brain/identify", s.user(s.brainIdentify))
+	m.Handle("POST /v1/brain/care-plan", s.user(s.brainCarePlan))
 	m.Handle("PUT /v1/me/weather-watch", s.user(s.weatherWatch))
 	m.Handle("POST /v1/events", s.ipLimit(rateAuthIP, s.postEvents))
 	m.Handle("POST /v1/referrals/{code}/redeem", s.user(s.redeemReferral))
@@ -113,6 +115,7 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/admin/store-events", s.admin(s.adminStoreEvents))
 	m.Handle("GET /v1/admin/diagnostics", s.admin(s.adminDiagnostics))
 	m.Handle("GET /v1/admin/events", s.admin(s.adminEvents))
+	m.Handle("GET /v1/admin/brain", s.admin(s.adminBrain))
 
 	return s.wrap(m)
 }

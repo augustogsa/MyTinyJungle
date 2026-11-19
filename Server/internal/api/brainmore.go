@@ -62,7 +62,8 @@ func (s *Server) brainAsk(w http.ResponseWriter, r *http.Request) {
 		Steps []string `json:"steps,omitempty"`
 	}
 	var out []answer
-	for i, m := range theBrain.rank(in.Q, "", boost) {
+	sp := theBrain.findSpecies(in.Species)
+	for i, m := range theBrain.rank(in.Q, "", boost, speciesEntries(sp)...) {
 		if i == 3 || m.score < 0.35 {
 			break
 		}
@@ -77,6 +78,9 @@ func (s *Server) brainAsk(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		out = append(out, answer{"situation", theBrain.tr(lang, sc.Name), theBrain.tr(lang, sc.Advice), nil})
+	}
+	if len(out) == 0 {
+		s.gap(r.Context(), "ask", in.Q)
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"answers": out})
 }

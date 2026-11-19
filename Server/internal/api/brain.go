@@ -255,7 +255,7 @@ func (b *brain) situational(sit situation) ([]scenario, map[string]float64) {
 	return fit, boost
 }
 
-func (b *brain) rank(note, saw string, boost map[string]float64) []match {
+func (b *brain) rank(note, saw string, boost map[string]float64, extra ...kbEntry) []match {
 	b.load()
 	b.mu.RLock()
 	defer b.mu.RUnlock()
@@ -267,7 +267,7 @@ func (b *brain) rank(note, saw string, boost map[string]float64) []match {
 		ev[t] = 1
 	}
 	var ms []match
-	for _, e := range b.entries {
+	for _, e := range append(extra, b.entries...) {
 		var s, total float64
 		for w, wt := range e.words {
 			total += wt
@@ -320,11 +320,15 @@ func (b *brain) answerFrom(m match, lang string) diagnosis {
 
 // see asks our own vision model what is visible. Empty when the model is down or slow.
 func see(ctx context.Context, jpegB64 string) string {
+	return seeWith(ctx, jpegB64, "Describe only the visible problems of this houseplant in one or two short sentences: leaf colour (yellow, brown, black, pale), spots, crispy or mushy edges, holes, webbing, insects, white fuzz, wilting, drooping, soil state. If it looks healthy say healthy.", 120)
+}
+
+func seeWith(ctx context.Context, jpegB64, prompt string, maxTokens int) string {
 	body, _ := json.Marshal(map[string]any{
-		"max_tokens": 120, "temperature": 0.1,
+		"max_tokens": maxTokens, "temperature": 0.1,
 		"messages": []any{map[string]any{"role": "user", "content": []any{
 			map[string]any{"type": "image_url", "image_url": map[string]string{"url": "data:image/jpeg;base64," + jpegB64}},
-			map[string]any{"type": "text", "text": "Describe only the visible problems of this houseplant in one or two short sentences: leaf colour (yellow, brown, black, pale), spots, crispy or mushy edges, holes, webbing, insects, white fuzz, wilting, drooping, soil state. If it looks healthy say healthy."},
+			map[string]any{"type": "text", "text": prompt},
 		}}},
 	})
 	cctx, cancel := context.WithTimeout(ctx, 45*time.Second)
@@ -369,7 +373,17 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string, s
 	}
 	saw := see(ctx, photo)
 	fit, boost := theBrain.situational(sit)
-	ms := theBrain.rank(note, saw, boost)
+	sp := theBrain.findSpecies(species)
+	notes, cb := clashes(sp, sit)
+	for k, v := range cb {
+		boost[k] += v
+	}
+	if sp != nil {
+		for _, id := range sp.Pests {
+			boost[id] += 0.15 // pests this species is known to get
+		}
+	}
+	ms := theBrain.rank(note, saw, boost, speciesEntries(sp)...)
 	sig := signature(species, ms)
 	ref := sig + "#" + lang
 	top := []string{}
@@ -393,7 +407,11 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string, s
 		d := theBrain.answerFrom(ms[0], lang)
 		s.remember(ctx, sig, lang, d)
 		d.Ref = ref
-		return withSituation(d, fit, ms[0].e.ID, lang), nil
+		d = withSituation(d, fit, ms[0].e.ID, lang)
+		if d.Context == "" && len(notes) > 0 {
+			d.Context = theBrain.tr(lang, notes[0])
+		}
+		return d, nil
 	}
 	if healthy && strings.TrimSpace(note) == "" {
 		return diagnosis{Problem: theBrain.tr(lang, "Looks healthy"), Confidence: "medium",
@@ -427,6 +445,7 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string, s
 		// Never leave the owner empty-handed when we have our own best guess.
 		g := theBrain.answerFrom(ms[0], lang)
 		g.Confidence, g.Ref = "low", ref
+		s.gap(ctx, "diagnose", note+" "+affirmed(saw))
 		return g, nil
 	}
 	return d, err
