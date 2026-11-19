@@ -57,6 +57,15 @@ Keep copies of the latest `/var/backups/mtj` on the Mac with `rsync -a mdm-ovh:/
 ## App Attest
 iOS attests a Secure Enclave key once per install and account (`AppAttest.swift`): `POST /v1/attest/challenge`, then `POST /v1/attest`. The server checks Apple's chain (App Attestation Root CA, embedded), the nonce, app ID `JKMB58P38J.com.simpleappscompany.mytinyjungle`, counter 0 and key ID, and stores the key on the device row (`attested_at`). Android uses Play Integrity in its own client.
 
+## Referrals
+`GET /v1/me/referral` gives each user a code and link (mytinyjungle.com/r/<code>, in the AASA file). A new account (7 days or younger) redeems one code with `POST /v1/referrals/{code}/redeem`; both people get 30 days of Plus as a `referral` entitlement (stacking), the sender at most 12 times a year.
+
+## AI plant doctor (Plus)
+`POST /v1/diagnose` sends one JPEG plus species and note to Claude (`claude-opus-5-5`) and returns problem, confidence, why, up to 4 steps and urgency, in the app's language. Plus only, 20 a day per user (`ai_usage`), photos never stored. Enabled by `MTJ_AI_KEY` in `api.env` (MyTinyJungle's own Anthropic key); without it the endpoint answers 503 and the app shows "unavailable".
+
+## Analytics (privacy-first)
+`POST /v1/events` (no auth, IP rate limited) adds daily counts per event name, platform and app version. No user, device, IP or time finer than a day is stored. Admin: `GET /v1/admin/events`.
+
 ## CI
 `.github/workflows/ci.yml` on every push and PR: Go vet, race tests, linux build, OpenAPI lint, shell syntax; iOS simulator build unsigned.
 

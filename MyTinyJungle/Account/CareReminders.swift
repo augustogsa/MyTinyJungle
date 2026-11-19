@@ -152,6 +152,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         Diagnostics.shared.start()
         Task { await AppAttest.ensure() }
+        Analytics.track("app_open")
+        Task { await Analytics.flush() }
         return true
     }
 

@@ -387,7 +387,7 @@ struct AddPlantFlow: View {
         let plant = Plant(name: name.isEmpty ? (s?.commonName ?? Grammar.pt(String(localized: "Plant", comment: "Default plant name"))) : name, speciesID: s?.id, personality: personality, location: location)
         plant.isOutdoor = outdoor
         plant.photo = photo
-        ctx.insert(plant)
+        ctx.insert(plant); Analytics.track("plant_added")
         ErtyCheer.shared.show(.celebrate, Grammar.pt(String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name")))
         if let photo {
             let e = CareEvent(kind: .photo, note: "First photo", source: "onboarding"); e.photo = photo; e.plant = plant; ctx.insert(e)

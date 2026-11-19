@@ -27,6 +27,7 @@ struct HealthCheckView: View {
                     viewfinder
                     if working { ErtyLoading(text: Grammar.pt(String(localized: "Looking closely…"))) }
                     if let read { result(read) }
+                    if read != nil, let photo { AIDoctorCard(photo: photo, plant: plant) }
                     pestSection
                     if let pest { PestPlanView(pest: pest, plant: plant, neighbours: neighbours) { dismiss() } }
                 }

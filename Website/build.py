@@ -359,9 +359,15 @@ def build():
         '<p class="flead">Get My Tiny Jungle, sign in, then open this link again to join and take turns caring for the plants.</p>'
         '<p><a class="btn" href="/get">Get the app</a></p>'
         '<p lang="pt-BR">Te chamaram pra cuidar de uma selva junto. Baixa o My Tiny Jungle, entra na conta e abre esse link de novo pra participar. <a href="/pt/get">Baixar o app</a></p>', meta=False))
+    # Referral links: /r/<code> opens the app, which saves the code and redeems it after sign-in.
+    (DIST / "r").mkdir(exist_ok=True)
+    (DIST / "r" / "index.html").write_text(doc("en", "/r", "A friend sent you My Tiny Jungle", "Get the app with this link and you both get a month of Plus.",
+        '<p class="flead">Get My Tiny Jungle, then open this link again on your iPhone and sign in. You and your friend both get a month of Plus.</p>'
+        '<p><a class="btn" href="/get">Get the app</a></p>'
+        '<p lang="pt-BR">Um amigo te mandou o My Tiny Jungle. Baixa o app, abre esse link de novo no celular e entra na conta: vocês dois ganham um mês de Plus. <a href="/pt/get">Baixar o app</a></p>', meta=False))
     wk = DIST / ".well-known"; wk.mkdir(exist_ok=True)
     (wk / "security.txt").write_text(seo.SECURITY)
-    (wk / "apple-app-site-association").write_text(json.dumps({"applinks": {"details": [{"appIDs": ["JKMB58P38J.com.simpleappscompany.mytinyjungle"], "components": [{"/": "/plus"}, {"/": "/pt/plus"}, {"/": "/join/*"}]}]}}))
+    (wk / "apple-app-site-association").write_text(json.dumps({"applinks": {"details": [{"appIDs": ["JKMB58P38J.com.simpleappscompany.mytinyjungle"], "components": [{"/": "/plus"}, {"/": "/pt/plus"}, {"/": "/join/*"}, {"/": "/r/*"}]}]}}))
     if (SRC / "app-ads.txt").exists():
         shutil.copy(SRC / "app-ads.txt", DIST / "app-ads.txt")
     (DIST / "robots.txt").write_text(seo.ROBOTS)

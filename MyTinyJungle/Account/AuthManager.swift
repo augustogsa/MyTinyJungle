@@ -86,6 +86,7 @@ final class AuthManager {
             await Household.shared.redeemPendingInvite()
             await Household.shared.sync()
             await AppAttest.ensure()
+            await Referrals.redeemPending()
         } catch JungleAPI.APIError.offline {
             error = Grammar.pt(String(localized: "No connection. Check your internet and try again.", comment: "Sign-in error when offline; calm; max 60 chars"))
         } catch {

@@ -336,6 +336,7 @@ RewriteCond %{HTTP:CF-Visitor} !https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 # shared-jungle invite links land on one page when the app isn't installed
 RewriteRule ^join/[A-Za-z0-9]{10}/?$ /join/index.html [L]
+RewriteRule ^r/[A-Za-z0-9]{8}/?$ /r/index.html [L]
 # share shortcuts
 RewriteRule ^(download|app|ios|iphone|beta|testflight)/?$ /get [R=301,L]
 RewriteRule ^pt/(baixar|app|download|beta)/?$ /pt/get [R=301,L]

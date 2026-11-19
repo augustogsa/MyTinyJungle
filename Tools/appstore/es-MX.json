@@ -1,0 +1,21 @@
+{
+  "name": "My Tiny Jungle",
+  "subtitle": "Plantas que platican contigo",
+  "promotionalText": "Tus plantitas tienen mucho que contarte. Platica con ellas, revisen la tierra juntos y nunca más se te olvide regarlas.",
+  "keywords": "planta,regar,riego,jardinería,suculenta,cactus,orquídea,helecho,potus,abono,maceta,huerto,recordar",
+  "description": "My Tiny Jungle convierte el cuidado de tus plantas en una plática. Cada planta que agregas tiene voz y personalidad, y te escribe cuando tiene sed, cuando quiere más luz, cuando la maceta le queda chica o solo para darte las gracias.\n\nPLATICA CON TUS PLANTAS\nCada planta habla a su manera: la monstera es tranquila, la calathea es un poco dramática y la suculenta solo quiere que la dejen en paz. ¿Le contaste que la regaste, rociaste o abonaste? Lo anota y se acuerda.\n\nLA PRUEBA DEL DEDO\nUna revisión rápida de la tierra, paso a paso, te dice si tu planta de verdad necesita agua hoy. Se acabó ahogar suculentas u olvidar el helecho.\n\nESCANEA TUS PRODUCTOS\nApunta la cámara a la etiqueta del abono o del sustrato. La app la lee y le dice a cada planta cómo y cuándo usarlo.\n\nRECORDATORIOS A TU RITMO\nNotificaciones suaves, a la hora que elijas, con los días de cuidado en tu calendario si quieres. Las alertas de calor, lluvias fuertes y frío te avisan a tiempo para proteger las plantas del balcón y el jardín.\n\nHECHA PARA TU CLIMA\nLa app sabe dónde vives y ajusta el riego y el abono a la temporada de lluvias, la temporada seca y las estaciones de tu hemisferio.\n\nMÁS DE 600 ESPECIES\nLengua de suegra, potus, zamioculca, cuna de Moisés, orquídeas, hierbas y hortalizas, con consejos de luz, sustrato, plagas y cómo sacar hijitos.\n\nALGUIEN LAS CUIDA MIENTRAS VIAJAS\n¿Te vas de viaje? Mándale a un amigo un enlace con los cuidados y tu junglita seguirá feliz.\n\nPRIVADA DE VERDAD\nFunciona sin conexión y las fotos de tus plantas se quedan en tu celular. La versión gratis muestra algunos anuncios; My Tiny Jungle Plus los quita todos y te deja tener plantas sin límite.\n\nHecha con cariño por Simple Apps Company.",
+  "whatsNew": "¡My Tiny Jungle ya habla español! Tus plantitas platican contigo con los nombres que conoces, como potus, lengua de suegra y monstera, y con consejos pensados para tu clima.",
+  "screenshotCaptions": [
+    "Tus plantas te escriben cuando te necesitan",
+    "Cada planta con su rincón y sus cuidados",
+    "Riego y abono a tiempo para cada una",
+    "Escanea la etiqueta y sabrás cómo usar el abono",
+    "Consejos para el clima de donde vives",
+    "Tu junglita, ordenada y feliz"
+  ],
+  "subscription": {
+    "groupName": "My Tiny Jungle Plus",
+    "displayName": "My Tiny Jungle Plus",
+    "description": "Plantas sin límite, cero anuncios y mucho más"
+  }
+}

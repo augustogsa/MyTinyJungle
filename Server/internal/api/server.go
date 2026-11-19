@@ -73,6 +73,10 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("DELETE /v1/me", s.user(s.deleteMe))
 	m.Handle("POST /v1/attest/challenge", s.user(s.attestChallenge))
 	m.Handle("POST /v1/attest", s.user(s.attest))
+	m.Handle("GET /v1/me/referral", s.user(s.myReferral))
+	m.Handle("POST /v1/diagnose", s.user(s.diagnose))
+	m.Handle("POST /v1/events", s.ipLimit(rateAuthIP, s.postEvents))
+	m.Handle("POST /v1/referrals/{code}/redeem", s.user(s.redeemReferral))
 
 	m.Handle("GET /v1/jungles", s.user(s.jungles))
 	m.Handle("POST /v1/jungles", s.user(s.createJungle))
@@ -105,6 +109,7 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/admin/users/{id}", s.admin(s.adminUser))
 	m.Handle("GET /v1/admin/store-events", s.admin(s.adminStoreEvents))
 	m.Handle("GET /v1/admin/diagnostics", s.admin(s.adminDiagnostics))
+	m.Handle("GET /v1/admin/events", s.admin(s.adminEvents))
 
 	return s.wrap(m)
 }

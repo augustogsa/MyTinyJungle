@@ -43,6 +43,8 @@ struct SettingsView: View {
                             JungleDivider()
                             ExportDataRow()
                             JungleDivider()
+                            ReferralRow()
+                            JungleDivider()
                             Button { confirmSignOut = true } label: { JungleRow(icon: .mail, title: Grammar.pt(String(localized: "Sign out", comment: "Settings title"))) }.buttonStyle(.plain)
                             JungleDivider()
                             Button { confirmDelete = true } label: { JungleRow(icon: .emptyPot, title: Grammar.pt(String(localized: "Delete account and data", comment: "Settings title"))) }.buttonStyle(.plain)

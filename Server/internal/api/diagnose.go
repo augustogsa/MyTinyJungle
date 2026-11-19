@@ -1,0 +1,132 @@
+package api
+
+import (
+	"context"
+	"encoding/base64"
+	"encoding/json"
+	"net/http"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/anthropics/anthropic-sdk-go/v2"
+	"github.com/anthropics/anthropic-sdk-go/v2/option"
+	"github.com/jackc/pgx/v5"
+)
+
+// AI plant diagnosis for Plus: one photo plus context in, a short structured diagnosis out.
+// Enabled when MTJ_AI_KEY is set (MyTinyJungle's own Anthropic key). Photos are never stored.
+
+const (
+	diagnoseModel  = "claude-opus-5-5"
+	diagnosePerDay = 20
+)
+
+const diagnoseSystem = `You are a houseplant doctor inside the My Tiny Jungle app. Look at the photo and the owner's note.
+Answer ONLY with a JSON object: {"problem": short name, "confidence": "low"|"medium"|"high", "why": one or two sentences on what you see,
+"steps": [up to 4 short, concrete care steps], "urgent": true|false}. Write every text value in the language given by "lang".
+If the photo shows no plant or is too unclear, set problem to a short note asking for a clearer photo of the affected leaves.`
+
+type diagnosis struct {
+	Problem    string   `json:"problem"`
+	Confidence string   `json:"confidence"`
+	Why        string   `json:"why"`
+	Steps      []string `json:"steps"`
+	Urgent     bool     `json:"urgent"`
+}
+
+func (s *Server) aiClient() *anthropic.Client {
+	key := os.Getenv("MTJ_AI_KEY")
+	if key == "" {
+		return nil
+	}
+	c := anthropic.NewClient(option.WithAPIKey(key), option.WithRequestTimeout(90*time.Second))
+	return &c
+}
+
+func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
+	client := s.aiClient()
+	if client == nil {
+		s.fail(w, r, apiError{http.StatusServiceUnavailable, "ai_unavailable"})
+		return
+	}
+	var in struct {
+		Photo   string `json:"photo"` // base64 JPEG, ≤ 1.5 MB
+		Species string `json:"species"`
+		Note    string `json:"note"`
+		Lang    string `json:"lang"`
+	}
+	if decode(r, &in) != nil || len(in.Photo) == 0 || len(in.Photo) > 1_800_000 || len(in.Species) > 120 || len(in.Note) > 600 || len(in.Lang) > 12 {
+		s.fail(w, r, bad("invalid_request"))
+		return
+	}
+	img, err := base64.StdEncoding.DecodeString(in.Photo)
+	if err != nil || len(img) < 4 || img[0] != 0xFF || img[1] != 0xD8 {
+		s.fail(w, r, bad("invalid_photo"))
+		return
+	}
+	ctx, c := r.Context(), claimsOf(r)
+	// Plus only, and a daily cap; the use is counted before the call so retries can't exceed it.
+	err = s.db.AsUser(ctx, c.Sub, func(tx pgx.Tx) error {
+		es, err := activeEntitlements(r, tx)
+		if err != nil {
+			return err
+		}
+		if len(es) == 0 {
+			return apiError{http.StatusPaymentRequired, "plus_required"}
+		}
+		var n int
+		if err := tx.QueryRow(ctx, `insert into ai_usage (user_id) values ($1) on conflict (user_id, day) do update set n = ai_usage.n + 1 returning n`, c.Sub).Scan(&n); err != nil {
+			return err
+		}
+		if n > diagnosePerDay {
+			return apiError{http.StatusTooManyRequests, "daily_limit"}
+		}
+		return nil
+	})
+	if err != nil {
+		s.fail(w, r, err)
+		return
+	}
+	note := "lang: " + in.Lang + "\nspecies: " + in.Species + "\nowner's note: " + in.Note
+	cctx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 100*time.Second)
+	defer cancel()
+	resp, err := client.Messages.New(cctx, anthropic.MessageNewParams{
+		Model:     diagnoseModel,
+		MaxTokens: 16000,
+		System:    []anthropic.TextBlockParam{{Text: diagnoseSystem}},
+		Messages: []anthropic.MessageParam{anthropic.NewUserMessage(
+			anthropic.NewImageBlockBase64("image/jpeg", in.Photo),
+			anthropic.NewTextBlock(note),
+		)},
+	})
+	if err != nil {
+		s.log.Error("diagnose", "err", err)
+		s.fail(w, r, apiError{http.StatusBadGateway, "ai_failed"})
+		return
+	}
+	if resp.StopReason == anthropic.StopReasonRefusal {
+		s.fail(w, r, apiError{http.StatusUnprocessableEntity, "ai_declined"})
+		return
+	}
+	var text strings.Builder
+	for _, b := range resp.Content {
+		if t, ok := b.AsAny().(anthropic.TextBlock); ok {
+			text.WriteString(t.Text)
+		}
+	}
+	raw := text.String()
+	if i, j := strings.Index(raw, "{"), strings.LastIndex(raw, "}"); i >= 0 && j > i {
+		raw = raw[i : j+1]
+	}
+	var d diagnosis
+	if json.Unmarshal([]byte(raw), &d) != nil || d.Problem == "" {
+		s.fail(w, r, apiError{http.StatusBadGateway, "ai_failed"})
+		return
+	}
+	if len(d.Steps) > 4 {
+		d.Steps = d.Steps[:4]
+	}
+	writeJSON(w, http.StatusOK, d)
+}
+

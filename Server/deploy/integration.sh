@@ -67,6 +67,16 @@ psqlq "update sessions set used_at = now() - interval '1 minute' where token_has
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/auth/refresh -d "{\"refreshToken\":\"$R1\"}"); [[ $st == 401 ]] && ok "reused refresh token refused"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/auth/refresh -d "{\"refreshToken\":\"$R2\"}"); [[ $st == 401 ]] && ok "reuse revoked the whole account"
 
+RC=$(c $A http://x/v1/me/referral | python3 -c 'import json,sys;print(json.load(sys.stdin)["code"])') && ok "referral code issued"
+st=$(c $A -o /dev/null -w '%{http_code}' -X POST http://x/v1/referrals/$RC/redeem); [[ $st == 403 ]] && ok "own referral code refused"
+st=$(c $B -o /dev/null -w '%{http_code}' -X POST http://x/v1/referrals/$RC/redeem); [[ $st == 200 ]] && ok "friend redeems referral"
+pa=$(c $A http://x/v1/me | python3 -c 'import json,sys;print(json.load(sys.stdin)["plus"])'); pb=$(c $B http://x/v1/me | python3 -c 'import json,sys;print(json.load(sys.stdin)["plus"])'); [[ $pa == True && $pb == True ]] && ok "both get Plus from referral"
+st=$(c $B -o /dev/null -w '%{http_code}' -X POST http://x/v1/referrals/$RC/redeem); [[ $st == 409 ]] && ok "referral redeemed once"
+st=$(c $A -o /dev/null -w '%{http_code}' http://x/v1/attest/challenge -X POST); [[ $st == 200 ]] && ok "attest challenge"
+st=$(c $A -o /dev/null -w '%{http_code}' http://x/v1/attest -d '{"keyId":"'$(head -c32 /dev/urandom|base64)'","attestation":"oA=="}'); [[ $st == 400 ]] && ok "bogus attestation refused"
+st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/events -d '{"platform":"ios","appVersion":"itest","counts":{"itest_event":2,"BAD NAME":1}}'); [[ $st == 200 ]] && [[ $(psqlq "select sum(n) from event_counts where app_version='itest'") == 2 ]] && ok "anonymous event counts"
+psqlq "delete from event_counts where app_version='itest'" >/dev/null
+st=$(c $A -o /dev/null -w '%{http_code}' http://x/v1/diagnose -d '{"photo":"/9j/AA==","species":"","note":"","lang":"en"}'); [[ $st == 503 || $st == 502 || $st == 200 ]] && ok "AI diagnosis gated ($st)"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
 st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/me); [[ $st == 200 ]] && ok "account deletion"
 echo "passed $pass checks"

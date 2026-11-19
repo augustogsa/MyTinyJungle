@@ -98,6 +98,21 @@ struct SetupChatView: View {
         if step != .finished && !typing {
             VStack(alignment: .leading, spacing: 8) {
                 SetupChips(chips: chips, picked: picked) { tap($0) }
+                if isMulti && !picked.isEmpty {
+                    // Distinct primary action, so it never reads as one more option.
+                    Button { tap(done) } label: {
+                        HStack(spacing: 6) {
+                            Text(done.title)
+                            Image(systemName: "arrow.right").font(.subheadline.weight(.bold))
+                        }
+                        .font(.headline).foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .background(Jungle.forest, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, 4)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
                 if allowsText {
                     HStack(spacing: 8) {
                         TextField(placeholder, text: $text)
@@ -151,7 +166,9 @@ struct SetupChatView: View {
             return firstName.isEmpty ? [] : [Chip(id: "keep", title: firstName, icon: .profile)] 
         case .place:
             return [Chip(id: "here", title: Grammar.pt(String(localized: "Use my location", comment: "Setup chat chip: use device location")), icon: .pin)]
-        case .heating, .aircon, .drafts, .outside:
+        case .heating, .aircon, .drafts:
+            return yesNo.prefix(1) + [Chip(id: "sometimes", title: Grammar.pt(String(localized: "Sometimes", comment: "Setup chat chip answer between yes and no")))] + yesNo.suffix(1)
+        case .outside:
             return yesNo
         case .air:
             return Climate.HomeAir.allCases.map { Chip(id: "air\($0.rawValue)", title: $0.label) }
@@ -159,11 +176,11 @@ struct SetupChatView: View {
             return [Chip(id: "cats", title: Grammar.pt(String(localized: "Cats", comment: "Setup chat chip: cats at home")), icon: .cat, multi: true),
                     Chip(id: "dogs", title: Grammar.pt(String(localized: "Dogs", comment: "Setup chat chip: dogs at home")), icon: .dog, multi: true),
                     Chip(id: "kids", title: Grammar.pt(String(localized: "Small children", comment: "Setup chat chip: small children at home")), icon: .kid, multi: true),
-                    picked.isEmpty ? Chip(id: "none", title: Grammar.pt(String(localized: "None of these", comment: "Setup chat chip: no pets or small kids"))) : done]
+                    picked.isEmpty ? Chip(id: "none", title: Grammar.pt(String(localized: "None of these", comment: "Setup chat chip: no pets or small kids"))) as Chip? : nil].compactMap { $0 }
         case .rooms:
             let rooms = Self.roomChips.map { Chip(id: $0.0, title: $0.0, icon: $0.1, multi: true) }
             let custom = picked.subtracting(Self.roomChips.map(\.0)).sorted().map { Chip(id: $0, title: $0, icon: .homeLeaf, multi: true) }
-            return rooms + custom + (picked.isEmpty ? [] : [done])
+            return rooms + custom
         case .light:
             return Self.lights.map { Chip(id: "light.\($0.0.rawValue)", title: $0.1, icon: $0.2) }
         case .plant:
@@ -174,7 +191,8 @@ struct SetupChatView: View {
         }
     }
 
-    private var done: Chip { Chip(id: "done", title: Grammar.pt(String(localized: "That's all", comment: "Setup chat chip: finish a multi-choice answer"))) }
+    private var done: Chip { Chip(id: "done", title: Grammar.pt(String(localized: "Continue", comment: "Setup chat: main button to confirm a multi-choice answer; max 20 chars"))) }
+    private var isMulti: Bool { step == .family || step == .rooms }
 
     static let roomChips: [(String, Icon3D)] = [
         (Grammar.pt(String(localized: "Living room", comment: "Suggested room name")), .livingRoom),
@@ -299,16 +317,16 @@ struct SetupChatView: View {
             }
             await next(.heating)
         case .heating:
-            climate.heating = chip.id == "yes"
+            climate.heating = chip.id != "no"
             await next(.aircon)
         case .aircon:
-            climate.aircon = chip.id == "yes"
+            climate.aircon = chip.id != "no"
             await next(.air)
         case .air:
             if let a = Climate.HomeAir.allCases.first(where: { chip.id == "air\($0.rawValue)" }) { climate.homeAir = a }
             await next(.drafts)
         case .drafts:
-            climate.drafts = chip.id == "yes"
+            climate.drafts = chip.id != "no"
             await next(.outside)
         case .outside:
             climate.growsOutside = chip.id == "yes"
@@ -387,10 +405,10 @@ private struct SetupChips: View {
                         else if let i = c.icon { Icon3DView(i, size: 20) }
                         Text(c.title)
                     }
-                    .font(.subheadline.weight(.medium)).foregroundStyle(on ? Jungle.surface : Jungle.text)
+                    .font(.subheadline.weight(on ? .semibold : .medium)).foregroundStyle(on ? Jungle.forest : Jungle.text)
                     .padding(.horizontal, 14).frame(minHeight: 40)
-                    .background(on ? Jungle.forest : Jungle.surface, in: Capsule())
-                    .overlay(Capsule().strokeBorder(on ? .clear : Jungle.border, lineWidth: 1))
+                    .background(on ? Jungle.mint : Jungle.surface, in: Capsule())
+                    .overlay(Capsule().strokeBorder(on ? Jungle.forest : Jungle.border, lineWidth: on ? 1.5 : 1))
                 }
                 .buttonStyle(.plain)
                 .accessibilityAddTraits(on ? .isSelected : [])

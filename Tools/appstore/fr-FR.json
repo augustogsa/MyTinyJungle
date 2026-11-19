@@ -1,0 +1,21 @@
+{
+ "name": "My Tiny Jungle",
+ "subtitle": "Des plantes qui te parlent",
+ "promotionalText": "Tes plantes ont plein de choses à te raconter. Discute avec elles, vérifie leur terre ensemble et n'oublie plus jamais un arrosage.",
+ "keywords": "plante,arrosage,arroser,jardinage,succulente,cactus,orchidée,monstera,pothos,engrais,rappel,potager",
+ "description": "My Tiny Jungle transforme le soin des plantes en conversation. Chaque plante que tu ajoutes a sa voix et son caractère, et t'écrit quand elle a soif, quand elle veut plus de lumière, quand son pot devient trop petit ou juste pour te remercier.\n\nDISCUTE AVEC TES PLANTES\nChaque plante parle à sa façon : le monstera est zen, le calathea un brin dramatique et la succulente veut juste qu'on la laisse tranquille. Tu as arrosé, brumisé ou mis de l'engrais ? Elle le note et s'en souvient.\n\nLE TEST DU DOIGT\nUn petit test de la terre, étape par étape, te dit si ta plante a vraiment besoin d'eau aujourd'hui. Fini les succulentes noyées et les fougères oubliées.\n\nSCANNE TES PRODUITS\nVise l'étiquette de ton engrais ou de ton terreau avec l'appareil photo. L'app lit tout et dit à chaque plante comment et quand l'utiliser.\n\nDES RAPPELS À TON RYTHME\nDes notifications tout en douceur, à l'heure que tu choisis, avec les jours de soin dans ton calendrier si tu veux. Les alertes canicule, fortes pluies et gel te préviennent à temps pour protéger les plantes du balcon et du jardin.\n\nPENSÉ POUR TON CLIMAT\nL'app sait où tu habites et adapte l'arrosage et l'engrais à tes saisons, du gel de l'hiver aux étés caniculaires.\n\nPLUS DE 600 ESPÈCES\nSansevieria, pothos, zamioculcas, spathiphyllum, orchidées, aromatiques et légumes, avec des conseils sur la lumière, la terre, les nuisibles et le bouturage.\n\nQUELQU'UN VEILLE PENDANT TES VACANCES\nTu pars ? Envoie un lien de soins à un ami et ta petite jungle reste heureuse.\n\nVRAIMENT PRIVÉ\nFonctionne hors ligne et les photos de tes plantes restent sur ton téléphone. La version gratuite affiche quelques pubs ; My Tiny Jungle Plus les retire toutes et débloque les plantes en illimité.\n\nFait avec amour par Simple Apps Company.",
+ "whatsNew": "My Tiny Jungle parle maintenant français ! Tes plantes discutent avec toi dans ta langue, avec les noms que tu connais, comme le pothos, la sansevieria ou le monstera, et des conseils adaptés à ton climat.",
+ "screenshotCaptions": [
+  "Tes plantes t'écrivent quand elles ont besoin de toi",
+  "Chaque plante a son coin et ses soins",
+  "Arrosage et engrais au bon moment pour chacune",
+  "Scanne l'étiquette et sache comment utiliser l'engrais",
+  "Des conseils adaptés à ton climat",
+  "Ta petite jungle, organisée et heureuse"
+ ],
+ "subscription": {
+  "groupName": "My Tiny Jungle Plus",
+  "displayName": "My Tiny Jungle Plus",
+  "description": "Plantes illimitées, zéro pub et bien plus"
+ }
+}

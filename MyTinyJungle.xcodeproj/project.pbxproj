@@ -168,7 +168,7 @@
 			buildConfigurationList = A10000000000000000000050;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
-			knownRegions = (en, Base, "pt-BR");
+			knownRegions = (en, Base, "pt-BR", es, fr, de, ja);
 			mainGroup = A10000000000000000000002;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;

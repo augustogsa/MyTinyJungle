@@ -72,10 +72,12 @@ struct MyTinyJungleApp: App {
                 }
                 .onOpenURL { url in
                     if let code = HouseholdCloud.code(from: url) { Task { await Household.shared.accept(code: code) } }
+                    else if let code = Referrals.code(from: url) { Task { await Referrals.received(code) } }
                     else if !PlanLink.handle(url) { GIDSignIn.sharedInstance.handle(url) }
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { a in
                     if let url = a.webpageURL, let code = HouseholdCloud.code(from: url) { Task { await Household.shared.accept(code: code) } }
+                    else if let url = a.webpageURL, let code = Referrals.code(from: url) { Task { await Referrals.received(code) } }
                 }
                 .updateGate()
         }
