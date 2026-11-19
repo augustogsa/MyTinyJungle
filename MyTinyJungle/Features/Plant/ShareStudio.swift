@@ -114,7 +114,7 @@ struct ShareStory: View {
                 Spacer(minLength: 0)
                 glassQuote.padding(.horizontal, 30).rotationEffect(.degrees(2))
                 VStack(spacing: 12) {
-                    fill(236, 262).clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                    fill(220, 236).clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: 4, style: .continuous).strokeBorder(.white.opacity(0.5), lineWidth: 0.8))
                     VStack(spacing: 1) {
                         Text(plant.name).font(.system(size: 26, weight: .heavy, design: .rounded))
@@ -127,6 +127,7 @@ struct ShareStory: View {
                 .glassSkin(RoundedRectangle(cornerRadius: 8, style: .continuous), mask: false, tint: 0.32)
                 .overlay(alignment: .top) { glassTape.offset(y: -11) }
                 .rotationEffect(.degrees(-3))
+                .padding(.top, 14).padding(.bottom, 12)
                 HStack(spacing: 8) {
                     glassStat(.calendarHeart, "\(days)", Grammar.pt(String(localized: "days", comment: "Share card stat unit: days together; short")), false)
                     glassStat(.waterDrops, "\(waters)", Grammar.pt(String(localized: "waterings", comment: "Share card stat unit: waterings; short, lowercase")), false)
