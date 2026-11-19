@@ -270,7 +270,7 @@ struct BestPlaceView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
-            ToolbarItem(placement: .primaryAction) { Button { adding = true } label: { Image(systemName: "plus") } }
+            ToolbarItem(placement: .primaryAction) { Button { adding = true } label: { Image(systemName: "plus") }.accessibilityLabel(Grammar.pt(String(localized: "Add a space", comment: "VoiceOver: add room/space button"))) }
         }
         .sheet(isPresented: $adding) { SpaceEditor(space: nil) }
     }

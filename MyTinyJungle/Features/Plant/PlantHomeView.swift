@@ -30,7 +30,7 @@ struct PlantHomeView: View {
     @State private var width: CGFloat = 0
     @State private var height: CGFloat = 0
 
-    enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate, share; var id: String { rawValue } }
+    enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate, share, passport; var id: String { rawValue } }
 
     var body: some View {
         Group {
@@ -72,8 +72,10 @@ struct PlantHomeView: View {
                     Button("Health check", systemImage: "stethoscope") { sheet = .health }
                     Button("Repotting check", systemImage: "arrow.up.bin") { sheet = .repot }
                     Button("Propagate", systemImage: "scissors") { sheet = .propagate }
+                    Button(Grammar.pt(String(localized: "Plant passport", comment: "Screen title; max 20 chars")), systemImage: "qrcode") { sheet = .passport }
                     PhotosPicker(selection: $pick, matching: .images) { Label("New photo", systemImage: "camera") }
                 } label: { Image(systemName: "ellipsis") }
+                .accessibilityLabel(Grammar.pt(String(localized: "More for \(plant.name)", comment: "VoiceOver: menu button for a plant")))
             }
         }
         .sheet(item: $sheet) { s in
@@ -85,6 +87,7 @@ struct PlantHomeView: View {
             case .place: NavigationStack { BestPlaceView(plant: plant) }
             case .edit: PlantProfileView(plant: plant)
             case .propagate: NavigationStack { StartPropagationView(parent: plant) }
+            case .passport: PassportSheet(plant: plant)
             }
         }
         .onChange(of: pick) { _, item in
@@ -173,6 +176,7 @@ struct PlantHomeView: View {
     private var overview: some View {
         VStack(alignment: .leading, spacing: 14) {
             PlantNotesCard(plant: plant)
+            PlantSuppliesCard(plant: plant)
             if !plant.isArtificial {
                 PlantForecastSection(plant: plant)
                 CarePlanCard(plant: plant)

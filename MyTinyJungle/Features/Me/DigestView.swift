@@ -19,8 +19,28 @@ nonisolated struct Digest: Decodable, Equatable {
     var watch: [Item]
     var grew: [Item]
     var photos: [Item]
+    var next: Next?
 
-    enum CodingKeys: String, CodingKey { case week, due, watch, grew, photos }
+    nonisolated struct Pattern: Decodable, Equatable, Identifiable {
+        var kind: String
+        var from: Date
+        var to: Date
+        var id: String { "\(kind)-\(from.timeIntervalSince1970)" }
+    }
+    nonisolated struct Next: Decodable, Equatable {
+        var week: String?
+        var due: [Item]
+        var weather: [Pattern]
+        enum CodingKeys: String, CodingKey { case week, due, weather }
+        init(from d: Decoder) throws {
+            let c = try d.container(keyedBy: CodingKeys.self)
+            week = try? c.decode(String.self, forKey: .week)
+            due = (try? c.decode([Item].self, forKey: .due)) ?? []
+            weather = (try? c.decode([Pattern].self, forKey: .weather)) ?? []
+        }
+    }
+
+    enum CodingKeys: String, CodingKey { case week, due, watch, grew, photos, next }
     init(from d: Decoder) throws {
         let c = try d.container(keyedBy: CodingKeys.self)
         week = (try? c.decode(String.self, forKey: .week)) ?? (try? c.decode(Int.self, forKey: .week)).map(String.init)
@@ -28,8 +48,9 @@ nonisolated struct Digest: Decodable, Equatable {
         watch = (try? c.decode([Item].self, forKey: .watch)) ?? []
         grew = (try? c.decode([Item].self, forKey: .grew)) ?? []
         photos = (try? c.decode([Item].self, forKey: .photos)) ?? []
+        next = try? c.decode(Next.self, forKey: .next)
     }
-    var isEmpty: Bool { due.isEmpty && watch.isEmpty && grew.isEmpty && photos.isEmpty }
+    var isEmpty: Bool { due.isEmpty && watch.isEmpty && grew.isEmpty && photos.isEmpty && (next?.due.isEmpty ?? true) && (next?.weather.isEmpty ?? true) }
 }
 
 @MainActor
@@ -90,6 +111,21 @@ struct DigestView: View {
                     section(Grammar.pt(String(localized: "Coming up", comment: "Weekly digest section: care due; max 24 chars")), d.due, symbol: "calendar")
                     section(Grammar.pt(String(localized: "Keep an eye on", comment: "Weekly digest section: plants to watch; max 24 chars")), d.watch, symbol: "eye")
                     section(Grammar.pt(String(localized: "Look who grew", comment: "Weekly digest section: growth moments; max 24 chars")), d.grew, symbol: "leaf.fill")
+                    if let n = d.next, !n.weather.isEmpty {
+                        VStack(alignment: .leading, spacing: 10) {
+                            SectionTitle(Grammar.pt(String(localized: "Weather ahead", comment: "Weekly digest section: multi-day weather; max 24 chars")))
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach(n.weather) { w in
+                                    Label { Text(Self.weatherLine(w)).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true) }
+                                    icon: { Image(systemName: Self.weatherSymbol(w.kind)).foregroundStyle(Jungle.accentText) }
+                                }
+                            }
+                            .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+                        }
+                    }
+                    if let n = d.next {
+                        section(Grammar.pt(String(localized: "Next week", comment: "Weekly digest section: projected care next week; max 24 chars")), n.due, symbol: "calendar.badge.clock")
+                    }
                     if !d.photos.isEmpty {
                         SectionTitle(Grammar.pt(String(localized: "Photos of the week", comment: "Weekly digest section; max 24 chars")))
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100), spacing: 8)], spacing: 8) {
@@ -145,6 +181,20 @@ struct DigestView: View {
                 }
                 .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
             }
+        }
+    }
+
+    static func weatherSymbol(_ kind: String) -> String {
+        switch kind { case "hot_dry_week": "sun.max.fill"; case "first_frost": "snowflake"; case "heavy_rain": "cloud.heavyrain.fill"; default: "cloud.sun" }
+    }
+
+    static func weatherLine(_ w: Digest.Pattern) -> String {
+        let span = (w.from..<max(w.to, w.from)).formatted(.interval.weekday(.wide).day())
+        switch w.kind {
+        case "hot_dry_week": return Grammar.pt(String(localized: "Hot, dry days \(span): pots will dry faster, check them more often.", comment: "Weekly digest weather; arg date range"))
+        case "first_frost": return Grammar.pt(String(localized: "First frost \(span): bring tender plants inside.", comment: "Weekly digest weather; arg date range"))
+        case "heavy_rain": return Grammar.pt(String(localized: "Heavy rain \(span): outdoor plants get watered, skip them.", comment: "Weekly digest weather; arg date range"))
+        default: return span
         }
     }
 
@@ -223,6 +273,10 @@ enum DeepLink {
         let d = UserDefaults.standard
         switch url.host() {
         case "today": d.set(0, forKey: "selectedTab")
+        case "supplies": d.set(true, forKey: SuppliesAPI.openKey)
+        case "passport":
+            guard let t = PassportAPI.token(from: url) else { return false }
+            d.set(t, forKey: PassportAPI.importKey)
         case "add": d.set(1, forKey: "selectedTab"); d.set(true, forKey: addKey)
         case "plant":
             guard let id = url.pathComponents.dropFirst().first, UUID(uuidString: id) != nil else { return false }

@@ -16,6 +16,8 @@
 	<array><string>applinks:www.mytinyjungle.com</string><string>applinks:mytinyjungle.com</string></array>
 	<key>com.apple.developer.devicecheck.appattest-environment</key>
 	<string>production</string>
+	<key>com.apple.security.application-groups</key>
+	<array><string>group.com.simpleappscompany.mytinyjungle</string></array>
 	<key>aps-environment</key>
 	<string>development</string>
 </dict>

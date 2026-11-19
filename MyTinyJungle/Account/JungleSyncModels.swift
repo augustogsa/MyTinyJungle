@@ -42,6 +42,13 @@ final class Payload {
 }
 
 private func v(_ s: String) -> JSONValue { .string(s) }
+/// Soil reading for the server's due calc: meter 1–10, finger 0 dry / 1 slightly moist / 2 wet.
+@MainActor private func moisture(_ e: CareEvent) -> JSONValue {
+    if e.note == "meter", let m = e.value { return .object(["method": .string("meter"), "value": .number(min(10, max(1, m.rounded())))]) }
+    guard let s = e.soil, e.kind == .soilCheck else { return .null }
+    let f: Double = switch s { case .dry: 0; case .slightlyMoist: 1; case .wet: 2 }
+    return .object(["method": .string("finger"), "value": .number(f)])
+}
 private func v(_ s: String?) -> JSONValue { s.map(JSONValue.string) ?? .null }
 private func v(_ b: Bool) -> JSONValue { .bool(b) }
 private func v(_ d: Double?) -> JSONValue { d.map(JSONValue.number) ?? .null }
@@ -166,7 +173,7 @@ enum Kind: String, CaseIterable {
         case .careEvent:
             return all(CareEvent.self).map { o in LocalItem(id: o.id, payload: Payload(self, [
                 "kind": v(o.kindRaw), "date": v(o.date), "note": v(o.note), "value": v(o.value), "soil": v(o.soilRaw),
-                "productName": v(o.productName), "source": v(o.source), "plantID": v(o.plant?.id)]), photo: o.photo) }
+                "productName": v(o.productName), "source": v(o.source), "plantID": v(o.plant?.id), "moisture": moisture(o)]), photo: o.photo) }
         case .chatMessage:
             return all(ChatMessage.self).map { o in LocalItem(id: o.id, payload: Payload(self, [
                 "text": v(o.text), "fromUser": v(o.fromUser), "date": v(o.date), "suggestions": v(o.suggestionsRaw),

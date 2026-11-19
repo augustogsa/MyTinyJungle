@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# App Store / TestFlight screenshots: ten features, en-US and pt-BR, demo jungle, 9:41 status bar.
+# App Store / TestFlight screenshots: ten features, en-US and pt-BR (plus es-MX, fr-FR, de-DE, ja via LANGS), demo jungle, 9:41 status bar.
 # Usage: Tools/appstore/capture.sh <kind> <simulator-udid> <path/to/MyTinyJungle.app>
 #   kind: iphone69 (iPhone 18 Pro Max) or duo (iPhone Duo, open flat; set the posture first)
 set -uo pipefail
@@ -13,13 +13,14 @@ PHOTOS="$PWD/Tools/demo-photos"
 xcrun simctl boot "$D" 2>/dev/null; xcrun simctl bootstatus "$D" >/dev/null
 xcrun simctl status_bar "$D" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 --dataNetwork wifi
 xcrun simctl install "$D" "$APP"
-for lang in en-US pt-BR; do
-  [ "$lang" = pt-BR ] && L='(pt-BR)' || L='(en)'
+# LANGS="es-MX fr-FR de-DE ja" Tools/appstore/capture.sh … for the other storefronts (default en-US pt-BR).
+for lang in ${LANGS:-en-US pt-BR}; do
+  case $lang in pt-BR) L='(pt-BR)';; es-MX) L='(es-MX)';; fr-FR) L='(fr)';; de-DE) L='(de)';; ja) L='(ja)';; *) L='(en)';; esac
   mkdir -p "$OUT/$lang/$kind"; rm -f "$OUT/$lang/$kind"/*.png
   shot() { # name, wait, extra args...
     local name=$1 wait=$2; shift 2
     xcrun simctl terminate "$D" $BID 2>/dev/null
-    xcrun simctl launch "$D" $BID -AppleLanguages "$L" -AppleLocale "${lang/-/_}" -demoPhotos "$PHOTOS" -plus -noAds -careReminders NO "$@" >/dev/null
+    xcrun simctl launch "$D" $BID -AppleLanguages "$L" -AppleLocale "$([ "$lang" = ja ] && echo ja_JP || echo "${lang/-/_}")" -demoPhotos "$PHOTOS" -plus -noAds -careReminders NO "$@" >/dev/null
     sleep "$wait"
     xcrun simctl io "$D" screenshot $DISP "$OUT/$lang/$kind/$name.png" >/dev/null 2>&1
   }

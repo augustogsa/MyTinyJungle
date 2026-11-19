@@ -92,12 +92,13 @@ private struct MainScene: View {
                 }
                 .onOpenURL { url in
                     if DigestAPI.handle(url) || DeepLink.handle(url) { return }
-                    if let code = HouseholdCloud.code(from: url) { Task { await Household.shared.accept(code: code) } }
+                    if let code = HouseholdCloud.code(from: url) { Task { if await !HouseholdsAPI.redeem(code) { await Household.shared.accept(code: code) } } }
                     else if let code = Referrals.code(from: url) { Task { await Referrals.received(code) } }
                     else if !PlanLink.handle(url) { GIDSignIn.sharedInstance.handle(url) }
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { a in
-                    if let url = a.webpageURL, let code = HouseholdCloud.code(from: url) { Task { await Household.shared.accept(code: code) } }
+                    if let url = a.webpageURL, let t = PassportAPI.token(from: url) { UserDefaults.standard.set(t, forKey: PassportAPI.importKey) }
+                    else if let url = a.webpageURL, let code = HouseholdCloud.code(from: url) { Task { if await !HouseholdsAPI.redeem(code) { await Household.shared.accept(code: code) } } }
                     else if let url = a.webpageURL, let code = Referrals.code(from: url) { Task { await Referrals.received(code) } }
                 }
                 .updateGate()
@@ -128,6 +129,8 @@ struct RootView: View {
             .background(GrammarSync())
             .modifier(PlanLinkSheet())
             .modifier(DigestLinkSheet())
+            .modifier(SuppliesLinkSheet())
+            .modifier(PassportImportSheet())
             .task {
                 guard ProcessInfo.processInfo.arguments.contains("-notifyDemo") else { return }
                 try? await Task.sleep(for: .seconds(2))

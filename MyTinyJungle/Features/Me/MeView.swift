@@ -46,6 +46,10 @@ struct MeView: View {
                         NavigationLink { GuidesView() } label: { JungleRow(icon: .tools, title: Grammar.pt(String(localized: "How-to guides", comment: "Me row title")), chevron: true) }
                         JungleDivider()
                         NavigationLink { TravelPlanView() } label: { JungleRow(icon: .travel, title: Grammar.pt(String(localized: "Going away", comment: "Me row title: travel plan")), subtitle: Grammar.pt(String(localized: "Plan care for a trip", comment: "Me row subtitle")), chevron: true) }
+                        JungleDivider()
+                        NavigationLink { WhoWatersView() } label: { JungleRow(icon: .waterDrops, title: Grammar.pt(String(localized: "Who waters", comment: "Screen title; max 20 chars")), subtitle: Grammar.pt(String(localized: "Take turns with your household", comment: "Me row subtitle")), chevron: true) }
+                        JungleDivider()
+                        NavigationLink { SuppliesView() } label: { JungleRow(icon: .box, title: Grammar.pt(String(localized: "Supplies", comment: "Screen title; max 20 chars")), subtitle: Grammar.pt(String(localized: "Soil, food and treatments", comment: "Me row subtitle")), chevron: true) }
                     }
                     .buttonStyle(.plain)
                     JungleGroup(title: Grammar.pt(String(localized: "Account", comment: "Me section title"))) {

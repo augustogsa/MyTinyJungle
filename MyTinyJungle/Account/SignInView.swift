@@ -44,7 +44,7 @@ struct SignInView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             ZStack {
-                ContentImage("art/signin-leaves.jpg", fallback: "SignInLeaves").scaledToFill().ignoresSafeArea()
+                ContentImage("art/signin-leaves.jpg", fallback: "SignInLeaves").scaledToFill().ignoresSafeArea().accessibilityHidden(true)
 
                 Rectangle().fill(.ultraThinMaterial).ignoresSafeArea()
                     .mask(LinearGradient(stops: [.init(color: .clear, location: 0.0), .init(color: .clear, location: 0.12), .init(color: .black, location: 0.42)], startPoint: .top, endPoint: .bottom).ignoresSafeArea())
@@ -73,8 +73,8 @@ struct SignInView: View {
             if auth.googleAvailable {
                 Button { auth.signInWithGoogle() } label: {
                     HStack(spacing: 8) {
-                        Image("GoogleG").resizable().interpolation(.high).frame(width: 20, height: 20)
-                        Text("Continue with Google").font(.system(size: 20, weight: .medium))
+                        Image("GoogleG").resizable().interpolation(.high).frame(width: 20, height: 20).accessibilityHidden(true)
+                        Text("Continue with Google").font(.title3.weight(.medium))
                     }
                     .foregroundStyle(Color(white: 0.12))
                     .frame(maxWidth: .infinity).frame(height: 54)

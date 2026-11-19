@@ -12,6 +12,7 @@
 		A10000000000000000000067 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000066 /* GoogleSignIn */; };
 		A10000000000000000000069 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000068 /* GoogleSignInSwift */; };
 		A10000000000000000000078 /* NotificationContent.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A10000000000000000000071 /* NotificationContent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A100000000000000000000A8 /* JungleWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A100000000000000000000A1 /* JungleWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,13 @@
 			remoteGlobalIDString = A10000000000000000000070;
 			remoteInfo = NotificationContent;
 		};
+		A100000000000000000000A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A100000000000000000000A0;
+			remoteInfo = JungleWidgets;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +47,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				A10000000000000000000078 /* NotificationContent.appex in Embed Foundation Extensions */,
+				A100000000000000000000A8 /* JungleWidgets.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,6 +58,7 @@
 		A10000000000000000000011 /* MyTinyJungle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTinyJungle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000021 /* MyTinyJungleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyTinyJungleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000071 /* NotificationContent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationContent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A100000000000000000000A1 /* JungleWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JungleWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -65,6 +75,11 @@
 		A10000000000000000000072 /* NotificationContent */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = NotificationContent;
+			sourceTree = "<group>";
+		};
+		A100000000000000000000A2 /* JungleWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JungleWidgets;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -95,6 +110,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A100000000000000000000A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -104,6 +126,7 @@
 				A10000000000000000000012 /* MyTinyJungle */,
 				A10000000000000000000022 /* MyTinyJungleTests */,
 				A10000000000000000000072 /* NotificationContent */,
+				A100000000000000000000A2 /* JungleWidgets */,
 				A10000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,6 +137,7 @@
 				A10000000000000000000011 /* MyTinyJungle.app */,
 				A10000000000000000000021 /* MyTinyJungleTests.xctest */,
 				A10000000000000000000071 /* NotificationContent.appex */,
+				A100000000000000000000A1 /* JungleWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,6 +158,7 @@
 			);
 			dependencies = (
 				A10000000000000000000080 /* PBXTargetDependency */,
+				A100000000000000000000B0 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A10000000000000000000012 /* MyTinyJungle */,
@@ -190,6 +215,26 @@
 			productReference = A10000000000000000000071 /* NotificationContent.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		A100000000000000000000A0 /* JungleWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A100000000000000000000B3 /* Build configuration list for PBXNativeTarget "JungleWidgets" */;
+			buildPhases = (
+				A100000000000000000000A4 /* Sources */,
+				A100000000000000000000A3 /* Frameworks */,
+				A100000000000000000000A5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A100000000000000000000A2 /* JungleWidgets */,
+			);
+			name = JungleWidgets;
+			productName = JungleWidgets;
+			productReference = A100000000000000000000A1 /* JungleWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -208,6 +253,9 @@
 						TestTargetID = A10000000000000000000010;
 					};
 					A10000000000000000000070 = {
+						CreatedOnToolsVersion = 27.2;
+					};
+					A100000000000000000000A0 = {
 						CreatedOnToolsVersion = 27.2;
 					};
 				};
@@ -239,6 +287,7 @@
 				A10000000000000000000010 /* MyTinyJungle */,
 				A10000000000000000000024 /* MyTinyJungleTests */,
 				A10000000000000000000070 /* NotificationContent */,
+				A100000000000000000000A0 /* JungleWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -259,6 +308,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A10000000000000000000075 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A100000000000000000000A5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -289,6 +345,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A100000000000000000000A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -302,6 +365,11 @@
 			target = A10000000000000000000070 /* NotificationContent */;
 			targetProxy = A10000000000000000000079 /* PBXContainerItemProxy */;
 		};
+		A100000000000000000000B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A100000000000000000000A0 /* JungleWidgets */;
+			targetProxy = A100000000000000000000A9 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -313,7 +381,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				ENABLE_PREVIEWS = YES;
 				GAD_APP_ID = "ca-app-pub-5572285766965735~4039327987";
@@ -353,7 +421,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				ENABLE_PREVIEWS = YES;
 				GAD_APP_ID = "ca-app-pub-5572285766965735~4039327987";
@@ -466,7 +534,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/NotificationContent-Info.plist";
@@ -497,7 +565,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/NotificationContent-Info.plist";
@@ -514,6 +582,60 @@
 					UserNotificationsUI,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.simpleappscompany.mytinyjungle.NotificationContent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A100000000000000000000B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/JungleWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 11;
+				DEVELOPMENT_TEAM = JKMB58P38J;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/JungleWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "My Tiny Jungle";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simpleappscompany.mytinyjungle.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A100000000000000000000B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/JungleWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 11;
+				DEVELOPMENT_TEAM = JKMB58P38J;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/JungleWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "My Tiny Jungle";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simpleappscompany.mytinyjungle.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -559,6 +681,15 @@
 			buildConfigurations = (
 				A10000000000000000000091 /* Debug */,
 				A10000000000000000000092 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A100000000000000000000B3 /* Build configuration list for PBXNativeTarget "JungleWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A100000000000000000000B1 /* Debug */,
+				A100000000000000000000B2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

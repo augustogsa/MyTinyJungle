@@ -449,6 +449,7 @@ private struct SetupFlowLayout: Layout {
 
 /// Three soft dots while the mascot "types".
 private struct TypingBubble: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var on = false
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
@@ -456,8 +457,8 @@ private struct TypingBubble: View {
             HStack(spacing: 4) {
                 ForEach(0..<3) { i in
                     Circle().fill(Jungle.subtle).frame(width: 7, height: 7)
-                        .opacity(on ? 1 : 0.3)
-                        .animation(.easeInOut(duration: 0.5).repeatForever().delay(Double(i) * 0.15), value: on)
+                        .opacity(reduceMotion ? 0.6 : (on ? 1 : 0.3))
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.5).repeatForever().delay(Double(i) * 0.15), value: on)
                 }
             }
             .padding(.horizontal, 14).padding(.vertical, 14)

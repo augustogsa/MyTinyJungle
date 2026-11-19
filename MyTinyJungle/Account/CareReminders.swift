@@ -38,6 +38,7 @@ enum CareReminders {
         let pending = await center.pendingNotificationRequests().map(\.identifier).filter { $0.hasPrefix("care-") }
         center.removePendingNotificationRequests(withIdentifiers: pending)
         let plants = (try? ctx.fetch(FetchDescriptor<Plant>(predicate: #Predicate { !$0.isArchived }))) ?? []
+        WidgetSnapshot.write(plants)
         let needing = plants.filter { CareEngine.needsYou($0) && !snoozed($0.id) }.count
         try? await center.setBadgeCount(enabled ? needing : 0)
         guard enabled, await center.notificationSettings().authorizationStatus == .authorized, !plants.isEmpty else { return }

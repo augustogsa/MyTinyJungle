@@ -451,7 +451,7 @@ struct PropagationListView: View {
         }
         .safeAreaInset(edge: .bottom) { BottomBannerAd() }
         .navigationTitle("Propagation")
-        .toolbar { Button { starting = true } label: { Image(systemName: "plus") } }
+        .toolbar { Button { starting = true } label: { Image(systemName: "plus") }.accessibilityLabel(Grammar.pt(String(localized: "Start a propagation", comment: "VoiceOver: new propagation button"))) }
         .sheet(isPresented: $starting) { NavigationStack { StartPropagationView(parent: nil) } }
     }
 

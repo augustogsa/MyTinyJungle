@@ -281,7 +281,7 @@ struct SharedJungleView: View {
                                     Text("Take turns", comment: "Care plan: rotate between members").tag(CarePlan.rotate)
                                     ForEach(house.members) { m in Text(m.id == house.meID ? Grammar.pt(String(localized: "Me", comment: "Care plan option: only me")) : m.firstName).tag(CarePlan.person(m.id)) }
                                 } label: { EmptyView() }
-                            } label: { Image(systemName: "ellipsis.circle").foregroundStyle(Jungle.subtle).frame(width: 30, height: 30) }
+                            } label: { Image(systemName: "ellipsis.circle").foregroundStyle(Jungle.subtle).frame(width: 44, height: 44) }
                                 .accessibilityLabel(Text(Grammar.pt(String(localized: "Who looks after \(p.name)", comment: "Accessibility: assignment menu; %@ plant"))))
                         }
                         .padding(.vertical, 8)

@@ -343,7 +343,7 @@ struct GuidePlayerView: View {
             }
             if let secs = s.seconds {
                 HStack {
-                    Text(timeString(running || remaining > 0 ? remaining : secs)).font(.system(size: 40, weight: .semibold, design: .rounded).monospacedDigit())
+                    Text(timeString(running || remaining > 0 ? remaining : secs)).font(.system(.largeTitle, design: .rounded, weight: .semibold).monospacedDigit())
                         .foregroundStyle(Jungle.text).contentTransition(.numericText(countsDown: true))
                     Spacer()
                     Button(running ? Grammar.pt(String(localized: "Pause", comment: "Pause step timer")) : Grammar.pt(String(localized: "Start timer", comment: "Start step timer")), systemImage: running ? "pause.fill" : "play.fill") {

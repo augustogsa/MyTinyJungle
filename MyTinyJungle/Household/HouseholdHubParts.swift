@@ -41,7 +41,8 @@ struct ManageJungleView: View {
                                         Button { house.setSitting(m.id, until: Date().addingTimeInterval(7 * 86_400)) } label: { Label { Text("Plant-sit for a week", comment: "Manage: make member a sitter for 7 days") } icon: { Image(systemName: "airplane") } }
                                     }
                                     Button(role: .destructive) { removing = m } label: { Label { Text("Remove", comment: "Remove member button") } icon: { Image(systemName: "person.badge.minus") } }
-                                } label: { Image(systemName: "ellipsis.circle").font(.title3).foregroundStyle(Jungle.subtle).frame(width: 36, height: 36) }
+                                } label: { Image(systemName: "ellipsis.circle").font(.title3).foregroundStyle(Jungle.subtle).frame(width: 44, height: 44) }
+                                .accessibilityLabel(Grammar.pt(String(localized: "Options for \(m.firstName)", comment: "VoiceOver: menu for a jungle member; arg first name")))
                             }
                         }
                         .padding(.vertical, 10)

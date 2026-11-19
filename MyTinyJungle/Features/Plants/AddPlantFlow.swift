@@ -4,6 +4,7 @@ import PhotosUI
 
 /// Photo-first onboarding: snap → read (species, leaf health, soil) → meet your plant with a ready care plan.
 struct AddPlantFlow: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.modelContext) private var ctx
     @Environment(\.dismiss) private var dismiss
     @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
@@ -28,6 +29,9 @@ struct AddPlantFlow: View {
     @State private var nameSeed = UInt64.random(in: 1...UInt64.max)
     @State private var setup = PlantSetupDraft()
     @State private var sceneOutdoor: Bool?
+    /// Our server's top guess, reported back with the owner's pick.
+    @State private var serverTop: String?
+    @State private var shelf = false
 
     var body: some View {
         DuoCompanion(mood: .plant, title: "A new green friend", detail: "Snap it, meet it, and it moves in.") { duoContent }
@@ -67,6 +71,10 @@ struct AddPlantFlow: View {
     // MARK: capture
 
     private var capture: some View {
+        captureBody.sheet(isPresented: $shelf) { ShelfImportView { dismiss() } }
+    }
+
+    private var captureBody: some View {
         VStack(spacing: 22) {
             Spacer()
             ZStack {
@@ -94,6 +102,8 @@ struct AddPlantFlow: View {
                 .buttonStyle(.bordered).fontDesign(.rounded).controlSize(.large)
                 Button("I know the species") { choosingSpecies = true }
                     .font(.subheadline).padding(.top, 4)
+                Button(Grammar.pt(String(localized: "A whole shelf at once", comment: "Add plant: identify several plants from one photo; max 28 chars")), systemImage: "square.grid.3x2") { shelf = true }
+                    .font(.subheadline)
             }
             .buttonBorderShape(.capsule)
             .padding(.horizontal, 24).padding(.bottom, 24)
@@ -110,7 +120,7 @@ struct AddPlantFlow: View {
                     .frame(width: 220, height: 280)
                     .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: 28, style: .continuous).stroke(Jungle.leaf.opacity(0.5), lineWidth: 2))
-                    .phaseAnimator([0.97, 1.0]) { v, p in v.scaleEffect(p) } animation: { _ in .easeInOut(duration: 0.9) }
+                    .phaseAnimator(reduceMotion ? [1.0] : [0.97, 1.0]) { v, p in v.scaleEffect(p) } animation: { _ in .easeInOut(duration: 0.9) }
             }
             ReadingSteps()
             Spacer()
@@ -380,6 +390,7 @@ struct AddPlantFlow: View {
             let r = await local
             let scene = await ours
             var rem = scene.candidates
+            serverTop = scene.candidates.first?.species.id
             if let sc = scene.scene { setup.apply(sc); sceneOutdoor = sc.isOutdoor; if let o = sc.isOutdoor { outdoor = o } }
             for cand in await remote where !rem.contains(where: { $0.species == cand.species }) { rem.append(cand) }
             let minimum = Task { try? await Task.sleep(for: .seconds(1.6)) }
@@ -405,6 +416,7 @@ struct AddPlantFlow: View {
         plant.photo = photo
         setup.write(to: plant)
         ctx.insert(plant); Analytics.track("plant_added")
+        if let top = serverTop { Task { await Brain.identifyFeedback(suggested: top, chosen: s?.id) } }
         ErtyCheer.shared.show(.celebrate, Grammar.pt(String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name")))
         if let photo {
             let e = CareEvent(kind: .photo, note: "First photo", source: "onboarding"); e.photo = photo; e.plant = plant; ctx.insert(e)
