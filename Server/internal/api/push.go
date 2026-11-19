@@ -201,3 +201,64 @@ func (p *pusher) sendFCM(ctx context.Context, token, jungleID string) (gone bool
 		return false, fmt.Errorf("fcm %d", res.StatusCode)
 	}
 }
+
+// alert sends a visible notification (weather watch). Errors are logged, a gone token is cleared.
+func (p *pusher) alert(ctx context.Context, platform, token, title, body, kind string) {
+	var err error
+	var gone bool
+	switch platform {
+	case "ios":
+		if p.cfg.APNsKeyFile == "" {
+			return
+		}
+		var tok string
+		if tok, err = p.apnsJWT(); err != nil {
+			break
+		}
+		payload, _ := json.Marshal(map[string]any{"aps": map[string]any{"alert": map[string]string{"title": title, "body": body}, "sound": "default"}, "kind": kind})
+		for _, host := range []string{"api.push.apple.com", "api.sandbox.push.apple.com"} {
+			req, _ := http.NewRequestWithContext(ctx, http.MethodPost, "https://"+host+"/3/device/"+token, bytes.NewReader(payload))
+			req.Header.Set("authorization", "bearer "+tok)
+			req.Header.Set("apns-topic", p.cfg.AppleBundleID)
+			req.Header.Set("apns-push-type", "alert")
+			req.Header.Set("apns-collapse-id", kind)
+			res, e := p.http.Do(req)
+			if e != nil {
+				err = e
+				break
+			}
+			res.Body.Close()
+			if res.StatusCode == 200 {
+				err, gone = nil, false
+				break
+			}
+			gone = res.StatusCode == 410 || res.StatusCode == 400
+		}
+	case "android":
+		if p.fcm == nil || p.proj == "" {
+			return
+		}
+		var at string
+		if at, err = p.fcm.accessToken(ctx); err != nil {
+			break
+		}
+		payload, _ := json.Marshal(map[string]any{"message": map[string]any{"token": token,
+			"notification": map[string]string{"title": title, "body": body}, "data": map[string]string{"kind": kind}}})
+		req, _ := http.NewRequestWithContext(ctx, http.MethodPost, "https://fcm.googleapis.com/v1/projects/"+p.proj+"/messages:send", bytes.NewReader(payload))
+		req.Header.Set("Authorization", "Bearer "+at)
+		req.Header.Set("Content-Type", "application/json")
+		res, e := p.http.Do(req)
+		if e != nil {
+			err = e
+			break
+		}
+		res.Body.Close()
+		gone = res.StatusCode == 404
+	}
+	if err != nil {
+		p.log.Warn("alert push", "err", err)
+	}
+	if gone {
+		p.db.Auth.Exec(ctx, `update devices set push_token = null where push_token = $1`, token)
+	}
+}

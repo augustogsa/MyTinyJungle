@@ -80,6 +80,9 @@ leaf=$(python3 -c 'import json;m=json.load(open("/var/lib/mtj/content/manifest.j
 python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"species":"Monstera","note":"fine webbing and tiny moving dots under the leaves, dusty speckles","lang":"es"}))' /var/lib/mtj/content/b/$leaf > /tmp/mtj-dx.json
 dx=$(c $A -m 120 http://x/v1/diagnose -d @/tmp/mtj-dx.json); rm -f /tmp/mtj-dx.json
 echo "$dx" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["source"] in ("internal","library") and d["problem"] and d["steps"],d' && ok "brain answers internally ($(echo "$dx" | python3 -c 'import json,sys;d=json.load(sys.stdin);print(d["source"],"·",d["problem"])'))"
+ref=$(echo "$dx" | python3 -c 'import json,sys;print(json.load(sys.stdin).get("ref",""))'); [[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/diagnose/feedback -d "{\"ref\":\"$ref\",\"helped\":true}") == 200 ]] && ok "diagnosis feedback"
+ask=$(c $A http://x/v1/brain/ask -d '{"q":"how do I root a cutting in water?","lang":"pt-BR","situation":{"room":["heater"],"season":["winter"]}}'); echo "$ask" | python3 -c 'import json,sys;a=json.load(sys.stdin)["answers"];assert a,a' && ok "brain answers questions ($(echo "$ask" | python3 -c 'import json,sys;print(len(json.load(sys.stdin)["answers"]))') answers)"
+did=$(c $A http://x/v1/me | python3 -c 'import json,sys;print([d["id"] for d in json.load(sys.stdin)["devices"]][0])'); [[ $(c $A -X PUT -o /dev/null -w '%{http_code}' http://x/v1/me/weather-watch -d "{\"lat\":-23.55,\"lon\":-46.63,\"lang\":\"pt-BR\",\"on\":true,\"deviceId\":\"$did\"}") == 200 ]] && ok "weather watch on"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
 st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/me); [[ $st == 200 ]] && ok "account deletion"
 echo "passed $pass checks"

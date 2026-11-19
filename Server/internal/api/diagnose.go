@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"math"
 	"net/http"
 	"os"
 	"strings"
@@ -34,6 +35,8 @@ type diagnosis struct {
 	Steps      []string `json:"steps"`
 	Urgent     bool     `json:"urgent"`
 	Source     string   `json:"source,omitempty"` // library | internal | free | claude
+	Context    string   `json:"context,omitempty"`
+	Ref        string   `json:"ref,omitempty"` // send back with /v1/diagnose/feedback // what the plant's situation has to do with it
 }
 
 func (s *Server) aiClient() *anthropic.Client {
@@ -51,6 +54,12 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 		Species string `json:"species"`
 		Note    string `json:"note"`
 		Lang    string `json:"lang"`
+		// Optional situation: room, humidity, temp, light, watered, soil, pot, event, season, weather
+		// (values as in the knowledge base's scenarios). Lat/lon are rounded to ~10 km here and only used
+		// to read the local weather; they are never stored.
+		Situation map[string][]string `json:"situation"`
+		Lat       *float64            `json:"lat"`
+		Lon       *float64            `json:"lon"`
 	}
 	if decode(r, &in) != nil || len(in.Photo) == 0 || len(in.Photo) > 1_800_000 || len(in.Species) > 120 || len(in.Note) > 600 || len(in.Lang) > 12 {
 		s.fail(w, r, bad("invalid_request"))
@@ -84,7 +93,22 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, err)
 		return
 	}
-	d, err := s.think(context.WithoutCancel(ctx), in.Photo, in.Species, in.Note, in.Lang)
+	sit := situation{}
+	for k, v := range in.Situation {
+		if len(k) <= 12 && len(v) <= 12 {
+			sit[k] = v
+		}
+	}
+	if in.Lat != nil && in.Lon != nil && *in.Lat >= -90 && *in.Lat <= 90 && *in.Lon >= -180 && *in.Lon <= 180 {
+		for k, v := range weatherAt(ctx, math.Round(*in.Lat*10)/10, math.Round(*in.Lon*10)/10) {
+			if _, set := sit[k]; !set {
+				sit[k] = v
+			}
+		}
+	}
+	tctx, tcancel := context.WithTimeout(context.WithoutCancel(ctx), 90*time.Second)
+	defer tcancel()
+	d, err := s.think(tctx, in.Photo, in.Species, in.Note, in.Lang, sit)
 	if err != nil {
 		s.fail(w, r, err)
 		return
@@ -101,11 +125,11 @@ func (s *Server) askClaude(ctx context.Context, photo, note string) (diagnosis, 
 	if client == nil {
 		return diagnosis{}, apiError{http.StatusServiceUnavailable, "ai_unavailable"}
 	}
-	cctx, cancel := context.WithTimeout(ctx, 100*time.Second)
+	cctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	resp, err := client.Messages.New(cctx, anthropic.MessageNewParams{
 		Model:     diagnoseModel,
-		MaxTokens: 16000,
+		MaxTokens: 2000,
 		System:    []anthropic.TextBlockParam{{Text: diagnoseSystem}},
 		Messages: []anthropic.MessageParam{anthropic.NewUserMessage(
 			anthropic.NewImageBlockBase64("image/jpeg", photo),

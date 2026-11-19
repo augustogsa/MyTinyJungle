@@ -75,6 +75,9 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("POST /v1/attest", s.user(s.attest))
 	m.Handle("GET /v1/me/referral", s.user(s.myReferral))
 	m.Handle("POST /v1/diagnose", s.user(s.diagnose))
+	m.Handle("POST /v1/diagnose/feedback", s.user(s.diagnoseFeedback))
+	m.Handle("POST /v1/brain/ask", s.user(s.brainAsk))
+	m.Handle("PUT /v1/me/weather-watch", s.user(s.weatherWatch))
 	m.Handle("POST /v1/events", s.ipLimit(rateAuthIP, s.postEvents))
 	m.Handle("POST /v1/referrals/{code}/redeem", s.user(s.redeemReferral))
 
@@ -252,3 +255,6 @@ func (l *Limiter) Allow(key string, perMin int) bool {
 	l.counts[key]++
 	return l.counts[key] <= perMin
 }
+
+// StartJobs runs the background work of a serving process (weather watch).
+func (s *Server) StartJobs(ctx context.Context) { go s.weatherLoop(ctx) }

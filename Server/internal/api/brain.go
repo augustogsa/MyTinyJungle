@@ -30,12 +30,24 @@ type kbEntry struct {
 	words                 map[string]float64
 }
 
+// situation is what we know around the plant: room, season, weather, care. Each field matches a key in a
+// knowledge-base scenario's "when".
+type situation map[string][]string
+
+type scenario struct {
+	ID, Name, Advice string
+	When             map[string]json.RawMessage
+	Boosts           []string
+}
+
 type brain struct {
-	mu      sync.RWMutex
-	loaded  time.Time
-	entries []kbEntry
-	locales map[string]map[string]string
-	dir     string
+	mu        sync.RWMutex
+	loaded    time.Time
+	scenarios []scenario
+	entries   []kbEntry
+	docs_     []doc
+	locales   map[string]map[string]string
+	dir       string
 }
 
 var wordRx = regexp.MustCompile(`[a-z]+`)
@@ -95,6 +107,15 @@ func (b *brain) load() {
 			Causes, Fixes, Keywords []string
 		}
 		Pests, Diseases, Deficiencies []struct{ ID, Name, Signs, Why, Fix, Prevent, Likes string }
+		Scenarios                     []scenario
+		Topics                        []struct {
+			ID, Title, Kind, Intro string
+			Steps                  []struct{ Title, Detail string }
+			Keywords               []string
+		}
+		Glossary []struct{ Term, Meaning string }
+		Soils    []struct{ ID, Name, Short, Note, ForGroups string }
+		Remedies []json.RawMessage
 	}
 	if json.Unmarshal(b.file("data/knowledge.json"), &kb) != nil {
 		return
@@ -131,6 +152,20 @@ func (b *brain) load() {
 			add(kbEntry{ID: p.ID, Kind: kind, Name: p.Name, Looks: p.Signs, Causes: causes, Fixes: fixes}, nil)
 		}
 	}
+	var ds []doc
+	for _, t := range kb.Topics {
+		text := t.Intro
+		for _, st := range t.Steps {
+			text += " " + st.Title + ": " + st.Detail
+		}
+		ds = append(ds, newDoc("topic", t.Title, t.Intro, t.Title+" "+t.Intro+" "+strings.Join(t.Keywords, " ")))
+	}
+	for _, g := range kb.Glossary {
+		ds = append(ds, newDoc("glossary", g.Term, g.Meaning, g.Term+" "+g.Term+" "+g.Meaning))
+	}
+	for _, so := range kb.Soils {
+		ds = append(ds, newDoc("soil", so.Name, strings.TrimSpace(so.Short+". "+so.Note), so.Name+" "+so.Short+" "+so.ForGroups+" soil mix"))
+	}
 	locales := map[string]map[string]string{}
 	for _, l := range []string{"pt-BR", "es", "fr", "de", "ja"} {
 		var t struct{ Text map[string]string }
@@ -139,7 +174,7 @@ func (b *brain) load() {
 		}
 	}
 	b.mu.Lock()
-	b.entries, b.locales, b.loaded = es, locales, st.ModTime()
+	b.entries, b.locales, b.loaded, b.scenarios, b.docs_ = es, locales, st.ModTime(), kb.Scenarios, ds
 	b.mu.Unlock()
 }
 
@@ -173,7 +208,54 @@ type match struct {
 }
 
 // rank scores every knowledge entry against the evidence (note + what the model saw).
-func (b *brain) rank(note, saw string) []match {
+// fits says whether every condition of a scenario holds in this situation.
+func (sc scenario) fits(sit situation) bool {
+	if len(sc.When) == 0 {
+		return false
+	}
+	for k, raw := range sc.When {
+		var want []string
+		if json.Unmarshal(raw, &want) != nil {
+			var one string
+			if json.Unmarshal(raw, &one) != nil {
+				return false
+			}
+			want = []string{one}
+		}
+		have, hit := sit[k], false
+		for _, w := range want {
+			for _, h := range have {
+				hit = hit || w == h
+			}
+		}
+		if !hit {
+			return false
+		}
+	}
+	return true
+}
+
+// situational returns the scenarios that fit and how much each knowledge entry is boosted by them.
+func (b *brain) situational(sit situation) ([]scenario, map[string]float64) {
+	b.load()
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+	var fit []scenario
+	boost := map[string]float64{}
+	for _, sc := range b.scenarios {
+		if sc.fits(sit) {
+			fit = append(fit, sc)
+			w := 0.25 + 0.1*float64(len(sc.When)) // more specific scenarios count more
+			for _, id := range sc.Boosts {
+				boost[id] += w
+			}
+		}
+	}
+	sort.SliceStable(fit, func(i, j int) bool { return len(fit[i].When) > len(fit[j].When) })
+	return fit, boost
+}
+
+func (b *brain) rank(note, saw string, boost map[string]float64) []match {
 	b.load()
 	b.mu.RLock()
 	defer b.mu.RUnlock()
@@ -192,7 +274,8 @@ func (b *brain) rank(note, saw string) []match {
 			s += wt * ev[w]
 		}
 		if s > 0 {
-			ms = append(ms, match{e, s / (4 + total*0.15)})
+			sc := s / (4 + total*0.15)
+			ms = append(ms, match{e, sc * (1 + boost[e.ID])})
 		}
 	}
 	sort.Slice(ms, func(i, j int) bool { return ms[i].score > ms[j].score })
@@ -244,7 +327,7 @@ func see(ctx context.Context, jpegB64 string) string {
 			map[string]any{"type": "text", "text": "Describe only the visible problems of this houseplant in one or two short sentences: leaf colour (yellow, brown, black, pale), spots, crispy or mushy edges, holes, webbing, insects, white fuzz, wilting, drooping, soil state. If it looks healthy say healthy."},
 		}}},
 	})
-	cctx, cancel := context.WithTimeout(ctx, 75*time.Second)
+	cctx, cancel := context.WithTimeout(ctx, 45*time.Second)
 	defer cancel()
 	req, _ := http.NewRequestWithContext(cctx, "POST", "http://127.0.0.1:8091/v1/chat/completions", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
@@ -277,7 +360,7 @@ var theBrain = &brain{}
 
 // think runs the tiers, cheapest first. Only Claude costs money, and it is reached only when
 // our own model + knowledge base aren't confident and no free model answered.
-func (s *Server) think(ctx context.Context, photo, species, note, lang string) (diagnosis, error) {
+func (s *Server) think(ctx context.Context, photo, species, note, lang string, sit situation) (diagnosis, error) {
 	if lang == "" || strings.HasPrefix(lang, "en") {
 		lang = "en"
 	}
@@ -285,8 +368,10 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string) (
 		theBrain.dir = s.cfg.ContentDir
 	}
 	saw := see(ctx, photo)
-	ms := theBrain.rank(note, saw)
+	fit, boost := theBrain.situational(sit)
+	ms := theBrain.rank(note, saw, boost)
 	sig := signature(species, ms)
+	ref := sig + "#" + lang
 	top := []string{}
 	for _, m := range ms {
 		top = append(top, m.e.ID+fmt.Sprintf(":%.2f", m.score))
@@ -298,8 +383,8 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string) (
 		var raw []byte
 		err := s.db.Auth.QueryRow(ctx, `update ai_library set hits = hits + 1 where sig = $1 and lang = $2 returning answer`, sig, lang).Scan(&raw)
 		if d, ok := parseDiagnosis(string(raw)); err == nil && ok {
-			d.Source = "library"
-			return d, nil
+			d.Source, d.Ref = "library", ref
+			return withSituation(d, fit, ms[0].e.ID, lang), nil
 		}
 	}
 	healthy := strings.Contains(strings.ToLower(saw), "healthy") && len(ms) == 0
@@ -307,7 +392,8 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string) (
 	if len(ms) > 0 && ms[0].score >= 0.6 && (len(ms) == 1 || ms[0].score >= ms[1].score*1.25) {
 		d := theBrain.answerFrom(ms[0], lang)
 		s.remember(ctx, sig, lang, d)
-		return d, nil
+		d.Ref = ref
+		return withSituation(d, fit, ms[0].e.ID, lang), nil
 	}
 	if healthy && strings.TrimSpace(note) == "" {
 		return diagnosis{Problem: theBrain.tr(lang, "Looks healthy"), Confidence: "medium",
@@ -316,6 +402,9 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string) (
 	ctxNote := "lang: " + lang + "\nspecies: " + species + "\nowner's note: " + note
 	if saw != "" {
 		ctxNote += "\nfirst look: " + saw
+	}
+	for k, v := range sit {
+		ctxNote += "\n" + k + ": " + strings.Join(v, ", ")
 	}
 	for i, m := range ms {
 		if i == 3 {
@@ -326,16 +415,18 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string) (
 	// 3. Free model.
 	if d, ok := askGemini(ctx, photo, ctxNote); ok {
 		s.remember(ctx, sig, lang, d)
+		d.Ref = ref
 		return d, nil
 	}
 	// 4. Claude, last resort.
 	d, err := s.askClaude(ctx, photo, ctxNote)
 	if err == nil {
 		s.remember(ctx, sig, lang, d)
+		d.Ref = ref
 	} else if len(ms) > 0 {
 		// Never leave the owner empty-handed when we have our own best guess.
 		g := theBrain.answerFrom(ms[0], lang)
-		g.Confidence = "low"
+		g.Confidence, g.Ref = "low", ref
 		return g, nil
 	}
 	return d, err
@@ -363,7 +454,7 @@ func askGemini(ctx context.Context, photo, note string) (diagnosis, bool) {
 		}}},
 		"generationConfig": map[string]any{"responseMimeType": "application/json"},
 	})
-	cctx, cancel := context.WithTimeout(ctx, 40*time.Second)
+	cctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 	req, _ := http.NewRequestWithContext(cctx, "POST", "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
@@ -384,4 +475,155 @@ func askGemini(ctx context.Context, photo, note string) (diagnosis, bool) {
 	d, ok := parseDiagnosis(out.Candidates[0].Content.Parts[0].Text)
 	d.Source = "free"
 	return d, ok
+}
+
+// withSituation adds the advice of the most specific scenario that explains this problem (the library stays
+// situation-free, so it is added after the cache).
+func withSituation(d diagnosis, fit []scenario, id, lang string) diagnosis {
+	for _, sc := range fit {
+		for _, b := range sc.Boosts {
+			if b == id && sc.Advice != "" {
+				d.Context = theBrain.tr(lang, sc.Advice)
+				return d
+			}
+		}
+	}
+	return d
+}
+
+var weatherCache sync.Map // "lat,lon" rounded → cached conditions
+
+// weatherAt reads current conditions near the plant from Open-Meteo (free, no key). Coordinates are rounded to
+// about 10 km by the caller and never stored.
+func weatherAt(ctx context.Context, lat, lon float64) situation {
+	key := fmt.Sprintf("%.1f,%.1f", lat, lon)
+	type cached struct {
+		at  time.Time
+		sit situation
+	}
+	if c, ok := weatherCache.Load(key); ok && time.Since(c.(cached).at) < time.Hour {
+		return c.(cached).sit
+	}
+	cctx, cancel := context.WithTimeout(ctx, 4*time.Second)
+	defer cancel()
+	u := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.1f&longitude=%.1f&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,cloud_cover&daily=temperature_2m_max,temperature_2m_min&past_days=3&forecast_days=1", lat, lon)
+	req, _ := http.NewRequestWithContext(cctx, "GET", u, nil)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil
+	}
+	defer res.Body.Close()
+	var w struct {
+		Current struct {
+			T     float64 `json:"temperature_2m"`
+			RH    float64 `json:"relative_humidity_2m"`
+			Rain  float64 `json:"precipitation"`
+			Wind  float64 `json:"wind_speed_10m"`
+			Cloud float64 `json:"cloud_cover"`
+		}
+		Daily struct {
+			Max []float64 `json:"temperature_2m_max"`
+			Min []float64 `json:"temperature_2m_min"`
+		}
+	}
+	if res.StatusCode != 200 || json.NewDecoder(res.Body).Decode(&w) != nil {
+		return nil
+	}
+	sit := situation{}
+	add := func(k, v string) { sit[k] = append(sit[k], v) }
+	c := w.Current
+	if c.Rain > 0.2 {
+		add("weather", "rainy")
+	}
+	if c.RH >= 75 {
+		add("weather", "humid")
+	} else if c.RH <= 35 {
+		add("weather", "dry")
+	}
+	if c.Wind >= 35 {
+		add("weather", "windy")
+	}
+	if c.Wind >= 60 {
+		add("weather", "storm")
+	}
+	if c.Cloud >= 85 {
+		add("weather", "cloudy-days")
+	}
+	hot, frost := 0, false
+	for i := range w.Daily.Max {
+		if w.Daily.Max[i] >= 32 {
+			hot++
+		}
+		if i < len(w.Daily.Min) && w.Daily.Min[i] <= 0 {
+			frost = true
+		}
+	}
+	if hot >= 2 {
+		add("weather", "heatwave")
+	}
+	if frost {
+		add("weather", "frost")
+	} else if c.T <= 8 {
+		add("weather", "cold-snap")
+	}
+	month := time.Now().Month()
+	south := lat < 0
+	season := map[time.Month]string{12: "winter", 1: "winter", 2: "winter", 3: "spring", 4: "spring", 5: "spring", 6: "summer", 7: "summer", 8: "summer", 9: "autumn", 10: "autumn", 11: "autumn"}[month]
+	if south {
+		season = map[string]string{"winter": "summer", "summer": "winter", "spring": "autumn", "autumn": "spring"}[season]
+	}
+	if lat > -23.5 && lat < 23.5 {
+		season = "" // tropics: seasons don't follow the calendar
+	}
+	if season != "" {
+		add("season", season)
+	}
+	weatherCache.Store(key, cached{time.Now(), sit})
+	return sit
+}
+
+type doc struct {
+	kind, title, text string
+	words             map[string]bool
+}
+
+func newDoc(kind, title, text, index string) doc {
+	w := map[string]bool{}
+	for _, t := range kbWords(index) {
+		w[t] = true
+	}
+	return doc{kind: kind, title: title, text: text, words: w}
+}
+
+// docs finds the topics, glossary terms and soils that best match a question, translated.
+func (b *brain) docs(q, lang string, n int) []doc {
+	b.load()
+	b.mu.RLock()
+	qs := kbWords(q)
+	type hit struct {
+		d doc
+		s float64
+	}
+	var hs []hit
+	for _, d := range b.docs_ {
+		var s float64
+		for _, t := range qs {
+			if d.words[t] {
+				s++
+			}
+		}
+		if s > 0 && s/float64(len(qs)) >= 0.34 {
+			hs = append(hs, hit{d, s / (1 + 0.02*float64(len(d.words)))})
+		}
+	}
+	b.mu.RUnlock()
+	sort.Slice(hs, func(i, j int) bool { return hs[i].s > hs[j].s })
+	var out []doc
+	for i, h := range hs {
+		if i == n {
+			break
+		}
+		out = append(out, doc{kind: h.d.kind, title: b.tr(lang, h.d.title), text: b.tr(lang, h.d.text)})
+	}
+	return out
 }

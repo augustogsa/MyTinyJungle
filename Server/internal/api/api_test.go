@@ -180,7 +180,7 @@ func TestBrainMatchesKnowledge(t *testing.T) {
 	os.WriteFile(filepath.Join(dir, "b", "l.json"), []byte(loc), 0o644)
 	os.WriteFile(filepath.Join(dir, "manifest.json"), []byte(`{"files":{"data/knowledge.json":{"h":"k.json"},"data/locales/es.json":{"h":"l.json"}}}`), 0o644)
 	b := &brain{dir: dir}
-	ms := b.rank("there is fine webbing under the leaves and they look dusty", "no yellow leaves, healthy")
+	ms := b.rank("there is fine webbing under the leaves and they look dusty", "no yellow leaves, healthy", nil)
 	if len(ms) == 0 || ms[0].e.ID != "spider-mites" {
 		t.Fatalf("rank: %+v", ms)
 	}

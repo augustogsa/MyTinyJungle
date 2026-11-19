@@ -70,11 +70,13 @@ func serve(log *slog.Logger) error {
 	if err != nil {
 		return err
 	}
+	app := api.New(cfg, db, priv, pubs, log)
+	app.StartJobs(ctx)
 	srv := &http.Server{
-		Handler:           api.New(cfg, db, priv, pubs, log).Handler(),
+		Handler:           app.Handler(),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       60 * time.Second,
-		WriteTimeout:      60 * time.Second,
+		WriteTimeout:      180 * time.Second, // diagnoses may think for a while
 		IdleTimeout:       120 * time.Second,
 		MaxHeaderBytes:    32 << 10,
 	}
