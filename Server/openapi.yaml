@@ -1,0 +1,306 @@
+openapi: 3.1.0
+info:
+  title: My Tiny Jungle API
+  version: 1.0.0
+  description: |
+    One account across iOS, Android and web. Clients (Swift, Kotlin) are generated from this file.
+    Auth: `Authorization: Bearer <accessToken>` (EdDSA JWT, 30 min). Refresh tokens rotate on every use;
+    reusing an old one revokes every session of the account.
+servers:
+  - url: https://api.mytinyjungle.com
+security:
+  - bearer: []
+paths:
+  /health:
+    get:
+      operationId: health
+      security: []
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+  /v1/auth/signin:
+    post:
+      operationId: signIn
+      security: []
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/SignInRequest" } } } }
+      responses:
+        "200": { $ref: "#/components/responses/Tokens" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /v1/auth/refresh:
+    post:
+      operationId: refresh
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [refreshToken], properties: { refreshToken: { type: string } } } } }
+      responses:
+        "200": { $ref: "#/components/responses/Tokens" }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/auth/signout:
+    post:
+      operationId: signOut
+      responses: { "200": { $ref: "#/components/responses/Ok" } }
+  /v1/auth/link:
+    post:
+      operationId: linkProvider
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [provider, idToken], properties: { provider: { $ref: "#/components/schemas/Provider" }, idToken: { type: string } } } } }
+      responses:
+        "200": { $ref: "#/components/responses/Ok" }
+        "409": { $ref: "#/components/responses/Error" }
+  /v1/me:
+    get:
+      operationId: getMe
+      responses: { "200": { description: Me, content: { application/json: { schema: { $ref: "#/components/schemas/Me" } } } } }
+    patch:
+      operationId: updateMe
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, properties: { displayName: { type: string, maxLength: 60 }, locale: { type: string, maxLength: 12 } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" } }
+    delete:
+      operationId: deleteMe
+      description: Signs out everywhere; data is erased after 30 days unless the user signs in again.
+      responses: { "200": { $ref: "#/components/responses/Ok" } }
+  /v1/me/push-token:
+    put:
+      operationId: setPushToken
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [token], properties: { token: { type: string, maxLength: 400 } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" } }
+  /v1/jungles:
+    get:
+      operationId: listJungles
+      description: Creates the personal jungle on first call.
+      responses:
+        "200":
+          description: Jungles
+          content: { application/json: { schema: { type: object, required: [jungles], properties: { jungles: { type: array, items: { $ref: "#/components/schemas/Jungle" } } } } } }
+    post:
+      operationId: createJungle
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [name], properties: { name: { type: string, maxLength: 60 } } } } }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { type: object, required: [id], properties: { id: { type: string, format: uuid } } } } } }
+  /v1/jungles/{id}/invites:
+    post:
+      operationId: createInvite
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [role], properties: { role: { type: string, enum: [member, sitter] }, until: { type: string, format: date-time } } } } }
+      responses:
+        "201": { description: Invite, content: { application/json: { schema: { $ref: "#/components/schemas/Invite" } } } }
+        "403": { $ref: "#/components/responses/Error" }
+  /v1/invites/{code}/redeem:
+    post:
+      operationId: redeemInvite
+      parameters: [{ name: code, in: path, required: true, schema: { type: string } }]
+      responses:
+        "200": { description: Joined, content: { application/json: { schema: { type: object, required: [jungleId], properties: { jungleId: { type: string, format: uuid } } } } } }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/jungles/{id}/members/{uid}:
+    parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: uid, in: path, required: true, schema: { type: string, format: uuid } }]
+    patch:
+      operationId: updateMember
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [role], properties: { role: { type: string, enum: [member, sitter] }, until: { type: string, format: date-time } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" } }
+    delete:
+      operationId: removeMember
+      responses: { "200": { $ref: "#/components/responses/Ok" } }
+  /v1/sync/pull:
+    get:
+      operationId: pull
+      parameters:
+        - { name: since, in: query, schema: { type: integer, format: int64, default: 0 } }
+        - { name: limit, in: query, schema: { type: integer, maximum: 1000, default: 500 } }
+      responses:
+        "200":
+          description: Changes after the cursor
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [changes, cursor, more]
+                properties:
+                  changes: { type: array, items: { $ref: "#/components/schemas/Record" } }
+                  cursor: { type: integer, format: int64 }
+                  more: { type: boolean }
+  /v1/sync/push:
+    post:
+      operationId: push
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [changes], properties: { changes: { type: array, maxItems: 500, items: { $ref: "#/components/schemas/Change" } } } }
+      responses:
+        "200":
+          description: Per-change result
+          content: { application/json: { schema: { type: object, required: [results], properties: { results: { type: array, items: { $ref: "#/components/schemas/PushResult" } } } } } }
+  /v1/media/{jungle}/{id}:
+    parameters:
+      - { name: jungle, in: path, required: true, schema: { type: string, format: uuid } }
+      - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+    put:
+      operationId: putMedia
+      requestBody:
+        required: true
+        content:
+          image/jpeg: { schema: { type: string, format: binary } }
+          image/heic: { schema: { type: string, format: binary } }
+          image/png: { schema: { type: string, format: binary } }
+          image/webp: { schema: { type: string, format: binary } }
+      responses: { "201": { $ref: "#/components/responses/Ok" }, "403": { $ref: "#/components/responses/Error" } }
+    get:
+      operationId: getMedia
+      responses:
+        "200": { description: Image, content: { image/*: { schema: { type: string, format: binary } } } }
+        "404": { $ref: "#/components/responses/Error" }
+    delete:
+      operationId: deleteMedia
+      responses: { "200": { $ref: "#/components/responses/Ok" } }
+  /v1/store/apple/transactions:
+    post:
+      operationId: postAppleTransaction
+      description: Send Transaction.jwsRepresentation after purchase/restore. Purchases must set appAccountToken = userId.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [signedTransaction], properties: { signedTransaction: { type: string } } } } }
+      responses: { "200": { $ref: "#/components/responses/Entitlements" }, "422": { $ref: "#/components/responses/Error" } }
+  /v1/store/play/purchases:
+    post:
+      operationId: postPlayPurchase
+      description: Send the purchase token. Purchases must set obfuscatedAccountId = userId.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [purchaseToken], properties: { purchaseToken: { type: string } } } } }
+      responses: { "200": { $ref: "#/components/responses/Entitlements" }, "422": { $ref: "#/components/responses/Error" } }
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    JungleID: { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+  responses:
+    Ok: { description: OK, content: { application/json: { schema: { type: object, properties: { ok: { type: boolean } } } } } }
+    Error: { description: Error, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    Tokens: { description: Tokens, content: { application/json: { schema: { $ref: "#/components/schemas/Tokens" } } } }
+    Entitlements:
+      description: Current Plus status
+      content: { application/json: { schema: { type: object, required: [plus, entitlements], properties: { plus: { type: boolean }, entitlements: { type: array, items: { $ref: "#/components/schemas/Entitlement" } } } } } }
+  schemas:
+    Error: { type: object, required: [error], properties: { error: { type: string } } }
+    Health: { type: object, required: [service, release, db], properties: { service: { type: string }, release: { type: string }, db: { type: boolean } } }
+    Provider: { type: string, enum: [apple, google] }
+    Platform: { type: string, enum: [ios, android, web] }
+    SignInRequest:
+      type: object
+      required: [provider, idToken, deviceId, platform]
+      properties:
+        provider: { $ref: "#/components/schemas/Provider" }
+        idToken: { type: string }
+        name: { type: string, maxLength: 60, description: Apple gives the name only on first sign-in. }
+        deviceId: { type: string, format: uuid }
+        platform: { $ref: "#/components/schemas/Platform" }
+        model: { type: string, maxLength: 80 }
+        appVersion: { type: string, maxLength: 40 }
+    Tokens:
+      type: object
+      required: [userId, accessToken, refreshToken, expiresIn]
+      properties:
+        userId: { type: string, format: uuid }
+        accessToken: { type: string }
+        refreshToken: { type: string }
+        expiresIn: { type: integer }
+    Entitlement:
+      type: object
+      required: [store, productId, status]
+      properties:
+        store: { type: string, enum: [app_store, play] }
+        productId: { type: string }
+        expiresAt: { type: [string, "null"], format: date-time }
+        status: { type: string, enum: [active, grace, expired, revoked] }
+    Device:
+      type: object
+      required: [id, platform, lastSeenAt, thisDevice]
+      properties:
+        id: { type: string, format: uuid }
+        platform: { $ref: "#/components/schemas/Platform" }
+        model: { type: [string, "null"] }
+        appVersion: { type: [string, "null"] }
+        lastSeenAt: { type: string, format: date-time }
+        thisDevice: { type: boolean }
+    Me:
+      type: object
+      required: [id, createdAt, providers, devices, plus, entitlements]
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: [string, "null"] }
+        displayName: { type: [string, "null"] }
+        locale: { type: [string, "null"] }
+        createdAt: { type: string, format: date-time }
+        providers: { type: array, items: { $ref: "#/components/schemas/Provider" } }
+        devices: { type: array, items: { $ref: "#/components/schemas/Device" } }
+        plus: { type: boolean }
+        entitlements: { type: array, items: { $ref: "#/components/schemas/Entitlement" } }
+    Member:
+      type: object
+      required: [userId, role]
+      properties:
+        userId: { type: string, format: uuid }
+        displayName: { type: [string, "null"] }
+        role: { type: string, enum: [owner, member, sitter] }
+        until: { type: [string, "null"], format: date-time }
+    Jungle:
+      type: object
+      required: [id, name, isPersonal, ownerId, role, members]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        isPersonal: { type: boolean }
+        ownerId: { type: string, format: uuid }
+        role: { type: string, enum: [owner, member, sitter] }
+        until: { type: [string, "null"], format: date-time }
+        members: { type: array, items: { $ref: "#/components/schemas/Member" } }
+    Invite:
+      type: object
+      required: [code, url, expiresAt]
+      properties: { code: { type: string }, url: { type: string }, expiresAt: { type: string, format: date-time } }
+    Entity: { type: string, enum: [plant, care_event, chat_message, owned_product, space, care_task, observation, badge] }
+    Record:
+      type: object
+      required: [jungleId, entity, id, data, deleted, version, updatedAt]
+      properties:
+        jungleId: { type: string, format: uuid }
+        entity: { $ref: "#/components/schemas/Entity" }
+        id: { type: string, format: uuid }
+        data: { type: object, additionalProperties: true }
+        deleted: { type: boolean }
+        version: { type: integer, format: int64 }
+        updatedAt: { type: string, format: date-time }
+    Change:
+      type: object
+      required: [jungleId, entity, id, data, clientUpdatedAt]
+      properties:
+        jungleId: { type: string, format: uuid }
+        entity: { $ref: "#/components/schemas/Entity" }
+        id: { type: string, format: uuid }
+        data: { type: object, additionalProperties: true }
+        deleted: { type: boolean, default: false }
+        baseVersion: { type: [integer, "null"], format: int64 }
+        clientUpdatedAt: { type: string, format: date-time }
+    PushResult:
+      type: object
+      required: [id, entity, status]
+      properties:
+        id: { type: string, format: uuid }
+        entity: { $ref: "#/components/schemas/Entity" }
+        status: { type: string, enum: [ok, conflict, forbidden, invalid] }
+        version: { type: integer, format: int64 }
+        server: { $ref: "#/components/schemas/Record" }

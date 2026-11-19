@@ -1,48 +1,52 @@
-# Backend — accounts, sync, admin (2026-11-19)
+# Backend — accounts, sync, admin (Go, 2026-11-19)
 
-Goal: one My Tiny Jungle account across iPhone, iPad, Android and web. Same data, same Plus, same shared jungle on every device.
+One My Tiny Jungle account across iPhone, iPad, Android and web: same plants, same Plus, same shared jungle everywhere.
 
-## Lessons carried over from My Digital Magnets
+## Lessons from My Digital Magnets
 | MDM pain | MTJ rule |
 |---|---|
-| Supabase → Azure → VPS layers; GoTrue, PostgREST, `anon`/`authenticated` roles still in the wire format (doc 107) | Own API from day one. Own auth, own tokens, own roles. No client-held anon key, no `/rest/v1`. |
-| ~140 client call sites hitting raw tables | Clients only call versioned domain routes under `/v1/...`. |
-| iOS and Android drifted, fixed later under a parity rule | One API contract; every feature lands on both clients in the same delivery. |
-| Keychain/prefs names tied to a vendor, forced session migration | Neutral names: keychain service `com.simpleappscompany.mytinyjungle.session`. |
-| Many services (identity, platform, functions, media, postgrest) | One Deno + Hono service, one database. Split only when load says so. |
-| Backups added late | Nightly dump from the first day. |
+| Supabase → Azure → VPS layers; GoTrue, PostgREST, `anon` roles still in the wire format | Own API, own auth, own tokens, own DB roles, from day one. |
+| ~140 client call sites hitting raw tables | Clients only call `/v1` domain routes defined in `Server/openapi.yaml`. |
+| iOS and Android drifted | One OpenAPI contract; Swift and Kotlin clients are generated from it. |
+| Many services and npm dependency trees | One static Go binary, one third-party library (pgx). |
+| Backups added late, not off-site at first | Encrypted nightly backup with restore check and off-site copy from the first day. |
 
 ## Shape (live)
-- `https://api.mytinyjungle.com` → Cloudflare (Full strict) → OVH VPS Apache proxy → `127.0.0.1:3300` → `mtj-api.service` (Deno + Hono, user `mtj-api`, hardened unit).
-- Database `mytinyjungle`, role `mtj_app`, in the shared PostgreSQL 18 container (`mdm-postgres`, loopback 5432). Fully separate from MDM data.
-- Secrets: `/opt/mtj/secrets/api.env` (root:mtj-api 0640): `DATABASE_URL`, `MTJ_JWT_SECRET`, `MTJ_RELEASE`, `MTJ_APPLE_AUDIENCES`, `MTJ_GOOGLE_AUDIENCES`.
-- Backups: `mtj-backup.timer`, 03:30 daily, `/var/backups/mtj`, 14 kept.
-- Source: `Server/`. Deploy: `Server/deploy/deploy.sh` (rsync, cache, migrate, restart, health check). Migrations: `Server/migrations/NNNN_*.sql`, applied once each.
+`Cloudflare (Full strict + Authenticated Origin Pulls)` → `Apache TLS on the OVH VPS (client cert required)` → `unix socket /run/mtj/api.sock (0660, Apache group only)` → `mtj-api` (Go, ~13 MB RAM) → `PostgreSQL 18 (mdm-postgres container), database mytinyjungle`.
+
+- Direct hits on the origin fail during the TLS handshake; plain HTTP returns 403.
+- Source: `Server/` (`cmd/mtj-api`, `internal/api`, `internal/jwt`, `migrations`). Contract: `Server/openapi.yaml`.
+- Deploy: `Server/deploy/deploy.sh` (tests, static linux build, ship, provision, migrate, restart, health check). End-to-end: `Server/deploy/integration.sh` (20 checks, run as root on the VPS, cleans up after itself).
+
+## Security
+| Layer | What |
+|---|---|
+| Origin | Cloudflare-only IPs, plus origin pull client certificate (`cloudflare-origin-pull-ca.pem`), unix socket, no TCP port. |
+| Admin | `https://api.mytinyjungle.com/admin` sits behind Cloudflare Access (team `simpleappscompany.cloudflareaccess.com`, one-time PIN by email, 12h sessions). The server also checks the Access JWT itself and requires an email in `MTJ_ADMIN_EMAILS` (now `support@simpleappscompany.com`; add more there and in the Access policy "Owners"). |
+| Tokens | Ed25519 (EdDSA) access tokens, 30 min, with key id; rotate with `mtj-api keygen kYYYYMM` and set `MTJ_SIGNING_KID` (old keys keep verifying until removed). Refresh tokens are 256-bit, stored only as SHA-256, rotated on every use, one family per device. A reused refresh token revokes every session of the account. |
+| Database | Roles `mtj_owner` (migrations), `mtj_auth` (sign-in and store intake, no jungle data), `mtj_app` (row-level security on `mtj.uid`, set per transaction), `mtj_admin` (read-only, bypasses RLS). A code bug can't read another user's jungle. |
+| Input | Strict JSON (unknown fields rejected), body limits (2 MB JSON, 8 MB sync batch, 12 MB photo), per-IP and per-account rate limits, security headers. |
+| Privacy | Photos are sealed with AES-256-GCM (key in `api.env`, path bound as associated data). Logs record method, route, status and duration only: no IPs, no user ids, no bodies. Co-members only see each other's display names. |
+| Service | systemd sandbox: no capabilities, seccomp `@system-service`, read-only system, private /tmp and devices, write access only to `/var/lib/mtj/media`, 512 MB memory cap. |
+| Store | App Store JWS verified against the pinned Apple Root CA G3 plus Apple's marker OIDs. Google RTDN needs a verified Google OIDC token from the configured service account, then the Play Developer API is called. |
+
+## Secrets (VPS, root-only)
+`/opt/mtj/secrets/api.env` (DSNs, signing kid, media key, Access team/AUD, admin emails, Play settings), `owner.env` (migration DSN), `keys/*.key` (Ed25519 seeds), `backup.key`. Copies of `backup.key` and the origin certificate are in `~/.config/mydigitalmagnets/mytinyjungle/`.
+
+## Backups and upkeep
+- `mtj-backup.timer` 03:30: `pg_dump` plus the photo store, gpg AES-256, decrypt and `pg_restore -l` check, copy to `s3://mdm-prod-media-864145506012-eu3-ls/backups/mytinyjungle/` with a size check, 14 days kept locally.
+- `mtj-purge.timer` 04:10: erases accounts deleted 30+ days ago (and their jungles and photos), expired sessions, old invites, and store or audit rows older than 400 days.
+- Restore: `gpg -d --passphrase-file backup.key db-….dump.gpg | pg_restore -d mytinyjungle`.
 
 ## API v1
-| Route | Purpose |
-|---|---|
-| `GET /health` | service, release, db |
-| `POST /v1/auth/signin` | Apple or Google identity token + device → access (1h JWT) + refresh (90d, rotated, stored hashed) |
-| `POST /v1/auth/refresh`, `POST /v1/auth/signout` | rotate / end this device's session |
-| `POST /v1/auth/link` | add a second provider to the same account (Apple on iPhone + Google on Android = one account) |
-| `GET/PATCH/DELETE /v1/me`, `PUT /v1/me/push-token` | profile, devices, Plus status, in-app account deletion (App Review 5.1.1(v)) |
-| `GET /v1/sync/bootstrap` | creates the personal jungle, lists jungles the user can reach |
-| `GET /v1/sync/pull?since=` | every change after the cursor, across all jungles, paged |
-| `POST /v1/sync/push` | batched upserts/tombstones; last writer wins by client time, stale writes come back as `conflict` with the server copy |
-| `POST /storekit/notifications`, `POST /play/rtdn` | store events stored raw, then mapped to `entitlements` |
-| `/v1/admin/*`, `/admin` | dashboard: stats, users, user detail, store events (admin role only) |
+See `Server/openapi.yaml`. Auth: `/v1/auth/signin|refresh|signout|link`. Account: `/v1/me` (GET, PATCH, DELETE with a 30-day grace period), `/v1/me/push-token`. Sharing: `/v1/jungles`, invites (member, or sitter until a date), member role and end date, remove or leave. Sync: `/v1/sync/pull?since=` and `/v1/sync/push` (last writer wins by client time; an edit made on the current version always wins; stale writes come back as `conflict` with the server copy). Photos: `/v1/media/{jungle}/{id}`. Store: `/v1/store/apple/transactions`, `/v1/store/play/purchases`, webhooks `/storekit/notifications` (URL already set in ASC) and `/play/rtdn`.
 
-## Data model
-`users`, `identities` (provider+subject), `devices`, `sessions`, `jungles` (personal or shared), `jungle_members` (owner/member/sitter + `until`), `invites`, `records` (generic synced rows: `plant`, `care_event`, `chat_message`, `owned_product`, `space`, `care_task`, `observation`; one global version sequence = one cursor), `media` (photos in object storage), `entitlements` (App Store + Play per user), `store_notifications`, `audit_log`.
-
-## Admin
-`https://api.mytinyjungle.com/admin`. Sign in with a 12h token: `ssh mdm-ovh 'cd /opt/mtj/api && set -a && . /opt/mtj/secrets/api.env && deno task admin-token <email>'`. The owner's user gets `role = 'admin'` after their first sign-in from the app (`update users set role='admin' where email=...`).
+## Client rules
+- iOS purchases set `appAccountToken = userId`; Android purchases set `obfuscatedAccountId = userId`.
+- Keychain service `com.simpleappscompany.mytinyjungle.session`. A stable `deviceId` (UUID) per install.
+- iOS client: swift-openapi-generator with `Server/clients/ios/openapi-generator-config.yaml`. Android: `Server/clients/android/generate.sh`.
 
 ## Rollout
-1. Done: server, schema, auth, sync, store intake, admin, backups, deployed and healthy.
-2. iOS client: `JungleAPI` (URLSession, keychain session, refresh), Sign in with Apple → `/v1/auth/signin`, sync engine mapping SwiftData models ↔ `records` (photos → `media`). CloudKit backup stays as the offline path until sync is proven, then household moves from CKShare to `jungles` + `invites` so Android members can join.
-3. StoreKit: send `appAccountToken = userId` on purchase; verify JWS chain on notifications and upsert `entitlements`.
-4. Android client (Kotlin, Compose): same contract, Google sign-in + Play Billing → `/play/rtdn`.
-5. Photos: Garage bucket `mtj-media` behind signed upload URLs.
-6. Purge job for accounts deleted > 30 days, push via APNs/FCM.
+1. Done: Go server, contract, roles and RLS, sign-in, sync, sharing, encrypted photos, store verification, admin behind Access, hardened service, origin pulls, encrypted off-site backups, purge, 20/20 end-to-end checks.
+2. iOS: generated client, Sign in with Apple, sync engine (SwiftData ↔ records, photos ↔ media), move household from CKShare to jungles and invites, StoreKit `appAccountToken`.
+3. Android app on the same contract (Google sign-in → `MTJ_GOOGLE_AUDIENCES`, Play Billing → `MTJ_PLAY_*`).

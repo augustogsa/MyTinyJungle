@@ -1,0 +1,6 @@
+# swift-openapi-generator: add the OpenAPIGenerator build plugin to the app target and symlink ../../openapi.yaml as openapi.yaml.
+generate:
+  - types
+  - client
+accessModifier: internal
+namingStrategy: idiomatic

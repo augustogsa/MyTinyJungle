@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
-# Ship Server/ to the OVH VPS, cache deps, migrate, restart. Run from repo root or Server/.
+# Build a static linux/amd64 binary, ship it with the units, migrate, restart, health-check.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 HOST=${MTJ_HOST:-mdm-ovh}
-rsync -az --delete --exclude tests ./ "$HOST:/opt/mtj/api/"
-ssh "$HOST" 'set -e
-  cd /opt/mtj/api
-  chown -R root:mtj-api /opt/mtj/api && chmod -R g+rX /opt/mtj/api
-  install -m 0644 deploy/mtj-api.service deploy/mtj-backup.service deploy/mtj-backup.timer /etc/systemd/system/
-  export DENO_DIR=/var/cache/mtj-api/deno
-  deno cache main.ts tools/migrate.ts tools/admin_token.ts
-  chown -R mtj-api: /var/cache/mtj-api
-  set -a; . /opt/mtj/secrets/api.env; set +a
-  deno run --allow-env --allow-net --allow-read tools/migrate.ts
-  systemctl daemon-reload && systemctl enable --now mtj-api mtj-backup.timer && systemctl restart mtj-api
-  sleep 2; curl -fsS http://127.0.0.1:3300/health; echo'
+REL=$(git rev-parse --short HEAD)$(git diff --quiet -- . || echo -dirty)
+export PATH=$HOME/.local/go/bin:$PATH
+go test ./...
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "-s -w" -o build/mtj-api ./cmd/mtj-api
+scp -q build/mtj-api deploy/*.service deploy/*.timer deploy/mtj-backup.sh deploy/provision.sh deploy/mtj-proxy.conf "$HOST:/tmp/"
+ssh "$HOST" "set -e
+  install -d /opt/mtj/bin
+  install -m 0755 /tmp/mtj-api /opt/mtj/bin/mtj-api.new && mv /opt/mtj/bin/mtj-api.new /opt/mtj/bin/mtj-api
+  install -m 0700 /tmp/mtj-backup.sh /opt/mtj/bin/mtj-backup.sh
+  install -m 0644 /tmp/mtj-api.service /tmp/mtj-purge.service /tmp/mtj-purge.timer /tmp/mtj-backup.service /tmp/mtj-backup.timer /etc/systemd/system/
+  bash /tmp/provision.sh
+  grep -q '^MTJ_RELEASE=' /opt/mtj/secrets/api.env && sed -i 's/^MTJ_RELEASE=.*/MTJ_RELEASE=$REL/' /opt/mtj/secrets/api.env || echo 'MTJ_RELEASE=$REL' >> /opt/mtj/secrets/api.env
+  set -a; . /opt/mtj/secrets/owner.env; set +a
+  /opt/mtj/bin/mtj-api migrate
+  systemctl daemon-reload
+  systemctl enable -q --now mtj-purge.timer mtj-backup.timer
+  systemctl enable -q mtj-api && systemctl restart mtj-api
+  for i in 1 2 3 4 5; do curl -fsS --unix-socket /run/mtj/api.sock http://mtj-api/health && break; sleep 1; done
+  echo
+  rm -f /tmp/mtj-api /tmp/mtj-*.service /tmp/mtj-*.timer /tmp/mtj-backup.sh /tmp/provision.sh"

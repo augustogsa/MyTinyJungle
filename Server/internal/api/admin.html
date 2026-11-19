@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Jungle Admin</title>
+<style>
+:root{--bg:#f6f5f0;--fg:#1d2a1f;--mut:#6b756c;--card:#fff;--line:#e3e2da;--acc:#2f6b3a}
+@media (prefers-color-scheme:dark){:root{--bg:#121512;--fg:#e8ece6;--mut:#98a198;--card:#1b201c;--line:#2a312b;--acc:#7fc48a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 -apple-system,system-ui,sans-serif}
+main{max-width:1120px;margin:0 auto;padding:24px 16px}h1{font-size:20px;margin:0 0 16px}h2{font-size:15px;margin:24px 0 8px;color:var(--mut);font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}.k b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.k span{color:var(--mut);font-size:13px}.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse}td,th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;white-space:nowrap}
+th{color:var(--mut);font-weight:500}tr[data-id]{cursor:pointer}tr[data-id]:hover{background:var(--bg)}
+input{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%;max-width:360px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12px}
+nav{display:flex;gap:16px;margin-bottom:16px}nav a{color:var(--acc);text-decoration:none}
+</style></head><body><main>
+<h1>My Tiny Jungle</h1>
+<nav><a href="#">Overview</a><a href="#store">Store events</a></nav>
+<div id="view"></div></main>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const d=s=>s?new Date(s).toLocaleString():'—';
+const api=p=>fetch('/v1/admin'+p,{credentials:'same-origin'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
+const L={users:'Users',newUsers7d:'New 7d',activeUsers24h:'Active 24h',activeUsers30d:'Active 30d',iosDevices:'iOS devices',androidDevices:'Android devices',sharedJungles:'Shared jungles',plants:'Plants',careEvents:'Care logs',plusUsers:'Plus',pendingDeletion:'Pending deletion'};
+async function overview(){
+  const s=await api('/stats');
+  $('#view').innerHTML=`<div class="grid">${Object.entries(L).map(([k,l])=>`<div class="k"><b>${s[k]}</b><span>${l}</span></div>`).join('')}</div>
+  <h2>Users</h2><p><input id="q" placeholder="Search email, name or id" autocomplete="off"></p>
+  <div class="wrap"><table><thead><tr><th>Email</th><th>Name</th><th>Platforms</th><th>Plus</th><th>Last seen</th><th>Joined</th></tr></thead><tbody id="rows"></tbody></table></div>`;
+  let t;$('#q').oninput=()=>{clearTimeout(t);t=setTimeout(users,250)};users();
+}
+async function users(){
+  const {users:u}=await api('/users?q='+encodeURIComponent($('#q').value));
+  $('#rows').innerHTML=u.map(x=>`<tr data-id="${esc(x.id)}"><td>${esc(x.email)}${x.deletedAt?' (deleting)':''}</td><td>${esc(x.displayName)}</td><td>${esc(x.platforms)}</td><td>${x.plus?'Yes':''}</td><td>${d(x.lastSeen)}</td><td>${d(x.createdAt)}</td></tr>`).join('');
+  document.querySelectorAll('tr[data-id]').forEach(r=>r.onclick=()=>location.hash='user/'+r.dataset.id);
+}
+async function user(id){const u=await api('/users/'+encodeURIComponent(id));$('#view').innerHTML=`<h2>User</h2><pre>${esc(JSON.stringify(u,null,2))}</pre>`}
+async function store(){const {events:e}=await api('/store-events');
+  $('#view').innerHTML=`<div class="wrap"><table><thead><tr><th>#</th><th>Store</th><th>Type</th><th>Verified</th><th>Received</th></tr></thead><tbody>${e.map(x=>`<tr><td>${x.id}</td><td>${esc(x.store)}</td><td>${esc(x.notification_type)}</td><td>${x.verified?'Yes':'No'}</td><td>${d(x.received_at)}</td></tr>`).join('')}</tbody></table></div>`}
+function route(){const h=location.hash.slice(1);(h.startsWith('user/')?user(h.slice(5)):h==='store'?store():overview()).catch(e=>$('#view').textContent='Error '+e.message)}
+addEventListener('hashchange',route);route();
+</script></body></html>

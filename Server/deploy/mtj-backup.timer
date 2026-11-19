@@ -1,5 +1,5 @@
 [Unit]
-Description=My Tiny Jungle nightly backup
+Description=Nightly My Tiny Jungle backup
 
 [Timer]
 OnCalendar=*-*-* 03:30:00

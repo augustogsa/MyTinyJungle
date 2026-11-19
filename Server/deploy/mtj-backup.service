@@ -1,6 +1,7 @@
 [Unit]
-Description=My Tiny Jungle nightly Postgres dump (14 kept)
+Description=My Tiny Jungle encrypted backup (local 14 days + off-site S3)
+After=mdm-postgres.service
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c 'mkdir -p /var/backups/mtj && podman exec mdm-postgres pg_dump -U postgres -Fc mytinyjungle > /var/backups/mtj/mtj-$(date +%%F).dump && find /var/backups/mtj -name "*.dump" -mtime +14 -delete'
+ExecStart=/opt/mtj/bin/mtj-backup.sh

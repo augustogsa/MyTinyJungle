@@ -1,21 +1,48 @@
 [Unit]
-Description=My Tiny Jungle API (loopback 3300, behind Apache + Cloudflare)
+Description=My Tiny Jungle API (Go, unix socket behind Apache + Cloudflare)
 After=network-online.target mdm-postgres.service
-Wants=mdm-postgres.service
+Wants=network-online.target mdm-postgres.service
 
 [Service]
+Type=simple
 User=mtj-api
-WorkingDirectory=/opt/mtj/api
+# Primary group nobody = Apache, so the socket (0660) is reachable only by Apache; mtj-api group reads secrets.
+Group=nobody
+SupplementaryGroups=mtj-api
 EnvironmentFile=/opt/mtj/secrets/api.env
-Environment=DENO_DIR=/var/cache/mtj-api/deno
-ExecStart=/usr/local/bin/deno run --cached-only --no-prompt --allow-env --allow-net --allow-read=/opt/mtj/api main.ts
+ExecStart=/opt/mtj/bin/mtj-api serve
 Restart=always
-RestartSec=3
+RestartSec=2
+RuntimeDirectory=mtj
+RuntimeDirectoryMode=0750
+UMask=0077
+LimitNOFILE=65536
+MemoryMax=512M
+TasksMax=256
+
+# Sandbox
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=yes
 PrivateTmp=yes
-ReadWritePaths=/var/cache/mtj-api
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RemoveIPC=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources @mount @debug @cpu-emulation @obsolete @raw-io @reboot @swap
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/mtj/media
+ReadOnlyPaths=/opt/mtj
 
 [Install]
 WantedBy=multi-user.target
