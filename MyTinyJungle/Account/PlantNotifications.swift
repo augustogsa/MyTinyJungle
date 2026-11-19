@@ -94,7 +94,7 @@ enum PlantNote {
     }
 
     static func messageIntent(from p: Plant, body: String) async -> INSendMessageIntent {
-        let avatar = p.photo.flatMap(UIImage.init(data:))?.preparingThumbnail(of: CGSize(width: 240, height: 240))?.jpegData(compressionQuality: 0.85)
+        let avatar = p.photo.flatMap { BrainPhoto.encode($0, maxSide: 240, quality: 0.85) }
         let sender = INPerson(personHandle: INPersonHandle(value: p.id.uuidString, type: .unknown),
                               nameComponents: nil, displayName: p.name,
                               image: avatar.map { INImage(imageData: $0) },
@@ -150,8 +150,7 @@ enum PlantNote {
 
     /// The plant's photo as a native thumbnail, written to a temp file.
     static func attachment(_ p: Plant) -> UNNotificationAttachment? {
-        guard let data = p.photo, let img = UIImage(data: data),
-              let jpg = img.preparingThumbnail(of: CGSize(width: 900, height: 900 * img.size.height / max(img.size.width, 1)))?.jpegData(compressionQuality: 0.82) else { return nil }
+        guard let data = p.photo, let jpg = BrainPhoto.encode(data, maxSide: 900, quality: 0.82) else { return nil }
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("plant-\(p.id)-\(UUID().uuidString.prefix(6)).jpg")
         guard (try? jpg.write(to: url)) != nil else { return nil }
         return try? UNNotificationAttachment(identifier: p.id.uuidString, url: url, options: [UNNotificationAttachmentOptionsThumbnailHiddenKey: false])

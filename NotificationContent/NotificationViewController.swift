@@ -1,3 +1,4 @@
+import ImageIO
 import UIKit
 import SwiftUI
 import UserNotifications
@@ -17,7 +18,12 @@ final class NotificationViewController: UIViewController, UNNotificationContentE
         let images: [UIImage] = c.attachments.prefix(4).compactMap { a in
             guard a.url.startAccessingSecurityScopedResource() else { return nil }
             defer { a.url.stopAccessingSecurityScopedResource() }
-            return (try? Data(contentsOf: a.url)).flatMap(UIImage.init(data:))
+            // Decoded at card size straight from the file (ImageIO), never the full image.
+            guard let src = CGImageSourceCreateWithURL(a.url as CFURL, nil),
+                  let cg = CGImageSourceCreateThumbnailAtIndex(src, 0, [kCGImageSourceCreateThumbnailFromImageAlways: true,
+                                                                         kCGImageSourceCreateThumbnailWithTransform: true,
+                                                                         kCGImageSourceThumbnailMaxPixelSize: 1000] as CFDictionary) else { return nil }
+            return UIImage(cgImage: cg)
         }
         let card = NoteCard(kind: c.userInfo["kind"] as? String ?? "",
                             names: c.userInfo["names"] as? [String] ?? [],

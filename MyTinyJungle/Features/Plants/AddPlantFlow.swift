@@ -115,7 +115,7 @@ struct AddPlantFlow: View {
     private var reading: some View {
         VStack(spacing: 24) {
             Spacer()
-            if let photo, let img = UIImage(data: photo) {
+            if let photo, let img = Thumbs.image(photo, side: 280) {
                 Image(uiImage: img).resizable().scaledToFill()
                     .frame(width: 220, height: 280)
                     .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
@@ -167,7 +167,7 @@ struct AddPlantFlow: View {
     private var hero: some View {
         ZStack(alignment: .bottomLeading) {
             Group {
-                if let photo, let img = UIImage(data: photo) { Image(uiImage: img).resizable().scaledToFill() }
+                if let photo, let img = Thumbs.image(photo, side: 440) { Image(uiImage: img).resizable().scaledToFill() }
                 else { ZStack { Jungle.mint; Image(systemName: "leaf").font(.system(size: 60)).foregroundStyle(Jungle.leaf) } }
             }
             .frame(height: 280).frame(maxWidth: .infinity)
@@ -383,10 +383,12 @@ struct AddPlantFlow: View {
         photo = data
         stage = .reading
         Task {
-            guard let img = UIImage(data: data) else { return }
+            // One 768 px upload for every call; the on-device read runs alongside the server.
+            let bp = await Task.detached(priority: .userInitiated) { BrainPhoto.make(raw) }.value
+            guard let img = bp.image ?? UIImage(data: data) else { return }
             async let local = PlantVision.read(img)
-            async let remote = PlantIdentifier.remote(data)
-            async let ours = Brain.identifyScene(data)
+            async let remote = PlantIdentifier.remote(bp.jpeg)
+            async let ours = Brain.identifyScene(bp)
             let r = await local
             let scene = await ours
             var rem = scene.candidates

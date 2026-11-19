@@ -20,7 +20,7 @@
 - App Privacy (updated for AdMob, published): Coarse Location, Device ID, Product Interaction and Advertising Data are used for Third-Party Advertising + Analytics, not linked, and used for tracking (ATT). Crash and Performance Data are used for App Functionality + Analytics; Other Diagnostic Data for Advertising + Analytics; none of these are used for tracking. Plant photos, plant data and scans stay on the device.
 - Price Free (base USA). Availability: all territories except China mainland (needs ICP filing / security assessment), new territories auto-on.
 - Copyright "2026 Simple Apps Company". Review contact Augusto Gomes, as on My Digital Magnets; no demo account needed.
-- Export compliance: set `ITSAppUsesNonExemptEncryption = NO` in Info.plist (see MyTinyJungle/Info-Permissions.md).
+- Export compliance: set `ITSAppUsesNonExemptEncryption = NO` in Info.plist (see Documentation/Info-Permissions.md).
 - Screenshots, app icon and build attach with the first upload (main session).
 
 ## Subscriptions — "My Tiny Jungle Plus"

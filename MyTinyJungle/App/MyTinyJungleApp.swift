@@ -63,7 +63,8 @@ struct MyTinyJungleApp: App {
                 let c = await Task.detached(priority: .userInitiated) { MyTinyJungleApp.shared }.value
                 NotificationDelegate.shared.container = c
                 let shown = Date().timeIntervalSince(started)
-                if shown < 1.2 { try? await Task.sleep(for: .seconds(1.2 - shown)) }
+                // Short floor so the splash never flashes; the store usually opens well inside it.
+                if shown < 0.5 { try? await Task.sleep(for: .seconds(0.5 - shown)) }
                 withAnimation(.easeOut(duration: 0.35)) { container = c }
             }
         }
@@ -75,6 +76,7 @@ private struct MainScene: View {
     let container: ModelContainer
     var body: some View {
             RootView()
+                .onAppear { LaunchClock.mark("ready") }
                 .modifier(ErtyCheerOverlay())
                 .task { if ProcessInfo.processInfo.arguments.contains("-ertyDemo") { try? await Task.sleep(for: .seconds(1)); ErtyCheer.shared.show(.water, "Watered · Goldie") } }
                 .tint(Jungle.tint)
@@ -82,7 +84,9 @@ private struct MainScene: View {
                 .task { try? await Task.sleep(for: .seconds(2)); AdPool.shared.start() }
                 .task {
                     JungleSync.shared.start(container)
-                    Task { await ContentStore.shared.refresh() }
+                    // Network, Google sign-in restore and StoreKit wait until the first screen has drawn.
+                    try? await Task.sleep(for: .milliseconds(800))
+                    Task(priority: .utility) { await ContentStore.shared.refresh() }
                     #if DEBUG
                     Task { await HouseholdSelfTest.run() }
                     #endif

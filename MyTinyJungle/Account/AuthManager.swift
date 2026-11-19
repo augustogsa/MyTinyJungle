@@ -118,6 +118,7 @@ final class AuthManager {
     func signOut() {
         if account?.provider == .google { GIDSignIn.sharedInstance.signOut() }
         Keychain.delete(); account = nil
+        BrainCache.clear()
         JungleSync.shared.reset()
         Task { await JungleAPI.shared.signOut() }
     }

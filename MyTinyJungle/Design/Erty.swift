@@ -31,7 +31,7 @@ struct ErtyView: View {
 
     var body: some View {
         Group {
-            if reduceMotion { ContentImage("erty/\(mood.rawValue).png", fallback: "erty-\(mood.rawValue)").scaledToFit() }
+            if reduceMotion { ContentImage("erty/\(mood.rawValue).png", fallback: "erty-\(mood.rawValue)", side: size).scaledToFit() }
             else { ErtyLoop(mood: mood, playing: visible).id(mood) }
         }
         .onAppear { visible = true }
@@ -48,64 +48,93 @@ private struct ErtyLoop: UIViewRepresentable {
     func updateUIView(_ v: LoopView, context: Context) { v.setPlaying(playing) }
     static func dismantleUIView(_ v: LoopView, coordinator: ()) { v.stop() }
 
+    /// The player exists only while Erty is on screen in a foreground app; hidden or backgrounded, it is released
+    /// and the still frame shows. After a few loops it settles on a frame so an idle screen uses no power.
     final class LoopView: UIView {
         override class var layerClass: AnyClass { AVPlayerLayer.self }
-        private var player: AVQueuePlayer?
+        private(set) var player: AVQueuePlayer?
         private var looper: AVPlayerLooper?
         private let still: UIImageView
+        private let url: URL?
+        private var observing = false
+        private var wanted = false
+        private var rest: DispatchWorkItem?
+        private var inBackground = UIApplication.shared.applicationState == .background
 
         init(mood: ErtyMood) {
             still = UIImageView(image: MainActor.assumeIsolated { ContentStore.shared.image("erty/\(mood.rawValue).png") } ?? UIImage(named: "erty-\(mood.rawValue)"))
+            // Loops come from the server; the copies bundled with the app cover the first launch and offline.
+            url = ContentFiles.url("erty/\(mood.rawValue).mov") ?? Bundle.main.url(forResource: mood.rawValue, withExtension: "mov")
             super.init(frame: .zero)
             backgroundColor = .clear
             still.contentMode = .scaleAspectFit
             still.frame = bounds; still.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             addSubview(still)
-            // Loops come from the server; the copies bundled with the app cover the first launch and offline.
-            guard let url = ContentFiles.url("erty/\(mood.rawValue).mov") ?? Bundle.main.url(forResource: mood.rawValue, withExtension: "mov") else { return }
+            (layer as! AVPlayerLayer).videoGravity = .resizeAspect
+            let nc = NotificationCenter.default
+            nc.addObserver(self, selector: #selector(background), name: UIApplication.didEnterBackgroundNotification, object: nil)
+            nc.addObserver(self, selector: #selector(foreground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        }
+        required init?(coder: NSCoder) { fatalError() }
+
+        @objc private func background() { inBackground = true; update() }
+        @objc private func foreground() { inBackground = false; update() }
+
+        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+            if (layer as? AVPlayerLayer)?.isReadyForDisplay == true { DispatchQueue.main.async { self.still.isHidden = self.player == nil } }
+        }
+
+        func setPlaying(_ on: Bool) {
+            wanted = on
+            update()
+        }
+
+        private var onScreen: Bool { wanted && window != nil && !inBackground }
+
+        private func update() {
+            rest?.cancel()
+            guard onScreen else { release(); return }
+            if player == nil { build() }
+            guard let player else { return }
+            player.play()
+            let w = DispatchWorkItem { [weak self] in self?.player?.pause() }
+            rest = w
+            DispatchQueue.main.asyncAfter(deadline: .now() + 9, execute: w)
+        }
+
+        private func build() {
+            guard let url else { return }
             let q = AVQueuePlayer(); q.isMuted = true; q.preventsDisplaySleepDuringVideoPlayback = false
             q.audiovisualBackgroundPlaybackPolicy = .pauses
             looper = AVPlayerLooper(player: q, templateItem: AVPlayerItem(url: url))
             player = q
             let l = layer as! AVPlayerLayer
-            l.player = q; l.videoGravity = .resizeAspect
-            l.addObserver(self, forKeyPath: "readyForDisplay", options: .new, context: nil)
+            l.player = q
+            if !observing { l.addObserver(self, forKeyPath: "readyForDisplay", options: .new, context: nil); observing = true }
         }
-        required init?(coder: NSCoder) { fatalError() }
 
-        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-            if (layer as? AVPlayerLayer)?.isReadyForDisplay == true { DispatchQueue.main.async { self.still.isHidden = true } }
-        }
-        private var wanted = false
-        private var rest: DispatchWorkItem?
-        /// Plays only while on screen, and settles on a frame after a few loops so an idle screen uses no power.
-        func setPlaying(_ on: Bool) {
-            wanted = on
-            update()
-        }
-        private func update() {
+        /// Drops the player and its decoder; the still frame covers the gap.
+        private func release() {
             rest?.cancel()
-            guard let player else { return }
-            if wanted && window != nil {
-                player.play()
-                let w = DispatchWorkItem { [weak self] in self?.player?.pause() }
-                rest = w
-                DispatchQueue.main.asyncAfter(deadline: .now() + 9, execute: w)
-            } else {
-                player.pause()
-            }
+            guard player != nil else { return }
+            player?.pause(); looper?.disableLooping()
+            (layer as? AVPlayerLayer)?.player = nil
+            player = nil; looper = nil
+            still.isHidden = false
         }
+
         override func didMoveToWindow() {
             super.didMoveToWindow()
             update()
         }
+
         func stop() {
-            rest?.cancel()
-            player?.pause(); looper?.disableLooping()
-            if player != nil { layer.removeObserver(self, forKeyPath: "readyForDisplay") }
-            player = nil; looper = nil
+            wanted = false
+            release()
+            NotificationCenter.default.removeObserver(self)
+            if observing { layer.removeObserver(self, forKeyPath: "readyForDisplay"); observing = false }
         }
-        deinit { if player != nil { layer.removeObserver(self, forKeyPath: "readyForDisplay") } }
+        deinit { if observing { layer.removeObserver(self, forKeyPath: "readyForDisplay") } }
     }
 }
 
@@ -186,6 +215,7 @@ struct LaunchSplash: View {
                 .opacity(showText ? 1 : 0)
         }
         .ignoresSafeArea()
+        .onAppear { LaunchClock.mark("firstFrame") }
         .task { try? await Task.sleep(for: .milliseconds(350)); withAnimation(.easeIn(duration: 0.3)) { showText = true } }
     }
 }

@@ -86,7 +86,7 @@ struct PlantAvatar: View {
 
     var body: some View {
         Group {
-            if let data, let image = UIImage(data: data) {
+            if let data, let image = Thumbs.image(data, side: size) {
                 Image(uiImage: image).resizable().scaledToFill()
             } else {
                 ZStack {

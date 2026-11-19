@@ -56,7 +56,7 @@ struct HealthCheckView: View {
         VStack(spacing: 12) {
         ZStack {
             Group {
-                if let d = photo ?? plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
+                if let d = photo ?? plant.photo, let img = Thumbs.image(d, side: 440) { Image(uiImage: img).resizable().scaledToFill() }
                 else { Jungle.mint }
             }
             .frame(height: 260).frame(maxWidth: .infinity).clipped()
@@ -156,8 +156,11 @@ struct HealthCheckView: View {
         photo = data
         working = true
         Task {
+            // The doctor's upload is prepared while the on-device read runs, so asking it starts sending at once.
+            async let upload: Void = Task.detached(priority: .utility) { _ = BrainPhoto.make(data) }.value
             if let img = UIImage(data: data) { read = await PlantVision.read(img) }
             working = false
+            _ = await upload
         }
     }
 

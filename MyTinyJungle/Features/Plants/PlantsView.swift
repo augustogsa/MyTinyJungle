@@ -182,7 +182,7 @@ struct PlantTile: View {
                 // Fixed box first, photo as overlay: a wide photo can never push the grid out of line.
                 Color.clear.frame(height: 140).frame(maxWidth: .infinity)
                     .overlay {
-                        if let d = plant.photo, let img = UIImage(data: d) {
+                        if let d = plant.photo, let img = Thumbs.image(d, side: 220) {
                             Image(uiImage: img).resizable().scaledToFill()
                         } else {
                             ZStack { Jungle.mint; Icon3DView(plant.species.map { PlantsIcon.for($0) } ?? .pottedPlant, size: 72) }

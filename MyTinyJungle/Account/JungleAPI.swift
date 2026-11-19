@@ -146,31 +146,96 @@ actor JungleAPI {
         return d
     }
 
-    private func raw<R: Decodable>(_ method: String, _ path: String, query: [URLQueryItem], body: Data?, contentType: String?, auth: Bool, decode: R.Type, retried: Bool = false, busyRetried: Bool = false) async throws -> R {
+    private func raw<R: Decodable>(_ method: String, _ path: String, query: [URLQueryItem], body: Data?, contentType: String?, auth: Bool, decode: R.Type) async throws -> R {
+        try Self.decoder.decode(R.self, from: try await rawData(method, path, query: query, body: body, contentType: contentType, auth: auth))
+    }
+
+    /// Same as `send`, but hands back the response bytes (for the brain result cache).
+    func sendData<B: Encodable>(_ method: String, _ path: String, body: B) async throws -> Data {
+        try await rawData(method, path, query: [], body: try Self.encoder.encode(body), contentType: "application/json", auth: true)
+    }
+
+    private func request(_ method: String, _ path: String, query: [URLQueryItem], body: Data?, contentType: String?, auth: Bool, accept: String? = nil) async throws -> URLRequest {
         var comps = URLComponents(url: Self.base.appending(path: path), resolvingAgainstBaseURL: false)!
         if !query.isEmpty { comps.queryItems = query }
         var req = URLRequest(url: comps.url!)
         req.httpMethod = method
         req.httpBody = body
         if let contentType { req.setValue(contentType, forHTTPHeaderField: "Content-Type") }
+        if let accept { req.setValue(accept, forHTTPHeaderField: "Accept") }
         if auth { req.setValue("Bearer \(try await accessToken())", forHTTPHeaderField: "Authorization") }
+        return req
+    }
+
+    private func rawData(_ method: String, _ path: String, query: [URLQueryItem], body: Data?, contentType: String?, auth: Bool, retried: Bool = false, busyRetried: Bool = false) async throws -> Data {
+        let req = try await request(method, path, query: query, body: body, contentType: contentType, auth: auth)
         let data: Data, res: URLResponse
         do { (data, res) = try await session.data(for: req) } catch { throw APIError.offline }
         let code = (res as? HTTPURLResponse)?.statusCode ?? 0
         if code == 401 && auth && !retried {
             access = nil
-            return try await raw(method, path, query: query, body: body, contentType: contentType, auth: auth, decode: decode, retried: true, busyRetried: busyRetried)
+            return try await rawData(method, path, query: query, body: body, contentType: contentType, auth: auth, retried: true, busyRetried: busyRetried)
         }
         // The server is busy: wait 3 s and try once more.
         if code == 503 && !busyRetried {
             try? await Task.sleep(for: .seconds(3))
-            return try await raw(method, path, query: query, body: body, contentType: contentType, auth: auth, decode: decode, retried: retried, busyRetried: true)
+            return try await rawData(method, path, query: query, body: body, contentType: contentType, auth: auth, retried: retried, busyRetried: true)
         }
         guard (200..<300).contains(code) else {
             let reason = (try? JSONDecoder().decode([String: String].self, from: data))?["error"] ?? "http_\(code)"
             throw APIError.http(code, reason)
         }
-        return try Self.decoder.decode(R.self, from: data)
+        return data
+    }
+
+    /// One server-sent event: `event:` name (default "message") and its joined `data:` lines.
+    struct Event: Sendable { var name: String; var data: Data }
+    enum Streamed: Sendable { case json(Data), events([Event]) }
+
+    /// POST that prefers `text/event-stream` and falls back to plain JSON when the server answers that way.
+    /// `onEvent` sees each event as it lands, so answers can show before the stream ends.
+    func stream<B: Encodable>(_ path: String, body: B, retried: Bool = false, onEvent: @Sendable (Event) async -> Void = { _ in }) async throws -> Streamed {
+        let req = try await request("POST", path, query: [], body: try Self.encoder.encode(body), contentType: "application/json", auth: true,
+                                    accept: "text/event-stream, application/json;q=0.9")
+        let bytes: URLSession.AsyncBytes, res: URLResponse
+        do { (bytes, res) = try await session.bytes(for: req) } catch { throw APIError.offline }
+        let http = res as? HTTPURLResponse, code = http?.statusCode ?? 0
+        if code == 401 && !retried { access = nil; return try await stream(path, body: body, retried: true, onEvent: onEvent) }
+        let isSSE = (http?.value(forHTTPHeaderField: "Content-Type") ?? "").lowercased().hasPrefix("text/event-stream")
+        guard (200..<300).contains(code), isSSE else {
+            var data = Data()
+            do { for try await b in bytes { data.append(b) } } catch { throw APIError.offline }
+            guard (200..<300).contains(code) else {
+                throw APIError.http(code, (try? JSONDecoder().decode([String: String].self, from: data))?["error"] ?? "http_\(code)")
+            }
+            return .json(data)
+        }
+        var out: [Event] = [], name = "message", lines: [String] = []
+        func flush() async {
+            defer { name = "message"; lines = [] }
+            guard !lines.isEmpty else { return }
+            let e = Event(name: name, data: Data(lines.joined(separator: "\n").utf8))
+            out.append(e); await onEvent(e)
+        }
+        do {
+            for try await line in bytes.lines {
+                if line.isEmpty { await flush(); continue }
+                if line.hasPrefix(":") { continue }
+                let (field, value) = Self.sseField(line)
+                if field == "event" { name = value } else if field == "data" { lines.append(value) }
+                if name == "done" { break }
+            }
+        } catch { if out.isEmpty { throw APIError.offline } }
+        await flush()
+        return .events(out)
+    }
+
+    /// `field: value` with the single leading space after the colon dropped (SSE spec).
+    nonisolated static func sseField(_ line: String) -> (String, String) {
+        guard let i = line.firstIndex(of: ":") else { return (line, "") }
+        var v = line[line.index(after: i)...]
+        if v.first == " " { v = v.dropFirst() }
+        return (String(line[..<i]), String(v))
     }
 }
 

@@ -58,7 +58,7 @@ final class ContentStore {
             ContentFiles.prune(keeping: Set(manifest.files.values.map(\.h)))
         }
         if landed > 0 || http.statusCode == 200 {
-            images.removeAllObjects()
+            images.removeAllObjects(); Thumbs.clear()
             revision += 1
         }
     }
@@ -70,6 +70,13 @@ final class ContentStore {
     }
 
     /// Remote image for a logical path, or nil while it isn't on this device yet.
+    /// Decoded at `side` points (ImageIO downsampling) instead of full size.
+    func image(_ path: String, side: CGFloat) -> UIImage? {
+        _ = revision
+        guard let url = ContentFiles.url(path) else { return nil }
+        return Thumbs.image(contentsOf: url, side: side)
+    }
+
     func image(_ path: String) -> UIImage? {
         _ = revision
         if let i = images.object(forKey: path as NSString) { return i }
@@ -147,14 +154,17 @@ nonisolated enum ContentFiles {
 struct ContentImage: View {
     let path: String
     let fallback: String
-    init(_ path: String, fallback: String) { self.path = path; self.fallback = fallback }
+    /// Longest side it's shown at, in points; nil decodes the full image.
+    var side: CGFloat?
+    init(_ path: String, fallback: String, side: CGFloat? = nil) { self.path = path; self.fallback = fallback; self.side = side }
+    private var remote: UIImage? { side.map { ContentStore.shared.image(path, side: $0) } ?? ContentStore.shared.image(path) }
     var body: some View {
-        if let ui = ContentStore.shared.image(path) { Image(uiImage: ui).resizable() }
+        if let ui = remote { Image(uiImage: ui).resizable() }
         else { Image(fallback).resizable() }
     }
     func interpolation(_ i: Image.Interpolation) -> some View {
         Group {
-            if let ui = ContentStore.shared.image(path) { Image(uiImage: ui).resizable().interpolation(i) }
+            if let ui = remote { Image(uiImage: ui).resizable().interpolation(i) }
             else { Image(fallback).resizable().interpolation(i) }
         }
     }

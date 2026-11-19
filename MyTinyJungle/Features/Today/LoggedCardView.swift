@@ -123,7 +123,7 @@ struct LoggedCardView: View {
                 if !row.photos.isEmpty {
                     HStack(spacing: 6) {
                         ForEach(row.photos.indices, id: \.self) { i in
-                            if let img = UIImage(data: row.photos[i]) {
+                            if let img = Thumbs.image(row.photos[i], side: 64) {
                                 Image(uiImage: img).resizable().scaledToFill()
                                     .frame(width: 64, height: 64)
                                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))

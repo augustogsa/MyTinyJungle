@@ -163,12 +163,16 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         CareReminders.registerCategories()
         Task { await Household.registerCategory() }
         application.registerForRemoteNotifications()
-        Diagnostics.shared.start()
-        Task { await AppAttest.ensure() }
-        Task { await WeatherWatch.sync() }
-        Task { await DigestAPI.sync() }
         Analytics.track("app_open")
-        Task { await Analytics.flush() }
+        // Nothing below is needed for the first frame: start it once the app is on screen.
+        Task(priority: .utility) {
+            try? await Task.sleep(for: .seconds(2))
+            Diagnostics.shared.start()
+            await AppAttest.ensure()
+            await WeatherWatch.sync()
+            await DigestAPI.sync()
+            await Analytics.flush()
+        }
         return true
     }
 

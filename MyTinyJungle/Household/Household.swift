@@ -332,7 +332,7 @@ final class Household {
     private func roster(_ plants: [Plant], into s: inout HouseState) -> [SharedPlant] {
         var map = Dictionary(uniqueKeysWithValues: s.plants.map { ($0.id, $0) })
         for p in plants {
-            let thumb = map[p.id]?.thumb ?? p.photo.flatMap { UIImage(data: $0)?.preparingThumbnail(of: CGSize(width: 160, height: 160))?.jpegData(compressionQuality: 0.6) }
+            let thumb = map[p.id]?.thumb ?? p.photo.flatMap { BrainPhoto.encode($0, maxSide: 160, quality: 0.6) }
             map[p.id] = SharedPlant(id: p.id, name: p.name, speciesID: p.speciesID, location: p.location, thumb: thumb)
         }
         s.plants = map.values.sorted { $0.name < $1.name }

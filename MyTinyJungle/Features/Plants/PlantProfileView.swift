@@ -96,7 +96,7 @@ struct PlantProfileView: View {
                                 Text(e.date, format: .dateTime.day().month().year()).font(.caption).foregroundStyle(Jungle.subtle)
                             }
                             Spacer()
-                            if let d = e.photo, let img = UIImage(data: d) {
+                            if let d = e.photo, let img = Thumbs.image(d, side: 44) {
                                 Image(uiImage: img).resizable().scaledToFill().frame(width: 44, height: 44).clipShape(RoundedRectangle(cornerRadius: 8))
                             }
                         }

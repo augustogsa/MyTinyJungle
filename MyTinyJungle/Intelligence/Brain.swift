@@ -116,17 +116,54 @@ extension ChatMessage {
 
 @MainActor
 enum Brain {
-    static func ask(_ q: String, plant: Plant?) async -> [BrainAnswer] {
+    nonisolated struct AskReply: Decodable { var answers: [BrainAnswer]?; var weather: ServerWeather? }
+
+    /// Asks with `Accept: text/event-stream` and falls back to the JSON reply. `onPartial` sees answers as they stream in.
+    static func ask(_ q: String, plant: Plant?, onPartial: (@MainActor ([BrainAnswer]) -> Void)? = nil) async -> [BrainAnswer] {
         guard JungleAPI.shared.hasSession else { return [] }
         nonisolated struct B: Encodable { let q, lang: String; let species: String?; let situation: [String: [String]]? }
-        nonisolated struct R: Decodable { let answers: [BrainAnswer]; let weather: ServerWeather? }
         let sit = PlantSituation.build(plant)
         let body = B(q: q, lang: PlantSituation.lang, species: plant?.species?.scientific, situation: sit.isEmpty ? nil : sit)
-        let r: R?
-        do { r = try await JungleAPI.shared.send("POST", "/v1/brain/ask", body: body) } catch { ServerNotice.show(error); r = nil }
-        var out = r?.answers.filter { !$0.text.isEmpty } ?? []
+        let r: AskReply?
+        do {
+            let partial = AskCollector()
+            let s = try await JungleAPI.shared.stream("/v1/brain/ask", body: body) { e in
+                guard let now = await partial.add(e) else { return }
+                if let onPartial { await MainActor.run { onPartial(now) } }
+            }
+            switch s {
+            case .json(let d): r = try JungleAPI.decoder.decode(AskReply.self, from: d)
+            case .events(let es): r = Self.reply(from: es)
+            }
+        } catch { ServerNotice.show(error); r = nil }
+        var out = r?.answers?.filter { !$0.text.isEmpty } ?? []
         if !out.isEmpty, let w = r?.weather?.line { out.append(BrainAnswer(kind: "weather", title: Grammar.pt(String(localized: "Weather", comment: "Settings section title")), text: w)) }
         return out
+    }
+
+    /// Folds stream events into one reply. Events: `answer` (one BrainAnswer), `weather` (ServerWeather),
+    /// or any event whose data is a whole reply ({answers, weather}); `done` ends the stream.
+    nonisolated static func reply(from events: [JungleAPI.Event]) -> AskReply {
+        var r = AskReply(answers: [], weather: nil)
+        let dec = JungleAPI.decoder
+        for e in events where e.name != "done" && e.name != "error" {
+            if e.name == "weather", let w = try? dec.decode(ServerWeather.self, from: e.data) { r.weather = w; continue }
+            if let a = try? dec.decode(BrainAnswer.self, from: e.data) { r.answers?.append(a); continue }
+            if let whole = try? dec.decode(AskReply.self, from: e.data), whole.answers != nil || whole.weather != nil {
+                if let a = whole.answers { r.answers?.append(contentsOf: a) }
+                if let w = whole.weather { r.weather = w }
+            }
+        }
+        return r
+    }
+
+    private actor AskCollector {
+        var events: [JungleAPI.Event] = []
+        func add(_ e: JungleAPI.Event) -> [BrainAnswer]? {
+            events.append(e)
+            let a = Brain.reply(from: events).answers?.filter { !$0.text.isEmpty } ?? []
+            return a.isEmpty ? nil : a
+        }
     }
 
     static func feedback(ref: String, helped: Bool) async {
@@ -211,32 +248,68 @@ enum WeatherWatch {
 // MARK: - Identify from photo (our own model)
 
 extension Brain {
-    /// Candidates from our own model, matched to the species library. Gives up after 15 s.
-    static func identify(_ jpeg: Data) async -> [PlantIdentifier.Candidate] { await identifyScene(jpeg).candidates }
+    /// Candidates from our own model, matched to the species library. Gives up after 20 s.
+    static func identify(_ photo: BrainPhoto) async -> [PlantIdentifier.Candidate] { await identifyScene(photo).candidates }
+
+    nonisolated struct IdentifyReply: Decodable {
+        nonisolated struct C: Decodable { let id: String; let scientific: String; let score: Double }
+        var candidates: [C]?
+        var scene: PhotoScene?
+    }
+    nonisolated struct SceneReply: Decodable { var scene: PhotoScene? }
 
     /// Candidates plus what the photo shows around the plant (medium, pot, stage, faux, several plants).
-    static func identifyScene(_ jpeg: Data) async -> (candidates: [PlantIdentifier.Candidate], scene: PhotoScene?) {
+    /// The scene comes inside the identify reply; only a reply without it gets a separate /v1/brain/scene call.
+    /// Both answers are cached by the photo's sha256.
+    static func identifyScene(_ photo: BrainPhoto) async -> (candidates: [PlantIdentifier.Candidate], scene: PhotoScene?) {
         guard JungleAPI.shared.hasSession else { return ([], nil) }
         nonisolated struct B: Encodable { let photo, lang: String }
-        nonisolated struct C: Decodable { let id: String; let scientific: String; let score: Double }
-        nonisolated struct R: Decodable { let candidates: [C]?; let scene: PhotoScene? }
-        let body = B(photo: jpeg.base64EncodedString(), lang: PlantSituation.lang)
-        let r: R? = await withTaskGroup(of: R?.self) { g in
-            g.addTask {
-                do { return try await JungleAPI.shared.send("POST", "/v1/brain/identify", body: body) as R }
-                catch { await MainActor.run { ServerNotice.show(error) }; return nil }
+        let lang = PlantSituation.lang
+        let key = BrainCache.key("identify", photo.sha, lang)
+        var r: IdentifyReply? = BrainCache.get(key)
+        if r == nil {
+            r = await withTimeout(20) {
+                do {
+                    let d = try await JungleAPI.shared.sendData("POST", "/v1/brain/identify", body: B(photo: photo.base64, lang: lang))
+                    let r = try JungleAPI.decoder.decode(IdentifyReply.self, from: d)
+                    if !(r.candidates ?? []).isEmpty { BrainCache.put(key, d) }
+                    return r
+                } catch { await MainActor.run { ServerNotice.show(error) }; return nil }
             }
-            g.addTask { try? await Task.sleep(for: .seconds(20)); return nil }
-            let first = await g.next() ?? nil
-            g.cancelAll()
-            return first
         }
+        if let got = r, got.scene == nil, !(got.candidates ?? []).isEmpty { r?.scene = await scene(photo) }
         let lib = SpeciesLibrary.shared
         let cands = (r?.candidates ?? []).compactMap { c in
             let sp = lib.species(id: c.id) ?? lib.all.first { $0.scientific.folded == c.scientific.folded }
             return sp.map { PlantIdentifier.Candidate(species: $0, confidence: c.score, source: "My Tiny Jungle") }
         }
         return (cands, r?.scene)
+    }
+
+    /// Fallback for a reply without `scene`.
+    static func scene(_ photo: BrainPhoto) async -> PhotoScene? {
+        nonisolated struct B: Encodable { let photo, lang: String }
+        let lang = PlantSituation.lang
+        let key = BrainCache.key("scene", photo.sha, lang)
+        if let hit: SceneReply = BrainCache.get(key) { return hit.scene }
+        let got: PhotoScene?? = await withTimeout(15) {
+            guard let d = try? await JungleAPI.shared.sendData("POST", "/v1/brain/scene", body: B(photo: photo.base64, lang: lang)),
+                  let r = try? JungleAPI.decoder.decode(SceneReply.self, from: d) else { return nil }
+            if r.scene != nil { BrainCache.put(key, d) }
+            return r.scene
+        }
+        return got ?? nil
+    }
+
+    /// First of the work or the timeout; nil on timeout.
+    nonisolated static func withTimeout<T: Sendable>(_ seconds: Double, _ work: @escaping @Sendable () async -> T?) async -> T? {
+        await withTaskGroup(of: T?.self) { g in
+            g.addTask { await work() }
+            g.addTask { try? await Task.sleep(for: .seconds(seconds)); return nil }
+            let first = await g.next() ?? nil
+            g.cancelAll()
+            return first
+        }
     }
 }
 

@@ -13,9 +13,14 @@ extension Brain {
     nonisolated struct BatchResult: Decodable { var items: [BatchItem]; var truncated: Bool? }
 
     /// Every plant in one shelf photo.
-    static func identifyBatch(_ jpeg: Data) async throws -> BatchResult {
+    static func identifyBatch(_ photo: BrainPhoto) async throws -> BatchResult {
         nonisolated struct B: Encodable { let photo, lang: String }
-        return try await JungleAPI.shared.send("POST", "/v1/brain/identify-batch", body: B(photo: jpeg.base64EncodedString(), lang: PlantSituation.lang))
+        let lang = PlantSituation.lang, key = BrainCache.key("identify-batch", photo.sha, lang)
+        if let hit: BatchResult = BrainCache.get(key) { return hit }
+        let d = try await JungleAPI.shared.sendData("POST", "/v1/brain/identify-batch", body: B(photo: photo.base64, lang: lang))
+        let r = try JungleAPI.decoder.decode(BatchResult.self, from: d)
+        if !r.items.isEmpty { BrainCache.put(key, d) }
+        return r
     }
 
     /// The owner's pick after identify, so the model learns. Fire and forget.
@@ -115,11 +120,12 @@ struct ShelfImportView: View {
 
     private func run(_ data: Data) async {
         guard JungleAPI.shared.hasSession else { error = Grammar.pt(String(localized: "Sign in to find plants on a shelf.", comment: "Shelf import when signed out")); return }
-        let jpeg = ImageShrinker.jpeg(data, maxSide: 1400)
-        guard let img = UIImage(data: jpeg)?.cgImage else { return }
         working = true; error = nil; defer { working = false }
+        // Boxes are relative, so the server gets the 768 px upload and the crops come from a sharper local decode.
+        let (bp, local) = await Task.detached(priority: .userInitiated) { (BrainPhoto.make(data), BrainPhoto.encode(data, maxSide: 1400, quality: 0.85)) }.value
+        guard let img = UIImage(data: local ?? bp.jpeg)?.cgImage else { return }
         do {
-            let r = try await Brain.identifyBatch(jpeg)
+            let r = try await Brain.identifyBatch(bp)
             truncated = r.truncated ?? false
             let lib = SpeciesLibrary.shared
             let W = Double(img.width), H = Double(img.height)

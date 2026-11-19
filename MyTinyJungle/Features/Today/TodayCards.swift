@@ -77,7 +77,7 @@ struct CareStoryCard: View {
         ZStack(alignment: .bottom) {
             Color.clear
                 .overlay {
-                    if let d = plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
+                    if let d = plant.photo, let img = Thumbs.image(d, side: 440) { Image(uiImage: img).resizable().scaledToFill() }
                     else { ZStack { Jungle.mint; Icon3DView(.pottedPlant, size: 96) } }
                 }
                 .clipped()

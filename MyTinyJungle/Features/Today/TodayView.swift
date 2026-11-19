@@ -444,7 +444,7 @@ struct PlantShelfCard: View {
         VStack(alignment: .leading, spacing: 0) {
             ZStack(alignment: .topTrailing) {
                 Group {
-                    if let d = plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
+                    if let d = plant.photo, let img = Thumbs.image(d, side: 150) { Image(uiImage: img).resizable().scaledToFill() }
                     else { ZStack { Jungle.mint; Image(systemName: "leaf.fill").font(.system(size: 44)).foregroundStyle(Jungle.leaf) } }
                 }
                 .frame(width: 150, height: 130).clipped()

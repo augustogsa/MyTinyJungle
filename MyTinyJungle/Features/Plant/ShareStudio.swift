@@ -80,7 +80,7 @@ struct ShareStory: View {
     private let sky = Color(red: 0.84, green: 0.91, blue: 0.96)
 
     private var photo: Image {
-        if let d = plant.photo, let ui = UIImage(data: d) { return Image(uiImage: ui) }
+        if let d = plant.photo, let ui = Thumbs.image(d, side: 440) { return Image(uiImage: ui) }
         return Image("AppMark")
     }
     private func fill(_ w: CGFloat? = nil, _ h: CGFloat? = nil) -> some View {

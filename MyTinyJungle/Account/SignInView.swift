@@ -44,7 +44,7 @@ struct SignInView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             ZStack {
-                ContentImage("art/signin-leaves.jpg", fallback: "SignInLeaves").scaledToFill().ignoresSafeArea().accessibilityHidden(true)
+                ContentImage("art/signin-leaves.jpg", fallback: "SignInLeaves", side: 1000).scaledToFill().ignoresSafeArea().accessibilityHidden(true)
 
                 Rectangle().fill(.ultraThinMaterial).ignoresSafeArea()
                     .mask(LinearGradient(stops: [.init(color: .clear, location: 0.0), .init(color: .clear, location: 0.12), .init(color: .black, location: 0.42)], startPoint: .top, endPoint: .bottom).ignoresSafeArea())

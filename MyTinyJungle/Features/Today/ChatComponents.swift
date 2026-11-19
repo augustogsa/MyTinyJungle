@@ -19,7 +19,7 @@ struct MessageBubble: View {
                     if let speaker, !message.fromUser {
                         Text(speaker.name).font(.caption.weight(.semibold)).foregroundStyle(Jungle.accentText)
                     }
-                    if let data = message.photo, let img = UIImage(data: data) {
+                    if let data = message.photo, let img = Thumbs.image(data, side: 220) {
                         Color.clear.frame(width: 220, height: 220)
                             .overlay { Image(uiImage: img).resizable().scaledToFill() }
                             .clipShape(RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
@@ -148,12 +148,9 @@ struct Composer: View {
 }
 
 enum ImageShrinker {
+    /// Downsampled straight from the file (ImageIO, HEIC included); never decodes the full original.
     static func jpeg(_ data: Data, maxSide: CGFloat = 1600) -> Data {
-        guard let img = UIImage(data: data) else { return data }
-        let scale = min(1, maxSide / max(img.size.width, img.size.height))
-        let size = CGSize(width: img.size.width * scale, height: img.size.height * scale)
-        let out = UIGraphicsImageRenderer(size: size).image { _ in img.draw(in: CGRect(origin: .zero, size: size)) }
-        return out.jpegData(compressionQuality: 0.82) ?? data
+        BrainPhoto.encode(data, maxSide: Int(maxSide), quality: 0.82) ?? data
     }
 }
 

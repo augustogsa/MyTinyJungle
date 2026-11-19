@@ -243,7 +243,7 @@ private struct DigestPhoto: View {
             .task {
                 guard image == nil, let m = item.media else { return }
                 let path = m.hasPrefix("/") ? m : "/" + m
-                if let d = try? await JungleAPI.shared.download(path) { image = UIImage(data: d) }
+                if let d = try? await JungleAPI.shared.download(path) { image = Thumbs.image(d, side: 440) }
             }
     }
 }

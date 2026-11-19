@@ -130,7 +130,7 @@ struct PlantHomeView: View {
         ZStack(alignment: .bottomLeading) {
             Color.clear.frame(height: fill ? nil : 380).frame(maxWidth: .infinity, maxHeight: fill ? .infinity : nil)
                 .overlay {
-                    if let d = plant.photo, let img = UIImage(data: d) { Image(uiImage: img).resizable().scaledToFill() }
+                    if let d = plant.photo, let img = Thumbs.image(d, side: 440) { Image(uiImage: img).resizable().scaledToFill() }
                     else { ZStack { Jungle.mint; Icon3DView(.pottedPlant, size: 120) } }
                 }
                 .clipped()
@@ -539,7 +539,7 @@ struct PlantStoryView: View {
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text(storyLine(e)).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
-                if let d = e.photo, let img = UIImage(data: d) {
+                if let d = e.photo, let img = Thumbs.image(d, side: 440) {
                     Color.clear.frame(maxWidth: .infinity).frame(height: 180)
                         .overlay { Image(uiImage: img).resizable().scaledToFill() }
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -575,7 +575,7 @@ struct PlantStoryView: View {
 
     private func compare(_ e: CareEvent, label: String) -> some View {
         ZStack(alignment: .bottomLeading) {
-            if let d = e.photo, let img = UIImage(data: d) {
+            if let d = e.photo, let img = Thumbs.image(d, side: 440) {
                 Image(uiImage: img).resizable().scaledToFill().frame(height: 170).frame(maxWidth: .infinity).clipped()
             }
             Text(label).font(.caption.weight(.semibold)).foregroundStyle(Jungle.text).padding(.horizontal, 8).padding(.vertical, 4)

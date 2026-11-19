@@ -381,7 +381,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				ENABLE_PREVIEWS = YES;
 				GAD_APP_ID = "ca-app-pub-5572285766965735~4039327987";
@@ -421,7 +421,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Config/MyTinyJungle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				ENABLE_PREVIEWS = YES;
 				GAD_APP_ID = "ca-app-pub-5572285766965735~4039327987";
@@ -534,7 +534,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/NotificationContent-Info.plist";
@@ -565,7 +565,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/NotificationContent-Info.plist";
@@ -597,7 +597,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Config/JungleWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/JungleWidgets-Info.plist";
@@ -624,7 +624,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Config/JungleWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = JKMB58P38J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/JungleWidgets-Info.plist";
