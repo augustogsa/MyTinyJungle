@@ -7,7 +7,7 @@ import UserNotifications
 @main
 struct MyTinyJungleApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    let container: ModelContainer = MyTinyJungleApp.shared
+    @State private var container: ModelContainer?
     static let shared: ModelContainer = {
         #if DEBUG
         AuthManager.applyTestSession()
@@ -30,7 +30,6 @@ struct MyTinyJungleApp: App {
 
     init() {
         Self.roundedTitles()
-        NotificationDelegate.shared.container = Self.shared
     }
 
     /// Navigation titles in SF Pro Rounded, warm forest ink.
@@ -54,6 +53,27 @@ struct MyTinyJungleApp: App {
 
     var body: some Scene {
         WindowGroup {
+            Group {
+                if let container { MainScene(container: container) } else { LaunchSplash() }
+            }
+            .task {
+                // The store (and its iCloud mirror) opens off the main thread, so the first frame is never blocked.
+                guard container == nil else { return }
+                let started = Date()
+                let c = await Task.detached(priority: .userInitiated) { MyTinyJungleApp.shared }.value
+                NotificationDelegate.shared.container = c
+                let shown = Date().timeIntervalSince(started)
+                if shown < 1.2 { try? await Task.sleep(for: .seconds(1.2 - shown)) }
+                withAnimation(.easeOut(duration: 0.35)) { container = c }
+            }
+        }
+    }
+}
+
+/// The app once the store is open.
+private struct MainScene: View {
+    let container: ModelContainer
+    var body: some View {
             RootView()
                 .modifier(ErtyCheerOverlay())
                 .task { if ProcessInfo.processInfo.arguments.contains("-ertyDemo") { try? await Task.sleep(for: .seconds(1)); ErtyCheer.shared.show(.water, "Watered · Goldie") } }
@@ -80,8 +100,7 @@ struct MyTinyJungleApp: App {
                     else if let url = a.webpageURL, let code = Referrals.code(from: url) { Task { await Referrals.received(code) } }
                 }
                 .updateGate()
-        }
-        .modelContainer(container)
+                .modelContainer(container)
     }
 }
 

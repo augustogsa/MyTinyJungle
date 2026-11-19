@@ -1,216 +1,228 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "CFBundleDisplayName": {
-      "comment": "Home-screen app name; brand, keep in English",
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Tiny Jungle"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Home-screen app name; brand, keep in English",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Tiny Jungle"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Tiny Jungle"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Tiny Jungle"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Tiny Jungle"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Tiny Jungle"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Tiny Jungle"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Tiny Jungle"
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Tiny Jungle"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Tiny Jungle"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Tiny Jungle"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Tiny Jungle"
           }
         }
       }
     },
-    "NSCameraUsageDescription": {
-      "comment": "Camera permission prompt; warm, one sentence",
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanne Etiketten von Erde, Dünger und Pflanzennahrung und fotografiere deine Pflanzen."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan soil, fertilizer and plant food labels, and take photos of your plants."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escanea etiquetas de tierra, fertilizante y abono, y toma fotos de tus plantas."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scanne les étiquettes de terreau et d'engrais, et prends tes plantes en photo."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "土や肥料のラベルをスキャンしたり、植物の写真を撮ったりするために使います。"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tira foto das suas plantinhas e escaneia rótulos de substrato e adubo."
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "MyTinyJungle"
           }
         }
       }
     },
-    "NSLocationWhenInUseUsageDescription": {
-      "comment": "Location permission prompt; mention climate tuning and weather alerts",
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine ungefähre Gegend hilft, Gießen und Düngen an dein Klima anzupassen, und warnt dich vor Frost und Hitze für Pflanzen draußen."
+    "NSCameraUsageDescription" : {
+      "comment" : "Camera permission prompt; warm, one sentence",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanne Etiketten von Erde, Dünger und Pflanzennahrung und fotografiere deine Pflanzen."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your rough area helps tune watering and feeding to your local climate and warns you about frost and heat for outdoor plants."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan soil, fertilizer and plant food labels, and take photos of your plants."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu zona aproximada ayuda a ajustar el riego y el abono a tu clima local y te avisa de heladas y calor para las plantas de afuera."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escanea etiquetas de tierra, fertilizante y abono, y toma fotos de tus plantas."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ta zone approximative permet d'adapter l'arrosage et l'engrais à ton climat local et de te prévenir du gel et des fortes chaleurs pour tes plantes d'extérieur."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanne les étiquettes de terreau et d'engrais, et prends tes plantes en photo."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "おおよその地域から、地元の気候に合わせて水やりや肥料を調整し、外の植物のために霜や暑さをお知らせします。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "土や肥料のラベルをスキャンしたり、植物の写真を撮ったりするために使います。"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Saber mais ou menos onde você mora ajusta a rega e o adubo ao seu clima e te avisa de calorão, chuva forte e frio pras plantas da varanda e do quintal."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tira foto das suas plantinhas e escaneia rótulos de substrato e adubo."
           }
         }
       }
     },
-    "NSPhotoLibraryUsageDescription": {
-      "comment": "Photo library permission prompt",
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wähle Fotos deiner Pflanzen und Produktetiketten aus."
+    "NSLocationWhenInUseUsageDescription" : {
+      "comment" : "Location permission prompt; mention climate tuning and weather alerts",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine ungefähre Gegend hilft, Gießen und Düngen an dein Klima anzupassen, und warnt dich vor Frost und Hitze für Pflanzen draußen."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose photos of your plants and product labels."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your rough area helps tune watering and feeding to your local climate and warns you about frost and heat for outdoor plants."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige fotos de tus plantas y de etiquetas de productos."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu zona aproximada ayuda a ajustar el riego y el abono a tu clima local y te avisa de heladas y calor para las plantas de afuera."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisis des photos de tes plantes et des étiquettes de produits."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta zone approximative permet d'adapter l'arrosage et l'engrais à ton climat local et de te prévenir du gel et des fortes chaleurs pour tes plantes d'extérieur."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "植物や商品ラベルの写真を選ぶために使います。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おおよその地域から、地元の気候に合わせて水やりや肥料を調整し、外の植物のために霜や暑さをお知らせします。"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolhe fotos das suas plantas e dos rótulos dos produtos."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saber mais ou menos onde você mora ajusta a rega e o adubo ao seu clima e te avisa de calorão, chuva forte e frio pras plantas da varanda e do quintal."
           }
         }
       }
     },
-    "NSUserTrackingUsageDescription": {
-      "comment": "App Tracking Transparency prompt; honest, reassuring",
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Werbung hält My Tiny Jungle gratis. Wenn du das erlaubst, geht es um Dinge, die dich wirklich interessieren könnten, statt um irgendwas. Deine Pflanzen und Notizen werden nie geteilt."
+    "NSPhotoLibraryUsageDescription" : {
+      "comment" : "Photo library permission prompt",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle Fotos deiner Pflanzen und Produktetiketten aus."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ads keep My Tiny Jungle free. Allowing this lets them be about things you might actually like, instead of random ones. Your plants and notes are never shared."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose photos of your plants and product labels."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Los anuncios mantienen gratis My Tiny Jungle. Si lo permites, serán sobre cosas que de verdad te pueden gustar, en vez de cualquier cosa. Tus plantas y notas nunca se comparten."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige fotos de tus plantas y de etiquetas de productos."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les pubs gardent My Tiny Jungle gratuit. Si tu acceptes, elles parleront de choses qui pourraient vraiment te plaire, plutôt que n'importe quoi. Tes plantes et tes notes ne sont jamais partagées."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisis des photos de tes plantes et des étiquettes de produits."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "広告のおかげでMy Tiny Jungleは無料です。許可すると、ランダムな広告ではなく、あなたが興味を持ちそうな広告が表示されます。植物やメモが共有されることはありません。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "植物や商品ラベルの写真を選ぶために使います。"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Os anúncios deixam o My Tiny Jungle de graça. Se você deixar, eles mostram coisas mais a sua cara, em vez de qualquer coisa. Suas plantas e anotações nunca são compartilhadas."
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolhe fotos das suas plantas e dos rótulos dos produtos."
+          }
+        }
+      }
+    },
+    "NSUserTrackingUsageDescription" : {
+      "comment" : "App Tracking Transparency prompt; honest, reassuring",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werbung hält My Tiny Jungle gratis. Wenn du das erlaubst, geht es um Dinge, die dich wirklich interessieren könnten, statt um irgendwas. Deine Pflanzen und Notizen werden nie geteilt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ads keep My Tiny Jungle free. Allowing this lets them be about things you might actually like, instead of random ones. Your plants and notes are never shared."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los anuncios mantienen gratis My Tiny Jungle. Si lo permites, serán sobre cosas que de verdad te pueden gustar, en vez de cualquier cosa. Tus plantas y notas nunca se comparten."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les pubs gardent My Tiny Jungle gratuit. Si tu acceptes, elles parleront de choses qui pourraient vraiment te plaire, plutôt que n'importe quoi. Tes plantes et tes notes ne sont jamais partagées."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "広告のおかげでMy Tiny Jungleは無料です。許可すると、ランダムな広告ではなく、あなたが興味を持ちそうな広告が表示されます。植物やメモが共有されることはありません。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os anúncios deixam o My Tiny Jungle de graça. Se você deixar, eles mostram coisas mais a sua cara, em vez de qualquer coisa. Suas plantas e anotações nunca são compartilhadas."
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

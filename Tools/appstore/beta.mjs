@@ -9,20 +9,20 @@ const app = (await call('GET', '/apps?filter[bundleId]=com.simpleappscompany.myt
 const info = {
   'en-US': {
     description: 'My Tiny Jungle gives your houseplants a voice. Chat with each plant, get gentle care requests timed to your home and weather, scan a plant or a fertiliser label, keep a care calendar, share the jungle with the people you live with and learn from short how-to guides.',
-    whatsNew: 'Ready for iPhone Duo: two-page layouts open or half-open, a full month care calendar with stats, a new sign-in and onboarding layout, rooms and diet cards. Please try: add a plant, chat with it, log care from Today, open Care, scan a label, invite someone to your jungle. On iPhone Duo, try every posture and rotation.',
+    whatsNew: 'A plant brain on our own server: snap a sick leaf and get a diagnosis from our plant library that knows your room, season and local weather; ask any care question in chat; identify a plant from a photo; a care plan for where each plant lives; frost and heatwave alerts. Please try: AI doctor on a plant, Did this help?, ask a question in chat, Identify from photo when adding, the care plan card, Settings > Frost & heatwave alerts.',
   },
   'pt-BR': {
     description: 'O My Tiny Jungle dá voz às suas plantas. Converse com cada uma, receba pedidos de cuidado no tempo certo pra sua casa e pro clima, escaneie uma planta ou o rótulo de um adubo, acompanhe tudo no calendário, divida a selva com quem mora com você e aprenda com guias curtinhos.',
-    whatsNew: 'Pronto pro iPhone Duo: telas em duas páginas aberto ou meio aberto, calendário do mês inteiro com estatísticas, novo login e boas-vindas, cards de cômodos e de adubo. Testa aí: adicione uma planta, converse com ela, registre um cuidado no Hoje, abra Cuidados, escaneie um rótulo, convide alguém pra sua selva. No iPhone Duo, teste todas as posições e rotações.',
+    whatsNew: 'Um cérebro de plantas no nosso próprio servidor: tira foto de uma folha doente e recebe o diagnóstico da nossa biblioteca, que sabe do seu cômodo, da estação e do clima aí; pergunta qualquer coisa no chat; identifica a planta pela foto; plano de cuidados pra onde cada planta vive; alerta de geada e onda de calor. Testa aí: o doutor de plantas, o Ajudou?, uma pergunta no chat, Identificar pela foto ao adicionar, o card do plano de cuidados e Ajustes > alertas de geada e calor.',
   },
   'pt-PT': {
     description: 'A My Tiny Jungle dá voz às suas plantas. Converse com cada uma, receba pedidos de cuidados na altura certa para a sua casa e o tempo, digitalize uma planta ou o rótulo de um adubo, acompanhe tudo no calendário, partilhe a selva com quem vive consigo e aprenda com guias curtos.',
-    whatsNew: 'Pronta para o iPhone Duo: ecrãs em duas páginas aberto ou meio aberto, calendário do mês inteiro com estatísticas, novo início de sessão e boas-vindas, cartões de divisões e de adubo. Experimente: adicione uma planta, converse com ela, registe um cuidado em Hoje, abra Cuidados, digitalize um rótulo, convide alguém para a sua selva. No iPhone Duo, experimente todas as posições e rotações.',
+    whatsNew: 'Um cérebro de plantas no nosso servidor: fotografe uma folha doente e receba o diagnóstico da nossa biblioteca, que conhece a divisão, a estação e o tempo local; faça qualquer pergunta no chat; identifique uma planta por foto; plano de cuidados para onde cada planta vive; alertas de geada e onda de calor. Experimente: o doutor de plantas, Ajudou?, uma pergunta no chat, Identificar por foto, o cartão do plano de cuidados e Definições > alertas de geada e calor.',
   },
 };
 const notes = 'Sign-in is required: the app has no email or password account, only Sign in with Apple (and Google), so we cannot provide a demo account. Please sign in with Sign in with Apple using your own Apple ID; a new jungle is created for you and the short setup chat follows. Everything can then be tested: add a plant from the Plants tab by name or photo, chat with it, log care from Today, the Care calendar, Scan, and Me > Share your jungle. Subscriptions use the sandbox. Ads show to free users after the ATT and consent prompts. The app also adapts to iPhone Duo (open, half-open and closed).';
 
-const shared = { feedbackEmail: 'asqgomes@gmail.com', marketingUrl: 'https://mytinyjungle.com/', privacyPolicyUrl: 'https://mytinyjungle.com/privacy' };
+const shared = { feedbackEmail: 'support@simpleappscompany.com', marketingUrl: 'https://mytinyjungle.com/', privacyPolicyUrl: 'https://mytinyjungle.com/privacy' };
 console.log(apply ? 'apply' : 'dry-run', 'build', build);
 if (!apply) process.exit(0);
 

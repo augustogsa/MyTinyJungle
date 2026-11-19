@@ -23,6 +23,7 @@ struct JungleBackdrop: View {
                     .frame(width: g.size.width).offset(x: -g.size.width * 0.3, y: g.size.height * 0.45)
             }
             .blur(radius: 60)
+            .drawingGroup() // rendered once into a texture, not re-blurred while content scrolls above it
             .overlay(alignment: .bottom) {
                 // Fade to plain cream so lower content sits on a calm base.
                 LinearGradient(colors: [.clear, Jungle.cream], startPoint: .top, endPoint: .bottom)

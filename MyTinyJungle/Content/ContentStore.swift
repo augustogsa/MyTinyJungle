@@ -51,8 +51,8 @@ final class ContentStore {
                 if let h = queue.popLast() { group.addTask { await Self.fetch(h, self.session) } }
             }
         }
-        // Adopt the manifest only when every file it names is here, so lookups never point at a gap.
-        guard landed == missing.count else { return }
+        // Adopt the manifest even if a file failed: lookups check each blob is here and fall back to the
+        // bundled floor, and the next refresh fetches only what is still missing.
         if http.statusCode == 200 {
             ContentFiles.save(manifest: data, etag: http.value(forHTTPHeaderField: "ETag"))
             ContentFiles.prune(keeping: Set(manifest.files.values.map(\.h)))
