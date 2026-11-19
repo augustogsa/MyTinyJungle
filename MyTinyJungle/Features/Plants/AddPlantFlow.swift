@@ -382,7 +382,7 @@ struct AddPlantFlow: View {
             read = r
             var c = rem
             for cand in PlantIdentifier.candidates(from: r) where !c.contains(where: { $0.species == cand.species }) { c.append(cand) }
-            unsure = rem.isEmpty
+            unsure = rem.isEmpty || (rem.first?.confidence ?? 0) < 0.5 // only a confident server match is "Best match"
             candidates = Array(c.prefix(unsure ? 3 : 5))
             withAnimation(.snappy) {
                 stage = .meet
