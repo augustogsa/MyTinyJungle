@@ -29,6 +29,12 @@
             "value": "My Tiny Jungle"
           }
         },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My Tiny Jungle"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
@@ -63,6 +69,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scanne les étiquettes de terreau et d'engrais, et prends tes plantes en photo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "土や肥料のラベルをスキャンしたり、植物の写真を撮ったりするために使います。"
           }
         },
         "pt-BR": {
@@ -101,6 +113,12 @@
             "value": "Ta zone approximative permet d'adapter l'arrosage et l'engrais à ton climat local et de te prévenir du gel et des fortes chaleurs pour tes plantes d'extérieur."
           }
         },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "おおよその地域から、地元の気候に合わせて水やりや肥料を調整し、外の植物のために霜や暑さをお知らせします。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
@@ -137,6 +155,12 @@
             "value": "Choisis des photos de tes plantes et des étiquettes de produits."
           }
         },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "植物や商品ラベルの写真を選ぶために使います。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
@@ -171,6 +195,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Les pubs gardent My Tiny Jungle gratuit. Si tu acceptes, elles parleront de choses qui pourraient vraiment te plaire, plutôt que n'importe quoi. Tes plantes et tes notes ne sont jamais partagées."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "広告のおかげでMy Tiny Jungleは無料です。許可すると、ランダムな広告ではなく、あなたが興味を持ちそうな広告が表示されます。植物やメモが共有されることはありません。"
           }
         },
         "pt-BR": {
