@@ -85,6 +85,7 @@ final class AuthManager {
             if let t = UserDefaults.standard.string(forKey: "push.token") { await JungleAPI.shared.setPushToken(t) }
             await Household.shared.redeemPendingInvite()
             await Household.shared.sync()
+            await AppAttest.ensure()
         } catch JungleAPI.APIError.offline {
             error = Grammar.pt(String(localized: "No connection. Check your internet and try again.", comment: "Sign-in error when offline; calm; max 60 chars"))
         } catch {

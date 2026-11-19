@@ -91,6 +91,19 @@ paths:
         required: true
         content: { application/json: { schema: { type: object, required: [token], properties: { token: { type: string, maxLength: 400 } } } } }
       responses: { "200": { $ref: "#/components/responses/Ok" } }
+  /v1/attest/challenge:
+    post:
+      operationId: attestChallenge
+      description: One-time App Attest challenge for this device, valid 5 minutes.
+      responses: { "200": { description: Challenge, content: { application/json: { schema: { type: object, required: [challenge], properties: { challenge: { type: string, format: byte } } } } } } }
+  /v1/attest:
+    post:
+      operationId: attest
+      description: iOS App Attest attestation; verified against Apple's App Attestation Root CA, then the device is marked attested.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [keyId, attestation], properties: { keyId: { type: string, format: byte }, attestation: { type: string, format: byte } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "400": { $ref: "#/components/responses/Error" } }
   /v1/jungles:
     get:
       operationId: listJungles

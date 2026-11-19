@@ -154,3 +154,17 @@ func TestContent(t *testing.T) {
 		}
 	}
 }
+
+func TestCBORAndAttestRejects(t *testing.T) {
+	// {"fmt": "none"} as CBOR.
+	v, rest, err := cborDecode([]byte{0xa1, 0x63, 'f', 'm', 't', 0x64, 'n', 'o', 'n', 'e'}, 0)
+	if err != nil || len(rest) != 0 || v.(map[any]any)["fmt"] != "none" {
+		t.Fatalf("cbor: %v %v", v, err)
+	}
+	if _, err := verifyAppAttest([]byte{0xa1, 0x63, 'f', 'm', 't', 0x64, 'n', 'o', 'n', 'e'}, make([]byte, 32), []byte("c"), time.Now()); err == nil {
+		t.Fatal("accepted a non-Apple attestation")
+	}
+	if _, _, err := cborDecode([]byte{0x5b, 0xff}, 0); err == nil {
+		t.Fatal("accepted truncated cbor")
+	}
+}

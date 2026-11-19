@@ -54,6 +54,9 @@ MTJ shares nothing with other apps on the VPS: own system users (`mtj-api` for t
 5. `Server/deploy/integration.sh` (30 checks), then point Cloudflare DNS at the new host.
 Keep copies of the latest `/var/backups/mtj` on the Mac with `rsync -a mdm-ovh:/var/backups/mtj/ ~/Backups/mtj/` when the owner wants a second place.
 
+## App Attest
+iOS attests a Secure Enclave key once per install and account (`AppAttest.swift`): `POST /v1/attest/challenge`, then `POST /v1/attest`. The server checks Apple's chain (App Attestation Root CA, embedded), the nonce, app ID `JKMB58P38J.com.simpleappscompany.mytinyjungle`, counter 0 and key ID, and stores the key on the device row (`attested_at`). Android uses Play Integrity in its own client.
+
 ## CI
 `.github/workflows/ci.yml` on every push and PR: Go vet, race tests, linux build, OpenAPI lint, shell syntax; iOS simulator build unsigned.
 

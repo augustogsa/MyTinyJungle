@@ -71,6 +71,8 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("PATCH /v1/me", s.user(s.patchMe))
 	m.Handle("PUT /v1/me/push-token", s.user(s.pushToken))
 	m.Handle("DELETE /v1/me", s.user(s.deleteMe))
+	m.Handle("POST /v1/attest/challenge", s.user(s.attestChallenge))
+	m.Handle("POST /v1/attest", s.user(s.attest))
 
 	m.Handle("GET /v1/jungles", s.user(s.jungles))
 	m.Handle("POST /v1/jungles", s.user(s.createJungle))

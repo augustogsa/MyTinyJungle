@@ -151,6 +151,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         Task { await Household.registerCategory() }
         application.registerForRemoteNotifications()
         Diagnostics.shared.start()
+        Task { await AppAttest.ensure() }
         return true
     }
 
