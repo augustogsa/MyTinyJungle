@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# MTJ plant ID service: BioCLIP zero-shot over our species list. Rootless podman as user mtj, 127.0.0.1:8092,
+# MTJ plant ID service: BioCLIP over our species list (zero-shot text + reference photo kNN from $M/refs, see mtj-id-refs.sh). Rootless podman as user mtj, 127.0.0.1:8092,
 # reads the published content pack read-only. Nothing shared with other apps. Idempotent.
 set -euo pipefail
 B=/opt/mtj/id; M=/var/lib/mtj-db/models
-install -d -o mtj -g mtj -m 0750 $M/hf $M/species
+install -d -o mtj -g mtj -m 0750 $M/hf $M/species $M/refs
 # The species list from the published content pack (the service never reads the API's files directly).
 src=/var/lib/mtj/content/b/$(python3 -c 'import json;print(json.load(open("/var/lib/mtj/content/manifest.json"))["files"]["data/species.json"]["h"])')
 cmp -s "$src" $M/species/species.json || install -o mtj -g mtj -m 0640 "$src" $M/species/species.json
@@ -27,6 +27,7 @@ ContainerName=mtj-id
 PublishPort=127.0.0.1:8092:8080
 Volume=$M/hf:/models/hf:Z
 Volume=$M/species:/species:ro,Z
+Volume=$M/refs:/refs:Z
 PodmanArgs=--cgroups=disabled --runtime=crun --memory=1536m
 [Service]
 Restart=always

@@ -1,0 +1,332 @@
+[
+ {
+  "file": "identify/sansevieria-1.jpg",
+  "expect": "sansevieria",
+  "source": "File:Sansevieria Trifasciata .jpg"
+ },
+ {
+  "file": "identify/sansevieria-2.jpg",
+  "expect": "sansevieria",
+  "source": "File:Asparagales - Sansevieria trifasciata 5.jpg"
+ },
+ {
+  "file": "identify/zamioculcas-1.jpg",
+  "expect": "zamioculcas",
+  "source": "File:Zamioculcas zamiifolia.png"
+ },
+ {
+  "file": "identify/zamioculcas-2.jpg",
+  "expect": "zamioculcas",
+  "source": "File:Zamioculcas zamiifolia in China (2).jpg"
+ },
+ {
+  "file": "identify/epipremnum-aureum-1.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "File:Epipremnum aureum (Marble Queen) houseplant.png"
+ },
+ {
+  "file": "identify/epipremnum-aureum-2.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "File:Epipremnum aureum 31082012.jpg"
+ },
+ {
+  "file": "identify/philodendron-hederaceum-1.jpg",
+  "expect": "philodendron-hederaceum",
+  "source": "File:Philodendron hederaceum, Singapore Botanic Gardens (141542).jpg"
+ },
+ {
+  "file": "identify/philodendron-hederaceum-2.jpg",
+  "expect": "philodendron-hederaceum",
+  "source": "File:Philodendron hederaceum hederaceum Brasil 0zz.jpg"
+ },
+ {
+  "file": "identify/maranta-1.jpg",
+  "expect": "maranta",
+  "source": "File:Maranta leuconeura3.jpg"
+ },
+ {
+  "file": "identify/maranta-2.jpg",
+  "expect": "maranta",
+  "source": "File:Maranta leuconeura 11zz.jpg"
+ },
+ {
+  "file": "identify/calathea-ornata-1.jpg",
+  "expect": "calathea-ornata",
+  "source": "File:Calathea ornata - Feb 2011.jpg"
+ },
+ {
+  "file": "identify/calathea-ornata-2.jpg",
+  "expect": "calathea-ornata",
+  "source": "File:Calathea ornata cc3.jpg"
+ },
+ {
+  "file": "identify/ficus-lyrata-1.jpg",
+  "expect": "ficus-lyrata",
+  "source": "File:Ficus lyrata 98162192.jpg"
+ },
+ {
+  "file": "identify/ficus-lyrata-2.jpg",
+  "expect": "ficus-lyrata",
+  "source": "File:Ficus lyrata 440618779.jpg"
+ },
+ {
+  "file": "identify/ficus-elastica-1.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Ficus elastica 2.jpg"
+ },
+ {
+  "file": "identify/ficus-elastica-2.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Ficus elastica 3.jpg"
+ },
+ {
+  "file": "identify/spathiphyllum-1.jpg",
+  "expect": "spathiphyllum",
+  "source": "File:Spathiphyllum in China.jpg"
+ },
+ {
+  "file": "identify/spathiphyllum-2.jpg",
+  "expect": "spathiphyllum",
+  "source": "File:Spathiphyllum kochi.jpg"
+ },
+ {
+  "file": "identify/anthurium-1.jpg",
+  "expect": "anthurium",
+  "source": "File:Anthurium andraeanum hatem moushir.JPG"
+ },
+ {
+  "file": "identify/anthurium-2.jpg",
+  "expect": "anthurium",
+  "source": "File:Anthurium andraeanum - fruits.jpg"
+ },
+ {
+  "file": "identify/monstera-deliciosa-1.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "File:Monstera deliciosa DSC02605.jpg"
+ },
+ {
+  "file": "identify/monstera-deliciosa-2.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "File:Monstera deliciosa DSC02600.jpg"
+ },
+ {
+  "file": "identify/monstera-adansonii-1.jpg",
+  "expect": "monstera-adansonii",
+  "source": "File:Monstera adansonii 126732868.jpg"
+ },
+ {
+  "file": "identify/monstera-adansonii-2.jpg",
+  "expect": "monstera-adansonii",
+  "source": "File:Monstera adansonii 127416487.jpg"
+ },
+ {
+  "file": "identify/aloe-vera-1.jpg",
+  "expect": "aloe-vera",
+  "source": "File:Aloe vera 101.jpg"
+ },
+ {
+  "file": "identify/aloe-vera-2.jpg",
+  "expect": "aloe-vera",
+  "source": "File:Aloe vera (Asphodelaceae).jpg"
+ },
+ {
+  "file": "identify/haworthia-1.jpg",
+  "expect": "haworthia",
+  "source": "File:Haworthia attenuata 33.jpg"
+ },
+ {
+  "file": "identify/haworthia-2.jpg",
+  "expect": "haworthia",
+  "source": "File:Haworthia attenuata Clariperla 0zz.jpg"
+ },
+ {
+  "file": "identify/dracaena-marginata-1.jpg",
+  "expect": "dracaena-marginata",
+  "source": "File:Dracaena marginata IndoorPlant 0605k.jpg"
+ },
+ {
+  "file": "identify/dracaena-marginata-2.jpg",
+  "expect": "dracaena-marginata",
+  "source": "File:Dracaena reflexa 'Angustifolia' - Ботаничка градина Скопје (1).jpg"
+ },
+ {
+  "file": "identify/dracaena-fragrans-1.jpg",
+  "expect": "dracaena-fragrans",
+  "source": "File:Dracaena fragrans Cornstalk Dracaena დრაცენა.JPG"
+ },
+ {
+  "file": "identify/dracaena-fragrans-2.jpg",
+  "expect": "dracaena-fragrans",
+  "source": "File:Dracaena fragrans Limelight 0zz.jpg"
+ },
+ {
+  "file": "identify/chlorophytum-1.jpg",
+  "expect": "chlorophytum",
+  "source": "File:Chlorophytum comosum in China (4).jpg"
+ },
+ {
+  "file": "identify/chlorophytum-2.jpg",
+  "expect": "chlorophytum",
+  "source": "File:Chlorophytum comosum in China (6).jpg"
+ },
+ {
+  "file": "identify/pilea-1.jpg",
+  "expect": "pilea",
+  "source": "File:Pilea peperomioides Chinese money plant.jpg"
+ },
+ {
+  "file": "identify/pilea-2.jpg",
+  "expect": "pilea",
+  "source": "File:Chinese money plant.jpg"
+ },
+ {
+  "file": "identify/peperomia-argyreia-1.jpg",
+  "expect": "peperomia-argyreia",
+  "source": "File:Peperomia argyreia.jpg"
+ },
+ {
+  "file": "identify/peperomia-argyreia-2.jpg",
+  "expect": "peperomia-argyreia",
+  "source": "File:Peperomia Argyreia.jpg"
+ },
+ {
+  "file": "identify/hoya-carnosa-1.jpg",
+  "expect": "hoya-carnosa",
+  "source": "File:Hoya carnosa leaves in Tropical Dream Center, Okinawa.jpg"
+ },
+ {
+  "file": "identify/hoya-carnosa-2.jpg",
+  "expect": "hoya-carnosa",
+  "source": "File:Hoya carnosa - flower view 01.jpg"
+ },
+ {
+  "file": "identify/crassula-ovata-1.jpg",
+  "expect": "crassula-ovata",
+  "source": "File:Crassula ovata Plant.jpg"
+ },
+ {
+  "file": "identify/crassula-ovata-2.jpg",
+  "expect": "crassula-ovata",
+  "source": "File:Crassulaceae Crassula ovata 2.1.jpg"
+ },
+ {
+  "file": "identify/nephrolepis-1.jpg",
+  "expect": "nephrolepis",
+  "source": "File:Nephrolepis exaltata indoor0705c.jpg"
+ },
+ {
+  "file": "identify/nephrolepis-2.jpg",
+  "expect": "nephrolepis",
+  "source": "File:Helecho de Boston (Nephrolepis exaltata).jpg"
+ },
+ {
+  "file": "identify/aglaonema-1.jpg",
+  "expect": "aglaonema",
+  "source": "File:Aglaonema (Chinese Evergreens).jpg"
+ },
+ {
+  "file": "identify/aglaonema-2.jpg",
+  "expect": "aglaonema",
+  "source": "File:Aglaonema Red Lipstick Plant.jpg"
+ },
+ {
+  "file": "identify/dieffenbachia-1.jpg",
+  "expect": "dieffenbachia",
+  "source": "File:Dieffenbachia moralis holotype 01.jpg"
+ },
+ {
+  "file": "identify/dieffenbachia-2.jpg",
+  "expect": "dieffenbachia",
+  "source": "File:Dieffenbachia plant.jpg"
+ },
+ {
+  "file": "identify/schefflera-arboricola-1.jpg",
+  "expect": "schefflera-arboricola",
+  "source": "File:Dwarf umbrella tree (Schefflera arboricola).jpg"
+ },
+ {
+  "file": "identify/schefflera-arboricola-2.jpg",
+  "expect": "schefflera-arboricola",
+  "source": "File:Schefflera arboricola (domesticated) in Florida.jpg"
+ },
+ {
+  "file": "identify/senecio-rowleyanus-1.jpg",
+  "expect": "senecio-rowleyanus",
+  "source": "File:Senecio rowleyanus leaves.jpg"
+ },
+ {
+  "file": "identify/senecio-rowleyanus-2.jpg",
+  "expect": "senecio-rowleyanus",
+  "source": "File:Erbse am Band (Senecio rowleyanus) (31772262164).jpg"
+ },
+ {
+  "file": "identify/tradescantia-zebrina-1.jpg",
+  "expect": "tradescantia-zebrina",
+  "source": "File:20260317 Tradescantia zebrina 01.jpg"
+ },
+ {
+  "file": "identify/tradescantia-zebrina-2.jpg",
+  "expect": "tradescantia-zebrina",
+  "source": "File:Tradescantia Zebrina flower.jpg"
+ },
+ {
+  "file": "identify/syngonium-1.jpg",
+  "expect": "syngonium",
+  "source": "File:Syngonium podophyllum ( Arrowhead plant).jpg"
+ },
+ {
+  "file": "identify/syngonium-2.jpg",
+  "expect": "syngonium",
+  "source": "File:Syngonium podophyllum Golden 0zz.jpg"
+ },
+ {
+  "file": "identify/phalaenopsis-1.jpg",
+  "expect": "phalaenopsis",
+  "source": "File:Phalaenopsis white cultivar 2.jpg"
+ },
+ {
+  "file": "identify/phalaenopsis-2.jpg",
+  "expect": "phalaenopsis",
+  "source": "File:Phalaenopsis Hybride FR 2013.jpg"
+ },
+ {
+  "file": "identify/strelitzia-1.jpg",
+  "expect": "strelitzia",
+  "source": "File:Strelitzia larger.jpg"
+ },
+ {
+  "file": "identify/strelitzia-2.jpg",
+  "expect": "strelitzia",
+  "source": "File:Strelitziaceae Strelitzia nicolai 1.jpg"
+ },
+ {
+  "file": "identify/alocasia-amazonica-1.jpg",
+  "expect": "alocasia-amazonica",
+  "source": "File:Alocasia x amazonica 'Polly'.jpg"
+ },
+ {
+  "file": "identify/alocasia-amazonica-2.jpg",
+  "expect": "alocasia-amazonica",
+  "source": "File:Alocasia amazonica Elephant's-Ear Plant ალოკასია.JPG"
+ },
+ {
+  "file": "identify/beaucarnea-1.jpg",
+  "expect": "beaucarnea",
+  "source": "File:Beaucarnea recurvata - Ботаничка градина Скопје (1).jpg"
+ },
+ {
+  "file": "identify/beaucarnea-2.jpg",
+  "expect": "beaucarnea",
+  "source": "File:Beaucarnea recurvata, Ocampo, Tamaulipas, Mexico 1.jpg"
+ },
+ {
+  "file": "identify/calathea-zebrina-1.jpg",
+  "expect": "calathea-zebrina",
+  "source": "File:Zebra Plant (Calathea Zebrina).jpg"
+ },
+ {
+  "file": "identify/calathea-zebrina-2.jpg",
+  "expect": "calathea-zebrina",
+  "source": "File:Calathea zebrina 10zz.jpg"
+ }
+]

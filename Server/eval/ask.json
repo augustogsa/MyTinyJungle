@@ -1,0 +1,460 @@
+[
+ {
+  "expect": [
+   "yellow-lower",
+   "yellow-all",
+   "leaf-yellow-guide",
+   "overwatering-signs",
+   "pothos-yellow",
+   "monstera-yellow"
+  ],
+  "q": {
+   "en": "Why are the bottom leaves of my pothos turning yellow?",
+   "pt-BR": "Por que as folhas de baixo da minha jiboia tão ficando amarelas?",
+   "es": "¿Por qué se ponen amarillas las hojas de abajo de mi poto?",
+   "fr": "Pourquoi les feuilles du bas de mon pothos jaunissent ?",
+   "de": "Warum werden die unteren Blätter meiner Efeutute gelb?",
+   "ja": "ポトスの下の葉が黄色くなるのはなぜ？"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "brown-tips",
+   "brown-tips-only",
+   "brown-tips-guide",
+   "dracaena-tips",
+   "spider-plant-tips",
+   "peace-lily-brown-tips",
+   "black-tips"
+  ],
+  "q": {
+   "en": "the tips of the leaves are brown and crispy",
+   "pt-BR": "as pontas das folhas tão marrons e secas",
+   "es": "las puntas de las hojas están marrones y secas",
+   "fr": "le bout des feuilles est brun et sec",
+   "de": "die Blattspitzen sind braun und trocken",
+   "ja": "葉の先が茶色く枯れてきた"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "prop-water",
+   "propagation-pothos",
+   "cutting-no-roots"
+  ],
+  "q": {
+   "en": "how do I root a cutting in water?",
+   "pt-BR": "como faço muda na água?",
+   "es": "¿cómo enraizar un esqueje en agua?",
+   "fr": "comment faire raciner une bouture dans l'eau ?",
+   "de": "wie bewurzle ich einen Steckling im Wasser?",
+   "ja": "挿し木を水で発根させる方法は？"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "fungus-gnats",
+   "tiny-flies",
+   "gnats-guide",
+   "fungus-gnat-larvae",
+   "flies",
+   "shore-flies",
+   "fruit-flies"
+  ],
+  "q": {
+   "en": "little black flies keep coming out of the soil",
+   "pt-BR": "tem umas mosquinhas pretas saindo da terra do vaso",
+   "es": "salen mosquitas negras de la tierra de la maceta",
+   "fr": "des petits moucherons noirs sortent de la terre",
+   "de": "kleine schwarze Fliegen kommen aus der Blumenerde",
+   "ja": "土から小さい黒い虫（コバエ）が飛んでくる"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "mealybugs",
+   "white-fluff",
+   "mealybug-guide",
+   "long-tailed-mealybugs",
+   "root-mealybugs",
+   "cottony-scale",
+   "woolly-aphids"
+  ],
+  "q": {
+   "en": "white cottony fluff on the stems",
+   "pt-BR": "tem umas bolinhas brancas parecendo algodão nos caules",
+   "es": "hay pelusa blanca como algodón en los tallos",
+   "fr": "il y a des amas blancs cotonneux sur les tiges",
+   "de": "weiße wattige Flocken an den Stängeln",
+   "ja": "茎に白い綿のようなものが付いている"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "spider-mites",
+   "webbing",
+   "spider-mites-guide",
+   "two-spotted-mites",
+   "stippling"
+  ],
+  "q": {
+   "en": "fine webs under the leaves and tiny dots",
+   "pt-BR": "teias bem finas embaixo das folhas e pontinhos",
+   "es": "telarañas finas debajo de las hojas y puntitos",
+   "fr": "de fines toiles sous les feuilles et des petits points",
+   "de": "feine Gespinste unter den Blättern und winzige Pünktchen",
+   "ja": "葉の裏に細かいクモの巣と小さな点がある"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "watering-winter",
+   "winter-care",
+   "leaves-drop-winter",
+   "no-growth-winter"
+  ],
+  "q": {
+   "en": "how often should I water in winter?",
+   "pt-BR": "de quanto em quanto tempo rego no inverno?",
+   "es": "¿cada cuánto riego en invierno?",
+   "fr": "à quelle fréquence arroser en hiver ?",
+   "de": "wie oft gießen im Winter?",
+   "ja": "冬の水やりの頻度は？"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "repot-signs",
+   "repot-how",
+   "pot-size",
+   "roots-out",
+   "roots-circling",
+   "pot-heavy-roots-top"
+  ],
+  "q": {
+   "en": "when should I repot my plant?",
+   "pt-BR": "quando eu troco a planta de vaso?",
+   "es": "¿cuándo debo trasplantar mi planta a otra maceta?",
+   "fr": "quand faut-il rempoter ma plante ?",
+   "de": "wann sollte ich meine Pflanze umtopfen?",
+   "ja": "植え替えはいつすればいい？"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "pet-safety",
+   "pet-friendly",
+   "lily-cats"
+  ],
+  "q": {
+   "en": "is this plant safe for cats?",
+   "pt-BR": "essa planta é tóxica pra gato?",
+   "es": "¿esta planta es tóxica para gatos?",
+   "fr": "cette plante est-elle toxique pour les chats ?",
+   "de": "ist die Pflanze giftig für Katzen?",
+   "ja": "この植物は猫に毒ですか？"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "leggy",
+   "leggy-fix",
+   "reaching",
+   "leggy-stems",
+   "succulent-stretch",
+   "light-signs",
+   "seedlings-leggy"
+  ],
+  "q": {
+   "en": "my plant is getting leggy and stretching toward the window",
+   "pt-BR": "minha planta tá esticando e ficando comprida, indo pra janela",
+   "es": "mi planta se está estirando hacia la ventana",
+   "fr": "ma plante s'étiole et file vers la fenêtre",
+   "de": "meine Pflanze vergeilt und wächst lang zum Fenster",
+   "ja": "徒長して窓の方へひょろひょろ伸びる"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "powdery-mildew",
+   "white-powder",
+   "powdery-mildew-succulent"
+  ],
+  "q": {
+   "en": "white powder on the leaves",
+   "pt-BR": "um pó branco nas folhas",
+   "es": "polvo blanco en las hojas",
+   "fr": "une poudre blanche sur les feuilles",
+   "de": "weißer Belag wie Mehl auf den Blättern",
+   "ja": "葉に白い粉がついている"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "root-rot",
+   "root-rot-rescue",
+   "pythium-root-rot",
+   "mushy-stem",
+   "smell-soil",
+   "soil-never-dries",
+   "overwatering-signs",
+   "wilting-wet",
+   "droop-wet"
+  ],
+  "q": {
+   "en": "the roots are mushy and smell bad",
+   "pt-BR": "as raízes tão moles e com cheiro ruim",
+   "es": "las raíces están blandas y huelen mal",
+   "fr": "les racines sont molles et sentent mauvais",
+   "de": "die Wurzeln sind matschig und riechen faulig",
+   "ja": "根がぶよぶよで嫌な臭いがする"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "sticky",
+   "sticky-leaves",
+   "sticky-floor",
+   "scale",
+   "aphids",
+   "soft-scale",
+   "sooty-mould",
+   "whitefly"
+  ],
+  "q": {
+   "en": "the leaves are sticky",
+   "pt-BR": "as folhas tão grudentas",
+   "es": "las hojas están pegajosas",
+   "fr": "les feuilles sont collantes",
+   "de": "die Blätter sind klebrig",
+   "ja": "葉がベタベタする"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "humidity-raise",
+   "humidity-group",
+   "humidity-measure",
+   "misting-myth",
+   "calathea-crispy",
+   "crispy-edges"
+  ],
+  "q": {
+   "en": "how can I raise the humidity for my plants?",
+   "pt-BR": "como aumento a umidade do ar pras plantas?",
+   "es": "¿cómo subo la humedad para mis plantas?",
+   "fr": "comment augmenter l'humidité pour mes plantes ?",
+   "de": "wie erhöhe ich die Luftfeuchtigkeit für meine Pflanzen?",
+   "ja": "植物のために湿度を上げるには？"
+  },
+  "split": "dev"
+ },
+ {
+  "expect": [
+   "feeding-basics",
+   "feeding-schedule",
+   "overfeeding",
+   "organic-feeds"
+  ],
+  "split": "holdout",
+  "q": {
+   "en": "how often should I fertilize?",
+   "pt-BR": "de quanto em quanto tempo eu adubo a planta?",
+   "es": "¿cada cuánto tengo que abonar?",
+   "fr": "tous les combien mettre de l'engrais ?",
+   "de": "wie oft soll ich düngen?",
+   "ja": "肥料はどのくらいの頻度であげる？"
+  }
+ },
+ {
+  "expect": [
+   "low-light-plants",
+   "light-signs",
+   "office-plants",
+   "bedroom-plants"
+  ],
+  "split": "holdout",
+  "q": {
+   "en": "which plants grow in a dark room with little light?",
+   "pt-BR": "quais plantas aguentam lugar escuro, com pouca luz?",
+   "es": "¿qué plantas aguantan poca luz?",
+   "fr": "quelles plantes supportent peu de lumière ?",
+   "de": "welche Pflanzen vertragen wenig Licht?",
+   "ja": "暗い部屋でも育つ植物は？"
+  }
+ },
+ {
+  "expect": [
+   "aphids",
+   "aphid-guide",
+   "black-aphids",
+   "woolly-aphids",
+   "sticky"
+  ],
+  "split": "holdout",
+  "q": {
+   "en": "tiny green bugs on new shoots",
+   "pt-BR": "pulgão nos brotos novos, o que faço?",
+   "es": "tengo pulgones en los brotes nuevos",
+   "fr": "des pucerons sur les jeunes pousses",
+   "de": "Blattläuse an den neuen Trieben",
+   "ja": "新芽にアブラムシがついた"
+  }
+ },
+ {
+  "expect": [
+   "leaf-drop",
+   "dropping-healthy",
+   "leaves-drop-winter",
+   "rubber-plant-drop",
+   "fiddle-drop",
+   "new-plant-drop"
+  ],
+  "split": "holdout",
+  "q": {
+   "en": "my plant is dropping a lot of leaves",
+   "pt-BR": "minha planta tá derrubando muita folha",
+   "es": "a mi planta se le caen muchas hojas",
+   "fr": "ma plante perd beaucoup de feuilles",
+   "de": "meine Pflanze verliert viele Blätter",
+   "ja": "葉がたくさん落ちる"
+  }
+ },
+ {
+  "expect": [
+   "mould-soil",
+   "white-mould-soil",
+   "mold-soil",
+   "green-algae-soil"
+  ],
+  "split": "holdout",
+  "q": {
+   "en": "there is white mold on top of the soil",
+   "pt-BR": "apareceu mofo branco em cima da terra",
+   "es": "sale moho blanco en la tierra",
+   "fr": "de la moisissure blanche sur la terre",
+   "de": "weißer Schimmel auf der Erde",
+   "ja": "土の表面に白いカビが生えた"
+  }
+ },
+ {
+  "expect": [
+   "sunburn",
+   "brown-scorch",
+   "tan-spots-sun",
+   "white-bleached",
+   "scorch",
+   "sunscald"
+  ],
+  "split": "holdout",
+  "q": {
+   "en": "leaves got burned by the sun",
+   "pt-BR": "as folhas queimaram no sol",
+   "es": "las hojas se quemaron con el sol",
+   "fr": "les feuilles ont brûlé au soleil",
+   "de": "die Blätter haben Sonnenbrand",
+   "ja": "葉が日焼けした"
+  }
+ },
+ {
+  "expect": [
+   "water-culture"
+  ],
+  "split": "medium",
+  "with": {
+   "medium": "water"
+  },
+  "q": {
+   "en": "how often should I water it?",
+   "pt-BR": "de quanto em quanto tempo eu rego?",
+   "es": "¿cada cuánto la riego?",
+   "fr": "tous les combien l'arroser ?",
+   "de": "wie oft soll ich gießen?",
+   "ja": "水やりはどのくらいの頻度？"
+  }
+ },
+ {
+  "expect": [
+   "leca-reservoir"
+  ],
+  "split": "medium",
+  "with": {
+   "medium": "leca"
+  },
+  "q": {
+   "en": "how often should I water it?",
+   "pt-BR": "de quanto em quanto tempo eu rego?",
+   "es": "¿cada cuánto la riego?",
+   "fr": "tous les combien l'arroser ?",
+   "de": "wie oft soll ich gießen?",
+   "ja": "水やりはどのくらいの頻度？"
+  }
+ },
+ {
+  "expect": [
+   "sphagnum-soak"
+  ],
+  "split": "medium",
+  "with": {
+   "medium": "sphagnum"
+  },
+  "q": {
+   "en": "how often should I water it?",
+   "pt-BR": "de quanto em quanto tempo eu rego?",
+   "es": "¿cada cuánto la riego?",
+   "fr": "tous les combien l'arroser ?",
+   "de": "wie oft soll ich gießen?",
+   "ja": "水やりはどのくらいの頻度？"
+  }
+ },
+ {
+  "expect": [
+   "mounted-mist"
+  ],
+  "split": "medium",
+  "with": {
+   "medium": "mounted"
+  },
+  "q": {
+   "en": "how often should I water it?",
+   "pt-BR": "de quanto em quanto tempo eu rego?",
+   "es": "¿cada cuánto la riego?",
+   "fr": "tous les combien l'arroser ?",
+   "de": "wie oft soll ich gießen?",
+   "ja": "水やりはどのくらいの頻度？"
+  }
+ },
+ {
+  "expect": [
+   "finger-test",
+   "watering-how-much",
+   "water-signs",
+   "overwatering-signs"
+  ],
+  "split": "medium",
+  "with": {
+   "medium": "soil"
+  },
+  "q": {
+   "en": "how often should I water it?",
+   "pt-BR": "de quanto em quanto tempo eu rego?",
+   "es": "¿cada cuánto la riego?",
+   "fr": "tous les combien l'arroser ?",
+   "de": "wie oft soll ich gießen?",
+   "ja": "水やりはどのくらいの頻度？"
+  }
+ }
+]

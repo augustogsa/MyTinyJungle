@@ -104,6 +104,8 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/me/supplies", s.user(s.mySupplies))
 	m.Handle("PUT /v1/me/supplies/{id}", s.user(s.putSupply))
 	m.Handle("DELETE /v1/me/supplies/{id}", s.user(s.deleteSupply))
+	m.Handle("POST /v1/brain/scene", s.user(s.brainScene))
+	m.Handle("POST /v1/brain/feedback", s.user(s.brainFeedback))
 	m.Handle("PUT /v1/me/weather-watch", s.user(s.weatherWatch))
 	m.Handle("GET /v1/me/digest", s.user(s.getDigest))
 	m.Handle("PUT /v1/me/digest", s.user(s.putDigest))
@@ -293,4 +295,5 @@ func (s *Server) StartJobs(ctx context.Context) {
 	go s.weatherLoop(ctx)
 	go s.digestLoop(ctx)
 	go s.suppliesLoop(ctx)
+	go s.learnLoop(ctx)
 }

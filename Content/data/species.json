@@ -152,7 +152,8 @@
    "pothos",
    "silver vine",
    "solomon islands ivy",
-   "taro vine"
+   "taro vine",
+   "hera-do-diabo"
   ],
   "outdoor": false,
   "wikidata": "Q161809",
@@ -227,7 +228,9 @@
    "heartleaf philodendron",
    "philodendron",
    "sweetheart plant",
-   "vilevine"
+   "vilevine",
+   "filodendro",
+   "filodendro-brasil"
   ],
   "outdoor": false,
   "wikidata": "Q4484257",
@@ -241,7 +244,7 @@
  },
  {
   "id": "spathiphyllum",
-  "scientific": "Spathiphyllum wallisii",
+  "scientific": "Spathiphyllum",
   "en": "Peace lily",
   "pt": "Lírio-da-paz",
   "family": "Araceae",
@@ -301,7 +304,8 @@
   "aliases": [
    "lirio da paz",
    "peace lily",
-   "spathiphyllum"
+   "spathiphyllum",
+   "lirio-branco"
   ],
   "outdoor": false,
   "wikidata": "Q761494",
@@ -376,7 +380,10 @@
    "eternity plant",
    "zamioculca",
    "zanzibar gem",
-   "zz plant"
+   "zz plant",
+   "zz",
+   "planta zz",
+   "zamiocultas"
   ],
   "outdoor": false,
   "wikidata": "Q15312475",
@@ -451,7 +458,9 @@
    "espada de sao jorge",
    "mother in law's tongue",
    "snake plant",
-   "viper's bowstring hemp"
+   "viper's bowstring hemp",
+   "lanca-de-sao-jorge",
+   "rabo-de-lagarto"
   ],
   "outdoor": false,
   "wikidata": "Q65936984",
@@ -527,7 +536,9 @@
    "fiddle-leaf fig",
    "figueira lira",
    "figueira-lira",
-   "lyrata"
+   "lyrata",
+   "ficus lirata",
+   "figo-lira"
   ],
   "outdoor": false,
   "wikidata": "Q1498748",
@@ -538,7 +549,7 @@
   "id": "ficus-elastica",
   "scientific": "Ficus elastica",
   "en": "Rubber plant",
-  "pt": "Árvore-da-borracha",
+  "pt": "Falsa-seringueira",
   "family": "Moraceae",
   "waterStyle": "half",
   "dryMin": 8,
@@ -607,7 +618,9 @@
    "rubber bush",
    "rubber fig",
    "rubber plant",
-   "rubber tree"
+   "rubber tree",
+   "seringueira",
+   "árvore-da-borracha"
   ],
   "outdoor": false,
   "wikidata": "Q160576",
@@ -616,9 +629,9 @@
  },
  {
   "id": "calathea",
-  "scientific": "Goeppertia orbifolia",
+  "scientific": "Goeppertia",
   "en": "Calathea",
-  "pt": "Calateia",
+  "pt": "Calathea",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -746,7 +759,8 @@
    "maranta-pena-de-pavão",
    "prayer plant",
    "prayerplant",
-   "red prayer plant"
+   "red prayer plant",
+   "planta-rezadeira"
   ],
   "outdoor": false,
   "wikidata": "Q6754829",
@@ -828,7 +842,8 @@
    "limon",
    "ribbon plant",
    "spider ivy",
-   "spider plant"
+   "spider plant",
+   "paulistinha"
   ],
   "outdoor": false,
   "wikidata": "Q1164349",
@@ -920,7 +935,7 @@
   "id": "echeveria",
   "scientific": "Echeveria elegans",
   "en": "Echeveria",
-  "pt": "Echevéria",
+  "pt": "Echeveria",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -979,7 +994,8 @@
    "echeveria",
    "hen and chicks",
    "mexican snow ball",
-   "rosa de pedra"
+   "rosa de pedra",
+   "rosa-de-pedra"
   ],
   "outdoor": false,
   "wikidata": "Q2783756",
@@ -994,7 +1010,7 @@
   "id": "crassula-ovata",
   "scientific": "Crassula ovata",
   "en": "Jade plant",
-  "pt": "Árvore-de-jade",
+  "pt": "Planta-jade",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 12,
@@ -1059,7 +1075,9 @@
    "money plant",
    "money tree",
    "penny tree",
-   "pink joy"
+   "pink joy",
+   "planta-jade",
+   "árvore-de-jade"
   ],
   "outdoor": false,
   "wikidata": "Q157299",
@@ -1073,7 +1091,7 @@
   "id": "cactus-generic",
   "scientific": "Cactaceae",
   "en": "Cactus",
-  "pt": "Cato",
+  "pt": "Cacto",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -1132,7 +1150,8 @@
    "cacto",
    "cactus",
    "cactus family",
-   "cato"
+   "cato",
+   "cactos"
   ],
   "outdoor": false,
   "wikidata": "Q14560",
@@ -1205,7 +1224,8 @@
    "moth orchid",
    "orchid",
    "orquidea",
-   "phalaenopsis"
+   "phalaenopsis",
+   "falenopsis"
   ],
   "outdoor": false,
   "wikidata": "Q133897",
@@ -1220,8 +1240,8 @@
  {
   "id": "dracaena-marginata",
   "scientific": "Dracaena marginata",
-  "en": "Dragon tree",
-  "pt": "Dracena",
+  "en": "Madagascar dragon tree",
+  "pt": "Dracena-de-madagascar",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 10,
@@ -1280,7 +1300,8 @@
    "dracena",
    "dragon tree",
    "dragontree",
-   "marginata"
+   "marginata",
+   "dracena-de-madagascar"
   ],
   "outdoor": false,
   "wikidata": "Q13539275",
@@ -1294,7 +1315,7 @@
   "id": "dypsis-lutescens",
   "scientific": "Dypsis lutescens",
   "en": "Areca palm",
-  "pt": "Areca-bambu",
+  "pt": "Palmeira-areca",
   "family": "Arecaceae",
   "waterStyle": "top",
   "dryMin": 5,
@@ -1353,7 +1374,9 @@
    "golden feather palm",
    "or butterfly palm",
    "palmeira areca",
-   "yellow butterfly palm"
+   "yellow butterfly palm",
+   "palmeira-areca",
+   "areca"
   ],
   "outdoor": false,
   "wikidata": "Q1535705",
@@ -1366,7 +1389,7 @@
   "id": "chamaedorea",
   "scientific": "Chamaedorea elegans",
   "en": "Parlour palm",
-  "pt": "Palmeira-de-salão",
+  "pt": "Palmeira-chamaedorea",
   "family": "Arecaceae",
   "waterStyle": "top",
   "dryMin": 6,
@@ -1419,7 +1442,10 @@
    "good luck palm",
    "palmeira bambu",
    "parlor palm",
-   "parlour palm"
+   "parlour palm",
+   "palmeira-chamaedorea",
+   "camedorea",
+   "palmeira-de-salão"
   ],
   "outdoor": false,
   "wikidata": "Q660200",
@@ -1431,7 +1457,7 @@
  },
  {
   "id": "strelitzia",
-  "scientific": "Strelitzia nicolai",
+  "scientific": "Strelitzia reginae",
   "en": "Bird of paradise",
   "pt": "Ave-do-paraíso",
   "family": "Strelitziaceae",
@@ -1495,7 +1521,8 @@
    "giant white bird of paradise tree",
    "natal wild banana",
    "strelitzia",
-   "wild banana"
+   "wild banana",
+   "estrelicia"
   ],
   "outdoor": false,
   "wikidata": "Q149601",
@@ -1510,7 +1537,7 @@
   "id": "alocasia",
   "scientific": "Alocasia amazonica",
   "en": "Alocasia",
-  "pt": "Alocásia",
+  "pt": "Alocasia",
   "family": "Araceae",
   "waterStyle": "top",
   "dryMin": 5,
@@ -1568,7 +1595,8 @@
   "aliases": [
    "alocasia",
    "elephant ear",
-   "alocasia polly"
+   "alocasia polly",
+   "orelha-de-elefante"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -1653,7 +1681,7 @@
  },
  {
   "id": "hoya",
-  "scientific": "Hoya carnosa",
+  "scientific": "Hoya",
   "en": "Hoya",
   "pt": "Flor-de-cera",
   "family": "Apocynaceae",
@@ -1728,7 +1756,7 @@
   "id": "peperomia",
   "scientific": "Peperomia obtusifolia",
   "en": "Peperomia",
-  "pt": "Peperómia",
+  "pt": "Peperômia",
   "family": "Piperaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -1803,7 +1831,7 @@
   "id": "pilea",
   "scientific": "Pilea peperomioides",
   "en": "Chinese money plant",
-  "pt": "Planta-do-dinheiro-chinesa",
+  "pt": "Pilea",
   "family": "Urticaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -1867,7 +1895,10 @@
    "pilea",
    "pilea microphylla",
    "planta da amizade",
-   "wuê mimolé"
+   "wuê mimolé",
+   "planta-chinesa-do-dinheiro",
+   "planta-panqueca",
+   "planta-do-dinheiro-chinesa"
   ],
   "outdoor": false,
   "wikidata": "Q311696",
@@ -1879,7 +1910,7 @@
  },
  {
   "id": "tradescantia",
-  "scientific": "Tradescantia zebrina",
+  "scientific": "Tradescantia",
   "en": "Wandering dude",
   "pt": "Trapoeraba-roxa",
   "family": "Commelinaceae",
@@ -1944,7 +1975,8 @@
    "trapoeraba",
    "wandering dude",
    "wandering jew",
-   "zebra plant"
+   "zebra plant",
+   "lambari"
   ],
   "outdoor": false,
   "wikidata": "Q169381",
@@ -1959,7 +1991,7 @@
   "id": "syngonium",
   "scientific": "Syngonium podophyllum",
   "en": "Arrowhead plant",
-  "pt": "Singónio",
+  "pt": "Singônio",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -2095,7 +2127,8 @@
    "chinese evergreen",
    "philippine evergreen",
    "poison dart plant",
-   "silver queen"
+   "silver queen",
+   "cafe-de-salao"
   ],
   "outdoor": false,
   "wikidata": "Q11684614",
@@ -2185,7 +2218,7 @@
   "id": "nephrolepis",
   "scientific": "Nephrolepis exaltata",
   "en": "Boston fern",
-  "pt": "Feto-de-boston",
+  "pt": "Samambaia-americana",
   "family": "Nephrolepidaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -2247,7 +2280,9 @@
    "samambaia",
    "sword fern",
    "tuber ladder fern",
-   "wild boston swordfern"
+   "wild boston swordfern",
+   "samambaia-americana",
+   "feto-de-boston"
   ],
   "outdoor": false,
   "wikidata": "Q136883",
@@ -2262,7 +2297,7 @@
   "id": "hedera-helix",
   "scientific": "Hedera helix",
   "en": "English ivy",
-  "pt": "Hera",
+  "pt": "Hera-inglesa",
   "family": "Araliaceae",
   "waterStyle": "top",
   "dryMin": 5,
@@ -2317,7 +2352,8 @@
    "english ivy",
    "european ivy",
    "hera",
-   "ivy"
+   "ivy",
+   "hera-inglesa"
   ],
   "outdoor": true,
   "wikidata": "Q26354",
@@ -2331,9 +2367,9 @@
  },
  {
   "id": "schefflera",
-  "scientific": "Schefflera arboricola",
+  "scientific": "Schefflera",
   "en": "Umbrella plant",
-  "pt": "Chefelera",
+  "pt": "Cheflera",
   "family": "Araliaceae",
   "waterStyle": "half",
   "dryMin": 8,
@@ -2391,7 +2427,8 @@
   "aliases": [
    "umbrella tree",
    "schefflera",
-   "cheflera"
+   "cheflera",
+   "chefelera"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -2702,9 +2739,9 @@
  },
  {
   "id": "lavandula",
-  "scientific": "Lavandula angustifolia",
+  "scientific": "Lavandula",
   "en": "Lavender",
-  "pt": "Alfazema",
+  "pt": "Lavanda",
   "family": "Lamiaceae",
   "waterStyle": "dry",
   "dryMin": 7,
@@ -2853,7 +2890,7 @@
   "id": "citrus-limon",
   "scientific": "Citrus limon",
   "en": "Lemon tree",
-  "pt": "Limoeiro",
+  "pt": "Limoeiro-siciliano",
   "family": "Rutaceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -2996,7 +3033,7 @@
   "id": "rhododendron-azalea",
   "scientific": "Rhododendron simsii",
   "en": "Azalea",
-  "pt": "Azálea",
+  "pt": "Azaleia",
   "family": "Ericaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -3062,7 +3099,7 @@
  },
  {
   "id": "hydrangea",
-  "scientific": "Hydrangea macrophylla",
+  "scientific": "Hydrangea",
   "en": "Hydrangea",
   "pt": "Hortênsia",
   "family": "Hydrangeaceae",
@@ -3137,7 +3174,7 @@
   "id": "begonia-maculata",
   "scientific": "Begonia maculata",
   "en": "Polka dot begonia",
-  "pt": "Begónia-maculata",
+  "pt": "Begônia-asa-de-anjo",
   "family": "Begoniaceae",
   "waterStyle": "top",
   "dryMin": 5,
@@ -3195,7 +3232,10 @@
   "aliases": [
    "begonia asa de anjo",
    "begonia maculata",
-   "polka dot begonia"
+   "polka dot begonia",
+   "begonia",
+   "begonia-asa-de-anjo",
+   "begónia-maculata"
   ],
   "outdoor": false,
   "wikidata": "Q2893846",
@@ -3206,9 +3246,9 @@
  },
  {
   "id": "ctenanthe",
-  "scientific": "Ctenanthe burle-marxii",
-  "en": "Fishbone prayer plant",
-  "pt": "Ctenante",
+  "scientific": "Ctenanthe",
+  "en": "Ctenanthe",
+  "pt": "Ctenanthe",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -3263,7 +3303,8 @@
   "about": "Herringbone-striped leaves that move with the day, like its prayer-plant cousins.",
   "aliases": [
    "ctenanthe",
-   "never never plant"
+   "never never plant",
+   "ctenante"
   ],
   "outdoor": false,
   "wikidata": "Q15326022",
@@ -3497,7 +3538,7 @@
  {
   "id": "philodendron-erubescens",
   "scientific": "Philodendron erubescens",
-  "en": "Pink princess philodendron",
+  "en": "Blushing philodendron",
   "pt": "Filodendro-rosa",
   "family": "Araceae",
   "waterStyle": "half",
@@ -3717,7 +3758,7 @@
  {
   "id": "colocasia",
   "scientific": "Colocasia esculenta",
-  "en": "Taro",
+  "en": "Elephant ear",
   "pt": "Inhame",
   "family": "Araceae",
   "waterStyle": "moist",
@@ -3947,7 +3988,7 @@
   "id": "dracaena-reflexa",
   "scientific": "Dracaena reflexa",
   "en": "Song of India",
-  "pt": "Dracena-malaia",
+  "pt": "Dracena-reflexa",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 9,
@@ -4005,7 +4046,8 @@
   "aliases": [
    "pleomele",
    "reflexa",
-   "song of india"
+   "song of india",
+   "dracena-malaia"
   ],
   "outdoor": false,
   "wikidata": "Q135016",
@@ -4018,7 +4060,7 @@
   "id": "cordyline-fruticosa",
   "scientific": "Cordyline fruticosa",
   "en": "Ti plant",
-  "pt": "Cordiline",
+  "pt": "Dracena-vermelha",
   "family": "Asparagaceae",
   "waterStyle": "top",
   "dryMin": 6,
@@ -4093,7 +4135,7 @@
   "id": "yucca-elephantipes",
   "scientific": "Yucca gigantea",
   "en": "Yucca",
-  "pt": "Iuca",
+  "pt": "Iúca",
   "family": "Asparagaceae",
   "waterStyle": "dry",
   "dryMin": 12,
@@ -4250,7 +4292,7 @@
  {
   "id": "ficus-microcarpa",
   "scientific": "Ficus microcarpa",
-  "en": "Ginseng ficus",
+  "en": "Chinese banyan",
   "pt": "Ficus-ginseng",
   "family": "Moraceae",
   "waterStyle": "half",
@@ -4399,7 +4441,7 @@
   "id": "pachira-aquatica",
   "scientific": "Pachira aquatica",
   "en": "Money tree",
-  "pt": "Monguba",
+  "pt": "Munguba",
   "family": "Malvaceae",
   "waterStyle": "half",
   "dryMin": 8,
@@ -4547,7 +4589,7 @@
   "id": "rhapis-excelsa",
   "scientific": "Rhapis excelsa",
   "en": "Lady palm",
-  "pt": "Palmeira-ráfia",
+  "pt": "Palmeira-ráfis",
   "family": "Arecaceae",
   "waterStyle": "half",
   "dryMin": 8,
@@ -4606,7 +4648,8 @@
    "palmeira-ráfis",
    "palmeira-rápis",
    "rhapis",
-   "slender lady palm"
+   "slender lady palm",
+   "palmeira-ráfia"
   ],
   "outdoor": false,
   "wikidata": "Q164097",
@@ -4684,7 +4727,8 @@
    "king sago",
    "sago",
    "sago cycas",
-   "sago palm"
+   "sago palm",
+   "sagu-de-jardim"
   ],
   "outdoor": true,
   "wikidata": "Q161517",
@@ -4699,7 +4743,7 @@
   "id": "stromanthe-sanguinea",
   "scientific": "Stromanthe thalia",
   "en": "Stromanthe triostar",
-  "pt": "Estromanthe",
+  "pt": "Stromanthe-triostar",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -4755,7 +4799,8 @@
   "aliases": [
    "magic star",
    "stromanthe",
-   "triostar"
+   "triostar",
+   "estromanthe"
   ],
   "outdoor": false,
   "wikidata": "Q15338244",
@@ -4769,7 +4814,7 @@
   "id": "goeppertia-orbifolia",
   "scientific": "Goeppertia orbifolia",
   "en": "Calathea orbifolia",
-  "pt": "Calateia-orbifolia",
+  "pt": "Calathea-orbifolia",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -4824,7 +4869,8 @@
   "about": "Big round leaves with silvery stripes, like a painted plate. A true humidity lover.",
   "aliases": [
    "calathea orbifolia",
-   "orbifolia"
+   "orbifolia",
+   "calateia-orbifolia"
   ],
   "outdoor": false,
   "wikidata": "Q80714198",
@@ -4836,9 +4882,9 @@
  },
  {
   "id": "goeppertia-lancifolia",
-  "scientific": "Goeppertia insignis",
+  "scientific": "Goeppertia lancifolia",
   "en": "Rattlesnake plant",
-  "pt": "Calateia-cascavel",
+  "pt": "Calathea-cascavel",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -4894,7 +4940,8 @@
   "aliases": [
    "calathea lancifolia",
    "lancifolia",
-   "rattlesnake plant"
+   "rattlesnake plant",
+   "calateia-cascavel"
   ],
   "outdoor": false,
   "wikidata": "Q90458733",
@@ -4964,7 +5011,8 @@
   "aliases": [
    "fittonia",
    "mosaic plant",
-   "nerve plant"
+   "nerve plant",
+   "planta-mosaico"
   ],
   "outdoor": false,
   "wikidata": "Q144956",
@@ -4978,7 +5026,7 @@
   "id": "hypoestes",
   "scientific": "Hypoestes phyllostachya",
   "en": "Polka dot plant",
-  "pt": "Planta-sardenta",
+  "pt": "Confete",
   "family": "Acanthaceae",
   "waterStyle": "top",
   "dryMin": 4,
@@ -5031,7 +5079,8 @@
    "freckle face",
    "hypoestes",
    "polka dot plant",
-   "polkadot-plant"
+   "polkadot-plant",
+   "planta-sardenta"
   ],
   "outdoor": false,
   "wikidata": "Q5959593",
@@ -5060,13 +5109,13 @@
   "aeration": 0.9,
   "phMin": 6.0,
   "phMax": 7.5,
-  "mix": "cactus",
-  "feed": "cactus",
+  "mix": "universal",
+  "feed": "light",
   "feedWeeks": 6,
   "growth": "slow",
   "repotYears": 2,
   "tip": "Water when the pot feels light; leaves store water.",
-  "group": "succulent",
+  "group": "tropical",
   "propagation": [
    "Single leaves laid on dry gritty mix until roots form",
    "Stem cuttings left to callus for a few days, then potted dry",
@@ -5095,7 +5144,7 @@
    }
   ],
   "repotNotes": "Repot in spring into a shallow pot of gritty mix. Wait a week before the first drink.",
-  "winterFactor": 2.0,
+  "winterFactor": 1.5,
   "summerFactor": 0.9,
   "origin": "South America",
   "habit": "Compact rosette",
@@ -5178,7 +5227,8 @@
    "aspidistra",
    "bar room plant",
    "bar-room plant",
-   "cast iron plant"
+   "cast iron plant",
+   "planta-de-ferro"
   ],
   "outdoor": true,
   "wikidata": "Q3239567",
@@ -5396,7 +5446,8 @@
    "asplenio",
    "asplenium",
    "bird's nest fern",
-   "hawai'i birdnest fern"
+   "hawai'i birdnest fern",
+   "ninho-de-passaro"
   ],
   "outdoor": false,
   "wikidata": "Q1736890",
@@ -5543,7 +5594,9 @@
    "colar de coracoes",
    "hearts entangled",
    "rosary vine",
-   "string of hearts"
+   "string of hearts",
+   "coracao-emaranhado",
+   "coracoes-emaranhados"
   ],
   "outdoor": false,
   "wikidata": "Q148960",
@@ -5767,7 +5820,8 @@
   "aliases": [
    "haworthia",
    "zebra cactus",
-   "zebra plant"
+   "zebra plant",
+   "havortia"
   ],
   "outdoor": false,
   "wikidata": "Q64524505",
@@ -5915,7 +5969,8 @@
    "flaming katy",
    "kalanchoe",
    "kalanchoe blossfeldiana",
-   "madagascar widow's-thrill"
+   "madagascar widow's-thrill",
+   "flor-da-fortuna"
   ],
   "outdoor": false,
   "wikidata": "Q132145",
@@ -5990,7 +6045,8 @@
    "flor-de-maio",
    "holiday cactus",
    "schlumbergera",
-   "thanksgiving cactus"
+   "thanksgiving cactus",
+   "cacto-de-natal"
   ],
   "outdoor": false,
   "wikidata": "Q312047",
@@ -6003,8 +6059,8 @@
  },
  {
   "id": "rhipsalis",
-  "scientific": "Rhipsalis baccifera",
-  "en": "Mistletoe cactus",
+  "scientific": "Rhipsalis",
+  "en": "Rhipsalis",
   "pt": "Ripsális",
   "family": "Cactaceae",
   "waterStyle": "top",
@@ -6073,9 +6129,9 @@
  },
  {
   "id": "opuntia",
-  "scientific": "Opuntia microdasys",
-  "en": "Bunny ears cactus",
-  "pt": "Palma",
+  "scientific": "Opuntia",
+  "en": "Prickly pear",
+  "pt": "Cacto-orelha-de-coelho",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -6312,7 +6368,7 @@
   "id": "sempervivum",
   "scientific": "Sempervivum tectorum",
   "en": "Houseleek",
-  "pt": "Saião",
+  "pt": "Sempervivum",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -6371,7 +6427,8 @@
    "common houseleek",
    "hens and chicks",
    "houseleek",
-   "sempervivum"
+   "sempervivum",
+   "saião"
   ],
   "outdoor": true,
   "wikidata": "Q161724",
@@ -6463,7 +6520,7 @@
   "id": "portulacaria-afra",
   "scientific": "Portulacaria afra",
   "en": "Elephant bush",
-  "pt": "Portulacária",
+  "pt": "Bonsai-de-jade",
   "family": "Didiereaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -6611,7 +6668,7 @@
   "id": "dendrobium",
   "scientific": "Dendrobium nobile",
   "en": "Dendrobium orchid",
-  "pt": "Orquídea-olho-de-boneca",
+  "pt": "Olho-de-boneca",
   "family": "Orchidaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -6669,7 +6726,8 @@
    "cane orchid",
    "dendrobium",
    "noble dendrobium",
-   "olho de boneca"
+   "olho de boneca",
+   "orquídea-olho-de-boneca"
   ],
   "outdoor": false,
   "wikidata": "Q636713",
@@ -6682,9 +6740,9 @@
  },
  {
   "id": "tillandsia",
-  "scientific": "Tillandsia ionantha",
+  "scientific": "Tillandsia",
   "en": "Air plant",
-  "pt": "Tilândsia",
+  "pt": "Tillandsia",
   "family": "Bromeliaceae",
   "waterStyle": "dry",
   "dryMin": 5,
@@ -6735,7 +6793,9 @@
    "air plant",
    "blushing bride",
    "tilandsia",
-   "tillandsia"
+   "tillandsia",
+   "cravo-do-mato",
+   "planta-aerea"
   ],
   "outdoor": false,
   "wikidata": "Q1937140",
@@ -6749,7 +6809,7 @@
   "id": "guzmania",
   "scientific": "Guzmania lingulata",
   "en": "Guzmania bromeliad",
-  "pt": "Gusmânia",
+  "pt": "Guzmânia",
   "family": "Bromeliaceae",
   "waterStyle": "top",
   "dryMin": 7,
@@ -6800,7 +6860,8 @@
    "bromelia",
    "bromeliad",
    "droophead tufted airplant",
-   "guzmania"
+   "guzmania",
+   "gusmânia"
   ],
   "outdoor": false,
   "wikidata": "Q2710056",
@@ -6950,7 +7011,7 @@
   "id": "cyclamen",
   "scientific": "Cyclamen persicum",
   "en": "Florist's cyclamen",
-  "pt": "Ciclame",
+  "pt": "Ciclâmen",
   "family": "Primulaceae",
   "waterStyle": "top",
   "dryMin": 4,
@@ -7070,7 +7131,8 @@
    "christmas star",
    "estrela-do-natal",
    "flor-do-natal",
-   "poinsettia"
+   "poinsettia",
+   "poinsetia"
   ],
   "outdoor": false,
   "wikidata": "Q208253",
@@ -7138,7 +7200,8 @@
    "cape jasmine",
    "gardenia",
    "gardenia jasminoides",
-   "gardénia"
+   "gardénia",
+   "jasmim-do-cabo"
   ],
   "outdoor": true,
   "wikidata": "Q1072101",
@@ -7205,7 +7268,8 @@
   "aliases": [
    "hibiscus",
    "hibisco",
-   "chinese hibiscus"
+   "chinese hibiscus",
+   "mimo-de-venus"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -7221,7 +7285,7 @@
   "id": "jasminum-polyanthum",
   "scientific": "Jasminum polyanthum",
   "en": "Pink jasmine",
-  "pt": "Jasmim",
+  "pt": "Jasmim-dos-poetas",
   "family": "Oleaceae",
   "waterStyle": "top",
   "dryMin": 4,
@@ -7426,7 +7490,7 @@
   "id": "soleirolia",
   "scientific": "Soleirolia soleirolii",
   "en": "Baby's tears",
-  "pt": "Lágrimas-de-bebê",
+  "pt": "Lágrima-de-bebê",
   "family": "Urticaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -7484,7 +7548,8 @@
    "baby's tears",
    "helxine",
    "mind your own business",
-   "mother of thousands"
+   "mother of thousands",
+   "lágrimas-de-bebê"
   ],
   "outdoor": true,
   "wikidata": "Q997566",
@@ -7634,7 +7699,8 @@
    "dionéia",
    "flytrap",
    "venus flytrap",
-   "vênus papa-moscas"
+   "vênus papa-moscas",
+   "planta-carnivora"
   ],
   "outdoor": true,
   "wikidata": "Q155825",
@@ -7650,7 +7716,7 @@
   "id": "radermachera",
   "scientific": "Radermachera sinica",
   "en": "China doll",
-  "pt": "Árvore-da-China",
+  "pt": "Árvore-da-felicidade-chinesa",
   "family": "Bignoniaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -7709,7 +7775,8 @@
    "china doll",
    "emerald tree",
    "radermachera",
-   "serpent tree"
+   "serpent tree",
+   "árvore-da-china"
   ],
   "outdoor": false,
   "wikidata": "Q203625",
@@ -7723,7 +7790,7 @@
   "id": "fatsia-japonica",
   "scientific": "Fatsia japonica",
   "en": "Japanese aralia",
-  "pt": "Arália",
+  "pt": "Arália-japonesa",
   "family": "Araliaceae",
   "waterStyle": "top",
   "dryMin": 6,
@@ -7791,7 +7858,7 @@
   "id": "polyscias",
   "scientific": "Polyscias fruticosa",
   "en": "Ming aralia",
-  "pt": "Arália-ming",
+  "pt": "Árvore-da-felicidade",
   "family": "Araliaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -7849,7 +7916,8 @@
   "aliases": [
    "aralia",
    "ming aralia",
-   "polyscias"
+   "polyscias",
+   "arália-ming"
   ],
   "outdoor": false,
   "wikidata": "Q5903279",
@@ -7861,9 +7929,9 @@
  },
  {
   "id": "pilea-peperomioides-twin",
-  "scientific": "Pilea cadierei",
-  "en": "Aluminium plant",
-  "pt": "Pileia-alumínio",
+  "scientific": "Pilea cadierei 'Minima'",
+  "en": "Dwarf aluminium plant",
+  "pt": "Pilea-alumínio-mini",
   "family": "Urticaceae",
   "waterStyle": "top",
   "dryMin": 5,
@@ -8008,7 +8076,7 @@
   "id": "alocasia-zebrina",
   "scientific": "Alocasia zebrina",
   "en": "Zebra alocasia",
-  "pt": "Alocásia-zebra",
+  "pt": "Alocasia-zebrina",
   "family": "Araceae",
   "waterStyle": "top",
   "dryMin": 6,
@@ -8066,7 +8134,8 @@
   "aliases": [
    "alocasia zebrina",
    "zebra plant",
-   "zebrina"
+   "zebrina",
+   "alocásia-zebra"
   ],
   "outdoor": false,
   "wikidata": "Q15314868",
@@ -8297,7 +8366,7 @@
   "id": "petroselinum",
   "scientific": "Petroselinum crispum",
   "en": "Parsley",
-  "pt": "Salsa",
+  "pt": "Salsinha",
   "family": "Apiaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -8369,7 +8438,7 @@
   "id": "allium-schoenoprasum",
   "scientific": "Allium schoenoprasum",
   "en": "Chives",
-  "pt": "Cebolinha",
+  "pt": "Cebolinha-francesa",
   "family": "Amaryllidaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -8512,7 +8581,7 @@
   "id": "capsicum",
   "scientific": "Capsicum annuum",
   "en": "Pepper",
-  "pt": "Pimenta",
+  "pt": "Pimentão",
   "family": "Solanaceae",
   "waterStyle": "top",
   "dryMin": 3,
@@ -10286,7 +10355,7 @@
   "id": "impatiens",
   "scientific": "Impatiens walleriana",
   "en": "Busy Lizzie",
-  "pt": "Beijo",
+  "pt": "Beijinho",
   "family": "Balsaminaceae",
   "waterStyle": "moist",
   "dryMin": 2,
@@ -10432,9 +10501,9 @@
  },
  {
   "id": "spathiphyllum-sensation",
-  "scientific": "Philodendron 'Birkin'",
-  "en": "Philodendron Birkin",
-  "pt": "Filodendro-birkin",
+  "scientific": "Philodendron 'White Wave'",
+  "en": "Philodendron White Wave",
+  "pt": "Filodendro White Wave",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -10503,7 +10572,7 @@
   "id": "calathea-makoyana",
   "scientific": "Goeppertia makoyana",
   "en": "Peacock plant",
-  "pt": "Calateia-pavão",
+  "pt": "Calathea-pavão",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -10559,7 +10628,8 @@
   "aliases": [
    "cathedral windows",
    "makoyana",
-   "peacock plant"
+   "peacock plant",
+   "calateia-pavão"
   ],
   "outdoor": false,
   "wikidata": "Q50841683",
@@ -11067,7 +11137,7 @@
   "id": "alocasia-amazonica",
   "scientific": "Alocasia × amazonica",
   "en": "African mask plant",
-  "pt": "Alocásia-amazônica",
+  "pt": "Alocasia-amazônica",
   "family": "Araceae",
   "waterStyle": "top",
   "dryMin": 6,
@@ -11429,7 +11499,7 @@
   "id": "dracaena-masoniana",
   "scientific": "Dracaena masoniana",
   "en": "Whale fin snake plant",
-  "pt": "Sansevieria-barbatana",
+  "pt": "Espada-de-são-jorge-baleia",
   "family": "Asparagaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -11487,7 +11557,8 @@
   "aliases": [
    "masoniana",
    "shark fin",
-   "whale fin"
+   "whale fin",
+   "sansevieria-barbatana"
   ],
   "outdoor": false,
   "wikidata": "Q85689460",
@@ -11639,7 +11710,7 @@
   "id": "ficus-audrey",
   "scientific": "Ficus benghalensis",
   "en": "Ficus Audrey",
-  "pt": "Figueira-de-bengala",
+  "pt": "Ficus-audrey",
   "family": "Moraceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -11701,7 +11772,8 @@
    "benghalensis",
    "ficus benghalensis",
    "figueira de bengala",
-   "indian banyan"
+   "indian banyan",
+   "figueira-de-bengala"
   ],
   "outdoor": false,
   "wikidata": "Q1405636",
@@ -12047,7 +12119,7 @@
   "id": "calathea-white-fusion",
   "scientific": "Goeppertia 'White Fusion'",
   "en": "Calathea White Fusion",
-  "pt": "Calateia-white-fusion",
+  "pt": "Calathea-white-fusion",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -12101,7 +12173,8 @@
   "habit": "Upright clump",
   "about": "Leaves brushed with white and lilac undersides. Delicate but beautiful.",
   "aliases": [
-   "white fusion"
+   "white fusion",
+   "calateia-white-fusion"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -12114,7 +12187,7 @@
   "id": "calathea-medallion",
   "scientific": "Goeppertia roseopicta",
   "en": "Calathea medallion",
-  "pt": "Calateia-medalhão",
+  "pt": "Calathea-medalhão",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -12170,7 +12243,8 @@
   "aliases": [
    "dottie",
    "medallion",
-   "roseopicta"
+   "roseopicta",
+   "calateia-medalhão"
   ],
   "outdoor": false,
   "wikidata": "Q50841692",
@@ -12470,7 +12544,7 @@
   "id": "davallia",
   "scientific": "Davallia fejeensis",
   "en": "Rabbit's foot fern",
-  "pt": "Davália",
+  "pt": "Samambaia-pé-de-coelho",
   "family": "Davalliaceae",
   "waterStyle": "top",
   "dryMin": 5,
@@ -12527,7 +12601,8 @@
   "aliases": [
    "davallia",
    "deer foot",
-   "rabbit's foot fern"
+   "rabbit's foot fern",
+   "davália"
   ],
   "outdoor": false,
   "wikidata": "Q5228130",
@@ -12758,7 +12833,7 @@
   "id": "dischidia",
   "scientific": "Dischidia nummularia",
   "en": "String of nickels",
-  "pt": "Dischídia",
+  "pt": "Dischidia",
   "family": "Apocynaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -12826,8 +12901,8 @@
  },
  {
   "id": "senecio-radicans",
-  "scientific": "Curio radicans",
-  "en": "String of bananas",
+  "scientific": "Senecio radicans",
+  "en": "Fishhook senecio",
   "pt": "Colar-de-bananas",
   "family": "Asteraceae",
   "waterStyle": "dry",
@@ -12902,7 +12977,7 @@
   "id": "crassula-perforata",
   "scientific": "Crassula perforata",
   "en": "String of buttons",
-  "pt": "Crassula-colar",
+  "pt": "Colar-de-botões",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -12959,7 +13034,8 @@
   "about": "Triangular leaves stacked along the stem like beads on a string.",
   "aliases": [
    "crassula perforata",
-   "string of buttons"
+   "string of buttons",
+   "crassula-colar"
   ],
   "outdoor": false,
   "wikidata": "Q15482979",
@@ -12973,11 +13049,11 @@
   "id": "aeonium",
   "scientific": "Aeonium arboreum",
   "en": "Tree aeonium",
-  "pt": "Eônio",
+  "pt": "Aeonium",
   "family": "Crassulaceae",
-  "waterStyle": "half",
-  "dryMin": 7,
-  "dryMax": 12,
+  "waterStyle": "dry",
+  "dryMin": 8,
+  "dryMax": 14,
   "light": "direct",
   "humidityMin": 35,
   "tempMin": 3,
@@ -13031,7 +13107,8 @@
   "aliases": [
    "aeonium",
    "black rose",
-   "tree houseleek"
+   "tree houseleek",
+   "eônio"
   ],
   "outdoor": true,
   "wikidata": "Q138279",
@@ -13267,7 +13344,7 @@
   "id": "kalanchoe-daigremontiana",
   "scientific": "Kalanchoe daigremontiana",
   "en": "Mother of thousands",
-  "pt": "Mãe-de-milhares",
+  "pt": "Aranto",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -13327,7 +13404,8 @@
    "daigremontiana",
    "devil's backbone",
    "mexican hat plant",
-   "mother of thousands"
+   "mother of thousands",
+   "mãe-de-milhares"
   ],
   "outdoor": false,
   "wikidata": "Q311176",
@@ -13342,7 +13420,7 @@
   "id": "aloe-aristata",
   "scientific": "Aristaloe aristata",
   "en": "Lace aloe",
-  "pt": "Aloé-renda",
+  "pt": "Aloe-aristata",
   "family": "Asphodelaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -13400,7 +13478,8 @@
   "aliases": [
    "aristata",
    "lace aloe",
-   "torch plant"
+   "torch plant",
+   "aloé-renda"
   ],
   "outdoor": false,
   "wikidata": "Q39719918",
@@ -13415,7 +13494,7 @@
   "id": "mammillaria",
   "scientific": "Mammillaria spp.",
   "en": "Pincushion cactus",
-  "pt": "Cacto-alfineteiro",
+  "pt": "Mammillaria",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -13473,7 +13552,8 @@
   "aliases": [
    "globe cactus",
    "mammillaria",
-   "pincushion"
+   "pincushion",
+   "cacto-alfineteiro"
   ],
   "outdoor": false,
   "wikidata": "Q311120",
@@ -13490,7 +13570,7 @@
   "id": "echinopsis",
   "scientific": "Echinopsis spp.",
   "en": "Easter lily cactus",
-  "pt": "Equinopsis",
+  "pt": "Echinopsis",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -13550,7 +13630,8 @@
    "echinopsis",
    "hedgehog cacti",
    "sea urchin cactus",
-   "sea-urchin cactus"
+   "sea-urchin cactus",
+   "equinopsis"
   ],
   "outdoor": true,
   "wikidata": "Q131726",
@@ -13861,7 +13942,7 @@
   "id": "cattleya",
   "scientific": "Cattleya hybrids",
   "en": "Cattleya orchid",
-  "pt": "Orquídea-catleia",
+  "pt": "Catleia",
   "family": "Orchidaceae",
   "waterStyle": "dry",
   "dryMin": 6,
@@ -13918,7 +13999,8 @@
   "aliases": [
    "catleia",
    "catléia",
-   "cattleya"
+   "cattleya",
+   "orquídea-catleia"
   ],
   "outdoor": false,
   "wikidata": "Q133733",
@@ -14083,7 +14165,7 @@
   "id": "cymbidium",
   "scientific": "Cymbidium hybrids",
   "en": "Cymbidium orchid",
-  "pt": "Cimbídio",
+  "pt": "Cymbidium",
   "family": "Orchidaceae",
   "waterStyle": "top",
   "dryMin": 5,
@@ -14140,7 +14222,8 @@
   "aliases": [
    "boat orchid",
    "boat orchids",
-   "cymbidium"
+   "cymbidium",
+   "cimbídio"
   ],
   "outdoor": true,
   "wikidata": "Q843914",
@@ -14156,7 +14239,7 @@
   "id": "vriesea",
   "scientific": "Vriesea splendens",
   "en": "Flaming sword",
-  "pt": "Vriesia",
+  "pt": "Vriesea",
   "family": "Bromeliaceae",
   "waterStyle": "top",
   "dryMin": 7,
@@ -14224,7 +14307,7 @@
   "id": "aechmea",
   "scientific": "Aechmea fasciata",
   "en": "Urn plant",
-  "pt": "Bromélia-vaso-prateado",
+  "pt": "Bromélia-prateada",
   "family": "Bromeliaceae",
   "waterStyle": "top",
   "dryMin": 7,
@@ -14277,7 +14360,8 @@
    "silver vase",
    "silver vase bromeliad",
    "urn plant",
-   "urnplant"
+   "urnplant",
+   "bromélia-vaso-prateado"
   ],
   "outdoor": false,
   "wikidata": "Q974721",
@@ -14432,7 +14516,7 @@
   "id": "tillandsia-xerographica",
   "scientific": "Tillandsia xerographica",
   "en": "King of air plants",
-  "pt": "Tilândsia-xerographica",
+  "pt": "Tillandsia-xerographica",
   "family": "Bromeliaceae",
   "waterStyle": "dry",
   "dryMin": 7,
@@ -14481,7 +14565,8 @@
   "about": "A big, curling silver rosette; drier-loving than most air plants.",
   "aliases": [
    "king air plant",
-   "xerographica"
+   "xerographica",
+   "tilândsia-xerographica"
   ],
   "outdoor": false,
   "wikidata": "Q7802776",
@@ -14767,8 +14852,8 @@
  },
  {
   "id": "episcia",
-  "scientific": "Episcia cupreata",
-  "en": "Flame violet",
+  "scientific": "Episcia",
+  "en": "Episcia",
   "pt": "Epíscia",
   "family": "Gesneriaceae",
   "waterStyle": "top",
@@ -15042,7 +15127,7 @@
   "id": "crocus",
   "scientific": "Crocus vernus",
   "en": "Crocus",
-  "pt": "Açafrão-da-primavera",
+  "pt": "Croco",
   "family": "Iridaceae",
   "waterStyle": "top",
   "dryMin": 4,
@@ -15051,8 +15136,8 @@
   "humidityMin": 40,
   "tempMin": -25,
   "tempMax": 22,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.5,
   "aeration": 0.7,
   "phMin": 6.0,
@@ -15094,7 +15179,8 @@
    "crocus",
    "dutch crocus",
    "giant crocus",
-   "spring crocus"
+   "spring crocus",
+   "açafrão-da-primavera"
   ],
   "outdoor": true,
   "wikidata": "Q165077",
@@ -15321,7 +15407,7 @@
   "id": "anthurium-white",
   "scientific": "Spathiphyllum wallisii",
   "en": "Small peace lily",
-  "pt": "Lírio-da-paz-pequeno",
+  "pt": "Lírio-da-paz-mini",
   "family": "Araceae",
   "waterStyle": "top",
   "dryMin": 6,
@@ -15378,7 +15464,8 @@
   "about": "A compact peace lily for small spaces.",
   "aliases": [
    "small peace lily",
-   "wallisii"
+   "wallisii",
+   "lírio-da-paz-pequeno"
   ],
   "outdoor": false,
   "wikidata": "Q761494",
@@ -15530,8 +15617,8 @@
  {
   "id": "calibrachoa",
   "scientific": "Calibrachoa hybrids",
-  "en": "Million bells",
-  "pt": "Calibracoa",
+  "en": "Calibrachoa",
+  "pt": "Calibrachoa",
   "family": "Solanaceae",
   "waterStyle": "top",
   "dryMin": 2,
@@ -15582,7 +15669,8 @@
   "about": "Thousands of tiny petunia-like bells all summer.",
   "aliases": [
    "calibrachoa",
-   "million bells"
+   "million bells",
+   "calibracoa"
   ],
   "outdoor": true,
   "wikidata": "Q141632",
@@ -15668,8 +15756,8 @@
  },
  {
   "id": "viola",
-  "scientific": "Viola × wittrockiana",
-  "en": "Pansy",
+  "scientific": "Viola cornuta",
+  "en": "Horned violet",
   "pt": "Amor-perfeito",
   "family": "Violaceae",
   "waterStyle": "top",
@@ -15722,7 +15810,8 @@
   "aliases": [
    "pansy",
    "viola",
-   "amor perfeito"
+   "amor perfeito",
+   "amor-perfeito-mini"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -15947,7 +16036,7 @@
   "id": "melissa",
   "scientific": "Melissa officinalis",
   "en": "Lemon balm",
-  "pt": "Erva-cidreira",
+  "pt": "Melissa",
   "family": "Lamiaceae",
   "waterStyle": "top",
   "dryMin": 3,
@@ -16004,7 +16093,8 @@
    "common balm",
    "erva cidreira",
    "lemon balm",
-   "melissa"
+   "melissa",
+   "erva-cidreira"
   ],
   "outdoor": true,
   "wikidata": "Q148396",
@@ -16683,8 +16773,8 @@
  },
  {
   "id": "rubus",
-  "scientific": "Rubus idaeus",
-  "en": "Raspberry",
+  "scientific": "Rubus",
+  "en": "Bramble",
   "pt": "Framboesa",
   "family": "Rosaceae",
   "waterStyle": "top",
@@ -16830,7 +16920,7 @@
   "id": "citrus-kumquat",
   "scientific": "Citrus japonica",
   "en": "Kumquat",
-  "pt": "Kumquat",
+  "pt": "Kinkan",
   "family": "Rutaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -17134,9 +17224,9 @@
  },
  {
   "id": "musa",
-  "scientific": "Musa acuminata 'Dwarf Cavendish'",
+  "scientific": "Musa",
   "en": "Banana plant",
-  "pt": "Bananeira",
+  "pt": "Bananeira-anã",
   "family": "Musaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -17563,7 +17653,7 @@
   "id": "hydrangea-paniculata",
   "scientific": "Hydrangea paniculata",
   "en": "Panicle hydrangea",
-  "pt": "Hortênsia-panícula",
+  "pt": "Hortênsia-paniculata",
   "family": "Hydrangeaceae",
   "waterStyle": "top",
   "dryMin": 3,
@@ -17616,7 +17706,8 @@
    "limelight",
    "panicle hydrangea",
    "panicled hydrangea",
-   "paniculata"
+   "paniculata",
+   "hortênsia-panícula"
   ],
   "outdoor": true,
   "wikidata": "Q158443",
@@ -17630,7 +17721,7 @@
  },
  {
   "id": "echinacea",
-  "scientific": "Echinacea purpurea",
+  "scientific": "Echinacea",
   "en": "Coneflower",
   "pt": "Equinácea",
   "family": "Asteraceae",
@@ -17852,7 +17943,7 @@
   "id": "nepeta",
   "scientific": "Nepeta × faassenii",
   "en": "Catmint",
-  "pt": "Erva-gateira",
+  "pt": "Nepeta",
   "family": "Lamiaceae",
   "waterStyle": "dry",
   "dryMin": 5,
@@ -17904,7 +17995,8 @@
   "aliases": [
    "catmint",
    "nepeta",
-   "catnip"
+   "catnip",
+   "erva-gateira"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -18351,7 +18443,7 @@
   "id": "passiflora",
   "scientific": "Passiflora caerulea",
   "en": "Passion flower",
-  "pt": "Maracujá",
+  "pt": "Maracujá-azul",
   "family": "Passifloraceae",
   "waterStyle": "top",
   "dryMin": 3,
@@ -18421,7 +18513,7 @@
  },
  {
   "id": "ipomoea",
-  "scientific": "Ipomoea purpurea",
+  "scientific": "Ipomoea",
   "en": "Morning glory",
   "pt": "Ipomeia",
   "family": "Convolvulaceae",
@@ -18626,8 +18718,8 @@
  },
  {
   "id": "drosera",
-  "scientific": "Drosera capensis",
-  "en": "Cape sundew",
+  "scientific": "Drosera",
+  "en": "Sundew",
   "pt": "Drósera",
   "family": "Droseraceae",
   "waterStyle": "moist",
@@ -18823,7 +18915,7 @@
   "id": "bonsai-juniper",
   "scientific": "Juniperus procumbens 'Nana'",
   "en": "Juniper bonsai",
-  "pt": "Junípero",
+  "pt": "Junípero-bonsai",
   "family": "Cupressaceae",
   "waterStyle": "top",
   "dryMin": 3,
@@ -18887,7 +18979,7 @@
   "id": "carmona",
   "scientific": "Ehretia microphylla",
   "en": "Fukien tea",
-  "pt": "Chá-de-fukien",
+  "pt": "Carmona",
   "family": "Boraginaceae",
   "waterStyle": "top",
   "dryMin": 3,
@@ -18947,7 +19039,8 @@
    "carmona",
    "fukien tea",
    "fukien tea tree",
-   "scorpionbush"
+   "scorpionbush",
+   "chá-de-fukien"
   ],
   "outdoor": false,
   "wikidata": "Q15283553",
@@ -18958,9 +19051,9 @@
  },
  {
   "id": "crassula-hobbit",
-  "scientific": "Crassula ovata 'Gollum'",
-  "en": "Gollum jade",
-  "pt": "Jade-gollum",
+  "scientific": "Crassula ovata 'Hobbit'",
+  "en": "Hobbit jade",
+  "pt": "Jade-hobbit",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -19031,7 +19124,7 @@
   "id": "monstera-thai",
   "scientific": "Monstera deliciosa 'Thai Constellation'",
   "en": "Thai constellation monstera",
-  "pt": "Costela-de-adão Thai",
+  "pt": "Costela-de-adão-thai-constellation",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -19087,7 +19180,8 @@
   "habit": "Climber",
   "about": "A monstera with creamy speckles like a starry sky; every leaf is a little different.",
   "aliases": [
-   "thai constellation"
+   "thai constellation",
+   "costela-de-adão thai"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -19099,7 +19193,7 @@
   "id": "philodendron-birkin",
   "scientific": "Philodendron 'Birkin'",
   "en": "Philodendron Birkin",
-  "pt": "Filodendro Birkin",
+  "pt": "Filodendro-birkin",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -19155,7 +19249,8 @@
   "habit": "Compact, self-heading",
   "about": "Dark green leaves painted with fine white pinstripes.",
   "aliases": [
-   "birkin"
+   "birkin",
+   "filodendro birkin"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -19167,7 +19262,7 @@
   "id": "philodendron-pink-princess",
   "scientific": "Philodendron erubescens 'Pink Princess'",
   "en": "Pink Princess philodendron",
-  "pt": "Filodendro Pink Princess",
+  "pt": "Filodendro-pink-princess",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -19223,7 +19318,8 @@
   "habit": "Climber",
   "about": "Dark leaves splashed with bubblegum pink.",
   "aliases": [
-   "pink princess"
+   "pink princess",
+   "filodendro pink princess"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -19236,7 +19332,7 @@
   "id": "philodendron-brasil",
   "scientific": "Philodendron hederaceum 'Brasil'",
   "en": "Philodendron Brasil",
-  "pt": "Filodendro Brasil",
+  "pt": "Filodendro-brasil",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -19292,7 +19388,8 @@
   "habit": "Trailing",
   "about": "Heart leaves with a lime-yellow stripe down the middle.",
   "aliases": [
-   "brasil philodendron"
+   "brasil philodendron",
+   "filodendro brasil"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -19307,7 +19404,7 @@
   "id": "philodendron-melanochrysum",
   "scientific": "Philodendron melanochrysum",
   "en": "Black gold philodendron",
-  "pt": "Filodendro melanochrysum",
+  "pt": "Filodendro-melanochrysum",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -19363,7 +19460,8 @@
   "habit": "Climber",
   "about": "Velvety, dark leaves with golden sparkle that grow huge on a moss pole.",
   "aliases": [
-   "melanochrysum"
+   "melanochrysum",
+   "filodendro melanochrysum"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -19377,7 +19475,7 @@
   "id": "philodendron-selloum",
   "scientific": "Thaumatophyllum bipinnatifidum 'Hope'",
   "en": "Philodendron Hope",
-  "pt": "Filodendro Hope",
+  "pt": "Filodendro-hope",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -19434,7 +19532,8 @@
   "about": "Deeply cut leaves on a big, sculptural plant.",
   "aliases": [
    "hope philodendron",
-   "selloum"
+   "selloum",
+   "filodendro hope"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -19447,7 +19546,7 @@
   "id": "epipremnum-njoy",
   "scientific": "Epipremnum aureum 'N'Joy'",
   "en": "N'Joy pothos",
-  "pt": "Jiboia N'Joy",
+  "pt": "Jiboia-n'joy",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -19504,7 +19603,8 @@
   "about": "Compact pothos with crisp white and green patches.",
   "aliases": [
    "njoy",
-   "n joy pothos"
+   "n joy pothos",
+   "jiboia n'joy"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -19518,7 +19618,7 @@
   "id": "epipremnum-marble-queen",
   "scientific": "Epipremnum aureum 'Marble Queen'",
   "en": "Marble Queen pothos",
-  "pt": "Jiboia Marble Queen",
+  "pt": "Jiboia-marble-queen",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -19574,7 +19674,8 @@
   "habit": "Trailing",
   "about": "Green leaves swirled with creamy white marble.",
   "aliases": [
-   "marble queen"
+   "marble queen",
+   "jiboia marble queen"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -19588,7 +19689,7 @@
   "id": "scindapsus-treubii",
   "scientific": "Scindapsus treubii 'Moonlight'",
   "en": "Moonlight scindapsus",
-  "pt": "Scindapsus Moonlight",
+  "pt": "Scindapsus-moonlight",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -19645,7 +19746,8 @@
   "about": "Silvery, leathery leaves that glow softly.",
   "aliases": [
    "moonlight",
-   "treubii"
+   "treubii",
+   "scindapsus moonlight"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -19659,7 +19761,7 @@
   "id": "anthurium-crystallinum",
   "scientific": "Anthurium crystallinum",
   "en": "Crystal anthurium",
-  "pt": "Antúrio cristal",
+  "pt": "Antúrio-cristal",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -19715,7 +19817,8 @@
   "habit": "Upright",
   "about": "Velvet heart leaves with bright silver-white veins.",
   "aliases": [
-   "crystallinum"
+   "crystallinum",
+   "antúrio cristal"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -19728,7 +19831,7 @@
   "id": "anthurium-warocqueanum",
   "scientific": "Anthurium warocqueanum",
   "en": "Queen anthurium",
-  "pt": "Antúrio rainha",
+  "pt": "Antúrio-rainha",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -19784,7 +19887,8 @@
   "habit": "Climber",
   "about": "Long, velvety dark leaves that can reach a metre.",
   "aliases": [
-   "queen anthurium"
+   "queen anthurium",
+   "antúrio rainha"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -19798,7 +19902,7 @@
   "id": "alocasia-frydek",
   "scientific": "Alocasia micholitziana 'Frydek'",
   "en": "Green velvet alocasia",
-  "pt": "Alocasia Frydek",
+  "pt": "Alocasia-frydek",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -19855,7 +19959,8 @@
   "about": "Velvety arrow leaves with bright white veins.",
   "aliases": [
    "frydek",
-   "green velvet"
+   "green velvet",
+   "alocasia frydek"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -19867,7 +19972,7 @@
   "id": "alocasia-polly",
   "scientific": "Alocasia × amazonica 'Polly'",
   "en": "Alocasia Polly",
-  "pt": "Alocasia Polly",
+  "pt": "Alocasia-polly",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -19924,7 +20029,8 @@
   "about": "Dark arrow leaves with silver veins, a smaller amazonica.",
   "aliases": [
    "polly",
-   "african mask"
+   "african mask",
+   "alocasia polly"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -19936,7 +20042,7 @@
   "id": "alocasia-cuprea",
   "scientific": "Alocasia cuprea",
   "en": "Red secret alocasia",
-  "pt": "Alocasia cuprea",
+  "pt": "Alocasia-cuprea",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -19992,7 +20098,8 @@
   "habit": "Compact",
   "about": "Metallic, copper-pink leaves that shimmer.",
   "aliases": [
-   "red secret"
+   "red secret",
+   "alocasia cuprea"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -20006,7 +20113,7 @@
   "id": "syngonium-albo",
   "scientific": "Syngonium podophyllum 'Albo Variegatum'",
   "en": "Variegated arrowhead",
-  "pt": "Singônio albo",
+  "pt": "Singônio-albo",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -20062,7 +20169,8 @@
   "habit": "Climber",
   "about": "Arrow leaves splashed with pure white.",
   "aliases": [
-   "syngonium albo"
+   "syngonium albo",
+   "singônio albo"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -20075,7 +20183,7 @@
   "id": "rhaphidophora-decursiva",
   "scientific": "Rhaphidophora decursiva",
   "en": "Dragon tail plant",
-  "pt": "Rhaphidophora decursiva",
+  "pt": "Rhaphidophora-decursiva",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -20131,7 +20239,8 @@
   "habit": "Climber",
   "about": "Deeply cut leaves on a fast climber.",
   "aliases": [
-   "dragon tail"
+   "dragon tail",
+   "rhaphidophora decursiva"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -20201,7 +20310,11 @@
   "origin": "Southeast Asia",
   "habit": "Climber",
   "about": "Fenestrated leaves, a quieter cousin of the monstera.",
-  "aliases": [],
+  "aliases": [
+   "amydrium",
+   "amydrium medium",
+   "amydrium zippelianum"
+  ],
   "outdoor": false,
   "difficulty": 2,
   "tags": [
@@ -20214,7 +20327,7 @@
   "id": "aglaonema-silver-bay",
   "scientific": "Aglaonema 'Silver Bay'",
   "en": "Silver Bay Chinese evergreen",
-  "pt": "Aglaonema Silver Bay",
+  "pt": "Aglaonema-silver-bay",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -20271,7 +20384,8 @@
   "about": "Long leaves with a silver centre; tolerant of dim rooms.",
   "aliases": [
    "silver bay",
-   "chinese evergreen"
+   "chinese evergreen",
+   "aglaonema silver bay"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -20284,7 +20398,7 @@
   "id": "dieffenbachia-camille",
   "scientific": "Dieffenbachia 'Camille'",
   "en": "Camille dumb cane",
-  "pt": "Comigo-ninguém-pode Camille",
+  "pt": "Comigo-ninguém-pode-camille",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -20340,7 +20454,8 @@
   "habit": "Upright",
   "about": "Creamy leaves edged in green.",
   "aliases": [
-   "camille"
+   "camille",
+   "comigo-ninguém-pode camille"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -20353,7 +20468,7 @@
   "id": "calathea-ornata",
   "scientific": "Goeppertia ornata",
   "en": "Pinstripe calathea",
-  "pt": "Calateia ornata",
+  "pt": "Calathea-ornata",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -20408,7 +20523,8 @@
   "about": "Dark leaves with fine pink pinstripes.",
   "aliases": [
    "ornata",
-   "pinstripe"
+   "pinstripe",
+   "calateia ornata"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -20422,8 +20538,8 @@
  {
   "id": "calathea-rattlesnake",
   "scientific": "Goeppertia insignis",
-  "en": "Rattlesnake plant",
-  "pt": "Calateia cascavel",
+  "en": "Rattlesnake calathea",
+  "pt": "Calathea-cascavel",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -20479,7 +20595,8 @@
   "aliases": [
    "calathea lancifolia",
    "lancifolia",
-   "rattlesnake"
+   "rattlesnake",
+   "calateia cascavel"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -20493,8 +20610,8 @@
  {
   "id": "calathea-zebrina",
   "scientific": "Goeppertia zebrina",
-  "en": "Zebra plant",
-  "pt": "Calateia zebrina",
+  "en": "Zebra calathea",
+  "pt": "Calathea-zebrina",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -20548,7 +20665,8 @@
   "habit": "Clump",
   "about": "Velvety leaves with dark zebra stripes.",
   "aliases": [
-   "zebra calathea"
+   "zebra calathea",
+   "calateia zebrina"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -20563,7 +20681,7 @@
   "id": "calathea-musaica",
   "scientific": "Goeppertia kegeljanii 'Network'",
   "en": "Network calathea",
-  "pt": "Calateia musaica",
+  "pt": "Calathea-musaica",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -20618,7 +20736,8 @@
   "about": "Lime leaves covered in a fine mosaic pattern.",
   "aliases": [
    "musaica",
-   "network"
+   "network",
+   "calateia musaica"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -20632,7 +20751,7 @@
   "id": "maranta-kerchoveana",
   "scientific": "Maranta leuconeura var. kerchoveana",
   "en": "Rabbit tracks prayer plant",
-  "pt": "Maranta",
+  "pt": "Maranta-pena-de-pavão",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -20686,7 +20805,8 @@
   "habit": "Spreading",
   "about": "Pale leaves with dark blotches like rabbit tracks.",
   "aliases": [
-   "rabbit tracks"
+   "rabbit tracks",
+   "maranta"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -20702,7 +20822,7 @@
   "id": "ctenanthe-burle-marxii",
   "scientific": "Ctenanthe burle-marxii",
   "en": "Fishbone prayer plant",
-  "pt": "Ctenanthe",
+  "pt": "Ctenanthe-espinha-de-peixe",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -20756,7 +20876,8 @@
   "habit": "Clump",
   "about": "Small leaves with a fishbone pattern.",
   "aliases": [
-   "fishbone"
+   "fishbone",
+   "ctenanthe"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -20771,7 +20892,7 @@
   "id": "ficus-umbellata",
   "scientific": "Ficus umbellata",
   "en": "Umbrella fig",
-  "pt": "Fícus umbellata",
+  "pt": "Ficus-umbellata",
   "family": "Moraceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -20827,7 +20948,8 @@
   "habit": "Tree",
   "about": "Huge heart-shaped leaves on a lush tree.",
   "aliases": [
-   "umbellata"
+   "umbellata",
+   "fícus umbellata"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -20840,7 +20962,7 @@
   "id": "ficus-triangularis",
   "scientific": "Ficus triangularis",
   "en": "Triangle fig",
-  "pt": "Fícus triangularis",
+  "pt": "Ficus-triangularis",
   "family": "Moraceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -20896,7 +21018,8 @@
   "habit": "Shrub",
   "about": "Little triangle leaves, often cream-edged.",
   "aliases": [
-   "triangle ficus"
+   "triangle ficus",
+   "fícus triangularis"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -20907,7 +21030,7 @@
   "id": "ficus-ginseng",
   "scientific": "Ficus microcarpa 'Ginseng'",
   "en": "Ginseng ficus",
-  "pt": "Fícus ginseng",
+  "pt": "Ficus-ginseng",
   "family": "Moraceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -20963,7 +21086,8 @@
   "habit": "Bonsai-like",
   "about": "Fat swollen roots under a little leafy crown.",
   "aliases": [
-   "ginseng"
+   "ginseng",
+   "fícus ginseng"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -20975,7 +21099,7 @@
   "id": "ficus-shivereana",
   "scientific": "Ficus elastica 'Shivereana'",
   "en": "Shivereana rubber plant",
-  "pt": "Fícus Shivereana",
+  "pt": "Falsa-seringueira-shivereana",
   "family": "Moraceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -21032,7 +21156,8 @@
   "about": "Pale pink and green marbled rubber plant.",
   "aliases": [
    "shivereana",
-   "moonshine"
+   "moonshine",
+   "fícus shivereana"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -21044,7 +21169,7 @@
   "id": "hoya-australis",
   "scientific": "Hoya australis",
   "en": "Australian wax plant",
-  "pt": "Hoya australis",
+  "pt": "Hoya-australis",
   "family": "Apocynaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -21100,7 +21225,8 @@
   "habit": "Climber",
   "about": "Glossy leaves and fragrant white waxy flowers.",
   "aliases": [
-   "australis"
+   "australis",
+   "hoya australis"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -21119,7 +21245,7 @@
   "id": "hoya-pubicalyx",
   "scientific": "Hoya pubicalyx",
   "en": "Pubicalyx wax plant",
-  "pt": "Hoya pubicalyx",
+  "pt": "Hoya-pubicalyx",
   "family": "Apocynaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -21175,7 +21301,8 @@
   "habit": "Climber",
   "about": "Speckled leaves and starry pink flower clusters.",
   "aliases": [
-   "pubicalyx"
+   "pubicalyx",
+   "hoya pubicalyx"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -21194,7 +21321,7 @@
   "id": "hoya-linearis",
   "scientific": "Hoya linearis",
   "en": "Linear hoya",
-  "pt": "Hoya linearis",
+  "pt": "Hoya-linearis",
   "family": "Apocynaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -21209,7 +21336,7 @@
   "aeration": 0.85,
   "phMin": 6.0,
   "phMax": 7.0,
-  "mix": "cactus",
+  "mix": "orchid",
   "feed": "light",
   "feedWeeks": 8,
   "propagation": [
@@ -21240,17 +21367,18 @@
    }
   ],
   "repotNotes": "Repot in spring into a shallow pot of gritty mix. Wait a week before the first drink.",
-  "winterFactor": 2.0,
-  "summerFactor": 0.9,
+  "winterFactor": 1.5,
+  "summerFactor": 0.85,
   "growth": "medium",
   "repotYears": 2,
   "tip": "Likes it cooler and moister than most hoyas.",
-  "group": "succulent",
+  "group": "epicactus",
   "origin": "Himalaya",
   "habit": "Trailing",
   "about": "Soft, needle-like leaves hanging in curtains.",
   "aliases": [
-   "linearis"
+   "linearis",
+   "hoya linearis"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -21266,7 +21394,7 @@
   "id": "hoya-obovata",
   "scientific": "Hoya obovata",
   "en": "Obovata hoya",
-  "pt": "Hoya obovata",
+  "pt": "Hoya-obovata",
   "family": "Apocynaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -21322,7 +21450,8 @@
   "habit": "Climber",
   "about": "Big round leaves with silver splashes.",
   "aliases": [
-   "obovata"
+   "obovata",
+   "hoya obovata"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -21340,7 +21469,7 @@
   "id": "ceropegia-sandersonii",
   "scientific": "Ceropegia sandersonii",
   "en": "Parachute plant",
-  "pt": "Ceropegia sandersonii",
+  "pt": "Planta-paraquedas",
   "family": "Apocynaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -21396,7 +21525,8 @@
   "habit": "Climber",
   "about": "Odd parachute-shaped flowers on twining stems.",
   "aliases": [
-   "parachute flower"
+   "parachute flower",
+   "ceropegia sandersonii"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -21633,7 +21763,7 @@
   "id": "echeveria-lola",
   "scientific": "Echeveria 'Lola'",
   "en": "Echeveria Lola",
-  "pt": "Echeveria Lola",
+  "pt": "Echeveria-lola",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -21689,7 +21819,8 @@
   "habit": "Rosette",
   "about": "Pearly lavender rosette like a sugared rose.",
   "aliases": [
-   "lola"
+   "lola",
+   "echeveria lola"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -21705,7 +21836,7 @@
   "id": "echeveria-perle",
   "scientific": "Echeveria 'Perle von Nürnberg'",
   "en": "Perle von Nürnberg",
-  "pt": "Echeveria Perle",
+  "pt": "Echeveria-perle",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -21761,7 +21892,8 @@
   "habit": "Rosette",
   "about": "Pink-purple rosette with powdery leaves.",
   "aliases": [
-   "perle"
+   "perle",
+   "echeveria perle"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -21849,7 +21981,7 @@
   "id": "aeonium-zwartkop",
   "scientific": "Aeonium arboreum 'Zwartkop'",
   "en": "Black rose aeonium",
-  "pt": "Aeonium preto",
+  "pt": "Aeonium-negro",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -21906,7 +22038,8 @@
   "about": "Glossy near-black rosettes on stems.",
   "aliases": [
    "zwartkop",
-   "black rose"
+   "black rose",
+   "aeonium preto"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -21923,7 +22056,7 @@
   "id": "crassula-gollum",
   "scientific": "Crassula ovata 'Gollum'",
   "en": "Gollum jade",
-  "pt": "Jade Gollum",
+  "pt": "Jade-gollum",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -21980,7 +22113,8 @@
   "about": "Tubular leaves with suction-cup tips.",
   "aliases": [
    "gollum",
-   "hobbit"
+   "hobbit",
+   "jade gollum"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -21995,7 +22129,7 @@
   "id": "crassula-capitella",
   "scientific": "Crassula capitella 'Campfire'",
   "en": "Campfire crassula",
-  "pt": "Crassula fogueira",
+  "pt": "Crassula-campfire",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -22051,7 +22185,8 @@
   "habit": "Spreading",
   "about": "Propeller leaves that turn fiery red in sun.",
   "aliases": [
-   "campfire"
+   "campfire",
+   "crassula fogueira"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -22067,7 +22202,7 @@
   "id": "kalanchoe-luciae",
   "scientific": "Kalanchoe luciae",
   "en": "Paddle plant",
-  "pt": "Kalanchoe flapjack",
+  "pt": "Kalanchoe-luciae",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -22124,7 +22259,8 @@
   "about": "Big round paddles edged in red.",
   "aliases": [
    "flapjack",
-   "paddle plant"
+   "paddle plant",
+   "kalanchoe flapjack"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -22140,7 +22276,7 @@
   "id": "sedum-rubrotinctum",
   "scientific": "Sedum rubrotinctum",
   "en": "Jelly bean plant",
-  "pt": "Sedum jujuba",
+  "pt": "Sedum-jujuba",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -22197,7 +22333,8 @@
   "about": "Chubby bean leaves blushing red.",
   "aliases": [
    "jelly bean",
-   "pork and beans"
+   "pork and beans",
+   "sedum jujuba"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -22213,7 +22350,7 @@
   "id": "haworthia-cooperi",
   "scientific": "Haworthiopsis cooperi",
   "en": "Window haworthia",
-  "pt": "Haworthia cooperi",
+  "pt": "Haworthia-cooperi",
   "family": "Asphodelaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -22270,7 +22407,8 @@
   "about": "Translucent leaf tips like little windows.",
   "aliases": [
    "cooperi",
-   "window plant"
+   "window plant",
+   "haworthia cooperi"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -22286,7 +22424,7 @@
   "id": "aloe-juvenna",
   "scientific": "Aloe juvenna",
   "en": "Tiger tooth aloe",
-  "pt": "Babosa dente-de-tigre",
+  "pt": "Babosa-dente-de-tigre",
   "family": "Asphodelaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -22342,7 +22480,8 @@
   "habit": "Clumping",
   "about": "Spotted, toothy little stacked rosettes.",
   "aliases": [
-   "tiger tooth"
+   "tiger tooth",
+   "babosa dente-de-tigre"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -22414,7 +22553,11 @@
   "origin": "Hybrid",
   "habit": "Rosette",
   "about": "Tough, warty leaves; nearly indestructible.",
-  "aliases": [],
+  "aliases": [
+   "gasteraloe",
+   "x gasteraloe",
+   "gastrolea"
+  ],
   "outdoor": false,
   "difficulty": 1,
   "bloom": "Spring",
@@ -22429,7 +22572,7 @@
   "id": "senecio-serpens",
   "scientific": "Curio repens",
   "en": "Blue chalksticks",
-  "pt": "Senécio azul",
+  "pt": "Senécio-azul",
   "family": "Asteraceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -22487,7 +22630,8 @@
   "aliases": [
    "blue chalksticks",
    "kleinia repens",
-   "senecio serpens"
+   "senecio serpens",
+   "senécio azul"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -22726,7 +22870,7 @@
   "id": "euphorbia-lactea",
   "scientific": "Euphorbia lactea",
   "en": "Mottled spurge",
-  "pt": "Euphorbia lactea",
+  "pt": "Euphorbia-lactea",
   "family": "Euphorbiaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -22786,7 +22930,8 @@
    "dragon bones",
    "elkhorn",
    "frilled fan spurge",
-   "mottled spurge"
+   "mottled spurge",
+   "euphorbia lactea"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -22952,7 +23097,7 @@
   "id": "rhipsalis-baccifera",
   "scientific": "Rhipsalis baccifera",
   "en": "Mistletoe cactus",
-  "pt": "Rhipsalis",
+  "pt": "Ripsális",
   "family": "Cactaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -23006,7 +23151,8 @@
   "about": "Cascading green strands; a jungle cactus.",
   "aliases": [
    "cactus mistletoe",
-   "mistletoe cactus"
+   "mistletoe cactus",
+   "rhipsalis"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -23171,7 +23317,7 @@
   "id": "orchid-miltonia",
   "scientific": "Miltoniopsis",
   "en": "Pansy orchid",
-  "pt": "Orquídea amor-perfeito",
+  "pt": "Miltônia",
   "family": "Orchidaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -23228,7 +23374,8 @@
   "aliases": [
    "miltonia",
    "orquídea amor perfeito",
-   "pansy orchid"
+   "pansy orchid",
+   "orquídea amor-perfeito"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -23245,7 +23392,7 @@
   "id": "orchid-vanda",
   "scientific": "Vanda",
   "en": "Vanda orchid",
-  "pt": "Orquídea vanda",
+  "pt": "Orquídea-vanda",
   "family": "Orchidaceae",
   "waterStyle": "moist",
   "dryMin": 2,
@@ -23300,7 +23447,8 @@
   "habit": "Epiphyte",
   "about": "Bold flowers on plants grown with bare roots in baskets.",
   "aliases": [
-   "vanda"
+   "vanda",
+   "orquídea vanda"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -23316,7 +23464,7 @@
   "id": "orchid-zygopetalum",
   "scientific": "Zygopetalum",
   "en": "Zygopetalum orchid",
-  "pt": "Orquídea zygopetalum",
+  "pt": "Zygopetalum",
   "family": "Orchidaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -23371,7 +23519,8 @@
   "habit": "Terrestrial or epiphyte",
   "about": "Purple-green speckled flowers with a strong scent.",
   "aliases": [
-   "zygo"
+   "zygo",
+   "orquídea zygopetalum"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -23525,7 +23674,7 @@
   "id": "tillandsia-ionantha",
   "scientific": "Tillandsia ionantha",
   "en": "Sky plant",
-  "pt": "Tilândsia ionantha",
+  "pt": "Tillandsia-ionantha",
   "family": "Bromeliaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -23574,7 +23723,8 @@
   "about": "A tiny air plant that blushes red when it flowers.",
   "aliases": [
    "blushing bride",
-   "ionantha"
+   "ionantha",
+   "tilândsia ionantha"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -23590,7 +23740,7 @@
   "id": "nephrolepis-fluffy",
   "scientific": "Nephrolepis exaltata 'Fluffy Ruffles'",
   "en": "Fluffy ruffles fern",
-  "pt": "Samambaia crespa",
+  "pt": "Samambaia-crespa",
   "family": "Nephrolepidaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -23645,7 +23795,8 @@
   "habit": "Clump",
   "about": "A frilly, compact Boston fern.",
   "aliases": [
-   "fluffy ruffles"
+   "fluffy ruffles",
+   "samambaia crespa"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -23659,7 +23810,7 @@
   "id": "asplenium-crispy",
   "scientific": "Asplenium nidus 'Crispy Wave'",
   "en": "Crispy wave fern",
-  "pt": "Asplênio crispy",
+  "pt": "Asplênio-ondulado",
   "family": "Aspleniaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -23714,7 +23865,8 @@
   "habit": "Rosette",
   "about": "Rippled, wavy fronds in a vase shape.",
   "aliases": [
-   "crispy wave"
+   "crispy wave",
+   "asplênio crispy"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -23729,7 +23881,7 @@
   "id": "blechnum",
   "scientific": "Blechnum gibbum",
   "en": "Silver lady fern",
-  "pt": "Samambaia-arbórea anã",
+  "pt": "Samambaia-prateada",
   "family": "Blechnaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -23784,7 +23936,8 @@
   "habit": "Small tree fern",
   "about": "A little tree fern with a dark trunk.",
   "aliases": [
-   "silver lady"
+   "silver lady",
+   "samambaia-arbórea anã"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -24010,7 +24163,7 @@
   "id": "chamaedorea-metallica",
   "scientific": "Chamaedorea metallica",
   "en": "Metallic palm",
-  "pt": "Palmeira metálica",
+  "pt": "Palmeira-metálica",
   "family": "Arecaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -24060,7 +24213,8 @@
   "about": "Blue-green, metallic fishtail leaves.",
   "aliases": [
    "metallic palm",
-   "metallica"
+   "metallica",
+   "palmeira metálica"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24211,7 +24365,7 @@
   "id": "ravenea",
   "scientific": "Ravenea rivularis",
   "en": "Majesty palm",
-  "pt": "Palmeira-majestade",
+  "pt": "Palmeira-majestosa",
   "family": "Arecaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -24261,7 +24415,8 @@
   "about": "A lush, feathery palm that loves water.",
   "aliases": [
    "majestic palm",
-   "majesty palm"
+   "majesty palm",
+   "palmeira-majestade"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -24274,7 +24429,7 @@
   "id": "dracaena-janet-craig",
   "scientific": "Dracaena fragrans 'Janet Craig'",
   "en": "Janet Craig dracaena",
-  "pt": "Dracena Janet Craig",
+  "pt": "Dracena-janet-craig",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 8,
@@ -24330,7 +24485,8 @@
   "habit": "Upright cane",
   "about": "Glossy deep-green leaves; thrives in dim offices.",
   "aliases": [
-   "janet craig"
+   "janet craig",
+   "dracena janet craig"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24343,7 +24499,7 @@
   "id": "sansevieria-moonshine",
   "scientific": "Dracaena trifasciata 'Moonshine'",
   "en": "Moonshine snake plant",
-  "pt": "Espada-de-são-jorge Moonshine",
+  "pt": "Espada-de-são-jorge-moonshine",
   "family": "Asparagaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -24399,7 +24555,8 @@
   "habit": "Upright",
   "about": "Silvery-mint swords.",
   "aliases": [
-   "moonshine"
+   "moonshine",
+   "espada-de-são-jorge moonshine"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24413,7 +24570,7 @@
   "id": "sansevieria-cylindrica",
   "scientific": "Dracaena angolensis 'Boncel'",
   "en": "Starfish snake plant",
-  "pt": "Espada-de-são-jorge cilíndrica",
+  "pt": "Espada-de-são-jorge-cilíndrica",
   "family": "Asparagaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -24470,7 +24627,8 @@
   "about": "Short, round fans like a starfish.",
   "aliases": [
    "starfish sansevieria",
-   "boncel"
+   "boncel",
+   "espada-de-são-jorge cilíndrica"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24483,7 +24641,7 @@
  {
   "id": "beaucarnea-ponytail",
   "scientific": "Beaucarnea recurvata",
-  "en": "Ponytail palm",
+  "en": "Elephant's foot palm",
   "pt": "Pata-de-elefante",
   "family": "Asparagaceae",
   "waterStyle": "dry",
@@ -24558,7 +24716,7 @@
   "id": "chlorophytum-bonnie",
   "scientific": "Chlorophytum comosum 'Bonnie'",
   "en": "Curly spider plant",
-  "pt": "Clorofito Bonnie",
+  "pt": "Clorofito-crespo",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -24615,7 +24773,8 @@
   "about": "Curly striped leaves and dangling babies.",
   "aliases": [
    "bonnie",
-   "curly spider"
+   "curly spider",
+   "clorofito bonnie"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24629,8 +24788,8 @@
  {
   "id": "peperomia-watermelon",
   "scientific": "Peperomia argyreia",
-  "en": "Watermelon peperomia",
-  "pt": "Peperômia melancia",
+  "en": "Watermelon begonia peperomia",
+  "pt": "Peperômia-melancia",
   "family": "Piperaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -24687,7 +24846,8 @@
   "about": "Round leaves striped like watermelon rind.",
   "aliases": [
    "watermelon begonia",
-   "watermelon peperomia"
+   "watermelon peperomia",
+   "peperômia melancia"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24702,7 +24862,7 @@
   "id": "peperomia-hope",
   "scientific": "Peperomia 'Hope'",
   "en": "Peperomia Hope",
-  "pt": "Peperômia Hope",
+  "pt": "Peperômia-hope",
   "family": "Piperaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -24758,7 +24918,8 @@
   "habit": "Trailing",
   "about": "Little round succulent leaves in threes.",
   "aliases": [
-   "hope peperomia"
+   "hope peperomia",
+   "peperômia hope"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24774,7 +24935,7 @@
   "id": "peperomia-rosso",
   "scientific": "Peperomia caperata 'Rosso'",
   "en": "Peperomia Rosso",
-  "pt": "Peperômia Rosso",
+  "pt": "Peperômia-rosso",
   "family": "Piperaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -24831,7 +24992,8 @@
   "about": "Rippled green leaves with red undersides.",
   "aliases": [
    "rosso",
-   "ripple peperomia"
+   "ripple peperomia",
+   "peperômia rosso"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24917,7 +25079,7 @@
   "id": "pilea-cadierei",
   "scientific": "Pilea cadierei",
   "en": "Aluminium plant",
-  "pt": "Pilea alumínio",
+  "pt": "Pilea-alumínio",
   "family": "Urticaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -24974,7 +25136,8 @@
   "about": "Quilted leaves splashed with silver.",
   "aliases": [
    "aluminium plant",
-   "aluminum plant"
+   "aluminum plant",
+   "pilea alumínio"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -24990,7 +25153,7 @@
   "id": "pilea-glauca",
   "scientific": "Pilea glauca",
   "en": "Silver sprinkles",
-  "pt": "Pilea glauca",
+  "pt": "Pilea-glauca",
   "family": "Urticaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -25046,7 +25209,8 @@
   "habit": "Trailing",
   "about": "Tiny blue-grey leaves on red stems.",
   "aliases": [
-   "silver sprinkles"
+   "silver sprinkles",
+   "pilea glauca"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -25062,7 +25226,7 @@
   "id": "fittonia-red",
   "scientific": "Fittonia albivenis 'Red Anne'",
   "en": "Red nerve plant",
-  "pt": "Fitônia vermelha",
+  "pt": "Fitônia-vermelha",
   "family": "Acanthaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -25118,7 +25282,8 @@
   "habit": "Low spreading",
   "about": "Leaves veined in vivid pink-red.",
   "aliases": [
-   "red fittonia"
+   "red fittonia",
+   "fitônia vermelha"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -25132,8 +25297,8 @@
  {
   "id": "hypoestes-pink",
   "scientific": "Hypoestes phyllostachya 'Pink Splash'",
-  "en": "Polka dot plant",
-  "pt": "Planta-confete",
+  "en": "Pink polka dot plant",
+  "pt": "Confete-rosa",
   "family": "Acanthaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -25190,7 +25355,8 @@
   "about": "Leaves splashed with pink dots.",
   "aliases": [
    "polka dot plant",
-   "pink splash"
+   "pink splash",
+   "planta-confete"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -25204,7 +25370,7 @@
   "id": "tradescantia-nanouk",
   "scientific": "Tradescantia albiflora 'Nanouk'",
   "en": "Fantasy Venice",
-  "pt": "Tradescantia Nanouk",
+  "pt": "Tradescantia-nanouk",
   "family": "Commelinaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -25260,7 +25426,8 @@
   "habit": "Trailing",
   "about": "Chunky pink, cream and green striped leaves.",
   "aliases": [
-   "nanouk"
+   "nanouk",
+   "tradescantia nanouk"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -25712,7 +25879,7 @@
   "id": "anthurium-andreanum-pink",
   "scientific": "Anthurium andraeanum (pink)",
   "en": "Pink anthurium",
-  "pt": "Antúrio rosa",
+  "pt": "Antúrio-rosa",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -25762,7 +25929,8 @@
   "habit": "Upright",
   "about": "Glossy pink heart-shaped flowers most of the year.",
   "aliases": [
-   "pink anthurium"
+   "pink anthurium",
+   "antúrio rosa"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -25980,7 +26148,7 @@
   "id": "hoya-bella",
   "scientific": "Hoya bella",
   "en": "Miniature wax plant",
-  "pt": "Hoya bella",
+  "pt": "Hoya-bella",
   "family": "Apocynaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -25995,7 +26163,7 @@
   "aeration": 0.85,
   "phMin": 6.0,
   "phMax": 7.0,
-  "mix": "cactus",
+  "mix": "orchid",
   "feed": "light",
   "feedWeeks": 8,
   "propagation": [
@@ -26026,17 +26194,18 @@
    }
   ],
   "repotNotes": "Repot in spring into a shallow pot of gritty mix. Wait a week before the first drink.",
-  "winterFactor": 2.0,
-  "summerFactor": 0.9,
+  "winterFactor": 1.5,
+  "summerFactor": 0.85,
   "growth": "medium",
   "repotYears": 2,
   "tip": "Don't move it when in bud.",
-  "group": "succulent",
+  "group": "epicactus",
   "origin": "Southeast Asia",
   "habit": "Trailing",
   "about": "Small leaves and tiny star flowers with a purple heart.",
   "aliases": [
-   "bella"
+   "bella",
+   "hoya bella"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -26193,7 +26362,7 @@
   "id": "lavandula-dentata",
   "scientific": "Lavandula dentata",
   "en": "French lavender",
-  "pt": "Alfazema-francesa",
+  "pt": "Lavanda-francesa",
   "family": "Lamiaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -26245,7 +26414,8 @@
   "about": "Toothed grey leaves and long-flowering purple spikes.",
   "aliases": [
    "french lavender",
-   "toothed lavender"
+   "toothed lavender",
+   "alfazema-francesa"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -26262,7 +26432,7 @@
   "id": "salvia-elegans",
   "scientific": "Salvia elegans",
   "en": "Pineapple sage",
-  "pt": "Sálvia-ananás",
+  "pt": "Sálvia-abacaxi",
   "family": "Lamiaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -26313,7 +26483,8 @@
   "habit": "Shrub",
   "about": "Leaves that smell of pineapple and scarlet flowers.",
   "aliases": [
-   "pineapple sage"
+   "pineapple sage",
+   "sálvia-ananás"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -26409,7 +26580,7 @@
   "id": "plectranthus-amboinicus",
   "scientific": "Coleus amboinicus",
   "en": "Cuban oregano",
-  "pt": "Hortelã-grosso",
+  "pt": "Hortelã-gorda",
   "family": "Lamiaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -26460,7 +26631,10 @@
   "about": "Fuzzy, thick leaves with a strong oregano scent.",
   "aliases": [
    "cuban oregano",
-   "hortela gorda"
+   "hortela gorda",
+   "oregano-cubano",
+   "malvarisco",
+   "hortelã-grosso"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -26541,7 +26715,7 @@
   "id": "sage-purple",
   "scientific": "Salvia officinalis 'Purpurascens'",
   "en": "Purple sage",
-  "pt": "Sálvia roxa",
+  "pt": "Sálvia-roxa",
   "family": "Lamiaceae",
   "waterStyle": "dry",
   "dryMin": 7,
@@ -26592,7 +26766,8 @@
   "habit": "Shrub",
   "about": "Velvety purple leaves for cooking.",
   "aliases": [
-   "purple sage"
+   "purple sage",
+   "sálvia roxa"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -26986,7 +27161,7 @@
   "id": "sunflower-dwarf",
   "scientific": "Helianthus annuus 'Teddy Bear'",
   "en": "Dwarf sunflower",
-  "pt": "Girassol anão",
+  "pt": "Girassol-anão",
   "family": "Asteraceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -27036,7 +27211,8 @@
   "habit": "Annual",
   "about": "Fluffy golden flowers on short stems.",
   "aliases": [
-   "teddy bear sunflower"
+   "teddy bear sunflower",
+   "girassol anão"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -27403,7 +27579,7 @@
   "id": "begonia-dragon",
   "scientific": "Begonia × hybrida 'Dragon Wing'",
   "en": "Dragon wing begonia",
-  "pt": "Begônia asa-de-dragão",
+  "pt": "Begônia-asa-de-dragão",
   "family": "Begoniaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -27453,7 +27629,8 @@
   "habit": "Arching",
   "about": "Glossy wing leaves and dangling red flowers all season.",
   "aliases": [
-   "dragon wing"
+   "dragon wing",
+   "begônia asa-de-dragão"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -27618,7 +27795,7 @@
   "id": "venus-cape-sundew",
   "scientific": "Drosera capensis",
   "en": "Cape sundew",
-  "pt": "Drósera do Cabo",
+  "pt": "Drósera",
   "family": "Droseraceae",
   "waterStyle": "moist",
   "dryMin": 1,
@@ -27667,7 +27844,8 @@
   "habit": "Rosette",
   "about": "Sticky glistening tentacles that curl around insects.",
   "aliases": [
-   "cape sundew"
+   "cape sundew",
+   "drósera do cabo"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -27684,7 +27862,7 @@
   "id": "sarracenia-purpurea",
   "scientific": "Sarracenia purpurea",
   "en": "Purple pitcher plant",
-  "pt": "Sarracênia roxa",
+  "pt": "Sarracênia-roxa",
   "family": "Sarraceniaceae",
   "waterStyle": "moist",
   "dryMin": 1,
@@ -27737,7 +27915,8 @@
    "purple pitcher",
    "purple pitcher plant",
    "purple pitcherplant",
-   "side-saddle flower"
+   "side-saddle flower",
+   "sarracênia roxa"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -27753,7 +27932,7 @@
   "id": "cephalotus",
   "scientific": "Cephalotus follicularis",
   "en": "Albany pitcher plant",
-  "pt": "Cefalotus",
+  "pt": "Cephalotus",
   "family": "Cephalotaceae",
   "waterStyle": "moist",
   "dryMin": 2,
@@ -27804,7 +27983,8 @@
   "aliases": [
    "albany pitcher",
    "albany pitcher plant",
-   "australian pitcher plant"
+   "australian pitcher plant",
+   "cefalotus"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -27887,7 +28067,7 @@
   "id": "bird-of-paradise-white",
   "scientific": "Strelitzia nicolai",
   "en": "Giant white bird of paradise",
-  "pt": "Estrelítzia-gigante",
+  "pt": "Estrelícia-branca",
   "family": "Strelitziaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -27948,7 +28128,8 @@
    "giant white bird of paradise tree",
    "natal wild banana",
    "strelitzia nicolai",
-   "wild banana"
+   "wild banana",
+   "estrelítzia-gigante"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -28034,7 +28215,7 @@
   "id": "cordyline-australis",
   "scientific": "Cordyline australis",
   "en": "Cabbage tree",
-  "pt": "Cordiline australis",
+  "pt": "Cordiline-australis",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -28086,7 +28267,8 @@
   "aliases": [
    "cabbage palm",
    "cabbage tree",
-   "torbay palm"
+   "torbay palm",
+   "cordiline australis"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -28100,7 +28282,7 @@
   "id": "phormium",
   "scientific": "Phormium tenax",
   "en": "New Zealand flax",
-  "pt": "Linho-da-nova-zelândia",
+  "pt": "Fórmio",
   "family": "Asphodelaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -28153,7 +28335,8 @@
    "flax",
    "harakeke",
    "new zealand flax",
-   "new zealand hemp"
+   "new zealand hemp",
+   "linho-da-nova-zelândia"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -28170,7 +28353,7 @@
   "id": "nandina",
   "scientific": "Nandina domestica",
   "en": "Heavenly bamboo",
-  "pt": "Bambu-celeste",
+  "pt": "Nandina",
   "family": "Berberidaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -28223,7 +28406,8 @@
    "common nandina",
    "heavenly bamboo",
    "nandina",
-   "sacred bamboo"
+   "sacred bamboo",
+   "bambu-celeste"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -28939,7 +29123,7 @@
   "id": "echinacea-purpurea",
   "scientific": "Echinacea purpurea",
   "en": "Purple coneflower",
-  "pt": "Equinácea",
+  "pt": "Equinácea-roxa",
   "family": "Asteraceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -28998,7 +29182,8 @@
    "helichroa purpurea",
    "purple coneflower",
    "purple-coneflower",
-   "rudbeckia purpurea"
+   "rudbeckia purpurea",
+   "equinácea"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -29085,7 +29270,7 @@
   "id": "bamboo-fargesia",
   "scientific": "Fargesia murielae",
   "en": "Umbrella bamboo",
-  "pt": "Bambu-guarda-chuva",
+  "pt": "Bambu-fargesia",
   "family": "Poaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -29139,7 +29324,8 @@
    "fargesia",
    "fargesia murielae",
    "giant-panda fodder-bamboo",
-   "umbrella bamboo"
+   "umbrella bamboo",
+   "bambu-guarda-chuva"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -29155,7 +29341,7 @@
   "id": "japanese-maple-dwarf",
   "scientific": "Acer palmatum 'Shaina'",
   "en": "Dwarf Japanese maple",
-  "pt": "Bordo-japonês anão",
+  "pt": "Bordo-japonês-anão",
   "family": "Sapindaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -29205,7 +29391,8 @@
   "habit": "Small tree",
   "about": "Lacy red leaves on a pot-sized tree.",
   "aliases": [
-   "dwarf maple"
+   "dwarf maple",
+   "bordo-japonês anão"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -29219,7 +29406,7 @@
   "id": "blueberry-dwarf",
   "scientific": "Vaccinium corymbosum 'Sunshine Blue'",
   "en": "Dwarf blueberry",
-  "pt": "Mirtilo anão",
+  "pt": "Mirtilo-anão",
   "family": "Ericaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -29270,7 +29457,8 @@
   "habit": "Compact shrub",
   "about": "A self-fertile patio blueberry with pink flowers.",
   "aliases": [
-   "sunshine blue"
+   "sunshine blue",
+   "mirtilo anão"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -29435,7 +29623,7 @@
   "id": "pomegranate",
   "scientific": "Punica granatum 'Nana'",
   "en": "Dwarf pomegranate",
-  "pt": "Romã anã",
+  "pt": "Romã-anã",
   "family": "Lythraceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -29486,7 +29674,8 @@
   "about": "Orange flowers and tiny ornamental fruits.",
   "aliases": [
    "pomegranate",
-   "roma"
+   "roma",
+   "romã anã"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -29578,7 +29767,7 @@
   "id": "acerola",
   "scientific": "Malpighia emarginata",
   "en": "Acerola",
-  "pt": "Acerola",
+  "pt": "Aceroleira",
   "family": "Malpighiaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -29879,7 +30068,7 @@
   "id": "coffee-dwarf",
   "scientific": "Coffea arabica 'Nana'",
   "en": "Dwarf coffee plant",
-  "pt": "Café anão",
+  "pt": "Café-anão",
   "family": "Rubiaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -29935,7 +30124,8 @@
   "habit": "Shrub",
   "about": "Glossy leaves, jasmine-scented flowers, red cherries.",
   "aliases": [
-   "dwarf coffee"
+   "dwarf coffee",
+   "café anão"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -30030,7 +30220,7 @@
   "id": "tea",
   "scientific": "Camellia sinensis",
   "en": "Tea plant",
-  "pt": "Planta-do-chá",
+  "pt": "Chá-verde",
   "family": "Theaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -30086,7 +30276,8 @@
    "chá-da-índia",
    "tea plant",
    "tea shrub",
-   "thea sinensis"
+   "thea sinensis",
+   "planta-do-chá"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -30103,11 +30294,11 @@
   "id": "aloe-polyphylla",
   "scientific": "Aloe polyphylla",
   "en": "Spiral aloe",
-  "pt": "Babosa espiral",
+  "pt": "Babosa-espiral",
   "family": "Asphodelaceae",
-  "waterStyle": "half",
-  "dryMin": 8,
-  "dryMax": 14,
+  "waterStyle": "dry",
+  "dryMin": 10,
+  "dryMax": 18,
   "light": "direct",
   "humidityMin": 30,
   "tempMin": -5,
@@ -30159,7 +30350,8 @@
   "habit": "Spiral rosette",
   "about": "Leaves arranged in a perfect spiral.",
   "aliases": [
-   "spiral aloe"
+   "spiral aloe",
+   "babosa espiral"
   ],
   "outdoor": true,
   "difficulty": 3,
@@ -30174,7 +30366,7 @@
   "id": "welwitschia",
   "scientific": "Agave victoriae-reginae",
   "en": "Queen Victoria agave",
-  "pt": "Agave rainha-vitória",
+  "pt": "Agave-rainha-vitória",
   "family": "Asparagaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -30230,7 +30422,8 @@
   "habit": "Rosette",
   "about": "A tight dome of white-lined leaves.",
   "aliases": [
-   "queen victoria agave"
+   "queen victoria agave",
+   "agave rainha-vitória"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -30247,7 +30440,7 @@
   "id": "yucca-rostrata",
   "scientific": "Yucca rostrata",
   "en": "Beaked yucca",
-  "pt": "Iúca rostrata",
+  "pt": "Iúca-rostrata",
   "family": "Asparagaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -30256,8 +30449,8 @@
   "humidityMin": 25,
   "tempMin": -15,
   "tempMax": 40,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.35,
   "aeration": 0.85,
   "phMin": 6.0,
@@ -30303,7 +30496,8 @@
   "habit": "Trunked rosette",
   "about": "A silvery pom-pom of blue leaves on a trunk.",
   "aliases": [
-   "beaked yucca"
+   "beaked yucca",
+   "iúca rostrata"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -30398,7 +30592,7 @@
   "id": "rosa-climbing",
   "scientific": "Rosa (climbing)",
   "en": "Climbing rose",
-  "pt": "Rosa trepadeira",
+  "pt": "Rosa-trepadeira",
   "family": "Rosaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -30448,7 +30642,8 @@
   "habit": "Climber",
   "about": "Long canes covered in scented summer roses.",
   "aliases": [
-   "climbing rose"
+   "climbing rose",
+   "rosa trepadeira"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -30465,7 +30660,7 @@
   "id": "rosa-patio",
   "scientific": "Rosa (patio)",
   "en": "Patio rose",
-  "pt": "Mini rosa",
+  "pt": "Minirrosa",
   "family": "Rosaceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -30517,7 +30712,8 @@
   "aliases": [
    "patio rose",
    "mini rose",
-   "miniature rose"
+   "miniature rose",
+   "mini rosa"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -30608,7 +30804,7 @@
   "id": "lavandula-angustifolia",
   "scientific": "Lavandula angustifolia",
   "en": "English lavender",
-  "pt": "Lavanda inglesa",
+  "pt": "Lavanda-inglesa",
   "family": "Lamiaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -30666,7 +30862,8 @@
    "lavender plant",
    "mariflor",
    "narrow-leaved lavender plant",
-   "true lavender plant"
+   "true lavender plant",
+   "lavanda inglesa"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -30683,8 +30880,8 @@
  {
   "id": "buxus-ball",
   "scientific": "Buxus sempervirens",
-  "en": "Boxwood",
-  "pt": "Buxo",
+  "en": "Boxwood ball",
+  "pt": "Buxinho",
   "family": "Buxaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -30961,7 +31158,7 @@
   "id": "juniperus-blue",
   "scientific": "Juniperus squamata 'Blue Star'",
   "en": "Blue star juniper",
-  "pt": "Junípero azul",
+  "pt": "Junípero-azul",
   "family": "Cupressaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -30970,8 +31167,8 @@
   "humidityMin": 30,
   "tempMin": -30,
   "tempMax": 32,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.6,
   "aeration": 0.6,
   "phMin": 6.0,
@@ -31011,7 +31208,8 @@
   "habit": "Dwarf conifer",
   "about": "Silver-blue starry mounds.",
   "aliases": [
-   "blue star"
+   "blue star",
+   "junípero azul"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -31026,7 +31224,7 @@
   "id": "pinus-mugo",
   "scientific": "Pinus mugo",
   "en": "Mountain pine",
-  "pt": "Pinheiro-anão",
+  "pt": "Pinheiro-mugo",
   "family": "Pinaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -31101,7 +31299,7 @@
   "id": "olive-bonsai",
   "scientific": "Olea europaea (bonsai)",
   "en": "Olive bonsai",
-  "pt": "Bonsai de oliveira",
+  "pt": "Oliveira-bonsai",
   "family": "Oleaceae",
   "waterStyle": "dry",
   "dryMin": 6,
@@ -31151,7 +31349,8 @@
   "habit": "Bonsai",
   "about": "A silvery little tree with a gnarled trunk.",
   "aliases": [
-   "olive bonsai"
+   "olive bonsai",
+   "bonsai de oliveira"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -31373,7 +31572,7 @@
   "id": "salvia-splendens",
   "scientific": "Salvia splendens",
   "en": "Scarlet sage",
-  "pt": "Sálvia vermelha",
+  "pt": "Sálvia-vermelha",
   "family": "Lamiaceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -31797,7 +31996,7 @@
   "id": "canna",
   "scientific": "Canna indica",
   "en": "Canna lily",
-  "pt": "Biri",
+  "pt": "Cana-índica",
   "family": "Cannaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -31936,7 +32135,7 @@
   "id": "allium-giganteum",
   "scientific": "Allium giganteum",
   "en": "Giant allium",
-  "pt": "Alho ornamental",
+  "pt": "Alho-ornamental",
   "family": "Amaryllidaceae",
   "waterStyle": "dry",
   "dryMin": 7,
@@ -31986,7 +32185,8 @@
   "about": "Purple globe flowers on tall stems.",
   "aliases": [
    "allium",
-   "ornamental onion"
+   "ornamental onion",
+   "alho ornamental"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -32138,7 +32338,7 @@
   "id": "dahlia-pot",
   "scientific": "Dahlia (patio)",
   "en": "Patio dahlia",
-  "pt": "Dália anã",
+  "pt": "Dália-anã",
   "family": "Asteraceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -32187,7 +32387,8 @@
   "habit": "Tuber",
   "about": "Compact dahlias flowering all summer in pots.",
   "aliases": [
-   "patio dahlia"
+   "patio dahlia",
+   "dália anã"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -32203,7 +32404,7 @@
   "id": "begonia-boliviensis",
   "scientific": "Begonia boliviensis",
   "en": "Bolivian begonia",
-  "pt": "Begônia boliviana",
+  "pt": "Begônia-boliviana",
   "family": "Begoniaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -32253,7 +32454,8 @@
   "habit": "Trailing",
   "about": "Cascades of fiery hanging flowers.",
   "aliases": [
-   "santa cruz begonia"
+   "santa cruz begonia",
+   "begônia boliviana"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -32411,7 +32613,7 @@
  {
   "id": "million-bells",
   "scientific": "Calibrachoa 'Million Bells'",
-  "en": "Million bells",
+  "en": "Million Bells calibrachoa",
   "pt": "Calibrachoa",
   "family": "Solanaceae",
   "waterStyle": "half",
@@ -32550,7 +32752,7 @@
   "id": "ipomoea-batatas",
   "scientific": "Ipomoea batatas (ornamental)",
   "en": "Ornamental sweet potato vine",
-  "pt": "Batata-doce ornamental",
+  "pt": "Batata-doce-ornamental",
   "family": "Convolvulaceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -32600,7 +32802,8 @@
   "habit": "Trailing",
   "about": "Lime or near-black heart leaves trailing everywhere.",
   "aliases": [
-   "sweet potato vine"
+   "sweet potato vine",
+   "batata-doce ornamental"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -32616,7 +32819,7 @@
   "id": "dichondra",
   "scientific": "Dichondra argentea 'Silver Falls'",
   "en": "Silver falls",
-  "pt": "Dicondra prateada",
+  "pt": "Dicondra-prateada",
   "family": "Convolvulaceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -32667,7 +32870,8 @@
   "about": "Silver waterfalls of round leaves.",
   "aliases": [
    "silver falls",
-   "dichondra"
+   "dichondra",
+   "dicondra prateada"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -32752,7 +32956,7 @@
   "id": "lantana-trailing",
   "scientific": "Lantana montevidensis",
   "en": "Trailing lantana",
-  "pt": "Lantana rasteira",
+  "pt": "Lantana-rasteira",
   "family": "Verbenaceae",
   "waterStyle": "dry",
   "dryMin": 5,
@@ -32804,7 +33008,8 @@
   "aliases": [
    "trailing lantana",
    "trailing shrubverbena",
-   "weeping lantana"
+   "weeping lantana",
+   "lantana rasteira"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -33173,8 +33378,8 @@
  {
   "id": "nepeta-six",
   "scientific": "Nepeta 'Six Hills Giant'",
-  "en": "Catmint",
-  "pt": "Erva-dos-gatos",
+  "en": "Six Hills Giant catmint",
+  "pt": "Nepeta",
   "family": "Lamiaceae",
   "waterStyle": "dry",
   "dryMin": 6,
@@ -33224,7 +33429,8 @@
   "habit": "Clump",
   "about": "Clouds of lavender-blue flowers; cats roll in it.",
   "aliases": [
-   "catmint"
+   "catmint",
+   "erva-dos-gatos"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -33242,7 +33448,7 @@
   "id": "hakonechloa",
   "scientific": "Hakonechloa macra",
   "en": "Japanese forest grass",
-  "pt": "Grama-da-floresta",
+  "pt": "Hakonechloa",
   "family": "Poaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -33293,7 +33499,8 @@
   "about": "Cascading golden grass for shade.",
   "aliases": [
    "forest grass",
-   "hakone grass"
+   "hakone grass",
+   "grama-da-floresta"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -33674,7 +33881,7 @@
   "id": "monstera-obliqua-peru",
   "scientific": "Monstera obliqua 'Peru'",
   "en": "Monstera Peru",
-  "pt": "Monstera Peru",
+  "pt": "Monstera-peru",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -33744,7 +33951,7 @@
   "id": "monstera-dubia",
   "scientific": "Monstera dubia",
   "en": "Shingle plant",
-  "pt": "Monstera dubia",
+  "pt": "Monstera-dubia",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -33800,7 +34007,8 @@
   "habit": "Shingle climber",
   "about": "Silver-marked leaves that press flat against a board.",
   "aliases": [
-   "shingle plant"
+   "shingle plant",
+   "monstera dubia"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -33813,7 +34021,7 @@
   "id": "rhaphidophora-cryptantha",
   "scientific": "Rhaphidophora cryptantha",
   "en": "Shingle rhaphidophora",
-  "pt": "Rhaphidophora cryptantha",
+  "pt": "Rhaphidophora-cryptantha",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -33868,7 +34076,11 @@
   "origin": "New Guinea",
   "habit": "Shingle climber",
   "about": "Dark leaves with silver veins plastered to a board.",
-  "aliases": [],
+  "aliases": [
+   "rhaphidophora cryptantha",
+   "shingle plant",
+   "shingling vine"
+  ],
   "outdoor": false,
   "difficulty": 3,
   "tags": [
@@ -33880,7 +34092,7 @@
   "id": "philodendron-squamiferum",
   "scientific": "Philodendron squamiferum",
   "en": "Hairy philodendron",
-  "pt": "Filodendro squamiferum",
+  "pt": "Filodendro-squamiferum",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -33936,7 +34148,8 @@
   "habit": "Climber",
   "about": "Five-lobed leaves on red fuzzy stems.",
   "aliases": [
-   "squamiferum"
+   "squamiferum",
+   "filodendro squamiferum"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -33950,7 +34163,7 @@
   "id": "philodendron-verrucosum",
   "scientific": "Philodendron verrucosum",
   "en": "Ecuador philodendron",
-  "pt": "Filodendro verrucosum",
+  "pt": "Filodendro-verrucosum",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 5,
@@ -34006,7 +34219,8 @@
   "habit": "Climber",
   "about": "Velvety heart leaves with lime veins and hairy stems.",
   "aliases": [
-   "verrucosum"
+   "verrucosum",
+   "filodendro verrucosum"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -34020,7 +34234,7 @@
   "id": "philodendron-mamei",
   "scientific": "Philodendron mamei",
   "en": "Silver cloud philodendron",
-  "pt": "Filodendro mamei",
+  "pt": "Filodendro-mamei",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -34077,7 +34291,8 @@
   "about": "Huge heart leaves splashed with silver.",
   "aliases": [
    "mamei",
-   "silver cloud"
+   "silver cloud",
+   "filodendro mamei"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -34090,7 +34305,7 @@
   "id": "philodendron-florida",
   "scientific": "Philodendron 'Florida Ghost'",
   "en": "Florida ghost",
-  "pt": "Filodendro Florida Ghost",
+  "pt": "Filodendro-florida-ghost",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -34146,7 +34361,8 @@
   "habit": "Climber",
   "about": "New leaves emerge ghost-white then green up.",
   "aliases": [
-   "florida ghost"
+   "florida ghost",
+   "filodendro florida ghost"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -34159,7 +34375,7 @@
   "id": "philodendron-ring-of-fire",
   "scientific": "Philodendron 'Ring of Fire'",
   "en": "Ring of fire philodendron",
-  "pt": "Filodendro Ring of Fire",
+  "pt": "Filodendro-ring-of-fire",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -34215,7 +34431,8 @@
   "habit": "Upright",
   "about": "Jagged leaves splashed with orange, red and cream.",
   "aliases": [
-   "ring of fire"
+   "ring of fire",
+   "filodendro ring of fire"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -34225,7 +34442,7 @@
   "id": "alocasia-dragon",
   "scientific": "Alocasia baginda 'Dragon Scale'",
   "en": "Dragon scale alocasia",
-  "pt": "Alocasia dragon scale",
+  "pt": "Alocasia-dragon-scale",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -34281,7 +34498,8 @@
   "habit": "Compact",
   "about": "Thick textured leaves like dragon scales.",
   "aliases": [
-   "dragon scale"
+   "dragon scale",
+   "alocasia dragon scale"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -34293,7 +34511,7 @@
   "id": "alocasia-silver-dragon",
   "scientific": "Alocasia baginda 'Silver Dragon'",
   "en": "Silver dragon alocasia",
-  "pt": "Alocasia silver dragon",
+  "pt": "Alocasia-silver-dragon",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -34349,7 +34567,8 @@
   "habit": "Compact",
   "about": "Silvery, embossed leaves with dark veins.",
   "aliases": [
-   "silver dragon"
+   "silver dragon",
+   "alocasia silver dragon"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -34361,7 +34580,7 @@
   "id": "alocasia-odora",
   "scientific": "Alocasia odora",
   "en": "Night-scented lily",
-  "pt": "Alocasia odora",
+  "pt": "Orelha-de-elefante",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -34419,7 +34638,8 @@
   "aliases": [
    "asian taro",
    "elephant ear",
-   "night scented lily"
+   "night scented lily",
+   "alocasia odora"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -34436,7 +34656,7 @@
   "id": "anthurium-veitchii",
   "scientific": "Anthurium veitchii",
   "en": "King anthurium",
-  "pt": "Antúrio rei",
+  "pt": "Antúrio-rei",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -34492,7 +34712,8 @@
   "habit": "Epiphyte",
   "about": "Metre-long pleated leaves hanging like curtains.",
   "aliases": [
-   "king anthurium"
+   "king anthurium",
+   "antúrio rei"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -34505,7 +34726,7 @@
   "id": "anthurium-magnificum",
   "scientific": "Anthurium magnificum",
   "en": "Magnificent anthurium",
-  "pt": "Antúrio magnificum",
+  "pt": "Antúrio-magnificum",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -34561,7 +34782,8 @@
   "habit": "Upright",
   "about": "Velvety heart leaves on square stems.",
   "aliases": [
-   "magnificum"
+   "magnificum",
+   "antúrio magnificum"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -34574,7 +34796,7 @@
   "id": "syngonium-three-kings",
   "scientific": "Syngonium 'Three Kings'",
   "en": "Three kings arrowhead",
-  "pt": "Singônio Three Kings",
+  "pt": "Singônio-three-kings",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -34630,7 +34852,8 @@
   "habit": "Climber",
   "about": "Speckled cream and green arrows.",
   "aliases": [
-   "three kings"
+   "three kings",
+   "singônio three kings"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -34642,7 +34865,7 @@
   "id": "syngonium-neon",
   "scientific": "Syngonium podophyllum 'Neon Robusta'",
   "en": "Neon arrowhead",
-  "pt": "Singônio neon",
+  "pt": "Singônio-neon",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -34699,7 +34922,8 @@
   "about": "Bubblegum-pink arrow leaves.",
   "aliases": [
    "neon robusta",
-   "pink syngonium"
+   "pink syngonium",
+   "singônio neon"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -34782,7 +35006,7 @@
   "id": "spathiphyllum-domino",
   "scientific": "Spathiphyllum 'Domino'",
   "en": "Domino peace lily",
-  "pt": "Lírio-da-paz Domino",
+  "pt": "Lírio-da-paz-domino",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -34838,7 +35062,8 @@
   "habit": "Clump",
   "about": "Peace lily with white-speckled leaves.",
   "aliases": [
-   "domino"
+   "domino",
+   "lírio-da-paz domino"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -34853,7 +35078,7 @@
   "id": "zz-zenzi",
   "scientific": "Zamioculcas zamiifolia 'Zenzi'",
   "en": "Zenzi ZZ",
-  "pt": "ZZ Zenzi",
+  "pt": "Zamioculca-zenzi",
   "family": "Araceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -34909,7 +35134,8 @@
   "habit": "Compact",
   "about": "A dwarf ZZ with curly, overlapping leaflets.",
   "aliases": [
-   "zenzi"
+   "zenzi",
+   "zz zenzi"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -34923,7 +35149,7 @@
   "id": "aglaonema-red",
   "scientific": "Aglaonema 'Red Valentine'",
   "en": "Red aglaonema",
-  "pt": "Aglaonema vermelha",
+  "pt": "Aglaonema-vermelha",
   "family": "Araceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -34980,7 +35206,8 @@
   "about": "Pink-red leaves edged with green.",
   "aliases": [
    "red valentine",
-   "red aglaonema"
+   "red aglaonema",
+   "aglaonema vermelha"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -34993,7 +35220,7 @@
   "id": "caladium-white",
   "scientific": "Caladium 'White Christmas'",
   "en": "White caladium",
-  "pt": "Tinhorão branco",
+  "pt": "Tinhorão-branco",
   "family": "Araceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -35043,7 +35270,8 @@
   "about": "Papery white leaves with green veins.",
   "aliases": [
    "white christmas",
-   "caladium"
+   "caladium",
+   "tinhorão branco"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -35057,7 +35285,7 @@
   "id": "dracaena-lemon-lime",
   "scientific": "Dracaena fragrans 'Lemon Lime'",
   "en": "Lemon lime dracaena",
-  "pt": "Dracena lemon lime",
+  "pt": "Dracena-lemon-lime",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -35113,7 +35341,8 @@
   "habit": "Cane",
   "about": "Bright lime-and-gold striped leaves.",
   "aliases": [
-   "lemon lime"
+   "lemon lime",
+   "dracena lemon lime"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -35126,7 +35355,7 @@
   "id": "dracaena-compacta",
   "scientific": "Dracaena fragrans 'Compacta'",
   "en": "Compacta dracaena",
-  "pt": "Dracena compacta",
+  "pt": "Dracena-compacta",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 8,
@@ -35183,7 +35412,8 @@
   "about": "Tight rosettes of dark leaves.",
   "aliases": [
    "compacta",
-   "janet craig compacta"
+   "janet craig compacta",
+   "dracena compacta"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -35196,7 +35426,7 @@
   "id": "cast-iron-milky",
   "scientific": "Aspidistra elatior 'Milky Way'",
   "en": "Milky Way cast iron plant",
-  "pt": "Aspidistra Via Láctea",
+  "pt": "Aspidistra-via-láctea",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 8,
@@ -35252,7 +35482,8 @@
   "habit": "Clump",
   "about": "Dark leaves dusted with cream stars.",
   "aliases": [
-   "milky way"
+   "milky way",
+   "aspidistra via láctea"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -35331,7 +35562,7 @@
   "id": "liriope",
   "scientific": "Liriope muscari",
   "en": "Lilyturf",
-  "pt": "Liríope",
+  "pt": "Liriope",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -35403,7 +35634,7 @@
   "id": "calathea-beauty-star",
   "scientific": "Goeppertia 'Beauty Star'",
   "en": "Beauty star calathea",
-  "pt": "Calateia Beauty Star",
+  "pt": "Calathea-beauty-star",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -35457,7 +35688,8 @@
   "habit": "Clump",
   "about": "Long dark leaves with silver-pink stripes.",
   "aliases": [
-   "beauty star"
+   "beauty star",
+   "calateia beauty star"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -35471,7 +35703,7 @@
   "id": "calathea-dottie",
   "scientific": "Goeppertia roseopicta 'Dottie'",
   "en": "Dottie calathea",
-  "pt": "Calateia Dottie",
+  "pt": "Calathea-dottie",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -35525,7 +35757,8 @@
   "habit": "Clump",
   "about": "Near-black leaves with a hot-pink outline.",
   "aliases": [
-   "dottie"
+   "dottie",
+   "calateia dottie"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -35539,7 +35772,7 @@
   "id": "stromanthe-triostar",
   "scientific": "Stromanthe thalia 'Triostar'",
   "en": "Triostar stromanthe",
-  "pt": "Estromante Triostar",
+  "pt": "Stromanthe-triostar",
   "family": "Marantaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -35593,7 +35826,8 @@
   "habit": "Clump",
   "about": "Pink, cream and green leaves with magenta undersides.",
   "aliases": [
-   "triostar"
+   "triostar",
+   "estromante triostar"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -35606,7 +35840,7 @@
   "id": "begonia-amphioxus",
   "scientific": "Begonia amphioxus",
   "en": "Spotted narrow begonia",
-  "pt": "Begônia amphioxus",
+  "pt": "Begônia-amphioxus",
   "family": "Begoniaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -35662,7 +35896,8 @@
   "habit": "Small shrub",
   "about": "Narrow leaves with red spots and edges.",
   "aliases": [
-   "amphioxus"
+   "amphioxus",
+   "begônia amphioxus"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -35676,7 +35911,7 @@
   "id": "begonia-river-nile",
   "scientific": "Begonia 'River Nile'",
   "en": "River Nile begonia",
-  "pt": "Begônia River Nile",
+  "pt": "Begônia-river-nile",
   "family": "Begoniaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -35732,7 +35967,8 @@
   "habit": "Rhizomatous",
   "about": "Puckered green leaves with dark veins.",
   "aliases": [
-   "river nile"
+   "river nile",
+   "begônia river nile"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -35744,7 +35980,7 @@
   "id": "begonia-polkadot-wightii",
   "scientific": "Begonia 'Wightii'",
   "en": "Wightii begonia",
-  "pt": "Begônia Wightii",
+  "pt": "Begônia-wightii",
   "family": "Begoniaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -35800,7 +36036,8 @@
   "habit": "Cane",
   "about": "Silver-spotted leaves and white flowers.",
   "aliases": [
-   "wightii"
+   "wightii",
+   "begônia wightii"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -35813,8 +36050,8 @@
  {
   "id": "episcia-cupreata",
   "scientific": "Episcia cupreata",
-  "en": "Flame violet",
-  "pt": "Episcia",
+  "en": "Copper flame violet",
+  "pt": "Epíscia",
   "family": "Gesneriaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -35880,8 +36117,8 @@
  {
   "id": "nematanthus",
   "scientific": "Nematanthus gregarius",
-  "en": "Goldfish plant",
-  "pt": "Planta-peixinho",
+  "en": "Guppy plant",
+  "pt": "Peixinho",
   "family": "Gesneriaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -35930,7 +36167,8 @@
   "habit": "Trailing",
   "about": "Glossy leaves and orange flowers like little goldfish.",
   "aliases": [
-   "goldfish plant"
+   "goldfish plant",
+   "planta-peixinho"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -35946,7 +36184,7 @@
   "id": "aeschynanthus-twister",
   "scientific": "Aeschynanthus 'Twister'",
   "en": "Curly lipstick plant",
-  "pt": "Planta-batom crespa",
+  "pt": "Planta-batom-crespa",
   "family": "Gesneriaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -35995,7 +36233,8 @@
   "habit": "Trailing",
   "about": "Curly twisted leaves and red tubular flowers.",
   "aliases": [
-   "twister"
+   "twister",
+   "planta-batom crespa"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -36010,7 +36249,7 @@
   "id": "kalanchoe-thyrsiflora",
   "scientific": "Kalanchoe thyrsiflora",
   "en": "Desert cabbage",
-  "pt": "Kalanchoe repolho",
+  "pt": "Kalanchoe-orelha-de-elefante",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -36069,7 +36308,8 @@
    "desert cabbage",
    "flapjacks",
    "paddle plant",
-   "white lady"
+   "white lady",
+   "kalanchoe repolho"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -36085,7 +36325,7 @@
   "id": "kalanchoe-pumila",
   "scientific": "Kalanchoe pumila",
   "en": "Flour dust kalanchoe",
-  "pt": "Kalanchoe pumila",
+  "pt": "Kalanchoe-pumila",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -36142,7 +36382,8 @@
   "about": "Silver powdered leaves and pink flowers.",
   "aliases": [
    "flour dust",
-   "flower dust plant"
+   "flower dust plant",
+   "kalanchoe pumila"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -36159,7 +36400,7 @@
   "id": "crassula-umbella",
   "scientific": "Crassula umbella",
   "en": "Wine cup crassula",
-  "pt": "Crassula umbella",
+  "pt": "Crassula-umbella",
   "family": "Crassulaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -36215,7 +36456,8 @@
   "habit": "Rosette",
   "about": "Round cupped leaves like a little wine glass.",
   "aliases": [
-   "wine cup"
+   "wine cup",
+   "crassula umbella"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -36230,7 +36472,7 @@
   "id": "lithops-mix",
   "scientific": "Conophytum",
   "en": "Cone plant",
-  "pt": "Conófito",
+  "pt": "Conophytum",
   "family": "Aizoaceae",
   "waterStyle": "dry",
   "dryMin": 21,
@@ -36292,7 +36534,8 @@
    "conophytum",
    "conos",
    "dumplings",
-   "sphaeroids"
+   "sphaeroids",
+   "conófito"
   ],
   "outdoor": false,
   "difficulty": 3,
@@ -36308,7 +36551,7 @@
   "id": "faucaria",
   "scientific": "Faucaria tigrina",
   "en": "Tiger jaws",
-  "pt": "Mandíbula-de-tigre",
+  "pt": "Boca-de-tigre",
   "family": "Aizoaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -36365,7 +36608,8 @@
   "about": "Toothed leaves like little open jaws.",
   "aliases": [
    "tiger jaws",
-   "tiger's jaws"
+   "tiger's jaws",
+   "mandíbula-de-tigre"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -36382,7 +36626,7 @@
   "id": "delosperma",
   "scientific": "Delosperma cooperi",
   "en": "Hardy ice plant",
-  "pt": "Planta-de-gelo",
+  "pt": "Delosperma",
   "family": "Aizoaceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -36441,7 +36685,8 @@
    "delosperma",
    "ice plant",
    "pink carpet",
-   "trailing iceplant"
+   "trailing iceplant",
+   "planta-de-gelo"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -36610,7 +36855,7 @@
   "id": "opuntia-bunny",
   "scientific": "Opuntia microdasys",
   "en": "Bunny ears cactus",
-  "pt": "Orelha-de-coelho",
+  "pt": "Cacto-orelha-de-coelho",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -36669,7 +36914,8 @@
    "angel's-wings",
    "bunny ears",
    "crested bunny ears",
-   "wavy bunny ears"
+   "wavy bunny ears",
+   "orelha-de-coelho"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -36684,7 +36930,7 @@
   "id": "cleistocactus",
   "scientific": "Cleistocactus strausii",
   "en": "Silver torch",
-  "pt": "Tocha-prateada",
+  "pt": "Cacto-tocha-prateada",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -36741,7 +36987,8 @@
   "about": "Columns covered in soft white hairs.",
   "aliases": [
    "silver torch",
-   "silver torch cactus"
+   "silver torch cactus",
+   "tocha-prateada"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -36757,7 +37004,7 @@
   "id": "espostoa",
   "scientific": "Espostoa lanata",
   "en": "Peruvian old man",
-  "pt": "Velho-peruano",
+  "pt": "Cacto-velho-peruano",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -36817,7 +37064,8 @@
    "old man cactus",
    "peruvian old man",
    "snowball cactus",
-   "snowball old man"
+   "snowball old man",
+   "velho-peruano"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -36832,7 +37080,7 @@
   "id": "parodia",
   "scientific": "Parodia leninghausii",
   "en": "Golden ball",
-  "pt": "Bola-dourada",
+  "pt": "Parodia",
   "family": "Cactaceae",
   "waterStyle": "dry",
   "dryMin": 14,
@@ -36889,7 +37137,8 @@
   "about": "Golden-spined columns topped by yellow flowers.",
   "aliases": [
    "lemon ball",
-   "golden ball"
+   "golden ball",
+   "bola-dourada"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -37100,7 +37349,11 @@
   "origin": "Bolivia",
   "habit": "Trailing",
   "about": "Flat, zigzag hanging stems.",
-  "aliases": [],
+  "aliases": [
+   "lepismium",
+   "lepismium bolivianum",
+   "bolivian cactus"
+  ],
   "outdoor": false,
   "difficulty": 1,
   "bloom": "Spring",
@@ -37260,7 +37513,7 @@
   "id": "orchid-cambria",
   "scientific": "× Oncidesa 'Cambria'",
   "en": "Cambria orchid",
-  "pt": "Orquídea cambria",
+  "pt": "Orquídea-cambria",
   "family": "Orchidaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -37315,7 +37568,8 @@
   "habit": "Epiphyte",
   "about": "Star-patterned flowers in rich colours.",
   "aliases": [
-   "cambria"
+   "cambria",
+   "orquídea cambria"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -37330,7 +37584,7 @@
   "id": "orchid-lady-slipper-maudiae",
   "scientific": "Paphiopedilum maudiae",
   "en": "Maudiae slipper orchid",
-  "pt": "Sapatinho maudiae",
+  "pt": "Sapatinho-maudiae",
   "family": "Orchidaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -37385,7 +37639,8 @@
   "habit": "Terrestrial",
   "about": "Mottled leaves and a pouch flower.",
   "aliases": [
-   "maudiae"
+   "maudiae",
+   "sapatinho maudiae"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -37401,7 +37656,7 @@
   "id": "tillandsia-cyanea",
   "scientific": "Tillandsia cyanea",
   "en": "Pink quill",
-  "pt": "Tilândsia-cyanea",
+  "pt": "Tillandsia-cyanea",
   "family": "Bromeliaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -37449,7 +37704,8 @@
   "habit": "Rosette",
   "about": "A flat pink quill with violet flowers.",
   "aliases": [
-   "pink quill"
+   "pink quill",
+   "tilândsia-cyanea"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -37465,7 +37721,7 @@
   "id": "billbergia",
   "scientific": "Billbergia nutans",
   "en": "Queen's tears",
-  "pt": "Lágrimas-da-rainha",
+  "pt": "Lágrimas-de-rainha",
   "family": "Bromeliaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -37514,7 +37770,8 @@
   "about": "Arching pink bracts and dangling green-blue flowers.",
   "aliases": [
    "queen's tears",
-   "queen's-tears"
+   "queen's-tears",
+   "lágrimas-da-rainha"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -37878,7 +38135,7 @@
   "id": "couve",
   "scientific": "Brassica oleracea var. acephala",
   "en": "Collard greens",
-  "pt": "Couve-manteiga",
+  "pt": "Couve",
   "family": "Brassicaceae",
   "waterStyle": "moist",
   "dryMin": 2,
@@ -37930,7 +38187,8 @@
   "aliases": [
    "collards",
    "couve",
-   "couve manteiga"
+   "couve manteiga",
+   "couve-manteiga"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -38830,7 +39088,7 @@
   "id": "yacon",
   "scientific": "Smallanthus sonchifolius",
   "en": "Yacón",
-  "pt": "Batata-yacon",
+  "pt": "Yacon",
   "family": "Asteraceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -38884,7 +39142,8 @@
    "polymnia sonchifolia",
    "smallanthus sonchifolius",
    "yacon",
-   "yacón"
+   "yacón",
+   "batata-yacon"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -38974,7 +39233,7 @@
   "id": "pak-choi-sp",
   "scientific": "Brassica rapa subsp. chinensis",
   "en": "Pak choi",
-  "pt": "Acelga-chinesa",
+  "pt": "Pak choi",
   "family": "Brassicaceae",
   "waterStyle": "moist",
   "dryMin": 2,
@@ -39029,7 +39288,8 @@
    "brassica chinensis",
    "brassica rapa pak choi group",
    "pak choi",
-   "shanghai green"
+   "shanghai green",
+   "acelga-chinesa"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -39415,7 +39675,7 @@
   "id": "bay-dwarf",
   "scientific": "Laurus nobilis (standard)",
   "en": "Bay tree standard",
-  "pt": "Louro em topiaria",
+  "pt": "Louro-topiaria",
   "family": "Lauraceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -39424,8 +39684,8 @@
   "humidityMin": 30,
   "tempMin": -5,
   "tempMax": 32,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.35,
   "aeration": 0.85,
   "phMin": 6.0,
@@ -39466,7 +39726,8 @@
   "habit": "Topiary",
   "about": "A lollipop bay tree for doorsteps and cooking.",
   "aliases": [
-   "bay standard"
+   "bay standard",
+   "louro em topiaria"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -39561,8 +39822,8 @@
   "humidityMin": 40,
   "tempMin": 3,
   "tempMax": 35,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.5,
   "aeration": 0.75,
   "phMin": 5.5,
@@ -39640,8 +39901,8 @@
   "humidityMin": 40,
   "tempMin": 3,
   "tempMax": 35,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.5,
   "aeration": 0.75,
   "phMin": 5.5,
@@ -39704,7 +39965,7 @@
   "id": "mandarin",
   "scientific": "Citrus reticulata",
   "en": "Mandarin",
-  "pt": "Tangerina",
+  "pt": "Tangerineira",
   "family": "Rutaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -39713,8 +39974,8 @@
   "humidityMin": 40,
   "tempMin": -3,
   "tempMax": 35,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.5,
   "aeration": 0.75,
   "phMin": 5.5,
@@ -39799,8 +40060,8 @@
   "humidityMin": 40,
   "tempMin": 0,
   "tempMax": 35,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.5,
   "aeration": 0.75,
   "phMin": 5.5,
@@ -39872,8 +40133,8 @@
   "humidityMin": 40,
   "tempMin": -2,
   "tempMax": 35,
-  "toxicCats": false,
-  "toxicDogs": false,
+  "toxicCats": true,
+  "toxicDogs": true,
   "retention": 0.5,
   "aeration": 0.75,
   "phMin": 5.5,
@@ -39944,7 +40205,7 @@
   "id": "loquat",
   "scientific": "Eriobotrya japonica",
   "en": "Loquat",
-  "pt": "Nêspera",
+  "pt": "Nespereira",
   "family": "Rosaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -40021,7 +40282,7 @@
   "id": "apple-columnar",
   "scientific": "Malus domestica (columnar)",
   "en": "Columnar apple",
-  "pt": "Macieira colunar",
+  "pt": "Macieira-colunar",
   "family": "Rosaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -40073,7 +40334,8 @@
   "aliases": [
    "columnar apple",
    "apple tree",
-   "macieira"
+   "macieira",
+   "macieira colunar"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -40514,7 +40776,7 @@
   "id": "redcurrant",
   "scientific": "Ribes rubrum",
   "en": "Redcurrant",
-  "pt": "Groselha",
+  "pt": "Groselha-vermelha",
   "family": "Grossulariaceae",
   "waterStyle": "half",
   "dryMin": 5,
@@ -40586,7 +40848,7 @@
   "id": "blackberry",
   "scientific": "Rubus fruticosus",
   "en": "Thornless blackberry",
-  "pt": "Amora-preta",
+  "pt": "Amoreira-sem-espinho",
   "family": "Rosaceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -40642,7 +40904,8 @@
    "bramble",
    "rubus fructicosus",
    "rubus fruticosus",
-   "shrubby blackberry"
+   "shrubby blackberry",
+   "amora-preta"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -40884,7 +41147,7 @@
   "id": "banana-dwarf",
   "scientific": "Musa acuminata 'Dwarf Cavendish'",
   "en": "Dwarf banana",
-  "pt": "Bananeira anã",
+  "pt": "Bananeira-anã",
   "family": "Musaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -40941,7 +41204,8 @@
   "about": "Banana paddles indoors; fruits in great light.",
   "aliases": [
    "dwarf banana",
-   "dwarf cavendish"
+   "dwarf cavendish",
+   "bananeira anã"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -41043,7 +41307,7 @@
   "id": "mango-dwarf",
   "scientific": "Mangifera indica (dwarf)",
   "en": "Dwarf mango",
-  "pt": "Mangueira anã",
+  "pt": "Mangueira-anã",
   "family": "Anacardiaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -41099,7 +41363,8 @@
   "habit": "Small tree",
   "about": "Glossy red new leaves and sweet fruit.",
   "aliases": [
-   "dwarf mango"
+   "dwarf mango",
+   "mangueira anã"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -41187,7 +41452,7 @@
   "id": "lychee",
   "scientific": "Litchi chinensis",
   "en": "Lychee",
-  "pt": "Lichia",
+  "pt": "Lichieira",
   "family": "Sapindaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -41850,7 +42115,7 @@
   "id": "turmeric",
   "scientific": "Curcuma longa",
   "en": "Turmeric",
-  "pt": "Açafrão-da-terra",
+  "pt": "Cúrcuma",
   "family": "Zingiberaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -41917,7 +42182,8 @@
    "medicinal plant",
    "sacred turmeric",
    "turmeric",
-   "turmeric plant"
+   "turmeric plant",
+   "açafrão-da-terra"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -42237,7 +42503,7 @@
   "id": "heliconia",
   "scientific": "Heliconia psittacorum",
   "en": "Parrot's flower",
-  "pt": "Helicônia",
+  "pt": "Helicônia-papagaio",
   "family": "Heliconiaceae",
   "waterStyle": "moist",
   "dryMin": 4,
@@ -42310,7 +42576,7 @@
   "id": "cordyline-red",
   "scientific": "Cordyline fruticosa 'Red Sister'",
   "en": "Red sister ti plant",
-  "pt": "Cordiline vermelha",
+  "pt": "Cordiline-vermelha",
   "family": "Asparagaceae",
   "waterStyle": "half",
   "dryMin": 6,
@@ -42367,7 +42633,8 @@
   "about": "Hot pink and burgundy leaves.",
   "aliases": [
    "red sister",
-   "ti plant"
+   "ti plant",
+   "cordiline vermelha"
   ],
   "outdoor": false,
   "difficulty": 1,
@@ -42734,7 +43001,7 @@
  {
   "id": "ipomoea-purpurea",
   "scientific": "Ipomoea purpurea",
-  "en": "Morning glory",
+  "en": "Common morning glory",
   "pt": "Ipomeia",
   "family": "Convolvulaceae",
   "waterStyle": "half",
@@ -43017,7 +43284,7 @@
   "id": "jacaranda",
   "scientific": "Jacaranda mimosifolia",
   "en": "Jacaranda",
-  "pt": "Jacarandá",
+  "pt": "Jacarandá-mimoso",
   "family": "Bignoniaceae",
   "waterStyle": "half",
   "dryMin": 7,
@@ -43225,7 +43492,7 @@
   "id": "gardenia-radicans",
   "scientific": "Gardenia jasminoides 'Radicans'",
   "en": "Dwarf gardenia",
-  "pt": "Gardênia anã",
+  "pt": "Gardênia-anã",
   "family": "Rubiaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -43276,7 +43543,8 @@
   "habit": "Groundcover shrub",
   "about": "Small leaves and very fragrant white flowers.",
   "aliases": [
-   "dwarf gardenia"
+   "dwarf gardenia",
+   "gardênia anã"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -43497,7 +43765,7 @@
   "id": "gerbera-pot",
   "scientific": "Gerbera jamesonii (pot)",
   "en": "Pot gerbera",
-  "pt": "Gérbera de vaso",
+  "pt": "Gérbera-de-vaso",
   "family": "Asteraceae",
   "waterStyle": "half",
   "dryMin": 4,
@@ -43547,7 +43815,8 @@
   "habit": "Rosette",
   "about": "Big cheerful daisies in every colour.",
   "aliases": [
-   "pot gerbera"
+   "pot gerbera",
+   "gérbera de vaso"
   ],
   "outdoor": false,
   "difficulty": 2,
@@ -43561,7 +43830,7 @@
   "id": "chrysanthemum-pot",
   "scientific": "Chrysanthemum × morifolium (pot)",
   "en": "Pot mum",
-  "pt": "Crisântemo de vaso",
+  "pt": "Crisântemo-de-vaso",
   "family": "Asteraceae",
   "waterStyle": "half",
   "dryMin": 3,
@@ -43612,7 +43881,8 @@
   "about": "Domes of autumn flowers.",
   "aliases": [
    "pot mum",
-   "mum"
+   "mum",
+   "crisântemo de vaso"
   ],
   "outdoor": true,
   "difficulty": 1,
@@ -43830,7 +44100,7 @@
   "id": "browallia",
   "scientific": "Browallia speciosa",
   "en": "Bush violet",
-  "pt": "Browállia",
+  "pt": "Browallia",
   "family": "Solanaceae",
   "waterStyle": "moist",
   "dryMin": 3,
@@ -44050,7 +44320,7 @@
   "id": "dioon",
   "scientific": "Dioon edule",
   "en": "Virgin's palm",
-  "pt": "Díon",
+  "pt": "Dioon",
   "family": "Zamiaceae",
   "waterStyle": "dry",
   "dryMin": 10,
@@ -44109,7 +44379,8 @@
    "chestnut dioon",
    "cycad",
    "virgin palm",
-   "virgins palm"
+   "virgins palm",
+   "díon"
   ],
   "outdoor": true,
   "difficulty": 2,
@@ -44832,7 +45103,7 @@
   "id": "helichrysum-italicum",
   "scientific": "Helichrysum italicum",
   "en": "Curry plant",
-  "pt": "Erva-caril",
+  "pt": "Perpétua-italiana",
   "family": "Asteraceae",
   "waterStyle": "dry",
   "dryMin": 8,
@@ -44887,7 +45158,8 @@
    "curry plant",
    "everlasting flower",
    "immortelle",
-   "italian strawflower"
+   "italian strawflower",
+   "erva-caril"
   ],
   "outdoor": true,
   "difficulty": 1,

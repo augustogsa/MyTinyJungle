@@ -42,6 +42,8 @@ func (s *Server) brainAsk(w http.ResponseWriter, r *http.Request) {
 		Lang      string              `json:"lang"`
 		Species   string              `json:"species"`
 		Situation map[string][]string `json:"situation"`
+		Lat, Lon  *float64
+		extras
 	}
 	if decode(r, &in) != nil || len(strings.TrimSpace(in.Q)) < 3 || len(in.Q) > 600 || len(in.Lang) > 12 {
 		s.fail(w, r, bad("invalid_request"))
@@ -54,32 +56,17 @@ func (s *Server) brainAsk(w http.ResponseWriter, r *http.Request) {
 	if lang == "" || strings.HasPrefix(lang, "en") {
 		lang = "en"
 	}
-	fit, boost := theBrain.situational(situation(in.Situation))
-	type answer struct {
-		Kind  string   `json:"kind"`
-		Title string   `json:"title"`
-		Text  string   `json:"text"`
-		Steps []string `json:"steps,omitempty"`
-	}
-	var out []answer
-	sp := theBrain.findSpecies(in.Species)
-	for i, m := range theBrain.rank(in.Q, "", boost, speciesEntries(sp)...) {
-		if i == 3 || m.score < 0.35 {
-			break
-		}
-		d := theBrain.answerFrom(m, lang)
-		out = append(out, answer{m.e.Kind, d.Problem, d.Why, d.Steps})
-	}
-	for _, d := range theBrain.docs(in.Q, lang, 3) {
-		out = append(out, answer{d.kind, d.title, d.text, nil})
-	}
-	for i, sc := range fit {
+	sit := in.extras.into(situation(in.Situation))
+	wf := resolveWeather(r.Context(), in.extras.Weather, in.Lat, in.Lon)
+	sit = mergeSit(sit, wf.situation())
+	out := theBrain.ask(in.Q, lang, in.Species, sit)
+	for i, n := range wf.notes(lang, isOutdoor(sit), theBrain.findSpecies(in.Species)) {
 		if i == 2 {
 			break
 		}
-		out = append(out, answer{"situation", theBrain.tr(lang, sc.Name), theBrain.tr(lang, sc.Advice), nil})
+		out = append(out, askAnswer{"weather", "weather", theBrain.tr(lang, "Weather near you"), n, nil})
 	}
-	if len(out) == 0 {
+	if len(out) == 0 || out[0].Kind == "situation" {
 		s.gap(r.Context(), "ask", in.Q)
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"answers": out})
@@ -114,13 +101,13 @@ func (s *Server) weatherWatch(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]bool{"ok": true})
 }
 
-var weatherText = map[string][2][2]string{ // lang → {frost, heat} → {title, body}
-	"en":    {{"Frost tonight", "Bring tender plants inside or cover them before dark."}, {"Heatwave coming", "Water early, shade pots and move tender plants out of the midday sun."}},
-	"pt-BR": {{"Geada hoje à noite", "Leva as plantas mais sensíveis pra dentro ou cobre antes de escurecer."}, {"Vem onda de calor", "Rega cedo, faz sombra nos vasos e tira as sensíveis do sol do meio-dia."}},
-	"es":    {{"Helada esta noche", "Mete adentro las plantas delicadas o cúbrelas antes de que oscurezca."}, {"Viene una ola de calor", "Riega temprano, da sombra a las macetas y aparta las delicadas del sol del mediodía."}},
-	"fr":    {{"Gel cette nuit", "Rentrez les plantes fragiles ou couvrez-les avant la nuit."}, {"Canicule en vue", "Arrosez tôt, ombragez les pots et éloignez les plantes fragiles du soleil de midi."}},
-	"de":    {{"Heute Nacht Frost", "Hol empfindliche Pflanzen rein oder deck sie vor Einbruch der Dunkelheit ab."}, {"Hitzewelle im Anmarsch", "Früh gießen, Töpfe beschatten und Empfindliches aus der Mittagssonne holen."}},
-	"ja":    {{"今夜は霜の予報", "暗くなる前に、寒さに弱い植物を室内に入れるか覆ってあげましょう。"}, {"猛暑がやってきます", "朝のうちに水やりをして、鉢を日陰に。弱い植物は真昼の日差しから避難させましょう。"}},
+var weatherText = map[string][3][2]string{ // lang → {frost, heat, rain} → {title, body}
+	"en":    {{"Frost tonight", "Bring tender plants inside or cover them before dark."}, {"Heatwave coming", "Water early, shade pots and move tender plants out of the midday sun."}, {"Rain today", "Skip watering outdoor plants today: the rain has it covered."}},
+	"pt-BR": {{"Geada hoje à noite", "Leva as plantas mais sensíveis pra dentro ou cobre antes de escurecer."}, {"Vem onda de calor", "Rega cedo, faz sombra nos vasos e tira as sensíveis do sol do meio-dia."}, {"Chuva hoje", "Pode pular a rega das plantas de fora hoje: a chuva dá conta."}},
+	"es":    {{"Helada esta noche", "Mete adentro las plantas delicadas o cúbrelas antes de que oscurezca."}, {"Viene una ola de calor", "Riega temprano, da sombra a las macetas y aparta las delicadas del sol del mediodía."}, {"Lluvia hoy", "Hoy no riegues las plantas de fuera: la lluvia se encarga."}},
+	"fr":    {{"Gel cette nuit", "Rentrez les plantes fragiles ou couvrez-les avant la nuit."}, {"Canicule en vue", "Arrosez tôt, ombragez les pots et éloignez les plantes fragiles du soleil de midi."}, {"Pluie aujourd'hui", "Pas besoin d'arroser les plantes d'extérieur aujourd'hui : la pluie s'en charge."}},
+	"de":    {{"Heute Nacht Frost", "Hol empfindliche Pflanzen rein oder deck sie vor Einbruch der Dunkelheit ab."}, {"Hitzewelle im Anmarsch", "Früh gießen, Töpfe beschatten und Empfindliches aus der Mittagssonne holen."}, {"Heute Regen", "Draußen heute nicht gießen: Der Regen übernimmt das."}},
+	"ja":    {{"今夜は霜の予報", "暗くなる前に、寒さに弱い植物を室内に入れるか覆ってあげましょう。"}, {"猛暑がやってきます", "朝のうちに水やりをして、鉢を日陰に。弱い植物は真昼の日差しから避難させましょう。"}, {"今日は雨", "屋外の植物への水やりは今日はお休みでOK。雨がしっかり降ります。"}},
 }
 
 // weatherLoop checks every watched cell every three hours: frost/heat tonight once a day per device, and
@@ -173,11 +160,11 @@ func (s *Server) weatherRound(ctx context.Context) {
 	}
 }
 
-// forecastRisk: 0 frost (≤ 1 °C tonight), 1 heatwave (≥ 34 °C today or tomorrow), -1 nothing.
+// forecastRisk: 0 frost (≤ 1 °C tonight), 1 heatwave (≥ 34 °C today or tomorrow), 2 rain (≥ 5 mm today), -1 nothing.
 func forecastRisk(ctx context.Context, lat, lon float64) int {
 	cctx, cancel := context.WithTimeout(ctx, 6*time.Second)
 	defer cancel()
-	u := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.1f&longitude=%.1f&daily=temperature_2m_max,temperature_2m_min&forecast_days=2&timezone=auto", lat, lon)
+	u := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.1f&longitude=%.1f&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&forecast_days=2&timezone=auto", lat, lon)
 	req, _ := http.NewRequestWithContext(cctx, "GET", u, nil)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -186,8 +173,9 @@ func forecastRisk(ctx context.Context, lat, lon float64) int {
 	defer res.Body.Close()
 	var f struct {
 		Daily struct {
-			Max []float64 `json:"temperature_2m_max"`
-			Min []float64 `json:"temperature_2m_min"`
+			Max  []float64 `json:"temperature_2m_max"`
+			Min  []float64 `json:"temperature_2m_min"`
+			Rain []float64 `json:"precipitation_sum"`
 		}
 	}
 	if json.NewDecoder(res.Body).Decode(&f) != nil {
@@ -203,5 +191,60 @@ func forecastRisk(ctx context.Context, lat, lon float64) int {
 			return 1
 		}
 	}
+	if len(f.Daily.Rain) > 0 && f.Daily.Rain[0] >= 5 {
+		return 2 // ≥ 5 mm today: outdoor plants need no watering
+	}
 	return -1
+}
+
+type askAnswer struct {
+	ID    string   `json:"id,omitempty"` // knowledge id (symptom, pest, topic, soil:…, glossary:…, scenario)
+	Kind  string   `json:"kind"`
+	Title string   `json:"title"`
+	Text  string   `json:"text"`
+	Steps []string `json:"steps,omitempty"`
+}
+
+// ask answers a care question from our own knowledge, in the asker's language.
+func (b *brain) ask(q, lang, speciesQ string, sit situation) []askAnswer {
+	fit, boost := b.situational(sit)
+	mediumBoost(sit, boost)
+	var out []askAnswer
+	sp := b.findSpecies(speciesQ)
+	fit = forSpecies(fit, sp)
+	seen := map[string]bool{}
+	for i, m := range b.rank(lang, q, "", boost, speciesEntries(sp)...) {
+		if i == 3 || m.score < 0.35 {
+			break
+		}
+		if seen[m.e.ID] {
+			continue
+		}
+		seen[m.e.ID] = true
+		d := b.answerFrom(m, lang)
+		out = append(out, askAnswer{m.e.ID, m.e.Kind, d.Problem, d.Why, d.Steps})
+	}
+	hydro := false
+	for _, m := range sit["medium"] {
+		hydro = hydro || (m != "soil" && m != "chunky" && m != "cactus" && m != "ground")
+	}
+	var situ []askAnswer
+	for i, sc := range fit {
+		if i == 2 {
+			break
+		}
+		situ = append(situ, askAnswer{sc.ID, "situation", b.tr(lang, sc.Name), b.tr(lang, sc.Advice), nil})
+	}
+	if hydro { // not in soil: its medium's rhythm leads, and soil-watering advice would mislead
+		out = append(situ, out...)
+		situ = nil
+	}
+	for _, d := range b.docs(q, lang, 3) {
+		if hydro && (strings.HasPrefix(d.id, "watering-") || strings.HasPrefix(d.id, "water-") || d.id == "finger-test" || d.id == "underwatering-signs" || d.id == "revive-dry") {
+			continue
+		}
+		out = append(out, askAnswer{d.id, d.kind, d.title, d.text, nil})
+	}
+	out = append(out, situ...)
+	return out
 }

@@ -1,0 +1,546 @@
+[
+ {
+  "file": "diagnose/mealybugs-1.jpg",
+  "expect": [
+   "mealybugs",
+   "white-fluff",
+   "long-tailed-mealybugs",
+   "cottony-scale"
+  ],
+  "note": "white cottony bits on the stems",
+  "lang": "en",
+  "source": "File:Ant On Mealybugs Jungle (38507070).jpeg"
+ },
+ {
+  "file": "diagnose/mealybugs-2.jpg",
+  "expect": [
+   "mealybugs",
+   "white-fluff",
+   "long-tailed-mealybugs",
+   "cottony-scale"
+  ],
+  "note": "umas bolinhas brancas tipo algodão nos caules",
+  "lang": "pt-BR",
+  "source": "File:Soursop (Annona muricata)- Ants with nest tending mealybugs on fruit.jpg"
+ },
+ {
+  "file": "diagnose/mealybugs-3.jpg",
+  "expect": [
+   "mealybugs",
+   "white-fluff",
+   "long-tailed-mealybugs",
+   "cottony-scale"
+  ],
+  "note": "bolitas blancas como algodón en los tallos",
+  "lang": "es",
+  "source": "File:Starr-130914-1506-Ipomoea pes caprae subsp brasiliensis-leaf with whitefly or mealybug near lake-NE Inland-Laysan (24929379870).jpg"
+ },
+ {
+  "file": "diagnose/powdery-mildew-1.jpg",
+  "expect": [
+   "powdery-mildew",
+   "white-powder",
+   "powdery-mildew-succulent"
+  ],
+  "note": "un dépôt blanc poudreux sur les feuilles",
+  "lang": "fr",
+  "source": "File:Powdery mildew 9.jpg"
+ },
+ {
+  "file": "diagnose/powdery-mildew-2.jpg",
+  "expect": [
+   "powdery-mildew",
+   "white-powder",
+   "powdery-mildew-succulent"
+  ],
+  "note": "weißer mehliger Belag auf den Blättern",
+  "lang": "de",
+  "source": "File:Uncinula tulasnei - powdery mildew - Echter Mehltau 08.jpg"
+ },
+ {
+  "file": "diagnose/powdery-mildew-3.jpg",
+  "expect": [
+   "powdery-mildew",
+   "white-powder",
+   "powdery-mildew-succulent"
+  ],
+  "note": "葉に白い粉がふいている",
+  "lang": "ja",
+  "source": "File:Uncinula tulasnei - powdery mildew - Echter Mehltau 03.jpg"
+ },
+ {
+  "file": "diagnose/iron-1.jpg",
+  "expect": [
+   "iron",
+   "yellow-veins-green",
+   "yellow-new",
+   "chlorosis-lime",
+   "manganese"
+  ],
+  "note": "new leaves are yellow but the veins stay green",
+  "lang": "en",
+  "source": "File:Iron chlorosis on young rose leaves in a garden, by baby-bear.org.jpg"
+ },
+ {
+  "file": "diagnose/iron-2.jpg",
+  "expect": [
+   "iron",
+   "yellow-veins-green",
+   "yellow-new",
+   "chlorosis-lime",
+   "manganese"
+  ],
+  "note": "as folhas novas tão amarelas com as nervuras verdes",
+  "lang": "pt-BR",
+  "source": "File:Banksia integrifolia 02 ies.jpg"
+ },
+ {
+  "file": "diagnose/sunburn-1.jpg",
+  "expect": [
+   "sunburn",
+   "brown-scorch",
+   "white-bleached",
+   "tan-spots-sun",
+   "sunscald"
+  ],
+  "note": "manchas pálidas quemadas desde que la puse al sol",
+  "lang": "es",
+  "source": "File:Sunburnt rubber plant leaf aug 21.jpg"
+ },
+ {
+  "file": "diagnose/sunburn-2.jpg",
+  "expect": [
+   "sunburn",
+   "brown-scorch",
+   "white-bleached",
+   "tan-spots-sun",
+   "sunscald"
+  ],
+  "note": "des taches pâles décolorées depuis que je l'ai mise au soleil",
+  "lang": "fr",
+  "source": "File:Basilikum Sonnenbrand-1--Vietmeier-Andreas-LWK-NRW.jpg"
+ },
+ {
+  "file": "diagnose/sunburn-3.jpg",
+  "expect": [
+   "sunburn",
+   "brown-scorch",
+   "white-bleached",
+   "tan-spots-sun",
+   "sunscald"
+  ],
+  "note": "helle ausgebleichte Flecken, seit sie in der Sonne steht",
+  "lang": "de",
+  "source": "File:Paprika Sonnenbrand-1-Schlaghecken.jpg"
+ },
+ {
+  "file": "diagnose/aphids-1.jpg",
+  "expect": [
+   "aphids",
+   "black-aphids",
+   "woolly-aphids",
+   "sticky"
+  ],
+  "note": "新芽に小さい虫がびっしり",
+  "lang": "ja",
+  "source": "File:Green peach aphid (Myzus persicae) on a stem, Lisbon, Portugal (approx. GPS location) julesvernex2.jpg"
+ },
+ {
+  "file": "diagnose/aphids-2.jpg",
+  "expect": [
+   "aphids",
+   "black-aphids",
+   "woolly-aphids",
+   "sticky"
+  ],
+  "note": "tiny bugs clustered on the new stems",
+  "lang": "en",
+  "source": "File:Pulgones del rosal.jpg"
+ },
+ {
+  "file": "diagnose/aphids-3.jpg",
+  "expect": [
+   "aphids",
+   "black-aphids",
+   "woolly-aphids",
+   "sticky"
+  ],
+  "note": "um monte de bichinhos nos brotos novos",
+  "lang": "pt-BR",
+  "source": "File:Unknown treehopper wasp mutualism.jpg"
+ },
+ {
+  "file": "diagnose/scale-1.jpg",
+  "expect": [
+   "scale",
+   "soft-scale",
+   "armored-scale"
+  ],
+  "note": "bultitos marrones pegados en tallos y hojas",
+  "lang": "es",
+  "source": "File:Panax (Polycias guilfoylei) Scale insects and bacterial leaf blight (15263962534).jpg"
+ },
+ {
+  "file": "diagnose/scale-2.jpg",
+  "expect": [
+   "scale",
+   "soft-scale",
+   "armored-scale"
+  ],
+  "note": "des petites bosses brunes collées sur les tiges et les feuilles",
+  "lang": "fr",
+  "source": "File:Scale insect on Sarracenia leaf.jpg"
+ },
+ {
+  "file": "diagnose/scale-3.jpg",
+  "expect": [
+   "scale",
+   "soft-scale",
+   "armored-scale"
+  ],
+  "note": "braune Höcker an Stängeln und Blättern",
+  "lang": "de",
+  "source": "File:Wax scale (pest insect).jpg"
+ },
+ {
+  "file": "diagnose/thrips-1.jpg",
+  "expect": [
+   "thrips",
+   "silver-streaks",
+   "western-flower-thrips",
+   "chilli-thrips"
+  ],
+  "note": "葉に銀色のすじと小さな黒い点",
+  "lang": "ja",
+  "source": "File:Solanum lycopersicum leaves with spider mite or thrips damage in Dnipro by baby-bear.org.jpg"
+ },
+ {
+  "file": "diagnose/thrips-2.jpg",
+  "expect": [
+   "thrips",
+   "silver-streaks",
+   "western-flower-thrips",
+   "chilli-thrips"
+  ],
+  "note": "silvery streaks and tiny black dots on the leaves",
+  "lang": "en",
+  "source": "File:Basilikum Thripsbefall-Schlaghecken.jpg"
+ },
+ {
+  "file": "diagnose/whitefly-1.jpg",
+  "expect": [
+   "whitefly",
+   "greenhouse-whitefly"
+  ],
+  "note": "mosquinhas brancas embaixo das folhas voam quando mexo",
+  "lang": "pt-BR",
+  "source": "File:Starr-130914-1508-Ipomoea pes caprae subsp brasiliensis-leaf with whitefly or mealybug-Near lake-Laysan (25224992515).jpg"
+ },
+ {
+  "file": "diagnose/whitefly-2.jpg",
+  "expect": [
+   "whitefly",
+   "greenhouse-whitefly"
+  ],
+  "note": "mosquitas blancas debajo de las hojas que vuelan al tocarla",
+  "lang": "es",
+  "source": "File:Starr-130914-1506-Ipomoea pes caprae subsp brasiliensis-leaf with whitefly or mealybug near lake-NE Inland-Laysan (24929379870).jpg"
+ },
+ {
+  "file": "diagnose/whitefly-3.jpg",
+  "expect": [
+   "whitefly",
+   "greenhouse-whitefly"
+  ],
+  "note": "des petites mouches blanches sous les feuilles s'envolent quand je la touche",
+  "lang": "fr",
+  "source": "File:CSIRO ScienceImage 7704 Silverleaf whitefly Bemisia tabaci biotype B.jpg"
+ },
+ {
+  "file": "diagnose/sooty-mould-1.jpg",
+  "expect": [
+   "sooty-mould",
+   "black-coating"
+  ],
+  "note": "schwarzer Belag oben auf den Blättern",
+  "lang": "de",
+  "source": "File:Sooty mold Schefflera 1.JPG"
+ },
+ {
+  "file": "diagnose/sooty-mould-2.jpg",
+  "expect": [
+   "sooty-mould",
+   "black-coating"
+  ],
+  "note": "葉の表面に黒いすすのような膜",
+  "lang": "ja",
+  "source": "File:Sooty mold Schefflera 2.JPG"
+ },
+ {
+  "file": "diagnose/sooty-mould-3.jpg",
+  "expect": [
+   "sooty-mould",
+   "black-coating"
+  ],
+  "note": "black film on top of the leaves",
+  "lang": "en",
+  "source": "File:Auberginen Blattläuse-Rußtau-1-DLR-NW-Jochen Kreiselmaier.jpg"
+ },
+ {
+  "file": "diagnose/rust-1.jpg",
+  "expect": [
+   "rust",
+   "rusty-spots",
+   "rust-pelargonium"
+  ],
+  "note": "pintinhas cor de ferrugem nas folhas",
+  "lang": "pt-BR",
+  "source": "File:Blackberry Leaf Rust Fungus (6710089489).jpg"
+ },
+ {
+  "file": "diagnose/rust-2.jpg",
+  "expect": [
+   "rust",
+   "rusty-spots",
+   "rust-pelargonium"
+  ],
+  "note": "manchitas color óxido en las hojas",
+  "lang": "es",
+  "source": "File:Flower-shaped rust fungus - Flickr - Alex Popovkin, Bahia, Brazil (4).jpg"
+ },
+ {
+  "file": "diagnose/rust-3.jpg",
+  "expect": [
+   "rust",
+   "rusty-spots",
+   "rust-pelargonium"
+  ],
+  "note": "des pustules orange brun poudreuses sur les feuilles",
+  "lang": "fr",
+  "source": "File:Melampsora populnea a2.jpg"
+ },
+ {
+  "file": "diagnose/botrytis-1.jpg",
+  "expect": [
+   "botrytis",
+   "grey-mould-stem",
+   "flower-blight"
+  ],
+  "note": "grauer pelziger Schimmel an den Blättern",
+  "lang": "de",
+  "source": "File:Endivien Frisee-Botrytis cinerea-3-Josef Schlaghecken.jpg"
+ },
+ {
+  "file": "diagnose/botrytis-2.jpg",
+  "expect": [
+   "botrytis",
+   "grey-mould-stem",
+   "flower-blight"
+  ],
+  "note": "葉に灰色のふわふわしたカビ",
+  "lang": "ja",
+  "source": "File:Endivien Frisee-Botrytis cinerea-5-Josef Schlaghecken.jpg"
+ },
+ {
+  "file": "diagnose/magnesium-1.jpg",
+  "expect": [
+   "magnesium",
+   "yellow-patches",
+   "potassium"
+  ],
+  "note": "yellow between the veins on the older leaves",
+  "lang": "en",
+  "source": "File:Citrus limon leaf - unidentified deficiency.jpg"
+ },
+ {
+  "file": "diagnose/magnesium-2.jpg",
+  "expect": [
+   "magnesium",
+   "yellow-patches",
+   "potassium"
+  ],
+  "note": "amarelado entre as nervuras das folhas mais velhas",
+  "lang": "pt-BR",
+  "source": "File:Boron toxicity (2313046082).jpg"
+ },
+ {
+  "file": "diagnose/leaf-miners-1.jpg",
+  "expect": [
+   "leaf-miners"
+  ],
+  "note": "túneles claros ondulados dentro de las hojas",
+  "lang": "es",
+  "source": "File:Holm oak leaf miner damage - geograph.org.uk - 5762175.jpg"
+ },
+ {
+  "file": "diagnose/leaf-miners-2.jpg",
+  "expect": [
+   "leaf-miners"
+  ],
+  "note": "des galeries claires sinueuses dans les feuilles",
+  "lang": "fr",
+  "source": "File:Leaf Miner damage, Dawson City, Yukon (3898594909).jpg"
+ },
+ {
+  "file": "diagnose/leaf-miners-3.jpg",
+  "expect": [
+   "leaf-miners"
+  ],
+  "note": "helle geschlängelte Gänge in den Blättern",
+  "lang": "de",
+  "source": "File:Ant and Leaf Miner damage, Dawson City, Yukon (3899374660).jpg"
+ },
+ {
+  "file": "diagnose/downy-mildew-1.jpg",
+  "expect": [
+   "downy-mildew",
+   "impatiens-downy"
+  ],
+  "note": "葉の表に黄色い斑点、裏に灰色のカビ",
+  "lang": "ja",
+  "source": "File:Salbei (Salvia officinalis) mit einem Peronospora salviae-officinalis Befall - Hinrichs-Berger-2.jpg"
+ },
+ {
+  "file": "diagnose/downy-mildew-2.jpg",
+  "expect": [
+   "downy-mildew",
+   "impatiens-downy"
+  ],
+  "note": "yellow patches on top and grey fuzz underneath",
+  "lang": "en",
+  "source": "File:Brokkoli Falscher Mehltau am Blatt-Foto Agroscope.jpg"
+ },
+ {
+  "file": "diagnose/downy-mildew-3.jpg",
+  "expect": [
+   "downy-mildew",
+   "impatiens-downy"
+  ],
+  "note": "manchas amarelas em cima e um mofo cinza embaixo da folha",
+  "lang": "pt-BR",
+  "source": "File:Chinakohl 2 Falscher Mehltau-Brand.jpg"
+ },
+ {
+  "file": "diagnose/root-rot-1.jpg",
+  "expect": [
+   "root-rot",
+   "pythium-root-rot",
+   "mushy-stem",
+   "root-rot-rescue"
+  ],
+  "note": "las raíces están marrones y blandas",
+  "lang": "es",
+  "source": "File:Rhizoctonia Root Rot on Corn.png"
+ },
+ {
+  "file": "diagnose/spider-mites-1.jpg",
+  "expect": [
+   "spider-mites",
+   "webbing",
+   "stippling",
+   "two-spotted-mites"
+  ],
+  "note": "de fines toiles et des petits points sur les feuilles",
+  "lang": "fr",
+  "source": "File:Mit Wasser benetzt.png"
+ },
+ {
+  "file": "diagnose/spider-mites-2.jpg",
+  "expect": [
+   "spider-mites",
+   "webbing",
+   "stippling",
+   "two-spotted-mites"
+  ],
+  "note": "feine Gespinste und winzige Pünktchen auf den Blättern",
+  "lang": "de",
+  "source": "File:Tetranychus urticae with silk threads.jpg"
+ },
+ {
+  "file": "diagnose/leaf-spot-1.jpg",
+  "expect": [
+   "leaf-spot",
+   "brown-spots-halo",
+   "bacterial-leaf-spot",
+   "cercospora",
+   "septoria",
+   "anthracnose"
+  ],
+  "note": "黄色い輪に囲まれた茶色い斑点",
+  "lang": "ja",
+  "source": "File:Leaf spot fungus, Glenlyon, Holywood (September 2015) - geograph.org.uk - 4680504.jpg"
+ },
+ {
+  "file": "diagnose/leaf-spot-2.jpg",
+  "expect": [
+   "leaf-spot",
+   "brown-spots-halo",
+   "bacterial-leaf-spot",
+   "cercospora",
+   "septoria",
+   "anthracnose"
+  ],
+  "note": "brown spots with yellow rings around them",
+  "lang": "en",
+  "source": "File:Septoria lycopersici malagutii leaf spot on tomato leaf.jpg"
+ },
+ {
+  "file": "diagnose/leaf-spot-3.jpg",
+  "expect": [
+   "leaf-spot",
+   "brown-spots-halo",
+   "bacterial-leaf-spot",
+   "cercospora",
+   "septoria",
+   "anthracnose"
+  ],
+  "note": "manchas marrons com um halo amarelo",
+  "lang": "pt-BR",
+  "source": "File:Sycamore leaf with galls and tar spot fungus - geograph.org.uk - 919089.jpg"
+ },
+ {
+  "file": "diagnose/nitrogen-1.jpg",
+  "expect": [
+   "nitrogen",
+   "yellow-lower",
+   "yellow-all",
+   "pale-all"
+  ],
+  "note": "toda la planta amarillenta, primero las hojas viejas",
+  "lang": "es",
+  "source": "File:Phaseolus vulgaris nitrogen deficiency.jpg"
+ },
+ {
+  "file": "diagnose/black-spot-1.jpg",
+  "expect": [
+   "black-spot",
+   "black-spots",
+   "brown-spots-halo"
+  ],
+  "note": "des taches noires entourées de jaune",
+  "lang": "fr",
+  "source": "File:Diplocarpon rosae 123701039.jpg"
+ },
+ {
+  "file": "diagnose/black-spot-2.jpg",
+  "expect": [
+   "black-spot",
+   "black-spots",
+   "brown-spots-halo"
+  ],
+  "note": "schwarze Flecken mit Gelb drumherum",
+  "lang": "de",
+  "source": "File:Diplocarpon rosae 283458090.jpg"
+ },
+ {
+  "file": "diagnose/black-spot-3.jpg",
+  "expect": [
+   "black-spot",
+   "black-spots",
+   "brown-spots-halo"
+  ],
+  "note": "黒い斑点のまわりが黄色い",
+  "lang": "ja",
+  "source": "File:Diplocarpon rosae 123701053.jpg"
+ }
+]

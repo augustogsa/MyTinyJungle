@@ -146,7 +146,13 @@ psqlq "delete from api_quota where subject in ('u:$UA', 'd:$did')" >/dev/null
 [[ $(c $A http://x/v1/brain/identify/feedback -d '{"suggested":"monstera-deliciosa","chosen":"philodendron-hederaceum"}' | jq1 'd["outcome"]') == corrected ]] && ok "identify correction counted"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/metrics); [[ $st == 403 ]] && ok "admin metrics refuses without Access"
 [[ $(psqlq "select count(*) from information_schema.tables where table_name='weather_pattern_sent'") == 1 ]] && ok "weather pattern dedupe table"
+cpw=$(c $A http://x/v1/brain/care-plan -d '{"species":"pothos","lang":"en","medium":"water","weather":{"lat":-23.5,"month":1,"rain7":40,"rainToday":12,"max16":31,"min16":20,"hasNormals":false}}'); echo "$cpw" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["medium"]=="water" and d["waterStyle"]=="refresh" and d["followUps"],d' && ok "water culture plan refreshes, never waters"
+python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"lang":"en"}))' /tmp/idcheck/aloe-vera.jpg > /tmp/mtj-sc.json
+sc=$(c $A -m 120 http://x/v1/brain/scene -d @/tmp/mtj-sc.json); rm -f /tmp/mtj-sc.json
+echo "$sc" | python3 -c 'import json,sys;s=json.load(sys.stdin)["scene"];assert all(k in s for k in ("plant","pot","soil","light","surroundings")) and "conf" in s["soil"]["medium"],s' && ok "whole scene from photo (medium $(echo "$sc" | python3 -c 'import json,sys;print(json.load(sys.stdin)["scene"]["soil"]["medium"]["value"])'))"
+[[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/feedback -d '{"kind":"species","predicted":"aloe-vera","corrected":"haworthia","lang":"en"}') == 200 ]] && [[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/feedback -d '{"kind":"nope"}') == 400 ]] && ok "brain feedback"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/limits); [[ $st == 403 ]] && ok "admin limits refuses without Access"
 st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/me); [[ $st == 200 ]] && ok "account deletion"
+if [[ -f /tmp/eval/run.py ]]; then python3 /tmp/eval/run.py --quick || die "brain eval below thresholds"; ok "brain eval (quick) passes thresholds"; fi
 echo "passed $pass checks"

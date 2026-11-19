@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -28,6 +29,58 @@ type kbEntry struct {
 	ID, Kind, Name, Looks string
 	Causes, Fixes         []string
 	words                 map[string]float64
+	ml                    mlIndex // translated name + looks per language
+	phrases               [][]string
+}
+
+// keywordPhrases tokenizes keyword phrases both ways (English stems and multilingual folding).
+func keywordPhrases(kws []string) [][]string {
+	var out [][]string
+	for _, k := range kws {
+		if t := kbWords(k); len(t) > 0 && isASCII(k) { // the English tokenizer cuts "düngen" into "ngen"
+			out = append(out, t)
+		}
+		if t := mlWords(k); len(t) > 0 {
+			out = append(out, t)
+		}
+	}
+	return out
+}
+
+func isASCII(s string) bool {
+	for i := 0; i < len(s); i++ {
+		if s[i] >= 0x80 {
+			return false
+		}
+	}
+	return true
+}
+
+func uniq(ws []string) []string {
+	seen := map[string]bool{}
+	out := ws[:0:0]
+	for _, w := range ws {
+		if !seen[w] {
+			seen[w] = true
+			out = append(out, w)
+		}
+	}
+	return out
+}
+
+// phraseBonus rewards a keyword phrase whose every word is in the question, longer phrases more.
+func phraseBonus(phrases [][]string, have func(string) bool) float64 {
+	best := 0.0
+	for _, ph := range phrases {
+		all := true
+		for _, t := range ph {
+			all = all && have(t)
+		}
+		if all {
+			best = max(best, 0.3+0.25*float64(min(len(ph), 4)))
+		}
+	}
+	return best
 }
 
 // situation is what we know around the plant: room, season, weather, care. Each field matches a key in a
@@ -106,9 +159,12 @@ func (b *brain) load() {
 			ID, Name, Looks         string
 			Causes, Fixes, Keywords []string
 		}
-		Pests, Diseases, Deficiencies []struct{ ID, Name, Signs, Why, Fix, Prevent, Likes string }
-		Scenarios                     []scenario
-		Topics                        []struct {
+		Pests, Diseases, Deficiencies []struct {
+			ID, Name, Signs, Why, Fix, Prevent, Likes string
+			Keywords                                  []string
+		}
+		Scenarios []scenario
+		Topics    []struct {
 			ID, Title, Kind, Intro string
 			Steps                  []struct{ Title, Detail string }
 			Keywords               []string
@@ -120,8 +176,26 @@ func (b *brain) load() {
 	if json.Unmarshal(b.file("data/knowledge.json"), &kb) != nil {
 		return
 	}
+	locales := map[string]map[string]string{}
+	for _, l := range mlLangs {
+		var t struct{ Text map[string]string }
+		if json.Unmarshal(b.file("data/locales/"+l+".json"), &t) == nil {
+			locales[l] = t.Text
+		}
+	}
 	var es []kbEntry
 	add := func(e kbEntry, keywords []string) {
+		e.ml = mlIndex{}
+		for _, l := range mlLangs {
+			e.ml.add(l, trWith(locales, l, e.Name), 2)
+			e.ml.add(l, trWith(locales, l, e.Looks), 1)
+		}
+		for _, k := range keywords { // keywords hold a few non-English phrasings too
+			for _, l := range mlLangs {
+				e.ml.add(l, k, 1)
+			}
+		}
+		e.phrases = keywordPhrases(append([]string{e.Name}, keywords...))
 		e.words = map[string]float64{}
 		for _, t := range kbWords(e.Name) {
 			e.words[t] += 2
@@ -139,7 +213,10 @@ func (b *brain) load() {
 	for _, s := range kb.Symptoms {
 		add(kbEntry{ID: s.ID, Kind: "symptom", Name: s.Name, Looks: s.Looks, Causes: s.Causes, Fixes: s.Fixes}, s.Keywords)
 	}
-	for kind, list := range map[string][]struct{ ID, Name, Signs, Why, Fix, Prevent, Likes string }{"pest": kb.Pests, "disease": kb.Diseases, "deficiency": kb.Deficiencies} {
+	for kind, list := range map[string][]struct {
+		ID, Name, Signs, Why, Fix, Prevent, Likes string
+		Keywords                                  []string
+	}{"pest": kb.Pests, "disease": kb.Diseases, "deficiency": kb.Deficiencies} {
 		for _, p := range list {
 			fixes := splitSentences(p.Fix)
 			if p.Prevent != "" {
@@ -149,7 +226,7 @@ func (b *brain) load() {
 			if p.Why != "" {
 				causes = append(causes, p.Why)
 			}
-			add(kbEntry{ID: p.ID, Kind: kind, Name: p.Name, Looks: p.Signs, Causes: causes, Fixes: fixes}, nil)
+			add(kbEntry{ID: p.ID, Kind: kind, Name: p.Name, Looks: p.Signs, Causes: causes, Fixes: fixes}, p.Keywords)
 		}
 	}
 	var ds []doc
@@ -158,19 +235,28 @@ func (b *brain) load() {
 		for _, st := range t.Steps {
 			text += " " + st.Title + ": " + st.Detail
 		}
-		ds = append(ds, newDoc("topic", t.Title, t.Intro, t.Title+" "+t.Intro+" "+strings.Join(t.Keywords, " ")))
+		d := newDoc("topic", t.Title, t.Intro, t.Title+" "+t.Intro+" "+strings.Join(t.Keywords, " "))
+		d.id, d.keywords, d.phrases = t.ID, t.Keywords, keywordPhrases(t.Keywords)
+		ds = append(ds, d)
 	}
 	for _, g := range kb.Glossary {
-		ds = append(ds, newDoc("glossary", g.Term, g.Meaning, g.Term+" "+g.Term+" "+g.Meaning))
+		d := newDoc("glossary", g.Term, g.Meaning, g.Term+" "+g.Term+" "+g.Meaning)
+		d.id = "glossary:" + strings.ToLower(g.Term)
+		ds = append(ds, d)
 	}
 	for _, so := range kb.Soils {
-		ds = append(ds, newDoc("soil", so.Name, strings.TrimSpace(so.Short+". "+so.Note), so.Name+" "+so.Short+" "+so.ForGroups+" soil mix"))
+		d := newDoc("soil", so.Name, strings.TrimSpace(so.Short+". "+so.Note), so.Name+" "+so.Short+" "+so.ForGroups+" soil mix")
+		d.id = "soil:" + so.ID
+		ds = append(ds, d)
 	}
-	locales := map[string]map[string]string{}
-	for _, l := range []string{"pt-BR", "es", "fr", "de", "ja"} {
-		var t struct{ Text map[string]string }
-		if json.Unmarshal(b.file("data/locales/"+l+".json"), &t) == nil {
-			locales[l] = t.Text
+	for i := range ds {
+		ds[i].ml = mlIndex{}
+		for _, l := range mlLangs {
+			ds[i].ml.add(l, trWith(locales, l, ds[i].title), 2)
+			ds[i].ml.add(l, trWith(locales, l, ds[i].text), 1)
+			for _, k := range ds[i].keywords {
+				ds[i].ml.add(l, k, 1)
+			}
 		}
 	}
 	b.mu.Lock()
@@ -255,7 +341,7 @@ func (b *brain) situational(sit situation) ([]scenario, map[string]float64) {
 	return fit, boost
 }
 
-func (b *brain) rank(note, saw string, boost map[string]float64, extra ...kbEntry) []match {
+func (b *brain) rank(lang, note, saw string, boost map[string]float64, extra ...kbEntry) []match {
 	b.load()
 	b.mu.RLock()
 	defer b.mu.RUnlock()
@@ -266,15 +352,39 @@ func (b *brain) rank(note, saw string, boost map[string]float64, extra ...kbEntr
 	for _, t := range kbWords(affirmed(note)) {
 		ev[t] = 1
 	}
-	var ms []match
-	for _, e := range append(extra, b.entries...) {
+	evL := map[string]float64{} // the owner's note in their own language
+	if lang != "en" {
+		for _, t := range mlWords(note) {
+			evL[t] = 1
+		}
+	}
+	score := func(words map[string]float64, ev map[string]float64) float64 {
 		var s, total float64
-		for w, wt := range e.words {
+		for w, wt := range words {
 			total += wt
 			s += wt * ev[w]
 		}
-		if s > 0 {
-			sc := s / (4 + total*0.15)
+		if s == 0 {
+			return 0
+		}
+		return s / (4 + total*0.15)
+	}
+	noteW := map[string]bool{}
+	for _, t := range kbWords(affirmed(note)) {
+		noteW[t] = true
+	}
+	for t := range evL {
+		noteW[t] = true
+	}
+	have := func(t string) bool { return noteW[t] }
+	var ms []match
+	for _, e := range append(extra, b.entries...) {
+		sc := score(e.words, ev)
+		if len(evL) > 0 {
+			sc = max(sc, score(e.ml[lang], evL))
+		}
+		sc += phraseBonus(e.phrases, have)
+		if sc > 0 {
 			ms = append(ms, match{e, sc * (1 + boost[e.ID])})
 		}
 	}
@@ -319,35 +429,6 @@ func (b *brain) answerFrom(m match, lang string) diagnosis {
 }
 
 // see asks our own vision model what is visible. Empty when the model is down or slow.
-func see(ctx context.Context, jpegB64 string) string {
-	return seeWith(ctx, jpegB64, "Describe only the visible problems of this houseplant in one or two short sentences: leaf colour (yellow, brown, black, pale), spots, crispy or mushy edges, holes, webbing, insects, white fuzz, wilting, drooping, soil state. If it looks healthy say healthy.", 120)
-}
-
-func seeWith(ctx context.Context, jpegB64, prompt string, maxTokens int) string {
-	body, _ := json.Marshal(map[string]any{
-		"max_tokens": maxTokens, "temperature": 0.1,
-		"messages": []any{map[string]any{"role": "user", "content": []any{
-			map[string]any{"type": "image_url", "image_url": map[string]string{"url": "data:image/jpeg;base64," + jpegB64}},
-			map[string]any{"type": "text", "text": prompt},
-		}}},
-	})
-	cctx, cancel := context.WithTimeout(ctx, 45*time.Second)
-	defer cancel()
-	req, _ := http.NewRequestWithContext(cctx, "POST", "http://127.0.0.1:8091/v1/chat/completions", bytes.NewReader(body))
-	req.Header.Set("Content-Type", "application/json")
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return ""
-	}
-	defer res.Body.Close()
-	var out struct {
-		Choices []struct{ Message struct{ Content string } }
-	}
-	if json.NewDecoder(res.Body).Decode(&out) != nil || len(out.Choices) == 0 {
-		return ""
-	}
-	return strings.TrimSpace(out.Choices[0].Message.Content)
-}
 
 func signature(species string, ms []match) string {
 	ids := []string{strings.ToLower(species)}
@@ -371,9 +452,13 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string, s
 	if theBrain.dir == "" {
 		theBrain.dir = s.cfg.ContentDir
 	}
-	saw := see(ctx, photo)
+	sc, _ := readScene(ctx, photo)
+	saw := sc.evidence()
+	sit = sc.situation(sit)
 	fit, boost := theBrain.situational(sit)
 	sp := theBrain.findSpecies(species)
+	mediumBoost(sit, boost)
+	fit = forSpecies(fit, sp)
 	notes, cb := clashes(sp, sit)
 	for k, v := range cb {
 		boost[k] += v
@@ -383,7 +468,23 @@ func (s *Server) think(ctx context.Context, photo, species, note, lang string, s
 			boost[id] += 0.15 // pests this species is known to get
 		}
 	}
-	ms := theBrain.rank(note, saw, boost, speciesEntries(sp)...)
+	ms := theBrain.rank(lang, note, saw, boost, speciesEntries(sp)...)
+	d, err := s.thinkTiers(ctx, photo, species, note, lang, sit, saw, fit, notes, ms)
+	var ids, alts []string
+	for i, m := range ms {
+		if i == 3 {
+			break
+		}
+		ids = append(ids, m.e.ID)
+		if i > 0 {
+			alts = append(alts, theBrain.tr(lang, m.e.Name))
+		}
+	}
+	d.IDs, d.Alternatives, d.Scene = ids, alts, &sc
+	return d, err
+}
+
+func (s *Server) thinkTiers(ctx context.Context, photo, species, note, lang string, sit situation, saw string, fit []scenario, notes []string, ms []match) (diagnosis, error) {
 	sig := signature(species, ms)
 	ref := sig + "#" + lang
 	top := []string{}
@@ -518,100 +619,12 @@ func withSituation(d diagnosis, fit []scenario, id, lang string) diagnosis {
 	return d
 }
 
-var weatherCache sync.Map // "lat,lon" rounded → cached conditions
-
-// weatherAt reads current conditions near the plant from Open-Meteo (free, no key). Coordinates are rounded to
-// about 10 km by the caller and never stored.
-func weatherAt(ctx context.Context, lat, lon float64) situation {
-	key := fmt.Sprintf("%.1f,%.1f", lat, lon)
-	type cached struct {
-		at  time.Time
-		sit situation
-	}
-	if c, ok := weatherCache.Load(key); ok && time.Since(c.(cached).at) < time.Hour {
-		return c.(cached).sit
-	}
-	cctx, cancel := context.WithTimeout(ctx, 4*time.Second)
-	defer cancel()
-	u := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.1f&longitude=%.1f&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,cloud_cover&daily=temperature_2m_max,temperature_2m_min&past_days=3&forecast_days=1", lat, lon)
-	req, _ := http.NewRequestWithContext(cctx, "GET", u, nil)
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil
-	}
-	defer res.Body.Close()
-	var w struct {
-		Current struct {
-			T     float64 `json:"temperature_2m"`
-			RH    float64 `json:"relative_humidity_2m"`
-			Rain  float64 `json:"precipitation"`
-			Wind  float64 `json:"wind_speed_10m"`
-			Cloud float64 `json:"cloud_cover"`
-		}
-		Daily struct {
-			Max []float64 `json:"temperature_2m_max"`
-			Min []float64 `json:"temperature_2m_min"`
-		}
-	}
-	if res.StatusCode != 200 || json.NewDecoder(res.Body).Decode(&w) != nil {
-		return nil
-	}
-	sit := situation{}
-	add := func(k, v string) { sit[k] = append(sit[k], v) }
-	c := w.Current
-	if c.Rain > 0.2 {
-		add("weather", "rainy")
-	}
-	if c.RH >= 75 {
-		add("weather", "humid")
-	} else if c.RH <= 35 {
-		add("weather", "dry")
-	}
-	if c.Wind >= 35 {
-		add("weather", "windy")
-	}
-	if c.Wind >= 60 {
-		add("weather", "storm")
-	}
-	if c.Cloud >= 85 {
-		add("weather", "cloudy-days")
-	}
-	hot, frost := 0, false
-	for i := range w.Daily.Max {
-		if w.Daily.Max[i] >= 32 {
-			hot++
-		}
-		if i < len(w.Daily.Min) && w.Daily.Min[i] <= 0 {
-			frost = true
-		}
-	}
-	if hot >= 2 {
-		add("weather", "heatwave")
-	}
-	if frost {
-		add("weather", "frost")
-	} else if c.T <= 8 {
-		add("weather", "cold-snap")
-	}
-	month := time.Now().Month()
-	south := lat < 0
-	season := map[time.Month]string{12: "winter", 1: "winter", 2: "winter", 3: "spring", 4: "spring", 5: "spring", 6: "summer", 7: "summer", 8: "summer", 9: "autumn", 10: "autumn", 11: "autumn"}[month]
-	if south {
-		season = map[string]string{"winter": "summer", "summer": "winter", "spring": "autumn", "autumn": "spring"}[season]
-	}
-	if lat > -23.5 && lat < 23.5 {
-		season = "" // tropics: seasons don't follow the calendar
-	}
-	if season != "" {
-		add("season", season)
-	}
-	weatherCache.Store(key, cached{time.Now(), sit})
-	return sit
-}
-
 type doc struct {
-	kind, title, text string
-	words             map[string]bool
+	id, kind, title, text string
+	words                 map[string]bool
+	keywords              []string
+	ml                    mlIndex
+	phrases               [][]string
 }
 
 func newDoc(kind, title, text, index string) doc {
@@ -626,21 +639,75 @@ func newDoc(kind, title, text, index string) doc {
 func (b *brain) docs(q, lang string, n int) []doc {
 	b.load()
 	b.mu.RLock()
-	qs := kbWords(q)
+	qs := uniq(kbWords(q))
+	var qL []string
+	if lang != "en" {
+		qL = uniq(mlWords(q))
+	}
 	type hit struct {
 		d doc
 		s float64
 	}
 	var hs []hit
+	// Rare words weigh more: "adubo" says more than "planta" or "tempo".
+	N := float64(len(b.docs_))
+	idf := func(df int) float64 { return math.Log((N + 1) / (float64(df) + 1)) }
+	wE, wL := make([]float64, len(qs)), make([]float64, len(qL))
 	for _, d := range b.docs_ {
-		var s float64
-		for _, t := range qs {
+		for i, t := range qs {
 			if d.words[t] {
-				s++
+				wE[i]++
 			}
 		}
-		if s > 0 && s/float64(len(qs)) >= 0.34 {
-			hs = append(hs, hit{d, s / (1 + 0.02*float64(len(d.words)))})
+		for i, t := range qL {
+			if d.ml[lang][t] > 0 {
+				wL[i]++
+			}
+		}
+	}
+	var totE, totL float64
+	for i := range wE {
+		wE[i] = idf(int(wE[i]))
+		totE += wE[i]
+	}
+	for i := range wL {
+		wL[i] = idf(int(wL[i]))
+		totL += wL[i]
+	}
+	for _, d := range b.docs_ {
+		var s, sw float64
+		for i, t := range qs {
+			if d.words[t] {
+				s++
+				sw += wE[i]
+			}
+		}
+		best := 0.0
+		if s > 0 && s/float64(len(qs)) >= 0.34 && totE > 0 {
+			best = s * (sw / totE) * float64(len(qs)) / s / (1 + 0.02*float64(len(d.words)))
+		}
+		if len(qL) > 0 {
+			var sl, slw float64
+			for i, t := range qL {
+				if d.ml[lang][t] > 0 {
+					sl++
+					slw += wL[i]
+				}
+			}
+			if sl > 0 && sl/float64(len(qL)) >= 0.25 && totL > 0 {
+				best = max(best, (slw/totL)*float64(len(qL))/(1+0.02*float64(len(d.ml[lang]))))
+			}
+		}
+		qw := map[string]bool{}
+		for _, t := range qs {
+			qw[t] = true
+		}
+		for _, t := range qL {
+			qw[t] = true
+		}
+		best += phraseBonus(d.phrases, func(t string) bool { return qw[t] })
+		if best > 0 {
+			hs = append(hs, hit{d, best})
 		}
 	}
 	b.mu.RUnlock()
@@ -650,7 +717,22 @@ func (b *brain) docs(q, lang string, n int) []doc {
 		if i == n {
 			break
 		}
-		out = append(out, doc{kind: h.d.kind, title: b.tr(lang, h.d.title), text: b.tr(lang, h.d.text)})
+		out = append(out, doc{id: h.d.id, kind: h.d.kind, title: b.tr(lang, h.d.title), text: b.tr(lang, h.d.text)})
 	}
 	return out
+}
+
+// mediumBoost: a plant in water, LECA or PON can't be thirsty for soil watering; favour hydro problems.
+func mediumBoost(sit situation, boost map[string]float64) {
+	for _, m := range sit["medium"] {
+		switch m {
+		case "water", "leca", "pon":
+			for _, id := range []string{"droop-dry", "underwatering-signs", "wrinkled", "soil-dries-fast", "brown-crispy-whole", "succulent-wrinkled", "revive-dry"} {
+				boost[id] -= 0.9
+			}
+			for _, id := range []string{"hydro-algae", "hydro-brown-roots", "leca-roots-rot", "leca-white-crust", "cutting-rotting", "root-rot"} {
+				boost[id] += 0.35
+			}
+		}
+	}
 }

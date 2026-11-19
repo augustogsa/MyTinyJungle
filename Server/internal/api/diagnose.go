@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"math"
 	"net/http"
 	"os"
 	"strings"
@@ -37,6 +36,11 @@ type diagnosis struct {
 	Source     string   `json:"source,omitempty"` // library | internal | free | claude
 	Context    string   `json:"context,omitempty"`
 	Ref        string   `json:"ref,omitempty"` // send back with /v1/diagnose/feedback // what the plant's situation has to do with it
+	// Our knowledge ids behind the answer, best first (up to 3), and the runners-up by name.
+	IDs          []string `json:"ids,omitempty"`
+	Alternatives []string `json:"alternatives,omitempty"`
+	Scene        *scene   `json:"scene,omitempty"`
+	Weather      []string `json:"weather,omitempty"` // reasons from the local weather, in the owner's language
 }
 
 func (s *Server) aiClient() *anthropic.Client {
@@ -60,6 +64,7 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 		Situation map[string][]string `json:"situation"`
 		Lat       *float64            `json:"lat"`
 		Lon       *float64            `json:"lon"`
+		extras
 	}
 	if decode(r, &in) != nil || len(in.Photo) == 0 || len(in.Photo) > 1_800_000 || len(in.Species) > 120 || len(in.Note) > 600 || len(in.Lang) > 12 {
 		s.fail(w, r, bad("invalid_request"))
@@ -99,13 +104,9 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 			sit[k] = v
 		}
 	}
-	if in.Lat != nil && in.Lon != nil && *in.Lat >= -90 && *in.Lat <= 90 && *in.Lon >= -180 && *in.Lon <= 180 {
-		for k, v := range weatherAt(ctx, math.Round(*in.Lat*10)/10, math.Round(*in.Lon*10)/10) {
-			if _, set := sit[k]; !set {
-				sit[k] = v
-			}
-		}
-	}
+	sit = in.extras.into(sit)
+	wf := resolveWeather(ctx, in.extras.Weather, in.Lat, in.Lon)
+	sit = mergeSit(sit, wf.situation())
 	tctx, tcancel := context.WithTimeout(context.WithoutCancel(ctx), 90*time.Second)
 	defer tcancel()
 	d, err := s.think(tctx, in.Photo, in.Species, in.Note, in.Lang, sit)
@@ -116,6 +117,11 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 	if len(d.Steps) > 4 {
 		d.Steps = d.Steps[:4]
 	}
+	lang := in.Lang
+	if lang == "" || strings.HasPrefix(lang, "en") {
+		lang = "en"
+	}
+	d.Weather = wf.notes(lang, isOutdoor(sit), theBrainWith(s).findSpecies(in.Species))
 	writeJSON(w, http.StatusOK, d)
 }
 

@@ -1,0 +1,500 @@
+[
+ {
+  "name": "pothos in a glass of water",
+  "in": {
+   "species": "epipremnum-aureum",
+   "medium": "water",
+   "lang": "en"
+  },
+  "expect": {
+   "waterStyle": "refresh",
+   "medium": "water",
+   "advice": [
+    "water-culture"
+   ],
+   "followUps": 1,
+   "waterMin": 7,
+   "waterMax": 10
+  }
+ },
+ {
+  "name": "pothos in water (situation key)",
+  "in": {
+   "species": "pothos",
+   "situation": {
+    "medium": [
+     "water"
+    ]
+   },
+   "lang": "pt-BR"
+  },
+  "expect": {
+   "waterStyle": "refresh",
+   "medium": "water"
+  }
+ },
+ {
+  "name": "monstera in LECA",
+  "in": {
+   "species": "monstera-deliciosa",
+   "medium": "leca",
+   "lang": "en"
+  },
+  "expect": {
+   "waterStyle": "reservoir",
+   "advice": [
+    "leca-reservoir"
+   ],
+   "followUps": 1
+  }
+ },
+ {
+  "name": "PON",
+  "in": {
+   "species": "zamioculcas",
+   "medium": "pon",
+   "lang": "de"
+  },
+  "expect": {
+   "waterStyle": "reservoir",
+   "advice": [
+    "pon-reservoir"
+   ]
+  }
+ },
+ {
+  "name": "orchid in sphagnum",
+  "in": {
+   "species": "phalaenopsis",
+   "medium": "sphagnum",
+   "lang": "en"
+  },
+  "expect": {
+   "waterStyle": "soak",
+   "advice": [
+    "sphagnum-soak"
+   ]
+  }
+ },
+ {
+  "name": "mounted staghorn",
+  "in": {
+   "species": "platycerium",
+   "medium": "mounted",
+   "lang": "en"
+  },
+  "expect": {
+   "waterStyle": "mist",
+   "advice": [
+    "mounted-mist"
+   ]
+  }
+ },
+ {
+  "name": "closed terrarium",
+  "in": {
+   "species": "fittonia",
+   "medium": "terrarium",
+   "lang": "en"
+  },
+  "expect": {
+   "waterStyle": "closed",
+   "waterMin": 30
+  }
+ },
+ {
+  "name": "just repotted",
+  "in": {
+   "species": "ficus-lyrata",
+   "lifeStage": "repotted",
+   "lang": "en"
+  },
+  "expect": {
+   "feedZero": true,
+   "advice": [
+    "stage-repotted"
+   ],
+   "followUps": 1
+  }
+ },
+ {
+  "name": "dormant in winter",
+  "in": {
+   "species": "zamioculcas",
+   "lifeStage": "dormant",
+   "situation": {
+    "season": [
+     "winter"
+    ]
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "feedZero": true,
+   "advice": [
+    "stage-dormant"
+   ],
+   "waterMin": 20
+  }
+ },
+ {
+  "name": "new plant acclimating",
+  "in": {
+   "species": "ficus-lyrata",
+   "lifeStage": "acclimating",
+   "lang": "fr"
+  },
+  "expect": {
+   "feedZero": true,
+   "advice": [
+    "stage-acclimating"
+   ],
+   "followUps": 2
+  }
+ },
+ {
+  "name": "treating spider mites",
+  "in": {
+   "species": "calathea-ornata",
+   "situation": {
+    "treating": [
+     "spider-mites"
+    ]
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "followUps": 2
+  }
+ },
+ {
+  "name": "no drainage and wet soil",
+  "in": {
+   "species": "sansevieria",
+   "situation": {
+    "moisture": [
+     "wet"
+    ]
+   },
+   "potSetup": {
+    "drainage": false
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "advice": [
+    "nodrain-wet"
+   ],
+   "warning": "no drainage hole"
+  }
+ },
+ {
+  "name": "toxic plant with a pet nearby",
+  "in": {
+   "species": "dieffenbachia",
+   "situation": {
+    "near": [
+     "pet"
+    ]
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "warning": "toxic to pets",
+   "advice": [
+    "pet-near"
+   ]
+  }
+ },
+ {
+  "name": "calathea by a radiator",
+  "in": {
+   "species": "calathea-ornata",
+   "situation": {
+    "near": [
+     "radiator"
+    ],
+    "room": [
+     "heater"
+    ],
+    "humidity": [
+     "low"
+    ]
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "warning": "humid air",
+   "advice": [
+    "radiator-near",
+    "winter-heater"
+   ]
+  }
+ },
+ {
+  "name": "outdoor in rain",
+  "in": {
+   "species": "lavandula",
+   "outdoor": true,
+   "situation": {
+    "weather": [
+     "rainy"
+    ]
+   },
+   "lang": "es"
+  },
+  "expect": {
+   "advice": [
+    "outdoor-rain"
+   ]
+  }
+ },
+ {
+  "name": "under a grow light",
+  "in": {
+   "species": "pilea",
+   "situation": {
+    "light": [
+     "grow-light"
+    ]
+   },
+   "lang": "ja"
+  },
+  "expect": {
+   "advice": [
+    "grow-light-hours"
+   ]
+  }
+ },
+ {
+  "name": "inside a cachepot",
+  "in": {
+   "species": "spathiphyllum",
+   "potSetup": {
+    "cachepot": true
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "advice": [
+    "cachepot-standing"
+   ]
+  }
+ },
+ {
+  "name": "self-watering pot",
+  "in": {
+   "species": "chlorophytum",
+   "potSetup": {
+    "selfWatering": true
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "advice": [
+    "self-watering"
+   ]
+  }
+ },
+ {
+  "name": "artificial plant",
+  "in": {
+   "species": "monstera-deliciosa",
+   "situation": {
+    "plant": [
+     "artificial"
+    ]
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "feedZero": true,
+   "advice": [
+    "plant-artificial"
+   ]
+  }
+ },
+ {
+  "name": "cutting",
+  "in": {
+   "species": "tradescantia-zebrina",
+   "lifeStage": "cutting",
+   "medium": "water",
+   "lang": "pt-BR"
+  },
+  "expect": {
+   "feedZero": true,
+   "advice": [
+    "stage-cutting",
+    "water-culture"
+   ],
+   "followUps": 2
+  }
+ },
+ {
+  "name": "hard water calathea",
+  "in": {
+   "species": "calathea-ornata",
+   "situation": {
+    "water": [
+     "hard"
+    ]
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "advice": [
+    "water-hard"
+   ]
+  }
+ },
+ {
+  "name": "eggshells on soil",
+  "in": {
+   "species": "monstera-deliciosa",
+   "situation": {
+    "surface": [
+     "eggshells"
+    ]
+   },
+   "lang": "en"
+  },
+  "expect": {
+   "advice": [
+    "eggshells-soil"
+   ]
+  }
+ },
+ {
+  "name": "weather: wet week outdoors",
+  "in": {
+   "species": "lavandula",
+   "outdoor": true,
+   "lang": "en",
+   "weather": {
+    "lat": 48.9,
+    "month": 5,
+    "rain7": 42,
+    "rainToday": 8,
+    "rainDays16": 7,
+    "max7": 19,
+    "min7": 9,
+    "max16": 22,
+    "min16": 8,
+    "rhNow": 80
+   }
+  },
+  "expect": {
+   "weatherNote": "rain",
+   "waterMin": 10,
+   "advice": [
+    "outdoor-rain",
+    "rainy-week",
+    "herbs-outdoor-rain"
+   ]
+  }
+ },
+ {
+  "name": "weather: frost ahead",
+  "in": {
+   "species": "citrus-limon",
+   "outdoor": true,
+   "lang": "pt-BR",
+   "weather": {
+    "lat": -30.0,
+    "month": 6,
+    "frostDays16": 3,
+    "min16": -2,
+    "max16": 14,
+    "max7": 16,
+    "min7": 3
+   }
+  },
+  "expect": {
+   "weatherNote": "geada"
+  }
+ },
+ {
+  "name": "weather: heat ahead indoors",
+  "in": {
+   "species": "monstera-deliciosa",
+   "lang": "en",
+   "weather": {
+    "lat": 40.4,
+    "month": 7,
+    "heatDays16": 4,
+    "max16": 37,
+    "max7": 33,
+    "min7": 21
+   }
+  },
+  "expect": {
+   "weatherNote": "37",
+   "waterMax": 9
+  }
+ },
+ {
+  "name": "weather: warmer than normal",
+  "in": {
+   "species": "calathea-ornata",
+   "lang": "de",
+   "weather": {
+    "lat": 52.5,
+    "month": 4,
+    "max7": 22,
+    "min7": 9,
+    "max16": 20,
+    "min16": 6,
+    "hasNormals": true,
+    "normalMax": 14,
+    "normalMin": 4,
+    "normalRain": 40
+   }
+  },
+  "expect": {
+   "weatherNote": "wärmer"
+  }
+ },
+ {
+  "name": "weather: southern winter means rest",
+  "in": {
+   "species": "ficus-elastica",
+   "lang": "en",
+   "weather": {
+    "lat": -33.9,
+    "month": 7,
+    "max7": 17,
+    "min7": 8,
+    "max16": 18,
+    "min16": 7
+   }
+  },
+  "expect": {
+   "feedZero": true
+  }
+ },
+ {
+  "name": "weather: dry spell outdoors",
+  "in": {
+   "species": "rosmarinus",
+   "outdoor": true,
+   "lang": "es",
+   "weather": {
+    "lat": 41.4,
+    "month": 7,
+    "rain7": 0,
+    "max7": 31,
+    "min7": 20,
+    "max16": 31,
+    "min16": 19,
+    "hasNormals": true,
+    "normalMax": 28,
+    "normalMin": 20,
+    "normalRain": 25
+   }
+  },
+  "expect": {
+   "weatherNote": "0 mm"
+  }
+ }
+]

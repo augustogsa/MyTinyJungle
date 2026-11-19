@@ -1,8 +1,8 @@
 package api
 
 import (
-	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -23,7 +23,7 @@ type species struct {
 	ToxicCats, ToxicDogs                                                             bool
 	Pests                                                                            []string
 	Problems                                                                         []struct{ Sign, Cause, Fix string }
-	Aliases                                                                          []string
+	Aliases, Tags                                                                    []string
 }
 
 var speciesDB struct {
@@ -143,6 +143,11 @@ func speciesEntries(sp *species) []kbEntry {
 		for _, t := range kbWords(p.Cause) {
 			e.words[t] += 0.5
 		}
+		e.ml = mlIndex{}
+		for _, l := range mlLangs {
+			e.ml.add(l, theBrain.tr(l, p.Sign), 2.5)
+			e.ml.add(l, theBrain.tr(l, p.Cause), 0.5)
+		}
 		es = append(es, e)
 	}
 	return es
@@ -150,7 +155,7 @@ func speciesEntries(sp *species) []kbEntry {
 
 // gap records knowledge words of something we couldn't answer well (aggregated per day, nothing personal).
 func (s *Server) gap(ctx context.Context, kind, text string) {
-	ws := kbWords(text)
+	ws := mlWords(text) // any language
 	sort.Strings(ws)
 	uniq := ws[:0]
 	for i, w := range ws {
@@ -200,12 +205,32 @@ func (s *Server) adminBrain(w http.ResponseWriter, r *http.Request) {
 		}
 		rows.Close()
 	}
-	writeJSON(w, http.StatusOK, map[string]any{"library": lib, "gaps": gaps})
+	type fb struct {
+		Kind      string `json:"kind"`
+		Predicted string `json:"predicted"`
+		Corrected string `json:"corrected"`
+		N         int64  `json:"n"`
+	}
+	var fbs []fb
+	if rows, err := s.db.Admin.Query(ctx, `select kind, predicted, corrected, count(*) from brain_feedback where day > current_date - 30 group by 1,2,3 order by 4 desc limit 100`); err == nil {
+		for rows.Next() {
+			var x fb
+			rows.Scan(&x.Kind, &x.Predicted, &x.Corrected, &x.N)
+			fbs = append(fbs, x)
+		}
+		rows.Close()
+	}
+	var learned, pending int64
+	s.db.Admin.QueryRow(ctx, `select count(*) filter (where learned_at is not null), count(*) filter (where learned_at is null and photo_ref is not null and kind = 'species') from brain_feedback`).Scan(&learned, &pending)
+	writeJSON(w, http.StatusOK, map[string]any{"library": lib, "gaps": gaps, "feedback": fbs, "learnedPhotos": learned, "pendingPhotos": pending})
 }
 
 // POST /v1/brain/identify {photo}: names a plant from a photo with our own model, matched to our species list.
 func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
-	var in struct{ Photo, Lang string }
+	var in struct {
+		Photo, Lang string
+		Scene       *bool `json:"scene"` // false: species only, with the quick BioCLIP-only scene (no vision model)
+	}
 	if decode(r, &in) != nil || len(in.Photo) == 0 || len(in.Photo) > 1_800_000 {
 		s.fail(w, r, bad("invalid_request"))
 		return
@@ -213,7 +238,7 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	if theBrain.dir == "" {
 		theBrain.dir = s.cfg.ContentDir
 	}
-	ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 60*time.Second)
+	ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 85*time.Second)
 	defer cancel()
 	theBrain.species()
 	type cand struct {
@@ -243,7 +268,16 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	}
 	// 1. Our own species model (BioCLIP over our list).
 	source := "internal"
-	for _, c := range bioclip(ctx, in.Photo) {
+	var sc scene
+	var ids []bioCand
+	if in.Scene != nil && !*in.Scene {
+		id := askID(ctx, in.Photo)
+		img, _ := base64.StdEncoding.DecodeString(in.Photo)
+		sc, ids = buildScene(vlmScene{}, false, id.Scene, img), id.Candidates
+	} else {
+		sc, ids = readScene(ctx, in.Photo)
+	}
+	for _, c := range ids {
 		if c.Score >= 0.05 {
 			add(c.ID, c.Score)
 		}
@@ -293,7 +327,7 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		s.gap(ctx, "identify", "unknown plant")
 	}
 	confident := len(out) > 0 && out[0].Score >= 0.5
-	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "confident": confident, "source": source})
+	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "confident": confident, "source": source, "scene": sc})
 }
 
 // POST /v1/brain/care-plan {species, situation, lat?, lon?}: watering rhythm, light, feeding, repotting and
@@ -304,8 +338,10 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 		Lang      string              `json:"lang"`
 		Situation map[string][]string `json:"situation"`
 		Lat, Lon  *float64
+		Photo     string `json:"photo"` // optional: what the photo shows joins the situation
+		extras
 	}
-	if decode(r, &in) != nil || len(in.Species) > 120 {
+	if decode(r, &in) != nil || len(in.Species) > 120 || len(in.Photo) > 1_800_000 {
 		s.fail(w, r, bad("invalid_request"))
 		return
 	}
@@ -322,13 +358,17 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 	if sit == nil {
 		sit = situation{}
 	}
-	if in.Lat != nil && in.Lon != nil {
-		for k, v := range weatherAt(r.Context(), *in.Lat, *in.Lon) {
-			if _, ok := sit[k]; !ok {
-				sit[k] = v
-			}
-		}
+	var sc *scene
+	if in.Photo != "" {
+		ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 85*time.Second)
+		got, _ := readScene(ctx, in.Photo)
+		cancel()
+		sc = &got
+		sit = got.situation(sit)
 	}
+	sit = in.extras.into(sit)
+	wf := resolveWeather(r.Context(), in.extras.Weather, in.Lat, in.Lon)
+	sit = mergeSit(sit, wf.situation())
 	has := func(k string, vs ...string) bool {
 		for _, x := range sit[k] {
 			for _, v := range vs {
@@ -369,6 +409,12 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 		f *= 0.85
 	}
 	notes, _ := clashes(sp, sit)
+	if (sp.ToxicCats || sp.ToxicDogs) && has("near", "pet") {
+		notes = append(notes, "A pet is close by and this plant is toxic to pets. Keep it out of reach.")
+	}
+	if has("pot", "no-drainage") && has("moisture", "wet") {
+		notes = append(notes, "The pot has no drainage hole and the soil looks wet: the roots are at risk of rotting.")
+	}
 	lang := in.Lang
 	if lang == "" || strings.HasPrefix(lang, "en") {
 		lang = "en"
@@ -377,23 +423,95 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 		notes[i] = theBrain.tr(lang, notes[i])
 	}
 	fit, _ := theBrain.situational(sit)
-	var advice []string
-	for i, sc := range fit {
-		if i == 3 {
+	fit = forSpecies(fit, sp)
+	var advice, adviceIDs []string
+	for i, f := range fit {
+		if i == 4 {
 			break
 		}
-		advice = append(advice, theBrain.tr(lang, sc.Advice))
+		advice = append(advice, theBrain.tr(lang, f.Advice))
+		adviceIDs = append(adviceIDs, f.ID)
 	}
 	feed := sp.FeedWeeks
 	if has("season", "winter") {
 		feed = 0 // rest
 	}
+	medium, style, mix, feedKind := "soil", sp.WaterStyle, sp.Mix, sp.Feed
+	if m := sit["medium"]; len(m) > 0 {
+		medium = m[0]
+	}
+	if has("lifeStage", "dormant") {
+		f *= 1.6
+	}
+	if has("room", "outdoor", "balcony") && has("weather", "rainy") {
+		f *= 1.8 // rain counts as watering
+	}
+	if wf != nil && isOutdoor(sit) && wf.Rain7 >= 25 {
+		f *= 1.3 // a properly wet week on top
+	}
+	water := [2]int{int(lo*f + 0.5), int(hi*f + 0.5)}
+	mc, ok := mediumCare[medium]
+	if ok {
+		style, water = mc.style, mc.every
+		if mc.mix != "" {
+			mix = mc.mix
+		}
+		if mc.feed != "" {
+			feedKind = mc.feed
+			if feed > 0 || !has("season", "winter") {
+				feed = 4
+			}
+		}
+	}
+	var care []string
+	for _, c := range mc.steps {
+		care = append(care, theBrain.tr(lang, c))
+	}
+	if has("lifeStage", "repotted", "dormant", "recovering", "acclimating", "cutting") || has("plant", "artificial") {
+		feed = 0
+	}
+	type follow struct {
+		InDays      int    `json:"inDays"`
+		RepeatEvery int    `json:"repeatEveryDays,omitempty"`
+		Times       int    `json:"times,omitempty"`
+		What        string `json:"what"`
+	}
+	var follows []follow
+	fu := func(in, every, times int, what string) {
+		follows = append(follows, follow{in, every, times, theBrain.tr(lang, what)})
+	}
+	switch medium {
+	case "water":
+		fu(8, 8, 0, "Swap the water and rinse the glass.")
+	case "leca", "pon":
+		fu(10, 10, 0, "Check the reservoir and top up with nutrient water.")
+	}
+	if has("lifeStage", "repotted") {
+		fu(35, 0, 0, "Start feeding again: the roots have settled.")
+	}
+	if has("lifeStage", "acclimating") {
+		fu(3, 0, 0, "Check the leaves and soil: a few dropped leaves are normal while it settles in.")
+		fu(14, 0, 0, "Settled in? If new growth shows, go back to the normal routine.")
+	}
+	if has("lifeStage", "cutting") {
+		fu(14, 7, 4, "Check for roots and refresh the water or keep the mix just moist.")
+	}
+	if has("lifeStage", "unknown_history") {
+		fu(7, 7, 2, "Check under the leaves for pests before it joins the other plants.")
+	}
+	for _, p := range sit["treating"] {
+		if len(p) < 40 {
+			fu(6, 6, 3, "Repeat the pest treatment and check under the leaves.")
+			fu(21, 0, 0, "Two clean checks in a row? It can rejoin the other plants.")
+			break
+		}
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
-		"species": sp.ID, "waterEveryDays": [2]int{int(lo*f + 0.5), int(hi*f + 0.5)}, "waterStyle": sp.WaterStyle,
+		"species": sp.ID, "waterEveryDays": water, "waterStyle": style, "medium": medium, "mediumCare": care,
 		"light": sp.Light, "humidityMin": sp.HumidityMin, "tempRange": [2]float64{sp.TempMin, sp.TempMax},
-		"feedEveryWeeks": feed, "feed": sp.Feed, "mix": sp.Mix, "repotEveryYears": sp.RepotYears,
+		"feedEveryWeeks": feed, "feed": feedKind, "mix": mix, "repotEveryYears": sp.RepotYears,
 		"toxicCats": sp.ToxicCats, "toxicDogs": sp.ToxicDogs, "tip": theBrain.tr(lang, sp.Tip),
-		"warnings": notes, "advice": advice, "situation": sit,
+		"warnings": notes, "advice": advice, "adviceIds": adviceIDs, "followUps": follows, "weatherNotes": wf.notes(lang, isOutdoor(sit), sp), "situation": sit, "scene": sc,
 	})
 }
 
@@ -402,18 +520,84 @@ type bioCand struct {
 	Score float64 `json:"score"`
 }
 
-// bioclip asks our plant ID service (127.0.0.1:8092) for its top species.
-func bioclip(ctx context.Context, jpegB64 string) []bioCand {
-	body, _ := json.Marshal(map[string]string{"photo": jpegB64})
-	cctx, cancel := context.WithTimeout(ctx, 20*time.Second)
-	defer cancel()
-	req, _ := http.NewRequestWithContext(cctx, "POST", "http://127.0.0.1:8092/", bytes.NewReader(body))
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil
+// mediumCare: plants not in soil follow their medium's rhythm, never a soil dry-out rhythm.
+// style: refresh (swap the water) | reservoir (top up a reservoir) | soak | mist | closed (terrarium).
+var mediumCare = map[string]struct {
+	style, mix, feed string
+	every            [2]int
+	steps            []string
+}{
+	"water": {"refresh", "water", "hydro-quarter", [2]int{7, 10}, []string{
+		"Swap the water every 7–10 days and top it up in between so the roots stay covered.",
+		"Feed at quarter strength with a liquid fertiliser once a month.",
+		"Rinse the glass if green algae or slime appear, and trim any brown, mushy roots.",
+		"Move it into soil once the roots are 5–10 cm long, or keep it in water for good.",
+	}},
+	"leca": {"reservoir", "leca", "hydro", [2]int{7, 14}, []string{
+		"Keep the water reservoir at about a third of the pot's height, with the roots above it.",
+		"Let the reservoir run almost dry for a day or two before refilling, so the roots get air.",
+		"Add hydro nutrient at every refill and flush with plain water once a month.",
+		"Rinse the balls when a white salt crust builds up.",
+	}},
+	"pon": {"reservoir", "pon", "hydro", [2]int{7, 14}, []string{
+		"Keep the water reservoir at about a third of the pot's height, with the roots above it.",
+		"Let the reservoir run almost dry for a day or two before refilling, so the roots get air.",
+		"Add hydro nutrient at every refill and flush with plain water once a month.",
+	}},
+	"sphagnum": {"soak", "sphagnum", "", [2]int{5, 8}, []string{
+		"Soak the moss when it feels light and only just damp, then let it drain well.",
+		"Never let the moss go crispy, and never leave it soggy.",
+		"Replace the moss once a year, when it turns slimy.",
+	}},
+	"mounted": {"mist", "mounted", "", [2]int{2, 4}, []string{
+		"Mist daily, or soak the mount for 10–20 minutes two or three times a week.",
+		"Let the roots turn silvery dry between soaks.",
+		"Keep the air humid: mounted plants dry out fast.",
+	}},
+	"terrarium": {"closed", "terrarium", "", [2]int{30, 90}, []string{
+		"Water only when the glass stops fogging in the morning; a closed terrarium may go months without water.",
+		"Open the lid for an hour if the glass stays fogged all day.",
+	}},
+}
+
+// Scenario subjects: a scenario whose id names a kind of plant ("heater-succulent", "tomato-rain") only applies
+// to plants of that kind. Each subject lists words that must appear in the species' id, group, names or tags.
+var scenarioSubjects = map[string][]string{
+	"succulent": {"succulent", "cactus", "epicactus", "aloe", "haworth", "echeveria", "crassula", "sedum", "senecio", "curio", "kalanchoe"},
+	"cactus":    {"cactus", "epicactus"}, "desert": {"cactus", "succulent"},
+	"orchid": {"orchid", "phalaenopsis"}, "fern": {"fern", "nephrolepis", "adiantum", "asplenium", "platycerium"},
+	"tomato": {"tomato", "solanum lycopersicum"}, "herbs": {"herb"}, "herb": {"herb"}, "basil": {"basil", "ocimum"}, "mint": {"mint", "mentha"},
+	"citrus": {"citrus", "lime", "lemon", "mandarin", "orange", "grapefruit"}, "calathea": {"prayer", "calathea", "goeppertia", "maranta", "ctenanthe", "stromanthe"},
+	"monstera": {"monstera"}, "alocasia": {"alocasia"}, "fig": {"ficus"}, "ficus": {"ficus"}, "roses": {"rosa", "rose"}, "rose": {"rosa", "rose"},
+	"pothos": {"epipremnum", "pothos", "scindapsus"}, "snake": {"sansevieria", "trifasciata", "snake"}, "peace": {"spathiphyllum"},
+	"ivy": {"hedera", "ivy"}, "bulbs": {"bulb"}, "veg": {"vegetable"}, "vegetables": {"vegetable"}, "fruit": {"fruit", "citrus", "strawberr", "fig", "olive"},
+	"lilies": {"lilium", "lily"}, "box": {"buxus", "box"}, "carnivorous": {"carnivorous"}, "bromeliad": {"bromeliad"}, "palm": {"palm"},
+	"violet": {"violet", "saintpaulia"}, "tropical": {"tropical", "aroid", "prayer", "palm", "bromeliad"}, "bonsai": {"bonsai"}, "strawberry": {"strawberr"},
+}
+
+// forSpecies keeps the scenarios that fit this plant and puts plant-specific ones first.
+func forSpecies(fit []scenario, sp *species) []scenario {
+	text := ""
+	if sp != nil {
+		text = strings.ToLower(strings.Join(append([]string{sp.ID, sp.Group, sp.Scientific, sp.En, sp.Mix}, sp.Tags...), " "))
 	}
-	defer res.Body.Close()
-	var out struct{ Candidates []bioCand }
-	json.NewDecoder(res.Body).Decode(&out)
-	return out.Candidates
+	var specific, general []scenario
+	for _, sc := range fit {
+		subject, match := false, false
+		for _, part := range strings.Split(sc.ID, "-") {
+			if words, ok := scenarioSubjects[part]; ok {
+				subject = true
+				for _, w := range words {
+					match = match || strings.Contains(text, w)
+				}
+			}
+		}
+		switch {
+		case subject && match:
+			specific = append(specific, sc)
+		case !subject:
+			general = append(general, sc)
+		}
+	}
+	return append(specific, general...)
 }

@@ -1,0 +1,208 @@
+[
+ {
+  "file": "scene/w4-0.jpg",
+  "expect": {
+   "soil.medium": "water",
+   "plant.artificial": false
+  },
+  "source": "File:Parlor palm in glass vase with visible roots.jpg"
+ },
+ {
+  "file": "scene/w4-1.jpg",
+  "expect": {
+   "soil.medium": "water"
+  },
+  "source": "File:A green plant in a round glass vase sits on a book next to a coffee mug.jpg"
+ },
+ {
+  "file": "scene/hydroculture-5.jpg",
+  "expect": {
+   "soil.medium": "water"
+  },
+  "source": "File:Class of Wistaria Tea House.jpg"
+ },
+ {
+  "file": "scene/waterroot-0.jpg",
+  "expect": {
+   "soil.medium": "water"
+  },
+  "source": "File:Ficus cuttings with roots in a bottle, White background.jpg"
+ },
+ {
+  "file": "scene/hydroculture-3.jpg",
+  "expect": {
+   "soil.medium": "leca"
+  },
+  "source": "File:Alocasia x amazonica 'Polly'.jpg"
+ },
+ {
+  "file": "scene/w8-0.jpg",
+  "expect": {
+   "soil.medium": "sphagnum"
+  },
+  "source": "File:Vanda falcata Akausagi fukiran planting habit.jpg"
+ },
+ {
+  "file": "scene/mounted-1.jpg",
+  "expect": {
+   "soil.medium": "mounted"
+  },
+  "source": "File:Tillandsia tower arp.jpg"
+ },
+ {
+  "file": "scene/h7-4.jpg",
+  "expect": {
+   "soil.medium": "mounted",
+   "surroundings.room": "outdoor"
+  },
+  "source": "File:Foxtail Orchid or Rhynchostylis.jpg"
+ },
+ {
+  "file": "scene/terrarium-5.jpg",
+  "expect": {
+   "soil.medium": "terrarium"
+  },
+  "source": "File:Bioglobes - MUSE.jpg"
+ },
+ {
+  "file": "scene/terrarium-7.jpg",
+  "expect": {
+   "soil.medium": "terrarium"
+  },
+  "source": "File:Casita de vidrio .jpg"
+ },
+ {
+  "file": "scene/terrarium-9.jpg",
+  "expect": {
+   "soil.medium": "terrarium"
+  },
+  "source": "File:Christmas Ecosystem.jpg"
+ },
+ {
+  "file": "scene/terrarium-10.jpg",
+  "expect": {
+   "soil.medium": "terrarium"
+  },
+  "source": "File:Connor Betts 2017 (Unsplash).jpg"
+ },
+ {
+  "file": "scene/fake-4.jpg",
+  "expect": {
+   "plant.artificial": true
+  },
+  "source": "File:An artificial plant.jpg"
+ },
+ {
+  "file": "scene/fake-5.jpg",
+  "expect": {
+   "plant.artificial": true
+  },
+  "source": "File:Artificial fern.JPG"
+ },
+ {
+  "file": "scene/fake-6.jpg",
+  "expect": {
+   "plant.artificial": true
+  },
+  "source": "File:Artificial plant.JPG"
+ },
+ {
+  "file": "scene/fake-9.jpg",
+  "expect": {
+   "plant.artificial": true
+  },
+  "source": "File:Beruru, Bengaluru (2026) 06.jpg"
+ },
+ {
+  "file": "scene/fake-13.jpg",
+  "expect": {
+   "plant.artificial": true
+  },
+  "source": "File:Bush.jpg"
+ },
+ {
+  "file": "identify/sansevieria-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/zamioculcas-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/aloe-vera-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false,
+   "pot.material": "terracotta"
+  }
+ },
+ {
+  "file": "identify/pilea-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/chlorophytum-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/crassula-ovata-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/schefflera-arboricola-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/calathea-zebrina-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/alocasia-amazonica-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/dracaena-marginata-1.jpg",
+  "expect": {
+   "soil.medium": "soil",
+   "plant.artificial": false
+  }
+ },
+ {
+  "file": "identify/ficus-lyrata-1.jpg",
+  "expect": {
+   "plant.artificial": false,
+   "surroundings.room": "outdoor"
+  }
+ },
+ {
+  "file": "identify/beaucarnea-2.jpg",
+  "expect": {
+   "plant.artificial": false,
+   "surroundings.room": "outdoor"
+  }
+ }
+]

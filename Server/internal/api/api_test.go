@@ -3,6 +3,8 @@ package api
 import (
 	"crypto/ed25519"
 	"crypto/rand"
+	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -180,7 +182,7 @@ func TestBrainMatchesKnowledge(t *testing.T) {
 	os.WriteFile(filepath.Join(dir, "b", "l.json"), []byte(loc), 0o644)
 	os.WriteFile(filepath.Join(dir, "manifest.json"), []byte(`{"files":{"data/knowledge.json":{"h":"k.json"},"data/locales/es.json":{"h":"l.json"}}}`), 0o644)
 	b := &brain{dir: dir}
-	ms := b.rank("there is fine webbing under the leaves and they look dusty", "no yellow leaves, healthy", nil)
+	ms := b.rank("en", "there is fine webbing under the leaves and they look dusty", "no yellow leaves, healthy", nil)
 	if len(ms) == 0 || ms[0].e.ID != "spider-mites" {
 		t.Fatalf("rank: %+v", ms)
 	}
@@ -188,4 +190,163 @@ func TestBrainMatchesKnowledge(t *testing.T) {
 	if d.Problem != "Ácaros" || d.Steps[0] != "Dale una ducha." || !d.Urgent {
 		t.Fatalf("answer: %+v", d)
 	}
+}
+
+// realBrain loads the repo's Content/ pack (go test -run Eval with MTJ_EVAL=1).
+func realBrain(t *testing.T) *brain {
+	if os.Getenv("MTJ_EVAL") == "" {
+		t.Skip("set MTJ_EVAL=1")
+	}
+	root, _ := filepath.Abs("../../../Content")
+	dir := t.TempDir()
+	os.MkdirAll(filepath.Join(dir, "b"), 0o755)
+	files := map[string]any{}
+	filepath.Walk(filepath.Join(root, "data"), func(p string, fi os.FileInfo, err error) error {
+		if err == nil && !fi.IsDir() {
+			rel, _ := filepath.Rel(root, p)
+			h := strings.ReplaceAll(rel, "/", "_")
+			os.Symlink(p, filepath.Join(dir, "b", h))
+			files[rel] = map[string]string{"h": h}
+		}
+		return nil
+	})
+	m, _ := json.Marshal(map[string]any{"files": files})
+	os.WriteFile(filepath.Join(dir, "manifest.json"), m, 0o644)
+	theBrain = &brain{dir: dir}
+	return theBrain
+}
+
+func TestEvalAsk(t *testing.T) {
+	b := realBrain(t)
+	var cases []struct {
+		Expect []string
+		Split  string
+		With   extras
+		Q      map[string]string
+	}
+	raw, _ := os.ReadFile("../../eval/ask.json")
+	json.Unmarshal(raw, &cases)
+	hit, n := map[string]int{}, map[string]int{}
+	for _, c := range cases {
+		for lang, q := range c.Q {
+			l := lang
+			lang = c.Split + " " + lang
+			n[lang]++
+			ok := false
+			var got []string
+			for _, a := range b.ask(q, l, "", c.With.into(nil)) {
+				got = append(got, a.ID)
+				for _, e := range c.Expect {
+					ok = ok || a.ID == e
+				}
+			}
+			if ok {
+				hit[lang]++
+			} else {
+				t.Logf("MISS %s %q -> %v", lang, q, got)
+			}
+		}
+	}
+	for l := range n {
+		t.Logf("ask %s %d/%d", l, hit[l], n[l])
+	}
+}
+
+func TestEvalCarePlan(t *testing.T) {
+	b := realBrain(t)
+	s := &Server{cfg: Config{ContentDir: b.dir}, log: slog.New(slog.NewTextHandler(os.Stderr, nil))}
+	var cases []struct {
+		Name   string
+		In     json.RawMessage
+		Expect struct {
+			WaterStyle, Medium, Warning, WeatherNote string
+			FeedZero                                 bool
+			WaterMin, WaterMax                       int
+			Advice                                   []string
+			FollowUps                                int
+		}
+	}
+	raw, _ := os.ReadFile("../../eval/careplan.json")
+	json.Unmarshal(raw, &cases)
+	ok := 0
+	for _, c := range cases {
+		w := httptest.NewRecorder()
+		s.brainCarePlan(w, httptest.NewRequest("POST", "/v1/brain/care-plan", strings.NewReader(string(c.In))))
+		var r struct {
+			WaterStyle, Medium                string
+			FeedEveryWeeks                    float64
+			Warnings, AdviceIds, WeatherNotes []string
+			FollowUps                         []any
+			WaterEveryDays                    []int
+		}
+		json.Unmarshal(w.Body.Bytes(), &r)
+		bad := []string{}
+		e := c.Expect
+		if e.WaterStyle != "" && r.WaterStyle != e.WaterStyle {
+			bad = append(bad, "style "+r.WaterStyle)
+		}
+		if e.FeedZero && r.FeedEveryWeeks != 0 {
+			bad = append(bad, "feed")
+		}
+		if len(e.Advice) > 0 {
+			hit := false
+			for _, a := range e.Advice {
+				for _, g := range r.AdviceIds {
+					hit = hit || a == g
+				}
+			}
+			if !hit {
+				bad = append(bad, "advice "+strings.Join(r.AdviceIds, ","))
+			}
+		}
+		if e.Warning != "" && !strings.Contains(strings.ToLower(strings.Join(r.Warnings, "|")), strings.ToLower(e.Warning)) {
+			bad = append(bad, "warn "+strings.Join(r.Warnings, "|"))
+		}
+		if e.WeatherNote != "" && !strings.Contains(strings.ToLower(strings.Join(r.WeatherNotes, "|")), strings.ToLower(e.WeatherNote)) {
+			bad = append(bad, "weather "+strings.Join(r.WeatherNotes, "|"))
+		}
+		if len(r.WaterEveryDays) == 2 && ((e.WaterMin > 0 && r.WaterEveryDays[0] < e.WaterMin) || (e.WaterMax > 0 && r.WaterEveryDays[1] > e.WaterMax)) {
+			bad = append(bad, fmt.Sprint("water ", r.WaterEveryDays))
+		}
+		if len(r.FollowUps) < e.FollowUps {
+			bad = append(bad, "follow")
+		}
+		if len(bad) == 0 {
+			ok++
+		} else {
+			t.Logf("MISS %s: %v (%d %s)", c.Name, bad, w.Code, w.Body.String()[:min(200, w.Body.Len())])
+		}
+	}
+	t.Logf("care-plan %d/%d", ok, len(cases))
+}
+
+func TestEvalDiagnoseNotes(t *testing.T) {
+	b := realBrain(t)
+	var cases []struct {
+		File, Note, Lang string
+		Expect           []string
+	}
+	raw, _ := os.ReadFile("../../eval/diagnose.json")
+	json.Unmarshal(raw, &cases)
+	ok := 0
+	for _, c := range cases {
+		var ids []string
+		for i, m := range b.rank(c.Lang, c.Note, "", map[string]float64{}) {
+			if i < 3 {
+				ids = append(ids, m.e.ID)
+			}
+		}
+		hit := false
+		for _, id := range ids {
+			for _, e := range c.Expect {
+				hit = hit || id == e
+			}
+		}
+		if hit {
+			ok++
+		} else {
+			t.Logf("MISS %s %s %q -> %v", c.File, c.Lang, c.Note, ids)
+		}
+	}
+	t.Logf("diagnose (notes only) %d/%d", ok, len(cases))
 }

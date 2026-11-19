@@ -280,34 +280,98 @@ paths:
         required: true
         content: { application/json: { schema: { type: object, required: [ref, helped], properties: { ref: { type: string }, helped: { type: boolean } } } } }
       responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
+  /v1/diagnose:
+    post:
+      operationId: diagnose
+      summary: Plant doctor (Plus) from a photo, with the whole scene and local weather
+      requestBody:
+        required: true
+        content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [photo], properties: { photo: { type: string, format: byte }, species: { type: string }, note: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
+      responses: { "200": { description: Diagnosis, content: { application/json: { schema: { $ref: "#/components/schemas/Diagnosis" } } } }, "402": { $ref: "#/components/responses/Error" }, "429": { $ref: "#/components/responses/Error" } }
   /v1/brain/ask:
     post:
       operationId: brainAsk
-      summary: Care question answered from our own knowledge
+      summary: Care question answered from our own knowledge, in any of our languages
       requestBody:
         required: true
-        content: { application/json: { schema: { type: object, required: [q], properties: { q: { type: string }, lang: { type: string }, species: { type: string }, situation: { type: object, additionalProperties: { type: array, items: { type: string } } } } } } }
-      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
+        content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [q], properties: { q: { type: string }, lang: { type: string }, species: { type: string }, lat: { type: number }, lon: { type: number }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
+      responses:
+        "200":
+          description: Answers, best first. kind is symptom|pest|disease|deficiency|species|topic|glossary|soil|situation|weather; id is the knowledge id.
+          content: { application/json: { schema: { type: object, properties: { answers: { type: array, items: { type: object, properties: { id: { type: string }, kind: { type: string }, title: { type: string }, text: { type: string }, steps: { type: array, items: { type: string } } } } } } } } }
+        "400": { $ref: "#/components/responses/Error" }
   /v1/brain/identify:
     post:
       operationId: brainIdentify
-      summary: Name a plant from a photo with our own model
+      summary: Name a plant from a photo with our own model, plus the photo's scene
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte }, lang: { type: string }, scene: { type: boolean, default: true, description: "false skips the vision model (quick BioCLIP-only scene)" } } } } }
+      responses:
+        "200":
+          description: Top 3 species and the scene
+          content: { application/json: { schema: { type: object, properties: { candidates: { type: array, items: { type: object, properties: { id: { type: string }, scientific: { type: string }, name: { type: string }, score: { type: number } } } }, confident: { type: boolean }, source: { type: string, enum: [internal, free, claude] }, scene: { $ref: "#/components/schemas/Scene" } } } } }
+        "400": { $ref: "#/components/responses/Error" }
+  /v1/brain/scene:
+    post:
+      operationId: brainScene
+      summary: The whole scene of a plant photo (plant, pot, soil, light, surroundings), own models only
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte }, lang: { type: string } } } } }
-      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
+      responses: { "200": { description: Scene, content: { application/json: { schema: { type: object, properties: { scene: { $ref: "#/components/schemas/Scene" } } } } } }, "400": { $ref: "#/components/responses/Error" } }
   /v1/brain/care-plan:
     post:
       operationId: brainCarePlan
-      summary: Care plan for a species in its real conditions
+      summary: Care plan for a species in its real conditions (medium, life stage, pot, scene, weather)
       requestBody:
         required: true
-        content: { application/json: { schema: { type: object, required: [species], properties: { species: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, situation: { type: object, additionalProperties: { type: array, items: { type: string } } } } } } }
-      responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" }, "404": { $ref: "#/components/responses/Error" } }
+        content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [species], properties: { species: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, photo: { type: string, format: byte, description: "optional: the photo's scene joins the situation" }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
+      responses:
+        "200":
+          description: Care plan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  species: { type: string }
+                  medium: { $ref: "#/components/schemas/Medium" }
+                  waterEveryDays: { type: array, items: { type: integer }, minItems: 2, maxItems: 2 }
+                  waterStyle: { type: string, enum: [top, half, dry, moist, refresh, reservoir, soak, mist, closed], description: "refresh = swap the water (water culture), reservoir = top up (LECA/PON), soak = sphagnum, mist = mounted, closed = terrarium; never show a soil 'water me' for these" }
+                  mediumCare: { type: array, items: { type: string } }
+                  light: { type: string }
+                  humidityMin: { type: number }
+                  tempRange: { type: array, items: { type: number } }
+                  feedEveryWeeks: { type: number }
+                  feed: { type: string }
+                  mix: { type: string }
+                  repotEveryYears: { type: number }
+                  toxicCats: { type: boolean }
+                  toxicDogs: { type: boolean }
+                  tip: { type: string }
+                  warnings: { type: array, items: { type: string } }
+                  advice: { type: array, items: { type: string } }
+                  adviceIds: { type: array, items: { type: string } }
+                  weatherNotes: { type: array, items: { type: string } }
+                  followUps: { type: array, items: { type: object, properties: { inDays: { type: integer }, repeatEveryDays: { type: integer }, times: { type: integer }, what: { type: string } } } }
+                  situation: { $ref: "#/components/schemas/Situation" }
+                  scene: { $ref: "#/components/schemas/Scene" }
+        "400": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /v1/brain/feedback:
+    post:
+      operationId: brainFeedback
+      summary: Correct the brain (60 a day per user)
+      description: "kind species: predicted/corrected species ids (corrected photos the owner shared via photoRef jungleId/mediaId feed the nightly reference index). scene_field: \"soil.medium=soil\" -> \"soil.medium=water\". answer_helpful / diagnose_helpful: predicted = id, corrected = yes|no."
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [kind], properties: { kind: { type: string, enum: [species, scene_field, answer_helpful, diagnose_helpful] }, predicted: { type: string }, corrected: { type: string }, photoRef: { type: string }, lang: { type: string } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "400": { $ref: "#/components/responses/Error" }, "404": { $ref: "#/components/responses/Error" }, "429": { $ref: "#/components/responses/Error" } }
   /v1/me/weather-watch:
     put:
       operationId: weatherWatch
-      summary: Frost and heatwave alerts for this device
+      summary: Frost, heatwave and rain-skip alerts for this device
       requestBody:
         required: true
         content: { application/json: { schema: { type: object, required: [lat, lon, on, deviceId], properties: { lat: { type: number }, lon: { type: number }, lang: { type: string }, on: { type: boolean }, deviceId: { type: string, format: uuid } } } } }
@@ -550,6 +614,101 @@ components:
       description: Current Plus status
       content: { application/json: { schema: { type: object, required: [plus, entitlements], properties: { plus: { type: boolean }, entitlements: { type: array, items: { $ref: "#/components/schemas/Entitlement" } } } } } }
   schemas:
+    Situation: { type: object, additionalProperties: { type: array, items: { type: string } }, description: "Keys as in the knowledge base scenarios: room, humidity, temp, light, watered, event, season, weather, pot, soil, medium, moisture, surface, near, lifeStage, plant, water, home, treating" }
+    Medium: { type: [string, "null"], enum: [soil, chunky, cactus, leca, pon, sphagnum, water, mounted, terrarium, ground, null] }
+    Extras:
+      type: object
+      properties:
+        medium: { $ref: "#/components/schemas/Medium" }
+        lifeStage: { type: string, enum: [cutting, seedling, acclimating, repotted, dormant, flowering, recovering, unknown_history] }
+        outdoor: { type: boolean }
+        potSetup: { type: object, properties: { selfWatering: { type: boolean }, cachepot: { type: boolean }, drainage: { type: boolean }, material: { type: string }, sizeFit: { type: string, enum: [too_small, ok, too_big] } } }
+        weather: { $ref: "#/components/schemas/WeatherFacts" }
+    WeatherFacts:
+      type: object
+      description: Optional; when absent the server reads Open-Meteo near lat/lon (past 7 days, 16-day forecast, 1991-2020 monthly normals).
+      properties:
+        lat: { type: number }
+        month: { type: integer }
+        tempNow: { type: number }
+        rhNow: { type: number }
+        windNow: { type: number }
+        cloudNow: { type: number }
+        rainNow: { type: number }
+        rain7: { type: number }
+        max7: { type: number }
+        min7: { type: number }
+        rainToday: { type: number }
+        rain16: { type: number }
+        rainDays16: { type: integer }
+        max16: { type: number }
+        min16: { type: number }
+        frostDays16: { type: integer }
+        heatDays16: { type: integer }
+        normalMax: { type: number }
+        normalMin: { type: number }
+        normalRain: { type: number }
+        hasNormals: { type: boolean }
+    SceneValue: { type: object, required: [value, conf], properties: { value: { description: "enum string, number, boolean, \"unknown\" or null" }, conf: { type: number, minimum: 0, maximum: 1 } } }
+    SceneItem: { type: object, properties: { item: { type: string }, conf: { type: number } } }
+    Scene:
+      type: object
+      properties:
+        plant:
+          type: object
+          properties:
+            heightCm: { $ref: "#/components/schemas/SceneValue" }
+            leafCount: { $ref: "#/components/schemas/SceneValue" }
+            stage: { $ref: "#/components/schemas/SceneValue", description: "seedling|juvenile|mature|unknown" }
+            artificial: { $ref: "#/components/schemas/SceneValue", description: "boolean or unknown: a fake plant" }
+            multiple: { $ref: "#/components/schemas/SceneValue", description: "boolean or unknown: several plants in one pot" }
+            issues: { type: array, items: { type: object, properties: { kind: { type: string, enum: [yellowing, brown_tips, brown_spots, black_spots, pale, wilting, drooping, curling, crispy, mushy, holes, webbing, insects, white_powder, white_fluff, sticky, mold, leggy, sunburn, variegation_loss, rot] }, conf: { type: number }, where: { type: string, enum: [new_leaves, old_leaves, all_leaves, stem, soil, roots, flowers, unknown] } } } }
+        pot:
+          type: object
+          properties:
+            material: { $ref: "#/components/schemas/SceneValue", description: "plastic|terracotta|ceramic_glazed|glass|metal|basket_cachepot|nursery|self_watering|hanging|none|unknown" }
+            drainage: { $ref: "#/components/schemas/SceneValue", description: "yes|no|unknown" }
+            diameterCm: { $ref: "#/components/schemas/SceneValue" }
+            rootbound: { $ref: "#/components/schemas/SceneValue" }
+            cachepot: { $ref: "#/components/schemas/SceneValue" }
+        soil:
+          type: object
+          properties:
+            medium: { $ref: "#/components/schemas/SceneValue", description: "soil|chunky|cactus|leca|pon|sphagnum|water|mounted|terrarium|ground|unknown" }
+            moisture: { $ref: "#/components/schemas/SceneValue", description: "dry|moist|wet|unknown" }
+            surface: { type: array, items: { $ref: "#/components/schemas/SceneItem" }, description: "items: stones|pebbles|eggshells|bark|moss|perlite_top|sand|coffee_grounds|mold|salt_crust|fertilizer_pellets|dead_leaves|gnats|mulch" }
+        light:
+          type: object
+          properties:
+            source: { $ref: "#/components/schemas/SceneValue", description: "window|grow_light|lamp|mixed|outdoor|unknown" }
+            naturalPct: { $ref: "#/components/schemas/SceneValue" }
+            directSun: { $ref: "#/components/schemas/SceneValue" }
+            windowDistance: { $ref: "#/components/schemas/SceneValue", description: "sill|under_1m|1_2m|over_2m|none_visible|unknown" }
+            windowFacing: { $ref: "#/components/schemas/SceneValue", description: "n|ne|e|se|s|sw|w|nw|unknown" }
+            intensity: { $ref: "#/components/schemas/SceneValue", description: "low|medium|bright_indirect|direct|unknown" }
+            lux: { $ref: "#/components/schemas/SceneValue" }
+            kelvin: { $ref: "#/components/schemas/SceneValue" }
+        surroundings:
+          type: object
+          properties:
+            room: { $ref: "#/components/schemas/SceneValue", description: "living|bedroom|bathroom|kitchen|office|balcony|outdoor|unknown" }
+            near: { type: array, items: { $ref: "#/components/schemas/SceneItem" }, description: "items: heater|radiator|ac_vent|fireplace|tv|draft_door|curtain_sheer|other_plants|pet|aquarium" }
+            humidityHint: { $ref: "#/components/schemas/SceneValue", description: "dry|normal|humid|unknown" }
+    Diagnosis:
+      type: object
+      properties:
+        problem: { type: string }
+        confidence: { type: string, enum: [low, medium, high] }
+        why: { type: string }
+        steps: { type: array, items: { type: string } }
+        urgent: { type: boolean }
+        source: { type: string, enum: [library, internal, free, claude] }
+        context: { type: string }
+        ref: { type: string }
+        ids: { type: array, items: { type: string }, description: "knowledge ids behind the answer, best first (up to 3)" }
+        alternatives: { type: array, items: { type: string } }
+        scene: { $ref: "#/components/schemas/Scene" }
+        weather: { type: array, items: { type: string } }
     Error: { type: object, required: [error], properties: { error: { type: string } } }
     WeatherPattern:
       type: object

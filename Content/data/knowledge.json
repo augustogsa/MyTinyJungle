@@ -1483,14 +1483,52 @@
    "name": "Spider mites",
    "signs": "Fine webbing, dusty speckled leaves, tiny moving dots underneath.",
    "fix": "Shower the plant well, wipe leaves, raise humidity, and repeat every 5 days for three weeks. Insecticidal soap for stubborn cases.",
-   "likes": "Warm, dry air"
+   "likes": "Warm, dry air",
+   "keywords": [
+    "ácaro",
+    "ácaros",
+    "ácaro-rajado",
+    "araña roja",
+    "arañita",
+    "araignée rouge",
+    "acariens",
+    "tétranyques",
+    "Spinnmilben",
+    "Rote Spinne",
+    "ハダニ",
+    "クモの巣",
+    "小さな点"
+   ]
   },
   {
    "id": "mealybugs",
    "name": "Mealybugs",
    "signs": "White cottony tufts in leaf joints and under leaves, sticky residue.",
    "fix": "Dab each tuft with a cotton bud dipped in rubbing alcohol, then check weekly. Isolate until clear.",
-   "likes": "Soft new growth, crowded plants"
+   "likes": "Soft new growth, crowded plants",
+   "keywords": [
+    "cochonilha",
+    "cochonilha-farinhenta",
+    "algodão nos caules",
+    "cochinilla",
+    "cochinilla algodonosa",
+    "algodón",
+    "cochenille",
+    "cochenilles farineuses",
+    "cotonneux",
+    "Wolllaus",
+    "Schmierläuse",
+    "Wollläuse",
+    "wattige Flocken",
+    "コナカイガラムシ",
+    "カイガラムシ",
+    "白い綿",
+    "cottony",
+    "white cottony bits",
+    "cotton on stems",
+    "white fluff",
+    "woolly white"
+   ]
   },
   {
    "id": "root-mealybugs",
@@ -1504,35 +1542,132 @@
    "name": "Scale insects",
    "signs": "Small brown or tan bumps on stems and leaf veins, sticky leaves.",
    "fix": "Scrape off gently with a fingernail or soft brush, wipe with soapy water, recheck every week.",
-   "likes": "Woody stems, citrus, ficus, palms"
+   "likes": "Woody stems, citrus, ficus, palms",
+   "keywords": [
+    "cochonilha de escama",
+    "carapaça",
+    "escamas",
+    "cochinilla de escudo",
+    "escama",
+    "cochenille à bouclier",
+    "Schildlaus",
+    "Schildläuse",
+    "カイガラムシ",
+    "brown bumps",
+    "bumps on stems",
+    "carapaças",
+    "bolinhas marrons grudadas",
+    "escamas marrones",
+    "bultitos marrones",
+    "bosses brunes",
+    "Höcker",
+    "braune Schilde",
+    "茶色いぽつぽつ"
+   ]
   },
   {
    "id": "fungus-gnats",
    "name": "Fungus gnats",
    "signs": "Tiny black flies hovering around the soil.",
    "fix": "Let the top of the soil dry out, use yellow sticky traps, and water from below for a few weeks.",
-   "likes": "Constantly damp compost"
+   "likes": "Constantly damp compost",
+   "keywords": [
+    "mosquinha",
+    "mosquinhas",
+    "mosquitinho",
+    "mosquinhas pretas",
+    "mosquitas",
+    "mosquitos negros",
+    "mosca del mantillo",
+    "moucherons",
+    "mouchettes",
+    "sciarides",
+    "Trauermücken",
+    "kleine Fliegen",
+    "Fliegen aus der Erde",
+    "コバエ",
+    "キノコバエ",
+    "小さい虫"
+   ]
   },
   {
    "id": "thrips",
    "name": "Thrips",
    "signs": "Silvery streaks, black specks and twisted new leaves.",
    "fix": "Shower the plant, use blue sticky traps and wipe leaves with insecticidal soap weekly.",
-   "likes": "Warm rooms, flowers"
+   "likes": "Warm rooms, flowers",
+   "keywords": [
+    "tripes",
+    "trips",
+    "thrips",
+    "Thripse",
+    "アザミウマ",
+    "スリップス",
+    "silvery streaks",
+    "silver streaks",
+    "black dots",
+    "riscos prateados",
+    "rayas plateadas",
+    "traînées argentées",
+    "silbrige Streifen",
+    "銀色のすじ",
+    "銀色",
+    "銀色の筋",
+    "小さな黒い点",
+    "silvering"
+   ]
   },
   {
    "id": "aphids",
    "name": "Aphids",
    "signs": "Clusters of small green, black or pink insects on tips and buds.",
    "fix": "Squash or rinse them off with water. Ladybirds and lacewings help outdoors.",
-   "likes": "Fresh soft shoots in spring"
+   "likes": "Fresh soft shoots in spring",
+   "keywords": [
+    "pulgão",
+    "pulgões",
+    "pulgón",
+    "pulgones",
+    "puceron",
+    "pucerons",
+    "Blattlaus",
+    "Blattläuse",
+    "アブラムシ",
+    "tiny bugs on new growth",
+    "bugs on new shoots",
+    "clustered bugs",
+    "bichinhos nos brotos",
+    "piolho de planta",
+    "bichitos en los brotes",
+    "bestioles sur les jeunes pousses",
+    "Tierchen an den Trieben",
+    "新芽に虫"
+   ]
   },
   {
    "id": "whitefly",
    "name": "Whitefly",
    "signs": "Clouds of tiny white flies rising when you brush the leaves.",
    "fix": "Yellow sticky traps, and rinse leaf undersides every few days.",
-   "likes": "Warm, still air, tomatoes and herbs"
+   "likes": "Warm, still air, tomatoes and herbs",
+   "keywords": [
+    "mosca-branca",
+    "mosca blanca",
+    "aleurode",
+    "mouche blanche",
+    "Weiße Fliege",
+    "コナジラミ",
+    "white flies",
+    "tiny white flies",
+    "fly up when touched",
+    "moscas brancas",
+    "mosquinhas brancas",
+    "mosquitas blancas",
+    "mouches blanches",
+    "aleurodes",
+    "weiße Fliegen",
+    "白い虫が飛ぶ"
+   ]
   },
   {
    "id": "cyclamen-mites",
@@ -1553,7 +1688,14 @@
    "name": "Slugs and snails",
    "signs": "Ragged holes and shiny trails.",
    "fix": "Night-time hand picking, copper tape on pots, and wildlife-friendly traps.",
-   "likes": "Damp evenings outdoors"
+   "likes": "Damp evenings outdoors",
+   "keywords": [
+    "lesma",
+    "babosa",
+    "limace",
+    "Schnecke",
+    "ナメクジ"
+   ]
   },
   {
    "id": "bulb-flies",
@@ -1581,7 +1723,25 @@
    "name": "Leaf miners",
    "signs": "Pale winding trails inside the leaf.",
    "fix": "Pick off mined leaves and squash the larvae at the end of each trail. Cover crops with fine mesh.",
-   "likes": "Spinach, chard, chrysanthemums, citrus"
+   "likes": "Spinach, chard, chrysanthemums, citrus",
+   "keywords": [
+    "tunnels in leaves",
+    "wavy lines",
+    "trails inside leaf",
+    "túneis nas folhas",
+    "caminhos nas folhas",
+    "minador",
+    "túneles en las hojas",
+    "minador de hojas",
+    "galeries dans les feuilles",
+    "mineuse",
+    "Miniermotte",
+    "Gänge in den Blättern",
+    "Minierfliege",
+    "葉に白い線",
+    "ハモグリバエ",
+    "絵かき虫"
+   ]
   },
   {
    "id": "caterpillars",
@@ -1932,7 +2092,22 @@
    "keywords": [
     "yellow",
     "old leaves",
-    "bottom leaves"
+    "bottom leaves",
+    "folhas amarelas embaixo",
+    "folha amarelando",
+    "amarelando",
+    "hojas amarillas",
+    "hojas de abajo amarillas",
+    "amarillean",
+    "feuilles jaunes",
+    "jaunissent",
+    "jaunissement",
+    "gelbe Blätter",
+    "untere Blätter gelb",
+    "vergilben",
+    "葉が黄色",
+    "黄色くなる",
+    "黄変"
    ]
   },
   {
@@ -1971,7 +2146,13 @@
    ],
    "keywords": [
     "all yellow",
-    "whole plant yellow"
+    "whole plant yellow",
+    "planta toda amarela",
+    "toda amarela",
+    "toda amarilla",
+    "toute jaune",
+    "ganz gelb",
+    "全体が黄色"
    ]
   },
   {
@@ -1992,7 +2173,21 @@
     "brown tips",
     "crispy",
     "dry edges",
-    "pontas secas"
+    "pontas secas",
+    "pontas marrons",
+    "ponta queimada",
+    "puntas marrones",
+    "puntas secas",
+    "bout des feuilles brun",
+    "pointes brunes",
+    "pointes sèches",
+    "braune Spitzen",
+    "Blattspitzen braun",
+    "trockene Spitzen",
+    "葉先が茶色",
+    "葉の先が茶色",
+    "葉先が枯れ",
+    "先が枯れ"
    ]
   },
   {
@@ -2048,7 +2243,18 @@
     "droop",
     "wilt",
     "limp",
-    "thirsty"
+    "thirsty",
+    "murcha",
+    "murchando",
+    "caída",
+    "marchita",
+    "mustia",
+    "flétrie",
+    "ramollie",
+    "schlapp",
+    "welk",
+    "しおれ",
+    "しなしな"
    ]
   },
   {
@@ -2065,7 +2271,12 @@
    "keywords": [
     "droop wet",
     "wilting wet soil",
-    "root rot"
+    "root rot",
+    "murcha com terra molhada",
+    "marchita con tierra mojada",
+    "flétrie terre mouillée",
+    "welk trotz nasser Erde",
+    "土が湿っているのにしおれる"
    ]
   },
   {
@@ -2083,7 +2294,23 @@
     "leggy",
     "stretching",
     "etiolated",
-    "leaning"
+    "leaning",
+    "esticando",
+    "estiolada",
+    "comprida",
+    "crescendo pra janela",
+    "se estira",
+    "ahilada",
+    "estirando",
+    "s'étiole",
+    "étiolée",
+    "file vers la lumière",
+    "vergeilt",
+    "vergeilen",
+    "lang und dünn",
+    "徒長",
+    "ひょろひょろ",
+    "ひょろ長い"
    ]
   },
   {
@@ -2120,7 +2347,17 @@
    "keywords": [
     "dropping leaves",
     "leaf drop",
-    "falling leaves"
+    "falling leaves",
+    "folhas caindo",
+    "caindo folhas",
+    "se le caen las hojas",
+    "hojas caen",
+    "perd ses feuilles",
+    "feuilles tombent",
+    "verliert Blätter",
+    "Blätter fallen",
+    "葉が落ちる",
+    "落葉"
    ]
   },
   {
@@ -2141,7 +2378,15 @@
    "keywords": [
     "curl",
     "curling",
-    "rolling"
+    "rolling",
+    "folhas enrolando",
+    "hojas enrolladas",
+    "se enrollan",
+    "feuilles enroulées",
+    "s'enroulent",
+    "Blätter rollen sich",
+    "丸まる",
+    "葉が巻く"
    ]
   },
   {
@@ -2174,7 +2419,14 @@
    "keywords": [
     "white powder",
     "mildew",
-    "flour"
+    "flour",
+    "pó branco",
+    "polvo blanco",
+    "poudre blanche",
+    "weißer Belag",
+    "Mehltau",
+    "白い粉",
+    "うどんこ"
    ]
   },
   {
@@ -2190,7 +2442,20 @@
    "keywords": [
     "sticky",
     "honeydew",
-    "shiny film"
+    "shiny film",
+    "folha grudenta",
+    "grudenta",
+    "melada",
+    "pegajosa",
+    "pegajosas",
+    "melaza",
+    "collante",
+    "collantes",
+    "miellat",
+    "klebrig",
+    "Honigtau",
+    "ベタベタ",
+    "べたつく"
    ]
   },
   {
@@ -2206,7 +2471,17 @@
    "keywords": [
     "web",
     "webbing",
-    "teia"
+    "teia",
+    "teias",
+    "telaraña",
+    "telarañas",
+    "toile",
+    "toiles",
+    "Gespinst",
+    "Gespinste",
+    "Spinnweben",
+    "クモの巣",
+    "蜘蛛の巣"
    ]
   },
   {
@@ -2222,7 +2497,24 @@
    "keywords": [
     "white fluff",
     "cotton",
-    "cochonilha"
+    "cochonilha",
+    "algodão",
+    "algodãozinho",
+    "bolinhas brancas",
+    "cochonilha-farinhenta",
+    "algodón",
+    "algodoncillo",
+    "pelusa blanca",
+    "cochinilla algodonosa",
+    "coton",
+    "cotonneux",
+    "cochenille farineuse",
+    "wattig",
+    "Watte",
+    "Wollläuse",
+    "白い綿",
+    "綿のよう",
+    "コナカイガラムシ"
    ]
   },
   {
@@ -2254,7 +2546,12 @@
    "keywords": [
     "mould",
     "mold",
-    "fuzz on soil"
+    "fuzz on soil",
+    "mofo na terra",
+    "moho en la tierra",
+    "moisissure terre",
+    "Schimmel auf der Erde",
+    "土にカビ"
    ]
   },
   {
@@ -2337,7 +2634,12 @@
    "keywords": [
     "holes",
     "chewed",
-    "notches"
+    "notches",
+    "furos nas folhas",
+    "agujeros en las hojas",
+    "trous dans les feuilles",
+    "Löcher in Blättern",
+    "葉に穴"
    ]
   },
   {
@@ -2939,7 +3241,12 @@
     "crispy tips",
     "dry tips",
     "tip burn",
-    "burnt tips"
+    "burnt tips",
+    "pontas marrons",
+    "puntas marrones",
+    "pointes brunes",
+    "braune Blattspitzen",
+    "葉先が茶色"
    ]
   },
   {
@@ -2960,7 +3267,12 @@
     "brown edges",
     "crispy edges",
     "brown margins",
-    "edges dying"
+    "edges dying",
+    "bordas secas",
+    "bordes secos",
+    "bords secs",
+    "trockene Ränder",
+    "縁が枯れ"
    ]
   },
   {
@@ -3062,7 +3374,12 @@
     "black spots",
     "black dots",
     "dark spots",
-    "black marks"
+    "black marks",
+    "manchas pretas",
+    "manchas negras",
+    "taches noires",
+    "schwarze Flecken",
+    "黒い斑点"
    ]
   },
   {
@@ -3480,7 +3797,13 @@
     "bending",
     "reaching",
     "lopsided",
-    "growing sideways"
+    "growing sideways",
+    "indo pra janela",
+    "virando pra luz",
+    "hacia la ventana",
+    "vers la fenêtre",
+    "zum Fenster",
+    "窓の方へ伸び"
    ]
   },
   {
@@ -3624,7 +3947,12 @@
     "honeydew",
     "shiny film",
     "tacky leaves",
-    "sap"
+    "sap",
+    "folhas grudentas",
+    "hojas pegajosas",
+    "feuilles collantes",
+    "klebrige Blätter",
+    "葉がベタベタ"
    ]
   },
   {
@@ -3806,7 +4134,14 @@
     "frost",
     "chilled",
     "froze",
-    "black after cold"
+    "black after cold",
+    "frio",
+    "queimada de frio",
+    "daño por frío",
+    "dégâts du froid",
+    "Kälteschaden",
+    "寒さ",
+    "低温障害"
    ]
   },
   {
@@ -4164,7 +4499,13 @@
     "fruit flies",
     "little flies",
     "black flies",
-    "midges"
+    "midges",
+    "mosquinhas na terra",
+    "mosquitas en la tierra",
+    "moucherons dans la terre",
+    "Fliegen in der Erde",
+    "土から虫",
+    "コバエ"
    ]
   },
   {
@@ -4359,7 +4700,22 @@
     "sunburnt",
     "burnt",
     "sun damage",
-    "scorched"
+    "scorched",
+    "queimada de sol",
+    "quemadura de sol",
+    "brûlure soleil",
+    "Sonnenbrand",
+    "葉焼け",
+    "bleached patches",
+    "scorched by sun",
+    "moved into the sun",
+    "queimou no sol",
+    "mancha clara depois do sol",
+    "quemada por el sol",
+    "décolorée au soleil",
+    "brûlée par le soleil",
+    "ausgebleicht",
+    "日焼け"
    ]
   },
   {
@@ -6089,7 +6445,34 @@
    "signs": "Wilting despite wet soil, yellow leaves, a sour smell, black mushy roots.",
    "why": "Roots starved of air in waterlogged soil.",
    "fix": "Unpot, cut away soft roots, repot into fresh airy mix in a clean pot, water sparingly.",
-   "prevent": "Pots with holes, airy mixes, and water only when needed."
+   "prevent": "Pots with holes, airy mixes, and water only when needed.",
+   "keywords": [
+    "raiz podre",
+    "raízes podres",
+    "raiz mole",
+    "raízes moles",
+    "cheiro ruim",
+    "apodrecendo",
+    "pudrición de raíz",
+    "raíces podridas",
+    "raíces blandas",
+    "huelen mal",
+    "pourriture des racines",
+    "racines molles",
+    "racines pourries",
+    "sentent mauvais",
+    "Wurzelfäule",
+    "Wurzeln matschig",
+    "faulig",
+    "riechen",
+    "根腐れ",
+    "根がぶよぶよ",
+    "臭い",
+    "mushy roots",
+    "roots smell",
+    "rotten roots",
+    "smelly roots"
+   ]
   },
   {
    "id": "powdery-mildew",
@@ -6097,7 +6480,21 @@
    "signs": "A white powdery film on leaves.",
    "why": "A fungus that loves dry roots and still, humid air.",
    "fix": "Remove badly hit leaves, increase airflow, keep leaves dry.",
-   "prevent": "Space plants out and water the soil, not the leaves."
+   "prevent": "Space plants out and water the soil, not the leaves.",
+   "keywords": [
+    "oídio",
+    "pó branco",
+    "polvo blanco",
+    "oidio",
+    "blanc",
+    "oïdium",
+    "poudre blanche",
+    "Echter Mehltau",
+    "weißer Belag",
+    "mehlig",
+    "うどんこ病",
+    "白い粉"
+   ]
   },
   {
    "id": "leaf-spot",
@@ -6105,7 +6502,15 @@
    "signs": "Brown or black spots, often with yellow halos.",
    "why": "Fungi or bacteria spread by water splashes.",
    "fix": "Snip spotted leaves, water at the base, improve airflow.",
-   "prevent": "Keep foliage dry and clean your tools."
+   "prevent": "Keep foliage dry and clean your tools.",
+   "keywords": [
+    "manchas nas folhas",
+    "manchas marrons",
+    "manchas en las hojas",
+    "taches sur les feuilles",
+    "Blattflecken",
+    "斑点"
+   ]
   },
   {
    "id": "botrytis",
@@ -6169,7 +6574,20 @@
    "signs": "Yellow patches on top of leaves, grey-purple fuzz underneath.",
    "why": "Cool, damp weather and wet leaves.",
    "fix": "Remove infected leaves, water at the base in the morning, improve airflow.",
-   "prevent": "Space plants, avoid wetting leaves, choose resistant varieties (basil, impatiens)."
+   "prevent": "Space plants, avoid wetting leaves, choose resistant varieties (basil, impatiens).",
+   "keywords": [
+    "grey fuzz underneath",
+    "fuzz under the leaf",
+    "míldio",
+    "mofo embaixo da folha",
+    "mildiu",
+    "pelusa gris debajo",
+    "duvet gris dessous",
+    "Falscher Mehltau",
+    "grauer Flaum unten",
+    "べと病",
+    "裏に灰色のカビ"
+   ]
   },
   {
    "id": "anthracnose",
@@ -6249,7 +6667,16 @@
    "signs": "Dark, glassy or mushy leaves after a cold night or draught.",
    "why": "Tropical cells burst below about 10 °C.",
    "fix": "Cut damaged parts once it warms and keep it warm and slightly dry.",
-   "prevent": "Keep tropicals away from cold glass and doors in winter."
+   "prevent": "Keep tropicals away from cold glass and doors in winter.",
+   "keywords": [
+    "frio",
+    "queimada de frio",
+    "daño por frío",
+    "dégâts du froid",
+    "Kälteschaden",
+    "寒さ",
+    "低温障害"
+   ]
   },
   {
    "id": "transplant-shock",
@@ -6665,7 +7092,14 @@
    "id": "nitrogen",
    "name": "Nitrogen",
    "signs": "Pale, evenly yellow older leaves; slow growth.",
-   "fix": "A balanced feed in the growing season."
+   "fix": "A balanced feed in the growing season.",
+   "keywords": [
+    "falta de nitrogênio",
+    "deficiencia de nitrógeno",
+    "carence en azote",
+    "Stickstoffmangel",
+    "窒素不足"
+   ]
   },
   {
    "id": "phosphorus",
@@ -6689,7 +7123,18 @@
    "id": "iron",
    "name": "Iron",
    "signs": "Yellow new leaves with green veins.",
-   "fix": "Lower the pH (rainwater, ericaceous feed) and use chelated iron."
+   "fix": "Lower the pH (rainwater, ericaceous feed) and use chelated iron.",
+   "keywords": [
+    "falta de ferro",
+    "clorose",
+    "deficiencia de hierro",
+    "clorosis",
+    "carence en fer",
+    "chlorose",
+    "Eisenmangel",
+    "Chlorose",
+    "鉄欠乏"
+   ]
   },
   {
    "id": "calcium",
@@ -8150,7 +8595,23 @@
     "cuttings in water",
     "root cuttings",
     "rooting cuttings",
-    "cutting"
+    "cutting",
+    "muda na água",
+    "fazer muda",
+    "enraizar na água",
+    "estaca na água",
+    "esqueje en agua",
+    "enraizar en agua",
+    "bouture dans l'eau",
+    "faire raciner",
+    "bouturage à l'eau",
+    "Steckling im Wasser",
+    "bewurzeln",
+    "Ableger im Wasser",
+    "水挿し",
+    "挿し木",
+    "発根",
+    "水で発根"
    ]
   },
   {
@@ -8185,7 +8646,13 @@
     "cutting in soil",
     "rooting hormone",
     "rooting powder",
-    "enraizar"
+    "enraizar",
+    "muda na terra",
+    "estaca na terra",
+    "esqueje en tierra",
+    "bouture en terre",
+    "Steckling in Erde",
+    "土に挿し木"
    ]
   },
   {
@@ -8635,7 +9102,14 @@
     "sunburn",
     "stretching",
     "leaning",
-    "losing variegation"
+    "losing variegation",
+    "pouca luz",
+    "falta de luz",
+    "poca luz",
+    "manque de lumière",
+    "zu wenig Licht",
+    "光不足",
+    "日照不足"
    ]
   },
   {
@@ -8673,7 +9147,24 @@
     "misting",
     "humidifier",
     "pebble tray",
-    "umidade"
+    "umidade",
+    "aumentar umidade",
+    "aumento a umidade",
+    "umidade do ar",
+    "ar seco",
+    "subir humedad",
+    "subo la humedad",
+    "humedad",
+    "aire seco",
+    "augmenter l'humidité",
+    "humidité",
+    "air sec",
+    "Luftfeuchtigkeit erhöhen",
+    "Luftfeuchtigkeit",
+    "trockene Luft",
+    "湿度を上げる",
+    "湿度",
+    "乾燥"
    ]
   },
   {
@@ -8785,7 +9276,22 @@
     "rootbound",
     "bigger pot",
     "replantar",
-    "vaso maior"
+    "vaso maior",
+    "trocar de vaso",
+    "troco de vaso",
+    "troca de vaso",
+    "trasplantar",
+    "cambiar de maceta",
+    "maceta más grande",
+    "rempoter",
+    "rempotage",
+    "pot plus grand",
+    "umtopfen",
+    "größerer Topf",
+    "Umtopfen wann",
+    "植え替え",
+    "鉢替え",
+    "大きい鉢"
    ]
   },
   {
@@ -8974,7 +9480,17 @@
     "fertilizer",
     "plant food",
     "adubo",
-    "adubar"
+    "adubar",
+    "fertilizante",
+    "abonar",
+    "abono",
+    "fertilizar",
+    "engrais",
+    "fertiliser",
+    "düngen",
+    "Dünger",
+    "肥料",
+    "追肥"
    ]
   },
   {
@@ -9016,7 +9532,21 @@
     "safe for",
     "gato",
     "cachorro",
-    "toxica"
+    "toxica",
+    "tóxica pra gato",
+    "tóxica para gato",
+    "venenosa",
+    "tóxica para gatos",
+    "perros",
+    "toxique chat",
+    "toxique chien",
+    "giftig Katze",
+    "giftig Hund",
+    "giftig für Katzen",
+    "猫に毒",
+    "犬に毒",
+    "ペット 安全",
+    "有毒"
    ]
   },
   {
@@ -9417,7 +9947,23 @@
     "mosquitinhos",
     "flies",
     "gnat",
-    "fruit flies"
+    "fruit flies",
+    "mosquinha",
+    "mosquinhas",
+    "mosquitinho",
+    "mosquinhas pretas",
+    "mosquitas",
+    "mosquitos negros",
+    "mosca del mantillo",
+    "moucherons",
+    "mouchettes",
+    "sciarides",
+    "Trauermücken",
+    "kleine Fliegen",
+    "Fliegen aus der Erde",
+    "コバエ",
+    "キノコバエ",
+    "小さい虫"
    ]
   },
   {
@@ -9480,7 +10026,12 @@
     "sparse",
     "bare stems",
     "spindly",
-    "estiolada"
+    "estiolada",
+    "planta esticada",
+    "ahilada",
+    "étiolée",
+    "vergeilt",
+    "徒長"
    ]
   },
   {
@@ -9506,7 +10057,12 @@
     "repot",
     "repotting",
     "new pot",
-    "how to repot"
+    "how to repot",
+    "como trocar de vaso",
+    "cómo trasplantar",
+    "comment rempoter",
+    "wie umtopfen",
+    "植え替え方"
    ]
   },
   {
@@ -9633,7 +10189,30 @@
    "keywords": [
     "when to water",
     "finger test",
-    "check soil"
+    "check soil",
+    "quando regar",
+    "cuándo regar",
+    "quand arroser",
+    "wann gießen",
+    "いつ水やり",
+    "水やりのタイミング",
+    "how often water",
+    "how often should I water",
+    "water frequency",
+    "com que frequência regar",
+    "de quanto em quanto tempo regar",
+    "regar",
+    "rego",
+    "rega",
+    "cada cuánto regar",
+    "frecuencia de riego",
+    "riego",
+    "arroser",
+    "tous les combien arroser",
+    "wie oft gießen",
+    "gießen",
+    "水やり",
+    "水やりの頻度"
    ]
   },
   {
@@ -9657,7 +10236,15 @@
    ],
    "keywords": [
     "how much water",
-    "watering amount"
+    "watering amount",
+    "quanto regar",
+    "quanta água",
+    "cuánta agua",
+    "cuánto regar",
+    "combien d'eau",
+    "wie viel gießen",
+    "水の量",
+    "どれくらい水"
    ]
   },
   {
@@ -9681,7 +10268,20 @@
    ],
    "keywords": [
     "winter watering",
-    "water in winter"
+    "water in winter",
+    "regar no inverno",
+    "rega no inverno",
+    "rego no inverno",
+    "regar en invierno",
+    "riego en invierno",
+    "riego invierno",
+    "arroser en hiver",
+    "arrosage hiver",
+    "fréquence arroser hiver",
+    "gießen im Winter",
+    "Winter gießen",
+    "冬の水やり",
+    "冬 水やり"
    ]
   },
   {
@@ -9705,7 +10305,12 @@
    ],
    "keywords": [
     "summer watering",
-    "hot weather water"
+    "hot weather water",
+    "regar no verão",
+    "regar en verano",
+    "arroser en été",
+    "gießen im Sommer",
+    "夏の水やり"
    ]
   },
   {
@@ -9905,7 +10510,17 @@
    "keywords": [
     "low light",
     "dark room",
-    "shade plants"
+    "shade plants",
+    "planta pra sombra",
+    "lugar escuro",
+    "plantas de sombra",
+    "poca luz",
+    "plantes d'ombre",
+    "peu de lumière",
+    "Schattenpflanzen",
+    "wenig Licht",
+    "日陰 植物",
+    "暗い部屋"
    ]
   },
   {
@@ -11151,7 +11766,12 @@
    "keywords": [
     "spider mites",
     "mites",
-    "webbing"
+    "webbing",
+    "ácaros",
+    "araña roja",
+    "acariens",
+    "Spinnmilben",
+    "ハダニ"
    ]
   },
   {
@@ -11175,7 +11795,12 @@
    ],
    "keywords": [
     "mealybugs",
-    "white fluff"
+    "white fluff",
+    "cochonilha",
+    "cochinilla",
+    "cochenille",
+    "Wollläuse",
+    "コナカイガラムシ"
    ]
   },
   {
@@ -11269,7 +11894,12 @@
    ],
    "keywords": [
     "root rot rescue",
-    "save plant root rot"
+    "save plant root rot",
+    "salvar raiz podre",
+    "rescatar raíces podridas",
+    "sauver racines pourries",
+    "Wurzelfäule retten",
+    "根腐れ 対処"
    ]
   },
   {
@@ -11293,7 +11923,17 @@
    ],
    "keywords": [
     "overwatering",
-    "too much water"
+    "too much water",
+    "rega demais",
+    "água demais",
+    "exceso de riego",
+    "demasiada agua",
+    "trop arrosé",
+    "trop d'eau",
+    "zu viel gegossen",
+    "Staunässe",
+    "水のやりすぎ",
+    "過湿"
    ]
   },
   {
@@ -11318,7 +11958,13 @@
    "keywords": [
     "underwatering",
     "too little water",
-    "thirsty"
+    "thirsty",
+    "falta de água",
+    "pouca água",
+    "falta de riego",
+    "manque d'eau",
+    "zu wenig gegossen",
+    "水不足"
    ]
   },
   {
@@ -11367,7 +12013,12 @@
    ],
    "keywords": [
     "yellow leaves",
-    "why yellow"
+    "why yellow",
+    "folhas amarelas",
+    "hojas amarillas",
+    "feuilles jaunes",
+    "gelbe Blätter",
+    "黄色い葉"
    ]
   },
   {
@@ -11391,7 +12042,12 @@
    ],
    "keywords": [
     "brown tips",
-    "why brown"
+    "why brown",
+    "pontas marrons",
+    "puntas marrones",
+    "pointes brunes",
+    "braune Spitzen",
+    "葉先 茶色"
    ]
   },
   {
@@ -11829,7 +12485,12 @@
    "keywords": [
     "pet safe",
     "cat safe",
-    "dog safe"
+    "dog safe",
+    "segura pra pets",
+    "segura para mascotas",
+    "sans danger animaux",
+    "haustierfreundlich",
+    "ペットに安全"
    ]
   },
   {
@@ -12474,7 +13135,12 @@
    ],
    "keywords": [
     "fungus gnats",
-    "gnats"
+    "gnats",
+    "mosquinhas",
+    "mosquitas",
+    "moucherons",
+    "Trauermücken",
+    "コバエ"
    ]
   },
   {
@@ -15351,7 +16017,7 @@
     "leaf-spot",
     "succulent-soft"
    ],
-   "advice": "Move succulents under cover and empty saucers."
+   "advice": "A wet week: skip watering outdoor pots, empty saucers and move succulents under cover."
   },
   {
    "id": "humid-weather-indoor",
@@ -15877,22 +16543,6 @@
     "salt-crust-pot"
    ],
    "advice": "Coir holds little food. Feed regularly, with calcium and magnesium."
-  },
-  {
-   "id": "leca-reservoir",
-   "name": "LECA reservoir too high",
-   "when": {
-    "soil": [
-     "leca-setup"
-    ],
-    "watered": "recent"
-   },
-   "boosts": [
-    "leca-roots-rot",
-    "hydro-brown-roots",
-    "leca-white-crust"
-   ],
-   "advice": "Keep the water line below the roots and flush weekly."
   },
   {
    "id": "sphagnum-old",
@@ -19574,6 +20224,557 @@
     "slow-growth"
    ],
    "advice": "Gentle morning sun suits most houseplants."
+  },
+  {
+   "id": "water-culture",
+   "name": "Growing in water",
+   "when": {
+    "medium": [
+     "water"
+    ]
+   },
+   "boosts": [
+    "hydro-algae",
+    "hydro-brown-roots",
+    "cutting-rotting"
+   ],
+   "advice": "Swap the water every 7–10 days and top it up in between. Feed at quarter strength once a month, and pot it into soil at 5–10 cm of roots if you like."
+  },
+  {
+   "id": "leca-reservoir",
+   "name": "Growing in LECA",
+   "when": {
+    "medium": [
+     "leca"
+    ]
+   },
+   "boosts": [
+    "leca-roots-rot",
+    "leca-white-crust"
+   ],
+   "advice": "Keep the reservoir at about a third of the pot with the roots above it, let it run almost dry before refilling, and use hydro nutrient at every refill."
+  },
+  {
+   "id": "pon-reservoir",
+   "name": "Growing in PON",
+   "when": {
+    "medium": [
+     "pon"
+    ]
+   },
+   "boosts": [
+    "leca-roots-rot"
+   ],
+   "advice": "Keep the water level low, about a fifth of the pot, and refill only when the indicator reads empty. Feed with each refill."
+  },
+  {
+   "id": "sphagnum-soak",
+   "name": "Growing in sphagnum moss",
+   "when": {
+    "medium": [
+     "sphagnum"
+    ]
+   },
+   "boosts": [
+    "orchid-roots-mushy"
+   ],
+   "advice": "Soak the moss when it feels light and only just damp, then drain well. Never crispy, never soggy."
+  },
+  {
+   "id": "mounted-mist",
+   "name": "Mounted on bark or a board",
+   "when": {
+    "medium": [
+     "mounted"
+    ]
+   },
+   "boosts": [],
+   "advice": "Mist daily or soak the mount 10–20 minutes two or three times a week, letting the roots turn silvery between soaks."
+  },
+  {
+   "id": "terrarium-closed",
+   "name": "Inside a terrarium",
+   "when": {
+    "medium": [
+     "terrarium"
+    ]
+   },
+   "boosts": [
+    "terrarium-fog"
+   ],
+   "advice": "A closed terrarium recycles its water. Add a little only when the glass no longer fogs in the morning, and air it if it fogs all day."
+  },
+  {
+   "id": "ground-rain",
+   "name": "Planted in the ground",
+   "when": {
+    "medium": [
+     "ground"
+    ]
+   },
+   "boosts": [],
+   "advice": "Rain counts as watering. Water deeply only when the top 5 cm are dry and no rain is coming."
+  },
+  {
+   "id": "nodrain-wet",
+   "name": "No drainage hole and wet soil",
+   "when": {
+    "pot": [
+     "no-drainage"
+    ],
+    "moisture": [
+     "wet"
+    ]
+   },
+   "boosts": [
+    "root-rot",
+    "droop-wet",
+    "yellow-all",
+    "smell-soil"
+   ],
+   "advice": "Water has nowhere to go and the roots can rot. Tip out the excess now and move it into a pot with a hole."
+  },
+  {
+   "id": "cachepot-standing",
+   "name": "Inside a cachepot",
+   "when": {
+    "pot": [
+     "cachepot"
+    ]
+   },
+   "boosts": [
+    "root-rot",
+    "droop-wet"
+   ],
+   "advice": "Water collects in the outer pot. Tip it out 15 minutes after watering so the roots never stand in water."
+  },
+  {
+   "id": "hanging-basket",
+   "name": "Hanging pot",
+   "when": {
+    "pot": [
+     "hanging"
+    ]
+   },
+   "boosts": [
+    "droop-dry",
+    "brown-tips"
+   ],
+   "advice": "Hanging pots sit in warmer, drier air and dry out fast. Check them more often than pots on the floor."
+  },
+  {
+   "id": "glass-pot",
+   "name": "Glass container",
+   "when": {
+    "pot": [
+     "glass"
+    ]
+   },
+   "boosts": [
+    "green-algae-soil",
+    "root-rot"
+   ],
+   "advice": "Glass has no drainage and lets algae grow in the light. Water sparingly, or use it as a cover pot."
+  },
+  {
+   "id": "eggshells-soil",
+   "name": "Eggshells on the soil",
+   "when": {
+    "surface": [
+     "eggshells"
+    ]
+   },
+   "boosts": [],
+   "advice": "Eggshells break down far too slowly to feed a houseplant and can draw pests. A balanced fertiliser does the job."
+  },
+  {
+   "id": "coffee-grounds-soil",
+   "name": "Coffee grounds on the soil",
+   "when": {
+    "surface": [
+     "coffee_grounds"
+    ]
+   },
+   "boosts": [
+    "mould-soil",
+    "fungus-gnats"
+   ],
+   "advice": "Coffee grounds stay wet, grow mould and attract gnats in pots. Scrape them off and feed with a proper fertiliser."
+  },
+  {
+   "id": "stones-top",
+   "name": "Stones on top of the soil",
+   "when": {
+    "surface": [
+     "stones",
+     "pebbles"
+    ]
+   },
+   "boosts": [
+    "soil-never-dries"
+   ],
+   "advice": "Stones hide how wet the soil is. Push a finger or a stick under them before you water."
+  },
+  {
+   "id": "salt-crust-soil",
+   "name": "White salt crust",
+   "when": {
+    "surface": [
+     "salt_crust"
+    ]
+   },
+   "boosts": [
+    "salt-burn",
+    "brown-tips"
+   ],
+   "advice": "Fertiliser salts have built up. Flush the pot with plenty of water and feed less often."
+  },
+  {
+   "id": "mold-soil-seen",
+   "name": "Mould on the soil",
+   "when": {
+    "surface": [
+     "mold"
+    ]
+   },
+   "boosts": [
+    "mould-soil",
+    "white-mould-soil",
+    "soil-never-dries"
+   ],
+   "advice": "The surface stays too wet. Scrape off the mould, let the top dry and give more airflow."
+  },
+  {
+   "id": "gnats-seen",
+   "name": "Gnats around the soil",
+   "when": {
+    "surface": [
+     "gnats"
+    ]
+   },
+   "boosts": [
+    "fungus-gnats",
+    "tiny-flies"
+   ],
+   "advice": "Gnats breed in wet topsoil. Let the top few centimetres dry, use yellow sticky traps and water from below."
+  },
+  {
+   "id": "dead-leaves-soil",
+   "name": "Dead leaves on the soil",
+   "when": {
+    "surface": [
+     "dead_leaves"
+    ]
+   },
+   "boosts": [
+    "botrytis",
+    "mould-soil"
+   ],
+   "advice": "Fallen leaves rot and hide pests. Clear them off the soil."
+  },
+  {
+   "id": "pellets-soil",
+   "name": "Slow-release fertiliser on the soil",
+   "when": {
+    "surface": [
+     "fertilizer_pellets"
+    ]
+   },
+   "boosts": [
+    "salt-burn"
+   ],
+   "advice": "These pellets feed for months. Don't add liquid fertiliser on top."
+  },
+  {
+   "id": "radiator-near",
+   "name": "Next to a radiator",
+   "when": {
+    "near": [
+     "radiator",
+     "heater",
+     "fireplace"
+    ]
+   },
+   "boosts": [
+    "brown-tips-only",
+    "spider-mites",
+    "crispy-edges"
+   ],
+   "advice": "Radiators dry the air and the soil fast. Move the plant a metre away and raise the humidity."
+  },
+  {
+   "id": "pet-near",
+   "name": "A pet nearby",
+   "when": {
+    "near": [
+     "pet"
+    ]
+   },
+   "boosts": [],
+   "advice": "Check whether this plant is safe for pets, and keep toxic ones out of reach."
+  },
+  {
+   "id": "aquarium-near",
+   "name": "Next to an aquarium",
+   "when": {
+    "near": [
+     "aquarium"
+    ]
+   },
+   "boosts": [],
+   "advice": "The air is a little more humid here. Old aquarium water makes a mild fertiliser for watering."
+  },
+  {
+   "id": "sheer-curtain",
+   "name": "Behind a sheer curtain",
+   "when": {
+    "near": [
+     "curtain_sheer"
+    ]
+   },
+   "boosts": [],
+   "advice": "A sheer curtain turns harsh sun into bright, filtered light, which most houseplants love."
+  },
+  {
+   "id": "grow-light-hours",
+   "name": "Under a grow light",
+   "when": {
+    "light": [
+     "grow-light"
+    ]
+   },
+   "boosts": [
+    "leggy"
+   ],
+   "advice": "Run it 12–14 hours a day on a timer, 20–40 cm above the leaves, and give at least 8 hours of dark."
+  },
+  {
+   "id": "stage-acclimating",
+   "name": "Settling into a new home",
+   "when": {
+    "lifeStage": [
+     "acclimating"
+    ]
+   },
+   "boosts": [
+    "new-plant-drop",
+    "leaf-drop",
+    "dropping-healthy"
+   ],
+   "advice": "Dropping a few leaves in the first 2–4 weeks is normal. Don't repot or feed yet; keep light and watering steady."
+  },
+  {
+   "id": "stage-repotted",
+   "name": "Just repotted",
+   "when": {
+    "lifeStage": [
+     "repotted"
+    ]
+   },
+   "boosts": [
+    "transplant-shock",
+    "yellow-after-repot"
+   ],
+   "advice": "Fresh mix has food in it. Skip fertiliser for 4–6 weeks and water a little less while the roots settle."
+  },
+  {
+   "id": "stage-dormant",
+   "name": "Resting (dormant)",
+   "when": {
+    "lifeStage": [
+     "dormant"
+    ]
+   },
+   "boosts": [
+    "no-growth-winter",
+    "leaves-drop-winter"
+   ],
+   "advice": "Growth pauses. Water much less, stop feeding, and keep it cool and bright until new growth starts."
+  },
+  {
+   "id": "stage-flowering",
+   "name": "In flower",
+   "when": {
+    "lifeStage": [
+     "flowering"
+    ]
+   },
+   "boosts": [
+    "bud-drop",
+    "buds-blast"
+   ],
+   "advice": "Don't move it while it blooms, keep watering even, and feed with a bloom fertiliser. Remove spent flowers."
+  },
+  {
+   "id": "stage-cutting",
+   "name": "A cutting",
+   "when": {
+    "lifeStage": [
+     "cutting"
+    ]
+   },
+   "boosts": [
+    "cutting-rotting",
+    "cutting-no-roots",
+    "cutting-wilting"
+   ],
+   "advice": "Keep it bright but out of direct sun and warm. Expect roots in 2–6 weeks; no fertiliser until it has them."
+  },
+  {
+   "id": "stage-seedling",
+   "name": "A seedling",
+   "when": {
+    "lifeStage": [
+     "seedling"
+    ]
+   },
+   "boosts": [
+    "seedlings-leggy",
+    "seedlings-collapse",
+    "damping-off"
+   ],
+   "advice": "Give strong light close by, keep the mix just moist and air moving to prevent damping off."
+  },
+  {
+   "id": "stage-recovering",
+   "name": "Recovering",
+   "when": {
+    "lifeStage": [
+     "recovering"
+    ]
+   },
+   "boosts": [],
+   "advice": "Hold off on fertiliser, water a little less than usual and give bright, indirect light. New growth is the sign it's healing."
+  },
+  {
+   "id": "stage-unknown-history",
+   "name": "History unknown",
+   "when": {
+    "lifeStage": [
+     "unknown_history"
+    ]
+   },
+   "boosts": [
+    "spider-mites",
+    "mealybugs",
+    "fungus-gnats"
+   ],
+   "advice": "Keep it apart from other plants for two weeks, check under the leaves for pests and water by the finger test."
+  },
+  {
+   "id": "outdoor-rain",
+   "name": "Outside in rainy weather",
+   "when": {
+    "room": [
+     "outdoor",
+     "balcony"
+    ],
+    "weather": [
+     "rainy"
+    ]
+   },
+   "boosts": [],
+   "advice": "Rain counts as watering: skip the watering can and make sure pots drain so roots don't sit in water."
+  },
+  {
+   "id": "water-hard",
+   "name": "Hard tap water",
+   "when": {
+    "water": [
+     "hard"
+    ]
+   },
+   "boosts": [
+    "salt-crust-pot",
+    "brown-tips",
+    "mineral-spots"
+   ],
+   "advice": "Lime builds up and browns sensitive tips. Use rain or filtered water for calatheas, ferns and carnivorous plants, and flush pots now and then."
+  },
+  {
+   "id": "water-chlorinated",
+   "name": "Chlorinated tap water",
+   "when": {
+    "water": [
+     "chlorinated"
+    ]
+   },
+   "boosts": [
+    "brown-tips"
+   ],
+   "advice": "Let tap water stand overnight in an open jug before watering sensitive plants."
+  },
+  {
+   "id": "plant-artificial",
+   "name": "Looks artificial",
+   "when": {
+    "plant": [
+     "artificial"
+    ]
+   },
+   "boosts": [],
+   "advice": "This looks like an artificial plant: no water or food needed. Dust it now and then."
+  },
+  {
+   "id": "plant-multiple",
+   "name": "Several plants in one pot",
+   "when": {
+    "plant": [
+     "multiple"
+    ]
+   },
+   "boosts": [],
+   "advice": "They share water and food. Water for the thirstiest one only if they have similar needs, otherwise split them into their own pots."
+  },
+  {
+   "id": "pot-moss-pole",
+   "name": "Climbing a moss pole",
+   "when": {
+    "pot": [
+     "moss-pole"
+    ]
+   },
+   "boosts": [
+    "moss-pole-dry",
+    "aerial-roots-dry"
+   ],
+   "advice": "Keep the pole damp so aerial roots grow into it, and tie new growth on as it climbs."
+  },
+  {
+   "id": "pot-bonsai",
+   "name": "Bonsai pot",
+   "when": {
+    "pot": [
+     "bonsai"
+    ]
+   },
+   "boosts": [
+    "droop-dry",
+    "bonsai-yellow"
+   ],
+   "advice": "Shallow bonsai pots dry out in a day in summer. Check daily and soak the whole pot when the surface turns dry."
+  },
+  {
+   "id": "home-kids",
+   "name": "Small children at home",
+   "when": {
+    "home": [
+     "kids"
+    ]
+   },
+   "boosts": [],
+   "advice": "Keep plants that are toxic if eaten out of reach, and pick up fallen leaves and berries."
+  },
+  {
+   "id": "home-allergy",
+   "name": "Allergies at home",
+   "when": {
+    "home": [
+     "allergy"
+    ]
+   },
+   "boosts": [],
+   "advice": "Pick foliage plants over flowering ones, wipe leaves often and keep the soil surface dry to avoid mould spores."
   }
  ]
 }
