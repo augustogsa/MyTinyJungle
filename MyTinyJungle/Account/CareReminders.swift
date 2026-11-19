@@ -153,7 +153,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
 
-    /// Shared jungle: a silent CloudKit push means someone changed something.
+    /// The server sends a silent push when someone else changes a jungle we share.
     nonisolated func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async -> UIBackgroundFetchResult {
         await Self.syncSharedJungle()
     }
@@ -161,12 +161,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     @MainActor private static func syncSharedJungle() async -> UIBackgroundFetchResult {
         guard let ctx = NotificationDelegate.shared.container?.mainContext else { return .noData }
         await Household.shared.sync(ctx)
+        await JungleSync.shared.sync()
         return .newData
     }
 
-    func application(_ application: UIApplication, configurationForConnecting session: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        let c = UISceneConfiguration(name: nil, sessionRole: session.role)
-        c.delegateClass = HouseholdSceneDelegate.self
-        return c
+    nonisolated func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let hex = deviceToken.map { String(format: "%02x", $0) }.joined()
+        UserDefaults.standard.set(hex, forKey: "push.token")
+        Task { await JungleAPI.shared.setPushToken(hex) }
     }
+
 }

@@ -5,12 +5,11 @@ import Charts
 // MARK: Manage — people, name, access, leaving
 
 /// Everything about running the shared jungle in one place: who's in it, adding and
-/// removing people, its name, iCloud access and stopping or leaving.
+/// removing people, its name and stopping or leaving.
 struct ManageJungleView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var name = Household.shared.state?.name ?? ""
     @State private var invite = false
-    @State private var access = false
     @State private var removing: Member?
     @State private var confirmLeave = false
     private var house = Household.shared
@@ -51,13 +50,6 @@ struct ManageJungleView: View {
                     Button { invite = true } label: {
                         JungleRow(icon: .mail, title: Grammar.pt(String(localized: "Invite someone", comment: "Hub row")), chevron: true)
                     }.buttonStyle(.plain)
-                    if house.isOwner, house.share != nil {
-                        JungleDivider()
-                        Button { access = true } label: {
-                            JungleRow(icon: .shieldCheck, title: Grammar.pt(String(localized: "iCloud access", comment: "Manage row: system sharing controls")),
-                                      subtitle: Grammar.pt(String(localized: "Pending invites and who can join", comment: "Manage row subtitle")), chevron: true)
-                        }.buttonStyle(.plain)
-                    }
                 }
                 JungleGroup(title: Grammar.pt(String(localized: "Jungle", comment: "Manage section: jungle details"))) {
                     JungleRow(icon: house.state?.kind.icon ?? .home, title: Grammar.pt(String(localized: "Name", comment: "Hub row: jungle name"))) {
@@ -74,7 +66,7 @@ struct ManageJungleView: View {
                         Text(house.state?.kind.label ?? "").foregroundStyle(Jungle.subtle)
                     }
                 }
-                JungleGroup(footer: Grammar.pt(String(localized: "Only the people you invite can see this jungle. It lives in iCloud, and members see plant names, photos and care, never your location or account.", comment: "Hub privacy footer"))) {
+                JungleGroup(footer: Grammar.pt(String(localized: "Only the people you invite can see this jungle. It lives on our servers, private to its members, who see plant names, photos and care, never your location or account.", comment: "Hub privacy footer"))) {
                     Button(role: .destructive) { confirmLeave = true } label: {
                         Text(house.isOwner ? Grammar.pt(String(localized: "Stop sharing", comment: "Owner ends shared jungle")) : Grammar.pt(String(localized: "Leave this jungle", comment: "Member leaves")))
                             .foregroundStyle(.red).frame(maxWidth: .infinity, minHeight: 50)
@@ -88,7 +80,6 @@ struct ManageJungleView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onDisappear { if house.isOwner, !name.isEmpty, name != house.state?.name { house.rename(name) } }
         .sheet(isPresented: $invite) { InviteView() }
-        .sheet(isPresented: $access) { if let share = house.share { CloudSharingSheet(share: share).ignoresSafeArea() } }
         .confirmationDialog(Grammar.pt(String(localized: "Remove \(removing?.firstName ?? "")?", comment: "Remove member dialog; %@ name")), isPresented: Binding(get: { removing != nil }, set: { if !$0 { removing = nil } }), titleVisibility: .visible) {
             Button(role: .destructive) { if let m = removing { withAnimation { house.remove(m.id) } } } label: { Text("Remove", comment: "Confirm remove member") }
         } message: { Text("Their turns go back to the rest of you. They keep their own plants.", comment: "Remove member explanation") }

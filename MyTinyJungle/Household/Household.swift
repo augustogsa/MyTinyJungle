@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import CloudKit
 import UserNotifications
 
 /// The shared jungle brain: members, whose turn it is, cover requests, travel hand-offs,
@@ -14,8 +13,8 @@ final class Household {
     private(set) var location: HouseholdCloud.Location?
     private(set) var syncing = false
     private(set) var lastError: String?
-    /// The live share, so the invite sheet can show the link and the system sharing controls.
-    var share: CKShare?
+    /// The current single-use invite link for the invite sheet.
+    var inviteURL: URL?
     static var demo: Bool { ProcessInfo.processInfo.arguments.contains("-householdDemo") }
 
     private let fileURL = URL.applicationSupportDirectory.appendingPathComponent("household.json")
@@ -108,42 +107,55 @@ final class Household {
 
     func create(kind: HouseKind, name: String, plants: [Plant]) async {
         let myName = JungleSettings.shared.ownerName.isEmpty ? Grammar.pt(String(localized: "Me", comment: "Shared jungle: fallback member name for yourself")) : JungleSettings.shared.ownerName
-        if let id = await HouseholdCloud.myID() { adoptMeID(id) }
+        if let id = HouseholdCloud.myID { adoptMeID(id) }
         var s = HouseState(name: name.isEmpty ? kind.defaultName : name, kind: kind)
         s.members = [Member(id: meID, name: myName, role: .owner, colorIndex: 0)]
         s.activity = [Activity(kind: .created, memberID: meID)]
         state = s
         roster(plants)
         persist()
-        await prepareShare()
+        await prepareInvite()
     }
 
-    /// Creates (or finds) the CKShare. Without iCloud the jungle still works on this phone.
-    func prepareShare() async {
+    /// Puts the jungle on the server (first time) and makes a fresh single-use invite link.
+    func prepareInvite() async {
         guard let s = state, !Self.demo else { return }
-        guard await HouseholdCloud.available() else {
-            lastError = Grammar.pt(String(localized: "Sign in to iCloud in the Settings app to invite people. Your shared jungle is ready the moment you do.", comment: "Shared jungle: invite needs iCloud"))
+        guard HouseholdCloud.available else {
+            lastError = Grammar.pt(String(localized: "Sign in from Settings to invite people. Your shared jungle is ready the moment you do.", comment: "Shared jungle: invite needs an account"))
             return
         }
         do {
-            if let loc = location { share = await HouseholdCloud.share(at: loc); if share != nil { return } }
-            share = try await HouseholdCloud.createShare(state: s, title: s.name)
-            setLocation(.init(zoneOwner: CKCurrentUserDefaultName, shared: false))
+            if let id = HouseholdCloud.myID { adoptMeID(id) }
+            let loc: HouseholdCloud.Location
+            if let l = location { loc = l } else {
+                loc = try await HouseholdCloud.create(state: state ?? s)
+                setLocation(loc)
+            }
+            let until = state?.sitterInviteUntil.flatMap { $0 > Date() ? $0 : nil }
+            inviteURL = try await HouseholdCloud.invite(at: loc, sitterUntil: until)
             lastError = nil
         } catch {
-            lastError = Grammar.pt(String(localized: "iCloud is taking a moment. Try the invite again in a little while.", comment: "Shared jungle: share creation failed"))
+            lastError = Grammar.pt(String(localized: "Couldn't make an invite just now. Check your connection and try again.", comment: "Shared jungle: invite creation failed"))
         }
     }
 
-    func accept(_ metadata: CKShare.Metadata) async {
+    /// Opened from an invite link.
+    func accept(code: String) async {
+        guard HouseholdCloud.available else {
+            UserDefaults.standard.set(code, forKey: "house.pendingInvite")
+            lastError = Grammar.pt(String(localized: "Sign in from Settings to join this jungle. The invite will be waiting.", comment: "Shared jungle: joining needs an account"))
+            return
+        }
         do {
-            let loc = try await HouseholdCloud.accept(metadata)
-            if let id = await HouseholdCloud.myID() { adoptMeID(id) }
+            let loc = try await HouseholdCloud.redeem(code: code)
+            UserDefaults.standard.removeObject(forKey: "house.pendingInvite")
+            if let id = HouseholdCloud.myID { adoptMeID(id) }
+            if location != loc { state = nil }
             setLocation(loc)
             await sync()
             guard var s = state else { return }
             if s.member(meID) == nil || s.member(meID)?.removed == true {
-                let myName = JungleSettings.shared.ownerName.isEmpty ? (metadata.share.currentUserParticipant?.userIdentity.nameComponents.map { PersonNameComponentsFormatter.localizedString(from: $0, style: .default) } ?? Grammar.pt(String(localized: "Me", comment: "Shared jungle: fallback member name for yourself"))) : JungleSettings.shared.ownerName
+                let myName = JungleSettings.shared.ownerName.isEmpty ? Grammar.pt(String(localized: "Me", comment: "Shared jungle: fallback member name for yourself")) : JungleSettings.shared.ownerName
                 s.members.removeAll { $0.id == meID }
                 var newbie = Member(id: meID, name: myName, colorIndex: s.members.count)
                 if let u = s.sitterInviteUntil, u > Date() { newbie.sittingUntil = u; s.sitterInviteUntil = nil }
@@ -157,6 +169,11 @@ final class Household {
         } catch {
             lastError = Grammar.pt(String(localized: "That invite didn't open. Ask for a fresh link.", comment: "Shared jungle: accepting invite failed"))
         }
+    }
+
+    /// An invite opened before signing in is redeemed right after.
+    func redeemPendingInvite() async {
+        if let code = UserDefaults.standard.string(forKey: "house.pendingInvite"), HouseholdCloud.available { await accept(code: code) }
     }
 
     func rename(_ name: String) { mutate { $0.name = name } }
@@ -216,8 +233,8 @@ final class Household {
             state = s
             await commit()
         }
-        if let loc = location { await HouseholdCloud.leave(at: loc) }
-        state = nil; share = nil; location = nil
+        if let loc = location { await HouseholdCloud.leave(at: loc, owner: isOwner) }
+        state = nil; inviteURL = nil; location = nil
         UserDefaults.standard.removeObject(forKey: "house.location")
         try? FileManager.default.removeItem(at: fileURL)
     }
@@ -254,13 +271,27 @@ final class Household {
     }
 
     func sync(_ ctx: ModelContext? = nil) async {
-        guard let loc = location, !Self.demo else { if let ctx { apply(ctx) }; return }
-        syncing = true; defer { syncing = false }
-        guard let remote = try? await HouseholdCloud.fetch(at: loc) else {
-            // The owner removed me or ended the jungle.
-            if loc.shared, await HouseholdCloud.available(), (try? await HouseholdCloud.container.sharedCloudDatabase.recordZone(for: HouseholdCloud.zoneID(loc))) == nil { state = nil; location = nil; UserDefaults.standard.removeObject(forKey: "house.location") }
+        guard !Self.demo, HouseholdCloud.available else { if let ctx { apply(ctx) }; return }
+        guard let loc = location else {
+            if let id = HouseholdCloud.myID { adoptMeID(id) }
+            // A jungle made before it lived on the server (beta): the owner moves it up; members get re-invited.
+            if let s = state, s.member(meID)?.role == .owner || s.members.count <= 1, let loc = try? await HouseholdCloud.create(state: s) {
+                setLocation(loc)
+            } else if state != nil, location == nil { state = nil; try? FileManager.default.removeItem(at: fileURL) }
+            if let ctx { apply(ctx) }
             return
         }
+        syncing = true; defer { syncing = false }
+        let remote: HouseState?
+        do { remote = try await HouseholdCloud.fetch(at: loc) }
+        catch HouseholdCloud.Failure.gone {
+            // The owner removed me or ended the jungle.
+            state = nil; location = nil; inviteURL = nil
+            UserDefaults.standard.removeObject(forKey: "house.location")
+            try? FileManager.default.removeItem(at: fileURL)
+            return
+        } catch { return }
+        guard let remote else { await commit(); return }
         let old = state
         var s = state ?? remote
         s.merge(remote)
@@ -269,11 +300,10 @@ final class Household {
         if let ctx { apply(ctx) }
         await notifyNews(old: old, new: s)
         await celebrateNewBadges()
-        await HouseholdCloud.subscribe(loc)
     }
 
     private func commit() async {
-        guard let loc = location, let s = state, !Self.demo else { return }
+        guard let loc = location, let s = state, !Self.demo, HouseholdCloud.available else { return }
         if let merged = try? await HouseholdCloud.save(s, at: loc) { state = merged; persist() }
     }
 

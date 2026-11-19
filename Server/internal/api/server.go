@@ -27,6 +27,7 @@ type Server struct {
 	log     *slog.Logger
 	now     func() time.Time
 	play    *playClient
+	pusher  *pusher
 }
 
 func New(cfg Config, db *DB, priv ed25519.PrivateKey, pubs map[string]ed25519.PublicKey, log *slog.Logger) *Server {
@@ -39,6 +40,7 @@ func New(cfg Config, db *DB, priv ed25519.PrivateKey, pubs map[string]ed25519.Pu
 	if cfg.AccessTeam != "" {
 		s.access = jwt.NewJWKS("https://" + cfg.AccessTeam + "/cdn-cgi/access/certs")
 	}
+	s.pusher = newPusher(cfg, db, log)
 	if cfg.PlayPackage != "" && cfg.PlaySAFile != "" {
 		s.play = newPlayClient(cfg.PlayPackage, cfg.PlaySAFile)
 	}
@@ -72,10 +74,15 @@ func (s *Server) Handler() http.Handler {
 
 	m.Handle("GET /v1/jungles", s.user(s.jungles))
 	m.Handle("POST /v1/jungles", s.user(s.createJungle))
+	m.Handle("DELETE /v1/jungles/{id}", s.user(s.deleteJungle))
 	m.Handle("POST /v1/jungles/{id}/invites", s.user(s.createInvite))
 	m.Handle("POST /v1/invites/{code}/redeem", s.user(s.redeemInvite))
 	m.Handle("PATCH /v1/jungles/{id}/members/{uid}", s.user(s.updateMember))
 	m.Handle("DELETE /v1/jungles/{id}/members/{uid}", s.user(s.removeMember))
+
+	m.Handle("GET /v1/jungles/{id}/house", s.user(s.getHouse))
+	m.Handle("PUT /v1/jungles/{id}/house", s.user(s.putHouse))
+	m.Handle("GET /v1/me/export", s.user(s.export))
 
 	m.Handle("GET /v1/sync/pull", s.user(s.pull))
 	m.Handle("POST /v1/sync/push", s.user(s.push))

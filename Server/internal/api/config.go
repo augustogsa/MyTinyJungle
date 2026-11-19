@@ -32,6 +32,10 @@ type Config struct {
 	AppleBundleID  string
 	PlayPackage    string
 	PlaySAFile     string
+	APNsKeyFile    string // team .p8 (ES256)
+	APNsKeyID      string
+	APNsTeamID     string
+	FCMSAFile      string // Firebase service account JSON
 	PlayRTDNAud    string
 	PlayRTDNEmail  string
 	Release        string
@@ -77,6 +81,10 @@ func LoadConfig() (Config, error) {
 		AppleBundleID: env("MTJ_APPLE_BUNDLE_ID", "com.simpleappscompany.mytinyjungle"),
 		PlayPackage:   os.Getenv("MTJ_PLAY_PACKAGE"),
 		PlaySAFile:    os.Getenv("MTJ_PLAY_SA_FILE"),
+		APNsKeyFile:   os.Getenv("MTJ_APNS_KEY_FILE"),
+		APNsKeyID:     os.Getenv("MTJ_APNS_KEY_ID"),
+		APNsTeamID:    os.Getenv("MTJ_APNS_TEAM_ID"),
+		FCMSAFile:     os.Getenv("MTJ_FCM_SA_FILE"),
 		PlayRTDNAud:   os.Getenv("MTJ_PLAY_RTDN_AUDIENCE"),
 		PlayRTDNEmail: os.Getenv("MTJ_PLAY_RTDN_EMAIL"),
 		Release:       env("MTJ_RELEASE", "dev"),

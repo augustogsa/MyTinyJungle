@@ -34,6 +34,17 @@ c $B -X POST http://x/v1/invites/$code/redeem >/dev/null
 n=$(c $B "http://x/v1/sync/pull?since=0" | python3 -c 'import json,sys;print(len(json.load(sys.stdin)["changes"]))'); [[ $n == 1 ]] && ok "sitter joins and sees the plant"
 st=$(c $B -o /dev/null -w '%{http_code}' -X POST http://x/v1/invites/$code/redeem); [[ $st == 404 ]] && ok "invite is single use"
 names=$(c $B http://x/v1/jungles | python3 -c 'import json,sys;j=[x for x in json.load(sys.stdin)["jungles"] if x["id"]=="'$JA'"][0];print(len(j["members"]))'); [[ $names == 2 ]] && ok "sitter sees members"
+hv=$(c $A -X PUT http://x/v1/jungles/$JA/house -d '{"data":{"name":"Home"},"baseVersion":null}' | python3 -c 'import json,sys;print(json.load(sys.stdin)["version"])') && ok "owner writes house state"
+st=$(c $B -o /tmp/itest.h -w '%{http_code}' -X PUT http://x/v1/jungles/$JA/house -d '{"data":{"name":"Stale"},"baseVersion":1}'); [[ $st == 409 ]] && grep -q '"Home"' /tmp/itest.h && ok "stale house write gets 409 with current copy"
+st=$(c $B -o /dev/null -w '%{http_code}' -X PUT http://x/v1/jungles/$JA/house -d "{\"data\":{\"name\":\"Home 2\"},\"baseVersion\":$hv}"); [[ $st == 200 ]] && ok "member writes on current version"
+n=$(c $A http://x/v1/jungles/$JA/house | python3 -c 'import json,sys;print(json.load(sys.stdin)["data"]["name"])'); [[ $n == "Home 2" ]] && ok "owner reads merged house"
+st=$(c $B -o /dev/null -w '%{http_code}' http://x/v1/jungles/$JB/house); [[ $st == 404 ]] && ok "house of a jungle with no state is 404"
+JS=$(c $A http://x/v1/jungles -d '{"name":"Shared"}' | python3 -c 'import json,sys;print(json.load(sys.stdin)["id"])')
+st=$(c $B -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/jungles/$JS); [[ $st == 404 ]] && ok "only the owner ends a shared jungle"
+st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/jungles/$JS); [[ $st == 200 ]] && ok "owner ends a shared jungle"
+st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/jungles/$JA); [[ $st == 404 ]] && ok "personal jungle cannot be deleted"
+ex=$(c $A http://x/v1/me/export | python3 -c 'import json,sys;d=json.load(sys.stdin);print(len(d["records"]),len(d["account"]),len(d["signIns"]))'); [[ $ex == "2 1 0" || $ex == "2 1 1" ]] && ok "data export ($ex)"
+rm -f /tmp/itest.h
 
 M=22222222-2222-4222-8222-$(openssl rand -hex 6)
 head -c 2048 /dev/urandom > /tmp/itest.jpg

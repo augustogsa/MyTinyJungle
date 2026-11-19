@@ -56,7 +56,7 @@ struct NativeAdCard: View {
 
     var body: some View {
         Group {
-            if let ad = pool.ad(for: slot) {
+            if RemoteConfig.flag("ads"), let ad = pool.ad(for: slot) {
                 switch style {
                 case .card:
                     NativeAdCardView(ad: ad, style: .card).frame(height: 76)

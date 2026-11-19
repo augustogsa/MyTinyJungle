@@ -5,6 +5,8 @@ import (
 	"errors"
 	"math/big"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -201,5 +203,27 @@ func (s *Server) removeMember(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, err)
 		return
 	}
+	writeJSON(w, http.StatusOK, map[string]bool{"ok": true})
+}
+
+// deleteJungle: the owner stops sharing. Members lose access at once; records and photos go with it.
+func (s *Server) deleteJungle(w http.ResponseWriter, r *http.Request) {
+	ctx, c, jid := r.Context(), claimsOf(r), r.PathValue("id")
+	if !isUUID(jid) {
+		s.fail(w, r, bad("invalid_request"))
+		return
+	}
+	err := s.db.AsUser(ctx, c.Sub, func(tx pgx.Tx) error {
+		tag, err := tx.Exec(ctx, `delete from jungles where id = $1 and owner_id = $2 and not is_personal`, jid, c.Sub)
+		if err == nil && tag.RowsAffected() == 0 {
+			return apiError{http.StatusNotFound, "not_found"}
+		}
+		return err
+	})
+	if err != nil {
+		s.fail(w, r, err)
+		return
+	}
+	_ = os.RemoveAll(filepath.Join(s.cfg.MediaDir, jid))
 	writeJSON(w, http.StatusOK, map[string]bool{"ok": true})
 }

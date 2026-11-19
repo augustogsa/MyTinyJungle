@@ -63,11 +63,21 @@ struct MyTinyJungleApp: App {
                 .task {
                     JungleSync.shared.start(container)
                     Task { await ContentStore.shared.refresh() }
+                    #if DEBUG
+                    Task { await HouseholdSelfTest.run() }
+                    #endif
                     await AuthManager.shared.refresh(); await CloudBackup.shared.refresh()
                     await Store.shared.refresh()
                     await JungleSync.shared.sync()
                 }
-                .onOpenURL { if !PlanLink.handle($0) { GIDSignIn.sharedInstance.handle($0) } }
+                .onOpenURL { url in
+                    if let code = HouseholdCloud.code(from: url) { Task { await Household.shared.accept(code: code) } }
+                    else if !PlanLink.handle(url) { GIDSignIn.sharedInstance.handle(url) }
+                }
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { a in
+                    if let url = a.webpageURL, let code = HouseholdCloud.code(from: url) { Task { await Household.shared.accept(code: code) } }
+                }
+                .updateGate()
         }
         .modelContainer(container)
     }

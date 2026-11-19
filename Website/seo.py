@@ -57,7 +57,8 @@ def og_image(L, path, title, desc, dist):
     """1200x630 share card per page and language, cached by content."""
     name = f"{L}-{path.strip('/').replace('/', '-') or 'home'}"
     out = dist / "og" / f"{name}.png"
-    key = hashlib.sha1(f"v10|{L}|{path}|{title}|{desc}".encode()).hexdigest()[:12]
+    say = SAY[L].get(path, SAY[L]["default"])
+    key = hashlib.sha1(f"v11|{L}|{path}|{title}|{desc}|{say}".encode()).hexdigest()[:12]
     cached = CACHE / f"{name}-{key}.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     if not cached.exists():
@@ -91,7 +92,7 @@ def _shadow(size, box, r, blur, alpha):
 
 
 SAY = {"en": {"/": "Hi! I'm Erty", "default": "Hi! I'm Erty", "/404": "Oops, wrong pot"},
-       "pt": {"/": "Oi! Eu sou o Erty", "default": "Oi! Eu sou o Erty", "/404": "Ops, vaso errado"}}
+       "pt": {"/": "Oi! Eu sou o Raminho", "default": "Oi! Eu sou o Raminho", "/404": "Ops, vaso errado"}}
 
 
 def _leaf(im, x, y, s, ang, col):
@@ -292,7 +293,7 @@ Sitemap: {SITE}/sitemap.xml
 def llms(T, rows_by_lang):
     en = T["en"]
     lines = [f"# {BRAND}", "", f"> {en['home_desc']}", "",
-             "iPhone app by SimpleAppsCo LLC (Lisbon). Free for up to 5 plants; Plus is €1.99 a month or €11.99 a year. "
+             "iPhone app by SimpleAppsCo LLC (Lisbon). Free for up to 5 plants; Greenhouse is €1.99 a month, Jungle €11.99 a year. "
              "Available in English and Brazilian Portuguese. Photos stay on the iPhone.", "",
              "## Pages", f"- [Home]({SITE}/): what the app does and pricing", f"- [Features]({SITE}/features): every feature",
              f"- [Good to know]({SITE}/good-to-know): all common questions", f"- [Support]({SITE}/support): contact and subscriptions",
@@ -333,6 +334,8 @@ RewriteCond %{HTTPS} off
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteCond %{HTTP:CF-Visitor} !https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# shared-jungle invite links land on one page when the app isn't installed
+RewriteRule ^join/[A-Za-z0-9]{10}/?$ /join/index.html [L]
 # share shortcuts
 RewriteRule ^(download|app|ios|iphone|beta|testflight)/?$ /get [R=301,L]
 RewriteRule ^pt/(baixar|app|download|beta)/?$ /pt/get [R=301,L]

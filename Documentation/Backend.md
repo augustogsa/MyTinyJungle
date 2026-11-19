@@ -51,7 +51,7 @@ See `Server/openapi.yaml`. Auth: `/v1/auth/signin|refresh|signout|link`. Account
 
 ## Rollout
 1. Done: Go server, contract, roles and RLS, sign-in, sync, sharing, encrypted photos, store verification, admin behind Access, hardened service, origin pulls, encrypted off-site backups, purge, 20/20 end-to-end checks.
-2. iOS: generated client, Sign in with Apple, sync engine (SwiftData ↔ records, photos ↔ media), move household from CKShare to jungles and invites, StoreKit `appAccountToken`.
+2. iOS: done. Sign in with Apple/Google, sync engine (SwiftData ↔ records, photos ↔ media), shared jungle on server jungles and invites, StoreKit `appAccountToken`, server content, remote config, data export.
 3. Android app on the same contract (Google sign-in → `MTJ_GOOGLE_AUDIENCES`, Play Billing → `MTJ_PLAY_*`).
 
 ## Content from the server (species, knowledge, translations, Erty, icons, artwork)
@@ -65,3 +65,24 @@ What the app knows that isn't the user's lives in `Content/` and is served by th
 - Images swap to full quality live; species/knowledge/translations apply on the next launch (they are read once at startup).
 - Engines (care, diagnosis, chat, forecast) stay on the device and run on this server-fed data: instant, offline and private, no plant data leaves the phone to get an answer.
 - Stays bundled on purpose: alternate app icons (iOS requires them in the bundle), AppMark (share cards render synchronously), tab icons, Google mark.
+
+## Shared jungle (household) on the server
+
+- The household is a non-personal jungle. Its state (members' turns, cover asks, travel, activity, plant roster with small thumbnails) is one JSON document: `GET/PUT /v1/jungles/{id}/house`, compare-and-swap on `version`. A stale write gets 409 with the current copy; the device merges (`HouseState.merge`) and retries. Up to 1 MB.
+- Invites: `POST /v1/jungles/{id}/invites` makes a single-use code (7 days) at `https://mytinyjungle.com/join/<code>`. A sitter invite stores the end date on the server; the joiner becomes a sitter until then. The link opens the app (universal link, AASA `/join/*`); without the app it lands on `/join` with a "get the app" page. An invite opened before signing in is kept and redeemed right after sign-in.
+- Members: the owner removes someone with `DELETE /v1/jungles/{id}/members/{uid}` (access ends at once, photos included); a member leaves the same way with their own id; the owner ends the jungle with `DELETE /v1/jungles/{id}` (records and photos erased). A device that finds itself no longer a member drops the local copy.
+- Member ids are server user ids, so iPhone and Android share one household. Beta households made on iCloud are moved up by the owner on first sync; members join again with a new link.
+
+## Push
+
+- `PUT /v1/me/push-token` per device. After every accepted house write the server wakes the other members' devices: iOS gets a silent `content-available` push (collapse id per jungle) and the app syncs and writes its own local notification in the user's language; Android gets an FCM data message `{jungle}`. Pushes carry no names or plant data.
+- APNs: team key `9U98NLQ264` (team `JKMB58P38J`) at `/opt/mtj/secrets/apns.p8`, env `MTJ_APNS_*`. Tries production, then sandbox (development builds). `410` or `BadDeviceToken` on both clears the token.
+- FCM: set `MTJ_FCM_SA_FILE` to the My Tiny Jungle Firebase service account when the Android app's Firebase project exists (the MyDigitalMagnets one must not be reused). Until then Android devices simply get no push.
+
+## Remote config
+
+- `Content/config.json`, published with the content pack, live after the next manifest check (launch and foreground): `minVersion` (older builds get a full-screen "Time for an update" with the App Store link) and `flags` (unknown flags default to on). `ads` turns native ad cards off everywhere.
+
+## Data export
+
+- `GET /v1/me/export`: account, sign-in providers, devices, entitlements, jungles and roles, every record you wrote or own, and the photo list with paths. Settings > Account > Download my data saves it as JSON through the share sheet. Account deletion was already there (`DELETE /v1/me`).

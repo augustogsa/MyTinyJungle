@@ -38,3 +38,37 @@ struct DevicesView: View {
         Grammar.pt(String(localized: "Last seen \(d.lastSeenAt.formatted(.relative(presentation: .named)))", comment: "Device row subtitle; %@ relative date"))
     }
 }
+
+/// Settings: a copy of everything the server holds about you, as one JSON file (GDPR / LGPD access right).
+struct ExportDataRow: View {
+    @State private var file: URL?
+    @State private var busy = false
+    @State private var failed = false
+    var body: some View {
+        Button { Task { await export() } } label: {
+            JungleRow(icon: .box, title: Grammar.pt(String(localized: "Download my data", comment: "Settings title")),
+                      subtitle: failed ? Grammar.pt(String(localized: "Couldn't prepare it. Try again.", comment: "Data export error; max 40 chars")) : nil) {
+                if busy { ProgressView() }
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(busy)
+        .sheet(item: $file) { ShareSheet(items: [$0]).ignoresSafeArea() }
+    }
+
+    private func export() async {
+        busy = true; failed = false
+        defer { busy = false }
+        guard let data = try? await JungleAPI.shared.download("/v1/me/export") else { failed = true; return }
+        let url = FileManager.default.temporaryDirectory.appending(path: "my-tiny-jungle-data.json")
+        do { try data.write(to: url, options: [.atomic, .completeFileProtection]); file = url } catch { failed = true }
+    }
+}
+
+extension URL: @retroactive Identifiable { public var id: String { absoluteString } }
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    func makeUIViewController(context: Context) -> UIActivityViewController { UIActivityViewController(activityItems: items, applicationActivities: nil) }
+    func updateUIViewController(_ c: UIActivityViewController, context: Context) {}
+}

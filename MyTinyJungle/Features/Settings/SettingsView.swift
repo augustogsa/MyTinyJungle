@@ -41,6 +41,8 @@ struct SettingsView: View {
                             JungleDivider()
                             NavigationLink { DevicesView() } label: { JungleRow(icon: .calendarClock, title: Grammar.pt(String(localized: "Your devices", comment: "Settings title")), chevron: true) }.buttonStyle(.plain)
                             JungleDivider()
+                            ExportDataRow()
+                            JungleDivider()
                             Button { confirmSignOut = true } label: { JungleRow(icon: .mail, title: Grammar.pt(String(localized: "Sign out", comment: "Settings title"))) }.buttonStyle(.plain)
                             JungleDivider()
                             Button { confirmDelete = true } label: { JungleRow(icon: .emptyPot, title: Grammar.pt(String(localized: "Delete account and data", comment: "Settings title"))) }.buttonStyle(.plain)

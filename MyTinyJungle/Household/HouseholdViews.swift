@@ -401,13 +401,12 @@ struct HouseSetupView: View {
 struct InviteView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var mail = false
-    @State private var system = false
     @State private var copied = false
     @State private var sitter = Household.shared.state?.sitterInviteUntil.map { $0 > Date() } ?? false
     @State private var sitterUntil = Household.shared.state?.sitterInviteUntil ?? Calendar.current.date(byAdding: .day, value: 7, to: Date())!
     private var house = Household.shared
 
-    private var url: URL? { house.share?.url ?? (Household.demo ? URL(string: "https://www.icloud.com/share/0demo-jungle") : nil) }
+    private var url: URL? { house.inviteURL ?? (Household.demo ? URL(string: "https://mytinyjungle.com/join/DEMO234XYZ") : nil) }
     private var message: String {
         let me = house.me?.firstName ?? ""
         if sitter {
@@ -445,8 +444,8 @@ struct InviteView: View {
                         }
                     }
                     .padding(14).jungleCard()
-                    .onChange(of: sitter) { _, on in house.setSitterInvite(on ? sitterUntil : nil) }
-                    .onChange(of: sitterUntil) { _, d in if sitter { house.setSitterInvite(d) } }
+                    .onChange(of: sitter) { _, on in house.setSitterInvite(on ? sitterUntil : nil); Task { await house.prepareInvite() } }
+                    .onChange(of: sitterUntil) { _, d in if sitter { house.setSitterInvite(d); Task { await house.prepareInvite() } } }
                     if let url {
                         VStack(spacing: 10) {
                             ShareLink(item: url, subject: Text(house.state?.name ?? ""), message: Text(message)) {
@@ -462,13 +461,13 @@ struct InviteView: View {
                                 }
                             }
                             .buttonStyle(.bordered).tint(Jungle.forest)
-                            Button { system = true } label: { Text("Manage people and access", comment: "Opens system CloudKit sharing controls") }.font(.subheadline).padding(.top, 4)
+                            Text("Each link works once and expires in 7 days.", comment: "Invite: link rules").font(.footnote).foregroundStyle(Jungle.subtle).padding(.top, 4)
                         }
                     } else if let err = house.lastError {
                         VStack(spacing: 12) {
                             Icon3DView(.weather, size: 48)
                             Text(err).font(.subheadline).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
-                            Button { Task { await house.prepareShare() } } label: { Text("Try again", comment: "Retry button") }.buttonStyle(.bordered)
+                            Button { Task { await house.prepareInvite() } } label: { Text("Try again", comment: "Retry button") }.buttonStyle(.bordered)
                         }.padding(16).frame(maxWidth: .infinity).jungleCard()
                     } else {
                         ErtyLoading(text: "", mood: .idle).padding(20)
@@ -486,9 +485,8 @@ struct InviteView: View {
             .jungleBackdrop()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button { dismiss() } label: { Text("Done") } } }
-            .task { if house.share == nil { await house.prepareShare() } }
+            .task { await house.prepareInvite() }
             .sheet(isPresented: $mail) { if let url { MailComposer(subject: house.state?.name ?? "My Tiny Jungle", body: message + "\n\n" + url.absoluteString).ignoresSafeArea() } }
-            .sheet(isPresented: $system) { if let share = house.share { CloudSharingSheet(share: share).ignoresSafeArea() } }
         }
     }
 
@@ -529,16 +527,6 @@ struct MailComposer: UIViewControllerRepresentable {
     }
 }
 
-/// Apple's own people-and-permissions screen for the share.
-struct CloudSharingSheet: UIViewControllerRepresentable {
-    let share: CKShare
-    func makeUIViewController(context: Context) -> UICloudSharingController {
-        let c = UICloudSharingController(share: share, container: HouseholdCloud.container)
-        c.availablePermissions = [.allowReadWrite, .allowPrivate, .allowPublic]
-        return c
-    }
-    func updateUIViewController(_ c: UICloudSharingController, context: Context) {}
-}
 
 // MARK: ask cover / away
 

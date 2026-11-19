@@ -192,6 +192,7 @@ func (s *Server) appleNotification(w http.ResponseWriter, r *http.Request) {
 
 type playClient struct {
 	pkg, saFile string
+	scope       string
 	mu          sync.Mutex
 	token       string
 	tokenExp    time.Time
@@ -199,7 +200,7 @@ type playClient struct {
 }
 
 func newPlayClient(pkg, sa string) *playClient {
-	return &playClient{pkg: pkg, saFile: sa, http: &http.Client{Timeout: 10 * time.Second}}
+	return &playClient{pkg: pkg, saFile: sa, scope: "https://www.googleapis.com/auth/androidpublisher", http: &http.Client{Timeout: 10 * time.Second}}
 }
 
 // accessToken: OAuth2 JWT-bearer grant with the service account (androidpublisher scope).
@@ -234,7 +235,7 @@ func (p *playClient) accessToken(ctx context.Context) (string, error) {
 	now := time.Now()
 	enc := base64.RawURLEncoding
 	hb, _ := json.Marshal(map[string]string{"alg": "RS256", "typ": "JWT"})
-	cb, _ := json.Marshal(map[string]any{"iss": sa.ClientEmail, "scope": "https://www.googleapis.com/auth/androidpublisher",
+	cb, _ := json.Marshal(map[string]any{"iss": sa.ClientEmail, "scope": p.scope,
 		"aud": sa.TokenURI, "iat": now.Unix(), "exp": now.Add(time.Hour).Unix()})
 	in := enc.EncodeToString(hb) + "." + enc.EncodeToString(cb)
 	sum := sha256.Sum256([]byte(in))

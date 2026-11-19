@@ -1,15 +1,4 @@
 import SwiftUI
-import CloudKit
-
-/// Receives "join this jungle" taps from iCloud share links, warm or cold launch.
-final class HouseholdSceneDelegate: NSObject, UIWindowSceneDelegate {
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options: UIScene.ConnectionOptions) {
-        if let m = options.cloudKitShareMetadata { Task { @MainActor in await Household.shared.accept(m) } }
-    }
-    func windowScene(_ windowScene: UIWindowScene, userDidAcceptCloudKitShareWith metadata: CKShare.Metadata) {
-        Task { @MainActor in await Household.shared.accept(metadata) }
-    }
-}
 
 /// Me tab entry: invite when alone, people and your turns when shared.
 /// Me tab: your care level and badges from caring together.

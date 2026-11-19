@@ -64,6 +64,26 @@ paths:
       operationId: deleteMe
       description: Signs out everywhere; data is erased after 30 days unless the user signs in again.
       responses: { "200": { $ref: "#/components/responses/Ok" } }
+  /v1/me/export:
+    get:
+      operationId: exportMe
+      description: Everything stored about the caller as one JSON file (GDPR art. 15/20, LGPD art. 18). Photos are listed with their media path.
+      responses: { "200": { description: Export, content: { application/json: { schema: { type: object } } } } }
+  /v1/content/manifest:
+    get:
+      operationId: getContentManifest
+      security: []
+      description: Content pack index (logical path to hashed blob). ETag; 304 when unchanged; max-age 300.
+      responses:
+        "200": { description: Manifest, content: { application/json: { schema: { type: object, required: [version, files], properties: { version: { type: string }, files: { type: object, additionalProperties: { type: object, required: [h, n], properties: { h: { type: string }, n: { type: integer } } } } } } } } }
+        "304": { description: Not modified }
+  /v1/content/b/{name}:
+    get:
+      operationId: getContentBlob
+      security: []
+      description: Immutable content blob named by its SHA-256 prefix; cached for a year.
+      parameters: [{ name: name, in: path, required: true, schema: { type: string, pattern: "^[0-9a-f]{32}\\.(json|png|jpg|mov|webp)$" } }]
+      responses: { "200": { description: Blob, content: { application/octet-stream: { schema: { type: string, format: binary } } } }, "404": { $ref: "#/components/responses/Error" } }
   /v1/me/push-token:
     put:
       operationId: setPushToken
@@ -86,6 +106,29 @@ paths:
         content: { application/json: { schema: { type: object, required: [name], properties: { name: { type: string, maxLength: 60 } } } } }
       responses:
         "201": { description: Created, content: { application/json: { schema: { type: object, required: [id], properties: { id: { type: string, format: uuid } } } } } }
+  /v1/jungles/{id}:
+    delete:
+      operationId: deleteJungle
+      description: Owner ends a shared jungle; members lose access, its records and photos are erased. The personal jungle cannot be deleted.
+      parameters: [{ $ref: "#/components/parameters/JungleID" }]
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "404": { $ref: "#/components/responses/Error" } }
+  /v1/jungles/{id}/house:
+    parameters: [{ $ref: "#/components/parameters/JungleID" }]
+    get:
+      operationId: getHouse
+      description: Shared-jungle household state (members' turns, cover asks, activity, plant roster), merged on devices.
+      responses:
+        "200": { description: House, content: { application/json: { schema: { $ref: "#/components/schemas/House" } } } }
+        "404": { $ref: "#/components/responses/Error" }
+    put:
+      operationId: putHouse
+      description: Compare-and-swap on version (baseVersion null creates). Success wakes other members' devices (silent APNs / FCM data push).
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [data], properties: { data: { type: object }, baseVersion: { type: integer, format: int64, nullable: true } } } } }
+      responses:
+        "200": { description: Saved, content: { application/json: { schema: { type: object, required: [version], properties: { version: { type: integer, format: int64 } } } } } }
+        "409": { description: Stale; merge this copy and retry, content: { application/json: { schema: { $ref: "#/components/schemas/House" } } } }
   /v1/jungles/{id}/invites:
     post:
       operationId: createInvite
@@ -196,6 +239,7 @@ components:
       content: { application/json: { schema: { type: object, required: [plus, entitlements], properties: { plus: { type: boolean }, entitlements: { type: array, items: { $ref: "#/components/schemas/Entitlement" } } } } } }
   schemas:
     Error: { type: object, required: [error], properties: { error: { type: string } } }
+    House: { type: object, required: [data, version], properties: { data: { type: object }, version: { type: integer, format: int64 } } }
     Health: { type: object, required: [service, release, db], properties: { service: { type: string }, release: { type: string }, db: { type: boolean } } }
     Provider: { type: string, enum: [apple, google] }
     Platform: { type: string, enum: [ios, android, web] }

@@ -6929,6 +6929,28 @@
         }
       }
     },
+    "Couldn't make an invite just now. Check your connection and try again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não deu pra criar o convite agora. Confere a conexão e tenta de novo."
+          }
+        }
+      }
+    },
+    "Couldn't prepare it. Try again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não deu pra preparar. Tenta de novo."
+          }
+        }
+      }
+    },
     "Couldn't reach the server. Check your connection and try again." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7557,6 +7579,17 @@
         }
       }
     },
+    "Download my data" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baixar meus dados"
+          }
+        }
+      }
+    },
     "Drain" : {
       "comment" : "Care guide step title; short",
       "localizations" : {
@@ -7905,6 +7938,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Folha empoeirada pega menos luz"
+          }
+        }
+      }
+    },
+    "Each link works once and expires in 7 days." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada link vale uma vez e expira em 7 dias."
           }
         }
       }
@@ -16744,6 +16788,17 @@
         }
       }
     },
+    "Only the people you invite can see this jungle. It lives on our servers, private to its members, who see plant names, photos and care, never your location or account." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Só quem você convida vê essa selva. Ela fica nos nossos servidores, privada pra quem participa, e o pessoal vê nomes, fotos e cuidados das plantas, nunca sua localização ou sua conta."
+          }
+        }
+      }
+    },
     "Only use it if you've confirmed a pest on %@." : {
       "comment" : "Product scan verdict reason for one plant. Args are plant or species names, numbers.",
       "localizations" : {
@@ -20286,6 +20341,28 @@
         }
       }
     },
+    "Sign in from Settings to invite people. Your shared jungle is ready the moment you do." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entra na sua conta pelos Ajustes pra convidar gente. Sua selva compartilhada fica pronta na hora."
+          }
+        }
+      }
+    },
+    "Sign in from Settings to join this jungle. The invite will be waiting." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entra na sua conta pelos Ajustes pra participar dessa selva. O convite fica te esperando."
+          }
+        }
+      }
+    },
     "Sign in to iCloud in the Settings app to back up." : {
       "comment" : "Backup status, no iCloud account",
       "localizations" : {
@@ -23186,6 +23263,17 @@
         }
       }
     },
+    "This version of My Tiny Jungle is too old to keep your plants in sync. The new one is free and takes a moment." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essa versão do My Tiny Jungle tá velhinha demais pra manter suas plantas sincronizadas. A nova é grátis e leva um minutinho."
+          }
+        }
+      }
+    },
     "Three numbers" : {
       "comment" : "Care guide step title; short",
       "localizations" : {
@@ -23237,6 +23325,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dê uma ajeitada"
+          }
+        }
+      }
+    },
+    "Time for an update" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora de atualizar"
           }
         }
       }
@@ -24121,6 +24220,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No alto"
+          }
+        }
+      }
+    },
+    "Update now" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizar agora"
           }
         }
       }

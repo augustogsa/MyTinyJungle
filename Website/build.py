@@ -27,7 +27,7 @@ ICON = {
 T = {
  "en": {
   "lang": "en", "prefix": "", "lights": "Turn the lights off or on", "other": "pt", "other_label": "PT",
-  "nav": ["Inside the app", "Plus", "Support", "Join the beta"],
+  "nav": ["Inside the app", "Plans", "Support", "Join the beta"],
   "foot": ["Support", "Privacy", "Terms", "Good to know","Features"], "made": 'Planted in Lisbon by <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Coming soon on the App Store",
   "home_title": "My Tiny Jungle: the plant care app that knows your home",
@@ -56,8 +56,8 @@ T = {
   "p_eyebrow": "Pricing", "p_h": "Start free. Grow when you're ready.",
   "plans": [
     ("Free", "€0", "forever", ["Up to 5 plants", "Chat and care requests", "Soil-check ritual", "Care calendar"], False, ""),
-    ("My Tiny Jungle Plus", "€1.99", "per month", ["Unlimited plants", "Product scanner", "Travel care and propagation guides", "Season planning"], False, ""),
-    ("My Tiny Jungle Plus", "€11.99", "per year", ["Everything in monthly", "Save 50% over monthly"], True, "Best value"),
+    ("Greenhouse", "€1.99", "per month", ["Unlimited plants", "Product scanner", "Travel care and propagation guides", "Season planning"], False, ""),
+    ("Jungle", "€11.99", "per year", ["Everything in monthly", "Save 50% over monthly"], True, "Best value"),
   ],
   "fine": "Prices in euros; local prices may vary by country. Subscriptions renew automatically until cancelled in your Apple ID settings.",
   "c_h": "Give your plants a voice.", "c_p": "My Tiny Jungle is coming soon to iPhone.",
@@ -67,22 +67,27 @@ T = {
   "sup_tip": "Please include your iPhone model, iOS version and the app version (Me tab).",
   "faq_h": "Common questions",
   "faq": [
-    ("How do I cancel My Tiny Jungle Plus?", "Open iPhone Settings → your name → Subscriptions → My Tiny Jungle → Cancel Subscription. You keep Plus until the end of the period you paid for."),
+    ("How do I cancel my plan?", "Open iPhone Settings → your name → Subscriptions → My Tiny Jungle → Cancel Subscription. You keep your plan until the end of the period you paid for."),
     ("Can I get a refund?", 'Purchases are handled by Apple. Request a refund at <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.'),
-    ("I bought Plus but the app still shows the free plan.", "Open Me → Restore Purchases while signed in with the same Apple ID you used to subscribe."),
+    ("I subscribed but the app still shows the free plan.", "Open Me → Restore Purchases while signed in with the same Apple ID you used to subscribe."),
     ("Are my photos uploaded?", "No. Plant recognition and product scans run on your iPhone. We never receive your photos."),
-    ("Why do I see ads?", "Ads keep the free version free. My Tiny Jungle Plus removes them. You can change ad personalisation in Me → Privacy &amp; ads choices."),
+    ("Why do I see ads?", "Ads keep the free version free. Greenhouse and Jungle remove them. You can change ad personalisation in Me → Privacy &amp; ads choices."),
     ("What happens to my plants if I reach 5 on the free plan?", "Nothing is deleted. You can keep caring for your 5 plants, or upgrade to add more."),
-    ("How do I delete my data?", "Delete the app: your plant data only lives on your device (and in your own iCloud backup, if enabled). For ad data, see the Privacy Policy."),
+    ("How do I delete my data?", "In the app, open Settings and tap Delete account and data: it erases your sign-in and every plant, photo and care history from your iPhone and your iCloud. Deleting the app also removes what is on the device. Your plant data only lives on your device (and in your own iCloud backup, if enabled). For ad data, see the Privacy Policy."),
   ],
   # privacy
   "pri_title": "Privacy Policy", "pri_desc": "How My Tiny Jungle handles data: plant photos and scans stay on your device; the free version shows Google AdMob ads.",
-  "pri_box": "Short version: your plants, photos, notes and scans stay on your iPhone and we never receive them. The free version shows ads from Google AdMob, which may process limited device data to show and measure ads, with your consent where the law requires it. My Tiny Jungle Plus has no ads and makes no ad requests.",
+  "pri_box": "Short version: your plants, photos, notes and scans stay on your iPhone and we never receive them. The free version shows ads from Google AdMob, which may process limited device data to show and measure ads, with your consent where the law requires it. Greenhouse and Jungle have no ads and make no ad requests.",
   "pri": [
     ("Who is responsible", f"My Tiny Jungle is published by Simple Apps Company (“we”), the data controller for the app. Contact: <a href=\"mailto:{EMAIL}\">{EMAIL}</a>."),
-    ("What stays on your device", "Plant photos, plant recognition, label scans, plant names, care logs, reminders and chat messages are processed and stored only on your iPhone. If iCloud backup is on, they are included in your own encrypted Apple backup, which we cannot access. We have no accounts and no servers that receive this data."),
+    ("What stays on your device", "Plant photos, plant recognition, label scans, plant names, care logs, reminders and chat messages are processed and stored only on your iPhone. If iCloud backup is on, they are included in your own encrypted Apple backup, which we cannot access. We run no servers that receive this data."),
+    ("Sign in with Apple or Google", "Signing in is optional. If you sign in, the app keeps your name, email (or Apple’s private relay address) and an account identifier in your iPhone’s Keychain, only to show who is signed in and to restore your session. We never receive them. Google processes sign-ins under its own privacy policy."),
+    ("Weather and your area", "To tune care to your climate, the app asks for your location only while in use, or lets you type a city. It rounds the coordinates to about 10 km and sends them to the free weather service Open-Meteo (open-meteo.com) to fetch the forecast and climate history. No name, account or device identifier is sent. You can type a city instead or turn location off in iPhone Settings."),
+    ("Camera and photos", "The camera and photo library are used only when you choose to photograph a plant or scan a label. Images are processed on your iPhone and stored with your plants; they are never uploaded to us."),
+    ("Shared jungles", "If you share your jungle with someone, Apple’s iCloud sharing sends the shared plants and care history to the people you invite. You can stop sharing or leave a shared jungle at any time; we never see that data."),
+    ("Deleting your account", "In Settings, tap Delete account and data. It removes your Sign in with Apple or Google session, revokes Google access, and erases every plant, photo and history from this iPhone and your iCloud. We keep no accounts on our servers, so nothing is left with us. Subscriptions are cancelled in your Apple account."),
     ("Ads in the free version (Google AdMob)", "<ul><li>The free version shows ads served by Google AdMob. Google acts as an independent controller for the data it processes to serve ads; Simple Apps Company is the controller for the app itself.</li><li>To show and measure ads, the Google Mobile Ads SDK may collect: your device advertising identifier (IDFA), only if you allow tracking when iOS asks; approximate location derived from your IP address; ad interactions (views and taps); and diagnostic and performance data about the ad SDK.</li><li>This is used for advertising, ad measurement, fraud prevention and keeping ads working. It is never linked to your plants, photos or scans.</li></ul>"),
-    ("Your consent and choices", "<ul><li>In the EEA, UK and Switzerland we ask for your consent using Google's User Messaging Platform (UMP) before any personalised ads are shown. If you don't consent, you may see non-personalised ads, which use only contextual and limited data.</li><li>Elsewhere, ads are non-personalised unless you allow tracking in the iOS prompt.</li><li>You can change your mind at any time in the app under Me → Privacy &amp; ads choices, and in iPhone Settings → Privacy &amp; Security → Tracking.</li><li>Subscribing to My Tiny Jungle Plus removes all ads: no ads are shown and the app makes no ad SDK requests.</li></ul>"),
+    ("Your consent and choices", "<ul><li>In the EEA, UK and Switzerland we ask for your consent using Google's User Messaging Platform (UMP) before any personalised ads are shown. If you don't consent, you may see non-personalised ads, which use only contextual and limited data.</li><li>Elsewhere, ads are non-personalised unless you allow tracking in the iOS prompt.</li><li>You can change your mind at any time in the app under Me → Privacy &amp; ads choices, and in iPhone Settings → Privacy &amp; Security → Tracking.</li><li>Subscribing to Greenhouse or Jungle removes all ads: no ads are shown and the app makes no ad SDK requests.</li></ul>"),
     ("Google's policies", f"Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\">How Google uses information from sites or apps that use its services</a> and the <a href=\"https://policies.google.com/privacy\">Google Privacy Policy</a>."),
     ("Notifications", "Care reminders are scheduled locally on your device. You can turn them off at any time in iPhone Settings."),
     ("Purchases", "Subscriptions are processed entirely by Apple. We never see your name, email or payment details. To keep subscriptions working, our server may receive Apple's App Store Server Notifications, which contain only anonymous transaction identifiers and subscription status."),
@@ -96,7 +101,7 @@ T = {
   "ter": [
     ("Agreement", 'By downloading or using My Tiny Jungle you agree to these terms and to Apple\'s <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Licensed Application End User License Agreement</a> (the “Standard EULA”), which applies between you and Simple Apps Company. If these terms and the Standard EULA conflict, these terms apply where the law allows.'),
     ("The app", "My Tiny Jungle helps you keep track of houseplant care. Care tips and plant identification are suggestions, not guarantees. Plants are living things and results vary; use your own judgement, especially for plants that may be toxic to pets or children."),
-    ("Free plan and My Tiny Jungle Plus", "The free plan lets you care for up to 5 plants and shows ads (see the Privacy Policy). My Tiny Jungle Plus is an optional auto-renewable subscription that removes ads and unlocks unlimited plants and extra features, offered monthly (€1.99) or yearly (€11.99). Prices shown in the app in your local currency are the ones that apply."),
+    ("Free plan, Greenhouse and Jungle", "The free plan lets you care for up to 5 plants and shows ads (see the Privacy Policy). Greenhouse (monthly) and Jungle (yearly) are optional auto-renewable subscriptions that remove ads and unlock unlimited plants and extra features: Greenhouse €1.99 a month, Jungle €11.99 a year. Prices shown in the app in your local currency are the ones that apply."),
     ("Payment and auto-renewal", "<ul><li>Payment is charged to your Apple ID account when you confirm the purchase.</li><li>The subscription renews automatically for the same period and price unless you cancel at least 24 hours before the end of the current period.</li><li>Your account is charged for renewal within 24 hours before the current period ends.</li><li>You can manage or cancel in iPhone Settings → your name → Subscriptions. Cancelling stops the next renewal; you keep access until the paid period ends.</li><li>If a free trial is offered, any unused part of it ends when you buy a subscription.</li></ul>"),
     ("Refunds", 'Refunds are handled by Apple under its policies at <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. EU consumer rights are not affected.'),
     ("Acceptable use", "Don't reverse engineer, resell or misuse the app, and don't use it to break the law."),
@@ -112,7 +117,7 @@ T = {
  },
  "pt": {
   "lang": "pt-BR", "prefix": "/pt", "lights": "Apagar ou acender as luzes", "other": "en", "other_label": "EN",
-  "nav": ["O app", "Plus", "Ajuda", "Quero testar"],
+  "nav": ["O app", "Planos", "Ajuda", "Quero testar"],
   "foot": ["Ajuda", "Privacidade", "Termos", "Bom saber","Recursos"], "made": 'Plantado em Lisboa pela <a href="https://simpleappscompany.com">Simple Apps Company</a>',
   "cta": "Em breve na App Store",
   "home_title": "My Tiny Jungle: o app que cuida das suas plantas do jeito certo",
@@ -141,8 +146,8 @@ T = {
   "p_eyebrow": "Preços", "p_h": "Comece de graça. Cresça quando quiser.",
   "plans": [
     ("Grátis", "0 €", "para sempre", ["Até 5 plantas", "Bate-papo e pedidos de cuidado", "Ritual de sentir a terra", "Calendário de cuidados"], False, ""),
-    ("My Tiny Jungle Plus", "1,99 €", "por mês", ["Plantas ilimitadas", "Leitor de produtos", "Guias de viagem e de mudas", "Planejamento por estação"], False, ""),
-    ("My Tiny Jungle Plus", "11,99 €", "por ano", ["Tudo do plano mensal", "Economize 50% em relação ao mensal"], True, "Melhor custo-benefício"),
+    ("Estufa", "1,99 €", "por mês", ["Plantas ilimitadas", "Leitor de produtos", "Guias de viagem e de mudas", "Planejamento por estação"], False, ""),
+    ("Selva", "11,99 €", "por ano", ["Tudo do plano mensal", "Economize 50% em relação ao mensal"], True, "Melhor custo-benefício"),
   ],
   "fine": "Preços em euros; podem variar de acordo com o país. As assinaturas são renovadas automaticamente até serem canceladas nos ajustes do seu ID Apple.",
   "c_h": "Dê voz às suas plantas.", "c_p": "O My Tiny Jungle chega em breve ao iPhone.",
@@ -151,21 +156,27 @@ T = {
   "sup_tip": "Pra agilizar, conta qual é o seu iPhone, a versão do iOS e a versão do app (aba Você).",
   "faq_h": "Perguntas frequentes",
   "faq": [
-    ("Como faço pra cancelar o My Tiny Jungle Plus?", "É rapidinho: Ajustes do iPhone → seu nome → Assinaturas → My Tiny Jungle → Cancelar assinatura. O Plus continua valendo até o fim do período que você já pagou."),
+    ("Como faço pra cancelar meu plano?", "É rapidinho: Ajustes do iPhone → seu nome → Assinaturas → My Tiny Jungle → Cancelar assinatura. Seu plano continua valendo até o fim do período que você já pagou."),
     ("Dá pra pedir reembolso?", 'Quem cuida das compras é a Apple. Pede o reembolso em <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.'),
-    ("Assinei o Plus, mas o app continua no plano de graça.", "Vai em Você → Restaurar compras, com o mesmo ID Apple da assinatura."),
+    ("Assinei, mas o app continua no plano de graça.", "Vai em Você → Restaurar compras, com o mesmo ID Apple da assinatura."),
     ("Minhas fotos vão pra algum lugar?", "Não. O reconhecimento de plantas e a leitura de produtos acontecem no seu iPhone. Nunca recebemos suas fotos."),
-    ("Por que aparecem anúncios?", "São eles que bancam a versão de graça. O My Tiny Jungle Plus tira todos. Dá pra mudar a personalização em Você → Privacidade e anúncios."),
+    ("Por que aparecem anúncios?", "São eles que bancam a versão de graça. Estufa e Selva tiram todos. Dá pra mudar a personalização em Você → Privacidade e anúncios."),
     ("E quando eu chegar a 5 plantas no plano de graça?", "Nada é apagado. Você segue cuidando das 5 ou assina pra colocar mais."),
-    ("Como eu apago meus dados?", "É só apagar o app: os dados das plantas só existem no seu aparelho (e no seu backup do iCloud, se estiver ativado). Sobre dados de anúncios, veja a Política de Privacidade."),
+    ("Como eu apago meus dados?", "No app, abra Ajustes e toque em Apagar conta e dados: isso remove seu login e apaga todas as plantas, fotos e histórico de cuidados do iPhone e do iCloud. Apagar o app também remove o que está no aparelho. Os dados das plantas só existem no seu aparelho (e no seu backup do iCloud, se estiver ativado). Sobre dados de anúncios, veja a Política de Privacidade."),
   ],
   "pri_title": "Política de Privacidade", "pri_desc": "Como o My Tiny Jungle trata seus dados: fotos e leituras ficam no celular; a versão grátis mostra anúncios do Google AdMob.",
-  "pri_box": "Resumindo: suas plantas, fotos, anotações e leituras ficam no seu iPhone e nunca chegam até nós. A versão grátis mostra anúncios do Google AdMob, que pode tratar dados limitados do aparelho para exibir e medir anúncios, com o seu consentimento quando a lei exige. O My Tiny Jungle Plus não tem anúncios e não faz nenhuma solicitação de anúncios.",
+  "pri_box": "Resumindo: suas plantas, fotos, anotações e leituras ficam no seu iPhone e nunca chegam até nós. A versão grátis mostra anúncios do Google AdMob, que pode tratar dados limitados do aparelho para exibir e medir anúncios, com o seu consentimento quando a lei exige. Estufa e Selva não têm anúncios e não fazem nenhuma solicitação de anúncios.",
   "pri": [
     ("Quem é o responsável", f"O My Tiny Jungle é publicado pela Simple Apps Company (“nós”), controladora dos dados tratados pelo app. Contato: <a href=\"mailto:{EMAIL}\">{EMAIL}</a>."),
-    ("O que fica no seu aparelho", "Fotos das plantas, reconhecimento de plantas, leituras de rótulos, nomes, registros de cuidados, lembretes e mensagens são processados e armazenados apenas no seu iPhone. Se o backup do iCloud estiver ativado, eles entram no seu backup criptografado da Apple, ao qual não temos acesso. Não temos contas nem servidores que recebam esses dados."),
+    ("O que fica no seu aparelho", "Fotos das plantas, reconhecimento de plantas, leituras de rótulos, nomes, registros de cuidados, lembretes e mensagens são processados e armazenados apenas no seu iPhone. Se o backup do iCloud estiver ativado, eles entram no seu backup criptografado da Apple, ao qual não temos acesso. Não mantemos servidores que recebam esses dados."),
+    ("Login com Apple ou Google", "Fazer login é opcional. Se você entrar, o app guarda seu nome, e-mail (ou o endereço privado da Apple) e um identificador da conta no Keychain do iPhone, só para mostrar quem está conectado e restaurar a sessão. Nós nunca recebemos esses dados. O Google trata os logins conforme a própria política de privacidade."),
+    ("Clima e sua região", "Para ajustar os cuidados ao seu clima, o app pede sua localização só durante o uso, ou deixa você digitar uma cidade. As coordenadas são arredondadas para cerca de 10 km e enviadas ao serviço gratuito de meteorologia Open-Meteo (open-meteo.com) para buscar a previsão e o histórico do clima. Nenhum nome, conta ou identificador do aparelho é enviado. Você pode digitar uma cidade ou desligar a localização nos Ajustes do iPhone."),
+    ("Câmera e fotos", "A câmera e a fototeca só são usadas quando você escolhe fotografar uma planta ou ler um rótulo. As imagens são processadas no iPhone e guardadas com suas plantas; nunca são enviadas para nós."),
+    ("Selvas compartilhadas", "Se você compartilhar sua selva com alguém, o compartilhamento do iCloud da Apple envia as plantas e o histórico compartilhados para quem você convidar. Você pode parar de compartilhar ou sair de uma selva compartilhada quando quiser; nós nunca vemos esses dados."),
+    ("LGPD", "Para quem está no Brasil, tratamos dados conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018). Anúncios personalizados dependem do seu consentimento, que pode ser revogado a qualquer momento. Você pode pedir confirmação, acesso, correção, anonimização, portabilidade ou eliminação dos dados e reclamar à ANPD. Fale conosco pelo e-mail acima."),
+    ("Apagar sua conta", "Em Ajustes, toque em Apagar conta e dados. Isso remove o login com Apple ou Google, revoga o acesso do Google e apaga todas as plantas, fotos e históricos deste iPhone e do seu iCloud. Não guardamos contas nos nossos servidores, então não sobra nada conosco. Assinaturas são canceladas na sua conta Apple."),
     ("Anúncios na versão grátis (Google AdMob)", "<ul><li>A versão grátis mostra anúncios veiculados pelo Google AdMob. O Google atua como controlador independente dos dados que trata para veicular anúncios; a Simple Apps Company é a controladora do app.</li><li>Para exibir e medir anúncios, o SDK Google Mobile Ads pode coletar: o identificador de publicidade do aparelho (IDFA), somente se você permitir o rastreamento quando o iOS perguntar; localização aproximada a partir do endereço IP; interações com anúncios (visualizações e toques); e dados de diagnóstico e desempenho do SDK.</li><li>Esses dados são usados para publicidade, medição, prevenção de fraudes e funcionamento dos anúncios. Eles nunca são associados às suas plantas, fotos ou leituras.</li></ul>"),
-    ("Seu consentimento e suas escolhas", "<ul><li>No EEE, no Reino Unido e na Suíça, pedimos seu consentimento pela User Messaging Platform (UMP) do Google antes de mostrar anúncios personalizados. Se você não consentir, poderá ver anúncios não personalizados, que usam apenas dados contextuais e limitados.</li><li>Nos demais países, os anúncios não são personalizados, a menos que você permita o rastreamento no aviso do iOS.</li><li>Você pode mudar de ideia quando quiser no app, em Você → Privacidade e anúncios, e em Ajustes do iPhone → Privacidade e Segurança → Rastreamento.</li><li>Assinar o My Tiny Jungle Plus remove todos os anúncios: nenhum anúncio é exibido e o app não faz nenhuma solicitação ao SDK de anúncios.</li></ul>"),
+    ("Seu consentimento e suas escolhas", "<ul><li>No EEE, no Reino Unido e na Suíça, pedimos seu consentimento pela User Messaging Platform (UMP) do Google antes de mostrar anúncios personalizados. Se você não consentir, poderá ver anúncios não personalizados, que usam apenas dados contextuais e limitados.</li><li>Nos demais países, os anúncios não são personalizados, a menos que você permita o rastreamento no aviso do iOS.</li><li>Você pode mudar de ideia quando quiser no app, em Você → Privacidade e anúncios, e em Ajustes do iPhone → Privacidade e Segurança → Rastreamento.</li><li>Assinar a Estufa ou a Selva remove todos os anúncios: nenhum anúncio é exibido e o app não faz nenhuma solicitação ao SDK de anúncios.</li></ul>"),
     ("Políticas do Google", f"Saiba mais em <a href=\"https://policies.google.com/technologies/partner-sites?hl=pt-BR\">Como o Google usa informações de sites ou apps que usam nossos serviços</a> e na <a href=\"https://policies.google.com/privacy?hl=pt-BR\">Política de Privacidade do Google</a>."),
     ("Notificações", "Os lembretes são agendados localmente no seu aparelho. Você pode desativá-los quando quiser nos Ajustes do iPhone."),
     ("Compras", "As assinaturas são processadas inteiramente pela Apple. Nunca vemos seu nome, e-mail ou dados de pagamento. Para manter as assinaturas funcionando, nosso servidor pode receber as notificações do App Store Server da Apple, que contêm apenas identificadores anônimos de transação e o status da assinatura."),
@@ -179,7 +190,7 @@ T = {
   "ter": [
     ("Acordo", 'Ao baixar ou usar o My Tiny Jungle, você aceita estes termos e o <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Contrato de Licença de Usuário Final de Aplicativos Licenciados</a> da Apple (o “EULA Padrão”), válido entre você e a Simple Apps Company. Em caso de conflito, prevalecem estes termos, na medida permitida por lei.'),
     ("O app", "O My Tiny Jungle ajuda você a acompanhar o cuidado com plantas de dentro de casa. Dicas e identificações são sugestões, não garantias. Plantas são seres vivos e os resultados variam; use o bom senso, principalmente com plantas que possam ser tóxicas para pets ou crianças."),
-    ("Plano grátis e My Tiny Jungle Plus", "O plano grátis permite cuidar de até 5 plantas e mostra anúncios (veja a Política de Privacidade). O My Tiny Jungle Plus é uma assinatura opcional com renovação automática que remove os anúncios e libera plantas ilimitadas e recursos extras, mensal (1,99 €) ou anual (11,99 €). Valem os preços mostrados no app na sua moeda local."),
+    ("Plano grátis, Estufa e Selva", "O plano grátis permite cuidar de até 5 plantas e mostra anúncios (veja a Política de Privacidade). Estufa (mensal) e Selva (anual) são assinaturas opcionais com renovação automática que removem os anúncios e liberam plantas ilimitadas e recursos extras: Estufa por 1,99 € ao mês, Selva por 11,99 € ao ano. Valem os preços mostrados no app na sua moeda local."),
     ("Pagamento e renovação automática", "<ul><li>O pagamento é cobrado na sua conta do ID Apple quando você confirma a compra.</li><li>A assinatura é renovada automaticamente pelo mesmo período e preço, a menos que você cancele pelo menos 24 horas antes do fim do período atual.</li><li>A renovação é cobrada nas 24 horas anteriores ao fim do período atual.</li><li>Você pode gerenciar ou cancelar em Ajustes do iPhone → seu nome → Assinaturas. O cancelamento impede a próxima renovação; você mantém o acesso até o fim do período pago.</li><li>Se houver um período de teste gratuito, a parte não usada termina quando você compra uma assinatura.</li></ul>"),
     ("Reembolsos", 'Os reembolsos são administrados pela Apple em <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. Seus direitos de consumidor na UE não são afetados.'),
     ("Uso aceitável", "Não faça engenharia reversa, não revenda nem use o app de forma indevida, e não o use para violar a lei."),
@@ -225,10 +236,9 @@ def page(L, path, title, desc, body):
 <meta name="apple-itunes-app" content="app-id=6836292367">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="preload" as="image" href="/assets/erty/favicon-sprite.png?v=3">
 <link rel="preload" href="/fonts/Intern.woff2" as="font" type="font/woff2" crossorigin>
+<script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script><script>(function(){{try{{if(/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent))return;var s=localStorage.getItem("lang"),p=location.pathname,pt=p==="/pt"||p.indexOf("/pt/")===0;var want=s||((navigator.languages&&navigator.languages[0])||navigator.language||"en").toLowerCase().indexOf("pt")===0?"pt":"en";if(s)want=s;if(want==="pt"&&!pt)location.replace("/pt"+(p==="/"?"/":p)+location.search+location.hash);else if(want==="en"&&pt)location.replace((p.replace(/^\/pt/,"")||"/")+location.search+location.hash)}}catch(e){{}}}})()</script>
 <link rel="stylesheet" href="/style.css?v={CSS_V}">
 </head><body>
-<script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script><script>(function(){{try{{if(/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent))return;var s=localStorage.getItem("lang"),p=location.pathname,pt=p==="/pt"||p.indexOf("/pt/")===0;var want=s||((navigator.languages&&navigator.languages[0])||navigator.language||"en").toLowerCase().indexOf("pt")===0?"pt":"en";if(s)want=s;if(want==="pt"&&!pt)location.replace("/pt"+(p==="/"?"/":p)+location.search+location.hash);else if(want==="en"&&pt)location.replace((p.replace(/^\/pt/,"")||"/")+location.search+location.hash)}}catch(e){{}}}})()</script>
-<script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <header class="nav"><div class="wrap navbar">
 <a class="brand" href="{p}/"><span class="bname" aria-label="My Tiny Jungle">{BRAND_NAME}</span></a>
 <nav><a class="hide-s" href="{p}/#today">{n[0]}</a><a class="hide-s" href="{p}/#pricing">{n[1]}</a><a class="hide-s" href="{p}/support">{n[2]}</a>
@@ -298,8 +308,8 @@ def good_to_know(L):
     inner += f'<h2>{u["by_feature"]}</h2>' + "".join(
         f'<h3 class="fq"><img class="i3d" src="/icons/{ic}.png" alt="" width="32" height="32"><a href="{p}/features/{slug}">{title}</a></h3>{det(qs)}'
         for ic, slug, title, short, (intro, how, qs) in _feat_rows(L))
-    return doc(L, "/good-to-know", u["gk_title"], u["gk_desc"], inner, meta=False)
     inner += seo.faq_ld([q for g, qs in GENERAL[L] for q in qs] + [q for *_, (i, h, qs) in _feat_rows(L) for q in qs])
+    return doc(L, "/good-to-know", u["gk_title"], u["gk_desc"], inner, meta=False)
 
 
 def build():
@@ -340,9 +350,18 @@ def build():
     t = T["en"]
     (DIST / "404.html").write_text(doc("en", "/404", t["nf_title"], t["nf_desc"],
         f'<p class="flead">{t["nf_desc"]}</p><p><a class="btn" href="/">{t["nf_home"]}</a></p><p><a href="/pt/">{T["pt"]["nf_title"]} · {T["pt"]["nf_home"]}</a></p>', meta=False))
+    tp = T["pt"]; (DIST / "pt" / "404").mkdir(parents=True, exist_ok=True)
+    (DIST / "pt" / "404" / "index.html").write_text(doc("pt", "/404", tp["nf_title"], tp["nf_desc"],
+        f'<p class="flead">{tp["nf_desc"]}</p><p><a class="btn" href="/pt/">{tp["nf_home"]}</a></p>', meta=False))
+    # Shared-jungle invites: /join/<code> opens the app (universal link); without it, this page.
+    (DIST / "join").mkdir(exist_ok=True)
+    (DIST / "join" / "index.html").write_text(doc("en", "/join", "You're invited to a shared jungle", "Get My Tiny Jungle, sign in and tap the link again to join.",
+        '<p class="flead">Get My Tiny Jungle, sign in, then open this link again to join and take turns caring for the plants.</p>'
+        '<p><a class="btn" href="/get">Get the app</a></p>'
+        '<p lang="pt-BR">Te chamaram pra cuidar de uma selva junto. Baixa o My Tiny Jungle, entra na conta e abre esse link de novo pra participar. <a href="/pt/get">Baixar o app</a></p>', meta=False))
     wk = DIST / ".well-known"; wk.mkdir(exist_ok=True)
     (wk / "security.txt").write_text(seo.SECURITY)
-    (wk / "apple-app-site-association").write_text(json.dumps({"applinks": {"details": [{"appIDs": ["JKMB58P38J.com.simpleappscompany.mytinyjungle"], "components": [{"/": "/plus"}, {"/": "/pt/plus"}]}]}}))
+    (wk / "apple-app-site-association").write_text(json.dumps({"applinks": {"details": [{"appIDs": ["JKMB58P38J.com.simpleappscompany.mytinyjungle"], "components": [{"/": "/plus"}, {"/": "/pt/plus"}, {"/": "/join/*"}]}]}}))
     if (SRC / "app-ads.txt").exists():
         shutil.copy(SRC / "app-ads.txt", DIST / "app-ads.txt")
     (DIST / "robots.txt").write_text(seo.ROBOTS)
@@ -352,11 +371,10 @@ def build():
     (DIST / "humans.txt").write_text(seo.HUMANS)
     (DIST / f"{seo.INDEXNOW_KEY}.txt").write_text(seo.INDEXNOW_KEY)
     (DIST / ".htaccess").write_text(seo.HTACCESS)
-    print("built", len(urls), "pages")
     harden()
+    print("built", len(urls), "pages")
 
 
-if __name__ == "__main__":
 def harden():
     """Ship minified, mangled code and compact markup: nothing readable to lift."""
     import re, subprocess
@@ -371,4 +389,5 @@ def harden():
         h.write_text(s.replace("> <!", "><!").strip())
 
 
+if __name__ == "__main__":
     build()
