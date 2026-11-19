@@ -50,6 +50,8 @@ enum CareReminders {
                   let raw = cal.date(bySettingHour: hour, minute: CarePrefs.minute, second: 0, of: day) else { continue }
             let fire = CarePrefs.gentle(raw)
             guard fire > now else { continue }
+            // Away with nobody sharing the jungle: care is paused, the sitter has the plan.
+            if let trip = CarePrefs.trip, fire >= trip.leave, fire < trip.back, !Household.shared.isShared { continue }
             // Plants that truly need you that morning, plus anything planned that day.
             let thirsty = Set(forecast.filter { $0.kind == .water && cal.isDate($0.date, inSameDayAs: day) }.compactMap(\.plantID))
             let due = !CarePrefs.isOn(.water) ? [] : plants.filter { p in

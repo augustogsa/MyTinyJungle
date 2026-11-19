@@ -93661,6 +93661,950 @@
           }
         }
       }
+    },
+    "Weather where it lives: %@%@" : {
+      "comment" : "Line under a server answer; args temperature range and optional rain amount",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clima onde ela vive: %@%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clima donde vive: %@%@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Météo chez elle : %@%@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wetter an ihrem Platz: %@%@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "育てている場所の天気：%@%@"
+          }
+        }
+      }
+    },
+    "Resting season begins: water less and stop feeding until spring." : {
+      "comment" : "Season outlook line for a coming month; warm, practical.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Começa a época de descanso: rega menos e para de adubar até a primavera."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empieza la temporada de reposo: riega menos y deja de abonar hasta la primavera."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La saison de repos commence : arrose moins et arrête l'engrais jusqu'au printemps."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Ruhezeit beginnt: weniger gießen und bis zum Frühling nicht düngen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "休眠の季節に入るよ。水は控えめにして、春まで肥料はお休み。"
+          }
+        }
+      }
+    },
+    "Growing season is back: start feeding gently, at half strength at first." : {
+      "comment" : "Season outlook line for a coming month; warm, practical.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A época de crescimento voltou: volta a adubar de leve, com meia dose no começo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve la temporada de crecimiento: empieza a abonar suave, a media dosis al principio."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La saison de croissance revient : reprends l'engrais en douceur, à demi-dose au début."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Wachstumszeit ist zurück: sanft wieder düngen, anfangs in halber Stärke."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成長期が戻ってきたよ。最初は半分の濃さで、やさしく肥料を再開しよう。"
+          }
+        }
+      }
+    },
+    "Repot window: %@ could move to a roomier pot." : {
+      "comment" : "Season outlook line for a coming month; warm, practical.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora de trocar de vaso: %@ pode ir pra um vaso maior."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Momento de trasplantar: %@ podría ir a una maceta más amplia."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fenêtre de rempotage : %@ peut passer dans un pot plus grand."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umtopfzeit: %@ könnte in einen größeren Topf."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "植え替えの時期：%@は大きめの鉢に移せそう。"
+          }
+        }
+      }
+    },
+    "Frost risk: bring %@ inside before nights get cold." : {
+      "comment" : "Season outlook line for a coming month; warm, practical.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Risco de geada: leva %@ pra dentro antes das noites esfriarem."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riesgo de helada: mete a %@ adentro antes de que lleguen las noches frías."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Risque de gel : rentre %@ avant que les nuits fraîchissent."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frostgefahr: Hol %@ rein, bevor die Nächte kalt werden."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "霜のおそれ：夜が冷え込む前に%@を室内に入れてね。"
+          }
+        }
+      }
+    },
+    "Spring move: %@ can summer outside. Start in shade and add sun over 1–2 weeks." : {
+      "comment" : "Season outlook line for a coming month; warm, practical.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mudança de primavera: %@ pode passar o verão lá fora. Começa na sombra e vai aumentando o sol em 1–2 semanas."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mudanza de primavera: %@ puede pasar el verano afuera. Empieza en sombra y suma sol durante 1–2 semanas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortie de printemps : %@ peut passer l'été dehors. Commence à l'ombre et ajoute du soleil sur 1 à 2 semaines."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frühlingsumzug: %@ kann den Sommer draußen verbringen. Im Schatten beginnen und über 1–2 Wochen mehr Sonne geben."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "春のお引っ越し：%@は夏を外で過ごせるよ。日陰から始めて、1〜2週間かけて日なたに慣らしてね。"
+          }
+        }
+      }
+    },
+    "Peak warmth: pots dry faster, so check more often and shade from harsh afternoon sun." : {
+      "comment" : "Season outlook line for a coming month; warm, practical.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calor no auge: os vasos secam mais rápido, então confere mais vezes e protege do sol forte da tarde."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calor máximo: las macetas se secan más rápido, revisa más seguido y protege del sol fuerte de la tarde."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pic de chaleur : les pots sèchent plus vite, vérifie plus souvent et protège du soleil fort de l'après-midi."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Höchste Wärme: Töpfe trocknen schneller, also öfter prüfen und vor greller Nachmittagssonne schützen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暑さのピーク：鉢が早く乾くので、こまめにチェックして午後の強い日差しを避けてね。"
+          }
+        }
+      }
+    },
+    "A steady month: keep the rhythm you have." : {
+      "comment" : "Season outlook line for a coming month; warm, practical.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um mês tranquilo: mantém o ritmo que vocês já têm."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un mes tranquilo: mantén el ritmo que ya tienes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un mois tranquille : garde ton rythme."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein ruhiger Monat: Behalte deinen Rhythmus bei."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "落ち着いた月：今のリズムを続けよう。"
+          }
+        }
+      }
+    },
+    "The months ahead" : {
+      "comment" : "Care tab section title: season outlook for the next 3 months; max 24 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os próximos meses"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los próximos meses"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les mois à venir"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die nächsten Monate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "これからの数か月"
+          }
+        }
+      }
+    },
+    "Hot days ahead dry the pot faster: about %lld days now." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dias quentes vindo secam o vaso mais rápido: uns %lld dias agora."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los días calurosos secan la maceta más rápido: unos %lld días ahora."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les jours chauds sèchent le pot plus vite : environ %lld jours en ce moment."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heiße Tage trocknen den Topf schneller: jetzt etwa %lld Tage."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暑い日が続くので鉢が早く乾くよ：いまは約%lld日。"
+          }
+        }
+      }
+    },
+    "Cooler season, slower drinking: about %lld days between drinks." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Época mais fresca, bebe mais devagar: uns %lld dias entre as regas."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temporada más fresca, bebe más lento: unos %lld días entre riegos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saison plus fraîche, elle boit moins vite : environ %lld jours entre deux arrosages."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kühlere Zeit, langsameres Trinken: etwa %lld Tage zwischen dem Gießen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "涼しい季節は水の減りがゆっくり：水やりの間隔は約%lld日。"
+          }
+        }
+      }
+    },
+    "Summer warmth: about %lld days between drinks." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calor de verão: uns %lld dias entre as regas."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calor de verano: unos %lld días entre riegos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaleur d'été : environ %lld jours entre deux arrosages."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sommerwärme: etwa %lld Tage zwischen dem Gießen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "夏の暖かさ：水やりの間隔は約%lld日。"
+          }
+        }
+      }
+    },
+    "It usually dries in about %lld days." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Costuma secar em uns %lld dias."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suele secarse en unos %lld días."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle sèche en général en %lld jours environ."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sie trocknet meist in etwa %lld Tagen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いつもは約%lld日で乾くよ。"
+          }
+        }
+      }
+    },
+    "Growing season: food helps new leaves." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Época de crescimento: adubo ajuda as folhas novas."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temporada de crecimiento: el abono ayuda a las hojas nuevas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saison de croissance : l'engrais aide les nouvelles feuilles."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachstumszeit: Dünger hilft neuen Blättern."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成長期：肥料が新しい葉を助けるよ。"
+          }
+        }
+      }
+    },
+    "Loves humid air, and indoor air is dry now." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ama ar úmido, e o ar de dentro de casa tá seco agora."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ama el aire húmedo, y el aire interior está seco ahora."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle adore l'air humide, et l'air intérieur est sec en ce moment."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liebt feuchte Luft, und die Raumluft ist gerade trocken."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "湿気が大好きなのに、いまは室内の空気が乾いてるよ。"
+          }
+        }
+      }
+    },
+    "Turning keeps it growing straight toward the light." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Girar faz ela crescer retinha em direção à luz."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Girarla hace que crezca derecha hacia la luz."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tourner l'aide à pousser droit vers la lumière."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drehen lässt sie gerade zum Licht wachsen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回すと光に向かってまっすぐ育つよ。"
+          }
+        }
+      }
+    },
+    "Spring is the gentlest time for a new pot." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A primavera é a época mais tranquila pra trocar de vaso."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La primavera es el momento más suave para una maceta nueva."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le printemps est le moment le plus doux pour un nouveau pot."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Frühling ist die sanfteste Zeit für einen neuen Topf."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "植え替えは春がいちばんやさしい時期だよ。"
+          }
+        }
+      }
+    },
+    "Based on the nights forecast where you live." : {
+      "comment" : "Reason under a forecast line (why this care is planned); short sentence.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com base na previsão das noites onde você mora."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Según el pronóstico de las noches donde vives."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D'après les prévisions des nuits chez toi."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach der Nachtvorhersage für deinen Ort."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お住まいの地域の夜の予報にもとづいて。"
+          }
+        }
+      }
+    },
+    "meter reading" : {
+      "comment" : "Timeline note: soil moisture measured with a meter; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "leitura do medidor"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "lectura del medidor"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mesure au testeur"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messgerät"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分計の値"
+          }
+        }
+      }
+    },
+    "finger test" : {
+      "comment" : "Timeline note: soil moisture felt with a finger; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "teste do dedo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "prueba del dedo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "test du doigt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fingertest"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指チェック"
+          }
+        }
+      }
+    },
+    "How moist is it?" : {
+      "comment" : "Water sheet section: log soil moisture before watering",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tá úmida quanto?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué tan húmeda está?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle est humide comment ?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie feucht ist sie?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "湿り具合は？"
+          }
+        }
+      }
+    },
+    "1–3 dry · 4–7 moist · 8–10 wet" : {
+      "comment" : "Moisture meter scale hint",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1–3 seca · 4–7 úmida · 8–10 molhada"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1–3 seca · 4–7 húmeda · 8–10 mojada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1–3 sec · 4–7 humide · 8–10 mouillé"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1–3 trocken · 4–7 feucht · 8–10 nass"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1〜3 乾燥 · 4〜7 しっとり · 8〜10 湿っている"
+          }
+        }
+      }
+    },
+    "Still wet: better to wait than to water now." : {
+      "comment" : "Water sheet warning when soil reading is wet",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ainda molhada: melhor esperar do que regar agora."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todavía mojada: mejor esperar que regar ahora."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encore mouillée : mieux vaut attendre que d'arroser maintenant."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch nass: lieber warten als jetzt gießen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ湿ってるよ。今は水やりより待つほうがいいね。"
+          }
+        }
+      }
+    },
+    "Finger test" : {
+      "comment" : "Moisture logging option; max 14 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teste do dedo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba del dedo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test du doigt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fingertest"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指チェック"
+          }
+        }
+      }
+    },
+    "Meter reading" : {
+      "comment" : "Moisture logging option: soil moisture meter; max 14 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medidor"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medidor"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testeur"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messgerät"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分計"
+          }
+        }
+      }
+    },
+    "–" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "–"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "–"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "–"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "–"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "–"
+          }
+        }
+      }
+    },
+    "Just log the reading" : {
+      "comment" : "Water sheet button: save moisture reading without watering",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Só anotar a leitura"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo anotar la lectura"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noter la mesure seulement"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Messwert eintragen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "測定値だけ記録"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

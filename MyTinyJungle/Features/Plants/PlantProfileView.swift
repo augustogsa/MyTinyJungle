@@ -126,7 +126,7 @@ struct PlantProfileView: View {
     private func title(_ e: CareEvent) -> String {
         var t = e.kind.label
         if let s = e.soil { t = Grammar.pt(String(localized: "\(t): \(s.label.lowercased())", comment: "Timeline row: care kind, colon, soil state lowercase")) }
-        if let v = e.value { t += " · " + PlantFormat.cm(v) }
+        if let v = e.value { t += " · " + (e.kind == .soilCheck ? "\(Int(v))/10" : PlantFormat.cm(v)) }
         if !e.note.isEmpty, e.kind != .photo || e.note != "First photo" { t += " · " + PlantFormat.note(e.note) }
         return t
     }

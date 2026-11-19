@@ -133,6 +133,8 @@ struct ForecastItem: Identifiable, Hashable {
     let kind: ReminderKind
     /// Short, warm line ("Pesto will be thirsty Friday").
     let line: String
+    /// Why it's planned then ("Dries in about 8 days in this season").
+    var reason: String? = nil
     var id: String { "\(plantID?.uuidString ?? "jungle")-\(kind.rawValue)-\(Int(date.timeIntervalSince1970 / 86_400))" }
 }
 
@@ -154,9 +156,26 @@ enum CareForecast {
         let end = now.addingTimeInterval(Double(days) * 86_400)
         let s = p.species
         var out: [ForecastItem] = []
-        func add(_ d: Date, _ k: ReminderKind, _ line: String) {
+        func add(_ d: Date, _ k: ReminderKind, _ line: String, _ reason: String? = nil) {
             guard d <= end else { return }
-            out.append(.init(plantID: p.id, plantName: p.name, date: max(d, now), kind: k, line: line))
+            out.append(.init(plantID: p.id, plantName: p.name, date: max(d, now), kind: k, line: line, reason: reason ?? why(k, at: d)))
+        }
+        func why(_ k: ReminderKind, at d: Date) -> String? {
+            switch k {
+            case .water:
+                if CareEngine.mediumKind(p) != nil { return nil }
+                let n = Int(CareEngine.expectedDryDays(for: p, at: d).rounded())
+                if p.isOutdoor, let t = Climate.shared.upcoming(d, days: 1).first, t.tMax >= 30 { return Grammar.pt(String(localized: "Hot days ahead dry the pot faster: about \(n) days now.", comment: "Reason under a forecast line (why this care is planned); short sentence.")) }
+                if CareEngine.isWinter(d) { return Grammar.pt(String(localized: "Cooler season, slower drinking: about \(n) days between drinks.", comment: "Reason under a forecast line (why this care is planned); short sentence.")) }
+                if CareEngine.isPeakSummer(d) { return Grammar.pt(String(localized: "Summer warmth: about \(n) days between drinks.", comment: "Reason under a forecast line (why this care is planned); short sentence.")) }
+                return Grammar.pt(String(localized: "It usually dries in about \(n) days.", comment: "Reason under a forecast line (why this care is planned); short sentence."))
+            case .feed: return Grammar.pt(String(localized: "Growing season: food helps new leaves.", comment: "Reason under a forecast line (why this care is planned); short sentence."))
+            case .mist: return Grammar.pt(String(localized: "Loves humid air, and indoor air is dry now.", comment: "Reason under a forecast line (why this care is planned); short sentence."))
+            case .rotate: return Grammar.pt(String(localized: "Turning keeps it growing straight toward the light.", comment: "Reason under a forecast line (why this care is planned); short sentence."))
+            case .repot: return Grammar.pt(String(localized: "Spring is the gentlest time for a new pot.", comment: "Reason under a forecast line (why this care is planned); short sentence."))
+            case .seasonal: return Grammar.pt(String(localized: "Based on the nights forecast where you live.", comment: "Reason under a forecast line (why this care is planned); short sentence."))
+            default: return nil
+            }
         }
 
         // Water: when the substrate should be dry, from the learned rhythm.

@@ -80,6 +80,29 @@ nonisolated struct BrainAnswer: Codable, Equatable, Hashable {
     var steps: [String]?
 }
 
+/// Local weather the server used for its answer. Accepts a plain sentence or {summary|text, tMin, tMax, rain}.
+nonisolated struct ServerWeather: Codable, Equatable {
+    var summary: String?
+    var tMin: Double?
+    var tMax: Double?
+    var rain: Double?
+    enum K: String, CodingKey { case summary, text, tMin, tMax, rain }
+    init(from d: Decoder) throws {
+        if let s = try? d.singleValueContainer().decode(String.self) { summary = s; return }
+        let c = try d.container(keyedBy: K.self)
+        summary = (try? c.decode(String.self, forKey: .summary)) ?? (try? c.decode(String.self, forKey: .text))
+        tMin = try? c.decode(Double.self, forKey: .tMin); tMax = try? c.decode(Double.self, forKey: .tMax); rain = try? c.decode(Double.self, forKey: .rain)
+    }
+    func encode(to e: Encoder) throws { var c = e.container(keyedBy: K.self); try c.encodeIfPresent(summary, forKey: .summary); try c.encodeIfPresent(tMin, forKey: .tMin); try c.encodeIfPresent(tMax, forKey: .tMax); try c.encodeIfPresent(rain, forKey: .rain) }
+    /// One line for the UI.
+    @MainActor var line: String? {
+        if let s = summary, !s.isEmpty { return s }
+        guard let lo = tMin, let hi = tMax else { return nil }
+        let r = rain.map { $0 >= 1 ? " · " + Climate.rain($0) : "" } ?? ""
+        return Grammar.pt(String(localized: "Weather where it lives: \(Climate.tempRange(lo, hi))\(r)", comment: "Line under a server answer; args temperature range and optional rain amount"))
+    }
+}
+
 nonisolated struct BrainCard: Codable, Equatable {
     var brain: [BrainAnswer]
 }
@@ -96,12 +119,14 @@ enum Brain {
     static func ask(_ q: String, plant: Plant?) async -> [BrainAnswer] {
         guard JungleAPI.shared.hasSession else { return [] }
         nonisolated struct B: Encodable { let q, lang: String; let species: String?; let situation: [String: [String]]? }
-        nonisolated struct R: Decodable { let answers: [BrainAnswer] }
+        nonisolated struct R: Decodable { let answers: [BrainAnswer]; let weather: ServerWeather? }
         let sit = PlantSituation.build(plant)
         let body = B(q: q, lang: PlantSituation.lang, species: plant?.species?.scientific, situation: sit.isEmpty ? nil : sit)
         let r: R?
         do { r = try await JungleAPI.shared.send("POST", "/v1/brain/ask", body: body) } catch { ServerNotice.show(error); r = nil }
-        return r?.answers.filter { !$0.text.isEmpty } ?? []
+        var out = r?.answers.filter { !$0.text.isEmpty } ?? []
+        if !out.isEmpty, let w = r?.weather?.line { out.append(BrainAnswer(kind: "weather", title: Grammar.pt(String(localized: "Weather", comment: "Settings section title")), text: w)) }
+        return out
     }
 
     static func feedback(ref: String, helped: Bool) async {
@@ -230,6 +255,7 @@ nonisolated struct BrainCarePlan: Codable, Equatable {
     var tip: String?
     var warnings: [String]?
     var advice: [String]?
+    var weather: ServerWeather?
 }
 
 @MainActor
@@ -286,6 +312,7 @@ struct CarePlanCard: View {
                             Label { Text(a).font(.subheadline).fixedSize(horizontal: false, vertical: true) } icon: { Image(systemName: "leaf.fill").foregroundStyle(Jungle.leaf) }
                                 .foregroundStyle(Jungle.text)
                         }
+                        if let w = p.weather?.line { Label(w, systemImage: "cloud.sun").font(.footnote).foregroundStyle(Jungle.subtle) }
                         if let t = p.tip, !t.isEmpty { Text(t).font(.footnote).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true) }
                     }
                     .padding(14).jungleCard()

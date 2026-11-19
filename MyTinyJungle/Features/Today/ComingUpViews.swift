@@ -78,11 +78,12 @@ struct PlantForecastSection: View {
                         Icon3DView(f.kind.icon, size: 28).frame(width: 40)
                         VStack(alignment: .leading, spacing: 2) {
                             PlantText(f.line, current: plant.id).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
-                            Text({ let w = CareForecast.dayWord(f.date); return w.prefix(1).uppercased() + w.dropFirst() }()).font(.caption).foregroundStyle(Jungle.subtle)
+                            Text({ let w = CareForecast.dayWord(f.date); let d = w.prefix(1).uppercased() + w.dropFirst(); return f.reason.map { d + " · " + $0 } ?? d }()).font(.caption).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
                         }
                         Spacer(minLength: 0)
                     }
                     .padding(.vertical, 10)
+                    .accessibilityElement(children: .combine)
                     if i < min(items.count, 8) - 1 { Divider().padding(.leading, 52) }
                 }
                 if let learned = plant.learnedDryDays {

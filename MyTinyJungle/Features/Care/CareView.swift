@@ -246,6 +246,7 @@ struct SeasonGuideView: View {
                 }
                 .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
             }
+            SeasonOutlookCard(plants: plants)
             Picker(Grammar.pt(String(localized: "Season", comment: "Accessibility label for the season picker")), selection: $season) {
                 ForEach(Season.allCases, id: \.self) { Text($0.label) }
             }

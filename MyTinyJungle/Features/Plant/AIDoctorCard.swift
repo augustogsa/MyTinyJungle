@@ -24,6 +24,7 @@ struct AIDoctorCard: View {
                 if let c = a.context, !c.isEmpty {
                     Text(c).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
                 }
+                if let w = a.weather?.line { Label(w, systemImage: "cloud.sun").font(.footnote).foregroundStyle(Jungle.subtle) }
                 ForEach(Array(a.steps.enumerated()), id: \.offset) { i, s in
                     Label { Text(s).font(.subheadline) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.accentText) }
                 }
@@ -101,6 +102,7 @@ nonisolated struct AIDiagnosis: Decodable {
     var source: String?
     var context: String?
     var ref: String?
+    var weather: ServerWeather?
 
     @MainActor static func ask(photo: Data, species: String, note: String, plant: Plant?) async throws -> AIDiagnosis {
         nonisolated struct B: Encodable { let photo, species, note, lang: String; let situation: [String: [String]]?; let lat, lon: Double? }

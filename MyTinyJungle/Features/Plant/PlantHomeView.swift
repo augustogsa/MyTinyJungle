@@ -728,6 +728,58 @@ struct WaterSheet: View {
     @Environment(\.modelContext) private var ctx
     @Environment(\.dismiss) private var dismiss
     let plant: Plant
+    @State private var useMeter = false
+    @State private var feel: SoilState?
+    @State private var meter: Double = 5
+    @State private var meterTouched = false
+
+    /// A moisture meter's 1–10 scale mapped to dry / moist / wet.
+    private var reading: SoilState? {
+        if useMeter { return meterTouched ? (meter <= 3 ? .dry : meter <= 7 ? .slightlyMoist : .wet) : nil }
+        return feel
+    }
+    private func logReading() {
+        guard let r = reading else { return }
+        let e = CareEvent(kind: .soilCheck, date: Date().addingTimeInterval(-60), note: useMeter ? "meter" : "finger", source: "form")
+        e.soil = r; if useMeter { e.value = meter.rounded() }
+        e.plant = plant; ctx.insert(e)
+        CareEngine.learn(from: r, plant: plant)
+    }
+
+    private var moisture: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(Grammar.pt(String(localized: "How moist is it?", comment: "Water sheet section: log soil moisture before watering"))).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+            Picker(Grammar.pt(String(localized: "How moist is it?", comment: "Water sheet section: log soil moisture before watering")), selection: $useMeter) {
+                Text(Grammar.pt(String(localized: "Finger test", comment: "Moisture logging option; max 14 chars"))).tag(false)
+                Text(Grammar.pt(String(localized: "Meter reading", comment: "Moisture logging option: soil moisture meter; max 14 chars"))).tag(true)
+            }
+            .pickerStyle(.segmented)
+            if useMeter {
+                HStack {
+                    Slider(value: Binding(get: { meter }, set: { meter = $0; meterTouched = true }), in: 1...10, step: 1)
+                        .accessibilityValue(Text("\(Int(meter))"))
+                    Text(meterTouched ? "\(Int(meter))" : "–").font(.system(.title3, design: .rounded, weight: .semibold)).monospacedDigit().foregroundStyle(Jungle.text).frame(minWidth: 32)
+                }
+                Text(Grammar.pt(String(localized: "1–3 dry · 4–7 moist · 8–10 wet", comment: "Moisture meter scale hint"))).font(.caption).foregroundStyle(Jungle.subtle)
+            } else {
+                HStack(spacing: 8) {
+                    ForEach(SoilState.allCases, id: \.self) { s in
+                        Button(s.label) { feel = feel == s ? nil : s }
+                            .buttonStyle(.plain).font(.subheadline.weight(.medium))
+                            .padding(.horizontal, 14).padding(.vertical, 8)
+                            .foregroundStyle(feel == s ? Jungle.onForest : Jungle.text)
+                            .background(feel == s ? Jungle.forest : Jungle.fill, in: Capsule())
+                            .accessibilityAddTraits(feel == s ? .isSelected : [])
+                    }
+                }
+            }
+            if reading == .wet {
+                Label(Grammar.pt(String(localized: "Still wet: better to wait than to water now.", comment: "Water sheet warning when soil reading is wet")), systemImage: "exclamationmark.triangle.fill")
+                    .font(.subheadline).foregroundStyle(Jungle.warmText)
+            }
+        }
+        .padding(14).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
+    }
 
     var body: some View {
         let s = plant.species
@@ -753,15 +805,21 @@ struct WaterSheet: View {
                         InfoRow(symbol: "calendar", title: Grammar.pt(String(localized: "Next watering", comment: "Water sheet row title")), value: Grammar.pt(String(localized: "In about \(expected) days. I'll ask for a soil check first.", comment: "Water sheet; plural days; plant voice")))
                     }
                     .jungleCard()
+                    moisture
                 }
                 .padding(20)
             }
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 10) {
                     Button {
+                        logReading()
                         JungleBrain.quick(.water, plants: [plant], in: ctx, announce: true); dismiss()
                     } label: { Label("Mark as watered", systemImage: "checkmark").frame(maxWidth: .infinity) }
                         .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).controlSize(.large)
+                    if reading != nil {
+                        Button { logReading(); try? ctx.save(); dismiss() } label: { Text(Grammar.pt(String(localized: "Just log the reading", comment: "Water sheet button: save moisture reading without watering"))).frame(maxWidth: .infinity) }
+                            .buttonStyle(.bordered).fontDesign(.rounded).controlSize(.large)
+                    }
                     Menu {
                         Button("This evening") { remind(hours: 8) }
                         Button("Tomorrow") { remind(hours: 24) }
@@ -823,6 +881,8 @@ enum PlantFormat {
         case "asked": Grammar.pt(String(localized: "logged later", comment: "Timeline note: user confirmed care afterwards; lowercase"))
         case "care-skip": Grammar.pt(String(localized: "skipped this round", comment: "Timeline note: user chose to skip a care round; lowercase"))
         case "quarantine": Grammar.pt(String(localized: "kept apart from the others", comment: "Timeline note: plant quarantined for pests; lowercase"))
+        case "meter": Grammar.pt(String(localized: "meter reading", comment: "Timeline note: soil moisture measured with a meter; lowercase"))
+        case "finger": Grammar.pt(String(localized: "finger test", comment: "Timeline note: soil moisture felt with a finger; lowercase"))
         case "roots-ok": Grammar.pt(String(localized: "roots checked", comment: "Timeline note; lowercase"))
         default: n
         }
