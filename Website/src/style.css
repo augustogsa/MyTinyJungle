@@ -630,3 +630,77 @@ html.switching,html.switching *{transition:background-color 1.1s var(--ease-out)
 }
 /* media guard */
 img,video,picture{-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+
+/* Motion polish v2: one rhythm. Enter 700ms ease-out-quint, stagger 60ms, hover 180ms, press 100ms. */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--ease-spring:cubic-bezier(.34,1.36,.64,1);--t-enter:.7s;--t-stagger:60ms;--rise:20px;--t-in:.18s;--t-out:.32s}
+html.enter-ready [data-enter]{transition:opacity var(--t-enter) var(--ease-out),translate var(--t-enter) var(--ease-out),scale var(--t-enter) var(--ease-out),filter var(--t-enter) var(--ease-out);transition-delay:calc(var(--enter-i,0) * var(--t-stagger))}
+html.enter-ready :is(h1,h2,h3)[data-enter]:not([data-entered]){translate:0 14px;filter:blur(6px)}
+html.enter-ready :is(.acard,.fcard,.field,.hc,.facts > *,.agrid > *,.fgrid > *,.mosaic figure,.talk,figure,.m-scene,.phone)[data-enter]:not([data-entered]){translate:0 28px;scale:.97}
+html.enter-ready [data-entered]{filter:none}
+/* sliders */
+.track{scroll-padding-inline:2px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scroll-behavior:auto}
+.slide{will-change:transform}
+.slider.deal .slide{opacity:0;translate:0 32px;scale:.94;transition:opacity .7s var(--ease-out),translate .8s var(--ease-out),scale .8s var(--ease-out);transition-delay:calc(var(--si,0) * 90ms)}
+.slider.deal.in .slide{opacity:1;translate:none;scale:1}
+.slider.deal .snav{opacity:0;transition:opacity .5s var(--ease-out) .35s}
+.slider.deal.in .snav{opacity:1}
+.slide figcaption{transition:color var(--t-out) var(--ease-out)}
+.slide .phone{transition:transform .45s var(--ease-out)}
+.slide:hover .phone{transform:none}
+@media (hover:hover){.slide:hover .phone{transform:translateY(-6px)}}
+@supports (animation-timeline:view()){@media (prefers-reduced-motion:no-preference){
+ .slider.in .slide>.phone{animation:peek linear both;animation-timeline:view(inline);animation-range:cover 0% cover 100%}
+ @keyframes peek{0%{scale:.92;opacity:.55}30%,70%{scale:1;opacity:1}100%{scale:.92;opacity:.55}}
+}}
+.sbtn{transition:background-color var(--t-out) var(--ease-out),transform .2s var(--ease-out),opacity .3s var(--ease-out)}
+.sbtn:not([disabled]):hover{transform:translateY(-1px)}
+.sbtn:not([disabled]):active{transform:scale(.92);transition-duration:100ms}
+/* phone screens: no blank flashes */
+.phone-screen{background:var(--mint)}
+.phone-screen img{transition:opacity .45s var(--ease-out)}
+.phone-screen img.ld{opacity:0}
+/* stage: quicker, calmer crossfade; phone settles in with a soft lift */
+.layer{transition:opacity .9s var(--ease-out),visibility 0s linear .9s}
+.layer.on{transition:opacity .9s var(--ease-out)}
+.layer .phone{transform:translate(-50%,-48%) scale(.96);transition:transform 1.1s var(--ease-out)}
+.layer.on .phone{transform:translate(-50%,-54%) scale(1);transition-delay:.12s}
+.layer .phone-screen img{transition:opacity .26s var(--ease-out),scale .5s var(--ease-out)}
+.layer .phone-screen img.fade{opacity:0;scale:1.015}
+.rdot{transition:background-color .3s var(--ease-out),color .3s var(--ease-out)}
+/* cards + buttons: one hover, one press */
+@media (hover:hover){
+ .acard:hover,a.acard:hover{transform:translateY(-4px);box-shadow:0 18px 36px -22px rgba(36,51,31,.35)}
+ .fcard:hover,.pill:hover,.chip:hover,.ask:hover{transform:translateY(-2px)}
+ .btn:hover{transform:translateY(-2px)}
+ .mosaic figure:hover img{transform:scale(1.04)}
+}
+@media (hover:none){.acard:hover,a.acard:hover,.fcard:hover,.pill:hover,.chip:hover,.ask:hover,.btn:hover{transform:none}}
+.btn:active,.chip:active,.ask:active,.fcard:active,a.acard:active{transform:scale(.975);transition-duration:100ms}
+.mosaic img{transition:transform .8s var(--ease-out)}
+.pill,.ask{transition:transform var(--t-out) var(--ease-out),background-color var(--t-out) var(--ease-out),color var(--t-out) var(--ease-out)}
+.b.new{animation:bubble .42s var(--ease-spring) both}
+@keyframes bubble{from{opacity:0;transform:translateY(10px) scale(.96)}}
+.hero h1.words .hw>span{transition:translate .9s var(--ease-out),rotate .9s var(--ease-out),opacity .6s var(--ease-out);transition-delay:calc(100ms + var(--w) * 45ms)}
+.hero h1.words:not(.go) .hw>span{opacity:0}
+@media (prefers-reduced-motion:reduce){
+ .slider.deal .slide,.slider.deal .snav{opacity:1;translate:none;scale:1;transition:none}
+ html.enter-ready [data-enter]{filter:none!important;scale:none!important}
+ .layer .phone,.layer.on .phone{transition:none}
+ .b.new{animation:none}
+}
+/* stage phone stays put: chapters only crossfade, no movement */
+.layer .phone,.layer.on .phone{transform:translate(-50%,-52%);transition:none}
+.layer .phone-screen img.fade{scale:1}
+/* one fixed phone: frame never moves or fades, only the photo and the screen change */
+.layer,.layer.on{opacity:1;visibility:visible;transition:none}
+.layer .photo{opacity:0;transition:opacity .8s var(--ease-out),transform 9s linear}
+.layer.on .photo{opacity:1}
+.layer .phone-screen{opacity:0;transition:opacity .45s var(--ease-out)}
+.layer.on .phone-screen{opacity:1;z-index:1}
+.layer:not(.on) .phone-frame{opacity:0}
+.layer.on .phone{z-index:2}
+.layer .reel{opacity:0;visibility:hidden;transition:opacity .4s var(--ease-out),visibility 0s linear .4s}
+.layer.on .reel{opacity:1;visibility:visible;transition:opacity .4s var(--ease-out) .15s}
+.layer.on{z-index:1}
+.two .timer{max-width:none}
+@media (min-width:700px){.two .timer{white-space:nowrap;font-size:clamp(16px,1.6vw,22px)}}
