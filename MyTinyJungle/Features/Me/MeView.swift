@@ -41,6 +41,8 @@ struct MeView: View {
                     milestones
                     if !store.isPlus { plusCard }
                     JungleGroup(title: Grammar.pt(String(localized: "Your jungle", comment: "Me section title"))) {
+                        NavigationLink { DigestView() } label: { JungleRow(icon: .calendarClock, title: Grammar.pt(String(localized: "Your week", comment: "Weekly digest screen title; max 20 chars")), subtitle: Grammar.pt(String(localized: "Weekly digest", comment: "Me row subtitle / Settings toggle: weekly summary")), chevron: true) }
+                        JungleDivider()
                         NavigationLink { GuidesView() } label: { JungleRow(icon: .tools, title: Grammar.pt(String(localized: "How-to guides", comment: "Me row title")), chevron: true) }
                         JungleDivider()
                         NavigationLink { TravelPlanView() } label: { JungleRow(icon: .travel, title: Grammar.pt(String(localized: "Going away", comment: "Me row title: travel plan")), subtitle: Grammar.pt(String(localized: "Plan care for a trip", comment: "Me row subtitle")), chevron: true) }

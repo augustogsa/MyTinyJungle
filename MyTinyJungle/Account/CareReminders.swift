@@ -88,6 +88,9 @@ enum CareReminders {
     /// Builds the one note of the day: a single plant texts you, several share one warm note.
     static func content(due: [Plant], planned: [ForecastItem], at fire: Date) async -> UNNotificationContent {
         let extras = planned.prefix(due.isEmpty ? 3 : 2).map { $0.line + "." }
+        if due.count == 1, let p = due.first, CareEngine.status(for: p, now: fire) == .tend, let r = CareEngine.requests(for: p, now: fire).first {
+            return await PlantNote.make(.chat, plants: [p], body: ([PlantVoice.say(r, plant: p)] + extras.prefix(1)).joined(separator: " "))
+        }
         if due.count == 1, let p = due.first {
             let kind: PlantNote.Kind = CareEngine.status(for: p, now: fire) == .struggling ? .struggling
                 : CareEngine.requests(for: p, now: fire).contains { $0.kind == .water } ? .water : .soil
@@ -139,6 +142,11 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
             await MainActor.run { Household.shared.handleNotification(response) }
             return
         }
+        // The weekly digest push carries a url (mytinyjungle://digest).
+        if let s = response.notification.request.content.userInfo["url"] as? String, let url = URL(string: s) {
+            await MainActor.run { _ = DigestAPI.handle(url) || DeepLink.handle(url) }
+            return
+        }
         // Frost & heatwave alerts just open the app.
         if response.notification.request.content.userInfo["kind"] as? String == "weather" { return }
         guard let container else { return }
@@ -155,6 +163,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         Diagnostics.shared.start()
         Task { await AppAttest.ensure() }
         Task { await WeatherWatch.sync() }
+        Task { await DigestAPI.sync() }
         Analytics.track("app_open")
         Task { await Analytics.flush() }
         return true

@@ -146,7 +146,7 @@ actor JungleAPI {
         return d
     }
 
-    private func raw<R: Decodable>(_ method: String, _ path: String, query: [URLQueryItem], body: Data?, contentType: String?, auth: Bool, decode: R.Type, retried: Bool = false) async throws -> R {
+    private func raw<R: Decodable>(_ method: String, _ path: String, query: [URLQueryItem], body: Data?, contentType: String?, auth: Bool, decode: R.Type, retried: Bool = false, busyRetried: Bool = false) async throws -> R {
         var comps = URLComponents(url: Self.base.appending(path: path), resolvingAgainstBaseURL: false)!
         if !query.isEmpty { comps.queryItems = query }
         var req = URLRequest(url: comps.url!)
@@ -159,7 +159,12 @@ actor JungleAPI {
         let code = (res as? HTTPURLResponse)?.statusCode ?? 0
         if code == 401 && auth && !retried {
             access = nil
-            return try await raw(method, path, query: query, body: body, contentType: contentType, auth: auth, decode: decode, retried: true)
+            return try await raw(method, path, query: query, body: body, contentType: contentType, auth: auth, decode: decode, retried: true, busyRetried: busyRetried)
+        }
+        // The server is busy: wait 3 s and try once more.
+        if code == 503 && !busyRetried {
+            try? await Task.sleep(for: .seconds(3))
+            return try await raw(method, path, query: query, body: body, contentType: contentType, auth: auth, decode: decode, retried: retried, busyRetried: true)
         }
         guard (200..<300).contains(code) else {
             let reason = (try? JSONDecoder().decode([String: String].self, from: data))?["error"] ?? "http_\(code)"

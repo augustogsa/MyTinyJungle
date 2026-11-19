@@ -26,6 +26,8 @@ struct AddPlantFlow: View {
     /// No real identification came back: on-device guesses are suggestions only.
     @State private var unsure = false
     @State private var nameSeed = UInt64.random(in: 1...UInt64.max)
+    @State private var setup = PlantSetupDraft()
+    @State private var sceneOutdoor: Bool?
 
     var body: some View {
         DuoCompanion(mood: .plant, title: "A new green friend", detail: "Snap it, meet it, and it moves in.") { duoContent }
@@ -57,7 +59,7 @@ struct AddPlantFlow: View {
                 let plan = PlantAdvisor.plan(species: s, read: read, existing: plants)
                 personality = plan.suggestedPersonality
                 if !nameEdited { name = nameIdeas.first ?? "" }
-                if !locationEdited { location = PlantAdvisor.suggestedRoom(for: s, existing: plants); outdoor = plan.outdoorsHint || Icon3D.room(location) == .balcony }
+                if !locationEdited { location = PlantAdvisor.suggestedRoom(for: s, existing: plants); outdoor = sceneOutdoor ?? (plan.outdoorsHint || Icon3D.room(location) == .balcony) }
             }
         }
     }
@@ -132,6 +134,7 @@ struct AddPlantFlow: View {
                     personalitySection
                     homeSection(plan)
                 }
+                if species != nil || !name.isEmpty { PlantSetupCard(draft: $setup) }
             }
             .padding(16)
             .padding(.bottom, 90)
@@ -373,9 +376,11 @@ struct AddPlantFlow: View {
             guard let img = UIImage(data: data) else { return }
             async let local = PlantVision.read(img)
             async let remote = PlantIdentifier.remote(data)
-            async let ours = Brain.identify(data)
+            async let ours = Brain.identifyScene(data)
             let r = await local
-            var rem = await ours
+            let scene = await ours
+            var rem = scene.candidates
+            if let sc = scene.scene { setup.apply(sc); sceneOutdoor = sc.isOutdoor; if let o = sc.isOutdoor { outdoor = o } }
             for cand in await remote where !rem.contains(where: { $0.species == cand.species }) { rem.append(cand) }
             let minimum = Task { try? await Task.sleep(for: .seconds(1.6)) }
             _ = await minimum.value
@@ -398,12 +403,17 @@ struct AddPlantFlow: View {
         let plant = Plant(name: name.isEmpty ? (s?.commonName ?? Grammar.pt(String(localized: "Plant", comment: "Default plant name"))) : name, speciesID: s?.id, personality: personality, location: location)
         plant.isOutdoor = outdoor
         plant.photo = photo
+        setup.write(to: plant)
         ctx.insert(plant); Analytics.track("plant_added")
         ErtyCheer.shared.show(.celebrate, Grammar.pt(String(localized: "Welcome home, \(plant.name)", comment: "Little celebration when a plant is added; arg is plant name")))
         if let photo {
             let e = CareEvent(kind: .photo, note: "First photo", source: "onboarding"); e.photo = photo; e.plant = plant; ctx.insert(e)
         }
-        if let m = read?.soilMoisture {
+        if setup.artificial {
+            ctx.insert(ChatMessage(text: Grammar.pt(String(localized: "Hi, I'm \(plant.name)! Faux and fabulous: I never get thirsty, so you can relax. A little dusting keeps me shiny.", comment: "Artificial plant intro in chat, playful; arg plant name")), fromUser: false, plant: plant))
+            try? ctx.save(); dismiss(); return
+        }
+        if let m = read?.soilMoisture, setup.medium.usesSoil {
             let e = CareEvent(kind: .soilCheck, note: Grammar.pt(String(localized: "Photo estimate", comment: "Timeline note: soil estimated from photo")), source: "photo"); e.soil = m; e.plant = plant; ctx.insert(e)
         }
         if let s {
@@ -411,7 +421,7 @@ struct AddPlantFlow: View {
             let hello = Grammar.pt(String(localized: "Hi, I'm \(plant.name)! I'm a \(s.commonName) (\(s.scientific)).", comment: "Plant voice intro in chat; args plant name, common species name, scientific name"))
             let tips = [plan.firstWater.title, plan.spot.title, plan.neighbours?.title].compactMap { $0 }.map { "\($0)." }
             let intro = ([hello] + (read.map { [$0.healthSummary] } ?? []) + tips).joined(separator: " ")
-            let sugg = read?.soilMoisture == .dry ? [Grammar.pt(String(localized: "Watered", comment: "Chat quick reply chip; max 14 chars"))] : [Grammar.pt(String(localized: "Dry", comment: "Chat quick reply chip: soil feels dry; max 14 chars")), Grammar.pt(String(localized: "Slightly moist", comment: "Chat quick reply chip: soil state; max 14 chars")), Grammar.pt(String(localized: "Wet", comment: "Chat quick reply chip: soil feels wet; max 14 chars"))]
+            let sugg = !setup.medium.usesSoil ? [String]() : read?.soilMoisture == .dry ? [Grammar.pt(String(localized: "Watered", comment: "Chat quick reply chip; max 14 chars"))] : [Grammar.pt(String(localized: "Dry", comment: "Chat quick reply chip: soil feels dry; max 14 chars")), Grammar.pt(String(localized: "Slightly moist", comment: "Chat quick reply chip: soil state; max 14 chars")), Grammar.pt(String(localized: "Wet", comment: "Chat quick reply chip: soil feels wet; max 14 chars"))]
             ctx.insert(ChatMessage(text: intro, fromUser: false, plant: plant, suggestions: sugg))
             let j = ChatMessage(text: Grammar.pt(String(localized: "Hi everyone! I'm new here. \(plan.spot.title.lowercased().capitalizedFirst).", comment: "Plant voice in group chat; arg sentence about its spot")), fromUser: false)
             j.speakerID = plant.id

@@ -103,7 +103,7 @@ struct HealthCheckView: View {
                 analysisRow(Grammar.pt(String(localized: "Leaf colour", comment: "Health analysis row label; max 16 chars")), Grammar.pt(String(localized: "\(percent(r.greenShare, of: r)) green", comment: "Health analysis value: share of green leaf area, e.g. 82% green; max 14 chars")), r.health == .lush || r.health == .good)
                 analysisRow(Grammar.pt(String(localized: "Yellowing", comment: "Health analysis row label: yellow leaves; max 16 chars")), r.yellowShare < 0.02 ? Grammar.pt(String(localized: "None seen", comment: "Health analysis value when no yellow/brown seen; max 14 chars")) : percent(r.yellowShare, of: r), r.yellowShare < 0.03)
                 analysisRow(Grammar.pt(String(localized: "Browning", comment: "Health analysis row label: brown leaves/tips; max 16 chars")), r.brownShare < 0.02 ? Grammar.pt(String(localized: "None seen", comment: "Health analysis value when no yellow/brown seen; max 14 chars")) : percent(r.brownShare, of: r), r.brownShare < 0.03)
-                analysisRow(Grammar.pt(String(localized: "Soil", comment: "Health analysis row label; max 16 chars")), r.soilMoisture.map { Grammar.pt(String(localized: "Looks \($0.label.lowercased())", comment: "Health analysis soil value; arg is soil state like dry/moist/wet (lowercase); max 18 chars")) } ?? Grammar.pt(String(localized: "Not visible", comment: "Health analysis soil value when soil not in photo; max 14 chars")), r.soilMoisture != .wet)
+                if plant.growingMedium.usesSoil { analysisRow(Grammar.pt(String(localized: "Soil", comment: "Health analysis row label; max 16 chars")), r.soilMoisture.map { Grammar.pt(String(localized: "Looks \($0.label.lowercased())", comment: "Health analysis soil value; arg is soil state like dry/moist/wet (lowercase); max 18 chars")) } ?? Grammar.pt(String(localized: "Not visible", comment: "Health analysis soil value when soil not in photo; max 14 chars")), r.soilMoisture != .wet) } else { analysisRow(Grammar.pt(String(localized: "Roots in", comment: "Add plant: growing medium label; max 16 chars")), plant.growingMedium.label, true, neutral: true) }
                 analysisRow(Grammar.pt(String(localized: "Pests", comment: "Health analysis row label; max 16 chars")), Grammar.pt(String(localized: "Can't be ruled out from a photo. Check under the leaves", comment: "Health analysis pests value; friendly advice; max 70 chars")), true, neutral: true)
                 Text(r.health == .unknown ? Grammar.pt(String(localized: "Confidence: low. Based on photo colours and \(plant.name)'s history.", comment: "Health check footnote; arg is plant name")) : Grammar.pt(String(localized: "Confidence: medium. Based on photo colours and \(plant.name)'s history.", comment: "Health check footnote; arg is plant name"))).font(.caption).foregroundStyle(Jungle.subtle)
             }
@@ -165,7 +165,7 @@ struct HealthCheckView: View {
         guard let r = read else { return }
         let e = CareEvent(kind: .health, note: r.healthSummary, source: "doctor")
         e.photo = photo
-        e.soil = r.soilMoisture
+        if plant.growingMedium.usesSoil { e.soil = r.soilMoisture }
         e.value = r.greenShare / max(r.greenShare + r.yellowShare + r.brownShare, 0.0001) * 100
         e.plant = plant
         ctx.insert(e)
@@ -240,13 +240,10 @@ struct PestPlanView: View {
             }
             Button {
                 let e = CareEvent(kind: .treat, note: Grammar.pt(String(localized: "Started treatment: \(pest.name)", comment: "Timeline note; arg is pest name")), source: "doctor"); e.plant = plant; ctx.insert(e)
-                for d in [3.0, 7.0, 14.0] {
-                    ctx.insert(CareTask(title: Grammar.pt(String(localized: "Treat & recheck \(plant.name) (\(pest.name))", comment: "Care task title; args plant name, pest name; max 45 chars")), kind: .treat, plantID: plant.id, due: Date().addingTimeInterval(d * 86_400)))
-                }
                 for n in neighbours where pest.spreads {
                     ctx.insert(CareTask(title: Grammar.pt(String(localized: "Inspect \(n.name) for \(pest.name.lowercased())", comment: "Care task title; args plant name, pest name lowercase; max 45 chars")), kind: .health, plantID: n.id, due: Date().addingTimeInterval(86_400)))
                 }
-                let m = ChatMessage(text: Grammar.pt(String(localized: "I might have \(pest.name.lowercased()). Thanks for starting my treatment. Let's recheck in 3 days.", comment: "Plant voice in chat, first person, grateful; arg pest name lowercase")), fromUser: false)
+                let m = ChatMessage(text: Grammar.pt(String(localized: "I might have \(pest.name.lowercased()). Thanks for starting my treatment. I'll remind you to repeat it in about 6 days, three rounds in all.", comment: "Plant voice in chat, first person, grateful; arg pest name lowercase")), fromUser: false)
                 m.speakerID = plant.id
                 ctx.insert(m)
                 try? ctx.save()

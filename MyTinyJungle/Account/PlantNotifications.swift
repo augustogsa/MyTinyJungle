@@ -124,8 +124,9 @@ enum PlantNote {
         guard let p = plants.first else { return Grammar.pt(String(localized: "Your plants are thinking of you.", comment: "Notification body fallback")) }
         func say(_ r: PlantRequest.Kind) -> String { PlantVoice.say(.init(plantID: p.id, kind: r, priority: 1, reason: ""), plant: p) }
         switch k {
-        case .water: return say(.water)
-        case .soil: return say(.checkSoil)
+        case .water, .soil:
+            if let mk = CareEngine.mediumKind(p) { return say(mk) }
+            return say(k == .water ? .water : .checkSoil)
         case .feed: return say(.feed)
         case .chat: return ProactiveVoice.voice(InsightEngine.pattern(for: p, now: now) ?? .init(id: "x-missed", plantID: p.id, tone: .pattern, icon: .heartPin, text: ""), plant: p)
         case .struggling:

@@ -137,7 +137,7 @@ struct PlantHomeView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Jungle.onForest : Jungle.text)
                     Text(plant.species?.scientific ?? Grammar.pt(String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars"))).font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
-                    StatusBadge(status: CareEngine.status(for: plant)).padding(.top, 8)
+                    HStack(spacing: 6) { StatusBadge(status: CareEngine.status(for: plant)); ToxicBadge(plant: plant) }.padding(.top, 8)
                 }
                 Spacer(minLength: 0)
             }
@@ -147,7 +147,20 @@ struct PlantHomeView: View {
 
     private var actions: some View {
         HStack(spacing: 10) {
-            ActionTile(title: Grammar.pt(String(localized: "Water", comment: "Quick action tile; verb; max 10 chars")), symbol: "drop.fill", tint: Jungle.forest) { sheet = .water }
+            if let mk = CareEngine.mediumKind(plant) {
+                let d = CareAsk.done(mk, plant: plant)
+                ActionTile(title: CareAsk.short(mk, plant: plant), symbol: "drop.fill", tint: Jungle.forest) {
+                    withAnimation {
+                        switch d.action {
+                        case .careNote(let k, let n): JungleBrain.quick(k, note: n, plants: [plant], in: ctx, announce: true)
+                        case .care(let k): JungleBrain.quick(k, plants: [plant], in: ctx, announce: true)
+                        default: break
+                        }
+                    }
+                }
+            } else {
+                ActionTile(title: Grammar.pt(String(localized: "Water", comment: "Quick action tile; verb; max 10 chars")), symbol: "drop.fill", tint: Jungle.forest) { sheet = .water }
+            }
             ActionTile(title: Grammar.pt(String(localized: "Feed", comment: "Quick action tile: fertilize; verb; max 10 chars")), symbol: "leaf.arrow.triangle.circlepath", tint: Jungle.leaf) {
                 withAnimation { JungleBrain.quick(.feed, plants: [plant], in: ctx, announce: true) }
             }
@@ -159,8 +172,11 @@ struct PlantHomeView: View {
 
     private var overview: some View {
         VStack(alignment: .leading, spacing: 14) {
-            PlantForecastSection(plant: plant)
-            CarePlanCard(plant: plant)
+            PlantNotesCard(plant: plant)
+            if !plant.isArtificial {
+                PlantForecastSection(plant: plant)
+                CarePlanCard(plant: plant)
+            }
             VStack(alignment: .leading, spacing: 10) {
                 SectionTitle(Grammar.pt(String(localized: "How-to for \(plant.name)", comment: "Section title: guides for this plant; arg plant name")), action: Grammar.pt(String(localized: "All", comment: "Section action: see all; max 8 chars"))) { showGuides = true }
                 let picks = Array(GuideLibrary.suggested(for: plant).prefix(3))
@@ -799,6 +815,16 @@ enum PlantFormat {
     static func percent(_ v: Double) -> String { (v / 100).formatted(.percent.precision(.fractionLength(0))) }
     /// Stored English sentinel notes shown translated.
     static func note(_ n: String) -> String {
-        n == "First photo" ? Grammar.pt(String(localized: "First photo", comment: "Timeline note for the first photo of a plant")) : n
+        switch n {
+        case "First photo": Grammar.pt(String(localized: "First photo", comment: "Timeline note for the first photo of a plant"))
+        case "refresh": Grammar.pt(String(localized: "fresh water", comment: "Timeline note: water changed for a plant growing in water; lowercase"))
+        case "top-up": Grammar.pt(String(localized: "reservoir topped up", comment: "Timeline note: LECA/pon or self-watering reservoir refilled; lowercase"))
+        case "soak": Grammar.pt(String(localized: "soaked", comment: "Timeline note: moss or mounted roots soaked; lowercase"))
+        case "asked": Grammar.pt(String(localized: "logged later", comment: "Timeline note: user confirmed care afterwards; lowercase"))
+        case "care-skip": Grammar.pt(String(localized: "skipped this round", comment: "Timeline note: user chose to skip a care round; lowercase"))
+        case "quarantine": Grammar.pt(String(localized: "kept apart from the others", comment: "Timeline note: plant quarantined for pests; lowercase"))
+        case "roots-ok": Grammar.pt(String(localized: "roots checked", comment: "Timeline note; lowercase"))
+        default: n
+        }
     }
 }

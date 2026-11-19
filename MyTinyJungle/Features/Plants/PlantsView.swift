@@ -6,6 +6,8 @@ import PhotosUI
 struct PlantsView: View {
     @Query(filter: #Predicate<Plant> { !$0.isArchived }, sort: \Plant.createdAt) private var plants: [Plant]
     @State private var adding = false
+    @AppStorage(DeepLink.plantKey) private var openPlant = ""
+    @AppStorage(DeepLink.addKey) private var openAdd = false
     @State private var paywall = false
     @State private var query = ""
     @State private var path: [UUID] = []
@@ -108,6 +110,7 @@ struct PlantsView: View {
                         }
                         }
                     }
+                    MemorialSection()
                 }
                 .padding(16)
             }
@@ -118,6 +121,11 @@ struct PlantsView: View {
                 if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
             }
             .sheet(isPresented: $adding) { AddPlantFlow() }
+            .onChange(of: openPlant, initial: true) { _, id in
+                if let u = UUID(uuidString: id), plants.contains(where: { $0.id == u }) { path = [u] }
+                if !id.isEmpty { openPlant = "" }
+            }
+            .onChange(of: openAdd, initial: true) { _, a in if a { openAdd = false; addTapped() } }
             .sheet(isPresented: $paywall) { PaywallView(reason: .morePlants) }
             .task {
                 // Store screenshots: `-demoOpen plant` opens the first plant's page.

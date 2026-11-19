@@ -126,6 +126,12 @@ enum Answerer {
         }
 
         // Care questions.
+        if has(WATER), let mk = CareEngine.mediumKind(plant) {
+            let last = plant.lastEvent(plant.waterKind)?.date
+            var parts = [CareEngine.mediumReason(plant, kind: mk, last: last, now: now)]
+            if plant.growingMedium == .water { parts.append(Grammar.pt(String(localized: "No soil, so never mind the finger test. Use room-temperature water and top up when the level drops.", comment: "Plant chat: watering advice for a plant growing in water."))) }
+            return (parts.joined(separator: " "), mk == .refreshWater ? [JungleBrain.freshWaterChip] : mk == .topUp ? [JungleBrain.toppedUpChip] : [])
+        }
         if has(WATER) {
             var parts = ["\(s.waterRule) \(s.seasonalWater) \(s.potHint(diameter: plant.potDiameterCm))"]
             parts.append(plant.learnedDryDays != nil
@@ -344,6 +350,13 @@ enum Answerer {
         case .portrait: Grammar.pt(String(localized: "monthly photo", comment: "Care need shown after a plant name, lowercase."))
         case .safety: Grammar.pt(String(localized: "pet safety", comment: "Care need shown after a plant name, lowercase."))
         case .pauseFeeding: Grammar.pt(String(localized: "pause feeding", comment: "Care need shown after a plant name, lowercase."))
+        case .refreshWater: Grammar.pt(String(localized: "fresh water", comment: "Care need shown after a plant name, lowercase."))
+        case .topUp: Grammar.pt(String(localized: "reservoir top-up", comment: "Care need shown after a plant name, lowercase."))
+        case .soak: Grammar.pt(String(localized: "soak", comment: "Care need shown after a plant name, lowercase."))
+        case .mist: Grammar.pt(String(localized: "light mist", comment: "Care need shown after a plant name, lowercase."))
+        case .askDone: Grammar.pt(String(localized: "did you already?", comment: "Care need shown after a plant name, lowercase. Asks whether the user already did the care."))
+        case .quarantine: Grammar.pt(String(localized: "keep apart", comment: "Care need shown after a plant name, lowercase. Quarantine for pests."))
+        case .treatFollowUp: Grammar.pt(String(localized: "next treatment round", comment: "Care need shown after a plant name, lowercase."))
         }
     }
 
@@ -351,6 +364,9 @@ enum Answerer {
         switch r.kind {
         case .checkSoil: JungleBrain.soilChips
         case .water: [JungleBrain.wateredChip]
+        case .refreshWater: [JungleBrain.freshWaterChip]
+        case .topUp: [JungleBrain.toppedUpChip]
+        case .treatFollowUp: [Grammar.pt(String(localized: "Treated", comment: "Chat suggestion chip: user confirms a pest treatment (pt: 'Tratei'; the parser understands it)."))]
         case .feed: [Grammar.pt(String(localized: "Fed", comment: "Chat suggestion chip: user confirms they fertilized (pt: 'Adubei'; the parser understands it)."))]
         case .portrait: [sendPhoto]
         case .safety: [Grammar.pt(String(localized: "Got it", comment: "Chat suggestion chip: acknowledge a pet safety warning (pt: 'Entendi')."))]

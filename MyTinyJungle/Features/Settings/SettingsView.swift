@@ -6,6 +6,7 @@ struct SettingsView: View {
     @Bindable private var settings = JungleSettings.shared
     @State private var paywall = false
     @State private var weatherWatch = WeatherWatch.isOn
+    @State private var digestOn = DigestAPI.isOn
     @State private var weatherNote: String?
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
@@ -110,6 +111,11 @@ struct SettingsView: View {
                                     if on && !now { weatherNote = Grammar.pt(String(localized: "We need your rough location to send alerts. You can allow it in the Settings app.", comment: "Settings footer: location missing for weather alerts")) }
                                 }
                             })).labelsHidden()
+                        }
+                    }
+                    JungleGroup(title: Grammar.pt(String(localized: "Weekly digest", comment: "Me row subtitle / Settings toggle: weekly summary")), footer: Grammar.pt(String(localized: "A Sunday note with what's coming up, who to watch and who grew.", comment: "Settings footer under the weekly digest toggle"))) {
+                        JungleRow(icon: .calendarClock, title: Grammar.pt(String(localized: "Weekly digest", comment: "Me row subtitle / Settings toggle: weekly summary"))) {
+                            Toggle("", isOn: Binding(get: { digestOn }, set: { on in digestOn = on; Task { await DigestAPI.set(on) } })).labelsHidden()
                         }
                     }
                     JungleGroup(title: Grammar.pt(String(localized: "Your plan", comment: "Settings title"))) {

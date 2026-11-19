@@ -2,19 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIColorName</key>
-		<string>LaunchBackground</string>
-		<key>UIImageName</key>
-		<string>LaunchMark</string>
-	</dict>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>$(GID_URL_SCHEME)</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.mytinyjungle.links</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>mytinyjungle</string>
 			</array>
 		</dict>
 	</array>
@@ -235,5 +236,12 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+		<key>UIImageName</key>
+		<string>LaunchMark</string>
+	</dict>
 </dict>
 </plist>

@@ -141,10 +141,10 @@ enum JungleBrain {
     }
 
     /// One-tap shortcuts (Water, Feed, Mist…) and soil answers. `announce` posts a card in the jungle thread.
-    static func quick(_ kind: CareKind, soil: SoilState? = nil, plants targets: [Plant], in ctx: ModelContext, now: Date = Date(), announce: Bool = false) {
+    static func quick(_ kind: CareKind, soil: SoilState? = nil, note: String? = nil, plants targets: [Plant], in ctx: ModelContext, now: Date = Date(), announce: Bool = false) {
         var entries: [LogCard.Entry] = []
         for p in targets {
-            let e = apply(.init(kind: kind, plantIDs: [p.id], date: now, soil: soil), to: p, in: ctx, now: now, source: "chip", speak: true)
+            let e = apply(.init(kind: kind, plantIDs: [p.id], date: now, soil: soil, detail: note), to: p, in: ctx, now: now, source: "chip", speak: true)
             entries.append(.init(plantID: p.id, eventID: e.id, kind: e.kindRaw))
         }
         if !targets.isEmpty {
@@ -232,6 +232,8 @@ enum JungleBrain {
             }
         case .repot:
             plant.lastRepotAt = action.date
+            if plant.growingMedium == .water, action.detail == nil { plant.growingMedium = .soil }
+            plant.setLifeStage(.repotted, at: action.date)
             if let cm = action.value { plant.potDiameterCm = cm }
         case .move:
             if let place = action.detail { plant.location = place }
@@ -240,7 +242,7 @@ enum JungleBrain {
         default: break
         }
         ctx.insert(e)
-        if speak { reply(PlantVoice.thanks(action.kind, plant: plant), plant: plant, in: ctx) }
+        if speak { reply(PlantVoice.thanks(action.kind, plant: plant, note: action.detail), plant: plant, in: ctx) }
         return e
     }
 
@@ -267,6 +269,8 @@ enum JungleBrain {
     nonisolated static var askLastWater: String { Grammar.pt(String(localized: "When did you last water me?", comment: "Plant chat: the plant asks when it was last watered. Must appear identically inside the plant's introduction.")) }
     nonisolated static var askWhere: String { Grammar.pt(String(localized: "Where do I live: which room or window?", comment: "Plant chat: plant asks which room or window it lives in.")) }
     nonisolated static var wateredChip: String { Grammar.pt(String(localized: "Watered", comment: "Chat suggestion chip: user confirms they watered (pt: 'Reguei'; the chat parser understands it). Max 14 chars.")) }
+    static var freshWaterChip: String { Grammar.pt(String(localized: "Changed the water", comment: "Chat suggestion chip: user changed the water of a plant growing in water (pt: 'Troquei a água'; the parser understands it). Max 18 chars.")) }
+    static var toppedUpChip: String { Grammar.pt(String(localized: "Topped up", comment: "Chat suggestion chip: user refilled a LECA/self-watering reservoir (pt: 'Completei a água'; the parser understands it). Max 18 chars.")) }
     nonisolated static var soilChips: [String] {
         [Grammar.pt(String(localized: "Dry", comment: "Chat suggestion chip: the soil feels dry (pt: 'Seca', refers to a terra).")),
          Grammar.pt(String(localized: "Slightly moist", comment: "Chat suggestion chip: the soil feels slightly moist (pt: 'Levemente úmida').")),

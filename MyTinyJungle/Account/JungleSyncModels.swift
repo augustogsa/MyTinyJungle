@@ -33,6 +33,8 @@ final class Payload {
     func i(_ k: String) -> Int { Int(d(k) ?? 0) }
     func t(_ k: String) -> Date { d(k).map(Date.init(timeIntervalSince1970:)) ?? Date() }
     func to(_ k: String) -> Date? { d(k).map(Date.init(timeIntervalSince1970:)) }
+    func obj(_ k: String) -> [String: JSONValue]? { if case .object(let o) = fields[k] { o } else { nil } }
+    func bo(_ k: String) -> Bool? { if case .bool(let v) = fields[k] { v } else { nil } }
     func u(_ k: String) -> UUID? { so(k).flatMap(UUID.init(uuidString:)) }
     func strings(_ k: String) -> [String] {
         if case .array(let a) = fields[k] { a.compactMap { if case .string(let s) = $0 { s } else { nil } } } else { [] }
@@ -48,6 +50,7 @@ private func v(_ t: Date) -> JSONValue { .number(t.timeIntervalSince1970) }
 private func v(_ t: Date?) -> JSONValue { t.map { v($0) } ?? .null }
 private func v(_ u: UUID?) -> JSONValue { u.map { .string($0.uuidString.lowercased()) } ?? .null }
 private func v(_ a: [String]) -> JSONValue { .array(a.map(JSONValue.string)) }
+private func v(_ b: Bool?) -> JSONValue { b.map(JSONValue.bool) ?? .null }
 
 struct LocalItem { let id: UUID; let payload: Payload; let photo: Data? }
 
@@ -103,6 +106,17 @@ enum Kind: String, CaseIterable {
             o.potHasDrainage = p.b("potHasDrainage", true); o.substrate = p.s("substrate"); o.heightCm = p.d("heightCm"); o.acquiredAt = p.t("acquiredAt")
             o.lastRepotAt = p.to("lastRepotAt"); o.learnedDryDays = p.d("learnedDryDays"); o.createdAt = p.t("createdAt")
             o.isArchived = p.b("isArchived"); o.archivedReason = p.so("archivedReason"); o.photo = photo(o.photo)
+            o.medium = p.so("medium"); o.lifeStage = p.so("lifeStage"); o.lifeStageAt = p.to("lifeStageAt")
+            if let out = p.bo("outdoor") { o.isOutdoor = out }
+            o.isArtificial = p.b("artificial"); o.sharesPot = p.b("multiple")
+            if let ps = p.obj("potSetup") {
+                func pb(_ k: String) -> Bool? { if case .bool(let x) = ps[k] { x } else { nil } }
+                func pstr(_ k: String) -> String? { if case .string(let x) = ps[k] { x } else { nil } }
+                o.potSelfWatering = pb("selfWatering"); o.potCachepot = pb("cachepot")
+                if let d = pb("drainage") { o.potHasDrainage = d }
+                if let m = pstr("material") { o.potMaterialRaw = m }
+                o.potSizeFit = pstr("sizeFit")
+            }
         case .careEvent:
             let o = find(CareEvent.self, id, ctx, #Predicate { $0.id == id }) ?? { let n = CareEvent(kind: .note); n.id = id; ctx.insert(n); return n }()
             o.kindRaw = p.s("kind"); o.date = p.t("date"); o.note = p.s("note"); o.value = p.d("value"); o.soilRaw = p.so("soil")
@@ -144,7 +158,11 @@ enum Kind: String, CaseIterable {
                 "location": v(o.location), "isOutdoor": v(o.isOutdoor), "potDiameterCm": v(o.potDiameterCm), "potMaterial": v(o.potMaterialRaw),
                 "potHasDrainage": v(o.potHasDrainage), "substrate": v(o.substrate), "heightCm": v(o.heightCm), "acquiredAt": v(o.acquiredAt),
                 "lastRepotAt": v(o.lastRepotAt), "learnedDryDays": v(o.learnedDryDays), "createdAt": v(o.createdAt),
-                "isArchived": v(o.isArchived), "archivedReason": v(o.archivedReason)]), photo: o.photo) }
+                "isArchived": v(o.isArchived), "archivedReason": v(o.archivedReason),
+                "medium": v(o.medium), "lifeStage": v(o.lifeStage), "lifeStageAt": v(o.lifeStageAt), "outdoor": v(o.isOutdoor),
+                "artificial": v(o.isArtificial), "multiple": v(o.sharesPot),
+                "potSetup": .object(["selfWatering": v(o.potSelfWatering), "cachepot": v(o.potCachepot), "drainage": v(o.potHasDrainage),
+                                     "material": v(o.potMaterialRaw), "sizeFit": v(o.potSizeFit)])]), photo: o.photo) }
         case .careEvent:
             return all(CareEvent.self).map { o in LocalItem(id: o.id, payload: Payload(self, [
                 "kind": v(o.kindRaw), "date": v(o.date), "note": v(o.note), "value": v(o.value), "soil": v(o.soilRaw),

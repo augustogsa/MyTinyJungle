@@ -331,6 +331,8 @@ struct TodayView: View {
         switch action {
         case .soil(let s): withAnimation(.snappy) { JungleBrain.quick(.soilCheck, soil: s, plants: [plant], in: ctx, announce: true) }
         case .care(let k): withAnimation(.snappy) { JungleBrain.quick(k, plants: [plant], in: ctx, announce: true) }
+        case .careNote(let k, let n): withAnimation(.snappy) { JungleBrain.quick(k, note: n, plants: [plant], in: ctx, announce: true) }
+        case .yes, .notYet, .skip: withAnimation(.snappy) { CareAsk.answer(action, plant: plant, in: ctx) }
         case .ack:
             let e = CareEvent(kind: .note, note: "safety-ack", source: "chip"); e.plant = plant; ctx.insert(e); try? ctx.save()
         case .open: path.append(plant.id)
@@ -339,7 +341,7 @@ struct TodayView: View {
 }
 
 struct RequestCard: View {
-    enum Action { case soil(SoilState), care(CareKind), ack, open }
+    enum Action { case soil(SoilState), care(CareKind), careNote(CareKind, String), yes, notYet, skip, ack, open }
     let plant: Plant
     let request: PlantRequest
     var onAction: (Action) -> Void
@@ -379,6 +381,13 @@ struct RequestCard: View {
         case .portrait: "camera"
         case .safety: "pawprint.fill"
         case .pauseFeeding: "moon.zzz"
+        case .refreshWater: "drop.fill"
+        case .topUp: "drop.circle"
+        case .soak: "humidity.fill"
+        case .mist: "cloud.drizzle"
+        case .askDone: "questionmark.bubble"
+        case .quarantine: "rectangle.portrait.and.arrow.right"
+        case .treatFollowUp: "cross.case.fill"
         }
     }
 
@@ -395,6 +404,13 @@ struct RequestCard: View {
             Button("Ask why") { onAction(.open) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
         case .safety:
             Button("Got it") { onAction(.ack) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
+        case .refreshWater, .topUp, .soak, .mist, .quarantine, .treatFollowUp:
+            let d = CareAsk.done(request.kind, plant: plant)
+            Button(d.label, systemImage: "checkmark") { onAction(d.action) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
+        case .askDone:
+            Button(Grammar.pt(String(localized: "Yes", comment: "Answer to 'Did you water X?': yes, already done; max 10 chars"))) { onAction(.yes) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button(Grammar.pt(String(localized: "Not yet", comment: "Answer to 'Did you water X?'; max 10 chars"))) { onAction(.notYet) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button(Grammar.pt(String(localized: "Skip", comment: "Answer to 'Did you water X?': skip this round; max 10 chars"))) { onAction(.skip) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
         default:
             Button(Grammar.pt(String(localized: "Talk to \(plant.name)"))) { onAction(.open) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
         }

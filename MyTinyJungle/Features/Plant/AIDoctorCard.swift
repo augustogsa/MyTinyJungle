@@ -83,8 +83,8 @@ struct AIDoctorCard: View {
             do {
                 answer = try await AIDiagnosis.ask(photo: jpeg, species: species, note: plant.name, plant: plant)
                 Analytics.track("ai_doctor")
-            } catch JungleAPI.APIError.http(429, _) {
-                failed = Grammar.pt(String(localized: "That's today's limit. Try again tomorrow.", comment: "AI doctor: daily cap reached"))
+            } catch where ServerNotice.message(for: error) != nil {
+                failed = ServerNotice.message(for: error)
             } catch {
                 failed = Grammar.pt(String(localized: "The plant doctor is unavailable right now. Try again later.", comment: "AI doctor: generic failure"))
             }

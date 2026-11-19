@@ -73,6 +73,16 @@ enum ChatParser {
             if negated(kind: kind, text: text) { continue }
             result.actions.append(.init(kind: kind, plantIDs: targets, date: date))
         }
+        // Water culture and reservoirs: "changed the water", "troquei a água", "topped up the LECA".
+        let topUp = matches(#"\b(topped (it |her |him |them )?(up|off)|top(ped)? up the|refilled the (reservoir|water)|completei (a )?agua|enchi o reservatorio|complete el agua|rellene el deposito|rempli le reservoir|wasser aufgefullt|水を足し)"#, text)
+        let refresh = matches(#"\b((changed|refreshed|swapped|replaced|renewed) (.{0,20} )?water|fresh water|(troquei|renovei|mudei) (.{0,15} )?agua|agua (nova|fresca|trocada)|cambie el agua|change l'?eau|changer l'?eau|wasser gewechselt|水を(替|換|か)え)"#, text)
+        if refresh || topUp {
+            if !negated(kind: .water, text: text) {
+                if let i = result.actions.firstIndex(where: { $0.kind == .water }) { result.actions[i].detail = refresh ? "refresh" : "top-up" }
+                else { result.actions.append(.init(kind: .water, plantIDs: targets, date: date, detail: refresh ? "refresh" : "top-up")) }
+                result.actions.removeAll { $0.kind == .repot || $0.kind == .move }
+            }
+        }
         // "sprayed Luna with neem" is a treatment, not misting.
         if result.actions.contains(where: { $0.kind == .treat }), !matches(#"\bmist(ed|ing)?\b"#, text) { result.actions.removeAll { $0.kind == .mist } }
 

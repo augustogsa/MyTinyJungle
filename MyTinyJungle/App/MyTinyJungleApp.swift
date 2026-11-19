@@ -91,6 +91,7 @@ private struct MainScene: View {
                     await JungleSync.shared.sync()
                 }
                 .onOpenURL { url in
+                    if DigestAPI.handle(url) || DeepLink.handle(url) { return }
                     if let code = HouseholdCloud.code(from: url) { Task { await Household.shared.accept(code: code) } }
                     else if let code = Referrals.code(from: url) { Task { await Referrals.received(code) } }
                     else if !PlanLink.handle(url) { GIDSignIn.sharedInstance.handle(url) }
@@ -126,6 +127,7 @@ struct RootView: View {
         tabView
             .background(GrammarSync())
             .modifier(PlanLinkSheet())
+            .modifier(DigestLinkSheet())
             .task {
                 guard ProcessInfo.processInfo.arguments.contains("-notifyDemo") else { return }
                 try? await Task.sleep(for: .seconds(2))

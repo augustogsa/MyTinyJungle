@@ -88271,6 +88271,5396 @@
           }
         }
       }
+    },
+    "Hi, I'm %@! Faux and fabulous: I never get thirsty, so you can relax. A little dusting keeps me shiny." : {
+      "comment" : "Artificial plant intro in chat, playful; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oi, eu sou %@! Falsa e maravilhosa: nunca fico com sede, pode relaxar. Só tirar o pó de vez em quando que eu fico brilhando."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Hola, soy %@! Falsa y fabulosa: nunca tengo sed, así que relájate. Una sacudidita de polvo y quedo brillante."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salut, je suis %@ ! Fausse et fabuleuse : je n'ai jamais soif, alors détends-toi. Un petit coup de chiffon et je brille."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hallo, ich bin %@! Künstlich und fabelhaft: Ich habe nie Durst, also entspann dich. Ab und zu abstauben, und ich glänze."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "こんにちは、%@だよ！フェイクだけど素敵でしょ。のどは渇かないから安心してね。ときどきほこりを払ってくれたらピカピカ。"
+          }
+        }
+      }
+    },
+    "No soil, so never mind the finger test. Use room-temperature water and top up when the level drops." : {
+      "comment" : "Plant chat: watering advice for a plant growing in water.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem terra, então nada de teste do dedo. Usa água em temperatura ambiente e completa quando o nível baixar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin tierra, así que olvídate de la prueba del dedo. Usa agua a temperatura ambiente y rellena cuando baje el nivel."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas de terre, donc pas de test du doigt. Utilise de l'eau à température ambiante et complète quand le niveau baisse."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Erde, also kein Fingertest. Nimm zimmerwarmes Wasser und füll nach, wenn der Pegel sinkt."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "土がないので指チェックは不要。常温の水を使って、水位が下がったら足してね。"
+          }
+        }
+      }
+    },
+    "fresh water" : {
+      "comment" : "Care need shown after a plant name, lowercase.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "água nova"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "agua fresca"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eau fraîche"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "frisches Wasser"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水の交換"
+          }
+        }
+      }
+    },
+    "reservoir top-up" : {
+      "comment" : "Care need shown after a plant name, lowercase.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "completar o reservatório"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rellenar el depósito"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "remplir le réservoir"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservoir auffüllen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯水の補充"
+          }
+        }
+      }
+    },
+    "soak" : {
+      "comment" : "Care need shown after a plant name, lowercase.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "banho de imersão"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "remojo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "trempage"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tauchbad"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ソーキング"
+          }
+        }
+      }
+    },
+    "light mist" : {
+      "comment" : "Care need shown after a plant name, lowercase.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "borrifada leve"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rocío ligero"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "légère brume"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "leichtes Sprühen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "軽い霧吹き"
+          }
+        }
+      }
+    },
+    "did you already?" : {
+      "comment" : "Care need shown after a plant name, lowercase. Asks whether the user already did the care.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "já fez?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿ya lo hiciste?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "déjà fait ?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "schon erledigt?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もうやった？"
+          }
+        }
+      }
+    },
+    "keep apart" : {
+      "comment" : "Care need shown after a plant name, lowercase. Quarantine for pests.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deixar separada"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mantener aparte"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mettre à l'écart"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "separat stellen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隔離"
+          }
+        }
+      }
+    },
+    "next treatment round" : {
+      "comment" : "Care need shown after a plant name, lowercase.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "próxima rodada do tratamento"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "siguiente ronda de tratamiento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "prochaine séance de traitement"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nächste Behandlungsrunde"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の処置"
+          }
+        }
+      }
+    },
+    "Changed the water" : {
+      "comment" : "Chat suggestion chip: user changed the water of a plant growing in water (pt: 'Troquei a água'; the parser understands it). Max 18 chars.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Troquei a água"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambié el agua"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eau changée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wasser gewechselt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水を替えた"
+          }
+        }
+      }
+    },
+    "Topped up" : {
+      "comment" : "Chat suggestion chip: user refilled a LECA/self-watering reservoir (pt: 'Completei a água'; the parser understands it). Max 18 chars.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completei a água"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rellené"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complété"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufgefüllt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "補充した"
+          }
+        }
+      }
+    },
+    "Skip" : {
+      "comment" : "Answer to 'Did you water X?': skip this round; max 10 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pular"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saltar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auslassen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スキップ"
+          }
+        }
+      }
+    },
+    "Potting soil" : {
+      "comment" : "Growing medium option; max 18 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terra vegetal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tierra para macetas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terreau"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blumenerde"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "培養土"
+          }
+        }
+      }
+    },
+    "Chunky aroid mix" : {
+      "comment" : "Growing medium option: bark, perlite, coir mix; max 18 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Substrato aeróide"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mezcla para aráceas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mélange aroïdées"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aroideen-Mix"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アロイド用ミックス"
+          }
+        }
+      }
+    },
+    "Cactus mix" : {
+      "comment" : "Growing medium option; max 18 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Substrato p/ cactos"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sustrato para cactus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terreau cactus"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kakteenerde"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サボテン用土"
+          }
+        }
+      }
+    },
+    "LECA" : {
+      "comment" : "Growing medium option: expanded clay balls; keep the acronym",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Argila expandida"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LECA"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Billes d'argile"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blähton"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ハイドロボール"
+          }
+        }
+      }
+    },
+    "Pon" : {
+      "comment" : "Growing medium option: mineral substrate brand-style name; keep as is",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pon"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pon"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ポン"
+          }
+        }
+      }
+    },
+    "Just water" : {
+      "comment" : "Growing medium option: plant grows in a glass of water, no soil; max 18 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Só água"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo agua"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juste de l'eau"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Wasser"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水だけ"
+          }
+        }
+      }
+    },
+    "Mounted" : {
+      "comment" : "Growing medium option: tied to bark or a board, like orchids; max 18 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montada"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufgebunden"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "着生"
+          }
+        }
+      }
+    },
+    "In the ground" : {
+      "comment" : "Growing medium option: planted in a garden bed; max 18 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No chão"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la tierra"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En pleine terre"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Beet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地植え"
+          }
+        }
+      }
+    },
+    "Settling in" : {
+      "comment" : "Plant life stage option: just arrived, adjusting to the new home; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se adaptando"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adaptándose"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En adaptation"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewöhnt sich ein"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "慣らし中"
+          }
+        }
+      }
+    },
+    "Just repotted" : {
+      "comment" : "Plant life stage option; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recém-replantada"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recién trasplantada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juste rempotée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frisch umgetopft"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "植え替え直後"
+          }
+        }
+      }
+    },
+    "Resting" : {
+      "comment" : "Plant life stage option: dormant; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descansando"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En reposo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Au repos"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruhephase"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "休眠中"
+          }
+        }
+      }
+    },
+    "Recovering" : {
+      "comment" : "Plant life stage option: getting better after a problem; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se recuperando"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperándose"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En convalescence"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erholt sich"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回復中"
+          }
+        }
+      }
+    },
+    "Unknown past" : {
+      "comment" : "Plant life stage option: rescued or second-hand, care history unknown; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passado incerto"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasado incierto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passé inconnu"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorgeschichte?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "経歴不明"
+          }
+        }
+      }
+    },
+    "Too small" : {
+      "comment" : "Pot size fit option; max 12 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pequeno demais"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muy chica"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trop petit"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zu klein"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "小さすぎ"
+          }
+        }
+      }
+    },
+    "Just right" : {
+      "comment" : "Pot size fit option; max 12 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na medida"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Justa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parfait"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ちょうどいい"
+          }
+        }
+      }
+    },
+    "Too big" : {
+      "comment" : "Pot size fit option; max 12 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grande demais"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muy grande"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trop grand"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zu groß"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大きすぎ"
+          }
+        }
+      }
+    },
+    "A faux plant: no water, no food, no worries. A quick dust now and then keeps it looking real." : {
+      "comment" : "Plant screen note for an artificial plant; warm, playful",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planta artificial: sem água, sem adubo, sem preocupação. Uma tiradinha de pó de vez em quando e ela parece de verdade."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planta artificial: sin agua, sin abono, sin preocupaciones. Quítale el polvo de vez en cuando y parece real."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plante artificielle : ni eau, ni engrais, ni souci. Un coup de chiffon de temps en temps et elle a l'air vraie."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunstpflanze: kein Wasser, kein Dünger, keine Sorgen. Ab und zu abstauben, dann sieht sie echt aus."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フェイクの植物：水も肥料も心配もいらないよ。ときどきほこりを払えば本物みたい。"
+          }
+        }
+      }
+    },
+    "Grows in water, so no soil checks. Fresh water every 7–10 days, a top-up in between, and a quarter-strength hydro feed once a month in the growing season." : {
+      "comment" : "Plant screen note for a plant growing in water",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vive na água, então nada de checar terra. Água nova a cada 7–10 dias, completa no meio-tempo, e adubo hidropônico a um quarto da dose uma vez por mês na época de crescimento."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vive en agua, así que nada de revisar tierra. Agua fresca cada 7–10 días, rellenar entre medio y abono hidropónico a un cuarto de dosis una vez al mes en temporada de crecimiento."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle vit dans l'eau, donc pas de test de terre. Eau fraîche tous les 7 à 10 jours, un complément entre deux, et un engrais hydro au quart de dose une fois par mois en saison de croissance."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wächst in Wasser, also keine Erdkontrolle. Alle 7–10 Tage frisches Wasser, zwischendurch nachfüllen und in der Wachstumszeit einmal im Monat Hydrodünger in Viertelstärke."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水で育っているので土のチェックは不要。7〜10日ごとに水を替えて、間で足し水を。成長期は月1回、ハイドロ用肥料を1/4の濃さで。"
+          }
+        }
+      }
+    },
+    "Green film on the glass or a sour smell means algae or rot: rinse the roots and the glass. Once roots reach 5–10 cm it can move to soil, or stay in water for good." : {
+      "comment" : "Plant screen note for a plant growing in water",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limo verde no vidro ou cheiro azedo é sinal de alga ou podridão: lava as raízes e o vidro. Quando as raízes tiverem 5–10 cm, dá pra passar pra terra ou deixar na água de vez."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una película verde en el vidrio o un olor agrio indica algas o pudrición: enjuaga raíces y vidrio. Con raíces de 5–10 cm puede pasar a tierra o quedarse en agua para siempre."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un film vert sur le verre ou une odeur aigre signale des algues ou de la pourriture : rince les racines et le verre. À 5–10 cm de racines, elle peut passer en terre ou rester dans l'eau."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grüner Belag am Glas oder saurer Geruch heißt Algen oder Fäulnis: Wurzeln und Glas abspülen. Bei 5–10 cm langen Wurzeln kann sie in Erde, oder sie bleibt einfach im Wasser."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ガラスに緑のぬめりや酸っぱいにおいがしたら藻か根腐れ。根とガラスを洗ってね。根が5〜10cmになったら土に植えても、ずっと水でもOK。"
+          }
+        }
+      }
+    },
+    "Semi-hydro: keep a reservoir about a third of the pot deep and let it run dry for a day or two before topping up. Feed hydro nutrients at each top-up and flush with plain water monthly." : {
+      "comment" : "Plant screen note for LECA or pon",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semi-hidro: mantém um reservatório de mais ou menos um terço do vaso e deixa secar um ou dois dias antes de completar. Põe nutriente hidropônico a cada reposição e lava com água pura uma vez por mês."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semihidro: mantén un depósito de un tercio de la maceta y deja que se seque un día o dos antes de rellenar. Agrega nutrientes hidropónicos en cada relleno y enjuaga con agua sola cada mes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semi-hydro : garde un réservoir d'environ un tiers du pot et laisse-le sécher un jour ou deux avant de remplir. Ajoute des nutriments hydro à chaque remplissage et rince à l'eau claire chaque mois."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semi-Hydro: Reservoir etwa ein Drittel des Topfes hoch halten und vor dem Nachfüllen ein, zwei Tage leer lassen. Bei jedem Nachfüllen Hydronährstoffe dazu, monatlich mit klarem Wasser spülen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セミハイドロ：鉢の1/3くらいの水位を保ち、1〜2日空にしてから補充してね。補充のたびにハイドロ用養液を入れて、月1回は水だけで洗い流そう。"
+          }
+        }
+      }
+    },
+    "In sphagnum moss: soak it when the moss feels light and crisp, then let it drain fully. Never leave it sitting in water." : {
+      "comment" : "Plant screen note for sphagnum moss",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No musgo esfagno: dá um banho quando o musgo estiver leve e crocante, depois deixa escorrer bem. Nunca deixa ela parada na água."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En musgo sphagnum: remójalo cuando se sienta ligero y crujiente y luego deja escurrir bien. Nunca la dejes en agua estancada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En sphaigne : fais-la tremper quand la mousse est légère et craquante, puis laisse bien égoutter. Ne la laisse jamais tremper dans l'eau."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Torfmoos: tauchen, wenn sich das Moos leicht und knusprig anfühlt, dann gut abtropfen lassen. Nie im Wasser stehen lassen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水苔植え：水苔が軽くカサカサになったら浸して、しっかり水を切ってね。水に浸けっぱなしはダメ。"
+          }
+        }
+      }
+    },
+    "Mounted plants dry fast: mist or dunk the roots every 2–3 days, more often when the air is dry." : {
+      "comment" : "Plant screen note for a mounted plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planta montada seca rápido: borrifa ou mergulha as raízes a cada 2–3 dias, mais vezes quando o ar estiver seco."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las plantas montadas se secan rápido: rocía o sumerge las raíces cada 2–3 días, más seguido si el aire está seco."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les plantes montées sèchent vite : brumise ou trempe les racines tous les 2 à 3 jours, plus souvent si l'air est sec."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufgebundene Pflanzen trocknen schnell: Wurzeln alle 2–3 Tage besprühen oder tauchen, bei trockener Luft öfter."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "着生植物はすぐ乾くよ。2〜3日ごとに根に霧吹きするか浸してね。空気が乾いているときはもっと頻繁に。"
+          }
+        }
+      }
+    },
+    "A closed terrarium waters itself. Mist lightly only when the morning condensation is gone, and open the lid if it's fogged all day." : {
+      "comment" : "Plant screen note for a terrarium",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terrário fechado se rega sozinho. Borrifa de leve só quando a condensação da manhã sumir, e abre a tampa se ficar embaçado o dia todo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un terrario cerrado se riega solo. Rocía un poco solo cuando desaparezca la condensación de la mañana, y abre la tapa si está empañado todo el día."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un terrarium fermé s'arrose tout seul. Brumise légèrement seulement quand la condensation du matin a disparu, et ouvre le couvercle s'il reste embué toute la journée."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein geschlossenes Terrarium gießt sich selbst. Nur leicht sprühen, wenn das Morgenkondenswasser weg ist, und den Deckel öffnen, wenn es den ganzen Tag beschlagen ist."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密閉テラリウムは自分で水が回るよ。朝の結露がなくなったときだけ軽く霧吹きして、一日中曇っていたらふたを開けてね。"
+          }
+        }
+      }
+    },
+    "In the ground, roots reach deeper, so it needs water less often than a pot. Rain counts." : {
+      "comment" : "Plant screen note for a plant in a garden bed",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No chão as raízes vão mais fundo, então precisa de água menos vezes que no vaso. Chuva conta."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la tierra las raíces llegan más hondo, así que necesita agua menos seguido que en maceta. La lluvia cuenta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En pleine terre, les racines vont plus loin, donc elle a besoin d'eau moins souvent qu'en pot. La pluie compte."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Beet reichen die Wurzeln tiefer, also braucht sie seltener Wasser als im Topf. Regen zählt."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地植えは根が深く張るので、鉢より水やりは少なめでOK。雨もカウントするよ。"
+          }
+        }
+      }
+    },
+    "A cutting: no food and no repotting yet. Bright, indirect light and patience while roots grow." : {
+      "comment" : "Plant screen note for a cutting",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma muda: nada de adubo nem troca de vaso ainda. Luz clara indireta e paciência enquanto as raízes crescem."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un esqueje: nada de abono ni trasplante todavía. Luz brillante indirecta y paciencia mientras crecen las raíces."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une bouture : pas d'engrais ni de rempotage pour l'instant. Lumière vive indirecte et patience pendant que les racines poussent."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Steckling: noch kein Dünger und kein Umtopfen. Helles, indirektes Licht und Geduld, während die Wurzeln wachsen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "挿し木中：まだ肥料も植え替えもなし。明るい間接光で、根が伸びるのを気長に待とう。"
+          }
+        }
+      }
+    },
+    "A seedling: keep it evenly moist, never soggy, with gentle light. Food can wait until its true leaves open." : {
+      "comment" : "Plant screen note for a seedling",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma plântula: mantém úmida por igual, nunca encharcada, com luz suave. O adubo pode esperar as folhas verdadeiras abrirem."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una plántula: mantenla húmeda de forma pareja, nunca encharcada, con luz suave. El abono puede esperar a que abran las hojas verdaderas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un semis : garde-le humide de façon régulière, jamais détrempé, avec une lumière douce. L'engrais attendra les vraies feuilles."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Sämling: gleichmäßig feucht halten, nie nass, mit sanftem Licht. Dünger hat Zeit, bis die echten Blätter da sind."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "芽生え：均一にしっとり、でも水浸しにしないで、やさしい光で。肥料は本葉が開いてからでOK。"
+          }
+        }
+      }
+    },
+    "Settling in: a few dropped or yellow leaves in the first weeks are normal. No repotting or food for now." : {
+      "comment" : "Plant screen note for a newly arrived plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se adaptando: perder ou amarelar umas folhas nas primeiras semanas é normal. Nada de trocar de vaso nem adubar por enquanto."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adaptándose: que caigan o amarilleen algunas hojas las primeras semanas es normal. Nada de trasplante ni abono por ahora."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En adaptation : quelques feuilles qui tombent ou jaunissent les premières semaines, c'est normal. Ni rempotage ni engrais pour l'instant."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewöhnt sich ein: Ein paar abfallende oder gelbe Blätter in den ersten Wochen sind normal. Vorerst kein Umtopfen und kein Dünger."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "慣らし中：最初の数週間に葉が少し落ちたり黄色くなるのは普通だよ。今は植え替えも肥料もなし。"
+          }
+        }
+      }
+    },
+    "Fresh soil already has food, so no feeding for 4–6 weeks. A little droop while roots settle is normal." : {
+      "comment" : "Plant screen note for a just repotted plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terra nova já tem nutriente, então nada de adubo por 4–6 semanas. Murchar um pouquinho enquanto as raízes se ajeitam é normal."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tierra nueva ya trae nutrientes, así que nada de abono por 4–6 semanas. Que se decaiga un poco mientras las raíces se asientan es normal."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La terre neuve contient déjà de quoi manger, donc pas d'engrais pendant 4 à 6 semaines. Un petit coup de mou pendant que les racines s'installent, c'est normal."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frische Erde hat schon Nährstoffe, also 4–6 Wochen nicht düngen. Etwas Hängen, während die Wurzeln sich setzen, ist normal."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい土には栄養があるので、4〜6週間は肥料なし。根が落ち着くまで少ししおれるのは普通だよ。"
+          }
+        }
+      }
+    },
+    "Resting: it drinks much less and needs no food until it wakes up." : {
+      "comment" : "Plant screen note for a dormant plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descansando: bebe bem menos e não precisa de adubo até acordar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En reposo: bebe mucho menos y no necesita abono hasta que despierte."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Au repos : elle boit beaucoup moins et n'a pas besoin d'engrais avant de se réveiller."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruhephase: Sie trinkt viel weniger und braucht keinen Dünger, bis sie aufwacht."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "休眠中：水はずっと少なめで、目覚めるまで肥料はいらないよ。"
+          }
+        }
+      }
+    },
+    "Flowering: keep it in the same spot and don't turn it, or buds may drop." : {
+      "comment" : "Plant screen note for a flowering plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Florindo: deixa no mesmo lugar e não gira, senão os botões podem cair."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floreciendo: déjala en el mismo lugar y no la gires, o se pueden caer los botones."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En fleurs : laisse-la au même endroit et ne la tourne pas, sinon les boutons risquent de tomber."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blüht: am selben Platz lassen und nicht drehen, sonst fallen die Knospen ab."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開花中：場所を変えたり回したりしないでね。つぼみが落ちちゃうかも。"
+          }
+        }
+      }
+    },
+    "Recovering: gentle care only. No food or repotting until new healthy growth shows." : {
+      "comment" : "Plant screen note for a recovering plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se recuperando: só cuidado gentil. Nada de adubo nem troca de vaso até aparecer broto novo saudável."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recuperándose: solo cuidados suaves. Nada de abono ni trasplante hasta que aparezcan brotes sanos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En convalescence : soins doux seulement. Ni engrais ni rempotage avant une nouvelle pousse saine."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erholt sich: nur sanfte Pflege. Kein Dünger und kein Umtopfen, bis gesunder Neuaustrieb kommt."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回復中：やさしいお世話だけ。元気な新芽が出るまで肥料も植え替えもなし。"
+          }
+        }
+      }
+    },
+    "Unknown past: let's learn its rhythm. Check before every drink and skip food for the first month." : {
+      "comment" : "Plant screen note for a plant with unknown care history",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passado incerto: vamos aprender o ritmo dela. Confere antes de cada rega e pula o adubo no primeiro mês."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasado incierto: aprendamos su ritmo. Revisa antes de cada riego y sáltate el abono el primer mes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passé inconnu : apprenons son rythme. Vérifie avant chaque arrosage et pas d'engrais le premier mois."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Vorgeschichte: Lernen wir ihren Rhythmus. Vor jedem Gießen prüfen und im ersten Monat nicht düngen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "経歴不明：まずはリズムを覚えよう。水やりの前は毎回チェックして、最初の1か月は肥料なし。"
+          }
+        }
+      }
+    },
+    "It sits in a cachepot: tip out any water that collects there 15 minutes after watering, or the roots will sit wet." : {
+      "comment" : "Plant screen warning: decorative outer pot without holes",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ela fica num cachepô: 15 minutos depois de regar, joga fora a água que juntar lá, senão as raízes ficam encharcadas."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Está dentro de un cubremacetas: 15 minutos después de regar, tira el agua que se junte ahí o las raíces quedarán mojadas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle est dans un cache-pot : 15 minutes après l'arrosage, vide l'eau qui s'y accumule, sinon les racines restent mouillées."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sie steht in einem Übertopf: 15 Minuten nach dem Gießen das Wasser darin ausleeren, sonst stehen die Wurzeln nass."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鉢カバーに入っているよ。水やりの15分後にたまった水を捨ててね。根がずっと濡れちゃうから。"
+          }
+        }
+      }
+    },
+    "No drainage holes: water little and often, and tip the pot to pour off extra. A pot with holes is safer." : {
+      "comment" : "Plant screen warning: pot without drainage holes",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem furo de drenagem: rega pouco e mais vezes, e inclina o vaso pra tirar o excesso. Vaso com furo é mais seguro."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin agujeros de drenaje: riega poco y seguido, e inclina la maceta para sacar el exceso. Una maceta con agujeros es más segura."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas de trous de drainage : arrose peu et souvent, et penche le pot pour vider l'excès. Un pot percé est plus sûr."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Abzugslöcher: wenig und oft gießen und den Topf kippen, um Überschuss abzugießen. Ein Topf mit Löchern ist sicherer."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "排水穴なし：少しずつこまめに水やりして、鉢を傾けて余分な水を捨ててね。穴あきの鉢のほうが安心。"
+          }
+        }
+      }
+    },
+    "Self-watering pot: refill the reservoir only once it's empty, and let it stay dry for a day or two so roots get air." : {
+      "comment" : "Plant screen note for a self-watering pot",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaso autoirrigável: só enche o reservatório quando ele esvaziar, e deixa seco um ou dois dias pras raízes respirarem."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maceta autorregable: rellena el depósito solo cuando esté vacío y déjalo seco un día o dos para que las raíces respiren."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pot à réserve d'eau : remplis la réserve seulement quand elle est vide, et laisse-la sèche un jour ou deux pour aérer les racines."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selbstbewässerungstopf: das Reservoir erst nachfüllen, wenn es leer ist, und ein, zwei Tage trocken lassen, damit die Wurzeln Luft bekommen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "底面給水鉢：タンクが空になってから補充して、根が呼吸できるよう1〜2日は空のままにしてね。"
+          }
+        }
+      }
+    },
+    "The pot looks tight. It will dry fast; plan a pot 2–5 cm wider in the growing season." : {
+      "comment" : "Plant screen note: pot too small",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O vaso parece apertado. Vai secar rápido; planeja um vaso 2–5 cm maior na época de crescimento."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La maceta se ve apretada. Se secará rápido; planea una maceta 2–5 cm más ancha en temporada de crecimiento."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le pot semble serré. Il va sécher vite ; prévois un pot 2 à 5 cm plus large en saison de croissance."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Topf wirkt eng. Er trocknet schnell; plane in der Wachstumszeit einen 2–5 cm breiteren Topf."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鉢がきつそう。すぐ乾くので、成長期に2〜5cm大きい鉢を用意しよう。"
+          }
+        }
+      }
+    },
+    "The pot looks roomy, so the soil stays wet longer. Water a little less and check before every drink." : {
+      "comment" : "Plant screen note: pot too big",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O vaso parece folgado, então a terra fica úmida por mais tempo. Rega um pouco menos e confere antes de cada rega."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La maceta se ve amplia, así que la tierra se mantiene húmeda más tiempo. Riega un poco menos y revisa antes de cada riego."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le pot semble grand, donc la terre reste humide plus longtemps. Arrose un peu moins et vérifie avant chaque arrosage."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Topf wirkt groß, also bleibt die Erde länger nass. Etwas weniger gießen und vor jedem Gießen prüfen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鉢が大きめなので土が乾きにくいよ。水は少し控えめにして、毎回チェックしてからね。"
+          }
+        }
+      }
+    },
+    "Several plants share this pot. They drink together, so care goes by the thirstiest one." : {
+      "comment" : "Plant screen note: several plants in one pot",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Várias plantas dividem este vaso. Elas bebem juntas, então o cuidado segue a mais sedenta."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varias plantas comparten esta maceta. Beben juntas, así que el cuidado sigue a la más sedienta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plusieurs plantes partagent ce pot. Elles boivent ensemble, donc les soins suivent la plus assoiffée."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehrere Pflanzen teilen sich diesen Topf. Sie trinken gemeinsam, also richtet sich die Pflege nach der durstigsten."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この鉢には複数の植物がいるよ。一緒に水を飲むから、いちばんのどが渇く子に合わせてお世話してね。"
+          }
+        }
+      }
+    },
+    "Not for nibbling: keep it out of reach of pets and little kids." : {
+      "comment" : "Plant screen note: toxic plant, home has kids",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não é pra morder: deixa longe dos pets e das crianças pequenas."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No es para mordisquear: mantenla lejos de mascotas y niños pequeños."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas à grignoter : garde-la hors de portée des animaux et des petits enfants."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht zum Knabbern: außer Reichweite von Haustieren und kleinen Kindern stellen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "かじっちゃダメ：ペットや小さな子の手が届かない場所に置いてね。"
+          }
+        }
+      }
+    },
+    "Toxic to pets if chewed. Keep it out of reach." : {
+      "comment" : "Plant screen note: toxic plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tóxica pra pets se mastigada. Deixa fora do alcance."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tóxica para mascotas si la mastican. Mantenla fuera de su alcance."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toxique pour les animaux si mâchée. Garde-la hors de portée."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giftig für Haustiere, wenn angeknabbert. Außer Reichweite stellen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ペットがかじると有毒。手の届かない場所に置いてね。"
+          }
+        }
+      }
+    },
+    "Pets & kids" : {
+      "comment" : "Badge: plant is toxic to pets and kids; max 14 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pets e crianças"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mascotas y niños"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animaux, enfants"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiere & Kinder"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ペットと子ども"
+          }
+        }
+      }
+    },
+    "Toxic to pets" : {
+      "comment" : "Badge: plant is toxic to pets; max 14 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tóxica p/ pets"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tóxica p/ mascotas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toxique animaux"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giftig für Tiere"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ペットに有毒"
+          }
+        }
+      }
+    },
+    "Toxic if chewed" : {
+      "comment" : "VoiceOver label for the toxicity badge",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tóxica se mastigada"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tóxica si se mastica"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toxique si mâchée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giftig beim Kauen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "かじると有毒"
+          }
+        }
+      }
+    },
+    "Fresh water" : {
+      "comment" : "Care task title: change the water of a plant growing in water; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Água nova"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agua fresca"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eau fraîche"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frisches Wasser"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水の交換"
+          }
+        }
+      }
+    },
+    "Top up the reservoir" : {
+      "comment" : "Care task title; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completar reservatório"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rellenar el depósito"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplir la réserve"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservoir auffüllen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯水を補充"
+          }
+        }
+      }
+    },
+    "Mist the roots" : {
+      "comment" : "Care task title for a mounted plant; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrifar as raízes"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rociar las raíces"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brumiser les racines"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wurzeln besprühen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根に霧吹き"
+          }
+        }
+      }
+    },
+    "Soak the moss" : {
+      "comment" : "Care task title; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molhar o musgo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remojar el musgo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tremper la mousse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moos tauchen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水苔を浸す"
+          }
+        }
+      }
+    },
+    "A light mist" : {
+      "comment" : "Care task title for a terrarium; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrifada leve"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rocío ligero"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brume légère"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leicht sprühen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "軽く霧吹き"
+          }
+        }
+      }
+    },
+    "Misted already?" : {
+      "comment" : "Care task title: asks whether the user already did it; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já borrifou?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Ya rociaste?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déjà brumisée ?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schon gesprüht?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "霧吹きした？"
+          }
+        }
+      }
+    },
+    "Watered already?" : {
+      "comment" : "Care task title: asks whether the user already watered; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já regou?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Ya regaste?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déjà arrosée ?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schon gegossen?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水やりした？"
+          }
+        }
+      }
+    },
+    "Keep it apart" : {
+      "comment" : "Care task title: quarantine a plant with pests; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deixar separada"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenla aparte"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mets-la à l'écart"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Separat stellen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隔離しよう"
+          }
+        }
+      }
+    },
+    "Next treatment" : {
+      "comment" : "Care task title: repeat pest treatment; max 22 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximo tratamento"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente tratamiento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traitement suivant"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächste Behandlung"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の処置"
+          }
+        }
+      }
+    },
+    "Refresh" : {
+      "comment" : "Quick action tile: change the water; verb; max 10 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trocar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wechseln"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "交換"
+          }
+        }
+      }
+    },
+    "Top up" : {
+      "comment" : "Quick action tile: refill reservoir; verb; max 10 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rellenar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplir"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auffüllen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "補充"
+          }
+        }
+      }
+    },
+    "Soak" : {
+      "comment" : "Quick action tile; verb; max 10 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molhar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remojar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tremper"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tauchen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "浸す"
+          }
+        }
+      }
+    },
+    "Changed it" : {
+      "comment" : "Button: water changed; max 14 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Troquei"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La cambié"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewechselt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "替えた"
+          }
+        }
+      }
+    },
+    "Soaked" : {
+      "comment" : "Button: moss soaked; max 14 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molhei"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remojado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trempée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getaucht"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "浸した"
+          }
+        }
+      }
+    },
+    "Doing its thing" : {
+      "comment" : "Life stage option: normal, nothing special; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De boa"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Normal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tranquille"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles normal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いつも通り"
+          }
+        }
+      }
+    },
+    "How do I live?" : {
+      "comment" : "Add plant section title: growing medium, pot and life stage; plant voice; max 24 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como eu vivo?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo vivo?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment je vis ?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie lebe ich?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どんなふうに育ってる？"
+          }
+        }
+      }
+    },
+    "Filled in from your photo. Tap to change." : {
+      "comment" : "Add plant: setup fields were guessed from the photo",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preenchi pela sua foto. Toca pra mudar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo completé con tu foto. Toca para cambiarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rempli d'après ta photo. Touche pour modifier."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus deinem Foto ausgefüllt. Tippen zum Ändern."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真から入力したよ。タップで変更できます。"
+          }
+        }
+      }
+    },
+    "Looks like a faux plant! I'll keep it in your jungle for the looks, no care needed." : {
+      "comment" : "Add plant: artificial plant detected; friendly",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parece planta artificial! Vou deixar ela na sua selva só pela beleza, sem precisar de cuidado."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Parece una planta artificial! La dejo en tu selva por lo bonita, sin cuidados."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On dirait une plante artificielle ! Je la garde dans ta jungle pour le style, sans soins."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieht nach Kunstpflanze aus! Ich behalte sie für die Optik in deinem Dschungel, ganz ohne Pflege."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フェイクの植物みたい！見た目用にジャングルに入れておくね。お世話は不要だよ。"
+          }
+        }
+      }
+    },
+    "Roots in" : {
+      "comment" : "Add plant: growing medium label; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raízes em"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raíces en"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Racines dans"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wurzeln in"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根の環境"
+          }
+        }
+      }
+    },
+    "Right now" : {
+      "comment" : "Add plant: life stage label; max 16 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En ce moment"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerade"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いまの状態"
+          }
+        }
+      }
+    },
+    "Inside a cachepot" : {
+      "comment" : "Toggle: plant pot sits inside a decorative outer pot without holes",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dentro de cachepô"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En un cubremacetas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans un cache-pot"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Übertopf"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鉢カバーに入れてる"
+          }
+        }
+      }
+    },
+    "Self-watering pot" : {
+      "comment" : "Toggle",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaso autoirrigável"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maceta autorregable"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pot à réserve d'eau"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selbstbewässerungstopf"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "底面給水鉢"
+          }
+        }
+      }
+    },
+    "Pot size" : {
+      "comment" : "Picker label: how the pot fits the plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamanho do vaso"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamaño de maceta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taille du pot"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Topfgröße"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鉢のサイズ"
+          }
+        }
+      }
+    },
+    "Several plants in this pot" : {
+      "comment" : "Toggle",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Várias plantas no vaso"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varias plantas en la maceta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plusieurs plantes dans le pot"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehrere Pflanzen im Topf"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1つの鉢に複数株"
+          }
+        }
+      }
+    },
+    "Faux plant" : {
+      "comment" : "Toggle: artificial plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planta artificial"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planta artificial"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plante artificielle"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunstpflanze"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フェイクの植物"
+          }
+        }
+      }
+    },
+    "How it lives" : {
+      "comment" : "Plant settings section title; max 24 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como ela vive"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cómo vive"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment elle vit"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie sie lebt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "育ち方"
+          }
+        }
+      }
+    },
+    "Reminders follow this: plants in water get fresh-water days, not soil checks." : {
+      "comment" : "Plant settings footer under growing medium",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os lembretes seguem isso: planta na água ganha dia de água nova, não checagem de terra."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los recordatorios siguen esto: las plantas en agua tienen días de agua fresca, no revisión de tierra."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les rappels en tiennent compte : les plantes dans l'eau ont des jours d'eau fraîche, pas de test de terre."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erinnerungen richten sich danach: Pflanzen in Wasser bekommen Wasserwechsel-Tage statt Erdkontrollen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リマインダーはこれに合わせるよ。水栽培なら土チェックではなく水替えの日をお知らせ。"
+          }
+        }
+      }
+    },
+    "In loving memory" : {
+      "comment" : "Plants tab section: plants that died; gentle; max 24 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com carinho, em memória"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En memoria, con cariño"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En souvenir"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In liebevoller Erinnerung"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "思い出の植物たち"
+          }
+        }
+      }
+    },
+    "More for %@" : {
+      "comment" : "VoiceOver: menu button for a plant",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais opções de %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más para %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus pour %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr für %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のその他"
+          }
+        }
+      }
+    },
+    "With you from %@ · %lld moments" : {
+      "comment" : "Memorial row subtitle; args start month/year and number of logged moments (plural)",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com você desde %@ · %lld momentos"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contigo desde %@ · %lld momentos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avec toi depuis %@ · %lld moments"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei dir seit %@ · %lld Momente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@から一緒 · %lld件の思い出"
+          }
+        }
+      }
+    },
+    "It came back!" : {
+      "comment" : "Memorial menu: restore a plant marked as dead",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ela voltou!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Revivió!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle est revenue !"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sie lebt wieder!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "復活した！"
+          }
+        }
+      }
+    },
+    "Fresh water for %@ %@" : {
+      "comment" : "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday).",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Água nova pra %@ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agua fresca para %@ %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eau fraîche pour %@ %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frisches Wasser für %@ %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@の水替え %2$@"
+          }
+        }
+      }
+    },
+    "Top up %@'s reservoir %@" : {
+      "comment" : "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday).",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completar o reservatório de %@ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rellenar el depósito de %@ %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplir la réserve de %@ %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@s Reservoir auffüllen %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@の貯水を補充 %2$@"
+          }
+        }
+      }
+    },
+    "Mist %@'s roots %@" : {
+      "comment" : "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday).",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrifar as raízes de %@ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rociar las raíces de %@ %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brumiser les racines de %@ %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@s Wurzeln besprühen %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@の根に霧吹き %2$@"
+          }
+        }
+      }
+    },
+    "Soak %@'s moss %@" : {
+      "comment" : "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday).",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molhar o musgo de %@ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remojar el musgo de %@ %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tremper la mousse de %@ %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@s Moos tauchen %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@の水苔を浸す %2$@"
+          }
+        }
+      }
+    },
+    "A light mist for %@'s terrarium %@" : {
+      "comment" : "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday).",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrifada leve no terrário de %@ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rocío ligero para el terrario de %@ %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brume légère pour le terrarium de %@ %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leichtes Sprühen für %@s Terrarium %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@のテラリウムに軽く霧吹き %2$@"
+          }
+        }
+      }
+    },
+    "Rain will water %@ %@" : {
+      "comment" : "Forecast line: outdoor plant, rain counts as watering. Args: plant name, when.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A chuva vai regar %@ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lluvia regará a %@ %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La pluie arrosera %@ %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regen gießt %@ %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@は雨が水やりしてくれるよ %2$@"
+          }
+        }
+      }
+    },
+    "A quarter-strength hydro feed for %@ %@" : {
+      "comment" : "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday).",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adubo hidropônico fraquinho pra %@ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abono hidropónico suave para %@ %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engrais hydro dilué pour %@ %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hydrodünger in Viertelstärke für %@ %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@に薄めたハイドロ肥料 %2$@"
+          }
+        }
+      }
+    },
+    "Fresh water %@" : {
+      "comment" : "Care card subtitle for a plant growing in water; %@ relative date like '2 days ago'",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Água trocada %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agua cambiada %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eau changée %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wasser gewechselt %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水替え %@"
+          }
+        }
+      }
+    },
+    "reservoir topped up" : {
+      "comment" : "Timeline note: LECA/pon or self-watering reservoir refilled; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "reservatório completado"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "depósito rellenado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "réserve remplie"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservoir aufgefüllt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貯水を補充"
+          }
+        }
+      }
+    },
+    "soaked" : {
+      "comment" : "Timeline note: moss or mounted roots soaked; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "molhada no banho"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "remojada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "trempée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "getaucht"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "浸した"
+          }
+        }
+      }
+    },
+    "logged later" : {
+      "comment" : "Timeline note: user confirmed care afterwards; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "anotado depois"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "anotado después"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "noté après coup"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nachgetragen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あとで記録"
+          }
+        }
+      }
+    },
+    "skipped this round" : {
+      "comment" : "Timeline note: user chose to skip a care round; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pulou essa vez"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "se saltó esta vez"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sautée cette fois"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "diesmal ausgelassen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今回はスキップ"
+          }
+        }
+      }
+    },
+    "kept apart from the others" : {
+      "comment" : "Timeline note: plant quarantined for pests; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "separada das outras"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "apartada de las demás"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mise à l'écart"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "von den anderen getrennt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ほかの植物から隔離"
+          }
+        }
+      }
+    },
+    "roots checked" : {
+      "comment" : "Timeline note; lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "raízes conferidas"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "raíces revisadas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "racines vérifiées"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wurzeln geprüft"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根をチェック"
+          }
+        }
+      }
+    },
+    "This water is SO last week. Fresh water, please, I'm begging." : {
+      "comment" : "Plant speaking in chat, first person, fresh water for a plant growing in water, dramatic.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essa água é TÃO semana passada. Água nova, por favor, tô implorando."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta agua es TAN de la semana pasada. Agua fresca, por favor, te lo ruego."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette eau date TELLEMENT de la semaine dernière. De l'eau fraîche, je t'en supplie."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Wasser ist SO letzte Woche. Frisches Wasser, bitte, ich flehe dich an."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この水、もう先週のなんだけど！新しい水をお願い、ほんとに。"
+          }
+        }
+      }
+    },
+    "Fresh water, please." : {
+      "comment" : "Plant speaking in chat, first person, fresh water, terse.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Água nova, por favor."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agua fresca, por favor."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De l'eau fraîche, s'il te plaît."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frisches Wasser, bitte."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい水をお願い。"
+          }
+        }
+      }
+    },
+    "Could I have fresh water? Rinse my glass too, if you've got a minute." : {
+      "comment" : "Plant speaking in chat, first person, plant growing in a glass of water asks for fresh water, warm.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me dá uma água nova? Se der, lava meu vidro também."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Me das agua fresca? Si tienes un minuto, enjuaga mi vaso también."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je peux avoir de l'eau fraîche ? Rince mon verre aussi, si tu as une minute."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekomme ich frisches Wasser? Spül mein Glas auch kurz aus, wenn du Zeit hast."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい水をもらえる？時間があればガラスもすすいでね。"
+          }
+        }
+      }
+    },
+    "Water change day! Fresh, room-temperature water would feel lovely." : {
+      "comment" : "Plant speaking in chat, first person, plant growing in water, cheerful.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia de trocar a água! Uma água fresquinha em temperatura ambiente ia ser uma delícia."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Día de cambio de agua! Agua fresca a temperatura ambiente me encantaría."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jour de changement d'eau ! Une eau fraîche à température ambiante, ce serait parfait."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wasserwechseltag! Frisches, zimmerwarmes Wasser wäre herrlich."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水替えの日だよ！常温の新しい水、うれしいな。"
+          }
+        }
+      }
+    },
+    "Reservoir's low. Top it up." : {
+      "comment" : "Plant speaking in chat, first person, LECA/self-watering reservoir, terse.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservatório baixo. Completa aí."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depósito bajo. Rellénalo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réserve basse. Remplis-la."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservoir leer. Auffüllen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タンクが少ないよ。補充して。"
+          }
+        }
+      }
+    },
+    "My reservoir is running dry. A top-up, please, about a third of the pot." : {
+      "comment" : "Plant speaking in chat, first person, LECA/pon/self-watering reservoir refill, warm.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meu reservatório tá secando. Completa, por favor, mais ou menos um terço do vaso."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mi depósito se está secando. Rellénalo, por favor, más o menos un tercio de la maceta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ma réserve est presque vide. Un complément, s'il te plaît, environ un tiers du pot."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mein Reservoir wird leer. Bitte auffüllen, etwa ein Drittel des Topfes."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タンクが空になりそう。鉢の1/3くらいまで補充してね。"
+          }
+        }
+      }
+    },
+    "My roots feel dry and crisp. A soak or a good misting, please." : {
+      "comment" : "Plant speaking in chat, first person, sphagnum moss or mounted plant, warm.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minhas raízes tão secas e crocantes. Um banho ou uma boa borrifada, por favor."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mis raíces están secas y crujientes. Un remojo o un buen rocío, por favor."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mes racines sont sèches et craquantes. Un trempage ou une bonne brumisation, s'il te plaît."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meine Wurzeln fühlen sich trocken und knusprig an. Ein Tauchbad oder gutes Sprühen, bitte."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根がカサカサだよ。浸すか、たっぷり霧吹きしてね。"
+          }
+        }
+      }
+    },
+    "No more fog on my glass. A light mist would be perfect." : {
+      "comment" : "Plant speaking in chat, first person, closed terrarium, warm.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meu vidro já desembaçou. Uma borrifada leve seria perfeita."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya no hay vaho en mi vidrio. Un rocío ligero sería perfecto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus de buée sur mon verre. Une légère brume serait parfaite."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Beschlag mehr an meinem Glas. Leichtes Sprühen wäre perfekt."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ガラスの曇りがなくなったよ。軽く霧吹きしてくれたら最高。"
+          }
+        }
+      }
+    },
+    "Tell me the truth: did I get my drink?" : {
+      "comment" : "Plant speaking in chat, first person, asks if the user already did the care, dramatic.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fala a verdade: eu ganhei minha água?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dime la verdad: ¿me diste de beber?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dis-moi la vérité : j'ai eu à boire ?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sag ehrlich: Hab ich was zu trinken bekommen?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正直に言って、お水もらえた？"
+          }
+        }
+      }
+    },
+    "Did I get my care? If you already did it, just tell me." : {
+      "comment" : "Plant speaking in chat, first person, asks if the user already did the overdue care, friendly, no guilt.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já cuidou de mim? Se já fez, é só me falar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Ya me cuidaste? Si ya lo hiciste, solo dímelo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu t'es déjà occupé de moi ? Si c'est fait, dis-le-moi."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hast du dich schon um mich gekümmert? Wenn ja, sag einfach Bescheid."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もうお世話してくれた？やったなら教えてね。"
+          }
+        }
+      }
+    },
+    "Could you keep me apart from the others for a bit? I don't want to share my bugs." : {
+      "comment" : "Plant speaking in chat, first person, plant with pests asks to be quarantined, warm.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me deixa separada das outras um tempinho? Não quero passar meus bichinhos."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Me apartas de las demás un tiempito? No quiero contagiarles mis bichos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu peux me mettre à l'écart un moment ? Je ne veux pas partager mes bestioles."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stellst du mich eine Weile weg von den anderen? Ich will meine Krabbler nicht teilen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "しばらくほかの子から離してくれる？虫をうつしたくないの。"
+          }
+        }
+      }
+    },
+    "Time for the next round of treatment. The eggs from last time are hatching now." : {
+      "comment" : "Plant speaking in chat, first person, pest treatment follow-up, warm.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora da próxima rodada do tratamento. Os ovos da última vez tão eclodindo agora."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca la siguiente ronda de tratamiento. Los huevos de la vez pasada están eclosionando."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C'est l'heure de la séance suivante. Les œufs de la dernière fois éclosent maintenant."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeit für die nächste Behandlungsrunde. Die Eier vom letzten Mal schlüpfen jetzt."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の処置の時間だよ。前回の卵がちょうどかえる頃なんだ。"
+          }
+        }
+      }
+    },
+    "Still looking fabulous. Perks of being faux." : {
+      "comment" : "Artificial plant greeting in chat, playful.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuo maravilhosa. Vantagens de ser artificial."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sigo fabulosa. Ventajas de ser artificial."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toujours fabuleuse. Les avantages d'être fausse."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immer noch fabelhaft. Vorteil einer Kunstpflanze."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日も素敵でしょ。フェイクの特権だね。"
+          }
+        }
+      }
+    },
+    "Roots, light and leaves are fine. I'll speak up when I need something." : {
+      "comment" : "Plant chat greeting when all is well, independent personality, plant without soil.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raízes, luz e folhas tão de boa. Falo quando precisar de algo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raíces, luz y hojas bien. Aviso cuando necesite algo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Racines, lumière et feuilles, tout va bien. Je te dirai si j'ai besoin de quelque chose."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wurzeln, Licht und Blätter passen. Ich melde mich, wenn ich etwas brauche."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根も光も葉も大丈夫。必要なときは言うね。"
+          }
+        }
+      }
+    },
+    "Fresh water! I feel brand new." : {
+      "comment" : "Plant thanks the user after its water was changed (plant grows in water).",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Água nova! Tô me sentindo outra."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Agua fresca! Me siento como nueva."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De l'eau fraîche ! Je me sens toute neuve."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frisches Wasser! Ich fühle mich wie neu."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい水！生まれ変わった気分。"
+          }
+        }
+      }
+    },
+    "Reservoir full. Thank you!" : {
+      "comment" : "Plant thanks the user after its reservoir was topped up.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservatório cheio. Valeu!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depósito lleno. ¡Gracias!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réserve pleine. Merci !"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservoir voll. Danke!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タンク満タン。ありがとう！"
+          }
+        }
+      }
+    },
+    "I might have %@. Thanks for starting my treatment. I'll remind you to repeat it in about 6 days, three rounds in all." : {
+      "comment" : "Plant voice in chat, first person, grateful; arg pest name lowercase",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acho que tô com %@. Valeu por começar meu tratamento. Te lembro de repetir em uns 6 dias, três rodadas no total."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puede que tenga %@. Gracias por empezar mi tratamiento. Te recordaré repetirlo en unos 6 días, tres rondas en total."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J'ai peut-être des %@. Merci d'avoir commencé mon traitement. Je te rappellerai de recommencer dans 6 jours environ, trois séances en tout."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vielleicht habe ich %@. Danke, dass du die Behandlung begonnen hast. Ich erinnere dich in etwa 6 Tagen ans Wiederholen, drei Runden insgesamt."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@がいるかも。処置を始めてくれてありがとう。約6日後にまたお知らせするね、全部で3回だよ。"
+          }
+        }
+      }
+    },
+    "Self-watering pot: refill the reservoir once it's empty." : {
+      "comment" : "Care reason for a self-watering pot.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaso autoirrigável: enche o reservatório quando esvaziar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maceta autorregable: rellena el depósito cuando esté vacío."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pot à réserve : remplis la réserve quand elle est vide."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selbstbewässerungstopf: Reservoir nachfüllen, wenn es leer ist."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "底面給水鉢：タンクが空になったら補充してね。"
+          }
+        }
+      }
+    },
+    "Mounted roots dry fast. Mist or dunk them every 2–3 days." : {
+      "comment" : "Care reason for a mounted plant.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raiz de planta montada seca rápido. Borrifa ou mergulha a cada 2–3 dias."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las raíces montadas se secan rápido. Rocíalas o sumérgelas cada 2–3 días."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les racines montées sèchent vite. Brumise-les ou trempe-les tous les 2 à 3 jours."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufgebundene Wurzeln trocknen schnell. Alle 2–3 Tage besprühen oder tauchen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "着生の根はすぐ乾くよ。2〜3日ごとに霧吹きか浸してね。"
+          }
+        }
+      }
+    },
+    "Soak the moss when it feels light and crisp, then let it drain." : {
+      "comment" : "Care reason for a plant in sphagnum moss.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molha o musgo quando ele estiver leve e crocante, depois deixa escorrer."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remoja el musgo cuando esté ligero y crujiente, y luego deja escurrir."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trempe la mousse quand elle est légère et craquante, puis laisse égoutter."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moos tauchen, wenn es leicht und knusprig ist, dann abtropfen lassen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水苔が軽くカサカサになったら浸して、水を切ってね。"
+          }
+        }
+      }
+    },
+    "Mist lightly only if the morning condensation is gone." : {
+      "comment" : "Care reason for a closed terrarium.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrifa de leve só se a condensação da manhã tiver sumido."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rocía un poco solo si ya no hay condensación por la mañana."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brumise légèrement seulement si la condensation du matin a disparu."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur leicht sprühen, wenn das Morgenkondenswasser weg ist."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "朝の結露がなくなっていたら、軽く霧吹きしてね。"
+          }
+        }
+      }
+    },
+    "Water changed %@. Fresh water every 7–10 days keeps the roots from rotting." : {
+      "comment" : "Care reason for a plant growing in water. %@ = relative day.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Água trocada %@. Água nova a cada 7–10 dias evita que as raízes apodreçam."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agua cambiada %@. Agua fresca cada 7–10 días evita que se pudran las raíces."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eau changée %@. De l'eau fraîche tous les 7 à 10 jours évite que les racines pourrissent."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wasser gewechselt: %@. Frisches Wasser alle 7–10 Tage verhindert Wurzelfäule."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水替え：%@。7〜10日ごとに替えると根腐れを防げるよ。"
+          }
+        }
+      }
+    },
+    "Fresh water every 7–10 days keeps the roots from rotting." : {
+      "comment" : "Care reason for a plant growing in water.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Água nova a cada 7–10 dias evita que as raízes apodreçam."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agua fresca cada 7–10 días evita que se pudran las raíces."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De l'eau fraîche tous les 7 à 10 jours évite que les racines pourrissent."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frisches Wasser alle 7–10 Tage verhindert Wurzelfäule."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7〜10日ごとに水を替えると根腐れを防げるよ。"
+          }
+        }
+      }
+    },
+    "Topped up %@. Keep the reservoir about a third of the pot deep, with hydro nutrients." : {
+      "comment" : "Care reason for LECA or pon. %@ = relative day.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completado %@. Mantém o reservatório em mais ou menos um terço do vaso, com nutriente hidropônico."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rellenado %@. Mantén el depósito en un tercio de la maceta, con nutrientes hidropónicos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complété %@. Garde la réserve à environ un tiers du pot, avec des nutriments hydro."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufgefüllt: %@. Reservoir etwa ein Drittel des Topfes hoch halten, mit Hydronährstoffen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "補充：%@。鉢の1/3くらいの水位で、ハイドロ用養液を入れてね。"
+          }
+        }
+      }
+    },
+    "Keep the reservoir about a third of the pot deep, with hydro nutrients." : {
+      "comment" : "Care reason for LECA or pon.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantém o reservatório em mais ou menos um terço do vaso, com nutriente hidropônico."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén el depósito en un tercio de la maceta, con nutrientes hidropónicos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Garde la réserve à environ un tiers du pot, avec des nutriments hydro."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reservoir etwa ein Drittel des Topfes hoch halten, mit Hydronährstoffen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鉢の1/3くらいの水位で、ハイドロ用養液を入れてね。"
+          }
+        }
+      }
+    },
+    "Last logged %@. If you already did it, tap Yes and I'll note it." : {
+      "comment" : "Care reason under 'Did you water X?'. %@ = relative day.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último registro %@. Se você já fez, toca em Sim que eu anoto."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último registro %@. Si ya lo hiciste, toca Sí y lo anoto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernière note %@. Si c'est déjà fait, touche Oui et je le note."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuletzt eingetragen: %@. Wenn schon erledigt, tippe auf Ja, dann trage ich es ein."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最後の記録：%@。もうやったなら「はい」を押してね、記録しておくよ。"
+          }
+        }
+      }
+    },
+    "Pests spread fast. Keep it 2–3 weeks away from the others, out of touching distance." : {
+      "comment" : "Care reason: quarantine a plant with pests.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Praga se espalha rápido. Deixa ela 2–3 semanas longe das outras, sem encostar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las plagas se propagan rápido. Mantenla 2–3 semanas lejos de las demás, sin que se toquen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les nuisibles se propagent vite. Garde-la 2 à 3 semaines loin des autres, sans contact."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schädlinge breiten sich schnell aus. 2–3 Wochen von den anderen fernhalten, ohne Berührung."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "害虫はすぐ広がるよ。2〜3週間、ほかの植物と触れない距離に離してね。"
+          }
+        }
+      }
+    },
+    "Round %lld of 3. Eggs hatch after the first round, so repeating every 5–7 days breaks the cycle." : {
+      "comment" : "Care reason: pest treatment follow-up. %lld = round number.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rodada %lld de 3. Os ovos eclodem depois da primeira, então repetir a cada 5–7 dias quebra o ciclo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ronda %lld de 3. Los huevos eclosionan después de la primera, así que repetir cada 5–7 días corta el ciclo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séance %lld sur 3. Les œufs éclosent après la première, donc répéter tous les 5 à 7 jours casse le cycle."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Runde %lld von 3. Nach der ersten schlüpfen Eier, darum unterbricht Wiederholen alle 5–7 Tage den Zyklus."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3回中%lld回目。1回目のあとに卵がかえるので、5〜7日ごとに繰り返すとサイクルを断てるよ。"
+          }
+        }
+      }
+    },
+    "Once a month in the growing season: hydro feed at a quarter strength, mixed into fresh water." : {
+      "comment" : "Care reason: feeding a plant that grows in water.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma vez por mês na época de crescimento: adubo hidropônico a um quarto da dose, misturado na água nova."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una vez al mes en temporada de crecimiento: abono hidropónico a un cuarto de dosis, mezclado en agua fresca."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une fois par mois en saison de croissance : engrais hydro au quart de dose, dans l'eau fraîche."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einmal im Monat in der Wachstumszeit: Hydrodünger in Viertelstärke ins frische Wasser."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成長期は月1回、ハイドロ用肥料を1/4の濃さで新しい水に混ぜてね。"
+          }
+        }
+      }
+    },
+    "Roots 5–10 cm long? It's ready for a pot with soil, or it can stay in water for good." : {
+      "comment" : "Care reason: water-grown plant may be ready for soil.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raízes com 5–10 cm? Já dá pra ir pro vaso com terra, ou pode ficar na água de vez."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Raíces de 5–10 cm? Ya puede ir a una maceta con tierra, o quedarse en agua para siempre."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Des racines de 5 à 10 cm ? Elle peut passer en pot avec de la terre, ou rester dans l'eau pour de bon."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wurzeln 5–10 cm lang? Dann kann sie in einen Topf mit Erde, oder sie bleibt für immer im Wasser."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根が5〜10cmになった？土の鉢に植えてもいいし、ずっと水のままでもOK。"
+          }
+        }
+      }
+    },
+    "The pot looks too small for it. A pot 2–5 cm wider will help." : {
+      "comment" : "Care reason: pot too small.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O vaso parece pequeno demais pra ela. Um vaso 2–5 cm maior vai ajudar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La maceta se ve muy chica. Una 2–5 cm más ancha la ayudará."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le pot semble trop petit. Un pot 2 à 5 cm plus large l'aidera."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Topf wirkt zu klein. Ein 2–5 cm breiterer Topf hilft."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鉢が小さすぎるみたい。2〜5cm大きい鉢にすると元気になるよ。"
+          }
+        }
+      }
+    },
+    "Care day" : {
+      "comment" : "Plant status badge: a small care task is due (fresh water, top-up, treatment). Max 14 chars.",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia de cuidado"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día de cuidado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jour de soin"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pflegetag"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お世話の日"
+          }
+        }
+      }
+    },
+    "Your week" : {
+      "comment" : "Weekly digest screen title; max 20 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua semana"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu semana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta semaine"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Woche"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週のまとめ"
+          }
+        }
+      }
+    },
+    "A quiet week. Log some care and next week's digest will fill up." : {
+      "comment" : "Weekly digest empty state",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana tranquila. Anota uns cuidados e o resumo da próxima semana vai encher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una semana tranquila. Anota algunos cuidados y el resumen de la próxima semana se llenará."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une semaine calme. Note quelques soins et le récap de la semaine prochaine se remplira."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine ruhige Woche. Trag etwas Pflege ein, dann füllt sich die nächste Übersicht."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "静かな一週間でした。お世話を記録すると来週のまとめが充実するよ。"
+          }
+        }
+      }
+    },
+    "Keep an eye on" : {
+      "comment" : "Weekly digest section: plants to watch; max 24 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De olho em"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ojo con"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À surveiller"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Blick behalten"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "気にかけたい子"
+          }
+        }
+      }
+    },
+    "Look who grew" : {
+      "comment" : "Weekly digest section: growth moments; max 24 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olha quem cresceu"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mira quién creció"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regarde qui a poussé"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schau, wer gewachsen ist"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成長した子たち"
+          }
+        }
+      }
+    },
+    "Photos of the week" : {
+      "comment" : "Weekly digest section; max 24 chars",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos da semana"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos de la semana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos de la semaine"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos der Woche"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週の写真"
+          }
+        }
+      }
+    },
+    "Sign in to get your weekly digest." : {
+      "comment" : "Weekly digest when signed out",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entra na sua conta pra receber o resumo semanal."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicia sesión para recibir tu resumen semanal."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecte-toi pour recevoir ton récap de la semaine."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melde dich an, um deine Wochenübersicht zu bekommen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログインすると週間まとめが届くよ。"
+          }
+        }
+      }
+    },
+    "That's enough for today, try again tomorrow." : {
+      "comment" : "Server daily limit reached; friendly",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por hoje chega, tenta de novo amanhã."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por hoy es suficiente, intenta de nuevo mañana."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C'est assez pour aujourd'hui, réessaie demain."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für heute reicht's, versuch es morgen wieder."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日はここまで。また明日試してね。"
+          }
+        }
+      }
+    },
+    "I'm a little busy right now. Try again in a minute." : {
+      "comment" : "Server busy; friendly",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tô meio ocupado agora. Tenta de novo daqui a pouco."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estoy un poco ocupado ahora. Intenta de nuevo en un minuto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je suis un peu occupé. Réessaie dans une minute."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich bin gerade etwas beschäftigt. Versuch es gleich noch mal."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いまちょっと混んでるよ。少ししてからもう一度試してね。"
+          }
+        }
+      }
+    },
+    "Couldn't load your week. Pull to try again." : {
+      "comment" : "Weekly digest load error",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não deu pra carregar sua semana. Puxa pra tentar de novo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo cargar tu semana. Desliza para intentarlo otra vez."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de charger ta semaine. Tire pour réessayer."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Woche konnte nicht geladen werden. Zum Wiederholen ziehen."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週のまとめを読み込めませんでした。引っぱって再試行してね。"
+          }
+        }
+      }
+    },
+    "Overdue since %@" : {
+      "comment" : "Weekly digest row; arg weekday and day",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atrasado desde %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pendiente desde %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En retard depuis %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überfällig seit %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@から遅れ"
+          }
+        }
+      }
+    },
+    "%@ is waiting for a drink" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tá esperando água"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ está esperando agua"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ attend à boire"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wartet auf Wasser"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@がお水を待ってるよ"
+          }
+        }
+      }
+    },
+    "Nothing logged for %@ in a while" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faz tempo que nada é anotado pra %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hace tiempo que no anotas nada de %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rien noté pour %@ depuis un moment"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für %@ länger nichts eingetragen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の記録がしばらくないよ"
+          }
+        }
+      }
+    },
+    "%@ may need a bigger pot" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ pode precisar de um vaso maior"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ podría necesitar una maceta más grande"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ aurait besoin d'un plus grand pot"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ braucht vielleicht einen größeren Topf"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@は大きい鉢が必要かも"
+          }
+        }
+      }
+    },
+    "%@ opened a new leaf" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ abriu uma folha nova"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ abrió una hoja nueva"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a ouvert une nouvelle feuille"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ hat ein neues Blatt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に新しい葉っぱ"
+          }
+        }
+      }
+    },
+    "%@ is flowering" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tá florindo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ está floreciendo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ est en fleurs"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ blüht"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@が開花中"
+          }
+        }
+      }
+    },
+    "A new cutting from %@" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma muda nova de %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un esqueje nuevo de %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une nouvelle bouture de %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein neuer Steckling von %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@から新しい挿し木"
+          }
+        }
+      }
+    },
+    "%@ had a problem logged" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ teve um problema anotado"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tuvo un problema anotado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un souci noté pour %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei %@ wurde ein Problem eingetragen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に問題が記録されたよ"
+          }
+        }
+      }
+    },
+    "%@ is %@ tall" : {
+      "comment" : "Weekly digest row; args plant name, height",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tá com %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ mide %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ mesure %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ist %@ groß"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@の高さは%2$@"
+          }
+        }
+      }
+    },
+    "%@ was measured" : {
+      "comment" : "Weekly digest row; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ foi medida"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ fue medida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a été mesurée"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wurde gemessen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@を測ったよ"
+          }
+        }
+      }
+    },
+    "Photo of %@" : {
+      "comment" : "VoiceOver: digest photo; arg plant name",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto de %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto de %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo de %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto von %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の写真"
+          }
+        }
+      }
+    },
+    "Weekly digest" : {
+      "comment" : "Me row subtitle / Settings toggle: weekly summary",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo semanal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen semanal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Récap de la semaine"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wochenübersicht"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "週間まとめ"
+          }
+        }
+      }
+    },
+    "A Sunday note with what's coming up, who to watch and who grew." : {
+      "comment" : "Settings footer under the weekly digest toggle",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um recado de domingo com o que vem por aí, quem precisa de atenção e quem cresceu."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una nota de domingo con lo que viene, a quién vigilar y quién creció."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un mot le dimanche : ce qui arrive, qui surveiller et qui a poussé."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Sonntagsnotiz: was ansteht, wen du im Blick behalten solltest und wer gewachsen ist."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日曜日に、これからのお世話・気にかけたい子・成長した子をお知らせ。"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

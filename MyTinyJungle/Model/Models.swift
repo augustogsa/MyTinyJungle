@@ -137,6 +137,19 @@ final class Plant {
     var createdAt: Date = Date()
     var isArchived: Bool = false
     var archivedReason: String?
+    /// Growing medium: soil, chunky, cactus, leca, pon, sphagnum, water, mounted, terrarium, ground. Nil = soil.
+    var medium: String?
+    /// cutting, seedling, acclimating, repotted, dormant, flowering, recovering, unknown_history. Nil = normal.
+    var lifeStage: String?
+    var lifeStageAt: Date?
+    var potSelfWatering: Bool?
+    var potCachepot: Bool?
+    /// too_small, ok, too_big
+    var potSizeFit: String?
+    /// A faux plant: kept for looks, never asks for care.
+    var isArtificial: Bool = false
+    /// Several plants share this pot.
+    var sharesPot: Bool = false
 
     @Relationship(deleteRule: .cascade, inverse: \CareEvent.plant) var events: [CareEvent]? = []
     @Relationship(deleteRule: .cascade, inverse: \ChatMessage.plant) var messages: [ChatMessage]? = []

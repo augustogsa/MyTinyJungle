@@ -38,6 +38,15 @@ enum PlantSituation {
         func days(_ k: CareKind) -> Double? { ev.first { $0.kind == k }.map { now.timeIntervalSince($0.date) / 86_400 } }
         if let w = days(.water) { if w <= 2 { add("watered", "recent") } else if w >= 21 { add("watered", "long-ago") } }
         if let soil = ev.first(where: { $0.soil != nil })?.soil, let d = days(.soilCheck), d <= 3 { add("soil", soil.rawValue) }
+        add("medium", plant.growingMedium.rawValue)
+        if let st = plant.activeLifeStage(now) { add("lifeStage", st.rawValue) }
+        add("outdoor", plant.isOutdoor || plant.growingMedium == .ground ? "true" : "false")
+        if plant.potSelfWatering == true { add("potSetup", "selfWatering"); add("pot", "self-watering") }
+        if plant.potCachepot == true { add("potSetup", "cachepot"); add("pot", "cachepot") }
+        add("potSetup", plant.potHasDrainage ? "drainage" : "no-drainage")
+        if let m = plant.potMaterialRaw { add("potSetup", "material:" + m) }
+        if let f = plant.potSizeFit { add("potSetup", "sizeFit:" + f) }
+        if plant.sharesPot { add("pot", "multiple-plants") }
         if !plant.potHasDrainage { add("pot", "no-drainage") }
         switch plant.potMaterial { case .terracotta: add("pot", "terracotta"); case .plastic: add("pot", "plastic"); default: break }
         if let d = plant.lastRepotAt.map({ now.timeIntervalSince($0) / 86_400 }) ?? days(.repot), d <= 21 { add("event", "repotted") }
@@ -90,7 +99,8 @@ enum Brain {
         nonisolated struct R: Decodable { let answers: [BrainAnswer] }
         let sit = PlantSituation.build(plant)
         let body = B(q: q, lang: PlantSituation.lang, species: plant?.species?.scientific, situation: sit.isEmpty ? nil : sit)
-        let r: R? = try? await JungleAPI.shared.send("POST", "/v1/brain/ask", body: body)
+        let r: R?
+        do { r = try await JungleAPI.shared.send("POST", "/v1/brain/ask", body: body) } catch { ServerNotice.show(error); r = nil }
         return r?.answers.filter { !$0.text.isEmpty } ?? []
     }
 
@@ -177,24 +187,31 @@ enum WeatherWatch {
 
 extension Brain {
     /// Candidates from our own model, matched to the species library. Gives up after 15 s.
-    static func identify(_ jpeg: Data) async -> [PlantIdentifier.Candidate] {
-        guard JungleAPI.shared.hasSession else { return [] }
+    static func identify(_ jpeg: Data) async -> [PlantIdentifier.Candidate] { await identifyScene(jpeg).candidates }
+
+    /// Candidates plus what the photo shows around the plant (medium, pot, stage, faux, several plants).
+    static func identifyScene(_ jpeg: Data) async -> (candidates: [PlantIdentifier.Candidate], scene: PhotoScene?) {
+        guard JungleAPI.shared.hasSession else { return ([], nil) }
         nonisolated struct B: Encodable { let photo, lang: String }
         nonisolated struct C: Decodable { let id: String; let scientific: String; let score: Double }
-        nonisolated struct R: Decodable { let candidates: [C]? }
+        nonisolated struct R: Decodable { let candidates: [C]?; let scene: PhotoScene? }
         let body = B(photo: jpeg.base64EncodedString(), lang: PlantSituation.lang)
         let r: R? = await withTaskGroup(of: R?.self) { g in
-            g.addTask { try? await JungleAPI.shared.send("POST", "/v1/brain/identify", body: body) }
-            g.addTask { try? await Task.sleep(for: .seconds(15)); return nil }
+            g.addTask {
+                do { return try await JungleAPI.shared.send("POST", "/v1/brain/identify", body: body) as R }
+                catch { await MainActor.run { ServerNotice.show(error) }; return nil }
+            }
+            g.addTask { try? await Task.sleep(for: .seconds(20)); return nil }
             let first = await g.next() ?? nil
             g.cancelAll()
             return first
         }
         let lib = SpeciesLibrary.shared
-        return (r?.candidates ?? []).compactMap { c in
+        let cands = (r?.candidates ?? []).compactMap { c in
             let sp = lib.species(id: c.id) ?? lib.all.first { $0.scientific.folded == c.scientific.folded }
             return sp.map { PlantIdentifier.Candidate(species: $0, confidence: c.score, source: "My Tiny Jungle") }
         }
+        return (cands, r?.scene)
     }
 }
 
@@ -302,4 +319,24 @@ struct CarePlanCard: View {
         }
         return out
     }
+}
+
+/// The server's read of the photo around the plant. Every part is optional; values below 0.6 confidence are ignored.
+nonisolated struct PhotoScene: Decodable, Equatable {
+    nonisolated struct Soil: Decodable, Equatable { var medium: String?; var confidence: Double? }
+    nonisolated struct PlantPart: Decodable, Equatable { var artificial: Bool?; var multiple: Bool?; var lifeStage: String?; var confidence: Double? }
+    nonisolated struct Pot: Decodable, Equatable { var selfWatering: Bool?; var cachepot: Bool?; var drainage: Bool?; var material: String?; var sizeFit: String?; var confidence: Double? }
+    nonisolated struct Outdoor: Decodable, Equatable { var value: Bool?; var confidence: Double? }
+    var soil: Soil?
+    var plant: PlantPart?
+    var pot: Pot?
+    var outdoor: Outdoor?
+
+    static let sure = 0.6
+    @MainActor var medium: GrowingMedium? { (soil?.confidence ?? 0) >= Self.sure ? soil?.medium.flatMap(GrowingMedium.init(scene:)) : nil }
+    var artificial: Bool { (plant?.confidence ?? 1) >= Self.sure && plant?.artificial == true }
+    var multiple: Bool { (plant?.confidence ?? 1) >= Self.sure && plant?.multiple == true }
+    @MainActor var lifeStage: LifeStage? { (plant?.confidence ?? 0) >= Self.sure ? plant?.lifeStage.flatMap(LifeStage.init(scene:)) : nil }
+    var potSure: Bool { (pot?.confidence ?? 0) >= Self.sure }
+    var isOutdoor: Bool? { (outdoor?.confidence ?? 0) >= Self.sure ? outdoor?.value : nil }
 }

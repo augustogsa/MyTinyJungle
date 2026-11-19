@@ -47,6 +47,7 @@ struct PlantProfileView: View {
                     TextField("Room or spot", text: $plant.location)
                     Toggle("Outdoors", isOn: $plant.isOutdoor)
                 }
+                PlantSetupSections(plant: plant)
                 Section("Pot & soil") {
                     LabeledContent("Pot diameter") {
                         TextField("cm", value: $plant.potDiameterCm, format: .number).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
@@ -55,6 +56,12 @@ struct PlantProfileView: View {
                         ForEach(PotMaterial.allCases) { Text($0.label).tag($0) }
                     }
                     Toggle("Drainage holes", isOn: $plant.potHasDrainage)
+                    Toggle(Grammar.pt(String(localized: "Inside a cachepot", comment: "Toggle: plant pot sits inside a decorative outer pot without holes")), isOn: Binding(get: { plant.potCachepot == true }, set: { plant.potCachepot = $0 ? true : nil }))
+                    Toggle(Grammar.pt(String(localized: "Self-watering pot", comment: "Toggle")), isOn: Binding(get: { plant.potSelfWatering == true }, set: { plant.potSelfWatering = $0 ? true : nil }))
+                    Picker(Grammar.pt(String(localized: "Pot size", comment: "Picker label: how the pot fits the plant")), selection: Binding(get: { plant.sizeFit }, set: { plant.sizeFit = $0 })) {
+                        Text(Grammar.pt(String(localized: "Not sure", comment: "Pot size fit option; max 12 chars"))).tag(PotSizeFit?.none)
+                        ForEach(PotSizeFit.allCases) { Text($0.label).tag(Optional($0)) }
+                    }
                     TextField("Soil / substrate", text: $plant.substrate)
                     if let s = plant.species { Text("Ideal: \(s.mixLabel)").font(.footnote).foregroundStyle(Jungle.subtle) }
                 }

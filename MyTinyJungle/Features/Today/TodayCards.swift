@@ -58,16 +58,18 @@ struct CareStoryCard: View {
         case .portrait: return Grammar.pt(String(localized: "Take a photo", comment: "Care task title; max 22 chars"))
         case .safety: return Grammar.pt(String(localized: "Keep away from pets", comment: "Care task: toxic plant; max 22 chars"))
         case .pauseFeeding: return Grammar.pt(String(localized: "Rest from feeding", comment: "Care task: no fertilizer in winter; max 22 chars"))
+        default: return CareAsk.title(request.kind, plant: plant)
         }
     }
 
     private var progress: Double {
-        guard let last = plant.lastEvent(.water)?.date else { return 1 }
+        guard let last = plant.lastEvent(plant.waterKind)?.date else { return 1 }
         return min(1, CareEngine.days(from: last) / max(1, CareEngine.expectedDryDays(for: plant)))
     }
 
     private var lastLine: String {
-        guard let last = plant.lastEvent(.water)?.date else { return Grammar.pt(String(localized: "Not watered yet", comment: "Care card subtitle")) }
+        guard let last = plant.lastEvent(plant.waterKind)?.date else { return Grammar.pt(String(localized: "Not watered yet", comment: "Care card subtitle")) }
+        if plant.growingMedium == .water { return Grammar.pt(String(localized: "Fresh water \(last.formatted(.relative(presentation: .named)))", comment: "Care card subtitle for a plant growing in water; %@ relative date like '2 days ago'")) }
         return Grammar.pt(String(localized: "Watered \(last.formatted(.relative(presentation: .named)))", comment: "Care card subtitle; %@ relative date like '2 days ago'"))
     }
 
@@ -137,6 +139,15 @@ struct CareStoryCard: View {
             Button { onAction(.ack) } label: { check }.accessibilityLabel("Got it")
         case .portrait, .checkRoots:
             Button(action: onOpen) { check }.accessibilityLabel(task)
+        case .askDone:
+            Menu {
+                Button(Grammar.pt(String(localized: "Yes", comment: "Answer to 'Did you water X?': yes, already done; max 10 chars"))) { onAction(.yes) }
+                Button(Grammar.pt(String(localized: "Not yet", comment: "Answer to 'Did you water X?'; max 10 chars"))) { onAction(.notYet) }
+                Button(Grammar.pt(String(localized: "Skip", comment: "Answer to 'Did you water X?': skip this round; max 10 chars"))) { onAction(.skip) }
+            } label: { check }
+            .accessibilityLabel(task)
+        case .refreshWater, .topUp, .soak, .mist, .quarantine, .treatFollowUp:
+            Button { onAction(CareAsk.done(request.kind, plant: plant).action) } label: { check }.accessibilityLabel(CareAsk.done(request.kind, plant: plant).label)
         default:
             Button { onAction(.care(request.kind == .feed ? .feed : .water)) } label: { check }.accessibilityLabel("Mark done")
         }

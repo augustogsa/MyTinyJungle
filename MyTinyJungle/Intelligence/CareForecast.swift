@@ -142,7 +142,7 @@ enum CareForecast {
     private static let cal = Calendar.current
 
     static func items(for plants: [Plant], propagations: [Propagation] = [], days: Int = horizon, now: Date = Date(), respectPrefs: Bool = true) -> [ForecastItem] {
-        var out = plants.filter { !$0.isArchived }.flatMap { plant(for: $0, days: days, now: now) }
+        var out = plants.filter { !$0.isArchived && !$0.isArtificial }.flatMap { plant(for: $0, days: days, now: now) }
         out += propagationItems(propagations, plants: plants, now: now, days: days)
         out += travelItems(plants, now: now, days: days)
         out += weatherItems(plants, now: now)
@@ -161,10 +161,31 @@ enum CareForecast {
 
         // Water: when the substrate should be dry, from the learned rhythm.
         let expected = CareEngine.expectedDryDays(for: p, at: now)
-        if let w = p.lastEvent(.water)?.date {
+        let stage = p.activeLifeStage(now)
+        let medium = p.growingMedium
+        if let mk = CareEngine.mediumKind(p) {
+            let last = [p.lastEvent(p.waterKind)?.date, CareEngine.lastSkip(p)].compactMap { $0 }.max()
+            let every = mk == .topUp && medium.usesSoil ? expected * 1.5 : expected
+            var next = max(now, last.map { $0.addingTimeInterval(every * 86_400) } ?? now)
+            while next <= end {
+                let w = dayWord(next, now)
+                let line: String = switch mk {
+                case .refreshWater: Grammar.pt(String(localized: "Fresh water for \(p.name) \(w)", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday)."))
+                case .topUp: Grammar.pt(String(localized: "Top up \(p.name)'s reservoir \(w)", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday)."))
+                case .soak: medium == .mounted ? Grammar.pt(String(localized: "Mist \(p.name)'s roots \(w)", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday).")) : Grammar.pt(String(localized: "Soak \(p.name)'s moss \(w)", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday)."))
+                default: Grammar.pt(String(localized: "A light mist for \(p.name)'s terrarium \(w)", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday)."))
+                }
+                add(next, .water, line)
+                next += every * 86_400
+            }
+        } else if let w = p.lastEvent(.water)?.date {
             var next = w.addingTimeInterval(expected * 86_400)
             if let c = p.lastEvent(.soilCheck), c.date > w, c.soil != .dry { next = max(next, c.date.addingTimeInterval(max(1, expected * 0.3) * 86_400)) }
-            let first = max(next, now)
+            var first = max(next, now)
+            if p.isOutdoor || medium == .ground, let rainy = Climate.shared.upcoming(now, days: days).first(where: { $0.rain >= 5 && $0.date <= first.addingTimeInterval(86_400) && $0.date >= now.addingTimeInterval(-43_200) }) {
+                add(rainy.date, .weather, Grammar.pt(String(localized: "Rain will water \(p.name) \(dayWord(max(rainy.date, now), now))", comment: "Forecast line: outdoor plant, rain counts as watering. Args: plant name, when.")))
+                first = max(first, rainy.date.addingTimeInterval(expected * 0.8 * 86_400))
+            }
             add(first, .water, Grammar.pt(String(localized: "\(p.name) will be thirsty \(dayWord(first, now))", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday, next weekday, in N weeks).")))
             let hello = first.addingTimeInterval(-86_400)
             if hello > now { add(hello, .soilCheck, Grammar.pt(String(localized: "A quick soil hello for \(p.name)", comment: "Forecast line on Today/agenda, warm, no final period. Playful: check the soil. %@ = plant name."))) }
@@ -175,9 +196,16 @@ enum CareForecast {
         }
 
         // Feed in the growing season only, skipping fresh soil.
-        if let s, s.feed != "none" {
+        if medium == .water, !(stage?.noFeeding ?? false) {
+            var f = p.lastEvent(.feed).map { $0.date.addingTimeInterval(28 * 86_400) } ?? now
+            while f <= end {
+                if CareEngine.isGrowingSeason(f) { add(f, .feed, Grammar.pt(String(localized: "A quarter-strength hydro feed for \(p.name) \(dayWord(max(f, now), now))", comment: "Forecast line on Today/agenda, warm, no final period. Args: plant name, when (today, tomorrow, weekday)."))) }
+                f += 28 * 86_400
+            }
+        } else if let s, s.feed != "none", ![.leca, .pon, .terrarium].contains(medium), !(stage?.noFeeding ?? false) {
             var f = p.lastEvent(.feed).map { $0.date.addingTimeInterval(s.feedWeeks * 7 * 86_400) } ?? now
-            let fresh = p.lastRepotAt.map { $0.addingTimeInterval(42 * 86_400) } ?? .distantPast
+            var fresh = p.lastRepotAt.map { $0.addingTimeInterval(42 * 86_400) } ?? .distantPast
+            if let ls = p.lifeStageAt, let l = stage?.lasts { fresh = max(fresh, ls.addingTimeInterval(l * 86_400)) }
             if f < fresh { f = fresh }
             while f <= end {
                 if CareEngine.isGrowingSeason(f) { add(f, .feed, Grammar.pt(String(localized: "\(p.name) would love a little snack \(dayWord(max(f, now), now))", comment: "Forecast line on Today/agenda, warm, no final period. Snack = fertilizer, playful. Args: plant name, when."))); break }
@@ -186,14 +214,14 @@ enum CareForecast {
         }
 
         // Mist: humidity lovers, more often when the air or the heating is dry.
-        if let s, s.humidityMin >= 60, !p.isOutdoor {
+        if let s, s.humidityMin >= 60, !p.isOutdoor, ![.water, .terrarium, .mounted].contains(medium) {
             let every: Double = Climate.shared.indoorFactor(now) < 1 || CareEngine.isWinter(now) ? 2 : 4
             let m = p.lastEvent(.mist).map { $0.date.addingTimeInterval(every * 86_400) } ?? now
             add(m, .mist, Grammar.pt(String(localized: "\(p.name) is dreaming of a misty morning", comment: "Forecast line on Today/agenda, warm, no final period. Misting reminder. %@ = plant name.")))
         }
 
         // Rotate every two weeks for even growth (not for plants outside).
-        if !p.isOutdoor {
+        if !p.isOutdoor, stage != .flowering, medium != .terrarium {
             let r = p.lastEvent(.rotate).map { $0.date.addingTimeInterval(14 * 86_400) } ?? now.addingTimeInterval(3 * 86_400)
             add(r, .rotate, Grammar.pt(String(localized: "Give \(p.name) a little turn toward the light", comment: "Forecast line on Today/agenda, warm, no final period. %@ = plant name.")))
         }
@@ -223,7 +251,7 @@ enum CareForecast {
         }
 
         // Repot: when overdue, plan it for the next growing window.
-        if let s {
+        if let s, medium.inPot, medium != .water, medium != .terrarium, !(stage?.noRepot ?? false) {
             let since = CareEngine.days(from: p.lastRepotAt ?? p.acquiredAt, to: now)
             if since > s.repotYears * 365 - 30 {
                 let when = CareEngine.isGrowingSeason(now) ? now.addingTimeInterval(2 * 86_400) : (nextSeasonStart(.spring, from: now) ?? now)
@@ -394,12 +422,12 @@ enum ProactiveVoice {
             guard d.integer(forKey: key) != today else { continue }
             var text: String?
             var chips: [String] = []
-            if let pat = InsightEngine.pattern(for: p, now: now) {
+            if p.growingMedium.usesSoil, let pat = InsightEngine.pattern(for: p, now: now) {
                 text = voice(pat, plant: p)
                 chips = JungleBrain.soilChips
-            } else if let r = CareEngine.requests(for: p, now: now).first(where: { $0.priority <= 1 && ($0.kind == .water || $0.kind == .checkSoil) }) {
+            } else if let r = CareEngine.requests(for: p, now: now).first(where: { $0.priority <= 1 && [.water, .checkSoil, .refreshWater, .topUp, .soak, .mist, .askDone, .quarantine, .treatFollowUp].contains($0.kind) }) {
                 text = PlantVoice.say(r, plant: p)
-                chips = r.kind == .water ? [JungleBrain.wateredChip] : JungleBrain.soilChips
+                chips = r.kind == .water ? [JungleBrain.wateredChip] : r.kind == .checkSoil ? JungleBrain.soilChips : Answerer.suggestions(for: r)
             } else if let f = CareForecast.plant(for: p, now: now).first(where: { [.feed, .mist, .repot, .prune].contains($0.kind) && Calendar.current.isDate($0.date, inSameDayAs: now) && CarePrefs.isOn($0.kind) }) {
                 text = nudge(f.kind, plant: p)
             }
