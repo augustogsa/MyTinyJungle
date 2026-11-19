@@ -1,6 +1,7 @@
 package api
 
 import (
+	"compress/gzip"
 	"context"
 	"crypto/ed25519"
 	"encoding/json"
@@ -93,21 +94,21 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("PATCH /v1/households/{id}/members/{uid}", s.user(s.updateHouseholdMember))
 	m.Handle("DELETE /v1/households/{id}/members/{uid}", s.user(s.removeHouseholdMember))
 	m.Handle("PUT /v1/households/{id}/assignments", s.user(s.putAssignment))
-	m.Handle("GET /v1/households/{id}/rotation", s.user(s.householdRotation))
+	m.Handle("GET /v1/households/{id}/rotation", etag(s.user(s.householdRotation)))
 
 	m.Handle("POST /v1/plants/{id}/passport", s.user(s.createPassport))
 	m.Handle("DELETE /v1/plants/{id}/passport", s.user(s.deletePassport))
 	m.Handle("GET /v1/passports/{token}", s.ipLimit(rateAuthIP*3, s.getPassport))
 	m.Handle("POST /v1/passports/{token}/import", s.user(s.importPassport))
 	m.Handle("GET /p/{token}", s.ipLimit(rateAuthIP*3, s.passportHTML))
-	m.Handle("GET /v1/plants/{id}/supplies", s.user(s.plantSupplies))
-	m.Handle("GET /v1/me/supplies", s.user(s.mySupplies))
+	m.Handle("GET /v1/plants/{id}/supplies", etag(s.user(s.plantSupplies)))
+	m.Handle("GET /v1/me/supplies", etag(s.user(s.mySupplies)))
 	m.Handle("PUT /v1/me/supplies/{id}", s.user(s.putSupply))
 	m.Handle("DELETE /v1/me/supplies/{id}", s.user(s.deleteSupply))
 	m.Handle("POST /v1/brain/scene", s.user(s.brainScene))
 	m.Handle("POST /v1/brain/feedback", s.user(s.brainFeedback))
 	m.Handle("PUT /v1/me/weather-watch", s.user(s.weatherWatch))
-	m.Handle("GET /v1/me/digest", s.user(s.getDigest))
+	m.Handle("GET /v1/me/digest", etag(s.user(s.getDigest)))
 	m.Handle("PUT /v1/me/digest", s.user(s.putDigest))
 	m.Handle("POST /v1/events", s.ipLimit(rateAuthIP, s.postEvents))
 	m.Handle("POST /v1/referrals/{code}/redeem", s.user(s.redeemReferral))
@@ -147,6 +148,7 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/admin/brain", s.admin(s.adminBrain))
 	m.Handle("GET /v1/admin/limits", s.admin(s.adminLimits))
 	m.Handle("GET /v1/admin/metrics", s.admin(s.adminMetrics))
+	m.Handle("GET /v1/admin/perf", s.admin(s.adminPerf))
 
 	return s.wrap(m)
 }
@@ -164,13 +166,35 @@ func (s *Server) wrap(next http.Handler) http.Handler {
 		if !strings.HasPrefix(r.URL.Path, "/v1/media/") {
 			r.Body = http.MaxBytesReader(w, r.Body, 2<<20)
 		}
-		rw := &statusWriter{ResponseWriter: w, code: 200}
+		h.Set("Accept-Encoding", "gzip") // RFC 7694: clients may gzip request bodies
+		if strings.EqualFold(r.Header.Get("Content-Encoding"), "gzip") {
+			zr, err := gzip.NewReader(r.Body)
+			if err != nil {
+				writeErr(w, http.StatusBadRequest, "invalid_request")
+				return
+			}
+			r.Body = http.MaxBytesReader(w, io.NopCloser(zr), 8<<20)
+			r.Header.Del("Content-Encoding")
+			r.ContentLength = -1
+		}
+		var out http.ResponseWriter = w
+		var cw *compressWriter
+		if enc := acceptEnc(r); enc != "" {
+			cw = &compressWriter{ResponseWriter: w, enc: enc}
+			out = cw
+		}
+		rw := &statusWriter{ResponseWriter: out, code: 200}
 		defer func() {
 			if p := recover(); p != nil {
 				s.log.Error("panic", "path", r.Pattern, "err", p)
 				writeErr(rw, http.StatusInternalServerError, "internal")
 			}
-			s.log.Info("req", "m", r.Method, "route", r.Pattern, "status", rw.code, "ms", time.Since(start).Milliseconds())
+			if cw != nil {
+				cw.close()
+			}
+			ms := time.Since(start).Milliseconds()
+			perfObserve(r.Pattern, ms, rw.code)
+			s.log.Info("req", "m", r.Method, "route", r.Pattern, "status", rw.code, "ms", ms)
 		}()
 		if !s.limiter.Allow("ip:"+clientIP(r), rateIP) {
 			writeErr(rw, http.StatusTooManyRequests, "rate_limited")
@@ -186,6 +210,12 @@ type statusWriter struct {
 }
 
 func (w *statusWriter) WriteHeader(c int) { w.code = c; w.ResponseWriter.WriteHeader(c) }
+
+func (w *statusWriter) Flush() {
+	if f, ok := w.ResponseWriter.(http.Flusher); ok {
+		f.Flush()
+	}
+}
 
 // clientIP trusts CF-Connecting-IP: the origin only accepts Cloudflare (authenticated origin pulls).
 // Used only as a rate-limit key in memory, never stored or logged.
@@ -296,4 +326,5 @@ func (s *Server) StartJobs(ctx context.Context) {
 	go s.digestLoop(ctx)
 	go s.suppliesLoop(ctx)
 	go s.learnLoop(ctx)
+	go s.perfLoop(ctx)
 }

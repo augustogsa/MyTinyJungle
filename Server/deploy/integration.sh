@@ -150,6 +150,13 @@ cpw=$(c $A http://x/v1/brain/care-plan -d '{"species":"pothos","lang":"en","medi
 python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"lang":"en"}))' /tmp/idcheck/aloe-vera.jpg > /tmp/mtj-sc.json
 sc=$(c $A -m 120 http://x/v1/brain/scene -d @/tmp/mtj-sc.json); rm -f /tmp/mtj-sc.json
 echo "$sc" | python3 -c 'import json,sys;s=json.load(sys.stdin)["scene"];assert all(k in s for k in ("plant","pot","soil","light","surroundings")) and "conf" in s["soil"]["medium"],s' && ok "whole scene from photo (medium $(echo "$sc" | python3 -c 'import json,sys;print(json.load(sys.stdin)["scene"]["soil"]["medium"]["value"])'))"
+python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"lang":"en"}))' /tmp/idcheck/monstera-deliciosa.webp > /tmp/mtj-id.json
+t0=$(date +%s%N); idw=$(c $A -m 30 http://x/v1/brain/identify -d @/tmp/mtj-id.json); ms=$(( ($(date +%s%N)-t0)/1000000 ))
+echo "$idw" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert "monstera-deliciosa" in [c["id"] for c in d["candidates"]] and d["scene"]["soil"] and d["sceneDepth"] in ("quick","full"),d' && ok "identify a WebP photo with its scene in one call (${ms} ms)"
+t0=$(date +%s%N); c $A -m 30 http://x/v1/brain/identify -d @/tmp/mtj-id.json >/dev/null; ms=$(( ($(date +%s%N)-t0)/1000000 )); rm -f /tmp/mtj-id.json; (( ms < 400 )) && ok "same photo again from the cache (${ms} ms)"
+sse=$(c $A -N -H 'Accept: text/event-stream' http://x/v1/brain/ask -d '{"q":"how often should I water it?","lang":"en","medium":"water"}'); grep -q '^event: answer' <<<"$sse" && grep -q '"water-culture"' <<<"$sse" && grep -q '^event: done' <<<"$sse" && ok "ask streams (SSE)"
+hd=$(c $A -D - -o /dev/null -H 'Accept-Encoding: br' http://x/v1/me/digest); et=$(grep -i '^etag:' <<<"$hd" | cut -d' ' -f2 | tr -d '\r'); grep -qi '^content-encoding: br' <<<"$hd" && [[ -n $et ]] && [[ $(c $A -o /dev/null -w '%{http_code}' -H "If-None-Match: $et" http://x/v1/me/digest) == 304 ]] && ok "digest brotli + ETag 304"
+st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/perf); [[ $st == 403 ]] && ok "admin perf refuses without Access"
 [[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/feedback -d '{"kind":"species","predicted":"aloe-vera","corrected":"haworthia","lang":"en"}') == 200 ]] && [[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/feedback -d '{"kind":"nope"}') == 400 ]] && ok "brain feedback"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/limits); [[ $st == 403 ]] && ok "admin limits refuses without Access"

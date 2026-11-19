@@ -445,14 +445,19 @@ var theBrain = &brain{}
 
 // think runs the tiers, cheapest first. Only Claude costs money, and it is reached only when
 // our own model + knowledge base aren't confident and no free model answered.
-func (s *Server) think(ctx context.Context, photo, species, note, lang string, sit situation) (diagnosis, error) {
+func (s *Server) think(ctx context.Context, photo string, given *scene, species, note, lang string, sit situation) (diagnosis, error) {
 	if lang == "" || strings.HasPrefix(lang, "en") {
 		lang = "en"
 	}
 	if theBrain.dir == "" {
 		theBrain.dir = s.cfg.ContentDir
 	}
-	sc, _ := readScene(ctx, photo)
+	var sc scene
+	if given != nil {
+		sc = *given
+	} else {
+		sc, _ = readScene(ctx, photo)
+	}
 	saw := sc.evidence()
 	sit = sc.situation(sit)
 	fit, boost := theBrain.situational(sit)

@@ -57,19 +57,108 @@ func (s *Server) brainAsk(w http.ResponseWriter, r *http.Request) {
 		lang = "en"
 	}
 	sit := in.extras.into(situation(in.Situation))
-	wf := resolveWeather(r.Context(), in.extras.Weather, in.Lat, in.Lon)
-	sit = mergeSit(sit, wf.situation())
-	out := theBrain.ask(in.Q, lang, in.Species, sit)
-	for i, n := range wf.notes(lang, isOutdoor(sit), theBrain.findSpecies(in.Species)) {
-		if i == 2 {
-			break
-		}
-		out = append(out, askAnswer{"weather", "weather", theBrain.tr(lang, "Weather near you"), n, nil})
+	spID := ""
+	if sp := theBrain.findSpecies(in.Species); sp != nil {
+		spID = sp.ID
 	}
-	if len(out) == 0 || out[0].Kind == "situation" {
+	// Weather is read in parallel; the stream answers first and adds weather when it lands (≤ 3 s).
+	wch := make(chan *weatherFacts, 1)
+	go func() { wch <- resolveWeather(r.Context(), in.extras.Weather, in.Lat, in.Lon) }()
+	stream := strings.Contains(r.Header.Get("Accept"), "text/event-stream")
+	knowledge := func(sit situation) []askAnswer {
+		key := answerKey("ask", lang, spID, normQ(in.Q), sit.bucket())
+		if v, ok := answers.get(key); ok {
+			perfCache("ask", true)
+			return v.([]askAnswer)
+		}
+		perfCache("ask", false)
+		out := theBrain.ask(in.Q, lang, in.Species, sit)
+		answers.put(key, out)
+		return out
+	}
+	weatherNotes := func(wf *weatherFacts, sit situation) []askAnswer {
+		var out []askAnswer
+		for i, n := range wf.notes(lang, isOutdoor(sit), theBrain.findSpecies(in.Species)) {
+			if i == 2 {
+				break
+			}
+			out = append(out, askAnswer{"weather", "weather", theBrain.tr(lang, "Weather near you"), n, nil})
+		}
+		return out
+	}
+	if stream {
+		s.askStream(w, r, in.Q, sit, knowledge, weatherNotes, wch)
+		return
+	}
+	wf := <-wch
+	sit = mergeSit(sit, wf.situation())
+	out := append(knowledge(sit), weatherNotes(wf, sit)...)
+	if onlySituation(out) {
 		s.gap(r.Context(), "ask", in.Q)
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"answers": out})
+}
+
+// onlySituation: nothing in the knowledge base answered the question itself (a gap), whatever the order.
+func onlySituation(out []askAnswer) bool {
+	for _, a := range out {
+		if a.Kind != "situation" && a.Kind != "weather" {
+			return false
+		}
+	}
+	return true
+}
+
+// askStream: Server-Sent Events. "answer" (one whole answer each, the first within milliseconds), "weather"
+// (one note each, when local weather lands), then "done" with the whole reply {answers:[...]}. When the weather arrives within
+// 80 ms it shapes the answers exactly as the JSON reply would.
+func (s *Server) askStream(w http.ResponseWriter, r *http.Request, q string, sit situation,
+	knowledge func(situation) []askAnswer, weatherNotes func(*weatherFacts, situation) []askAnswer, wch chan *weatherFacts) {
+	fl, ok := w.(http.Flusher)
+	if !ok {
+		s.fail(w, r, bad("streaming_unsupported"))
+		return
+	}
+	h := w.Header()
+	h.Set("Content-Type", "text/event-stream")
+	h.Set("Cache-Control", "no-cache")
+	h.Set("X-Accel-Buffering", "no")
+	w.WriteHeader(http.StatusOK)
+	send := func(ev string, v any) {
+		b, _ := json.Marshal(v)
+		fmt.Fprintf(w, "event: %s\ndata: %s\n\n", ev, b)
+		fl.Flush()
+	}
+	var wf *weatherFacts
+	got := false
+	select {
+	case wf = <-wch:
+		got = true
+		sit = mergeSit(sit, wf.situation())
+	case <-time.After(80 * time.Millisecond):
+	}
+	out := knowledge(sit)
+	for _, a := range out {
+		send("answer", a)
+	}
+	if !got {
+		select {
+		case wf = <-wch:
+			got = true
+		case <-time.After(3 * time.Second):
+		case <-r.Context().Done():
+		}
+	}
+	if got {
+		for _, a := range weatherNotes(wf, mergeSit(sit, wf.situation())) {
+			send("weather", a)
+			out = append(out, a)
+		}
+	}
+	if onlySituation(out) {
+		s.gap(r.Context(), "ask", q)
+	}
+	send("done", map[string]any{"answers": out}) // the whole reply, same shape as the JSON answer
 }
 
 // PUT /v1/me/weather-watch {lat, lon, lang, on}: a frost or heatwave heads-up for owners with plants outside.

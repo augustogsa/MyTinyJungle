@@ -80,18 +80,22 @@ func (s *Server) brainIdentifyBatch(w http.ResponseWriter, r *http.Request) {
 	items := []batchItem{}
 	truncated := false
 	used := 0
+	var crops []string
+	var cropBoxes []batchBox
 	for _, b := range boxes {
-		if used >= allowed {
+		if len(crops) >= allowed {
 			truncated = true
 			break
 		}
-		crop := cropJPEG(img, b)
-		if crop == "" {
-			continue
+		if crop := cropJPEG(img, b); crop != "" {
+			crops, cropBoxes = append(crops, crop), append(cropBoxes, b)
 		}
-		used++
+	}
+	used = len(crops)
+	for i, res := range askIDBatch(ctx, crops) { // one batched forward pass for all crops
+		b := cropBoxes[i]
 		var cands []idCand
-		for _, bc := range bioclip(ctx, crop) {
+		for _, bc := range res.Candidates {
 			if bc.Score < 0.05 {
 				continue
 			}

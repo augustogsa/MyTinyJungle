@@ -2,8 +2,8 @@
 """Builds the plant ID reference index: CC/PD Wikimedia Commons photos per species -> BioCLIP image embeddings.
 
   refs.py fetch  <species.json> <cache>       # downloads ≤480 px thumbnails + credits (resumable)
-  refs.py embed  <species.json> <cache> <out> # writes <out>/refs.npz (ids, emb float16) + refs.json (credits)
-  refs.py tune   <species.json> <cache> <out> # leave-one-out on the reference photos -> <out>/params.json
+  refs.py embed  <species.json> <cache> <out> <onnx_dir>  # <out>/refs.npz (ids, emb float16) + refs.json (credits)
+  refs.py tune   <species.json> <cache> <out> <onnx_dir>  # leave-one-out on the reference photos -> <out>/params.json
 
 Eval photos (Server/eval/identify.json) and near-duplicates of them (cosine ≥ 0.95) are never indexed, so the
 eval stays held out. Run by Server/deploy/mtj-id-refs.sh (on any machine with the deps; the result is synced
@@ -73,31 +73,28 @@ def fetch(species, cache):
         list(ex.map(one, sp))
 
 
-def embed(species, cache, out):
-    import numpy as np, torch, open_clip
+def clip(onnx):
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from clipnx import Clip
+    return Clip(str(onnx), threads=int(os.environ.get("THREADS", "8")))
+
+
+def embed(species, cache, out, onnx):
+    """Reference embeddings with the same ONNX encoder mtj-id serves with (so queries and refs match)."""
+    import numpy as np
     from PIL import Image
-    torch.set_num_threads(int(os.environ.get("THREADS", "6")))
-    model, _, pre = open_clip.create_model_and_transforms("hf-hub:imageomics/bioclip")
-    model.eval()
-
-    def enc(paths):
-        with torch.no_grad():
-            x = torch.stack([pre(Image.open(p).convert("RGB")) for p in paths])
-            e = model.encode_image(x)
-            return (e / e.norm(dim=-1, keepdim=True)).numpy()
-
+    c = clip(onnx)
     evdir = EVAL.parent
-    held = enc([evdir / c["file"] for c in json.load(open(EVAL))]) if EVAL.exists() else np.zeros((0, 512))
+    held = c.images([Image.open(evdir / x["file"]) for x in json.load(open(EVAL))]) if EVAL.exists() else np.zeros((0, 1))
     ids, embs, credits = [], [], {}
     for s in json.load(open(species)):
         d = cache / s["id"]
         if not (d / "meta.json").exists():
             continue
-        meta = json.loads((d / "meta.json").read_text())
-        ok = [m for m in meta if (d / m["file"]).exists()]
+        ok = [m for m in json.loads((d / "meta.json").read_text()) if (d / m["file"]).exists()]
         if not ok:
             continue
-        e = enc([d / m["file"] for m in ok])
+        e = c.images([Image.open(d / m["file"]) for m in ok], batch=16)
         keep = (e @ held.T).max(axis=1) < 0.95 if len(held) else np.ones(len(e), bool)
         for m, v, k in zip(ok, e, keep):
             if k:
@@ -110,32 +107,14 @@ def embed(species, cache, out):
     print(f"{len(ids)} reference photos for {len(credits)} species", flush=True)
 
 
-def text_embeddings(model, tok, sp):
-    import torch
-    ids, prior, embs = [], [], []
-    with torch.no_grad():
-        for s in sp:
-            sci = s.get("scientific") or ""
-            if not sci:
-                continue
-            fam = s.get("family") or ""
-            texts = [f"a photo of {sci}.", f"a photo of Plantae {fam} {sci}.", f"a photo of {s.get('en','')}, {sci}, a plant."]
-            texts += [f"a photo of {a}." for a in (s.get("aliases") or [])[:3]]
-            e = model.encode_text(tok(texts)); e = e / e.norm(dim=-1, keepdim=True); e = e.mean(dim=0)
-            embs.append((e / e.norm()).numpy()); ids.append(s["id"]); prior.append(0.0 if not s.get("outdoor") else -0.7)
-    import numpy as np
-    return ids, np.array(embs), np.array(prior)
-
-
-def tune(species, cache, out):
+def tune(species, cache, out, onnx):
     """Grid search of the kNN/text blend by leave-one-out over the reference photos. A held-out photo never
     sees references by the same Commons author (photo series) or near-duplicates, so the score is honest."""
-    import numpy as np, torch, open_clip
-    model, _, _ = open_clip.create_model_and_transforms("hf-hub:imageomics/bioclip")
-    tok = open_clip.get_tokenizer("hf-hub:imageomics/bioclip")
-    model.eval()
-    sp = json.load(open(species))
-    ids, temb, prior = text_embeddings(model, tok, sp)
+    import numpy as np
+    c = clip(onnx)
+    from clipnx import species_embeddings
+    ids, temb, outdoor = species_embeddings(c, json.load(open(species)))
+    prior = np.where(outdoor, -0.7, 0.0)
     index = {s: i for i, s in enumerate(ids)}
     z = np.load(out / "refs.npz"); rid = np.array([index.get(str(x), -1) for x in z["ids"]]); remb = z["emb"].astype(np.float32)
     credits = json.loads((out / "refs.json").read_text())
@@ -155,7 +134,7 @@ def tune(species, cache, out):
         sims[n, i] = -9
     tl = remb[q] @ temb.T
     best = None
-    for tt in (60.0, 100.0):
+    for tt in (40.0, 60.0, 100.0):
         text = np.exp(tt * tl + prior - (tt * tl + prior).max(1, keepdims=True)); text /= text.sum(1, keepdims=True)
         for k in (5, 10, 20, 40):
             top = np.argsort(-sims, axis=1)[:, :k]
@@ -182,6 +161,6 @@ if __name__ == "__main__":
     if cmd == "fetch":
         fetch(species, cache)
     elif cmd == "embed":
-        embed(species, cache, Path(sys.argv[4]))
+        embed(species, cache, Path(sys.argv[4]), Path(sys.argv[5]))
     else:
-        tune(species, cache, Path(sys.argv[4]))
+        tune(species, cache, Path(sys.argv[4]), Path(sys.argv[5]))

@@ -15,6 +15,7 @@ HERE = Path(__file__).resolve().parent
 QUICK = "--quick" in sys.argv
 SOCK = "/run/mtj/api.sock"
 TH = {"identify_top1": 0.85, "identify_top3": 0.95, "diagnose_top3": 0.80, "ask_lang": 0.85, "careplan": 0.95, "scene_field": 0.70}
+MAX = {"identify_p50": 0.6, "identify_p95": 1.5}  # seconds, measured live on uncached photos
 
 
 class UConn(http.client.HTTPConnection):
@@ -61,8 +62,17 @@ def token(email):
     return subprocess.run(env=api_env(), args=["runuser", "-u", "mtj-api", "-g", "nobody", "-G", "mtj-api", "--", "/opt/mtj/bin/mtj-api", "test-token", email], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, check=True).stdout.strip()
 
 
-def photo(f):
-    return base64.b64encode((HERE / f).read_bytes()).decode()
+def photo(f, fresh=False):
+    b = (HERE / f).read_bytes()
+    if fresh:  # same pixels, different bytes: a JPEG comment defeats the server's sha256 cache (honest timing)
+        c = b"eval " + os.urandom(8).hex().encode()
+        b = b[:2] + b"\xff\xfe" + (len(c) + 2).to_bytes(2, "big") + c + b[2:]
+    return base64.b64encode(b).decode()
+
+
+def q(xs, p):
+    s = sorted(xs)
+    return s[min(len(s) - 1, int(len(s) * p))] if s else 0
 
 
 def species_base():
@@ -90,9 +100,11 @@ def main():
         # Identify (species only: the scene is checked on its own below).
         cases = json.load(open(HERE / "identify.json"))
         t1 = t3 = 0
-        misses = []
+        misses, lat = [], []
         for c in cases:
-            _, r = call(A, "/v1/brain/identify", {"photo": photo(c["file"]), "lang": "en", "scene": False})
+            t0 = time.time()
+            _, r = call(A, "/v1/brain/identify", {"photo": photo(c["file"], fresh=True), "lang": "en", "scene": False})
+            lat.append(time.time() - t0)
             got = [x["id"] for x in r.get("candidates", [])]
             same = [g == c["expect"] or (base.get(g) and base.get(g) == base.get(c["expect"])) for g in got]
             t1 += bool(same[:1] and same[0])
@@ -103,6 +115,31 @@ def main():
         print(f"identify  top-1 {t1}/{len(cases)} = {results['identify_top1']:.0%}   top-3 {t3}/{len(cases)} = {results['identify_top3']:.0%}")
         for m in misses:
             print("   miss", m)
+        results["identify_p50"], results["identify_p95"] = q(lat, 0.5), q(lat, 0.95)
+        t0 = time.time(); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en"}); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en"})
+        print(f"identify  latency p50 {results['identify_p50'] * 1000:.0f} ms  p95 {results['identify_p95'] * 1000:.0f} ms (uncached)   cached {(time.time() - t0) * 500:.0f} ms")
+        st, r = call(A, "/v1/brain/identify", {"photo": photo(cases[1]["file"], fresh=True), "lang": "en"})
+        assert st == 200 and r.get("scene", {}).get("soil") and r.get("sceneDepth") in ("quick", "full"), r
+
+        # Multi-photo scans: both photos of a species as one scan (fused species vote, one charge).
+        by = {}
+        for c in cases:
+            by.setdefault(c["expect"], []).append(c["file"])
+        m1 = mn = 0
+        for sp_, fs in by.items():
+            if len(fs) < 2:
+                continue
+            st, r = call(A, "/v1/brain/identify", {"photos": [{"photo": photo(fs[0], fresh=True), "kind": "whole"}, {"photo": photo(fs[1], fresh=True), "kind": "leaf"}], "lang": "pt-BR"})
+            got = [x["id"] for x in r.get("candidates", [])]
+            mn += 1
+            m1 += bool(got) and (got[0] == sp_ or (base.get(got[0]) and base.get(got[0]) == base.get(sp_)))
+            assert st == 200 and r.get("used") == ["whole", "leaf"] and isinstance(r.get("tips"), list), r
+            if r["tips"]:
+                assert all(t["kind"] in ("flower", "stem") and t["why"] for t in r["tips"]), r["tips"]
+        results["identify_multi_top1"] = pct(m1, mn)
+        print(f"identify  multi-photo top-1 {m1}/{mn} = {results['identify_multi_top1']:.0%} (single {results['identify_top1']:.0%})")
+        if results["identify_multi_top1"] + 1e-9 < results["identify_top1"]:
+            fails.append("multi-photo identify worse than single")
 
         # Ask, per language.
         per = {}
@@ -162,6 +199,27 @@ def main():
             hit += h
             if not h:
                 print(f"   diagnose miss {c['file']}: {ids} ({st})")
+        # Multi-photo diagnosis: two photos of the same problem (leaf + underside) as one scan.
+        allx = json.load(open(HERE / "diagnose.json"))
+        pairs, seen = [], {}
+        for c in allx:
+            k = c["expect"][0]
+            if k in seen and len(pairs) < (2 if QUICK else 6):
+                pairs.append((seen.pop(k), c))
+            else:
+                seen[k] = c
+        mh = 0
+        for a, b in pairs:
+            psql("delete from ai_usage")
+            st, r = call(B, "/v1/diagnose", {"photos": [{"photo": photo(a["file"], fresh=True), "kind": "leaf"}, {"photo": photo(b["file"], fresh=True), "kind": "underside"}],
+                                             "note": a.get("note", ""), "lang": a.get("lang", "en"), "species": a.get("species", "")})
+            ok = st == 200 and r.get("used") == ["leaf", "underside"] and any(i in a["expect"] for i in (r.get("ids") or [])[:3])
+            mh += ok
+            if not ok:
+                print(f"   diagnose multi miss {a['file']}+{b['file']}: {r.get('ids')} used={r.get('used')} ({st})")
+        print(f"diagnose  multi-photo top-3 {mh}/{len(pairs)}")
+        if pairs and pct(mh, len(pairs)) < TH["diagnose_top3"]:
+            fails.append(f"diagnose multi {mh}/{len(pairs)}")
         results["diagnose_top3"] = pct(hit, len(dx))
         print(f"diagnose  top-3 {hit}/{len(dx)} = {results['diagnose_top3']:.0%}")
 
@@ -190,6 +248,9 @@ def main():
     for k, v in TH.items():
         if results.get(k, 0) < v:
             fails.append(f"{k} {results.get(k, 0):.0%} < {v:.0%}")
+    for k, v in MAX.items():
+        if results.get(k, 99) > v:
+            fails.append(f"{k} {results.get(k, 99):.2f}s > {v}s")
     print("PASS all thresholds" if not fails else "FAIL " + ", ".join(fails))
     sys.exit(1 if fails else 0)
 

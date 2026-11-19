@@ -286,7 +286,7 @@ paths:
       summary: Plant doctor (Plus) from a photo, with the whole scene and local weather
       requestBody:
         required: true
-        content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [photo], properties: { photo: { type: string, format: byte }, species: { type: string }, note: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
+        content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, properties: { photo: { $ref: "#/components/schemas/Photo" }, photos: { type: array, minItems: 1, maxItems: 8, items: { $ref: "#/components/schemas/Shot" }, description: "multi-photo scan (with or instead of photo); charged once" }, species: { type: string }, note: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
       responses: { "200": { description: Diagnosis, content: { application/json: { schema: { $ref: "#/components/schemas/Diagnosis" } } } }, "402": { $ref: "#/components/responses/Error" }, "429": { $ref: "#/components/responses/Error" } }
   /v1/brain/ask:
     post:
@@ -297,20 +297,23 @@ paths:
         content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [q], properties: { q: { type: string }, lang: { type: string }, species: { type: string }, lat: { type: number }, lon: { type: number }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
       responses:
         "200":
-          description: Answers, best first. kind is symptom|pest|disease|deficiency|species|topic|glossary|soil|situation|weather; id is the knowledge id.
-          content: { application/json: { schema: { type: object, properties: { answers: { type: array, items: { type: object, properties: { id: { type: string }, kind: { type: string }, title: { type: string }, text: { type: string }, steps: { type: array, items: { type: string } } } } } } } } }
+          description: "Answers, best first. kind is symptom|pest|disease|deficiency|species|topic|glossary|soil|situation|weather; id is the knowledge id. With Accept: text/event-stream the same answers stream as Server-Sent Events, the first within milliseconds: event answer = one whole answer {id,kind,title,text,steps}, event weather = one weather note {id,kind,title,text} when local weather lands (up to 3 s), event done = the whole reply {answers:[...]} (same shape as the JSON answer)."
+          content:
+            text/event-stream: { schema: { type: string } }
+            application/json: { schema: { type: object, properties: { answers: { type: array, items: { type: object, properties: { id: { type: string }, kind: { type: string }, title: { type: string }, text: { type: string }, steps: { type: array, items: { type: string } } } } } } } }
         "400": { $ref: "#/components/responses/Error" }
   /v1/brain/identify:
     post:
       operationId: brainIdentify
-      summary: Name a plant from a photo with our own model, plus the photo's scene
+      summary: Name a plant from a photo with our own model, plus the photo's scene (one upload serves both)
+      description: "Cheap first: BioCLIP-2 (int8) plus the photo's own stats answer in well under a second with the quick scene (sceneDepth quick). When the top species is below 0.5 or the quick scene can't tell the medium, pot or a fake plant, the vision model reads the whole scene in the background; a care-plan, scene or diagnose call with the same photo then gets it from the cache (by sha256, 30 min), and a repeated identify returns sceneDepth full."
       requestBody:
         required: true
-        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte }, lang: { type: string }, scene: { type: boolean, default: true, description: "false skips the vision model (quick BioCLIP-only scene)" } } } } }
+        content: { application/json: { schema: { type: object, properties: { photo: { $ref: "#/components/schemas/Photo" }, photos: { type: array, minItems: 1, maxItems: 8, items: { $ref: "#/components/schemas/Shot" }, description: "multi-photo scan (with or instead of photo); charged once" }, lang: { type: string }, scene: { type: boolean, default: true, description: "false never starts the vision model, not even in the background" } } } } }
       responses:
         "200":
           description: Top 3 species and the scene
-          content: { application/json: { schema: { type: object, properties: { candidates: { type: array, items: { type: object, properties: { id: { type: string }, scientific: { type: string }, name: { type: string }, score: { type: number } } } }, confident: { type: boolean }, source: { type: string, enum: [internal, free, claude] }, scene: { $ref: "#/components/schemas/Scene" } } } } }
+          content: { application/json: { schema: { type: object, properties: { candidates: { type: array, items: { type: object, properties: { id: { type: string }, scientific: { type: string }, name: { type: string }, score: { type: number } } } }, confident: { type: boolean }, source: { type: string, enum: [internal, free, claude] }, scene: { $ref: "#/components/schemas/Scene" }, sceneDepth: { type: string, enum: [quick, full] }, used: { type: array, items: { type: string } }, tips: { type: array, items: { $ref: "#/components/schemas/PhotoTip" } } } } } }
         "400": { $ref: "#/components/responses/Error" }
   /v1/brain/scene:
     post:
@@ -318,7 +321,7 @@ paths:
       summary: The whole scene of a plant photo (plant, pot, soil, light, surroundings), own models only
       requestBody:
         required: true
-        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte }, lang: { type: string } } } } }
+        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { $ref: "#/components/schemas/Photo" }, lang: { type: string } } } } }
       responses: { "200": { description: Scene, content: { application/json: { schema: { type: object, properties: { scene: { $ref: "#/components/schemas/Scene" } } } } } }, "400": { $ref: "#/components/responses/Error" } }
   /v1/brain/care-plan:
     post:
@@ -326,7 +329,7 @@ paths:
       summary: Care plan for a species in its real conditions (medium, life stage, pot, scene, weather)
       requestBody:
         required: true
-        content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [species], properties: { species: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, photo: { type: string, format: byte, description: "optional: the photo's scene joins the situation" }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
+        content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [species], properties: { species: { type: string }, lang: { type: string }, lat: { type: number }, lon: { type: number }, photo: { allOf: [ { $ref: "#/components/schemas/Photo" } ], description: "optional: the photo's scene joins the situation" }, photos: { type: array, minItems: 1, maxItems: 8, items: { $ref: "#/components/schemas/Shot" }, description: "multi-photo scan (with or instead of photo); charged once" }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
       responses:
         "200":
           description: Care plan
@@ -357,6 +360,8 @@ paths:
                   followUps: { type: array, items: { type: object, properties: { inDays: { type: integer }, repeatEveryDays: { type: integer }, times: { type: integer }, what: { type: string } } } }
                   situation: { $ref: "#/components/schemas/Situation" }
                   scene: { $ref: "#/components/schemas/Scene" }
+                  used: { type: array, items: { type: string } }
+                  tips: { type: array, items: { $ref: "#/components/schemas/PhotoTip" } }
         "400": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
   /v1/brain/feedback:
@@ -381,6 +386,7 @@ paths:
       operationId: getDigest
       summary: This week's jungle digest (due, watch, grew, photos) across every jungle you can reach
       responses:
+        "304": { $ref: "#/components/responses/NotModified" }
         "200": { description: Digest, content: { application/json: { schema: { $ref: "#/components/schemas/Digest" } } } }
         "401": { $ref: "#/components/responses/Error" }
     put:
@@ -396,7 +402,7 @@ paths:
       summary: Name every plant in one photo of a shelf (each crop counts against the identify daily limit)
       requestBody:
         required: true
-        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte, description: "JPEG or PNG, base64, up to 1.8 MB encoded" }, lang: { type: string } } } } }
+        content: { application/json: { schema: { type: object, required: [photo], properties: { photo: { type: string, format: byte, description: "JPEG, WebP or PNG, base64, up to 1.8 MB encoded (the shelf photo; crops go to the plant model in one batch)" }, lang: { type: string } } } } }
       responses:
         "200":
           description: One item per plant found
@@ -492,6 +498,7 @@ paths:
       summary: Fair watering rotation for the next days
       parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: days, in: query, schema: { type: integer, minimum: 1, maximum: 28, default: 7 } }]
       responses:
+        "304": { $ref: "#/components/responses/NotModified" }
         "200":
           description: Rotation
           content:
@@ -561,6 +568,7 @@ paths:
       summary: Soil mix, pot and fertiliser for this plant's species
       parameters: [{ $ref: "#/components/parameters/JungleID" }, { name: lang, in: query, schema: { type: string } }]
       responses:
+        "304": { $ref: "#/components/responses/NotModified" }
         "200":
           description: Recommendations
           content:
@@ -583,6 +591,7 @@ paths:
       operationId: mySupplies
       summary: Your supplies stock
       responses:
+        "304": { $ref: "#/components/responses/NotModified" }
         "200": { description: Supplies, content: { application/json: { schema: { type: object, required: [supplies], properties: { supplies: { type: array, items: { $ref: "#/components/schemas/Supply" } } } } } } }
         "401": { $ref: "#/components/responses/Error" }
   /v1/me/supplies/{id}:
@@ -601,6 +610,23 @@ paths:
       summary: Remove a supply
       parameters: [{ $ref: "#/components/parameters/JungleID" }]
       responses: { "200": { $ref: "#/components/responses/Ok" }, "401": { $ref: "#/components/responses/Error" } }
+  /v1/admin/perf:
+    get:
+      operationId: adminPerf
+      summary: (Admin, Cloudflare Access) per-route latency p50/p95 and error rate (last hour, last 24 h), cache-hit rates, paid model calls this month
+      responses:
+        "200":
+          description: Performance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lastHour: { type: array, items: { $ref: "#/components/schemas/RoutePerf" } }
+                  last24h: { type: array, items: { $ref: "#/components/schemas/RoutePerf" } }
+                  caches: { type: object, additionalProperties: { type: object, properties: { hits: { type: integer }, misses: { type: integer }, hitRate: { type: number } } } }
+                  paidCallsThisMonth: { type: object, additionalProperties: { type: integer } }
+                  paidCap: { type: integer }
 components:
   securitySchemes:
     bearer: { type: http, scheme: bearer, bearerFormat: JWT }
@@ -609,11 +635,16 @@ components:
   responses:
     Ok: { description: OK, content: { application/json: { schema: { type: object, properties: { ok: { type: boolean } } } } } }
     Error: { description: Error, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    NotModified: { description: "Unchanged since the ETag sent in If-None-Match (200s carry ETag and Cache-Control private, no-cache)" }
     Tokens: { description: Tokens, content: { application/json: { schema: { $ref: "#/components/schemas/Tokens" } } } }
     Entitlements:
       description: Current Plus status
       content: { application/json: { schema: { type: object, required: [plus, entitlements], properties: { plus: { type: boolean }, entitlements: { type: array, items: { $ref: "#/components/schemas/Entitlement" } } } } } }
   schemas:
+    Shot: { type: object, required: [photo, kind], properties: { photo: { $ref: "#/components/schemas/Photo" }, kind: { type: string, enum: [leaf, whole, stem, flower, pot, soil, underside, roots, other] } }, description: "Species vote weights: leaf, flower, whole 1; stem 0.6; underside, other 0.5; roots 0.2; pot 0.15; soil 0.05. Pot and soil photos give medium, drainage and pot size; leaf and underside give pests; soil gives moisture, mould and gnats." }
+    PhotoTip: { type: object, properties: { kind: { type: string }, why: { type: string, description: "in the request language" } }, description: "Up to two, when confidence is below 0.7: the next most useful photo to add" }
+    Photo: { type: string, format: byte, description: "base64 JPEG or WebP; send the longest side at 768 px (bigger is scaled down on the server), up to 1.8 MB encoded" }
+    RoutePerf: { type: object, properties: { route: { type: string }, n: { type: integer }, p50Ms: { type: integer }, p95Ms: { type: integer }, errorRate: { type: number } } }
     Situation: { type: object, additionalProperties: { type: array, items: { type: string } }, description: "Keys as in the knowledge base scenarios: room, humidity, temp, light, watered, event, season, weather, pot, soil, medium, moisture, surface, near, lifeStage, plant, water, home, treating" }
     Medium: { type: [string, "null"], enum: [soil, chunky, cactus, leca, pon, sphagnum, water, mounted, terrarium, ground, null] }
     Extras:
@@ -709,6 +740,8 @@ components:
         alternatives: { type: array, items: { type: string } }
         scene: { $ref: "#/components/schemas/Scene" }
         weather: { type: array, items: { type: string } }
+        used: { type: array, items: { type: string }, description: "photo kinds that went into the answer" }
+        tips: { type: array, items: { $ref: "#/components/schemas/PhotoTip" } }
     Error: { type: object, required: [error], properties: { error: { type: string } } }
     WeatherPattern:
       type: object

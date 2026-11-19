@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Rebuilds the plant ID reference index (Wikimedia Commons CC/PD photos per species -> BioCLIP embeddings), tunes
+# Exports BioCLIP-2 to ONNX (int8 image encoder) once, rebuilds the plant ID reference index (Wikimedia Commons CC/PD photos per
+# species -> embeddings with that same encoder), tunes
 # the text/kNN blend by leave-one-out on the references (never on the eval set) and syncs refs.npz, refs.json and
 # params.json to /var/lib/mtj-db/models/refs on the VPS, where mtj-id picks them up without a restart.
 # Runs on any machine with uv (the VPS has no spare RAM for a second model copy). Resumable.
@@ -8,11 +9,17 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 W=${MTJ_REFS_WORK:-$HOME/.cache/mtj-refs}; H=${MTJ_HOST:-mdm-ovh}
 mkdir -p "$W"
-[[ -x "$W/venv/bin/python" ]] || { uv venv -q -p 3.11 "$W/venv"; uv pip install -q -p "$W/venv" torch open_clip_torch pillow numpy; }
-P="$W/venv/bin/python -I Server/deploy/mtj-id/refs.py"
+[[ -x "$W/venv/bin/python" ]] || { uv venv -q -p 3.11 "$W/venv"; uv pip install -q -p "$W/venv" torch open_clip_torch onnx onnxruntime onnxscript ftfy regex pillow numpy; }
+PY="$W/venv/bin/python -I"; P="$PY Server/deploy/mtj-id/refs.py"
+[[ -f "$W/model/visual.int8.onnx" ]] || MODEL=hf-hub:imageomics/bioclip-2 $PY Server/deploy/mtj-id/export_onnx.py "$W/model"
 $P fetch Content/data/species.json "$W/cache"
-$P embed Content/data/species.json "$W/cache" "$W/out"
-$P tune  Content/data/species.json "$W/cache" "$W/out"
+$P embed Content/data/species.json "$W/cache" "$W/out" "$W/model"
+$P tune  Content/data/species.json "$W/cache" "$W/out" "$W/model"
+R=/var/lib/mtj-db/models/refs
+ssh "$H" "sudo install -d -o mtj -g mtj -m 0750 $R/model"
+for f in visual.int8.onnx text.onnx preprocess.json; do  # the model only when it changed
+  [[ $(ssh "$H" "sudo sha256sum $R/model/$f 2>/dev/null | cut -c1-64") == $(shasum -a 256 "$W/model/$f" | cut -c1-64) ]] || { scp -q "$W/model/$f" "$H:/tmp/$f" && ssh "$H" "sudo install -o mtj -g mtj -m 0640 /tmp/$f $R/model/ && rm -f /tmp/$f"; }
+done
 scp -q "$W/out/refs.npz" "$W/out/refs.json" "$W/out/params.json" "$H:/tmp/"
-ssh "$H" 'sudo install -o mtj -g mtj -m 0640 /tmp/refs.npz /tmp/refs.json /tmp/params.json /var/lib/mtj-db/models/refs/ && rm -f /tmp/refs.npz /tmp/refs.json /tmp/params.json'
-echo "refs synced"
+ssh "$H" "sudo install -o mtj -g mtj -m 0640 /tmp/refs.npz /tmp/refs.json /tmp/params.json $R/ && rm -f /tmp/refs.npz /tmp/refs.json /tmp/params.json"
+echo "model and refs synced"

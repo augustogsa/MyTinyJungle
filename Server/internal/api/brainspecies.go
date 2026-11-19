@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -20,7 +19,7 @@ import (
 type species struct {
 	ID, Scientific, En, Pt, Family, Light, Mix, Feed, Growth, Tip, Group, WaterStyle string
 	DryMin, DryMax, HumidityMin, TempMin, TempMax, FeedWeeks, RepotYears             float64
-	ToxicCats, ToxicDogs                                                             bool
+	ToxicCats, ToxicDogs, Outdoor                                                    bool
 	Pests                                                                            []string
 	Problems                                                                         []struct{ Sign, Cause, Fix string }
 	Aliases, Tags                                                                    []string
@@ -169,6 +168,9 @@ func (s *Server) gap(ctx context.Context, kind, text string) {
 	if len(uniq) > 8 {
 		uniq = uniq[:8]
 	}
+	if s.db == nil || s.db.Auth == nil {
+		return
+	}
 	s.db.Auth.Exec(context.WithoutCancel(ctx), `insert into brain_gaps (kind, words, n) values ($1, $2, 1) on conflict (day, kind, words) do update set n = brain_gaps.n + 1`, kind, strings.Join(uniq, " "))
 }
 
@@ -229,10 +231,16 @@ func (s *Server) adminBrain(w http.ResponseWriter, r *http.Request) {
 func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	var in struct {
 		Photo, Lang string
-		Scene       *bool `json:"scene"` // false: species only, with the quick BioCLIP-only scene (no vision model)
+		Photos      []shot `json:"photos"` // multi-photo scan: 1-8 {photo, kind}
+		Scene       *bool  `json:"scene"`  // false: species only, with the quick BioCLIP-only scene (no vision model)
 	}
-	if decode(r, &in) != nil || len(in.Photo) == 0 || len(in.Photo) > 1_800_000 {
+	if decode(r, &in) != nil || len(in.Photo) > 1_800_000 {
 		s.fail(w, r, bad("invalid_request"))
+		return
+	}
+	ss, err := shots(in.Photo, in.Photos)
+	if err != nil {
+		s.fail(w, r, err)
 		return
 	}
 	if theBrain.dir == "" {
@@ -268,14 +276,16 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	}
 	// 1. Our own species model (BioCLIP over our list).
 	source := "internal"
-	var sc scene
-	var ids []bioCand
-	if in.Scene != nil && !*in.Scene {
-		id := askID(ctx, in.Photo)
-		img, _ := base64.StdEncoding.DecodeString(in.Photo)
-		sc, ids = buildScene(vlmScene{}, false, id.Scene, img), id.Candidates
-	} else {
-		sc, ids = readScene(ctx, in.Photo)
+	main := pick(ss, "whole", "leaf", "flower", "stem", "other")
+	in.Photo = ss[main].Photo
+	// Cheap first: BioCLIP + the photo's own stats answer in well under a second. The vision model only warms
+	// the whole scene in the background when the species is unsure or the quick scene can't tell the medium,
+	// pot or a fake plant; the care-plan or diagnosis that follows then gets it from the cache.
+	sc := fuseScene(ctx, ss)
+	ids := fuseSpecies(ctx, ss)
+	_, full := cachedFull(in.Photo)
+	if !full && (in.Scene == nil || *in.Scene) && (len(ids) == 0 || ids[0].Score < 0.5 || sc.needsFull()) {
+		warmScene(in.Photo)
 	}
 	for _, c := range ids {
 		if c.Score >= 0.05 {
@@ -327,7 +337,16 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		s.gap(ctx, "identify", "unknown plant")
 	}
 	confident := len(out) > 0 && out[0].Score >= 0.5
-	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "confident": confident, "source": source, "scene": sc})
+	depth := "quick"
+	if full {
+		depth = "full"
+	}
+	top := 0.0
+	if len(out) > 0 {
+		top = out[0].Score
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "confident": confident, "source": source, "scene": sc, "sceneDepth": depth,
+		"used": kindsOf(ss), "tips": photoTips(in.Lang, top, kindsOf(ss), "leaf", "whole", "flower", "stem")})
 }
 
 // POST /v1/brain/care-plan {species, situation, lat?, lon?}: watering rhythm, light, feeding, repotting and
@@ -338,7 +357,8 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 		Lang      string              `json:"lang"`
 		Situation map[string][]string `json:"situation"`
 		Lat, Lon  *float64
-		Photo     string `json:"photo"` // optional: what the photo shows joins the situation
+		Photo     string `json:"photo"`  // optional: what the photo shows joins the situation
+		Photos    []shot `json:"photos"` // or several (pot and soil photos tell the medium, drainage and size)
 		extras
 	}
 	if decode(r, &in) != nil || len(in.Species) > 120 || len(in.Photo) > 1_800_000 {
@@ -359,9 +379,16 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 		sit = situation{}
 	}
 	var sc *scene
-	if in.Photo != "" {
+	var used []string
+	if in.Photo != "" || len(in.Photos) > 0 {
+		ss, err := shots(in.Photo, in.Photos)
+		if err != nil {
+			s.fail(w, r, err)
+			return
+		}
+		used = kindsOf(ss)
 		ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 85*time.Second)
-		got, _ := readScene(ctx, in.Photo)
+		got := fuseScene(ctx, ss, pick(ss, "pot", "soil", "whole"))
 		cancel()
 		sc = &got
 		sit = got.situation(sit)
@@ -512,7 +539,20 @@ func (s *Server) brainCarePlan(w http.ResponseWriter, r *http.Request) {
 		"feedEveryWeeks": feed, "feed": feedKind, "mix": mix, "repotEveryYears": sp.RepotYears,
 		"toxicCats": sp.ToxicCats, "toxicDogs": sp.ToxicDogs, "tip": theBrain.tr(lang, sp.Tip),
 		"warnings": notes, "advice": advice, "adviceIds": adviceIDs, "followUps": follows, "weatherNotes": wf.notes(lang, isOutdoor(sit), sp), "situation": sit, "scene": sc,
+		"used": used, "tips": carePlanTips(lang, sc, used, in.Medium != "" || len(in.Situation["medium"]) > 0),
 	})
+}
+
+// carePlanTips: when photos were sent but the medium or pot is still unsure, which photo would settle it.
+func carePlanTips(lang string, sc *scene, used []string, mediumGiven bool) []photoTip {
+	if sc == nil || len(used) == 0 {
+		return []photoTip{}
+	}
+	conf := min(sc.Soil.Medium.Conf, sc.Pot.Drainage.Conf)
+	if mediumGiven {
+		conf = sc.Pot.Drainage.Conf
+	}
+	return photoTips(lang, conf, used, "pot", "soil", "whole")
 }
 
 type bioCand struct {

@@ -3,8 +3,6 @@ package api
 import (
 	"bytes"
 	"context"
-	"crypto/sha256"
-	"encoding/base64"
 	"encoding/binary"
 	"encoding/json"
 	"image"
@@ -12,7 +10,6 @@ import (
 	"math"
 	"net/http"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -186,7 +183,7 @@ type idResult struct {
 	Scene      map[string]map[string]float64
 }
 
-func askID(ctx context.Context, jpegB64 string) idResult {
+func askIDRaw(ctx context.Context, jpegB64 string) idResult {
 	var out idResult
 	body, _ := json.Marshal(map[string]string{"photo": jpegB64})
 	cctx, cancel := context.WithTimeout(ctx, 25*time.Second)
@@ -473,43 +470,6 @@ func parseTIFF(d []byte) (t, n, iso float64, ok bool) {
 	return t, n, iso, t > 0 && n > 0
 }
 
-// sceneCache keeps a photo's scene for a few minutes: the app often identifies, then diagnoses the same photo.
-var sceneCache sync.Map
-
-type sceneCached struct {
-	at  time.Time
-	sc  scene
-	ids []bioCand
-}
-
-// readScene runs both models on a photo (in parallel) and returns the scene plus BioCLIP's species guesses.
-func readScene(ctx context.Context, jpegB64 string) (scene, []bioCand) {
-	key := sha256.Sum256([]byte(jpegB64))
-	if c, ok := sceneCache.Load(key); ok && time.Since(c.(sceneCached).at) < 10*time.Minute {
-		return c.(sceneCached).sc, c.(sceneCached).ids
-	}
-	img, _ := base64.StdEncoding.DecodeString(jpegB64)
-	var id idResult
-	var v vlmScene
-	var okV bool
-	var wg sync.WaitGroup
-	wg.Add(2)
-	go func() { defer wg.Done(); id = askID(ctx, jpegB64) }()
-	go func() { defer wg.Done(); v, okV = askVLMScene(ctx, jpegB64) }()
-	wg.Wait()
-	sc := buildScene(v, okV, id.Scene, img)
-	if okV || id.Scene != nil {
-		sceneCache.Store(key, sceneCached{time.Now(), sc, id.Candidates})
-		sceneCache.Range(func(k, c any) bool {
-			if time.Since(c.(sceneCached).at) > 10*time.Minute {
-				sceneCache.Delete(k)
-			}
-			return true
-		})
-	}
-	return sc, id.Candidates
-}
-
 // situation turns what the photo shows (confident fields only) into the knowledge base's situation keys,
 // without overriding anything the owner told us.
 func (sc scene) situation(into situation) situation {
@@ -647,13 +607,14 @@ func (s *Server) brainScene(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, bad("invalid_request"))
 		return
 	}
-	if img, err := base64.StdEncoding.DecodeString(in.Photo); err != nil || len(img) < 4 || img[0] != 0xFF || img[1] != 0xD8 {
-		s.fail(w, r, bad("invalid_photo"))
+	photo, err := normPhoto(in.Photo)
+	if err != nil {
+		s.fail(w, r, err)
 		return
 	}
 	ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 85*time.Second)
 	defer cancel()
-	sc, _ := readScene(ctx, in.Photo)
+	sc, _ := readScene(ctx, photo)
 	writeJSON(w, http.StatusOK, map[string]any{"scene": sc})
 }
 
@@ -727,6 +688,28 @@ func (x extras) into(sit situation) situation {
 
 // bioclip: species candidates only (batch identify crops).
 func bioclip(ctx context.Context, jpegB64 string) []bioCand { return askID(ctx, jpegB64).Candidates }
+
+// askIDBatch: several crops in one BioCLIP call (one batched forward pass).
+func askIDBatch(ctx context.Context, jpegs []string) []idResult {
+	out := make([]idResult, len(jpegs))
+	if len(jpegs) == 0 {
+		return out
+	}
+	body, _ := json.Marshal(map[string]any{"photos": jpegs})
+	cctx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+	req, _ := http.NewRequestWithContext(cctx, "POST", "http://127.0.0.1:8092/", bytes.NewReader(body))
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return out
+	}
+	defer res.Body.Close()
+	var r struct{ Results []idResult }
+	if json.NewDecoder(res.Body).Decode(&r) == nil && len(r.Results) == len(jpegs) {
+		return r.Results
+	}
+	return out
+}
 
 // seeWith: a free-form prompt to the local vision model (batch identify boxes).
 func seeWith(ctx context.Context, jpegB64, prompt string, maxTokens int) string {

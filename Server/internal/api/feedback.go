@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -99,6 +100,52 @@ func (s *Server) learnLoop(ctx context.Context) {
 	}
 }
 
+// outdoorPrior: how much less likely a garden species is than a houseplant in an owner's photo. Retuned weekly
+// (Sundays, or after a restart) from the last 90 days of species corrections: owners correcting to outdoor
+// species more often than away from them loosens it, the reverse tightens it. Default -0.7, range -1.5..0.
+var outdoorPriorState struct {
+	v    float64
+	week string
+}
+
+func (s *Server) outdoorPrior(ctx context.Context) float64 {
+	y, wk := time.Now().UTC().ISOWeek()
+	week := fmt.Sprintf("%d-%d", y, wk)
+	if outdoorPriorState.week != "" && (outdoorPriorState.week == week || time.Now().UTC().Weekday() != time.Sunday) {
+		return outdoorPriorState.v
+	}
+	v := -0.7
+	var toOut, fromOut, n float64
+	if rows, err := s.db.Auth.Query(ctx, `select predicted, corrected from brain_feedback where kind = 'species' and corrected <> predicted
+		and created_at > now() - interval '90 days'`); err == nil {
+		for rows.Next() {
+			var p, c string
+			if rows.Scan(&p, &c) != nil {
+				continue
+			}
+			speciesDB.RLock()
+			ps, cs := speciesDB.byID[p], speciesDB.byID[c]
+			speciesDB.RUnlock()
+			if ps == nil || cs == nil {
+				continue
+			}
+			n++
+			if cs.Outdoor && !ps.Outdoor {
+				toOut++
+			}
+			if ps.Outdoor && !cs.Outdoor {
+				fromOut++
+			}
+		}
+		rows.Close()
+	}
+	if n >= 20 {
+		v = max(-1.5, min(0, -0.7+1.5*(toOut-fromOut)/n))
+	}
+	outdoorPriorState.v, outdoorPriorState.week = v, week
+	return v
+}
+
 // learnRound turns confirmed species corrections into (1) a per-species prior for mtj-id (more owners correcting
 // to a species → a small boost) and (2) reference photos: corrected photos the owner shared are embedded into
 // the reference index by mtj-id. Nothing leaves the server.
@@ -120,7 +167,7 @@ func (s *Server) learnRound(ctx context.Context) {
 		}
 		rows.Close()
 	}
-	postID(ctx, "/prior", map[string]any{"boost": prior})
+	postID(ctx, "/prior", map[string]any{"boost": prior, "_outdoor": s.outdoorPrior(ctx)})
 	rows, err := s.db.Auth.Query(ctx, `select id, corrected, photo_ref from brain_feedback where kind = 'species' and photo_ref is not null and learned_at is null limit 200`)
 	if err != nil {
 		return

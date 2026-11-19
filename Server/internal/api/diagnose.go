@@ -2,8 +2,8 @@ package api
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -37,10 +37,12 @@ type diagnosis struct {
 	Context    string   `json:"context,omitempty"`
 	Ref        string   `json:"ref,omitempty"` // send back with /v1/diagnose/feedback // what the plant's situation has to do with it
 	// Our knowledge ids behind the answer, best first (up to 3), and the runners-up by name.
-	IDs          []string `json:"ids,omitempty"`
-	Alternatives []string `json:"alternatives,omitempty"`
-	Scene        *scene   `json:"scene,omitempty"`
-	Weather      []string `json:"weather,omitempty"` // reasons from the local weather, in the owner's language
+	IDs          []string   `json:"ids,omitempty"`
+	Alternatives []string   `json:"alternatives,omitempty"`
+	Used         []string   `json:"used,omitempty"` // photo kinds that went into the answer
+	Tips         []photoTip `json:"tips,omitempty"` // the next most useful photos when unsure
+	Scene        *scene     `json:"scene,omitempty"`
+	Weather      []string   `json:"weather,omitempty"` // reasons from the local weather, in the owner's language
 }
 
 func (s *Server) aiClient() *anthropic.Client {
@@ -54,7 +56,8 @@ func (s *Server) aiClient() *anthropic.Client {
 
 func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 	var in struct {
-		Photo   string `json:"photo"` // base64 JPEG, ≤ 1.5 MB
+		Photo   string `json:"photo"`  // base64 JPEG/WebP ≤ 768 px
+		Photos  []shot `json:"photos"` // or a multi-photo scan: 1-8 {photo, kind}
 		Species string `json:"species"`
 		Note    string `json:"note"`
 		Lang    string `json:"lang"`
@@ -66,14 +69,25 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 		Lon       *float64            `json:"lon"`
 		extras
 	}
-	if decode(r, &in) != nil || len(in.Photo) == 0 || len(in.Photo) > 1_800_000 || len(in.Species) > 120 || len(in.Note) > 600 || len(in.Lang) > 12 {
+	if decode(r, &in) != nil || len(in.Photo) > 1_800_000 || len(in.Species) > 120 || len(in.Note) > 600 || len(in.Lang) > 12 {
 		s.fail(w, r, bad("invalid_request"))
 		return
 	}
-	img, err := base64.StdEncoding.DecodeString(in.Photo)
-	if err != nil || len(img) < 4 || img[0] != 0xFF || img[1] != 0xD8 {
-		s.fail(w, r, bad("invalid_photo"))
+	ss, err := shots(in.Photo, in.Photos)
+	if err != nil {
+		s.fail(w, r, err)
 		return
+	}
+	// The vision model reads the leaf (underside first: pests) and the soil (moisture, mould, gnats).
+	lead := pick(ss, "underside", "leaf", "whole", "stem", "flower", "other")
+	full := []int{lead}
+	if i := pick(ss, "soil"); ss[i].Kind == "soil" && i != lead {
+		full = append(full, i)
+	}
+	in.Photo = ss[lead].Photo
+	photoIDs := ""
+	for _, x := range ss {
+		photoIDs += fmt.Sprintf("%s:%x,", x.Kind, photoKey(x.Photo))
 	}
 	ctx, c := r.Context(), claimsOf(r)
 	// Plus only, and a daily cap; the use is counted before the call so retries can't exceed it.
@@ -109,10 +123,25 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 	sit = mergeSit(sit, wf.situation())
 	tctx, tcancel := context.WithTimeout(context.WithoutCancel(ctx), 90*time.Second)
 	defer tcancel()
-	d, err := s.think(tctx, in.Photo, in.Species, in.Note, in.Lang, sit)
-	if err != nil {
-		s.fail(w, r, err)
-		return
+	// Same photo, note, species, language and situation: the same answer (weather notes are added after).
+	key := answerKey("dx", photoIDs, in.Species, strings.TrimSpace(strings.ToLower(in.Note)), in.Lang, sit.bucket())
+	var d diagnosis
+	if v, ok := answers.get(key); ok {
+		d = v.(diagnosis)
+		perfCache("diagnose", true)
+	} else {
+		perfCache("diagnose", false)
+		var given *scene
+		if len(ss) > 1 {
+			fs := fuseScene(tctx, ss, full...)
+			given = &fs
+		}
+		d, err = s.think(tctx, in.Photo, given, in.Species, in.Note, in.Lang, sit)
+		if err != nil {
+			s.fail(w, r, err)
+			return
+		}
+		answers.put(key, d)
 	}
 	if len(d.Steps) > 4 {
 		d.Steps = d.Steps[:4]
@@ -121,6 +150,8 @@ func (s *Server) diagnose(w http.ResponseWriter, r *http.Request) {
 	if lang == "" || strings.HasPrefix(lang, "en") {
 		lang = "en"
 	}
+	d.Used = kindsOf(ss)
+	d.Tips = photoTips(lang, confNum(d.Confidence), d.Used, "underside", "leaf", "soil", "stem", "whole", "roots")
 	d.Weather = wf.notes(lang, isOutdoor(sit), theBrainWith(s).findSpecies(in.Species))
 	writeJSON(w, http.StatusOK, d)
 }

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Every 5 minutes: API health (incl. database), own Postgres, disk, backup age, and new errors in the API log.
+# Every 5 minutes: API health (incl. database), own Postgres, disk, backup age, new errors and p95 latency
+# regressions in the API log.
 set -uo pipefail
 A=/opt/mtj/bin/mtj-alert.sh
 h=$(curl -s -m 5 --unix-socket /run/mtj/api.sock http://x/health || true)
@@ -17,6 +18,9 @@ wal=$(ls -t /var/backups/mtj/wal/*.gpg 2>/dev/null | head -1)
 [[ -n $wal && $(( $(date +%s) - $(stat -c %Y "$wal") )) -lt 3600 ]] || $A "WAL shipping stalled" "Newest: ${wal:-none}"
 errs=$(journalctl -u mtj-api --since "-5min" -o cat --no-pager 2>/dev/null | grep '"level":"ERROR"' | tail -20)
 [[ -z $errs ]] || $A "API errors in the last 5 minutes" "$errs"
+slow=$(journalctl -u mtj-api --since "-5min" -o cat --no-pager 2>/dev/null | grep '"msg":"p95_regression"' | tail -10)
+[[ -z $slow ]] || $A "API got slower (p95)" "$slow
+Details: /v1/admin/perf"
 ai=$(curl -s -m 5 http://127.0.0.1:8091/health || true)
 if [[ $ai != *'"ok"'* ]]; then
   (cd /var/lib/mtj-db/home && sudo -u mtj XDG_RUNTIME_DIR=/run/user/$(id -u mtj) systemctl --user restart mtj-ai) || true

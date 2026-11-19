@@ -8573,6 +8573,14 @@
     "This past week was about %d °C cooler than usual for the month, so water a little less.": "この1週間は平年より約%d°C涼しいので、水やりを少し控えめに。",
     "Hardly any rain this week (%d mm, usually about %d mm a week): outdoor pots will need you.": "今週はほとんど雨なし（%dmm、平年は週%dmmほど）。屋外の鉢は水やりが必要です。",
     "The air outside is very dry today (%d%% humidity); with heating or AC on, indoor air gets drier still.": "今日は外の空気がとても乾燥しています（湿度%d%%）。暖房や冷房を使うと室内はさらに乾きます。",
-    "A wet week: skip watering outdoor pots, empty saucers and move succulents under cover.": "雨の多い週：屋外の鉢は水やりをお休みし、受け皿の水を捨て、多肉植物は屋根の下へ。"
+    "A wet week: skip watering outdoor pots, empty saucers and move succulents under cover.": "雨の多い週：屋外の鉢は水やりをお休みし、受け皿の水を捨て、多肉植物は屋根の下へ。",
+    "Add a sharp close-up of one leaf in daylight": "昼間の光で葉を1枚、くっきり接写して追加してください",
+    "Add a close-up of a leaf underside to check for mites": "ハダニがいないか、葉の裏の接写を追加してください",
+    "Add a photo of a flower if it has one": "花が咲いていれば、花の写真を追加してください",
+    "Add a photo of the whole plant from a step back": "少し離れて、株全体の写真を追加してください",
+    "Add a close-up of the stem where it meets the soil": "茎の土との境目を接写して追加してください",
+    "Add a photo of the soil surface to check moisture, mould and gnats": "湿り具合・カビ・コバエを確認するため、土の表面の写真を追加してください",
+    "Add a photo of the pot from the side to see its size and drainage": "大きさと水はけを見るため、鉢を横から撮った写真を追加してください",
+    "Add a photo of the roots if you can slide the plant out": "鉢から抜けるなら、根の写真を追加してください"
   }
 }
