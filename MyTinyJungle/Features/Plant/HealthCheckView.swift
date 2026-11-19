@@ -230,7 +230,7 @@ struct PestPlanView: View {
             Text("Based on what you saw. Confirm with a close look under the leaves.").font(.caption).foregroundStyle(Jungle.subtle)
             ForEach(Array(pest.steps.enumerated()), id: \.offset) { i, step in
                 HStack(alignment: .top, spacing: 10) {
-                    Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(.white).frame(width: 22, height: 22).background(Jungle.leaf, in: Circle())
+                    Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.onForest).frame(width: 22, height: 22).background(Jungle.forest, in: Circle())
                     Text(step).font(.subheadline).foregroundStyle(Jungle.text)
                 }
             }
@@ -281,8 +281,8 @@ struct FlowChips: View {
                     .buttonStyle(.plain)
                     .font(.subheadline)
                     .padding(.horizontal, 12).padding(.vertical, 7)
-                    .foregroundStyle(selected == item ? Color.white : Jungle.text)
-                    .background(selected == item ? Jungle.terracotta : Jungle.cream, in: Capsule())
+                    .foregroundStyle(selected == item ? Jungle.warmText : Jungle.text)
+                    .background(selected == item ? Jungle.warmFill : Jungle.surface, in: Capsule())
                     .overlay(Capsule().stroke(Jungle.border))
             }
         }

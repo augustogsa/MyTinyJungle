@@ -254,10 +254,10 @@ struct CarePlanCard: View {
                     SectionTitle(Grammar.pt(String(localized: "Care plan for where it lives", comment: "Plant screen section title: care plan adapted to the plant's room and climate; max 32 chars")))
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(p.warnings ?? [], id: \.self) { w in
-                            Label { Text(w).font(.subheadline.weight(.semibold)).fixedSize(horizontal: false, vertical: true) } icon: { Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange) }
+                            Label { Text(w).font(.subheadline.weight(.semibold)).fixedSize(horizontal: false, vertical: true) } icon: { Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Jungle.terracotta) }
                                 .foregroundStyle(Jungle.text)
                                 .padding(10).frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color.orange.opacity(0.14), in: RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
+                                .background(Jungle.warmFill, in: RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
                         }
                         ForEach(rows(p), id: \.1) { r in
                             HStack(alignment: .firstTextBaseline, spacing: 10) {

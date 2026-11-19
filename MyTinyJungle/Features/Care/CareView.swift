@@ -108,7 +108,7 @@ struct CareView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(dayTitle(day)).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                        if cal.isDateInToday(day) { Text("Now").font(.caption.weight(.bold)).foregroundStyle(Jungle.warmText).padding(.horizontal, 8).padding(.vertical, 2).background(Jungle.peach.opacity(0.5), in: Capsule()) }
+                        if cal.isDateInToday(day) { Text("Now").font(.caption.weight(.bold)).foregroundStyle(Jungle.warmText).padding(.horizontal, 8).padding(.vertical, 2).background(Jungle.warmFill, in: Capsule()) }
                     }
                     ForEach(grouped[day] ?? []) { item in
                         HStack(spacing: 12) {
@@ -558,9 +558,9 @@ struct WeekStrip: View {
                             .foregroundStyle(isToday ? Jungle.warmText : Jungle.subtle)
                         Text(d.formatted(.dateTime.day()))
                             .font(.system(.body, design: .rounded, weight: isSel || isToday ? .bold : .regular))
-                            .foregroundStyle(isSel ? Color.white : Jungle.text)
+                            .foregroundStyle(isSel ? Jungle.onForest : Jungle.text)
                             .frame(width: 36, height: 36)
-                            .background { if isSel { Circle().fill(Jungle.forest) } else if isToday { Circle().strokeBorder(Jungle.forest, lineWidth: 1.5) } }
+                            .background { if isSel { Circle().fill(Jungle.forest) } else if isToday { Circle().strokeBorder(Jungle.tint, lineWidth: 1.5) } }
                         HStack(spacing: 3) {
                             if done > 0 { Circle().fill(Jungle.leaf).frame(width: 5, height: 5) }
                             if count > 0 && d >= cal.startOfDay(for: Date()) { Circle().strokeBorder(Jungle.terracotta, lineWidth: 1.2).frame(width: 5, height: 5) }
@@ -628,7 +628,7 @@ private struct CareStatsCard: View {
             Text(label).font(.footnote).foregroundStyle(Jungle.subtle).lineLimit(1).minimumScaleFactor(0.8)
         }
         .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-        .background(Jungle.mint.opacity(0.45), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Jungle.fill, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .combine)
     }
 }

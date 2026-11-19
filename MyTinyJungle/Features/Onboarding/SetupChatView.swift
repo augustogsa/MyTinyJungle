@@ -120,9 +120,9 @@ struct SetupChatView: View {
                             .textContentType(step == .name ? .givenName : step == .place ? .addressCity : nil)
                             .padding(.horizontal, 14).frame(minHeight: 40)
                         Button(action: sendText) {
-                            Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(Jungle.surface)
+                            Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(canSend ? Jungle.onForest : Jungle.tertiary)
                                 .frame(width: 36, height: 36)
-                                .background(canSend ? Jungle.forest : Jungle.subtle.opacity(0.4), in: Circle())
+                                .background(canSend ? Jungle.forest : Jungle.surfaceRaised, in: Circle())
                         }
                         .disabled(!canSend)
                         .accessibilityLabel(Grammar.pt(String(localized: "Send", comment: "Send button accessibility label")))

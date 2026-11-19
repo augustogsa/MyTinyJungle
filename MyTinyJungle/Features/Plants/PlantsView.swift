@@ -71,7 +71,7 @@ struct PlantsView: View {
                                 ForEach(Filter.allCases, id: \.self) { f in
                                     Button { withAnimation(.snappy) { filter = f } } label: {
                                         Text(f.label).font(.subheadline.weight(.medium))
-                                            .foregroundStyle(filter == f ? Color.white : Jungle.text)
+                                            .foregroundStyle(filter == f ? Jungle.onForest : Jungle.text)
                                             .padding(.horizontal, 16).padding(.vertical, 8)
                                             .background(filter == f ? Jungle.forest : Jungle.surface, in: Capsule())
                                             .overlay(Capsule().strokeBorder(filter == f ? .clear : Jungle.border, lineWidth: 1))

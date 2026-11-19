@@ -2,10 +2,10 @@ import SwiftUI
 
 /// Little lessons: cosy, plant-parent explainers built from the knowledge base.
 extension GuideLibrary {
-    private static let blue = Color(red: 0.27, green: 0.5, blue: 0.72)
-    private static let teal = Color(red: 0.25, green: 0.55, blue: 0.55)
-    private static let plum = Color(red: 0.55, green: 0.35, blue: 0.55)
-    private static let gold = Color(red: 0.72, green: 0.56, blue: 0.2)
+    private static let blue = Jungle.sky
+    private static let teal = Jungle.teal
+    private static let plum = Jungle.plum
+    private static let gold = Jungle.gold
 
     private static func lesson(_ id: String, _ title: String, _ sub: String, _ symbol: String, _ tint: Color, _ min: Int,
                                _ level: CareGuide.Level = .easy, tools: [String] = [], when: String, logs: CareKind? = nil,
@@ -103,13 +103,13 @@ extension GuideLibrary {
             S(title: Grammar.pt(String(localized: "Wait for roots", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "In 4–8 weeks roots show through the moss.", comment: "Care guide step instruction; warm, practical")), symbol: "clock.fill"),
             S(title: Grammar.pt(String(localized: "Cut and pot", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "Cut below the moss ball and plant it whole. The old stem will sprout again.", comment: "Care guide step instruction; warm, practical")), symbol: "scissors"),
         ]),
-        lesson("pest-check", Grammar.pt(String(localized: "Weekly pest patrol", comment: "Care guide title; short")), Grammar.pt(String(localized: "Catch them early", comment: "Care guide subtitle; short")), "magnifyingglass", Color(red: 0.75, green: 0.33, blue: 0.27), 3, when: Grammar.pt(String(localized: "Once a week, while watering.", comment: "When to do this care guide")), [
+        lesson("pest-check", Grammar.pt(String(localized: "Weekly pest patrol", comment: "Care guide title; short")), Grammar.pt(String(localized: "Catch them early", comment: "Care guide subtitle; short")), "magnifyingglass", Jungle.brick, 3, when: Grammar.pt(String(localized: "Once a week, while watering.", comment: "When to do this care guide")), [
             S(title: Grammar.pt(String(localized: "Flip a leaf", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "Most pests hide underneath. Look for webs, white fluff, brown bumps or tiny dots.", comment: "Care guide step instruction; warm, practical")), symbol: "arrow.uturn.down"),
             S(title: Grammar.pt(String(localized: "Check the joints", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "Mealybugs love the crooks where leaves meet stems.", comment: "Care guide step instruction; warm, practical")), symbol: "point.3.connected.trianglepath.dotted"),
             S(title: Grammar.pt(String(localized: "Sticky leaves?", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "A shiny, sticky film means sap-suckers like scale or aphids are nearby.", comment: "Care guide step instruction; warm, practical")), symbol: "hand.raised.fill"),
             S(title: Grammar.pt(String(localized: "Quarantine new plants", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "Keep newcomers apart for two weeks before they join the family.", comment: "Care guide step instruction; warm, practical")), symbol: "shield.fill", tip: Grammar.pt(String(localized: "Yellow sticky traps catch fungus gnats and show you what's flying.", comment: "Care guide step tip"))),
         ]),
-        lesson("fungus-gnats", Grammar.pt(String(localized: "Say goodbye to fungus gnats", comment: "Care guide title; short")), Grammar.pt(String(localized: "Dry the top, trap the flies", comment: "Care guide subtitle; short")), "ant.fill", Color(red: 0.75, green: 0.33, blue: 0.27), 5, tools: [Grammar.pt(String(localized: "Yellow sticky traps", comment: "Tool needed for a care guide"))], when: Grammar.pt(String(localized: "Tiny black flies around the soil.", comment: "When to do this care guide")), logs: .treat, [
+        lesson("fungus-gnats", Grammar.pt(String(localized: "Say goodbye to fungus gnats", comment: "Care guide title; short")), Grammar.pt(String(localized: "Dry the top, trap the flies", comment: "Care guide subtitle; short")), "ant.fill", Jungle.brick, 5, tools: [Grammar.pt(String(localized: "Yellow sticky traps", comment: "Tool needed for a care guide"))], when: Grammar.pt(String(localized: "Tiny black flies around the soil.", comment: "When to do this care guide")), logs: .treat, [
             S(title: Grammar.pt(String(localized: "Let it dry", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "Gnat larvae need damp compost. Let the top few centimetres dry between waterings.", comment: "Care guide step instruction; warm, practical")), symbol: "sun.max.fill"),
             S(title: Grammar.pt(String(localized: "Set traps", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "Sticky traps catch adults before they lay more eggs.", comment: "Care guide step instruction; warm, practical")), symbol: "rectangle.fill"),
             S(title: Grammar.pt(String(localized: "Water from below", comment: "Care guide step title; short")), detail: Grammar.pt(String(localized: "For a few weeks, water from a saucer so the surface stays dry.", comment: "Care guide step instruction; warm, practical")), symbol: "water.waves"),
@@ -192,8 +192,8 @@ extension GuideLibrary {
             ])
         }
         let topicLook: [String: (String, Color)] = [
-            "propagation": ("scissors", Jungle.leaf), "watering": ("drop.fill", Color(red: 0.36, green: 0.6, blue: 0.75)), "light": ("sun.max.fill", gold),
-            "environment": ("humidity.fill", Color(red: 0.36, green: 0.6, blue: 0.75)), "care": ("leaf.fill", Jungle.leaf), "safety": ("pawprint.fill", Jungle.terracotta),
+            "propagation": ("scissors", Jungle.leaf), "watering": ("drop.fill", Jungle.sky), "light": ("sun.max.fill", gold),
+            "environment": ("humidity.fill", Jungle.sky), "care": ("leaf.fill", Jungle.leaf), "safety": ("pawprint.fill", Jungle.terracotta),
             "edible": ("leaf.arrow.circlepath", Jungle.leaf), "myths": ("sparkles", plum), "flowering": ("camera.macro", plum),
             "outdoor": ("sun.horizon.fill", gold), "pests": ("ant.fill", Jungle.terracotta), "problems": ("stethoscope", Jungle.terracotta),
         ]

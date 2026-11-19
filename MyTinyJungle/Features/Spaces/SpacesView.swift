@@ -239,7 +239,7 @@ struct BestPlaceView: View {
                                 HStack {
                                     Image(systemName: f.fit.symbol).foregroundStyle(f.fit >= .good ? Jungle.leaf : Jungle.terracotta)
                                     Text(space.name).font(.system(.headline, design: .rounded))
-                                    if space.id == current?.id { Text("Now").font(.caption2.weight(.bold)).padding(.horizontal, 6).padding(.vertical, 2).background(Jungle.sun.opacity(0.4), in: Capsule()) }
+                                    if space.id == current?.id { Text("Now").font(.caption2.weight(.bold)).padding(.horizontal, 6).padding(.vertical, 2).foregroundStyle(Jungle.text).background(Jungle.sunFill, in: Capsule()) }
                                     Spacer()
                                     Text(f.fit.label).font(.subheadline).foregroundStyle(Jungle.subtle)
                                 }

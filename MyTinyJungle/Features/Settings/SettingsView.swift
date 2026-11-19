@@ -88,7 +88,7 @@ struct SettingsView: View {
                                     Text(appIcon.title).font(.caption).foregroundStyle(Jungle.subtle)
                                 }
                                 Spacer(minLength: 8)
-                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
+                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.tertiary)
                             }
                             .padding(.vertical, 11).frame(minHeight: 52).contentShape(Rectangle())
                         }.buttonStyle(.plain)

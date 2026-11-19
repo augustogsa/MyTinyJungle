@@ -109,7 +109,7 @@ struct MeView: View {
                     stat(daysTogether >= 365 ? (daysTogether / 365).formatted() : daysTogether.formatted(), daysTogether >= 730 ? Grammar.pt(String(localized: "years", comment: "Me stat caption: years together")) : daysTogether >= 365 ? Grammar.pt(String(localized: "year", comment: "Me stat caption: one year together")) : Grammar.pt(String(localized: "days", comment: "Me stat caption: days together")))
                 }
                 .padding(.vertical, 10)
-                .background(Jungle.mint.opacity(0.6), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(Jungle.fill, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
             .padding(16)
             .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius + 4, style: .continuous))
@@ -200,11 +200,11 @@ struct MeView: View {
             HStack(alignment: .center, spacing: 14) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Greenhouse or Jungle").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                    Text("Room for every plant you love, early help when one struggles, and the right food for each.").font(.subheadline).foregroundStyle(Jungle.text.opacity(0.75))
+                    Text("Room for every plant you love, early help when one struggles, and the right food for each.").font(.subheadline).foregroundStyle(Jungle.subtle)
                         .fixedSize(horizontal: false, vertical: true)
-                    Text("See plans").font(.subheadline.weight(.semibold)).foregroundStyle(.white)
+                    Text("See plans").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.onForest)
                         .padding(.horizontal, 14).padding(.vertical, 7)
-                        .background(Jungle.leaf, in: Capsule())
+                        .background(Jungle.forest, in: Capsule())
                         .padding(.top, 4)
                 }
                 Spacer(minLength: 0)

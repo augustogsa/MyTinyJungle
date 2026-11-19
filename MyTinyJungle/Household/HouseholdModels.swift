@@ -60,7 +60,7 @@ struct Member: Codable, Identifiable, Hashable {
         return parts.map { String($0.prefix(1)) }.joined().uppercased()
     }
     func isAway(_ now: Date = Date()) -> Bool { awayUntil.map { $0 > now } ?? false }
-    static let palette: [Color] = [Jungle.leaf, Jungle.terracotta, Color(red: 0.42, green: 0.55, blue: 0.78), Color(red: 0.78, green: 0.62, blue: 0.25), Color(red: 0.62, green: 0.48, blue: 0.72), Color(red: 0.3, green: 0.6, blue: 0.58)]
+    static let palette: [Color] = [Jungle.leaf, Jungle.terracotta, Jungle.sky, Jungle.gold, Jungle.plum, Jungle.teal]
     var color: Color { Self.palette[colorIndex % Self.palette.count] }
 }
 

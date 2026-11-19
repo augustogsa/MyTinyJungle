@@ -18,7 +18,7 @@ struct AIDoctorCard: View {
                     Icon3DView(.healthShield, size: 28)
                     Text(a.problem).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                     Spacer(minLength: 0)
-                    if a.urgent { Text(Grammar.pt(String(localized: "Act soon", comment: "AI doctor urgency badge; max 12 chars"))).font(.caption.weight(.bold)).foregroundStyle(.white).padding(.horizontal, 8).padding(.vertical, 3).background(.orange, in: Capsule()) }
+                    if a.urgent { Text(Grammar.pt(String(localized: "Act soon", comment: "AI doctor urgency badge; max 12 chars"))).font(.caption.weight(.bold)).foregroundStyle(Jungle.warmText).padding(.horizontal, 8).padding(.vertical, 3).background(Jungle.warmFill, in: Capsule()) }
                 }
                 Text(a.why).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                 if let c = a.context, !c.isEmpty {

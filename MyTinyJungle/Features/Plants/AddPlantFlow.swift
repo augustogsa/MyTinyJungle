@@ -193,7 +193,7 @@ struct AddPlantFlow: View {
                                 Text(unsure ? Grammar.pt(String(localized: "Maybe", comment: "Species candidate tag for an uncertain on-device guess; max 14 chars")) : c.id == candidates.first?.id ? Grammar.pt(String(localized: "Best match", comment: "Species candidate tag; max 14 chars")) : c.source).font(.caption2).opacity(0.8)
                             }
                             .padding(.horizontal, 14).padding(.vertical, 9)
-                            .foregroundStyle(species == c.species ? Color.white : Jungle.text)
+                            .foregroundStyle(species == c.species ? Jungle.onForest : Jungle.text)
                             .background(species == c.species ? Jungle.forest : Jungle.mist, in: Capsule())
                         }
                         .buttonStyle(.plain)
@@ -244,7 +244,7 @@ struct AddPlantFlow: View {
                             .buttonStyle(.plain)
                             .font(.subheadline.weight(.medium)).fontDesign(.rounded)
                             .padding(.horizontal, 14).padding(.vertical, 8)
-                            .foregroundStyle(name == idea ? Color.white : Jungle.text)
+                            .foregroundStyle(name == idea ? Jungle.onForest : Jungle.text)
                             .background(name == idea ? Jungle.forest : Jungle.surface, in: Capsule())
                             .overlay(Capsule().strokeBorder(Jungle.border, lineWidth: name == idea ? 0 : 0.5))
                     }
@@ -326,8 +326,8 @@ struct AddPlantFlow: View {
                         }
                             .buttonStyle(.plain)
                             .padding(.horizontal, 14).padding(.vertical, 8)
-                            .foregroundStyle(personality == p ? Color.white : Jungle.text)
-                            .background(personality == p ? Jungle.leaf : Jungle.mist, in: Capsule())
+                            .foregroundStyle(personality == p ? Jungle.onForest : Jungle.text)
+                            .background(personality == p ? Jungle.forest : Jungle.fill, in: Capsule())
                     }
                 }
             }

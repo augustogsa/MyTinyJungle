@@ -199,7 +199,7 @@ enum PlantStatus: Int, Comparable {
     var tint: Color {
         switch self {
         case .struggling: Jungle.terracotta
-        case .thirsty, .checkSoil: Color(red: 0.27, green: 0.5, blue: 0.72)
+        case .thirsty, .checkSoil: Jungle.sky
         case .petRisk: Jungle.peach
         case .hungry, .repot: Jungle.sun
         case .thriving: Jungle.leaf

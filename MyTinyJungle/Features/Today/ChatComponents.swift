@@ -242,7 +242,7 @@ struct GlassComposer: View {
                         .font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
                         .fixedSize()
                         .padding(.horizontal, 12).frame(height: 36)
-                        .background(Jungle.text.opacity(0.06), in: Capsule())
+                        .background(Jungle.fill, in: Capsule())
                 }
                 .buttonStyle(.plain)
             }
@@ -251,15 +251,15 @@ struct GlassComposer: View {
     private var photoButton: some View {
         PhotosPicker(selection: $pick, matching: .images) {
             Image(systemName: "camera").font(.system(size: 17, weight: .medium)).foregroundStyle(Jungle.text)
-                .frame(width: 40, height: 40).background(Jungle.text.opacity(0.06), in: Circle())
+                .frame(width: 40, height: 40).background(Jungle.fill, in: Circle())
         }
         .accessibilityLabel("Add photo")
     }
     private var sendButton: some View {
         Button(action: send) {
-            Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(Jungle.surface)
+            Image(systemName: "arrow.up").font(.system(size: 16, weight: .bold)).foregroundStyle(canSend ? Jungle.onForest : Jungle.tertiary)
                 .frame(width: 40, height: 40)
-                .background(canSend ? Jungle.forest : Jungle.subtle.opacity(0.4), in: Circle())
+                .background(canSend ? Jungle.forest : Jungle.surfaceRaised, in: Circle())
         }
         .disabled(!canSend)
         .accessibilityLabel("Send")

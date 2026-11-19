@@ -172,9 +172,9 @@ private struct DayCell: View {
         VStack(spacing: 3) {
             ZStack {
                 if selected { Circle().fill(Jungle.forest) }
-                else if cal.isDateInToday(date) { Circle().strokeBorder(Jungle.forest, lineWidth: 1.5) }
+                else if cal.isDateInToday(date) { Circle().strokeBorder(Jungle.tint, lineWidth: 1.5) }
                 Text(date.formatted(.dateTime.day())).font(.subheadline.weight(cal.isDateInToday(date) ? .bold : .regular))
-                    .foregroundStyle(selected ? Color.white : Jungle.text)
+                    .foregroundStyle(selected ? Jungle.onForest : Jungle.text)
             }
             .frame(width: 34, height: 34)
             HStack(spacing: 2) {

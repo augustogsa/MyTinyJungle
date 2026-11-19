@@ -2,8 +2,13 @@ import SwiftUI
 import UIKit
 
 extension Color {
-    fileprivate init(light: UInt32, dark: UInt32) {
-        self.init(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(hex: dark) : UIColor(hex: light) })
+    /// A named token from Assets.xcassets/Jungle (light + dark colorsets).
+    fileprivate static func token(_ name: String) -> Color { Color(name) }
+    /// Base token, switching to its elevated twin for sheets, popovers and covers in dark mode (HIG Dark Mode › base and elevated).
+    fileprivate static func token(_ name: String, elevated: String) -> Color {
+        Color(uiColor: UIColor { t in
+            UIColor(named: t.userInterfaceLevel == .elevated ? elevated : name, in: nil, compatibleWith: t) ?? .systemBackground
+        })
     }
 }
 
@@ -14,33 +19,48 @@ extension UIColor {
     }
 }
 
-/// My Tiny Jungle palette. 80% warm neutrals, 15% greens, 5% warm accents.
+/// My Tiny Jungle palette as semantic tokens. Every value lives in Assets.xcassets/Jungle with a light and a dark variant;
+/// Android mirrors the same names and hex values.
 enum Jungle {
-    static let forest = Color(light: 0x2F5D3A, dark: 0x468553)
-    /// App-wide tint for text, icons and controls: light green in dark mode so it reads on dark glass.
-    static let tint = Color(light: 0x2F5D3A, dark: 0x8DBE8F)
-    static let leaf = Color(light: 0x5F8F62, dark: 0x7FAF82)
-    static let sage = Color(light: 0xA8C7A5, dark: 0x4C6A4E)
-    static let cream = Color(light: 0xFCFAF6, dark: 0x141A15)
-    static let mist = Color(light: 0xF4F9EF, dark: 0x1C241D)
-    /// Incoming message bubble (people and plants), visible on white cards and the backdrop.
-    static let incoming = Color(light: 0xE8EEE4, dark: 0x2B342C)
-    static let mint = Color(light: 0xEEF7E8, dark: 0x223024)
-    static let sun = Color(light: 0xF6D992, dark: 0xC9A955)
-    static let peach = Color(light: 0xF8CDB6, dark: 0xB98A72)
-    static let terracotta = Color(light: 0xD9987B, dark: 0xD9987B)
-    static let text = Color(light: 0x3E4E3D, dark: 0xE4EBE2)
-    /// Secondary text: 5.2:1 on white, 5:1 on cream (HIG / WCAG AA).
-    static let subtle = Color(light: 0x5C6B5B, dark: 0xA3B0A1)
-    /// Card surface: white on warm cream, lifted grey-green in dark mode.
-    static let surface = Color(light: 0xFFFFFF, dark: 0x1E2720)
-    /// Accent text on light backgrounds (leaf is too light for small text).
-    static let accentText = Color(light: 0x2F5D3A, dark: 0xA6D3A8)
-    /// Readable text on sun/peach/terracotta tints.
-    static let warmText = Color(light: 0x7A3E22, dark: 0xF2C2A8)
-    static let border = Color(light: 0xDDE5D9, dark: 0x2E3A2F)
+    // Backgrounds (base vs elevated, grouped hierarchy)
+    static let background = Color.token("Background", elevated: "BackgroundElevated")
+    static let surface = Color.token("Surface", elevated: "SurfaceElevated")
+    static let surfaceRaised = Color.token("SurfaceRaised")
+    static let fill = Color.token("Fill")
+    static let fillSubtle = Color.token("FillSubtle")
+    static let separator = Color.token("Separator")
+    // Labels
+    static let text = Color.token("Label")
+    static let subtle = Color.token("SecondaryLabel")
+    static let tertiary = Color.token("TertiaryLabel")
+    static let accentText = Color.token("AccentText")
+    static let warmText = Color.token("WarmText")
+    // Brand and controls
+    static let tint = Color.token("Tint")
+    static let forest = Color.token("Forest")
+    static let onForest = Color.token("OnForest")
+    static let leaf = Color.token("Leaf")
+    static let sage = Color.token("Sage")
+    static let sun = Color.token("Sun")
+    static let sunFill = Color.token("SunFill")
+    static let peach = Color.token("Peach")
+    static let warmFill = Color.token("WarmFill")
+    static let terracotta = Color.token("Terracotta")
+    static let sky = Color.token("Sky")
+    static let gold = Color.token("Gold")
+    static let teal = Color.token("Teal")
+    static let plum = Color.token("Plum")
+    static let brick = Color.token("Brick")
+    static let indigo = Color.token("Indigo")
+    // Chat
+    static let incoming = Color.token("IncomingBubble")
+    static let userBubble = Color.token("UserBubble")
 
-    static let userBubble = Color(light: 0xDCEFD3, dark: 0x2C4A30)
+    // Legacy names, same tokens
+    static var cream: Color { background }
+    static var mist: Color { fillSubtle }
+    static var mint: Color { fill }
+    static var border: Color { separator }
 
     static let radius: CGFloat = 20
     static let innerRadius: CGFloat = 12
@@ -49,9 +69,8 @@ enum Jungle {
 struct CardBackground: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .background(Jungle.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border.opacity(0.7), lineWidth: 0.5))
+            .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.separator, lineWidth: 0.5))
             .shadow(color: Color(red: 0.24, green: 0.3, blue: 0.2).opacity(0.06), radius: 10, y: 4)
     }
 }

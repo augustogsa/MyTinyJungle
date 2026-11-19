@@ -13,7 +13,7 @@ struct MyCareProfileCard: View {
                 HStack(spacing: 4) { ForEach(profile.earned.suffix(6)) { Icon3DView($0.icon, size: 22) } }
             }
             Spacer(minLength: 0)
-            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
+            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.tertiary)
         }
         .padding(16)
         .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
@@ -34,10 +34,10 @@ struct SharedJungleRow: View {
                     Text(subtitle).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
-                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
+                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.tertiary)
             }
             .padding(16)
-            .background(Jungle.mint.opacity(0.7), in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+            .background(Jungle.fill, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $open) { NavigationStack { SharedJungleView() } }

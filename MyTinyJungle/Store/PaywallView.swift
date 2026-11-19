@@ -133,7 +133,7 @@ struct PaywallView: View {
                         Text(yearly ? Grammar.pt(String(localized: "Yearly", comment: "Paywall plan period")) : Grammar.pt(String(localized: "Monthly", comment: "Paywall plan period"))).font(.caption2.weight(.semibold)).foregroundStyle(Jungle.subtle)
                     }
                     Spacer()
-                    Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.title3).foregroundStyle(on ? Jungle.forest : Jungle.subtle.opacity(0.5))
+                    Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.title3).foregroundStyle(on ? Jungle.forest : Jungle.tertiary)
                 }
                 Text(p.displayPrice).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
                 Text(yearly ? Grammar.pt(String(localized: "\((p.price / 12).formatted(p.priceFormatStyle))/month", comment: "Paywall: yearly price per month; arg is price")) : Grammar.pt(String(localized: "per month", comment: "Paywall: monthly plan caption")))

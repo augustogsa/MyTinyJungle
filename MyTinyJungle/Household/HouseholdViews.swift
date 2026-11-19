@@ -11,7 +11,7 @@ struct MemberAvatar: View {
     var body: some View {
         Text(member.initials)
             .font(.system(size: size * 0.4, weight: .semibold, design: .rounded))
-            .foregroundStyle(.white)
+            .foregroundStyle(Jungle.background)
             .frame(width: size, height: size)
             .background(member.color.gradient, in: Circle())
             .overlay(alignment: .bottomTrailing) {
@@ -71,7 +71,7 @@ struct HouseholdTodayCard: View {
                             Text(summary).font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(2)
                         }
                         Spacer(minLength: 0)
-                        Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
+                        Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.tertiary)
                     }
                 }.buttonStyle(.plain)
                 ForEach(house.openRequestsForMe) { r in RequestRow(request: r) }
@@ -257,7 +257,7 @@ struct SharedJungleView: View {
                                     ProfileStrip(profile: house.profile(m))
                                 }
                                 Spacer()
-                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7))
+                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.tertiary)
                             }
                             .padding(.vertical, 10).contentShape(Rectangle())
                         }.buttonStyle(.plain)

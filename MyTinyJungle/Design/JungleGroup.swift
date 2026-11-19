@@ -33,7 +33,7 @@ struct JungleRow<Trailing: View>: View {
             }
             Spacer(minLength: 8)
             trailing
-            if chevron { Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7)) }
+            if chevron { Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.tertiary) }
         }
         .padding(.vertical, 11).frame(minHeight: 52).contentShape(Rectangle())
     }

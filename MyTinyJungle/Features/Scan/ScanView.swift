@@ -84,7 +84,7 @@ struct ScanView: View {
         VStack(spacing: 18) {
             ZStack {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(LinearGradient(colors: [Jungle.mint, Jungle.sun.opacity(0.35)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .fill(LinearGradient(colors: [Jungle.fill, Jungle.sunFill], startPoint: .topLeading, endPoint: .bottomTrailing))
                 Viewfinder().stroke(Jungle.leaf.opacity(0.7), style: StrokeStyle(lineWidth: 4, lineCap: .round))
                     .padding(28)
                 VStack(spacing: 8) {
@@ -119,7 +119,7 @@ struct ScanView: View {
             .buttonStyle(.plain).fontDesign(.rounded)
         }
         .padding(16)
-        .background(Jungle.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: 24 + 16, style: .continuous))
+        .background(Jungle.surface, in: RoundedRectangle(cornerRadius: 24 + 16, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 24 + 16, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
     }
 
@@ -135,7 +135,7 @@ struct ScanView: View {
                 Menu {
                     ForEach(plants) { p in Button(p.name) { checking = p } }
                 } label: {
-                    modeTile(Grammar.pt(String(localized: "A sick leaf", comment: "Scan mode tile title")), Grammar.pt(String(localized: "Spots, yellowing or pests", comment: "Scan mode tile subtitle")), .wilted, Jungle.peach.opacity(0.45))
+                    modeTile(Grammar.pt(String(localized: "A sick leaf", comment: "Scan mode tile title")), Grammar.pt(String(localized: "Spots, yellowing or pests", comment: "Scan mode tile subtitle")), .wilted, Jungle.warmFill)
                 }
                 .disabled(plants.isEmpty)
             }
@@ -146,7 +146,7 @@ struct ScanView: View {
     private func modeTile(_ t: String, _ sub: String, _ s: Icon3D, _ bg: Color) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Icon3DView(s, size: 32)
-                .frame(width: 44, height: 44).background(Jungle.surface.opacity(0.8), in: Circle())
+                .frame(width: 44, height: 44).background(Jungle.surface, in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text(t).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Text(sub).font(.caption).foregroundStyle(Jungle.subtle).multilineTextAlignment(.leading).lineLimit(2, reservesSpace: true)
@@ -383,7 +383,7 @@ private struct ProductResultView: View {
     private func nutrient(_ l: String, _ sub: String, _ v: Double, _ c: Color) -> some View {
         VStack(spacing: 4) {
             Text(v.formatted(.number.precision(.fractionLength(0...1)))).font(.system(.title, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)
-            Text(l).font(.caption.weight(.bold)).foregroundStyle(.white).frame(width: 22, height: 22).background(c, in: Circle())
+            Text(l).font(.caption.weight(.bold)).foregroundStyle(Jungle.text).frame(width: 24, height: 24).background(c.opacity(0.3), in: Circle())
             Text(sub).font(.caption2).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)

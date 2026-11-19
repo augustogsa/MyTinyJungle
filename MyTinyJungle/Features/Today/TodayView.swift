@@ -165,7 +165,7 @@ struct TodayView: View {
             SectionTitle(Grammar.pt(String(localized: "At a glance", comment: "Section title")))
             HStack(alignment: .top, spacing: 12) {
                 Button { path.append(TodayRoute.watering) } label: {
-                    SummaryCard(title: Grammar.pt(String(localized: "Next sips", comment: "Card title: upcoming waterings; playful; max 16 chars")), symbol: "drop.fill", tint: Color(red: 0.27, green: 0.5, blue: 0.72)) {
+                    SummaryCard(title: Grammar.pt(String(localized: "Next sips", comment: "Card title: upcoming waterings; playful; max 16 chars")), symbol: "drop.fill", tint: Jungle.sky) {
                         if upcoming.isEmpty {
                             Text(plants.isEmpty ? "Add a plant and I'll plan its drinks." : "Everyone's had a drink. Relax!" as LocalizedStringKey)
                                 .font(.subheadline).foregroundStyle(Jungle.subtle).lineLimit(3, reservesSpace: true)
@@ -184,7 +184,7 @@ struct TodayView: View {
                     }
                 }
                 Button { path.append(TodayRoute.season) } label: {
-                    SummaryCard(title: season.label, symbol: season.symbol, tint: Color(red: 0.72, green: 0.56, blue: 0.2)) {
+                    SummaryCard(title: season.label, symbol: season.symbol, tint: Jungle.gold) {
                         Text(seasonTip(season)).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                     }
                 }
@@ -434,9 +434,9 @@ struct PlantShelfCard: View {
                 .frame(width: 150, height: 130).clipped()
                 Text(mood == .needsYou ? "Needs you" : mood == .fine ? "Okay" : "Thriving" as LocalizedStringKey)
                     .font(.caption2.weight(.semibold))
-                    .foregroundStyle(mood == .needsYou ? Color.white : Jungle.accentText)
+                    .foregroundStyle(mood == .needsYou ? Jungle.warmText : Jungle.accentText)
                     .padding(.horizontal, 8).padding(.vertical, 4)
-                    .background(mood == .needsYou ? Jungle.terracotta : Jungle.surface.opacity(0.94), in: Capsule())
+                    .background(mood == .needsYou ? Jungle.warmFill : Jungle.surface, in: Capsule())
                     .padding(8)
             }
             VStack(alignment: .leading, spacing: 2) {

@@ -135,7 +135,7 @@ struct PlantHomeView: View {
             if hasPhoto { LinearGradient(colors: [.clear, .black.opacity(0.6)], startPoint: .center, endPoint: .bottom) }
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Color.white : Jungle.text)
+                    Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Jungle.onForest : Jungle.text)
                     Text(plant.species?.scientific ?? Grammar.pt(String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars"))).font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
                     StatusBadge(status: CareEngine.status(for: plant)).padding(.top, 8)
                 }
@@ -318,7 +318,7 @@ struct InfoRow: View {
                 Text(value).font(.subheadline).foregroundStyle(Jungle.subtle)
             }
             Spacer(minLength: 0)
-            if chevron { Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.subtle.opacity(0.7)) }
+            if chevron { Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Jungle.tertiary) }
         }
         .padding(.horizontal, 16).padding(.vertical, 11).frame(minHeight: 52)
         .contentShape(Rectangle())
@@ -386,7 +386,7 @@ struct PlantStoryView: View {
                     ForEach(Filter.allCases, id: \.self) { f in
                         Button { withAnimation(.snappy) { filter = f } } label: {
                             Text(f.label).font(.subheadline.weight(.medium))
-                                .foregroundStyle(filter == f ? Color.white : Jungle.text)
+                                .foregroundStyle(filter == f ? Jungle.onForest : Jungle.text)
                                 .padding(.horizontal, 14).padding(.vertical, 7)
                                 .background(filter == f ? Jungle.forest : Jungle.surface, in: Capsule())
                                 .overlay(Capsule().strokeBorder(filter == f ? .clear : Jungle.border, lineWidth: 1))
