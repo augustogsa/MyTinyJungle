@@ -6,7 +6,7 @@ S=/run/mtj/api.sock; pass=0
 c() { curl -sS --unix-socket $S -H "Authorization: Bearer $1" -H 'Content-Type: application/json' "${@:2}"; }
 ok() { pass=$((pass+1)); echo "ok  $1"; }
 die() { echo "FAIL $1"; exit 1; }
-psqlq() { podman exec -i mdm-postgres psql -U postgres -d mytinyjungle -Atq -c "$1"; }
+psqlq() { /opt/mtj/bin/mtj-psql -d mytinyjungle -Atq -c "$1" </dev/null; }
 A=$(runuser -u mtj-api -g nobody -G mtj-api -- /opt/mtj/bin/mtj-api test-token itest-a@mytinyjungle.test)
 B=$(runuser -u mtj-api -g nobody -G mtj-api -- /opt/mtj/bin/mtj-api test-token itest-b@mytinyjungle.test)
 trap 'psqlq "delete from users where email like '"'"'itest-%@mytinyjungle.test'"'"'"; rm -rf /var/lib/mtj/media/$JA' EXIT

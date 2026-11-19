@@ -42,12 +42,12 @@ FEATURES = {
          ["45 common symptoms explained in plain words", "Photo check right on your iPhone", "A short plan, not a lecture", "Follow-up reminders until the plant recovers"],
          [("Is the photo uploaded?", "No. The photo is checked on your iPhone and stays there."),
           ("Is it always right?", "It's careful, not magic. When it isn't sure, it says so and suggests what to look at next."),
-          ("Is it free?", "Health checks are part of Plus.")]),
+          ("Is it free?", "Health checks come with Greenhouse and Jungle.")]),
   "pt": ("Folha amarela, ponta marrom, planta murchando do nada. Tira uma foto ou conta o que tá vendo e recebe o passo a passo do que tá errado e do que fazer agora.",
          ["45 sintomas comuns explicados em palavras simples", "Diagnóstico por foto direto no iPhone", "Um plano curtinho, sem sermão", "Lembretes de acompanhamento até a planta se recuperar"],
          [("A foto vai pra algum lugar?", "Não. A foto é analisada no seu iPhone e fica nele."),
           ("Acerta sempre?", "É cuidadoso, mas não faz milagre. Quando não tem certeza, ele fala e diz no que ficar de olho."),
-          ("É de graça?", "O diagnóstico de saúde faz parte do Plus.")])}),
+          ("É de graça?", "O diagnóstico de saúde vem com a Estufa e a Selva.")])}),
  "bug": ("pests", {
   "en": ("Spot pests early and follow a calm plan. 27 common pests, how to recognise them and how to get rid of them without panic.",
          ["Recognise pests from simple signs", "Step-by-step treatment plan", "Reminders to check again", "Advice on isolating a plant so others stay safe"],
@@ -97,11 +97,11 @@ FEATURES = {
   "en": ("In the shop and not sure? Point the camera at the back of a fertilizer, soil or treatment and see which of your plants it suits, how much to use and when.",
          ["A clear yes or no for each of your plants", "Dose and timing in plain words", "Works on most fertilizer, soil and treatment labels", "Reading happens on your iPhone"],
          [("Does it need internet?", "The label is read on your iPhone."),
-          ("Is it free?", "The label scanner is part of Plus.")]),
+          ("Is it free?", "The label scanner comes with Greenhouse and Jungle.")]),
   "pt": ("Bateu a dúvida na loja? Aponta a câmera pro verso do adubo, substrato ou remédio e vê pra quais plantas ele serve, quanto usar e quando.",
          ["Sim ou não, direto, pra cada planta", "Dose e frequência em palavras simples", "Funciona com a maioria dos rótulos de adubo, substrato e tratamento", "A leitura acontece no seu iPhone"],
          [("Precisa de internet?", "O rótulo é lido no seu iPhone."),
-          ("É de graça?", "O leitor de rótulos faz parte do Plus.")])}),
+          ("É de graça?", "O leitor de rótulos vem com a Estufa e a Selva.")])}),
  "livingRoom": ("spaces", {
   "en": ("Room by room, the right light for every plant. Tell the app how bright each room is and it matches plants to the spots they'll love.",
          ["Rooms with their own light", "A warning when a plant sits in the wrong light", "Heating, air-con and humidity per home", "Indoor and outdoor spaces"],
@@ -131,13 +131,13 @@ GENERAL = {
    ("Is it in my language?", "The app and the plants speak English and Portuguese.")]),
   ("Plans and billing", [
    ("Is it really free?", "Yes. Sprout is free forever for up to 5 plants, with chat, reminders and soil checks, supported by small ads."),
-   ("What do Greenhouse and Jungle add?", "Both are My Tiny Jungle Plus: unlimited plants, no ads, health checks, the label scanner, travel mode, seasons and cuttings guides. Jungle is the yearly plan at €1 a month."),
-   ("How do I cancel?", "iPhone Settings → your name → Subscriptions → My Tiny Jungle. You keep Plus until the end of the paid period."),
+   ("What do Greenhouse and Jungle add?", "Both include the same: unlimited plants, no ads, health checks, the label scanner, travel mode, seasons and cuttings guides. Jungle is the yearly plan at €1 a month."),
+   ("How do I cancel?", "iPhone Settings → your name → Subscriptions → My Tiny Jungle. You keep your plan until the end of the paid period."),
    ("What happens to my plants if I cancel?", "Nothing is deleted. You keep caring for 5 plants for free and can come back any time.")]),
   ("Privacy", [
    ("Where are my photos kept?", "Only on your iPhone. Photos, readings and notes never go to a server."),
    ("Do I need an account?", "You sign in with Apple or Google so your jungle can be backed up and shared with your home."),
-   ("Do the ads track me?", "Only if you allow it when iOS asks. Plus removes ads completely.")]),
+   ("Do the ads track me?", "Only if you allow it when iOS asks. Greenhouse and Jungle remove ads completely.")]),
   ("Sharing a home", [
    ("Can I share my plants with someone?", "Yes. Invite the people you live with and you all care for the same plants, taking fair turns with no double watering."),
    ("What if I'm away?", "Someone at home takes over your turns, and the plants know who to thank.")]),
@@ -153,13 +153,13 @@ GENERAL = {
    ("Tem em português?", "Tem, sim. O app e as plantas falam português e inglês.")]),
   ("Planos e pagamento", [
    ("É de graça mesmo?", "É, sim. O Broto é de graça pra sempre, pra até 5 plantas, com conversa, lembretes e teste da terra, e tem anúncios discretos."),
-   ("O que os planos Estufa e Selva têm a mais?", "Os dois planos são o My Tiny Jungle Plus: plantas ilimitadas, zero anúncios, diagnóstico de saúde, leitor de rótulos, modo viagem, estações e mudas. A Estufa é o plano mensal e a Selva, o anual, que sai mais em conta."),
-   ("Como faço pra cancelar a assinatura?", "É rapidinho: Ajustes do iPhone → seu nome → Assinaturas → My Tiny Jungle → Cancelar assinatura. O Plus continua valendo até o fim do período que você já pagou."),
+   ("O que os planos Estufa e Selva têm a mais?", "Os dois planos têm o mesmo: plantas ilimitadas, zero anúncios, diagnóstico de saúde, leitor de rótulos, modo viagem, estações e mudas. A Estufa é o plano mensal e a Selva, o anual, que sai mais em conta."),
+   ("Como faço pra cancelar a assinatura?", "É rapidinho: Ajustes do iPhone → seu nome → Assinaturas → My Tiny Jungle → Cancelar assinatura. Seu plano continua valendo até o fim do período que você já pagou."),
    ("Se eu cancelar, perco minhas plantas?", "Não perde nada. Tudo fica salvo, você segue cuidando de até 5 plantas de graça e pode voltar quando quiser.")]),
   ("Privacidade", [
    ("Onde ficam minhas fotos?", "Só no seu iPhone. Fotos, leituras e anotações não vão para nenhum servidor."),
    ("Preciso criar uma conta?", "Você entra com Apple ou Google pra ter backup da sua selva e dividir com quem mora com você."),
-   ("Os anúncios me rastreiam?", "Só se você permitir quando o iOS perguntar. O Plus remove todos os anúncios.")]),
+   ("Os anúncios me rastreiam?", "Só se você permitir quando o iOS perguntar. Estufa e Selva removem todos os anúncios.")]),
   ("Casa compartilhada", [
    ("Dá pra dividir os cuidados com mais gente?", "Dá, sim. Chama quem mora com você e todos cuidam das mesmas plantas, com rodízio justo e sem rega em dobro."),
    ("E quando eu viajar?", "Alguém da casa assume a sua vez, e as plantas sabem a quem agradecer.")]),
@@ -171,9 +171,9 @@ GENERAL = {
 
 UI = {
  "en": {"gk_title": "Good to know", "gk_desc": "Every question about My Tiny Jungle, from getting started to each feature.", "gk_intro": "Everything people ask about My Tiny Jungle, in one place. Still curious? Write to us from the Support page.",
-        "by_feature": "Feature by feature", "how": "How it works", "q": "Questions", "all_q": "All questions", "more": "Learn more", "features": "All features", "feat_desc": "Everything My Tiny Jungle does for your plants. Tap a feature to see how it works.", "plus_badge": "Plus"},
+        "by_feature": "Feature by feature", "how": "How it works", "q": "Questions", "all_q": "All questions", "more": "Learn more", "features": "All features", "feat_desc": "Everything My Tiny Jungle does for your plants. Tap a feature to see how it works.", "plus_badge": "Paid plans"},
  "pt": {"gk_title": "Bom saber", "gk_desc": "Todas as dúvidas sobre o My Tiny Jungle, dos primeiros passos a cada recurso.", "gk_intro": "Tudo o que o pessoal pergunta sobre o My Tiny Jungle, num lugar só. Ainda ficou com dúvida? Fala com a gente na página de Ajuda.",
         "by_feature": "Recurso por recurso", "how": "Como funciona", "q": "Perguntas", "all_q": "Ver todas as perguntas", "more": "Saiba mais", "features": "Todos os recursos", "feat_desc": "Tudo o que o My Tiny Jungle faz pelas suas plantas. Toca num recurso pra ver como funciona.",
-  "feat_desc": "Tudo o que o My Tiny Jungle faz pelas suas plantas. Toca num recurso pra ver como funciona.", "plus_badge": "Plus"},
+  "feat_desc": "Tudo o que o My Tiny Jungle faz pelas suas plantas. Toca num recurso pra ver como funciona.", "plus_badge": "Planos pagos"},
 }
 PLUS = {"firstAid", "fertilizer", "travel", "seedling", "sun"}

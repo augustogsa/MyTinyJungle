@@ -150,6 +150,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         CareReminders.registerCategories()
         Task { await Household.registerCategory() }
         application.registerForRemoteNotifications()
+        Diagnostics.shared.start()
         return true
     }
 

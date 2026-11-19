@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # One-time (idempotent) VPS setup for mtj-api. Run as root on the VPS: bash provision.sh
 set -euo pipefail
-psql() { podman exec -i mdm-postgres psql -U postgres -v ON_ERROR_STOP=1 -Atq "$@"; }
+# My Tiny Jungle's own Postgres (rootless container of the mtj account; nothing shared with other apps).
+bash "$(dirname "$0")/mtj-postgres-setup.sh" >/dev/null
+psql() { /opt/mtj/bin/mtj-psql -v ON_ERROR_STOP=1 -Atq "$@" </dev/null; }
 S=/opt/mtj/secrets
 id mtj-api >/dev/null 2>&1 || useradd --system --no-create-home --shell /sbin/nologin mtj-api
 install -d -m 0750 -o root -g mtj-api $S $S/keys
@@ -26,7 +28,7 @@ if [[ ! -f $S/api.env ]]; then
   psql -c "revoke all on database mytinyjungle from public"
   psql -c "grant connect on database mytinyjungle to mtj_auth, mtj_app, mtj_admin"
   psql -c "drop role if exists mtj_app_legacy"
-  dsn() { echo "postgres://$1:${PW[$1]}@127.0.0.1:5432/mytinyjungle?sslmode=disable"; }
+  dsn() { echo "postgres://$1:${PW[$1]}@127.0.0.1:5433/mytinyjungle?sslmode=disable"; }
   umask 027
   cat > $S/api.env <<ENV
 MTJ_SOCKET=/run/mtj/api.sock

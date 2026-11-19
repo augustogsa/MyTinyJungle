@@ -1,0 +1,5 @@
+[Unit]
+Description=My Tiny Jungle watchdog
+[Service]
+Type=oneshot
+ExecStart=/opt/mtj/bin/mtj-watchdog.sh

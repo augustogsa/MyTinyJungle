@@ -1,0 +1,6 @@
+[Unit]
+OnFailure=mtj-alert@%n.service
+Description=My Tiny Jungle: ship WAL off-site
+[Service]
+Type=oneshot
+ExecStart=/opt/mtj/bin/mtj-wal-ship.sh

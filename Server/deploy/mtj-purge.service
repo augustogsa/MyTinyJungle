@@ -1,6 +1,6 @@
 [Unit]
+OnFailure=mtj-alert@%n.service
 Description=My Tiny Jungle purge (accounts deleted 30+ days ago, expired sessions)
-After=mdm-postgres.service
 
 [Service]
 Type=oneshot

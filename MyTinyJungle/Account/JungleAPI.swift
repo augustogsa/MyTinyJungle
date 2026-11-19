@@ -127,6 +127,11 @@ actor JungleAPI {
         try await raw("GET", path, query: query, body: nil, contentType: nil, auth: true, decode: R.self)
     }
 
+    /// Posts a JSON body built elsewhere (diagnostics).
+    func postRaw(_ path: String, _ json: Data) async throws {
+        let _: OK = try await raw("POST", path, query: [], body: json, contentType: "application/json", auth: true, decode: OK.self)
+    }
+
     func upload(_ path: String, data: Data, contentType: String) async throws {
         let _: OK = try await raw("PUT", path, query: [], body: data, contentType: contentType, auth: true, decode: OK.self)
     }

@@ -1,0 +1,5 @@
+[Unit]
+Description=My Tiny Jungle alert: %i failed
+[Service]
+Type=oneshot
+ExecStart=/opt/mtj/bin/mtj-alert.sh unit %i

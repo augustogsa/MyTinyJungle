@@ -1,6 +1,6 @@
 [Unit]
-Description=My Tiny Jungle encrypted backup (local 14 days + off-site S3)
-After=mdm-postgres.service
+OnFailure=mtj-alert@%n.service
+Description=My Tiny Jungle encrypted backup (own Postgres, 14 days on the VPS)
 
 [Service]
 Type=oneshot

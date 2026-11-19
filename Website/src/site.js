@@ -56,7 +56,7 @@
   // Entrances, one system for the whole site: every block rises in, staggered within its section.
   var reduceM = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (io) {
-    var SEL = "h1,h2,h3,p,ul,ol,figure,details,.btn,.acard,.fcard,.field,.hc,.facts > *,.agrid > *,.fgrid > *,.inputs > *,.mosaic figure,.phone,.m-scene,.talk,.qhead > *,.fhero,.fnav,.slider";
+    var SEL = "h1,h2,h3,p,ul,ol,figure,details,.btn,.acard,.fcard,.field,.hc,.facts > *,.agrid > *,.fgrid > *,.inputs > *,.mosaic figure,.phone,.m-scene,.talk,.qhead > *,.fhero,.fnav";
     var SKIP = ".stage,.nav,.msgs,.lockphone,.vs2,.talk *,.phone *,.m-scene *,.slider *,.agrid *,.fgrid *,.facts > * *,.field *,.hc *,.acard *,.fcard *,footer,.hero h1";
     var eo = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.setAttribute("data-entered", ""); eo.unobserve(e.target); } });
@@ -66,7 +66,7 @@
       sec.querySelectorAll(SEL).forEach(function (el) {
         if (el.closest(SKIP) || el.hasAttribute("data-enter")) return;
         var up = el.parentElement.closest("[data-enter]"); if (up && sec.contains(up)) return;
-        el.setAttribute("data-enter", ""); el.style.setProperty("--enter-i", Math.min(i++, 8)); eo.observe(el);
+        el.setAttribute("data-enter", ""); el.style.setProperty("--enter-i", Math.min(i++, 6)); eo.observe(el);
       });
     });
     root.classList.add("enter-ready");
@@ -115,28 +115,55 @@
     var dots = l.querySelectorAll(".rdot"), img = l.querySelector(".phone-screen img");
     if (!dots.length || !img) return;
     var cur = 0;
+    var cache = {};
+    var load = function (src) { if (!cache[src]) { var im = new Image(); im.src = src; cache[src] = (im.decode ? im.decode() : Promise.resolve()).catch(function () {}); } return cache[src]; };
+    dots.forEach(function (x) { if (x.dataset.src) load(x.dataset.src); });
+    var tok = 0;
     var go = function (i) {
-      cur = i;
+      cur = i; var my = ++tok;
       dots.forEach(function (x, j) { x.classList.remove("on"); void x.offsetWidth; x.classList.toggle("on", j === i); x.setAttribute("aria-pressed", j === i); });
-      img.classList.add("fade");
-      setTimeout(function () { img.src = dots[i].dataset.src; img.alt = dots[i].textContent; img.classList.remove("fade"); }, 220);
+      if (img.getAttribute("src") === dots[i].dataset.src) return;
+      Promise.all([load(dots[i].dataset.src), new Promise(function (r) { img.classList.add("fade"); setTimeout(r, 260); })]).then(function () {
+        if (my !== tok) return;
+        img.src = dots[i].dataset.src; img.alt = dots[i].textContent;
+        requestAnimationFrame(function () { img.classList.remove("fade"); });
+      });
     };
     dots.forEach(function (x, i) {
       x.innerHTML = "<span>" + x.textContent + "</span>";
       x.addEventListener("click", function () { go(i); });
       x.addEventListener("animationend", function () { if (!reduce && x.classList.contains("on")) go((i + 1) % dots.length); });
     });
-    new MutationObserver(function () { if (l.classList.contains("on")) go(0); }).observe(l, { attributes: true, attributeFilter: ["class"] });
+    var was = l.classList.contains("on");
+    new MutationObserver(function () { var on = l.classList.contains("on"); if (on && !was) go(0); was = on; }).observe(l, { attributes: true, attributeFilter: ["class"] });
   });
 
-  // Screen sliders (phone layout).
+  // Screen sliders (phone layout): slides deal in one by one, buttons glide one card at a time.
   d.querySelectorAll(".slider").forEach(function (sl) {
     var tr = sl.querySelector(".track"), pv = sl.querySelector(".prev"), nx = sl.querySelector(".next");
-    var step = function () { var f = tr.querySelector(".slide"); return f ? f.getBoundingClientRect().width + 22 : 240; };
+    var slides = tr.querySelectorAll(".slide");
+    slides.forEach(function (f, i) { f.style.setProperty("--si", Math.min(i, 5)); });
+    if (io && !reduceM) {
+      sl.classList.add("deal");
+      var so = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { so.disconnect(); sl.classList.add("in"); } }, { rootMargin: "0px 0px -12% 0px" });
+      so.observe(sl);
+    }
+    var step = function () { var f = slides[0], g = slides[1]; return f ? (g ? g.offsetLeft - f.offsetLeft : f.offsetWidth + 22) : 240; };
     var upd = function () { pv.disabled = tr.scrollLeft < 4; nx.disabled = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 4; sl.querySelector(".snav").hidden = tr.scrollWidth <= tr.clientWidth + 4; };
-    pv.addEventListener("click", function () { tr.scrollBy({ left: -step() }); });
-    nx.addEventListener("click", function () { tr.scrollBy({ left: step() }); });
-    tr.addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+    var by = function (dir) { tr.scrollBy({ left: dir * step(), behavior: reduceM ? "auto" : "smooth" }); };
+    pv.addEventListener("click", function () { by(-1); });
+    nx.addEventListener("click", function () { by(1); });
+    var rq = false;
+    tr.addEventListener("scroll", function () { if (!rq) { rq = true; requestAnimationFrame(function () { rq = false; upd(); }); } }, { passive: true });
+    addEventListener("resize", upd); upd();
+  });
+
+  // Phone screens fade in once their image is ready, never a blank flash.
+  d.querySelectorAll(".phone-screen img").forEach(function (im) {
+    if (im.complete && im.naturalWidth) return;
+    im.classList.add("ld");
+    var done = function () { im.classList.remove("ld"); };
+    im.addEventListener("load", done, { once: true }); im.addEventListener("error", done, { once: true });
   });
 
   // Ask a plant.
@@ -201,11 +228,11 @@ document.addEventListener("click", function (e) {
     document.addEventListener(ev, function (e) { if (e.target.closest && e.target.closest(m)) e.preventDefault(); });
   });
 })();
-/* source guard: block view-source, save, print-to-copy and devtools shortcuts; strip copied text to a link */
+/* source guard: block view-source, save and devtools shortcuts; strip copied text to a link */
 (function () {
   document.addEventListener("keydown", function (e) {
     var k = (e.key || "").toLowerCase(), mod = e.metaKey || e.ctrlKey;
-    if (k === "f12" || (mod && (k === "u" || k === "s" || k === "p")) || (mod && (e.altKey || e.shiftKey) && (k === "i" || k === "j" || k === "c"))) e.preventDefault();
+    if (k === "f12" || (mod && (k === "u" || k === "s")) || (mod && (e.altKey || e.shiftKey) && (k === "i" || k === "j" || k === "c"))) e.preventDefault();
   }, true);
   document.addEventListener("copy", function (e) {
     var t = String(window.getSelection() || "");

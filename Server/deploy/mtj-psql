@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# psql into My Tiny Jungle's own Postgres (rootless container of the mtj account).
+cd /var/lib/mtj-db/home && exec sudo -u mtj XDG_RUNTIME_DIR=/run/user/$(id -u mtj) podman exec -i mtj-postgres "${MTJ_PG_BIN:-psql}" -U postgres "$@"

@@ -83,6 +83,7 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/jungles/{id}/house", s.user(s.getHouse))
 	m.Handle("PUT /v1/jungles/{id}/house", s.user(s.putHouse))
 	m.Handle("GET /v1/me/export", s.user(s.export))
+	m.Handle("POST /v1/diagnostics", s.user(s.postDiagnostics))
 
 	m.Handle("GET /v1/sync/pull", s.user(s.pull))
 	m.Handle("POST /v1/sync/push", s.user(s.push))
@@ -101,6 +102,7 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/admin/users", s.admin(s.adminUsers))
 	m.Handle("GET /v1/admin/users/{id}", s.admin(s.adminUser))
 	m.Handle("GET /v1/admin/store-events", s.admin(s.adminStoreEvents))
+	m.Handle("GET /v1/admin/diagnostics", s.admin(s.adminDiagnostics))
 
 	return s.wrap(m)
 }

@@ -1,7 +1,8 @@
 [Unit]
+OnFailure=mtj-alert@%n.service
 Description=My Tiny Jungle API (Go, unix socket behind Apache + Cloudflare)
-After=network-online.target mdm-postgres.service
-Wants=network-online.target mdm-postgres.service
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple

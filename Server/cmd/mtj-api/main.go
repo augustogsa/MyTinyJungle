@@ -156,6 +156,7 @@ func purge(log *slog.Logger) error {
 	_, _ = conn.Exec(ctx, `delete from invites where expires_at < now() - interval '30 days'`)
 	_, _ = conn.Exec(ctx, `delete from store_notifications where received_at < now() - interval '400 days'`)
 	_, _ = conn.Exec(ctx, `delete from audit_log where at < now() - interval '400 days'`)
+	_, _ = conn.Exec(ctx, `delete from diagnostics where created_at < now() - interval '90 days'`)
 	if tag.RowsAffected() > 0 {
 		_, _ = conn.Exec(ctx, `insert into audit_log (actor, action, detail) values ('system','account.purge',$1)`,
 			map[string]int64{"accounts": tag.RowsAffected()})

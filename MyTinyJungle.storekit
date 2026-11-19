@@ -7,16 +7,16 @@
     {
       "id" : "21800001",
       "localizations" : [],
-      "name" : "My Tiny Jungle Plus",
+      "name" : "My Tiny Jungle",
       "subscriptions" : [
         { "adHocOffers" : [], "codeOffers" : [], "displayPrice" : "1.99", "familyShareable" : false, "groupNumber" : 1,
           "internalID" : "6800000001", "introductoryOffer" : null,
-          "localizations" : [ { "description" : "All Plus features, billed monthly", "displayName" : "Plus Monthly", "locale" : "en_US" } ],
+          "localizations" : [ { "description" : "Unlimited plants, no ads, scanner and Plant Doctor, billed monthly", "displayName" : "Greenhouse", "locale" : "en_US" } ],
           "productID" : "com.simpleappscompany.mytinyjungle.plus.monthly", "recurringSubscriptionPeriod" : "P1M", "referenceName" : "Plus Monthly",
           "subscriptionGroupID" : "21800001", "type" : "RecurringSubscription", "winbackOffers" : [] },
         { "adHocOffers" : [], "codeOffers" : [], "displayPrice" : "11.99", "familyShareable" : false, "groupNumber" : 1,
           "internalID" : "6800000002", "introductoryOffer" : null,
-          "localizations" : [ { "description" : "All Plus features, billed yearly", "displayName" : "Plus Yearly", "locale" : "en_US" } ],
+          "localizations" : [ { "description" : "Everything in Greenhouse, billed yearly", "displayName" : "Jungle", "locale" : "en_US" } ],
           "productID" : "com.simpleappscompany.mytinyjungle.plus.yearly", "recurringSubscriptionPeriod" : "P1Y", "referenceName" : "Plus Yearly",
           "subscriptionGroupID" : "21800001", "type" : "RecurringSubscription", "winbackOffers" : [] }
       ]
