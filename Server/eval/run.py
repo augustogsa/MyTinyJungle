@@ -24,7 +24,15 @@ class UConn(http.client.HTTPConnection):
         self.sock.connect(SOCK)
 
 
-def call(tok, path, body=None, method="POST"):
+def call(tok, path, body=None, method="POST", retry=True):
+    st, r = _call(tok, path, body, method)
+    if st == 429 and retry:  # daily quota: the eval users are throwaway, reset theirs and go on
+        psql("delete from api_quota where subject in (select 'u:' || id::text from users where email like 'ieval-%@mytinyjungle.test')")
+        st, r = _call(tok, path, body, method)
+    return st, r
+
+
+def _call(tok, path, body=None, method="POST"):
     c = UConn("x", timeout=130)
     c.request(method, path, json.dumps(body) if body is not None else None, {"Authorization": f"Bearer {tok}", "Content-Type": "application/json"})
     r = c.getresponse()
@@ -36,11 +44,21 @@ def call(tok, path, body=None, method="POST"):
 
 
 def psql(q):
-    return subprocess.run(["/opt/mtj/bin/mtj-psql", "-d", "mytinyjungle", "-Atq", "-c", q], capture_output=True, text=True, stdin=subprocess.DEVNULL).stdout.strip()
+    return subprocess.run(["/opt/mtj/bin/mtj-psql", "-d", "mytinyjungle", "-Atq", "-c", q], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, stdin=subprocess.DEVNULL).stdout.strip()
+
+
+def api_env():
+    env = dict(os.environ)
+    for line in open("/opt/mtj/secrets/api.env"):
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            env[k] = v.strip().strip("'\"")
+    return env
 
 
 def token(email):
-    return subprocess.run(["runuser", "-u", "mtj-api", "-g", "nobody", "-G", "mtj-api", "--", "/opt/mtj/bin/mtj-api", "test-token", email], capture_output=True, text=True, check=True).stdout.strip()
+    return subprocess.run(env=api_env(), args=["runuser", "-u", "mtj-api", "-g", "nobody", "-G", "mtj-api", "--", "/opt/mtj/bin/mtj-api", "test-token", email], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, check=True).stdout.strip()
 
 
 def photo(f):
