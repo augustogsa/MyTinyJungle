@@ -721,7 +721,7 @@ struct WaterSheet: View {
                 VStack(spacing: 18) {
                     PlantAvatar(data: plant.photo, size: 120)
                         .overlay(alignment: .topTrailing) {
-                            Image(systemName: "drop.fill").font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.forest)
+                            Image(systemName: "drop.fill").font(.system(.title2, design: .rounded)).foregroundStyle(Jungle.accentText)
                                 .padding(10).background(.regularMaterial, in: Circle()).offset(x: 10, y: -6)
                         }
                     VStack(spacing: 6) {
@@ -745,7 +745,7 @@ struct WaterSheet: View {
                     Button {
                         JungleBrain.quick(.water, plants: [plant], in: ctx, announce: true); dismiss()
                     } label: { Label("Mark as watered", systemImage: "checkmark").frame(maxWidth: .infinity) }
-                        .buttonStyle(.borderedProminent).fontDesign(.rounded).controlSize(.large)
+                        .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).controlSize(.large)
                     Menu {
                         Button("This evening") { remind(hours: 8) }
                         Button("Tomorrow") { remind(hours: 24) }

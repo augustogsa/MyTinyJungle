@@ -171,17 +171,21 @@ struct ErtyCheerOverlay: ViewModifier {
     }
 }
 
-/// First thing on screen at launch: the launch mark, then Erty waving while the jungle opens.
+/// First thing on screen at launch. Same art, size and position as the launch screen's LaunchMark
+/// (erty-wave, 168 pt, screen centre), so the system launch image hands over without a jump.
 struct LaunchSplash: View {
+    @State private var showText = false
     var body: some View {
-        VStack(spacing: 14) {
-            Spacer()
-            ErtyView(mood: .wave, size: 168)
+        ZStack {
+            Color("LaunchBackground")
+            Image("erty-wave").resizable().interpolation(.high).frame(width: 168, height: 168)
+                .accessibilityHidden(true)
             Text("Waking up your jungle…", comment: "Launch splash under Erty; max 30 chars")
                 .font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.subtle)
-            Spacer()
+                .offset(y: 84 + 28)
+                .opacity(showText ? 1 : 0)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("LaunchBackground").ignoresSafeArea())
+        .ignoresSafeArea()
+        .task { try? await Task.sleep(for: .milliseconds(350)); withAnimation(.easeIn(duration: 0.3)) { showText = true } }
     }
 }

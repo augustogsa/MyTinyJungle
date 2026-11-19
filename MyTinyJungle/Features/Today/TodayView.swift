@@ -389,9 +389,9 @@ struct RequestCard: View {
                 Button(s == .slightlyMoist ? Grammar.pt(String(localized: "Moist", comment: "Soil feel button; max 10 chars")) : s.label) { onAction(.soil(s)) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
             }
         case .water:
-            Button("Watered", systemImage: "drop.fill") { onAction(.care(.water)) }.buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button("Watered", systemImage: "drop.fill") { onAction(.care(.water)) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
         case .feed:
-            Button("Fed", systemImage: "checkmark") { onAction(.care(.feed)) }.buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button("Fed", systemImage: "checkmark") { onAction(.care(.feed)) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
             Button("Ask why") { onAction(.open) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
         case .safety:
             Button("Got it") { onAction(.ack) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
@@ -411,7 +411,7 @@ struct EmptyJungle: View {
                 .foregroundStyle(Jungle.subtle)
             if let onAdd {
                 Button(action: onAdd) { Label("Snap your first plant", systemImage: "camera.fill") }
-                    .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).padding(.top, 4)
+                    .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule).padding(.top, 4)
             }
         }
         .padding(18)
@@ -434,7 +434,7 @@ struct PlantShelfCard: View {
                 .frame(width: 150, height: 130).clipped()
                 Text(mood == .needsYou ? "Needs you" : mood == .fine ? "Okay" : "Thriving" as LocalizedStringKey)
                     .font(.caption2.weight(.semibold))
-                    .foregroundStyle(mood == .needsYou ? Color.white : Jungle.forest)
+                    .foregroundStyle(mood == .needsYou ? Color.white : Jungle.accentText)
                     .padding(.horizontal, 8).padding(.vertical, 4)
                     .background(mood == .needsYou ? Jungle.terracotta : Jungle.surface.opacity(0.94), in: Capsule())
                     .padding(8)
@@ -514,7 +514,7 @@ struct CaughtUpCard: View {
         HStack(spacing: 16) {
             ZStack {
                 DayRing(progress: 1, size: 64)
-                Image(systemName: "checkmark").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.forest)
+                Image(systemName: "checkmark").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.accentText)
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text("Everyone's happy").font(.system(.title3, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text)

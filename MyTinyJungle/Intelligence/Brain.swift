@@ -121,7 +121,7 @@ struct BrainAnswerCards: View {
                     if !a.title.isEmpty { Text(a.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text) }
                     Text(a.text).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                     ForEach(Array((a.steps ?? []).enumerated()), id: \.offset) { i, s in
-                        Label { Text(s).font(.subheadline).fixedSize(horizontal: false, vertical: true) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.forest) }
+                        Label { Text(s).font(.subheadline).fixedSize(horizontal: false, vertical: true) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.accentText) }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -261,7 +261,7 @@ struct CarePlanCard: View {
                         }
                         ForEach(rows(p), id: \.1) { r in
                             HStack(alignment: .firstTextBaseline, spacing: 10) {
-                                Image(systemName: r.0).foregroundStyle(Jungle.forest).frame(width: 22)
+                                Image(systemName: r.0).foregroundStyle(Jungle.accentText).frame(width: 22)
                                 Text(r.1).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                             }
                         }

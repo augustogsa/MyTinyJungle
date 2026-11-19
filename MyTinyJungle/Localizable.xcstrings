@@ -79050,6 +79050,41 @@
         }
       }
     },
+    "Waking up your jungle…" : {
+      "comment" : "Launch splash under Erty; max 30 chars",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Dschungel wacht auf…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Despertando tu jungla…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveil de votre jungle…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ジャングルを起こしています…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acordando sua selva…"
+          }
+        }
+      }
+    },
     "Want a heads-up before frost or a heatwave? I'll warn you so you can protect your outdoor plants." : {
       "comment" : "Setup chat: mascot offers frost and heatwave push alerts for outdoor plants",
       "localizations" : {
@@ -88023,6 +88058,216 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tagarela, Fofoca, Bolinha"
+          }
+        }
+      }
+    },
+    "Not sure who this is" : {
+      "comment" : "Add plant: identification found no confident match; headline; max 28 chars",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht sicher, wer das ist"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No sé bien cuál es"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne la reconnais pas"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ種類がわかりません"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não sei bem quem é"
+          }
+        }
+      }
+    },
+    "Search for it, or pick one of these guesses if it looks right." : {
+      "comment" : "Add plant: shown under 'Not sure who this is'",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Such danach oder wähl einen dieser Tipps, wenn er passt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Búscala o elige una de estas opciones si te parece correcta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cherchez-la, ou choisissez une de ces pistes si elle vous semble juste."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索するか、合っていそうなら下の候補から選んでください。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Procura pelo nome ou escolhe um desses palpites, se parecer certo."
+          }
+        }
+      }
+    },
+    "Maybe" : {
+      "comment" : "Species candidate tag for an uncertain guess; max 14 chars",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vielleicht"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quizás"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peut-être"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "かも"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talvez"
+          }
+        }
+      }
+    },
+    "Bean, Pickle, Sprout, Mochi, Biscuit, Noodle, Peanut, Clover, Toffee, Pebble, Muffin, Nugget, Waffle, Button, Maple, Kiwi" : {
+      "comment" : "Comma-separated generic cute pet-name ideas for any plant; 16 names",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bohne, Gurke, Sprössling, Mochi, Keks, Nudel, Erdnuss, Klee, Toffee, Kiesel, Muffin, Krümel, Waffel, Knopf, Ahorn, Kiwi"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frijol, Pepinillo, Brote, Mochi, Galleta, Fideo, Maní, Trébol, Flan, Piedrita, Pancito, Chispa, Churro, Botón, Arce, Kiwi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haricot, Cornichon, Pousse, Mochi, Biscuit, Nouille, Cacahuète, Trèfle, Caramel, Galet, Muffin, Pépite, Gaufre, Bouton, Érable, Kiwi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まめ, ピクルス, めばえ, もち, ビスケット, うどん, ピーナッツ, クローバー, キャラメル, こいし, マフィン, ナゲット, ワッフル, ボタン, もみじ, キウイ"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feijão, Picles, Broto, Paçoca, Biscoito, Miojo, Amendoim, Trevo, Pudim, Pipoca, Bolinho, Nhoque, Brigadeiro, Botão, Jujuba, Kiwi"
+          }
+        }
+      }
+    },
+    "Mostly healthy. There might be a little yellowing, hard to tell from one photo." : {
+      "comment" : "Photo read: uncertain leaf health summary; gentle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieht größtenteils gesund aus. Vielleicht etwas Gelb, aber das ist auf einem Foto schwer zu sagen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ve sana en general. Puede que haya algo de amarillo, pero es difícil saberlo con una sola foto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plutôt en forme. Il y a peut-être un peu de jaunissement, difficile à dire sur une seule photo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おおむね元気そうです。少し黄ばみがあるかもしれませんが、写真1枚では判断しにくいです。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parece saudável no geral. Pode ter um pouquinho de amarelado, mas é difícil cravar só com uma foto."
+          }
+        }
+      }
+    },
+    "Mostly healthy. There might be a few brown edges, hard to tell from one photo." : {
+      "comment" : "Photo read: uncertain leaf health summary; gentle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieht größtenteils gesund aus. Vielleicht ein paar braune Ränder, aber das ist auf einem Foto schwer zu sagen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ve sana en general. Puede que tenga algunas puntas cafés, pero es difícil saberlo con una sola foto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plutôt en forme. Il y a peut-être quelques bords bruns, difficile à dire sur une seule photo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おおむね元気そうです。葉先が少し茶色いかもしれませんが、写真1枚では判断しにくいです。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parece saudável no geral. Pode ter umas pontinhas marrons, mas é difícil cravar só com uma foto."
           }
         }
       }

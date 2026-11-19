@@ -281,7 +281,7 @@ struct GuidePlayerView: View {
                 Spacer(minLength: 0)
                 HStack(spacing: 12) {
                     Button { go(index - 1) } label: { Text("Back").frame(maxWidth: .infinity) }
-                        .buttonStyle(.bordered).fontDesign(.rounded).tint(Jungle.forest).disabled(index < 0)
+                        .buttonStyle(.bordered).fontDesign(.rounded).tint(Jungle.tint).disabled(index < 0)
                     if index == guide.steps.count - 1 {
                         Button { finish() } label: { Text(logged ? Grammar.pt(String(localized: "Logged", comment: "Care guide finished and logged")) : finishLabel).frame(maxWidth: .infinity) }
                             .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest).disabled(logged)
@@ -350,7 +350,7 @@ struct GuidePlayerView: View {
                         if remaining == 0 { remaining = secs }
                         running.toggle()
                     }
-                    .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.forest)
+                    .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.tint)
                 }
                 .padding(14).background(Jungle.mist, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             }

@@ -65,7 +65,7 @@ struct NativeAdCard: View {
                 case .row:
                     NativeAdCardView(ad: ad, style: .row).frame(height: 76)
                 case .tile:
-                    NativeAdCardView(ad: ad, style: .tile).frame(height: 218)
+                    NativeAdCardView(ad: ad, style: .tile).frame(minHeight: 218, maxHeight: .infinity)
                         .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
                         .shadow(color: .black.opacity(0.05), radius: 10, y: 3)
                 }
@@ -97,27 +97,31 @@ private struct NativeAdCardView: UIViewRepresentable {
     func makeUIView(context: Context) -> NativeAdView {
         style == .tile ? makeTile() : makeRow()
     }
+    /// Grid tile: whole media (fit, never cropped), then the "Sponsored" badge on its own line, a two-line headline and the button.
     private func makeTile() -> NativeAdView {
         let v = NativeAdView()
         v.backgroundColor = UIColor(Jungle.surface)
-        let media = MediaView(); media.contentMode = .scaleAspectFill; media.clipsToBounds = true
+        let media = MediaView(); media.contentMode = .scaleAspectFit; media.clipsToBounds = true; media.backgroundColor = UIColor(Jungle.mist)
         let badge = Self.badge()
-        let headline = UILabel(); headline.font = Self.rounded(.headline); headline.textColor = UIColor(Jungle.text); headline.numberOfLines = 1
-        let body = UILabel(); body.font = .preferredFont(forTextStyle: .subheadline); body.textColor = UIColor(Jungle.subtle); body.numberOfLines = 1
-        var cfg = UIButton.Configuration.tinted(); cfg.cornerStyle = .capsule; cfg.baseForegroundColor = UIColor(Jungle.forest); cfg.baseBackgroundColor = UIColor(Jungle.forest); cfg.buttonSize = .mini
+        badge.backgroundColor = UIColor(Jungle.mint)
+        let headline = UILabel(); headline.font = Self.rounded(.subheadline); headline.textColor = UIColor(Jungle.text); headline.numberOfLines = 2
+        headline.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        var cfg = UIButton.Configuration.tinted(); cfg.cornerStyle = .capsule; cfg.baseForegroundColor = UIColor(Jungle.accentText); cfg.baseBackgroundColor = UIColor(Jungle.forest); cfg.buttonSize = .mini
         let cta = UIButton(configuration: cfg); cta.isUserInteractionEnabled = false
-        for s in [media, badge, headline, body, cta] as [UIView] { s.translatesAutoresizingMaskIntoConstraints = false; v.addSubview(s) }
+        cta.setContentCompressionResistancePriority(.required, for: .vertical)
+        for s in [media, badge, headline, cta] as [UIView] { s.translatesAutoresizingMaskIntoConstraints = false; v.addSubview(s) }
         NSLayoutConstraint.activate([
             media.topAnchor.constraint(equalTo: v.topAnchor), media.leadingAnchor.constraint(equalTo: v.leadingAnchor),
-            media.trailingAnchor.constraint(equalTo: v.trailingAnchor), media.heightAnchor.constraint(equalToConstant: 128),
-            badge.topAnchor.constraint(equalTo: v.topAnchor, constant: 10), badge.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 10),
-            headline.topAnchor.constraint(equalTo: media.bottomAnchor, constant: 12),
-            headline.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 14), headline.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -14),
-            body.topAnchor.constraint(equalTo: headline.bottomAnchor, constant: 2),
-            body.leadingAnchor.constraint(equalTo: headline.leadingAnchor), body.trailingAnchor.constraint(equalTo: headline.trailingAnchor),
-            cta.topAnchor.constraint(equalTo: body.bottomAnchor, constant: 6), cta.leadingAnchor.constraint(equalTo: headline.leadingAnchor),
+            media.trailingAnchor.constraint(equalTo: v.trailingAnchor), media.heightAnchor.constraint(equalToConstant: 104),
+            badge.topAnchor.constraint(equalTo: media.bottomAnchor, constant: 10), badge.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 12),
+            badge.trailingAnchor.constraint(lessThanOrEqualTo: v.trailingAnchor, constant: -12),
+            headline.topAnchor.constraint(equalTo: badge.bottomAnchor, constant: 6),
+            headline.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 12), headline.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -12),
+            headline.bottomAnchor.constraint(lessThanOrEqualTo: cta.topAnchor, constant: -6),
+            cta.leadingAnchor.constraint(equalTo: headline.leadingAnchor), cta.trailingAnchor.constraint(lessThanOrEqualTo: v.trailingAnchor, constant: -12),
+            cta.bottomAnchor.constraint(equalTo: v.bottomAnchor, constant: -12),
         ])
-        v.mediaView = media; v.headlineView = headline; v.bodyView = body; v.callToActionView = cta
+        v.mediaView = media; v.headlineView = headline; v.callToActionView = cta
         return v
     }
     private static func badge() -> UILabel {
@@ -136,7 +140,7 @@ private struct NativeAdCardView: UIViewRepresentable {
         badge.layer.cornerRadius = 4; badge.clipsToBounds = true
         let headline = UILabel(); headline.font = Self.rounded(.subheadline); headline.textColor = UIColor(Jungle.text); headline.numberOfLines = 1
         let body = UILabel(); body.font = .preferredFont(forTextStyle: .caption1); body.textColor = UIColor(Jungle.subtle); body.numberOfLines = 1
-        var cfg = UIButton.Configuration.tinted(); cfg.cornerStyle = .capsule; cfg.baseForegroundColor = UIColor(Jungle.forest); cfg.baseBackgroundColor = UIColor(Jungle.forest)
+        var cfg = UIButton.Configuration.tinted(); cfg.cornerStyle = .capsule; cfg.baseForegroundColor = UIColor(Jungle.accentText); cfg.baseBackgroundColor = UIColor(Jungle.forest)
         cfg.buttonSize = .small
         let cta = UIButton(configuration: cfg); cta.isUserInteractionEnabled = false
         for l in [badge, cta] as [UIView] { l.setContentHuggingPriority(.required, for: .horizontal); l.setContentCompressionResistancePriority(.required, for: .horizontal) }
@@ -162,7 +166,7 @@ private struct NativeAdCardView: UIViewRepresentable {
         (v.iconView as? UIImageView)?.image = ad.icon?.image
         v.iconView?.isHidden = ad.icon == nil
         v.mediaView?.mediaContent = ad.mediaContent
-        v.mediaView?.contentMode = .scaleAspectFill
+        v.mediaView?.contentMode = .scaleAspectFit
         (v.callToActionView as? UIButton)?.configuration?.title = ad.callToAction ?? Grammar.pt(String(localized: "Open", comment: "Ad call-to-action fallback button"))
         v.nativeAd = ad
     }

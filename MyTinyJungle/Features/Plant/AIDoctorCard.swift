@@ -25,7 +25,7 @@ struct AIDoctorCard: View {
                     Text(c).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
                 }
                 ForEach(Array(a.steps.enumerated()), id: \.offset) { i, s in
-                    Label { Text(s).font(.subheadline) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.forest) }
+                    Label { Text(s).font(.subheadline) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.accentText) }
                 }
                 if let ref = a.ref, !ref.isEmpty { feedback(ref) }
             } else if working {
@@ -65,7 +65,7 @@ struct AIDoctorCard: View {
                         Text(yes ? Grammar.pt(String(localized: "Yes", comment: "AI doctor feedback button; short")) : Grammar.pt(String(localized: "No", comment: "AI doctor feedback button; short")))
                             .font(.subheadline.weight(.semibold)).padding(.horizontal, 14).padding(.vertical, 6)
                     }
-                    .buttonStyle(.bordered).tint(Jungle.forest)
+                    .buttonStyle(.bordered).tint(Jungle.tint)
                 }
             }
             .padding(.top, 4)

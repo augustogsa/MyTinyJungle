@@ -28,7 +28,7 @@ struct TodayWeekStrip: View {
                             .strokeBorder(due && !done ? Jungle.leaf : .clear, lineWidth: 1.5)
                             .frame(width: 6, height: 6)
                     }
-                    .foregroundStyle(isToday ? Jungle.forest : Jungle.subtle)
+                    .foregroundStyle(isToday ? Jungle.accentText : Jungle.subtle)
                     .frame(maxWidth: .infinity).padding(.vertical, 10)
                     .background { if isToday { Capsule().fill(Jungle.surface).shadow(color: .black.opacity(0.06), radius: 8, y: 2) } }
                 }

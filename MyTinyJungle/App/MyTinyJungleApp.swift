@@ -77,7 +77,7 @@ private struct MainScene: View {
             RootView()
                 .modifier(ErtyCheerOverlay())
                 .task { if ProcessInfo.processInfo.arguments.contains("-ertyDemo") { try? await Task.sleep(for: .seconds(1)); ErtyCheer.shared.show(.water, "Watered · Goldie") } }
-                .tint(Jungle.forest)
+                .tint(Jungle.tint)
                 .task { DemoSeeder.seedIfAsked(container.mainContext) }
                 .task { try? await Task.sleep(for: .seconds(2)); AdPool.shared.start() }
                 .task {

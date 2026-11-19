@@ -66,7 +66,7 @@ struct HealthCheckView: View {
         if photo == nil {
             HStack(spacing: 10) {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    Button { camera = true } label: { Label("Photo", systemImage: "camera.fill").frame(maxWidth: .infinity) }.buttonStyle(.borderedProminent)
+                    Button { camera = true } label: { Label("Photo", systemImage: "camera.fill").frame(maxWidth: .infinity) }.buttonStyle(.borderedProminent).tint(Jungle.forest)
                 }
                 PhotosPicker(selection: $pick, matching: .images) { Label("Library", systemImage: "photo").frame(maxWidth: .infinity) }.buttonStyle(.bordered)
                 if plant.photo != nil {
@@ -252,7 +252,7 @@ struct PestPlanView: View {
                 try? ctx.save()
                 onStart()
             } label: { Label("Start treatment plan", systemImage: "cross.case.fill").frame(maxWidth: .infinity) }
-                .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
+                .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
         }
         .padding(14).jungleCard()
     }

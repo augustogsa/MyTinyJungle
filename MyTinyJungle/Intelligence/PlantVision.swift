@@ -17,11 +17,12 @@ struct PhotoRead {
         let foliage = greenShare + yellowShare + brownShare
         guard foliage > 0.08 else { return .unknown }
         let bad = (yellowShare + brownShare) / foliage
+        // Variegation, pots and backgrounds fool colour counts, so only a strong, leaf-bound signal counts as stress.
         switch bad {
-        case ..<0.06: return greenShare > 0.35 ? .lush : .good
-        case ..<0.15: return .good
-        case ..<0.3: return .someStress
-        default: return .stressed
+        case ..<0.08: return greenShare > 0.35 ? .lush : .good
+        case ..<0.22: return .good
+        case ..<0.45: return .someStress
+        default: return yellowShare + brownShare > 0.08 ? .stressed : .someStress
         }
     }
 
@@ -29,7 +30,7 @@ struct PhotoRead {
         switch health {
         case .lush: Grammar.pt(String(localized: "Leaves look lush and green.", comment: "Photo read: leaf health summary, labelled as an estimate."))
         case .good: Grammar.pt(String(localized: "Leaves look healthy overall.", comment: "Photo read: leaf health summary, labelled as an estimate."))
-        case .someStress: yellowShare >= brownShare ? Grammar.pt(String(localized: "Some yellowing visible, worth a closer look.", comment: "Photo read: leaf health summary, labelled as an estimate.")) : Grammar.pt(String(localized: "Some browning visible, often dry air or uneven watering.", comment: "Photo read: leaf health summary, labelled as an estimate."))
+        case .someStress: yellowShare >= brownShare ? Grammar.pt(String(localized: "Mostly healthy. There might be a little yellowing, hard to tell from one photo.", comment: "Photo read: uncertain leaf health summary, labelled as an estimate; gentle, not alarming")) : Grammar.pt(String(localized: "Mostly healthy. There might be a few brown edges, hard to tell from one photo.", comment: "Photo read: uncertain leaf health summary, labelled as an estimate; gentle, not alarming"))
         case .stressed: yellowShare >= brownShare ? Grammar.pt(String(localized: "A lot of yellowing. Check the roots and how wet the soil stays.", comment: "Photo read: leaf health summary, labelled as an estimate.")) : Grammar.pt(String(localized: "A lot of browning. Check watering, humidity and sun.", comment: "Photo read: leaf health summary, labelled as an estimate."))
         case .unknown: Grammar.pt(String(localized: "I couldn't see enough leaves to judge health.", comment: "Photo read: leaf health summary, labelled as an estimate."))
         }
@@ -75,15 +76,35 @@ enum PlantVision {
         var green = 0, yellow = 0, brown = 0
         var soilCount = 0, soilV = 0.0
         let total = side * side
+        // 0 other, 1 green, 2 yellow, 3 brown
+        var kind = [UInt8](repeating: 0, count: total)
         for y in 0..<side {
             for x in 0..<side {
                 let i = (y * side + x) * 4
                 let (h, s, v) = hsv(Double(data[i]) / 255, Double(data[i + 1]) / 255, Double(data[i + 2]) / 255)
-                if s > 0.2, v > 0.18, (75...170).contains(h) { green += 1 }
-                else if s > 0.35, v > 0.45, (40..<75).contains(h) { yellow += 1 }
-                else if s > 0.3, (0.2...0.7).contains(v), (12..<40).contains(h) { brown += 1 }
+                if s > 0.2, v > 0.18, (75...170).contains(h) { kind[y * side + x] = 1 }
+                // Bright, creamy yellow is variegation, not yellowing.
+                else if s > 0.45, v > 0.45, !(v > 0.75 && s < 0.7), (40..<75).contains(h) { kind[y * side + x] = 2 }
+                else if s > 0.35, (0.2...0.65).contains(v), (12..<40).contains(h) { kind[y * side + x] = 3 }
                 // CGContext origin is bottom-left: y < side/3 is the bottom of the photo.
                 if y < side / 3, s < 0.55, v < 0.45, (h < 45 || h > 330 || s < 0.15) { soilCount += 1; soilV += v }
+            }
+        }
+        // Leaf mask: yellow/brown only counts when it sits among green leaf pixels (not pots, floors or walls).
+        let r2 = 3
+        for y in 0..<side {
+            for x in 0..<side {
+                let k = kind[y * side + x]
+                if k == 1 { green += 1; continue }
+                guard k >= 2 else { continue }
+                var near = 0, seen = 0
+                for dy in -r2...r2 { for dx in -r2...r2 {
+                    let yy = y + dy, xx = x + dx
+                    guard yy >= 0, yy < side, xx >= 0, xx < side else { continue }
+                    seen += 1; if kind[yy * side + xx] == 1 { near += 1 }
+                } }
+                guard Double(near) / Double(seen) >= 0.25 else { continue }
+                if k == 2 { yellow += 1 } else { brown += 1 }
             }
         }
         r.greenShare = Double(green) / Double(total)

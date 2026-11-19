@@ -19,7 +19,7 @@ struct SpacesView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Add your rooms").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                         Text("Tell me about each room's light and I'll tell you which plants feel best where.").foregroundStyle(Jungle.subtle)
-                        Button("Add a space", systemImage: "plus") { adding = true }.buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule)
+                        Button("Add a space", systemImage: "plus") { adding = true }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
                     }
                     .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
                 }

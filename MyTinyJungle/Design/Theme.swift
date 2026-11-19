@@ -16,7 +16,9 @@ extension UIColor {
 
 /// My Tiny Jungle palette. 80% warm neutrals, 15% greens, 5% warm accents.
 enum Jungle {
-    static let forest = Color(light: 0x2F5D3A, dark: 0x8DBE8F)
+    static let forest = Color(light: 0x2F5D3A, dark: 0x468553)
+    /// App-wide tint for text, icons and controls: light green in dark mode so it reads on dark glass.
+    static let tint = Color(light: 0x2F5D3A, dark: 0x8DBE8F)
     static let leaf = Color(light: 0x5F8F62, dark: 0x7FAF82)
     static let sage = Color(light: 0xA8C7A5, dark: 0x4C6A4E)
     static let cream = Color(light: 0xFCFAF6, dark: 0x141A15)

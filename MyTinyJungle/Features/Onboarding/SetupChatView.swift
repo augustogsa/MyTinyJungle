@@ -409,7 +409,7 @@ private struct SetupChips: View {
                         else if let i = c.icon { Icon3DView(i, size: 20) }
                         Text(c.title)
                     }
-                    .font(.subheadline.weight(on ? .semibold : .medium)).foregroundStyle(on ? Jungle.forest : Jungle.text)
+                    .font(.subheadline.weight(on ? .semibold : .medium)).foregroundStyle(on ? Jungle.accentText : Jungle.text)
                     .padding(.horizontal, 14).frame(minHeight: 40)
                     .background(on ? Jungle.mint : Jungle.surface, in: Capsule())
                     .overlay(Capsule().strokeBorder(on ? Jungle.forest : Jungle.border, lineWidth: on ? 1.5 : 1))

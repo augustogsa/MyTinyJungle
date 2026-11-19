@@ -112,14 +112,15 @@ struct ScanView: View {
 
             HStack(spacing: 10) {
                 PhotosPicker(selection: $pick, matching: .images) {
-                    Text("From photos").frame(maxWidth: .infinity)
+                    Label("From photos", systemImage: "photo.on.rectangle").secondaryPill()
                 }
-                Button { typing = true } label: { Text("Type it").frame(maxWidth: .infinity) }
+                Button { typing = true } label: { Label("Type it", systemImage: "keyboard").secondaryPill() }
             }
-            .buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.leaf).font(.subheadline.weight(.medium))
+            .buttonStyle(.plain).fontDesign(.rounded)
         }
         .padding(16)
-        .background(Color.white.opacity(0.6), in: RoundedRectangle(cornerRadius: 24 + 16, style: .continuous))
+        .background(Jungle.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: 24 + 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 24 + 16, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
     }
 
     // MARK: Modes
@@ -145,7 +146,7 @@ struct ScanView: View {
     private func modeTile(_ t: String, _ sub: String, _ s: Icon3D, _ bg: Color) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Icon3DView(s, size: 32)
-                .frame(width: 44, height: 44).background(.white.opacity(0.7), in: Circle())
+                .frame(width: 44, height: 44).background(Jungle.surface.opacity(0.8), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text(t).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
                 Text(sub).font(.caption).foregroundStyle(Jungle.subtle).multilineTextAlignment(.leading).lineLimit(2, reservesSpace: true)
@@ -532,5 +533,16 @@ private struct JungleDietCard: View {
             }
             .padding(.horizontal, 14).jungleCard()
         }
+    }
+}
+
+private extension View {
+    /// Secondary action on a card: readable in light and dark.
+    func secondaryPill() -> some View {
+        self.font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
+            .frame(maxWidth: .infinity).padding(.vertical, 11)
+            .background(Jungle.mint, in: Capsule())
+            .overlay(Capsule().strokeBorder(Jungle.sage.opacity(0.6), lineWidth: 1))
+            .contentShape(Capsule())
     }
 }

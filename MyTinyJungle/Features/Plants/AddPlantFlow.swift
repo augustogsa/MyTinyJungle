@@ -23,6 +23,9 @@ struct AddPlantFlow: View {
     @State private var choosingSpecies = false
     @State private var nameEdited = false
     @State private var locationEdited = false
+    /// No real identification came back: on-device guesses are suggestions only.
+    @State private var unsure = false
+    @State private var nameSeed = UInt64.random(in: 1...UInt64.max)
 
     var body: some View {
         DuoCompanion(mood: .plant, title: "A new green friend", detail: "Snap it, meet it, and it moves in.") { duoContent }
@@ -53,7 +56,7 @@ struct AddPlantFlow: View {
                 if stage == .capture { stage = .meet }
                 let plan = PlantAdvisor.plan(species: s, read: read, existing: plants)
                 personality = plan.suggestedPersonality
-                if !nameEdited { name = plan.suggestedName }
+                if !nameEdited { name = nameIdeas.first ?? "" }
                 if !locationEdited { location = PlantAdvisor.suggestedRoom(for: s, existing: plants); outdoor = plan.outdoorsHint || Icon3D.room(location) == .balcony }
             }
         }
@@ -81,7 +84,7 @@ struct AddPlantFlow: View {
                     Button { showCamera = true } label: {
                         Label("Take a photo", systemImage: "camera.fill").frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.borderedProminent).fontDesign(.rounded).controlSize(.large)
+                    .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).controlSize(.large)
                 }
                 PhotosPicker(selection: $pick, matching: .images) {
                     Label("Choose from Photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
@@ -139,7 +142,7 @@ struct AddPlantFlow: View {
                 Text(species == nil && name.isEmpty ? Grammar.pt(String(localized: "Pick the species first", comment: "Save button disabled hint")) : name.isEmpty ? Grammar.pt(String(localized: "Welcome home", comment: "Save button; max 24 chars")) : Grammar.pt(String(localized: "Welcome \(name)", comment: "Save button; arg plant name; max 24 chars")))
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
+            .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
             .disabled(name.isEmpty && species == nil)
             .padding(.horizontal, 16).padding(.vertical, 10)
             .background(.bar)
@@ -173,7 +176,12 @@ struct AddPlantFlow: View {
 
     private var speciesSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(candidates.isEmpty ? "Which plant is this?" : "I think I'm a…").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+            if unsure {
+                Text(Grammar.pt(String(localized: "Not sure who this is", comment: "Add plant: identification found no confident match; headline; max 28 chars"))).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                Text(Grammar.pt(String(localized: "Search for it, or pick one of these guesses if it looks right.", comment: "Add plant: shown under 'Not sure who this is'; on-device guesses below are suggestions only"))).font(.subheadline).foregroundStyle(Jungle.subtle)
+            } else {
+                Text(candidates.isEmpty ? "Which plant is this?" : "I think I'm a…").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(candidates) { c in
@@ -182,7 +190,7 @@ struct AddPlantFlow: View {
                         } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(c.species.commonName).font(.subheadline.weight(.semibold))
-                                Text(c.id == candidates.first?.id ? Grammar.pt(String(localized: "Best match", comment: "Species candidate tag; max 14 chars")) : c.source).font(.caption2).opacity(0.8)
+                                Text(unsure ? Grammar.pt(String(localized: "Maybe", comment: "Species candidate tag for an uncertain on-device guess; max 14 chars")) : c.id == candidates.first?.id ? Grammar.pt(String(localized: "Best match", comment: "Species candidate tag; max 14 chars")) : c.source).font(.caption2).opacity(0.8)
                             }
                             .padding(.horizontal, 14).padding(.vertical, 9)
                             .foregroundStyle(species == c.species ? Color.white : Jungle.text)
@@ -191,7 +199,7 @@ struct AddPlantFlow: View {
                         .buttonStyle(.plain)
                     }
                     Button { choosingSpecies = true } label: {
-                        Label(candidates.isEmpty ? "Search species" : "Something else", systemImage: "magnifyingglass")
+                        Label(candidates.isEmpty || unsure ? "Search species" : "Something else", systemImage: "magnifyingglass")
                             .font(.subheadline.weight(.medium))
                             .padding(.horizontal, 14).padding(.vertical, 12)
                             .background(Jungle.mist, in: Capsule())
@@ -210,7 +218,7 @@ struct AddPlantFlow: View {
         }
     }
 
-    private var nameIdeas: [String] { PlantAdvisor.nameIdeas(for: species, personality: personality, existing: plants) }
+    private var nameIdeas: [String] { PlantAdvisor.nameIdeas(for: species, personality: personality, existing: plants, seed: nameSeed) }
 
     private var nameSection: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -374,10 +382,11 @@ struct AddPlantFlow: View {
             read = r
             var c = rem
             for cand in PlantIdentifier.candidates(from: r) where !c.contains(where: { $0.species == cand.species }) { c.append(cand) }
-            candidates = Array(c.prefix(5))
+            unsure = rem.isEmpty
+            candidates = Array(c.prefix(unsure ? 3 : 5))
             withAnimation(.snappy) {
                 stage = .meet
-                species = candidates.first?.species
+                species = unsure ? nil : candidates.first?.species
                 if species == nil, !nameEdited { name = nameIdeas.first ?? "" }
             }
         }

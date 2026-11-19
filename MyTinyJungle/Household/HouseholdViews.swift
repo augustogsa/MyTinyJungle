@@ -171,7 +171,7 @@ struct PlantShareSection: View {
                     Spacer(minLength: 0)
                     if house.turn(for: plant.id)?.isMe == true {
                         Button { ask = true } label: { Text("Ask for a hand", comment: "Plant page button: ask another member to cover") }
-                            .buttonStyle(.bordered).controlSize(.small).tint(Jungle.forest)
+                            .buttonStyle(.bordered).controlSize(.small).tint(Jungle.tint)
                     }
                 }
                 .padding(.vertical, 12)
@@ -460,7 +460,7 @@ struct InviteView: View {
                                     Label { Text(copied ? Grammar.pt(String(localized: "Copied", comment: "Link copied confirmation")) : Grammar.pt(String(localized: "Copy link", comment: "Invite button"))) } icon: { Image(systemName: copied ? "checkmark" : "link") }.frame(maxWidth: .infinity, minHeight: 44)
                                 }
                             }
-                            .buttonStyle(.bordered).tint(Jungle.forest)
+                            .buttonStyle(.bordered).tint(Jungle.tint)
                             Text("Each link works once and expires in 7 days.", comment: "Invite: link rules").font(.footnote).foregroundStyle(Jungle.subtle).padding(.top, 4)
                         }
                     } else if let err = house.lastError {
@@ -501,7 +501,7 @@ struct InviteView: View {
     }
     private func step(_ n: Int, _ t: String) -> some View {
         HStack(spacing: 12) {
-            Text(n.formatted()).font(.system(.subheadline, design: .rounded, weight: .bold)).foregroundStyle(Jungle.forest).frame(width: 28, height: 28).background(Jungle.mint, in: Circle())
+            Text(n.formatted()).font(.system(.subheadline, design: .rounded, weight: .bold)).foregroundStyle(Jungle.accentText).frame(width: 28, height: 28).background(Jungle.mint, in: Circle())
             Text(t).font(.subheadline).foregroundStyle(Jungle.text)
         }
     }

@@ -70,7 +70,7 @@ enum PlantAdvisor {
         default: .cheerful
         }
 
-        let name = nameIdeas(for: s, personality: personality, existing: existing).first ?? s.commonName
+        let name = nameIdeas(for: s, personality: personality, existing: existing).first ?? ""
         return WelcomePlan(firstWater: water, food: food, spot: spot, neighbours: neighbours, potAndSoil: pot, safety: safety,
                            suggestedName: name, suggestedPersonality: personality,
                            outdoorsHint: s.outdoor == true || ["Lamiaceae", "Solanaceae", "Oleaceae", "Rutaceae"].contains(s.family))
@@ -100,7 +100,7 @@ enum PlantAdvisor {
     }
 
     /// Name ideas from the species itself (puns on its name), its family and its personality. Never repeats a name already in the jungle.
-    static func nameIdeas(for s: Species?, personality: Personality? = nil, existing: [Plant] = []) -> [String] {
+    static func nameIdeas(for s: Species?, personality: Personality? = nil, existing: [Plant] = [], seed: UInt64? = nil) -> [String] {
         func names(_ list: String) -> [String] { list.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) } }
         let byID: [String: [String]] = [
             "monstera-deliciosa": names(Grammar.pt(String(localized: "Monty, Swiss, Cheesy, Delilah", comment: "Comma-separated pet-name ideas for a plant; give local, playful names a native would pick, same count"))),
@@ -119,8 +119,6 @@ enum PlantAdvisor {
         var pool: [String] = []
         if let s {
             pool += byID[s.id] ?? []
-            let first = s.commonName.split(separator: " ").first.map(String.init) ?? s.en
-            if first.count >= 4 { pool += Locale.current.language.languageCode?.identifier == "en" ? [String(first.prefix(4)) + "y", first] : [first] }
             let fam: [String] = switch s.family {
             case "Araceae": names(Grammar.pt(String(localized: "Milo, Ollie, Leo, Kiki, Bruno", comment: "Comma-separated pet-name ideas for a plant; give local, playful names a native would pick, same count")))
             case "Marantaceae": names(Grammar.pt(String(localized: "Luna, Diva, Iris, Stella", comment: "Comma-separated pet-name ideas for a plant; give local, playful names a native would pick, same count")))
@@ -144,7 +142,18 @@ enum PlantAdvisor {
         }
         pool += mood
         let used = Set(existing.map { $0.name.folded })
-        return pool.uniqued().filter { !used.contains($0.folded) }
+        guard let seed else { return pool.uniqued().filter { !used.contains($0.folded) } }
+        // A fresh mix per open: themed ideas interleaved with generic cute names, never the species name.
+        var rng = SeededRandom(seed)
+        let themed = pool.uniqued().shuffled(using: &rng)
+        let generic = names(Grammar.pt(String(localized: "Bean, Pickle, Sprout, Mochi, Biscuit, Noodle, Peanut, Clover, Toffee, Pebble, Muffin, Nugget, Waffle, Button, Maple, Kiwi", comment: "Comma-separated generic cute pet-name ideas for any plant; give 16 local, playful names a native would pick (food, small cute things); same count"))).shuffled(using: &rng)
+        var mixed: [String] = []
+        for i in 0..<max(themed.count, generic.count) {
+            if i < themed.count { mixed.append(themed[i]) }
+            if i < generic.count { mixed.append(generic[i]) }
+        }
+        let banned = Set([s?.commonName.folded, s?.en.folded].compactMap { $0 })
+        return mixed.uniqued().filter { !used.contains($0.folded) && !banned.contains($0.folded) }
     }
 
     /// Best spot for it: a room you already use with the same light needs, else the classic room for its needs.
@@ -158,5 +167,18 @@ enum PlantAdvisor {
         case .medium: return Grammar.pt(String(localized: "Bedroom", comment: "Suggested room name for a new plant, capitalized."))
         case .low: return Grammar.pt(String(localized: "Office", comment: "Suggested room name for a new plant, capitalized."))
         }
+    }
+}
+
+/// Small deterministic RNG so one add-plant session keeps a stable order while each open differs.
+struct SeededRandom: RandomNumberGenerator {
+    private var state: UInt64
+    init(_ seed: UInt64) { state = seed }
+    mutating func next() -> UInt64 {
+        state &+= 0x9E3779B97F4A7C15
+        var z = state
+        z = (z ^ (z >> 30)) &* 0xBF58476D1CE4E5B9
+        z = (z ^ (z >> 27)) &* 0x94D049BB133111EB
+        return z ^ (z >> 31)
     }
 }

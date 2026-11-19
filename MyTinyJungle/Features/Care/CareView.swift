@@ -372,7 +372,7 @@ struct TravelPlanView: View {
                     ShareLink(item: sitterNote, subject: Text("Plant care while I'm away", comment: "Share subject for plant-sitter note"), message: Text("Thank you for looking after my plants", comment: "Share message for plant-sitter note")) {
                         Text("Send plant-sitter instructions").font(.headline).frame(maxWidth: .infinity).frame(height: 48)
                     }
-                    .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(Jungle.forest)
+                    .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(Jungle.tint)
                 }
             }
             .padding(.horizontal, 16).padding(.vertical, 12)
@@ -439,7 +439,7 @@ struct PropagationListView: View {
                     }
                     if pr.stage != .done {
                         Button(pr.stage == .growing ? Grammar.pt(String(localized: "It's a plant now! Add to jungle", comment: "Propagation button on final stage")) : (Propagation.Stage(rawValue: pr.stage.rawValue + 1)?.label).map { Grammar.pt(String(localized: "Next: \($0)", comment: "Propagation advance button; arg is next stage name")) } ?? "") { advance(pr, parent: parent) }
-                            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
+                            .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.small)
                     } else {
                         Label("Joined your jungle", systemImage: "leaf.fill").foregroundStyle(Jungle.accentText)
                     }
