@@ -121,9 +121,9 @@ enum GuideLibrary {
     static func guide(_ id: String) -> CareGuide? { all.first { $0.id == id } }
 
     /// Guides worth doing now for this plant, most relevant first.
-    static func suggested(for plant: Plant) -> [CareGuide] {
+    static func suggested(for plant: Plant, now: Date = .now) -> [CareGuide] {
         var ids: [String] = []
-        let reqs = CareEngine.requests(for: plant).map(\.kind)
+        let reqs = CareEngine.requests(for: plant, now: now).map(\.kind)
         if reqs.contains(.water) || reqs.contains(.checkSoil) { ids += ["soil", "water"] }
         if reqs.contains(.checkRoots) { ids.append("repot") }
         if reqs.contains(.feed) { ids.append("feed") }
@@ -139,7 +139,7 @@ enum GuideLibrary {
             default: break
             }
             if !sp.isPetSafe && (JungleSettings.shared.hasCats || JungleSettings.shared.hasDogs) { ids.append("pet-safe") }
-            if CareEngine.isWinter() { ids.append("winter") }
+            if CareEngine.isWinter(now) { ids.append("winter") }
         }
         if plant.sortedEvents.contains(where: { $0.kind == .health }) { ids += ["leaf-signs", "hunger-signs"] }
         ids.append("this-month")

@@ -142,7 +142,9 @@ enum PlantAdvisor {
         }
         pool += mood
         let used = Set(existing.map { $0.name.folded })
-        guard let seed else { return pool.uniqued().filter { !used.contains($0.folded) } }
+        // Never the species' own names ("Basil" for a basil).
+        let banned = Set(([s?.en, s?.pt, s?.commonName, s?.scientific.split(separator: " ").first.map(String.init)] + (s?.aliases ?? []).map(Optional.some)).compactMap { $0?.folded })
+        guard let seed else { return pool.uniqued().filter { !used.contains($0.folded) && !banned.contains($0.folded) } }
         // A fresh mix per open: themed ideas interleaved with generic cute names, never the species name.
         var rng = SeededRandom(seed)
         let themed = pool.uniqued().shuffled(using: &rng)
@@ -152,7 +154,6 @@ enum PlantAdvisor {
             if i < themed.count { mixed.append(themed[i]) }
             if i < generic.count { mixed.append(generic[i]) }
         }
-        let banned = Set([s?.commonName.folded, s?.en.folded].compactMap { $0 })
         return mixed.uniqued().filter { !used.contains($0.folded) && !banned.contains($0.folded) }
     }
 

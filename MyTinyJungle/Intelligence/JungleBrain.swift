@@ -288,7 +288,7 @@ enum JungleBrain {
             .components(separatedBy: " ").prefix(2).joined(separator: " ")
         name = name.flatMap { $0.replacingOccurrences(of: #"\b(in|on|na|no|em|and|e|que|da|do)$"#, with: "", options: .regularExpression).trimmingCharacters(in: .whitespaces) }
         guard species != nil || name != nil else { return nil }
-        let finalName = (name?.isEmpty == false ? name! : species!.commonName).capitalized
+        let finalName = (name?.isEmpty == false ? name! : (PlantAdvisor.nameIdeas(for: species, existing: plants).first ?? species!.commonName)).capitalized
         if plants.contains(where: { $0.name.folded == finalName.folded }) { return nil }
         let plant = Plant(name: finalName, speciesID: species?.id, personality: Personality.allCases.randomElement() ?? .cheerful)
         if let place = ChatParser.capture(#"\b(?:in the|in my|on the|by the|na|no) ([a-z ]{3,25})"#, t) {

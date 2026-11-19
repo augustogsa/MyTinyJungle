@@ -6,7 +6,15 @@ enum PlantVoice {
         guard !options.isEmpty else { return "" }
         let day = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
         let h = abs(seed.unicodeScalars.reduce(day) { ($0 &* 31) &+ Int($1.value) })
-        return options[h % options.count]
+        var line = options[h % options.count]
+        // Stable within a day, and never the same line two days running for the same seed.
+        let key = "voice.last.\(seed)", d = UserDefaults.standard
+        if let stored = d.array(forKey: key) as? [Any], stored.count == 2, let sd = stored[0] as? Int, let sl = stored[1] as? String {
+            if sd == day, options.contains(sl) { return sl }
+            if options.count > 1, sl == line { line = options[(h + 1) % options.count] }
+        }
+        d.set([day, line], forKey: key)
+        return line
     }
 
     static func say(_ request: PlantRequest, plant: Plant) -> String {

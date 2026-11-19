@@ -86,6 +86,8 @@ final class SpeciesLibrary {
     static let shared = SpeciesLibrary()
     let all: [Species]
     private let byID: [String: Species]
+    /// Normalised names per species id, built once.
+    private let nameTable: [String: [String]]
 
     init(bundle: Bundle = .main) {
         if let data = ContentFiles.data("data/species.json"),
@@ -95,6 +97,10 @@ final class SpeciesLibrary {
             all = []
         }
         byID = Dictionary(uniqueKeysWithValues: all.map { ($0.id, $0) })
+        nameTable = Dictionary(uniqueKeysWithValues: all.map { s in
+            (s.id, ([s.en, s.pt, s.local ?? "", s.scientific] + (s.aliases ?? []) + s.scientific.split(separator: " ").prefix(1).map(String.init))
+                .map { Self.norm($0).trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.uniqued())
+        })
     }
 
     func species(id: String) -> Species? { byID[id] }
@@ -107,16 +113,32 @@ final class SpeciesLibrary {
 
     /// Best match of a species mentioned inside free text ("my new monstera").
     func mentioned(in text: String) -> Species? {
-        let t = " " + text.folded.replacingOccurrences(of: #"[^a-z0-9' ]"#, with: " ", options: .regularExpression) + " "
+        let t = Self.norm(text)
         var best: (Species, Int)?
         for s in all {
-            for name in [s.en, s.pt, s.local ?? "", s.scientific] + (s.aliases ?? []) + s.scientific.split(separator: " ").prefix(1).map(String.init) {
-                let n = name.folded
-                if n.count >= 4, t.contains(" " + n), n.count > (best?.1 ?? 0) { best = (s, n.count) }
+            let common = [s.en, s.pt, s.local ?? ""].map { Self.norm($0).trimmingCharacters(in: .whitespaces) }
+            for n in names(s) {
+                // Longest name wins; on a tie, the species whose own common name it is ("monstera" → Monstera deliciosa, not a genus mate).
+                let score = n.count * 2 + (common.contains(n) ? 1 : 0)
+                if n.count >= 4, Self.hasWord(t, n), score > (best?.1 ?? 0) { best = (s, score) }
             }
         }
         return best?.0
     }
+
+    /// True when the text names this species by any of its names, as whole words ("reguei a costela-de-adão").
+    func isNamedIn(_ s: Species, text: String) -> Bool {
+        let t = Self.norm(text)
+        return names(s).contains { $0.count >= 4 && Self.hasWord(t, $0) }
+    }
+
+    /// Whole-word match, plurals included ("calatheas", "cactos").
+    private static func hasWord(_ t: String, _ n: String) -> Bool { t.contains(" \(n) ") || t.contains(" \(n)s ") || t.contains(" \(n)es ") }
+    /// Folded, punctuation and hyphens to spaces, single-spaced, padded: names and text compare word by word.
+    private static func norm(_ s: String) -> String {
+        " " + s.folded.replacingOccurrences(of: "[^a-z0-9']+", with: " ", options: .regularExpression).trimmingCharacters(in: .whitespaces) + " "
+    }
+    private func names(_ s: Species) -> [String] { nameTable[s.id] ?? [] }
 }
 
 extension String {

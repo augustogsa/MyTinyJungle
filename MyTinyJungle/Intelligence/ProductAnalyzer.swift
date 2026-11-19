@@ -110,6 +110,12 @@ enum ProductAnalyzer {
     }
 
     static func parseNPK(_ t: String) -> (n: Double, p: Double, k: Double)? {
+        // Brazilian dotted form: "NPK 04.14.08", "10.10.10".
+        if let re = try? NSRegularExpression(pattern: #"npk\s*(\d{1,2})\.(\d{1,2})\.(\d{1,2})\b"#),
+           let m = re.firstMatch(in: t, range: NSRange(t.startIndex..., in: t)) {
+            let vals = (1...3).compactMap { Range(m.range(at: $0), in: t).flatMap { Double(t[$0]) } }
+            if vals.count == 3, vals.reduce(0, +) > 0 { return (vals[0], vals[1], vals[2]) }
+        }
         let num = #"(\d{1,2}(?:[.,]\d{1,2})?)"#
         let sep = #"\s*[-–—:/+]\s*"#
         if let re = try? NSRegularExpression(pattern: #"(?:npk\s*)?"# + num + sep + num + sep + num),

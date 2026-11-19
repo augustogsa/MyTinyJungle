@@ -14,11 +14,27 @@ enum Answerer {
     private static var askPests: String { Grammar.pt(String(localized: "Any pests to watch?", comment: "Chat suggestion chip: question to the plant about pests to watch for.")) }
     private static func bullets(_ lines: [String]) -> String { lines.map { "• \($0)" }.joined(separator: "\n") }
 
+    // Care topics, matched on folded text, in every shipped language (en, pt, es, fr, de, ja).
+    static let WATER = #"\b(water|drink|agua|regar|rega|rego|regue|regad|riego|riega|regarte|arros|giess|gieß|wasser)|水"#
+    static let LIGHT = #"\b(light|sun|sunny|window|luz|sol|solzinho|ensolarad|janela|bright|dark|escur|claridade|sombra|lumiere|soleil|licht|sonne|helle?)\b|光|日当|日光"#
+    static let FEED = #"\b(fertili|feed|food|adub|nutri|npk|comida|abon|engrais|dunger|düng)|肥料"#
+    static let REPOT = #"\b(repot|pot|vaso|transplant|replant|roots|raiz|raize|maceta|trasplant|rempot|umtopf|topf)|植え替え|鉢"#
+    static let SOIL = #"\b(soil|substrate|mix|terra|substrato|perlite|perlita|bark|casca|sustrato|tierra|terreau|erde|substrat)\b|用土|土"#
+    static let HUMID = #"\b(humid|umid|mist|borrif|humedad|luftfeucht)|湿度"#
+    static let TEMP = #"\b(cold|hot|temperat|frio|calor|winter|inverno|heater|aquecedor|radiator|ar.condicionado|froid|chaud|kalt|warm)|温度|寒|暑"#
+    static let TOXIC = #"\b(toxic|safe|pet|cat|cats|dog|dogs|kid|child|gato|gatos|cao|cachorro|crianc|venen|faz mal|perro|chien|chat|chats|hund|katze|giftig)|毒|猫|犬"#
+    static let PROPAGATE = #"\b(propag|cutting|estaca|muda|multiplic|esqueje|bouture|steckling|vermehr)|増や|挿し木"#
+    static let PESTS = #"\b(bug|pest|insect|inset|bicho|praga|web|teia|mite|acaro|aranha|gnat|mosca|mosquit|mealy|cochonilha|scale|aphid|pulg|thrip|tripes|whitefly|lagarta|formiga|plaga|ravageur|parasit|schadling|schädling)|害虫|虫"#
+    static let ORIGIN = #"\b(about|story|origin|where.{0,10}from|native|history|historia|origem|de onde|who are you|quem e voce|origen|d'ou|herkunft|woher)|原産|出身|どこ"#
+    /// Questions the plant's own facts answer better than a generic how-to.
+    static let CARE = [WATER, LIGHT, FEED, REPOT, SOIL, HUMID, TEMP, TOXIC, PROPAGATE, PESTS, ORIGIN].map { "(?:\($0))" }.joined(separator: "|")
+
     static func answer(_ raw: String, plant: Plant?, plants: [Plant], now: Date = Date()) -> (text: String, suggestions: [String]) {
         let q = raw.folded
         func has(_ p: String) -> Bool { ChatParser.matches(p, q) }
 
-        if let general = knowledgeAnswer(q, raw: raw, plant: plant, plants: plants, now: now) { return general }
+        let species = plant?.species ?? (plant == nil ? SpeciesLibrary.shared.mentioned(in: raw) : nil)
+        if let general = knowledgeAnswer(q, raw: raw, plant: plant, plants: plants, now: now, careTopic: species != nil && has(CARE)) { return general }
 
         // Collection-level questions.
         if plant == nil {
@@ -34,8 +50,17 @@ enum Answerer {
             if has(#"\b(recommend|suggest|which plant|what plant|should i (get|buy)|best plant|indica|recomend|sugest|qual planta|que planta)"#) {
                 return (recommend(q), [])
             }
-            if let sp = SpeciesLibrary.shared.mentioned(in: raw) {
-                return (speciesCard(sp), [Grammar.pt(String(localized: "Is it pet-safe?", comment: "Chat suggestion chip: question whether a plant is safe for pets.")),
+            if let sp = species {
+                // A focused question about a species ("is monstera toxic to cats?") gets that fact first, then the card.
+                let focus: String? = has(TOXIC) ? Grammar.pt(String(localized: "Pets: \(sp.toxicityLine).", comment: "Species card bullet: pet toxicity."))
+                    : has(WATER) ? Grammar.pt(String(localized: "Water: \(sp.waterRule) \(sp.seasonalWater)", comment: "Species card bullet. Args: watering rule, seasonal watering sentences."))
+                    : has(LIGHT) ? Grammar.pt(String(localized: "Light: \(sp.lightRule)", comment: "Species card bullet. %@ = light rule sentence."))
+                    : has(TEMP) ? Grammar.pt(String(localized: "Comfort: \(Climate.tempRange(sp.tempMin, sp.tempMax)), humidity \(Int(sp.humidityMin))%+", comment: "Species card bullet. Args: temperature range, minimum humidity percent."))
+                    : has(SOIL) ? Grammar.pt(String(localized: "Soil: \(sp.soilPlan)", comment: "Species card bullet."))
+                    : has(FEED) ? Grammar.pt(String(localized: "Food: \(sp.feedPlan)", comment: "Species card bullet: fertilizer plan."))
+                    : nil
+                let card = speciesCard(sp)
+                return (focus.map { "\(sp.commonName): \($0)\n\n\(card)" } ?? card, [Grammar.pt(String(localized: "Is it pet-safe?", comment: "Chat suggestion chip: question whether a plant is safe for pets.")),
                                           Grammar.pt(String(localized: "Recommend a plant", comment: "Chat suggestion chip: ask for a plant recommendation."))])
             }
             if has(#"\b(safe|toxic|poison|pet|cat|dog|gato|cao|cachorro|venen|bicho de estimacao)"#) {
@@ -84,7 +109,7 @@ enum Answerer {
             return (Grammar.pt(String(localized: "Curling leaves usually mean I'm thirsty, the air is too dry, or I'm getting too much sun. \(s.lightRule)", comment: "Plant chat: curling leaves. %@ = species light rule sentence.")),
                     [soilDry, Grammar.pt(String(localized: "It gets direct sun", comment: "Chat suggestion chip: the plant gets direct sun."))])
         }
-        if has(#"\b(bug|pest|insect|inset|bicho|praga|web|teia|mite|acaro|aranha|gnat|mosca|mosquit|mealy|cochonilha|scale|aphid|pulg|thrip|tripes|whitefly|lagarta|formiga)"#) {
+        if has(PESTS) {
             let named = Knowledge.shared.pests.first { p in p.name.folded.split(separator: " ").contains { q.contains($0.prefix(5)) } }
             if let p = named {
                 return (Grammar.pt(String(localized: "\(p.name): \(p.signs) What helps: \(p.fix) Keep me apart from the others until it's clear.", comment: "Plant chat: pest card. Args: pest name, signs sentence, fix sentence.")), [sendPhoto])
@@ -101,7 +126,7 @@ enum Answerer {
         }
 
         // Care questions.
-        if has(#"\b(water|drink|agua|regar|rega|regad)"#) {
+        if has(WATER) {
             var parts = ["\(s.waterRule) \(s.seasonalWater) \(s.potHint(diameter: plant.potDiameterCm))"]
             parts.append(plant.learnedDryDays != nil
                 ? Grammar.pt(String(localized: "In my current setup I usually dry in about \(expectedDays) days. I learned that from your soil checks.", comment: "Plant chat: learned drying rhythm. %lld = days (plural)."))
@@ -110,10 +135,10 @@ enum Answerer {
             parts.append(Grammar.pt(String(localized: "Always feel the soil first. The calendar is only a guess.", comment: "Plant chat: watering advice closer.")))
             return (parts.joined(separator: " "), [soilDry, soilMoist])
         }
-        if has(#"\b(light|sun|window|luz|sol|janela|bright|dark|escur|claridade|sombra)"#) {
+        if has(LIGHT) {
             return (Grammar.pt(String(localized: "\(s.lightRule) If I stretch toward the window or my new leaves come out small, I need more light. Bleached or scorched patches mean too much direct sun.", comment: "Plant chat: light advice. %@ = species light rule sentence.")), [])
         }
-        if has(#"\b(fertili|feed|food|adub|nutri|npk|comida)"#) {
+        if has(FEED) {
             if !CareEngine.isGrowingSeason(now) {
                 return (Grammar.pt(String(localized: "I'm growing slowly at this time of year, so please pause feeding until spring. Feeding a resting plant just builds up salts in my soil.", comment: "Plant chat: no feeding in the resting season.")), [])
             }
@@ -123,7 +148,7 @@ enum Answerer {
             if s.feed == "none" { return (Grammar.pt(String(localized: "Please never feed me. I catch my own food, and fertilizer burns my roots. Rainwater only.", comment: "Plant chat: carnivorous plant, never fertilize.")), []) }
             return (Grammar.pt(String(localized: "\(s.feedPlan) Always water first. Never feed dry roots. Scan any bottle at the shop and I'll tell you if it suits me.", comment: "Plant chat: feeding advice. %@ = species feeding plan sentence.")), [scanProduct, askSoil])
         }
-        if has(#"\b(repot|pot|vaso|transplant|replant|roots|raiz|raize)"#) {
+        if has(REPOT) {
             let size = plant.potDiameterCm.map { d in
                 Grammar.pt(String(localized: "My pot is \(Int(d)) cm, so the next one should be about \(Int(d + 2))–\(Int(d + 5)) cm.", comment: "Plant chat: next pot size. Args: current pot diameter, min and max next diameter (cm)."))
             } ?? Grammar.pt(String(localized: "Go only 2–5 cm wider than my current pot.", comment: "Plant chat: pot size advice."))
@@ -134,16 +159,16 @@ enum Answerer {
             let soil = Grammar.pt(String(localized: "For soil: \(s.soilPlan)", comment: "Plant chat: soil recommendation. %@ = species soil plan sentence."))
             return ([head, size, season, s.repotNotes, soil].compactMap { $0 }.joined(separator: " "), [askPropagate])
         }
-        if has(#"\b(soil|substrate|mix|terra|substrato|perlite|perlita|bark|casca)"#) {
+        if has(SOIL) {
             return (Grammar.pt(String(localized: "My perfect home is \(s.soilPlan) \(s.soil?.note ?? "") Scan a soil bag and I'll check it against that.", comment: "Plant chat: ideal soil. Args: species soil plan sentence, optional soil note.")), [scanProduct, askFood])
         }
-        if has(#"\b(humid|umid|mist|borrif)"#) {
+        if has(HUMID) {
             return (Grammar.pt(String(localized: "I'm happiest above \(Int(s.humidityMin))% humidity. Grouping plants or using a humidifier works better than misting, whose effect lasts only minutes.", comment: "Plant chat: humidity advice. %lld = minimum humidity percent.")), [])
         }
-        if has(#"\b(cold|hot|temperat|frio|calor|winter|inverno|heater|aquecedor|radiator|ar.condicionado)"#) {
+        if has(TEMP) {
             return (Grammar.pt(String(localized: "I'm comfortable between \(Climate.temp(s.tempMin)) and \(Climate.temp(s.tempMax)). Keep me away from radiators, AC vents and cold drafts.", comment: "Plant chat: temperature range. Args: formatted min and max temperatures. In Brazil: 'aquecedor', 'ar-condicionado', 'correntes de ar frio'.")), [])
         }
-        if has(#"\b(toxic|safe|pet|cat|dog|kid|child|gato|cao|cachorro|crianc|venen)"#) {
+        if has(TOXIC) {
             let tox = s.toxicCats || s.toxicDogs
             return (tox ? Grammar.pt(String(localized: "\(s.toxicityLine). Keep me out of reach. If a pet chews me and shows symptoms, call a vet.", comment: "Plant chat: plant is toxic. %@ = toxicity sentence without final period."))
                 : Grammar.pt(String(localized: "I'm on the non-toxic list for cats and dogs (ASPCA). Still, nibbling isn't good for either of us.", comment: "Plant chat: plant is pet-safe.")), [])
@@ -153,11 +178,11 @@ enum Answerer {
             if let first = reqs.first(where: { $0.priority <= 1 }) { return (PlantVoice.say(first, plant: plant), suggestions(for: first)) }
             return (PlantVoice.happy(plant), [])
         }
-        if has(#"\b(propag|cutting|estaca|muda|multiplic)"#) {
+        if has(PROPAGATE) {
             let ways = bullets(s.propagation ?? [Grammar.pt(String(localized: "Stem cuttings just below a node, in water or moist perlite", comment: "Default propagation method (bullet item, no final period)."))])
             return (Grammar.pt(String(localized: "Here's how to make more of me:\n\(ways)\nSpring and early summer are best, in bright, indirect light.", comment: "Plant chat: propagation. %@ = bulleted list of methods.")), [])
         }
-        if has(#"\b(about|story|origin|where.{0,10}from|native|history|historia|origem|de onde|who are you|quem e voce)"#) {
+        if has(ORIGIN) {
             var parts = [s.about ?? s.tip]
             if let o = s.origin { parts.append(Grammar.pt(String(localized: "I come from \(o).", comment: "Plant chat: where the species is native. %@ = region."))) }
             if let h = s.habit { parts.append(Grammar.pt(String(localized: "Growth habit: \(h.lowercased()).", comment: "Plant chat: growth habit. %@ = habit description, lowercase."))) }
@@ -178,7 +203,7 @@ enum Answerer {
     }
 
     /// Questions the knowledge base answers whatever plant we're talking about.
-    static func knowledgeAnswer(_ q: String, raw: String, plant: Plant?, plants: [Plant], now: Date) -> (text: String, suggestions: [String])? {
+    static func knowledgeAnswer(_ q: String, raw: String, plant: Plant?, plants: [Plant], now: Date, careTopic: Bool = false) -> (text: String, suggestions: [String])? {
         func has(_ p: String) -> Bool { ChatParser.matches(p, q) }
         let k = Knowledge.shared
         if has(#"\b(what is|what's|what are|whats|meaning|o que e|o que sao|significa|define)\b"#), let t = k.term(in: q) {
@@ -196,7 +221,7 @@ enum Answerer {
             return (Grammar.pt(String(localized: "This month indoors: \(m.indoor)\nOutdoors: \(m.outdoor)", comment: "Chat: monthly garden tasks. Args: indoor tasks, outdoor tasks.")), [])
         }
         let c = Climate.shared
-        if has(#"\b(weather|forecast|frost|freez|heatwave|heat wave|storm|rain|tempo|geada|chuva|previs|tempestade|onda de calor)"#) {
+        if !careTopic, has(#"\b(weather|forecast|frost|freez|heatwave|heat wave|storm|rain|geada|chuva|previs|como esta o tempo|tempo la fora|tempestade|onda de calor)"#) {
             if c.profile == nil {
                 return (Grammar.pt(String(localized: "Tell me where you live (Me › Settings › Where you grow) and I'll watch the weather for your outdoor plants.", comment: "Chat: no location set. Path names must match the app's own labels (Me tab › Settings › Where you grow).")),
                         [Grammar.pt(String(localized: "Open settings", comment: "Chat suggestion chip: open settings."))])
@@ -220,7 +245,7 @@ enum Answerer {
            let sp = plant?.species ?? SpeciesLibrary.shared.mentioned(in: raw), let fit = c.fit(sp) {
             return (fit, [])
         }
-        if has(#"\b(lux|how bright|light level|light meter|luminosidade|quanta luz|nivel de luz)"#) {
+        if !careTopic, has(#"\b(lux|how bright|light level|light meter|luminosidade|quanta luz|nivel de luz)"#) {
             return (bullets(k.lightLevels.map { Grammar.pt(String(localized: "\($0.id.capitalized) (\($0.lux) lux): \($0.where). Think \($0.plants).", comment: "Chat: light level line. Args: level name, lux range, where in a home, example plants.")) }), [])
         }
         if has(#"\b(terracotta|terracota|barro|plastic pot|vaso de plastico|ceramic|ceramica|which pot|qual vaso|pot material|self.?watering|autoirrig|grow bag)"#) {
@@ -252,7 +277,7 @@ enum Answerer {
             return (Grammar.pt(String(localized: "Easy food for pots: \(easy.formatted(.list(type: .and))). Ask me about any of them, like \"how do I grow chillies\".", comment: "Chat: easy edible plants for pots. %@ = list of crop names. Translate the example naturally (e.g. 'como plantar pimenta').")), [])
         }
         // How-to topics: propagation, watering methods, light, holidays, myths and more.
-        if let t = k.topic(in: q), (plant == nil && t.kind != "safety") || has(#"\b(how|why|tips?|guide|best way|should i|is it true|myth|como|por que|porque|dicas?|melhor jeito|e verdade|mito)\b"#) {
+        if !careTopic, let t = k.topic(in: q), (plant == nil && t.kind != "safety") || has(#"\b(how|why|tips?|guide|best way|should i|is it true|myth|como|por que|porque|dicas?|melhor jeito|e verdade|mito)\b"#) {
             let steps = bullets(t.steps.prefix(5).map { "\($0.title): \($0.detail)" })
             return ("\(t.title). \(t.intro)\n\(steps)", [])
         }
