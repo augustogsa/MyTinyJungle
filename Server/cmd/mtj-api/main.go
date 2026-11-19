@@ -154,6 +154,20 @@ func purge(log *slog.Logger) error {
 	for _, j := range jungles {
 		_ = os.RemoveAll(filepath.Join(mediaDir, j))
 	}
+	// Photo retention: media not attached to a live plant, journal entry or chat message (record with a photo)
+	// for 30 days is erased, file and row.
+	orows, _ := conn.Query(ctx, `delete from media m where m.created_at < now() - interval '30 days'
+		and not exists (select 1 from records r where r.jungle_id = m.jungle_id and r.id = m.id and not r.deleted
+			and r.entity in ('plant', 'care_event', 'chat_message') and coalesce(r.data->>'photo', '') <> '')
+		returning m.jungle_id::text || '/' || m.id::text`)
+	orphans, err := pgx.CollectRows(orows, pgx.RowTo[string])
+	if err != nil {
+		return err
+	}
+	for _, o := range orphans {
+		_ = os.Remove(filepath.Join(mediaDir, filepath.FromSlash(o)))
+	}
+	_, _ = conn.Exec(ctx, `delete from api_quota where day < current_date - 35`)
 	_, _ = conn.Exec(ctx, `delete from sessions where expires_at < now()`)
 	_, _ = conn.Exec(ctx, `delete from invites where expires_at < now() - interval '30 days'`)
 	_, _ = conn.Exec(ctx, `delete from store_notifications where received_at < now() - interval '400 days'`)
@@ -163,7 +177,7 @@ func purge(log *slog.Logger) error {
 		_, _ = conn.Exec(ctx, `insert into audit_log (actor, action, detail) values ('system','account.purge',$1)`,
 			map[string]int64{"accounts": tag.RowsAffected()})
 	}
-	log.Info("purge", "accounts", tag.RowsAffected(), "jungles", len(jungles))
+	log.Info("purge", "accounts", tag.RowsAffected(), "jungles", len(jungles), "orphanPhotos", len(orphans))
 	return nil
 }
 

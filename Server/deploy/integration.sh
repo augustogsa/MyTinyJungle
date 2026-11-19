@@ -89,6 +89,25 @@ for sp in aloe-vera chlorophytum zamioculcas monstera-deliciosa; do
   idr=$(c $A -m 90 http://x/v1/brain/identify -d @/tmp/mtj-id.json)
   echo "$idr" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert sys.argv[1] in [c["id"] for c in d["candidates"]],d' $sp || die "identify $sp: $idr"
 done; rm -f /tmp/mtj-id.json; ok "identify from photo (4 species, own model)"
+# Weekly digest, daily limits, photo retention.
+E=33333333-3333-4333-8333-$(openssl rand -hex 6); T=44444444-4444-4444-8444-$(openssl rand -hex 6); ep=$(date -u +%s)
+c $A http://x/v1/sync/push -d "{\"changes\":[{\"jungleId\":\"$JA\",\"entity\":\"care_event\",\"id\":\"$E\",\"data\":{\"kind\":\"newLeaf\",\"date\":$ep,\"plantID\":\"$P\",\"photo\":\"h1\"},\"baseVersion\":null,\"clientUpdatedAt\":\"$now\"},{\"jungleId\":\"$JA\",\"entity\":\"care_task\",\"id\":\"$T\",\"data\":{\"title\":\"Repot\",\"kind\":\"repot\",\"plantID\":\"$P\",\"due\":$((ep+86400)),\"done\":false},\"baseVersion\":null,\"clientUpdatedAt\":\"$now\"}]}" >/dev/null
+dg=$(c $A http://x/v1/me/digest); echo "$dg" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert [i["kind"] for i in d["grew"]]==["newLeaf"] and any(i["kind"]=="task" and i["title"]=="Repot" for i in d["due"]) and d["photos"][0]["media"].endswith(sys.argv[1]) and d["watch"]==[],d' $E && ok "weekly digest (due, grew, photos)"
+[[ $(c $B http://x/v1/me/digest | python3 -c 'import json,sys;d=json.load(sys.stdin);print(len(d["due"])+len(d["grew"]))') == 0 ]] && ok "digest only covers your jungles"
+[[ $(c $A -X PUT -o /dev/null -w '%{http_code}' http://x/v1/me/digest -d "{\"on\":false,\"deviceId\":\"$did\",\"lang\":\"pt-BR\"}") == 200 && $(psqlq "select digest_on, digest_lang from devices where id='$did'") == "f|pt-BR" ]] && ok "digest opt-out per device"
+[[ $(c $A -X PUT -o /dev/null -w '%{http_code}' http://x/v1/me/digest -d "{\"on\":true,\"deviceId\":\"$(cat /proc/sys/kernel/random/uuid)\"}") == 404 ]] && ok "digest toggle refuses another device"
+psqlq "insert into api_quota (subject, kind, n) values ('u:$UA', 'ask', 300)" >/dev/null
+r=$(c $A -w ' %{http_code}' http://x/v1/brain/ask -d '{"q":"water?","lang":"en"}'); [[ $r == '{"error":"daily_limit"}'*429 ]] && ok "daily limit 429 on ask"
+psqlq "delete from api_quota where subject in ('u:$UA', 'd:$did')" >/dev/null
+[[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/ask -d '{"q":"water?","lang":"en"}') == 200 && $(psqlq "select n from api_quota where subject='d:$did' and kind='ask' and day=current_date") == 1 ]] && ok "quota counted per device"
+psqlq "delete from api_quota where subject in ('u:$UA', 'd:$did')" >/dev/null
+[[ $(psqlq "select count(*) from information_schema.tables where table_name='ai_spend'") == 1 ]] && ok "paid spend guard table"
+O=55555555-5555-4555-8555-$(openssl rand -hex 6)
+psqlq "insert into media (jungle_id, id, content_type, bytes, created_at) values ('$JA', '$O', 'image/jpeg', 1, now() - interval '31 days')" >/dev/null
+install -o mtj-api -m 600 /dev/null /var/lib/mtj/media/$JA/$O
+systemctl start mtj-purge.service
+[[ $(psqlq "select count(*) from media where id='$O'") == 0 && ! -e /var/lib/mtj/media/$JA/$O && -e /var/lib/mtj/media/$JA/$M ]] && ok "unattached photo older than 30 days purged, new one kept"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
+st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/limits); [[ $st == 403 ]] && ok "admin limits refuses without Access"
 st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/me); [[ $st == 200 ]] && ok "account deletion"
 echo "passed $pass checks"

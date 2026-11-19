@@ -58,6 +58,11 @@ func (s *Server) user(h http.HandlerFunc) http.Handler {
 			writeErr(w, http.StatusTooManyRequests, "rate_limited")
 			return
 		}
+		release, ok := s.guard(w, r, c) // daily quotas and model load (limits.go)
+		if !ok {
+			return
+		}
+		defer release()
 		h(w, r.WithContext(context.WithValue(r.Context(), ctxKey{}, c)))
 	})
 }

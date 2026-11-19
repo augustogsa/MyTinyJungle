@@ -41,6 +41,7 @@ func New(cfg Config, db *DB, priv ed25519.PrivateKey, pubs map[string]ed25519.Pu
 		s.access = jwt.NewJWKS("https://" + cfg.AccessTeam + "/cdn-cgi/access/certs")
 	}
 	s.pusher = newPusher(cfg, db, log)
+	installGuards(s)
 	if cfg.PlayPackage != "" && cfg.PlaySAFile != "" {
 		s.play = newPlayClient(cfg.PlayPackage, cfg.PlaySAFile)
 	}
@@ -82,6 +83,8 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("POST /v1/brain/identify", s.user(s.brainIdentify))
 	m.Handle("POST /v1/brain/care-plan", s.user(s.brainCarePlan))
 	m.Handle("PUT /v1/me/weather-watch", s.user(s.weatherWatch))
+	m.Handle("GET /v1/me/digest", s.user(s.getDigest))
+	m.Handle("PUT /v1/me/digest", s.user(s.putDigest))
 	m.Handle("POST /v1/events", s.ipLimit(rateAuthIP, s.postEvents))
 	m.Handle("POST /v1/referrals/{code}/redeem", s.user(s.redeemReferral))
 
@@ -118,6 +121,7 @@ func (s *Server) Handler() http.Handler {
 	m.Handle("GET /v1/admin/diagnostics", s.admin(s.adminDiagnostics))
 	m.Handle("GET /v1/admin/events", s.admin(s.adminEvents))
 	m.Handle("GET /v1/admin/brain", s.admin(s.adminBrain))
+	m.Handle("GET /v1/admin/limits", s.admin(s.adminLimits))
 
 	return s.wrap(m)
 }
@@ -262,4 +266,4 @@ func (l *Limiter) Allow(key string, perMin int) bool {
 }
 
 // StartJobs runs the background work of a serving process (weather watch).
-func (s *Server) StartJobs(ctx context.Context) { go s.weatherLoop(ctx) }
+func (s *Server) StartJobs(ctx context.Context) { go s.weatherLoop(ctx); go s.digestLoop(ctx) }

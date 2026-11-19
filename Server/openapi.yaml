@@ -7,6 +7,9 @@ info:
     One account across iOS, Android and web. Clients (Swift, Kotlin) are generated from this file.
     Auth: `Authorization: Bearer <accessToken>` (EdDSA JWT, 30 min). Refresh tokens rotate on every use;
     reusing an old one revokes every session of the account.
+    Daily limits per user and per device: /v1/brain/scene and /v1/brain/identify 60, /v1/brain/ask 300,
+    /v1/diagnose 20. Over the limit: 429 {"error":"daily_limit"} (resets at 00:00 UTC). When the photo models
+    are saturated: 503 {"error":"busy"}; retry later.
 servers:
   - url: https://api.mytinyjungle.com
 security:
@@ -309,6 +312,20 @@ paths:
         required: true
         content: { application/json: { schema: { type: object, required: [lat, lon, on, deviceId], properties: { lat: { type: number }, lon: { type: number }, lang: { type: string }, on: { type: boolean }, deviceId: { type: string, format: uuid } } } } }
       responses: { "200": { description: OK }, "400": { $ref: "#/components/responses/Error" } }
+  /v1/me/digest:
+    get:
+      operationId: getDigest
+      summary: This week's jungle digest (due, watch, grew, photos) across every jungle you can reach
+      responses:
+        "200": { description: Digest, content: { application/json: { schema: { $ref: "#/components/schemas/Digest" } } } }
+        "401": { $ref: "#/components/responses/Error" }
+    put:
+      operationId: putDigest
+      summary: Weekly digest push on or off for this device (default on). The push opens mytinyjungle://digest
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [on, deviceId], properties: { on: { type: boolean }, deviceId: { type: string, format: uuid }, lang: { type: string, description: "en, pt-BR, es, fr, de or ja; kept for the push text" } } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "400": { $ref: "#/components/responses/Error" }, "404": { $ref: "#/components/responses/Error" } }
 components:
   securitySchemes:
     bearer: { type: http, scheme: bearer, bearerFormat: JWT }
@@ -323,6 +340,28 @@ components:
       content: { application/json: { schema: { type: object, required: [plus, entitlements], properties: { plus: { type: boolean }, entitlements: { type: array, items: { $ref: "#/components/schemas/Entitlement" } } } } } }
   schemas:
     Error: { type: object, required: [error], properties: { error: { type: string } } }
+    Digest:
+      type: object
+      required: [week, due, watch, grew, photos]
+      properties:
+        week: { type: string, format: date, description: Monday of the current week (UTC) }
+        due: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "kind water | feed | task, next 7 days and overdue" }
+        watch: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "kind overdue_water | problem | quiet | repot" }
+        grew: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "kind newLeaf | flower | measure | propagate, last 7 days" }
+        photos: { type: array, items: { $ref: "#/components/schemas/DigestItem" }, description: "journal photos of the last 7 days (up to 12); media is the GET path" }
+    DigestItem:
+      type: object
+      required: [kind]
+      properties:
+        kind: { type: string }
+        plantId: { type: string }
+        plant: { type: string }
+        date: { type: string, format: date-time }
+        overdue: { type: boolean }
+        title: { type: string }
+        value: { type: number }
+        eventId: { type: string }
+        media: { type: string }
     House: { type: object, required: [data, version], properties: { data: { type: object }, version: { type: integer, format: int64 } } }
     Health: { type: object, required: [service, release, db], properties: { service: { type: string }, release: { type: string }, db: { type: boolean } } }
     Provider: { type: string, enum: [apple, google] }

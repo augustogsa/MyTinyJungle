@@ -131,3 +131,18 @@ Cheapest first; paid models only when our own can't answer.
 - `PUT /v1/me/weather-watch` frost/heatwave alert push per ~10 km cell, once a day max.
 - Gaps (`brain_gaps`): daily counts of knowledge words we couldn't answer, nothing personal; `GET /v1/admin/brain` shows them with library stats so content grows where owners ask.
 - Think time is capped at 90 s (Apache 100 s, Cloudflare 100 s).
+
+## Weekly jungle digest
+- `GET /v1/me/digest` → `{week, due[], watch[], grew[], photos[]}` from synced records of every jungle you can reach (plants, care events of the last 120 days, care tasks). due: water (learned dry days, else species `dryMax`, else 7), feed (species `feedWeeks` after the last feeding), open tasks, next 7 days and overdue. watch: very overdue water, health/treat logged this week, no care for 30 days, repot due. grew: new leaf, flower, measure, propagate this week. photos: journal photos of the week with their `/v1/media` path (up to 12).
+- `PUT /v1/me/digest {on, deviceId, lang?}` per-device opt-out, default on (`devices.digest_on`, `digest_lang`).
+- `digestLoop` (in-process, hourly): Sunday from 17:00 UTC, each opted-in device with a push token gets one visible push a week (`digest_sent_at`), counts only, in en, pt-BR, es, fr, de or ja (digest_lang, else weather_lang, else account locale). APNs payload and FCM data carry `kind: digest`, `url: mytinyjungle://digest`. Empty digests send nothing.
+
+## Abuse limits and cost guards (`limits.go`)
+- Daily quotas per user and per device (`api_quota`, UTC day): `/v1/brain/scene` 60, `/v1/brain/identify` 60, `/v1/brain/ask` 300, `/v1/diagnose` 20. Over: `429 {"error":"daily_limit"}`. Applied in `user()` before the handler.
+- Load: at most `MTJ_BRAIN_CONCURRENCY` (4) brain requests at once, else `503 {"error":"busy"}` after 20 s; at most 2 concurrent calls into each local model (`MTJ_VLM_CONCURRENCY`, `MTJ_ID_CONCURRENCY`), enforced on `http.DefaultClient`'s transport.
+- Paid models: `MTJ_AI_MONTHLY_CAP` calls a month, Gemini + Claude together (default 3000, 0 turns paid tiers off), counted in `ai_spend`. Over the cap the paid call fails fast (synthetic 403, not retried) and the brain answers with its own result.
+- Admin: `GET /v1/admin/limits` (today's use per kind, users at the limit, paid calls and blocked calls this month, in-flight load, digest opt-ins).
+
+## Photo retention
+- Brain endpoints (`/v1/brain/*`, `/v1/diagnose`) never write photos: they are held in memory for the request; only text answers go to `ai_library`.
+- The purge job erases media (row and file) older than 30 days that isn't attached to a live plant, care event or chat message record. `api_quota` rows go after 35 days.
