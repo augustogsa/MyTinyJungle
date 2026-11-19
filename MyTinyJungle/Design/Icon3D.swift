@@ -55,7 +55,7 @@ struct Icon3DView: View {
     var size: CGFloat
     init(_ icon: Icon3D, size: CGFloat = 28) { self.icon = icon; self.size = size }
     var body: some View {
-        Image(icon.assetName).resizable().interpolation(.high).scaledToFit()
+        ContentImage("icons/\(icon.rawValue).png", fallback: icon.assetName).interpolation(.high).scaledToFit()
             .frame(width: size, height: size)
             .accessibilityHidden(true)
     }

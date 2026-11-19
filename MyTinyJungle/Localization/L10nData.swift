@@ -1,7 +1,7 @@
 import Foundation
 
 /// Localizes the bundled knowledge data (species.json, knowledge.json).
-/// Each language ships `Knowledge/Locales/<lang>.json`:
+/// Each language ships `Content/data/locales/<lang>.json (served by the API, bundled as an lzfse seed)`:
 /// `{ "names": { "<species id>": "Local name" }, "text": { "<English text>": "Translation" } }`.
 /// Text is swapped before decoding, so every screen reading the data is localized for free.
 /// See Documentation/Localization.md.
@@ -17,9 +17,7 @@ enum L10nData {
     private static let table: Table? = {
         for code in Bundle.main.preferredLocalizations + [Locale.current.identifier] {
             for candidate in [code, String(code.prefix(2))] where !candidate.hasPrefix("en") {
-                if let url = Bundle.main.url(forResource: candidate, withExtension: "json", subdirectory: nil)
-                    ?? Bundle.main.url(forResource: candidate, withExtension: "json", subdirectory: "Locales"),
-                   let data = try? Data(contentsOf: url),
+                if let data = ContentFiles.data("data/locales/\(candidate).json"),
                    let t = try? JSONDecoder().decode(Table.self, from: data) { return t }
             }
         }

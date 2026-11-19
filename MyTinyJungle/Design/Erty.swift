@@ -30,7 +30,7 @@ struct ErtyView: View {
 
     var body: some View {
         Group {
-            if reduceMotion { Image("erty-\(mood.rawValue)").resizable().scaledToFit() }
+            if reduceMotion { ContentImage("erty/\(mood.rawValue).png", fallback: "erty-\(mood.rawValue)").scaledToFit() }
             else { ErtyLoop(mood: mood).id(mood) }
         }
         .frame(width: size, height: size)
@@ -51,13 +51,14 @@ private struct ErtyLoop: UIViewRepresentable {
         private let still: UIImageView
 
         init(mood: ErtyMood) {
-            still = UIImageView(image: UIImage(named: "erty-\(mood.rawValue)"))
+            still = UIImageView(image: MainActor.assumeIsolated { ContentStore.shared.image("erty/\(mood.rawValue).png") } ?? UIImage(named: "erty-\(mood.rawValue)"))
             super.init(frame: .zero)
             backgroundColor = .clear
             still.contentMode = .scaleAspectFit
             still.frame = bounds; still.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             addSubview(still)
-            guard let url = Bundle.main.url(forResource: "erty-\(mood.rawValue)", withExtension: "mov") else { return }
+            // Loops come from the server; until downloaded, the still frame stands in.
+            guard let url = ContentFiles.url("erty/\(mood.rawValue).mov") else { return }
             let q = AVQueuePlayer(); q.isMuted = true; q.preventsDisplaySleepDuringVideoPlayback = false
             q.audiovisualBackgroundPlaybackPolicy = .pauses
             looper = AVPlayerLooper(player: q, templateItem: AVPlayerItem(url: url))

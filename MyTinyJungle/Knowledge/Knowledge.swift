@@ -80,8 +80,7 @@ struct Knowledge: Decodable {
     }
 
     static let shared: Knowledge = {
-        guard let url = Bundle.main.url(forResource: "knowledge", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
+        guard let data = ContentFiles.data("data/knowledge.json"),
               let k = try? JSONDecoder().decode(Knowledge.self, from: L10nData.localize(data)) else {
             return Knowledge(soils: [], components: [], fertilizers: [], pests: [], sources: [])
         }

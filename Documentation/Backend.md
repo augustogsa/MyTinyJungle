@@ -53,3 +53,15 @@ See `Server/openapi.yaml`. Auth: `/v1/auth/signin|refresh|signout|link`. Account
 1. Done: Go server, contract, roles and RLS, sign-in, sync, sharing, encrypted photos, store verification, admin behind Access, hardened service, origin pulls, encrypted off-site backups, purge, 20/20 end-to-end checks.
 2. iOS: generated client, Sign in with Apple, sync engine (SwiftData ↔ records, photos ↔ media), move household from CKShare to jungles and invites, StoreKit `appAccountToken`.
 3. Android app on the same contract (Google sign-in → `MTJ_GOOGLE_AUDIENCES`, Play Billing → `MTJ_PLAY_*`).
+
+## Content from the server (species, knowledge, translations, Erty, icons, artwork)
+
+What the app knows that isn't the user's lives in `Content/` and is served by the API, so it changes without an app update.
+
+- Publish: edit `Content/`, then `Server/content/publish.py --apply`. Each file goes to `/var/lib/mtj/content/b/<sha256[:32]>.<ext>` (immutable, never overwritten, old ones kept for older app versions); `manifest.json` (logical path → hash) goes up last, atomically. The script also refreshes the app's bundled seeds, so commit those with the content change.
+- API (public, no auth): `GET /v1/content/manifest` (ETag, `max-age=300`, 304 when unchanged) and `GET /v1/content/b/{hash}.{ext}` (`immutable`, one year; Cloudflare edge-caches images).
+- App: `ContentStore` (MyTinyJungle/Content) revalidates the manifest at launch and on foreground, downloads missing blobs (4 at a time, SHA-256 checked), adopts the manifest only when every file is present, prunes unreferenced blobs. Files live in Application Support/Content, excluded from backup.
+- Mini floor in the bundle: data files as lzfse seeds (~260 KB instead of 1.5 MB), icons at 72 px, Erty stills at 128 px, sign-in art at 836 px. Erty loops are server-only; the still shows until they land.
+- Images swap to full quality live; species/knowledge/translations apply on the next launch (they are read once at startup).
+- Engines (care, diagnosis, chat, forecast) stay on the device and run on this server-fed data: instant, offline and private, no plant data leaves the phone to get an answer.
+- Stays bundled on purpose: alternate app icons (iOS requires them in the bundle), AppMark (share cards render synchronously), tab icons, Google mark.

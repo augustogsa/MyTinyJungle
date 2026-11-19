@@ -27,6 +27,7 @@ type Config struct {
 	AccessAud      string // Access application AUD tag
 	AdminEmails    []string
 	MediaDir       string
+	ContentDir     string // published content pack: manifest.json + b/<hash>
 	MediaKey       []byte // 32 bytes
 	AppleBundleID  string
 	PlayPackage    string
@@ -72,6 +73,7 @@ func LoadConfig() (Config, error) {
 		AccessAud:     os.Getenv("MTJ_ACCESS_AUD"),
 		AdminEmails:   list("MTJ_ADMIN_EMAILS"),
 		MediaDir:      env("MTJ_MEDIA_DIR", "/var/lib/mtj/media"),
+		ContentDir:    env("MTJ_CONTENT_DIR", "/var/lib/mtj/content"),
 		AppleBundleID: env("MTJ_APPLE_BUNDLE_ID", "com.simpleappscompany.mytinyjungle"),
 		PlayPackage:   os.Getenv("MTJ_PLAY_PACKAGE"),
 		PlaySAFile:    os.Getenv("MTJ_PLAY_SA_FILE"),

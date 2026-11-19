@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -116,5 +117,40 @@ func TestSecurityHeaders(t *testing.T) {
 func TestAppleRootPinned(t *testing.T) {
 	if appleRoot.Subject.CommonName != "Apple Root CA - G3" {
 		t.Fatal(appleRoot.Subject.CommonName)
+	}
+}
+
+func TestContent(t *testing.T) {
+	s := testServer(t)
+	dir := t.TempDir()
+	s.cfg.ContentDir = dir
+	_ = os.MkdirAll(dir+"/b", 0o755)
+	_ = os.WriteFile(dir+"/manifest.json", []byte(`{"v":1}`), 0o644)
+	_ = os.WriteFile(dir+"/b/0123456789abcdef0123456789abcdef.png", []byte("png"), 0o644)
+	h := s.Handler()
+	do := func(path, inm string) *httptest.ResponseRecorder {
+		r := httptest.NewRequest("GET", path, nil)
+		if inm != "" {
+			r.Header.Set("If-None-Match", inm)
+		}
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		return w
+	}
+	m := do("/v1/content/manifest", "")
+	if m.Code != 200 || m.Body.String() != `{"v":1}` || m.Header().Get("ETag") == "" {
+		t.Fatalf("manifest %d", m.Code)
+	}
+	if do("/v1/content/manifest", m.Header().Get("ETag")).Code != 304 {
+		t.Fatal("etag not honoured")
+	}
+	b := do("/v1/content/b/0123456789abcdef0123456789abcdef.png", "")
+	if b.Code != 200 || !strings.Contains(b.Header().Get("Cache-Control"), "immutable") || b.Header().Get("Content-Type") != "image/png" {
+		t.Fatalf("blob %d %v", b.Code, b.Header())
+	}
+	for _, bad := range []string{"../manifest.json", "x.png", "0123456789abcdef0123456789abcdef.sh"} {
+		if do("/v1/content/b/"+bad, "").Code == 200 {
+			t.Fatal("served " + bad)
+		}
 	}
 }

@@ -13,7 +13,7 @@ Every language must read as if a native plant lover from that country wrote the 
 | UI, chat, plant voices, CareEngine, notifications, paywall, ads labels | `MyTinyJungle/Localizable.xcstrings` | SwiftUI literals and `String(localized:comment:)` |
 | Notification content extension | `NotificationContent/Localizable.xcstrings` | same |
 | Permission prompts, display name | `MyTinyJungle/InfoPlist.xcstrings` | Info.plist keys |
-| Species names, about, tips, problems; knowledge.json (soils, pests, glossary, lessons) | `MyTinyJungle/Knowledge/Locales/<lang>.json` | `L10nData.localize` swaps text when the JSON loads |
+| Species names, about, tips, problems; knowledge.json (soils, pests, glossary, lessons) | `Content/data/locales/<lang>.json` | `L10nData.localize` swaps text when the JSON loads |
 | App Store listing, subscription, screenshot captions, What's New | `Tools/appstore/<lang>.json` | `node Tools/appstore/push.mjs <lang> --apply` |
 | Website | `Website/build.py`, `Website/home_content.py` | per-language dicts, `/pt/` for Portuguese |
 

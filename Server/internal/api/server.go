@@ -57,6 +57,9 @@ func (s *Server) Handler() http.Handler {
 	m := http.NewServeMux()
 	m.HandleFunc("GET /health", s.health)
 
+	m.HandleFunc("GET /v1/content/manifest", s.contentManifest)
+	m.HandleFunc("GET /v1/content/b/{name}", s.contentBlob)
+
 	m.Handle("POST /v1/auth/signin", s.ipLimit(rateAuthIP, s.signIn))
 	m.Handle("POST /v1/auth/refresh", s.ipLimit(rateAuthIP, s.refresh))
 	m.Handle("POST /v1/auth/signout", s.user(s.signOut))

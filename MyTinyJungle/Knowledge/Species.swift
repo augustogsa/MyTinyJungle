@@ -88,8 +88,7 @@ final class SpeciesLibrary {
     private let byID: [String: Species]
 
     init(bundle: Bundle = .main) {
-        if let url = bundle.url(forResource: "species", withExtension: "json"),
-           let data = try? Data(contentsOf: url),
+        if let data = ContentFiles.data("data/species.json"),
            let list = try? JSONDecoder().decode([Species].self, from: L10nData.localize(data)) {
             all = list.sorted { $0.en < $1.en }
         } else {

@@ -62,6 +62,7 @@ struct MyTinyJungleApp: App {
                 .task { try? await Task.sleep(for: .seconds(2)); AdPool.shared.start() }
                 .task {
                     JungleSync.shared.start(container)
+                    Task { await ContentStore.shared.refresh() }
                     await AuthManager.shared.refresh(); await CloudBackup.shared.refresh()
                     await Store.shared.refresh()
                     await JungleSync.shared.sync()
@@ -107,7 +108,7 @@ struct RootView: View {
             }
             .onChange(of: phase) { _, p in
                 if p == .background { Task { await CareReminders.reschedule(ctx) }; Task { await JungleSync.shared.sync() } }
-                if p == .active { Task { await JungleSync.shared.sync() } }
+                if p == .active { Task { await JungleSync.shared.sync() }; Task { await ContentStore.shared.refresh() } }
                 if p == .active { Task { await Household.shared.sync(ctx); if UserDefaults.standard.bool(forKey: "house.openHub") { UserDefaults.standard.set(false, forKey: "house.openHub"); openHouse = true } }; Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); ProactiveVoice.speak(ctx); await CareReminders.reschedule(ctx) } }
             }
             // Reschedule on every change to the care log.
