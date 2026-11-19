@@ -1,6 +1,8 @@
+# Android App Links signers: upload key, then Play App Signing key.
+ANDROID_CERT_SHA256 = ["3E:5E:C4:56:88:99:53:10:B7:A5:E4:3D:62:74:81:A5:80:DA:82:F3:11:C7:22:8C:AD:89:10:17:1B:47:12:8D", "40:D3:53:D2:C7:EE:FE:87:0A:4B:D4:6E:14:D9:42:C6:BE:96:53:12:11:25:D7:32:6B:44:3F:77:40:26:8A:C4"]
 import re
 import json
-from home_content import TESTFLIGHT_URL as TESTFLIGHT
+from home_content import TESTFLIGHT_URL as TESTFLIGHT, badges
 #!/usr/bin/env python3
 """Builds the static mytinyjungle.com site into Website/dist (EN at /, pt-BR at /pt/)."""
 import hashlib
@@ -115,9 +117,9 @@ T = {
     ("Changes and law", "We may update these terms; the date above shows the latest version. These terms are governed by Portuguese law, without depriving you of protections under the law of your country of residence."),
     ("Contact", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
   ],
-  "get_nav": "Get the app", "get_title": "Get My Tiny Jungle for iPhone", "get_desc": "Free for up to 5 plants. Join the beta on TestFlight and your plants start talking today.",
-  "get_intro": "My Tiny Jungle is in public beta on iPhone. Install TestFlight, tap the button, and add your first plant in under a minute.",
-  "get_btn": "Join the beta on TestFlight", "get_pts": ["Free for up to 5 plants, no card needed", "Works on iPhone with iOS 26 or later", "English and Brazilian Portuguese", "Photos stay on your iPhone"],
+  "get_nav": "Get the app", "get_title": "Get My Tiny Jungle for iPhone and Android", "get_desc": "Free for up to 5 plants. Join the beta on iPhone or Android and your plants start talking today.",
+  "get_intro": "My Tiny Jungle is in beta on iPhone and Android. On iPhone, install TestFlight and tap the App Store badge. On Android, get it on Google Play. Your first plant takes under a minute.",
+  "get_btn": "Join the beta on TestFlight", "get_pts": ["Free for up to 5 plants, no card needed", "iPhone with iOS 26 or later, or Android", "English and Brazilian Portuguese", "Photos stay on your phone"],
   "nf_title": "This page wandered off", "nf_desc": "We couldn't find that page. It may have moved, or the link has a typo.", "nf_home": "Back to the jungle",
   "updated": "Last updated", "plus_title": "Opening My Tiny Jungle", "plus_desc": "Choose your plan in the app.", "plus_intro": "If My Tiny Jungle is on this iPhone, it opens straight to your plan. Not installed yet? Get it free with TestFlight first, then tap the plan again.", "plus_btn": "Get My Tiny Jungle on TestFlight", "plus_tip": "On a computer? Open mytinyjungle.com on your iPhone to join.",
  },
@@ -210,9 +212,9 @@ T = {
     ("Alterações e lei aplicável", "Podemos atualizar estes termos; a data acima indica a versão mais recente. Estes termos são regidos pela lei portuguesa, sem prejuízo das proteções da lei do seu país de residência."),
     ("Contato", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
   ],
-  "get_nav": "Baixar o app", "get_title": "Baixe o My Tiny Jungle no iPhone", "get_desc": "Grátis pra até 5 plantas. Entra no beta pelo TestFlight e suas plantas já começam a falar hoje.",
-  "get_intro": "O My Tiny Jungle tá em beta aberto no iPhone. Instala o TestFlight, toca no botão e cadastra sua primeira planta em menos de um minuto.",
-  "get_btn": "Entrar no beta pelo TestFlight", "get_pts": ["Grátis pra até 5 plantas, sem cartão", "Funciona no iPhone com iOS 26 ou mais novo", "Em português do Brasil e em inglês", "Suas fotos ficam no seu iPhone"],
+  "get_nav": "Baixar o app", "get_title": "Baixe o My Tiny Jungle no iPhone e no Android", "get_desc": "Grátis pra até 5 plantas. Entra no beta no iPhone ou no Android e suas plantas já começam a falar hoje.",
+  "get_intro": "O My Tiny Jungle tá em beta no iPhone e no Android. No iPhone, instala o TestFlight e toca no selo da App Store. No Android, baixa pelo Google Play. Cadastrar a primeira planta leva menos de um minuto.",
+  "get_btn": "Entrar no beta pelo TestFlight", "get_pts": ["Grátis pra até 5 plantas, sem cartão", "iPhone com iOS 26 ou mais novo, ou Android", "Em português do Brasil e em inglês", "Suas fotos ficam no seu celular"],
   "nf_title": "Essa página se perdeu", "nf_desc": "A gente não achou essa página. Pode ter mudado de lugar ou o link tá com erro.", "nf_home": "Voltar pra selva",
   "updated": "Última atualização", "plus_title": "Abrindo o My Tiny Jungle", "plus_desc": "Escolhe seu plano no app.", "plus_intro": "Se o My Tiny Jungle já tá no seu iPhone, ele abre direto no plano que você escolheu. Ainda não tem? Instala de graça pelo TestFlight e toca no plano de novo.", "plus_btn": "Baixar o My Tiny Jungle no TestFlight", "plus_tip": "Tá no computador? Abre mytinyjungle.com no iPhone pra entrar.",
  },
@@ -352,8 +354,9 @@ def build():
                         f'<script>if(/iPhone|iPad/.test(navigator.userAgent))setTimeout(function(){{location.href="{TESTFLIGHT}"}},1500)</script>', meta=False),
         }
         out["get"] = doc(L, "/get", t["get_title"], t["get_desc"],
-                        f'<p class="flead">{t["get_intro"]}</p><p><a class="btn" href="{TESTFLIGHT}" rel="noopener">{ICON["apple"]}{t["get_btn"]}</a></p>'
-                        f'<ul class="fhow">' + "".join(f"<li>{x}</li>" for x in t["get_pts"]) + f'</ul><div class="fnav"><a href="{p}/features">{t["foot"][4]} →</a></div>', meta=False)
+                        f'<p class="flead">{t["get_intro"]}</p>' + badges(L, "get-badges") +
+                        f'<ul class="fhow">' + "".join(f"<li>{x}</li>" for x in t["get_pts"]) + f'</ul><div class="fnav"><a href="{p}/features">{t["foot"][4]} →</a></div>'
+                        '<script>(function(){var u=navigator.userAgent,b=document.querySelector(".get-badges");if(!b)return;var a=/Android/i.test(u)?"android":/iPhone|iPad|iPod/.test(u)?"ios":"";if(a){var e=b.querySelector("."+a);e.classList.add("pref");b.insertBefore(e,b.firstChild)}})()</script>', meta=False)
         for slug, html in out.items():
             d = DIST / p.lstrip("/") / slug
             d.mkdir(parents=True, exist_ok=True)
@@ -369,16 +372,17 @@ def build():
     (DIST / "join").mkdir(exist_ok=True)
     (DIST / "join" / "index.html").write_text(doc("en", "/join", "You're invited to a shared jungle", "Get My Tiny Jungle, sign in and tap the link again to join.",
         '<p class="flead">Get My Tiny Jungle, sign in, then open this link again to join and take turns caring for the plants.</p>'
-        '<p><a class="btn" href="/get">Get the app</a></p>'
+        + badges("en") +
         '<p lang="pt-BR">Te chamaram pra cuidar de uma selva junto. Baixa o My Tiny Jungle, entra na conta e abre esse link de novo pra participar. <a href="/pt/get">Baixar o app</a></p>', meta=False))
     # Referral links: /r/<code> opens the app, which saves the code and redeems it after sign-in.
     (DIST / "r").mkdir(exist_ok=True)
     (DIST / "r" / "index.html").write_text(doc("en", "/r", "A friend sent you My Tiny Jungle", "Get the app with this link and you both get a month of Plus.",
         '<p class="flead">Get My Tiny Jungle, then open this link again on your iPhone and sign in. You and your friend both get a month of Plus.</p>'
-        '<p><a class="btn" href="/get">Get the app</a></p>'
+        + badges("en") +
         '<p lang="pt-BR">Um amigo te mandou o My Tiny Jungle. Baixa o app, abre esse link de novo no celular e entra na conta: vocês dois ganham um mês de Plus. <a href="/pt/get">Baixar o app</a></p>', meta=False))
     wk = DIST / ".well-known"; wk.mkdir(exist_ok=True)
     (wk / "security.txt").write_text(seo.SECURITY)
+    (wk / "assetlinks.json").write_text(json.dumps([{"relation": ["delegate_permission/common.handle_all_urls"], "target": {"namespace": "android_app", "package_name": "com.simpleappscompany.mytinyjungle", "sha256_cert_fingerprints": ANDROID_CERT_SHA256}}]))
     (wk / "apple-app-site-association").write_text(json.dumps({"applinks": {"details": [{"appIDs": ["JKMB58P38J.com.simpleappscompany.mytinyjungle"], "components": [{"/": "/plus"}, {"/": "/pt/plus"}, {"/": "/join/*"}, {"/": "/r/*"}]}]}}))
     if (SRC / "app-ads.txt").exists():
         shutil.copy(SRC / "app-ads.txt", DIST / "app-ads.txt")

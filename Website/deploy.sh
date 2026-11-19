@@ -16,3 +16,11 @@ ssh "$HOST" "chown -R simpleapps:simpleapps $D; find $D -type d -exec chmod 755 
 python3 -c "import json,re;u=re.findall(r'<loc>(.*?)</loc>',open('dist/sitemap.xml').read());import seo;print(json.dumps({'host':'mytinyjungle.com','key':seo.INDEXNOW_KEY,'keyLocation':'https://mytinyjungle.com/'+seo.INDEXNOW_KEY+'.txt','urlList':u}))" \
   | curl -s -o /dev/null -w "indexnow %{http_code}\n" -H "Content-Type: application/json; charset=utf-8" --data @- https://api.indexnow.org/indexnow || true
 echo "deployed"
+
+# Purge Cloudflare cache so new pages and assets show right away.
+if [ -f "$HOME/.config/mydigitalmagnets/cloudflare.env" ]; then
+  . "$HOME/.config/mydigitalmagnets/cloudflare.env"
+  curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID_MYTINYJUNGLE/purge_cache" \
+    -H "Authorization: Bearer $(cat "$CLOUDFLARE_API_TOKEN_FILE")" -H "Content-Type: application/json" \
+    --data '{"purge_everything":true}' | grep -o '"success":[a-z]*' | head -1
+fi

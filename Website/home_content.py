@@ -14,6 +14,16 @@ def sentences(text):
 
 
 TESTFLIGHT_URL = "https://testflight.apple.com/join/A8YUuUHj"
+PLAY_URL = "https://play.google.com/store/apps/details?id=com.simpleappscompany.mytinyjungle"
+BADGE_LABEL = {"en": ("Download on the App Store", "Get it on Google Play"), "pt": ("Baixar na App Store", "Disponível no Google Play")}
+
+
+def badges(L="en", cls=""):
+    """Official App Store and Google Play badges side by side (never redrawn). iPhone goes through the public TestFlight beta."""
+    a, g = BADGE_LABEL["pt" if L == "pt" else "en"]
+    return (f'<div class="{("store-badges " + cls).strip()}">'
+            f'<a class="store-badge ios" href="{TESTFLIGHT_URL}" rel="noopener" aria-label="{a}"><img src="/assets/badges/app-store-badge.svg" alt="{a}" width="120" height="40"></a>'
+            f'<a class="store-badge android" href="{PLAY_URL}" rel="noopener" aria-label="{g}"><img src="/assets/badges/google-play-badge.png" alt="{g}" width="134" height="40"></a></div>')
 
 
 def I(name, size=40, lazy=True):
@@ -120,7 +130,7 @@ H = {
           ("I missed a week. Now what?", "Your plants are simply happy you are back, and tell you what to do first."),
           ("Will it nag me?", "No. One gentle note a day at most, with quiet hours, and you can snooze anything."),
           ("Which iPhones?", "Any iPhone that runs the latest iOS. During the beta it installs through TestFlight.")],
-  "c_h": "Give your plants a voice", "c_p": "My Tiny Jungle is in beta on iPhone. Join today and bring a friend.",
+  "c_h": "Give your plants a voice", "c_p": "My Tiny Jungle is in beta on iPhone and Android. Join today and bring a friend.",
  },
  "pt": {
   "h1": "Suas plantas bem cuidadas, do jeitinho da sua casa.",
@@ -216,7 +226,7 @@ H = {
           ("Fiquei um tempo sem cuidar. E agora?", "Sem culpa. O app mostra por onde começar e as plantas comemoram a sua volta."),
           ("Vou receber muitas notificações?", "Não. No máximo um lembrete por dia, com horário de silêncio, e dá pra adiar qualquer aviso."),
           ("Funciona em qual iPhone?", "Em qualquer iPhone com o iOS mais recente. Durante os testes, a instalação é pelo TestFlight.")],
-  "c_h": "Suas plantas merecem esse cuidado", "c_p": "O My Tiny Jungle tá em fase de testes no iPhone. Entra agora e chama quem também ama planta.",
+  "c_h": "Suas plantas merecem esse cuidado", "c_p": "O My Tiny Jungle tá em fase de testes no iPhone e no Android. Entra agora e chama quem também ama planta.",
  },
 }
 
@@ -239,7 +249,7 @@ FEAT_SLUG = {k: v[0] for k, v in _F.items()}
 def render_home(L, t, page, phone, apple_icon):
     h = H[L]
     A = "app-pt" if L == "pt" else "app"
-    cta = f'<a class="btn" href="{TESTFLIGHT_URL}" rel="noopener">{apple_icon}{h["cta"]}</a>'
+    cta = badges(L)
 
     def screen(name, alt, cls="screen"):
         return f'<img class="{cls}" src="/assets/{A}/{name}.jpg" alt="{alt}" width="1100" height="2392" loading="lazy">'
@@ -340,14 +350,14 @@ def render_home(L, t, page, phone, apple_icon):
 <section class="allf" id="features"><div class="wrap"><h2>{h['all_h']}</h2><div class="agrid">{"".join(f'<a class="acard" href="{t["prefix"]}/features/{FEAT_SLUG[i]}">{I(i, 64)}<h3>{x}</h3><p>{y}</p></a>' for i, x, y in h["all"])}</div></div></section>
 <section class="smart" id="smart"><div class="wrap sgrid"><div class="stext"><h2>{h['smart_h']}</h2><p>{h['smart_p']}</p></div><div class="facts">{"".join(f'<div class="fact"><b>{n}</b>{f"<span>{u}</span>" if u else ""}<p>{d}</p></div>' for n, u, d in h["smart"])}</div></div></section>
 <section class="pricing" id="pricing"><div class="wrap phead">{E("water", 120)}<h2>{h["plans_h"]}</h2><p>{h["plans_p"]}</p></div><div class="wrap fields">
-{field("free", h["free"], f'<a class="btn ghost" href="{TESTFLIGHT_URL}" rel="noopener">{h["cta"]}</a>')}
+{field("free", h["free"], badges(L))}
 {field("monthly", h["monthly"], f'<a class="btn" href="https://www.mytinyjungle.com{t["prefix"]}/plus?plan=monthly">{h["plus_btn"]}</a>')}
 {field("plus", h["plus"], f'<a class="btn light" href="https://www.mytinyjungle.com{t["prefix"]}/plus?plan=yearly">{h["plus_btn"]}</a>', h["best"])}
 </div></section>
 <p class="wrap fine">{h['fine']}</p>
 <section class="faq" id="faq"><div class="wrap qgrid"><div class="qhead">{E("scan", 140)}<h2>{h['faq_h']}</h2><p><a class="btn ghost" href="{t['prefix']}/good-to-know">{h['faq_more']}</a></p></div><div class="qtext">{faq}</div></div></section>
 <section class="closing"><div class="wrap cgrid">
-<div class="ctext">{E("love", 150)}<h2>{h['c_h']}</h2><p>{h['c_p']}</p>{cta.replace('class="btn"', 'class="btn light"')}<p class="note">{h['note']}</p></div>
+<div class="ctext">{E("love", 150)}<h2>{h['c_h']}</h2><p>{h['c_p']}</p>{badges(L, "on-dark")}<p class="note">{h['note']}</p></div>
 <div class="mosaic">{"".join(f'<figure><img src="/assets/plants/{ph}.jpg" alt="{kind}" width="400" height="400" loading="lazy"><figcaption><b>{nm}</b>{kind}</figcaption></figure>' for ph, nm, kind in h["close_names"])}</div>
 </div></section>"""
     return page(L, "/", t["home_title"], t["home_desc"], body)
