@@ -507,6 +507,10 @@ struct PlantStoryView: View {
         let cal = Calendar.current
         let groups = Dictionary(grouping: shown) { cal.date(from: cal.dateComponents([.year, .month], from: $0.date))! }
         return VStack(alignment: .leading, spacing: 18) {
+            if shown.isEmpty {
+                JungleEmptyState(mood: .notes, title: Grammar.pt(String(localized: "Nothing here yet", comment: "Plant timeline empty state title; max 30 chars")),
+                                 message: Grammar.pt(String(localized: "Water, snap or jot a note and it lands here.", comment: "Plant timeline empty state line")))
+            }
             ForEach(groups.keys.sorted(by: >), id: \.self) { month in
                 VStack(alignment: .leading, spacing: 0) {
                     Text(month.formatted(.dateTime.month(.wide).year())).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text).padding(.bottom, 10)

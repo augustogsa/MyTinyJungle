@@ -418,21 +418,12 @@ struct RequestCard: View {
 }
 
 struct EmptyJungle: View {
+    var message: String?
     var onAdd: (() -> Void)? = nil
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            ErtyView(mood: .wave, size: 96)
-            Text("Your jungle is waiting").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
-            Text("Just tell me about a plant, like \"I have a monstera called Milo in the living room\", or add one in Plants with a photo.")
-                .foregroundStyle(Jungle.subtle)
-            if let onAdd {
-                Button(action: onAdd) { Label("Snap your first plant", systemImage: "camera.fill") }
-                    .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule).padding(.top, 4)
-            }
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .jungleCard()
+        JungleEmptyState(mood: .wave, title: Grammar.pt(String(localized: "Your jungle is waiting", comment: "Empty state title when the owner has no plants; max 30 chars")),
+                         message: message ?? Grammar.pt(String(localized: "Snap a plant, or just tell me about it below.", comment: "Today/Plants empty state line: add by photo or by chatting")),
+                         actionTitle: onAdd == nil ? nil : Grammar.pt(String(localized: "Add a plant", comment: "Primary button in empty states; max 20 chars")), actionSymbol: "camera.fill", action: onAdd)
     }
 }
 

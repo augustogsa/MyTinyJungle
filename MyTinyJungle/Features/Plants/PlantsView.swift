@@ -66,7 +66,7 @@ struct PlantsView: View {
                         .transition(.move(edge: .top).combined(with: .opacity))
                     }
                     if plants.isEmpty {
-                        EmptyJungle { adding = true }
+                        EmptyJungle(message: Grammar.pt(String(localized: "Snap one and I'll tell you what it is and how to keep it happy.", comment: "Plants tab empty state line"))) { addTapped() }
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {

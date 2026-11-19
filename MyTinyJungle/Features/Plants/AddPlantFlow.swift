@@ -32,6 +32,9 @@ struct AddPlantFlow: View {
     /// Our server's top guess, reported back with the owner's pick.
     @State private var serverTop: String?
     @State private var shelf = false
+    /// A photo the Scan camera already took: skips straight to reading it.
+    private let initialPhoto: Data?
+    init(initialPhoto: Data? = nil) { self.initialPhoto = initialPhoto }
 
     var body: some View {
         DuoCompanion(mood: .plant, title: "A new green friend", detail: "Snap it, meet it, and it moves in.") { duoContent }
@@ -50,6 +53,7 @@ struct AddPlantFlow: View {
             .animation(.snappy, value: stage)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
             .sheet(isPresented: $choosingSpecies) { SpeciesPicker(selection: $species) }
+            .task { if let initialPhoto, photo == nil { start(with: initialPhoto) } }
             .fullScreenCover(isPresented: $showCamera) {
                 CameraPicker { data in showCamera = false; if let data { start(with: data) } }.ignoresSafeArea()
             }

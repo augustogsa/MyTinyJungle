@@ -15,6 +15,9 @@ struct HealthCheckView: View {
     @State private var camera = false
     @State private var working = false
     @State private var pest: Pest?
+    /// A photo the Scan camera already took.
+    private let initialPhoto: Data?
+    init(plant: Plant, initialPhoto: Data? = nil) { self.plant = plant; self.initialPhoto = initialPhoto }
 
     var body: some View {
         DuoCompanion(mood: .scan, title: "Health check", detail: "Snap a photo and learn what it needs.") { duoContent }
@@ -41,6 +44,7 @@ struct HealthCheckView: View {
                 if read != nil { ToolbarItem(placement: .confirmationAction) { Button("Save") { save() } } }
             }
             .fullScreenCover(isPresented: $camera) { CameraPicker { d in camera = false; if let d { analyze(d) } }.ignoresSafeArea() }
+            .task { if let initialPhoto, photo == nil { analyze(initialPhoto) } }
             .onChange(of: pick) { _, item in
                 guard let item else { return }
                 Task { if let d = try? await item.loadTransferable(type: Data.self) { analyze(d) }; pick = nil }

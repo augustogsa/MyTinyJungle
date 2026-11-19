@@ -103,10 +103,10 @@ struct DigestView: View {
                 if loading && digest == nil {
                     ProgressView().frame(maxWidth: .infinity).padding(.top, 60)
                 } else if let failed {
-                    message(failed)
+                    message(failed, title: Grammar.pt(String(localized: "Couldn't load your week", comment: "Weekly digest error title; max 30 chars")), mood: .sleep)
                 } else if let d = digest {
                     if d.isEmpty {
-                        message(Grammar.pt(String(localized: "A quiet week. Log some care and next week's digest will fill up.", comment: "Weekly digest empty state")))
+                        message(Grammar.pt(String(localized: "A quiet week. Log some care and next week's digest will fill up.", comment: "Weekly digest empty state")), title: Grammar.pt(String(localized: "A quiet week", comment: "Weekly digest empty state title; max 30 chars")), mood: .notes)
                     }
                     section(Grammar.pt(String(localized: "Coming up", comment: "Weekly digest section: care due; max 24 chars")), d.due, symbol: "calendar")
                     section(Grammar.pt(String(localized: "Keep an eye on", comment: "Weekly digest section: plants to watch; max 24 chars")), d.watch, symbol: "eye")
@@ -151,12 +151,8 @@ struct DigestView: View {
         catch { failed = ServerNotice.message(for: error) ?? Grammar.pt(String(localized: "Couldn't load your week. Pull to try again.", comment: "Weekly digest load error")) }
     }
 
-    private func message(_ t: String) -> some View {
-        VStack(spacing: 12) {
-            ErtyView(mood: .notes, size: 96)
-            Text(t).multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
-        }
-        .frame(maxWidth: .infinity).padding(.top, 40)
+    private func message(_ t: String, title: String, mood: ErtyMood) -> some View {
+        JungleEmptyState(mood: mood, title: title, message: t).padding(.top, 12)
     }
 
     @ViewBuilder private func section(_ title: String, _ items: [Digest.Item], symbol: String) -> some View {

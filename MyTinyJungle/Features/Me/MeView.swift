@@ -8,6 +8,7 @@ struct MeView: View {
     @Query private var props: [Propagation]
     @Query private var events: [CareEvent]
     @State private var settings = false
+    @State private var addingPlant = false
     @State private var paywall: PlusFeature?
     private var store = Store.shared
     private var name: String { JungleSettings.shared.ownerName.isEmpty ? Grammar.pt(String(localized: "Plant parent", comment: "Me tab header fallback when owner has no name; max 20 chars")) : JungleSettings.shared.ownerName }
@@ -23,14 +24,20 @@ struct MeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    TabHeader(title: name, subtitle: store.isPlus ? Grammar.pt(String(localized: "\(store.planName) · Growing since \(sinceText)", comment: "Me header subtitle for Plus members; arg is month+year")) : Grammar.pt(String(localized: "Growing since \(sinceText)", comment: "Me header subtitle; arg is month+year like Mar 2025"))) {
+                    TabHeader(title: name, subtitle: plants.isEmpty ? Grammar.pt(String(localized: "Your jungle starts here", comment: "Header subtitle with no plants")) : store.isPlus ? Grammar.pt(String(localized: "\(store.planName) · Growing since \(sinceText)", comment: "Me header subtitle for Plus members; arg is month+year")) : Grammar.pt(String(localized: "Growing since \(sinceText)", comment: "Me header subtitle; arg is month+year like Mar 2025"))) {
                         HeaderButton(symbol: "gearshape", label: Grammar.pt(String(localized: "Settings", comment: "Accessibility label for settings button"))) { settings = true }
                     }
                     WithPageSpread { spread in
                     TwoPage(spacing: 24) {
-                    header
+                    if plants.isEmpty {
+                        JungleEmptyState(mood: .wave, title: Grammar.pt(String(localized: "Your jungle is waiting", comment: "Empty state title when the owner has no plants; max 30 chars")),
+                                         message: Grammar.pt(String(localized: "Add your first plant and I'll keep track of how everyone's doing.", comment: "Me tab empty jungle card line")),
+                                         actionTitle: Grammar.pt(String(localized: "Add a plant", comment: "Primary button in empty states; max 20 chars")), actionSymbol: "camera.fill") { addingPlant = true }
+                    } else {
+                        header
+                    }
                     HStack(spacing: 10) {
-                        NavigationLink { SpacesView() } label: { shortcut(.home, Grammar.pt(String(localized: "Spaces", comment: "Me shortcut title: rooms in the home")), Grammar.pt(String(localized: "\(roomCount) rooms", comment: "Me shortcut subtitle: number of rooms with plants"))) }
+                        NavigationLink { SpacesView() } label: { shortcut(.home, Grammar.pt(String(localized: "Spaces", comment: "Me shortcut title: rooms in the home")), roomCount == 0 ? Grammar.pt(String(localized: "None yet", comment: "Me shortcut subtitle when there are no rooms with plants; max 14 chars")) : Grammar.pt(String(localized: "\(roomCount) rooms", comment: "Me shortcut subtitle: number of rooms with plants"))) }
                         NavigationLink { PropagationListView() } label: { shortcut(.seedling, Grammar.pt(String(localized: "Cuttings", comment: "Me shortcut title: propagation cuttings")), props.isEmpty ? Grammar.pt(String(localized: "Start one", comment: "Me cuttings shortcut subtitle when none")) : Grammar.pt(String(localized: "\(props.count) growing", comment: "Me cuttings shortcut subtitle: number of cuttings growing"))) }
                     }
                     .buttonStyle(.plain)
@@ -72,6 +79,7 @@ struct MeView: View {
                 if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
             }
             .sheet(isPresented: $settings) { SettingsView() }
+            .sheet(isPresented: $addingPlant) { AddPlantFlow() }
             .navigationDestination(isPresented: Binding(get: { demoDest != nil }, set: { if !$0 { demoDest = nil } })) {
                 if demoDest == "guides" { GuidesView() } else { TravelPlanView() }
             }
@@ -161,7 +169,7 @@ struct MeView: View {
             .init(id: "five", icon: .plantStand, title: Grammar.pt(String(localized: "Little jungle", comment: "Milestone title: have 5 plants")), progress: r(plants.count, 5), detail: Grammar.pt(String(localized: "\(min(plants.count, 5)) of 5 plants", comment: "Milestone progress detail"))),
             .init(id: "leaf", icon: .sprout, title: Grammar.pt(String(localized: "New growth", comment: "Milestone title")), progress: r(leaves, 3), detail: Grammar.pt(String(localized: "\(min(leaves, 3)) of 3 new leaves logged", comment: "Milestone progress detail"))),
             .init(id: "prop", icon: .seedling, title: Grammar.pt(String(localized: "Propagator", comment: "Milestone title: started a cutting")), progress: r(props.count, 1), detail: Grammar.pt(String(localized: "Start your first cutting", comment: "Milestone detail"))),
-            .init(id: "happy", icon: .award, title: Grammar.pt(String(localized: "All happy", comment: "Milestone title")), progress: plants.isEmpty ? 0 : r(happy, plants.count), detail: Grammar.pt(String(localized: "\(happy) of \(plants.count) plants happy", comment: "Milestone progress detail"))),
+            .init(id: "happy", icon: .award, title: Grammar.pt(String(localized: "All happy", comment: "Milestone title")), progress: plants.isEmpty ? 0 : r(happy, plants.count), detail: plants.isEmpty ? Grammar.pt(String(localized: "Add a plant to start", comment: "Milestone detail when there are no plants yet")) : Grammar.pt(String(localized: "\(happy) of \(plants.count) plants happy", comment: "Milestone progress detail"))),
             .init(id: "water", icon: .waterDrops, title: Grammar.pt(String(localized: "Hydration hero", comment: "Milestone title: 50 waterings")), progress: r(waters, 50), detail: Grammar.pt(String(localized: "\(min(waters, 50)) of 50 waterings", comment: "Milestone progress detail"))),
             .init(id: "year", icon: .blossomTree, title: Grammar.pt(String(localized: "One year", comment: "Milestone title")), progress: r(daysTogether, 365), detail: Grammar.pt(String(localized: "\(min(daysTogether, 365)) of 365 days", comment: "Milestone progress detail"))),
         ]

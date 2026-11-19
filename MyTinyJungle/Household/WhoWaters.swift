@@ -83,8 +83,11 @@ struct WhoWatersView: View {
             if let error { Text(error).foregroundStyle(Jungle.subtle) }
             if loaded && homes.isEmpty && error == nil {
                 Section {
-                    Text(Grammar.pt(String(localized: "Share the watering with the people you live with. I'll take turns fairly and remind whoever's up.", comment: "Who waters empty state")))
-                        .foregroundStyle(Jungle.subtle)
+                    JungleEmptyState(mood: .water, title: Grammar.pt(String(localized: "Water together", comment: "Who waters empty state title; max 30 chars")),
+                                     message: Grammar.pt(String(localized: "Share the watering with the people you live with. I'll take turns fairly and remind whoever's up.", comment: "Who waters empty state")))
+                        .listRowBackground(Color.clear).listRowInsets(EdgeInsets()).listRowSeparator(.hidden)
+                }
+                Section {
                     TextField(Grammar.pt(String(localized: "Household name", comment: "Field placeholder")), text: $newName)
                     Button(Grammar.pt(String(localized: "Start a household", comment: "Button"))) { act { try await HouseholdsAPI.create(name: newName.isEmpty ? Grammar.pt(String(localized: "Home", comment: "Default household name")) : newName, jungleId: JungleSync.shared.jungleID) } }
                 }

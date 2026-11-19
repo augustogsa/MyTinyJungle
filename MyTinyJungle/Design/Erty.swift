@@ -158,11 +158,12 @@ struct ErtyEmpty: View {
     var text: String
     var mood: ErtyMood = .happy
     var body: some View {
-        HStack(spacing: 12) {
-            ErtyView(mood: mood, size: 64)
-            Text(text).font(.subheadline).foregroundStyle(Jungle.subtle).fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: 0)
+        VStack(spacing: 8) {
+            ErtyView(mood: mood, size: 88)
+            Text(text).font(.subheadline).foregroundStyle(Jungle.subtle).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
         }
+        .frame(maxWidth: .infinity).padding(.vertical, 8)
+        .accessibilityElement(children: .combine)
     }
 }
 

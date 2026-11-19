@@ -59,8 +59,10 @@ struct SuppliesView: View {
         List {
             if let error { Text(error).foregroundStyle(Jungle.subtle) }
             if loaded && items.isEmpty && error == nil {
-                Text(Grammar.pt(String(localized: "Keep track of soil, plant food and treatments. I'll let you know when something runs low.", comment: "Supplies empty state")))
-                    .foregroundStyle(Jungle.subtle)
+                JungleEmptyState(mood: .soilbag, title: Grammar.pt(String(localized: "No supplies yet", comment: "Supplies empty state title; max 30 chars")),
+                                 message: Grammar.pt(String(localized: "Keep track of soil, plant food and treatments. I'll let you know when something runs low.", comment: "Supplies empty state")),
+                                 actionTitle: JungleAPI.shared.hasSession ? Grammar.pt(String(localized: "Add a supply", comment: "VoiceOver: add supply button")) : nil) { editing = Supply(id: UUID().uuidString.lowercased(), kind: "soil", name: "", qty: 1, unit: "L", lowAt: nil) }
+                    .listRowBackground(Color.clear).listRowInsets(EdgeInsets()).listRowSeparator(.hidden)
             }
             ForEach(Supply.kinds, id: \.self) { k in
                 let group = items.filter { $0.kind == k }

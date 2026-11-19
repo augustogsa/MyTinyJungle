@@ -3,23 +3,524 @@ import SwiftData
 import PhotosUI
 import Vision
 import VisionKit
+import AVFoundation
 
-/// Scan: one warm place to point the camera at anything plant-related.
+/// Scan: a full-bleed live camera. Pick a mode, frame it, tap the shutter, and the answer slides up.
 struct ScanView: View {
+    enum Mode: String, CaseIterable, Identifiable {
+        case identify, doctor, label, shelf
+        var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .identify: Grammar.pt(String(localized: "Identify", comment: "Scan mode chip: identify a plant; max 12 chars"))
+            case .doctor: Grammar.pt(String(localized: "Doctor", comment: "Scan mode chip: diagnose a sick plant; max 12 chars"))
+            case .label: Grammar.pt(String(localized: "Label", comment: "Scan mode chip: read a soil or fertiliser label; max 12 chars"))
+            case .shelf: Grammar.pt(String(localized: "Shelf", comment: "Scan mode chip: add many plants from one photo; max 12 chars"))
+            }
+        }
+        var symbol: String {
+            switch self { case .identify: "leaf.fill"; case .doctor: "stethoscope"; case .label: "text.viewfinder"; case .shelf: "square.grid.3x2.fill" }
+        }
+        var icon: Icon3D {
+            switch self { case .identify: .pottedPlant; case .doctor: .wilted; case .label: .leafTag; case .shelf: .shelf }
+        }
+        var hint: String {
+            switch self {
+            case .identify: Grammar.pt(String(localized: "Point me at a leaf!", comment: "Erty speech bubble in Scan, identify mode; playful; max 32 chars"))
+            case .doctor: Grammar.pt(String(localized: "Show me the poorly leaves", comment: "Erty speech bubble in Scan, plant doctor mode; playful; max 32 chars"))
+            case .label: Grammar.pt(String(localized: "Flip the bag, I'll read it!", comment: "Erty speech bubble in Scan, label mode; playful; max 32 chars"))
+            case .shelf: Grammar.pt(String(localized: "Step back, get everyone in!", comment: "Erty speech bubble in Scan, shelf mode; playful; max 32 chars"))
+            }
+        }
+        var shutterLabel: String {
+            switch self {
+            case .identify: Grammar.pt(String(localized: "Identify this plant", comment: "VoiceOver: scan shutter in identify mode"))
+            case .doctor: Grammar.pt(String(localized: "Check this plant's health", comment: "VoiceOver: scan shutter in plant doctor mode"))
+            case .label: Grammar.pt(String(localized: "Read this label", comment: "VoiceOver: scan shutter in label mode"))
+            case .shelf: Grammar.pt(String(localized: "Find every plant in this photo", comment: "VoiceOver: scan shutter in shelf mode"))
+            }
+        }
+        /// Reticle size as a share of the screen width, and its aspect.
+        var frame: (width: CGFloat, aspect: CGFloat) {
+            switch self { case .identify, .doctor: (0.74, 1.25); case .label: (0.84, 0.7); case .shelf: (0.9, 0.85) }
+        }
+    }
+
+    enum Result: Identifiable {
+        case identify(Data), doctor(Plant, Data), shelf(Data), product(AnalyzedProduct), typing, products
+        var id: String {
+            switch self {
+            case .identify: "identify"; case .doctor(let p, _): "doctor-\(p.id)"; case .shelf: "shelf"
+            case .product(let p): "product-\(p.name)\(p.barcode ?? "")"; case .typing: "typing"; case .products: "products"
+            }
+        }
+    }
+
     @Environment(\.modelContext) private var ctx
-    @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
-    @Query(sort: \OwnedProduct.addedAt, order: .reverse) private var owned: [OwnedProduct]
-    @State private var liveScanning = false
-    @State private var pick: PhotosPickerItem?
-    @State private var collectedText = ""
-    @State private var barcode: String?
-    @State private var product: AnalyzedProduct?
-    @State private var working = false
-    @State private var typing = false
+    @Environment(\.scenePhase) private var phase
+    @Query(filter: #Predicate<Plant> { !$0.isArchived }, sort: \Plant.name) private var plants: [Plant]
+    @AppStorage("selectedTab") private var selectedTab = 3
+    @AppStorage("scanMode") private var modeRaw = Mode.identify.rawValue
+    @State private var camera = ScanCamera()
+    @State private var visible = false
+    @State private var result: Result?
     @State private var paywall: PlusFeature?
     @State private var addingPlant = false
-    @State private var checking: Plant?
+    @State private var doctorPlantID: UUID?
+    @State private var pick: PhotosPickerItem?
+    @State private var working = false
+    @State private var toast: String?
+    @State private var cheer = false
+    @State private var breathe = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    private var ertyMood: ErtyMood { working ? .scan : cheer ? .happy : .wave }
 
+    private var mode: Mode { Mode(rawValue: modeRaw) ?? .identify }
+    private var doctorPlant: Plant? { plants.first { $0.id == doctorPlantID } ?? plants.first }
+    private var canShoot: Bool { !working && !(mode == .doctor && plants.isEmpty) }
+
+    var body: some View {
+        ZStack {
+            Color.clear.jungleBackdrop()
+            cameraLayer
+            VStack(spacing: 0) {
+                topBar
+                Spacer(minLength: 12)
+                if camera.state == .ready { reticle }
+                Spacer(minLength: 12)
+                ertyPeek
+                modeExtras
+                chips.padding(.top, 14)
+                bottomBar.padding(.top, 14).padding(.bottom, 10)
+            }
+            .padding(.horizontal, 16)
+            if working {
+                ErtyLoading(text: mode == .label ? Grammar.pt(String(localized: "Reading the label…", comment: "Scan: reading a label photo")) : Grammar.pt(String(localized: "Getting the photo ready…", comment: "Scan: preparing a captured photo")), mood: .scan, size: 110)
+                    .padding(24).background(Jungle.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+                    .shadow(color: .black.opacity(0.12), radius: 16, y: 6)
+                    .transition(.opacity)
+            }
+            if let toast {
+                VStack {
+                    Text(toast).font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text).multilineTextAlignment(.center)
+                        .padding(.horizontal, 16).padding(.vertical, 10).background(Jungle.surface, in: Capsule())
+                        .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
+                        .padding(.top, 70)
+                    Spacer()
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .accessibilityAddTraits(.isStaticText)
+            }
+        }
+        .animation(.snappy, value: mode)
+        .animation(.easeInOut(duration: 0.2), value: working)
+        .animation(.snappy, value: toast)
+        .task { await camera.prepare() }
+        .onAppear { visible = true; if !reduceMotion { withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) { breathe = true } } }
+        .onDisappear { visible = false; camera.setTorch(false) }
+        .onChange(of: mode) { _, m in camera.labelMode = m == .label; camera.resetText() }
+        .onChange(of: phase) { _, p in if p != .active { camera.setTorch(false) } }
+        .onChange(of: pick) { _, item in
+            guard let item else { return }
+            working = true
+            Task {
+                let data = try? await item.loadTransferable(type: Data.self)
+                pick = nil
+                if let data { await route(data, liveText: "") } else { working = false }
+            }
+        }
+        .task { if DemoSeeder.wantsScan, result == nil { try? await Task.sleep(for: .seconds(1)); modeRaw = Mode.label.rawValue; result = .product(ProductAnalyzer.analyze(text: DemoSeeder.sampleLabel)) } }
+        .sheet(item: $result) { r in sheet(r) }
+        .sheet(item: $paywall) { PaywallView(reason: $0) }
+        .sheet(isPresented: $addingPlant) { AddPlantFlow() }
+    }
+
+    // MARK: Camera
+
+    @ViewBuilder private var cameraLayer: some View {
+        switch camera.state {
+        case .checking: ProgressView().tint(Jungle.leaf)
+        case .ready:
+            ScanCameraView(camera: camera, running: visible && result == nil && paywall == nil && !addingPlant && phase == .active)
+                .ignoresSafeArea()
+                .accessibilityLabel(Grammar.pt(String(localized: "Camera preview", comment: "VoiceOver: live camera in Scan")))
+        case .denied:
+            noCamera(title: Grammar.pt(String(localized: "Camera access is off", comment: "Scan: camera permission denied title; max 30 chars")),
+                     message: Grammar.pt(String(localized: "Turn it on in Settings to scan live, or pick a photo.", comment: "Scan: camera permission denied line")), settings: true)
+        case .unavailable:
+            noCamera(title: Grammar.pt(String(localized: "No camera here", comment: "Scan: camera unavailable (simulator, restricted) title; max 30 chars")),
+                     message: Grammar.pt(String(localized: "Pick a photo and I'll read it just the same.", comment: "Scan: camera unavailable line")), settings: false)
+        }
+    }
+
+    private func noCamera(title: String, message: String, settings: Bool) -> some View {
+        VStack(spacing: 14) {
+            Icon3DView(.leafTag, size: 72)
+            VStack(spacing: 6) {
+                Text(title).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).accessibilityAddTraits(.isHeader)
+                Text(message).font(.subheadline).foregroundStyle(Jungle.subtle)
+            }
+            .multilineTextAlignment(.center)
+            PhotosPicker(selection: $pick, matching: .images) {
+                Label(Grammar.pt(String(localized: "Choose a photo", comment: "Scan: button to pick a photo instead of the camera; max 22 chars")), systemImage: "photo.on.rectangle")
+                    .font(.system(.headline, design: .rounded)).frame(maxWidth: 260).padding(.vertical, 4)
+            }
+            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
+            if settings, let url = URL(string: UIApplication.openSettingsURLString) {
+                Button(Grammar.pt(String(localized: "Open Settings", comment: "Button: open iOS Settings to allow the camera; max 20 chars"))) { UIApplication.shared.open(url) }
+                    .font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
+            }
+        }
+        .padding(.vertical, 26).padding(.horizontal, 20).jungleCard()
+        .padding(.horizontal, 28)
+        .padding(.bottom, 120)
+    }
+
+    // MARK: Chrome
+
+    private var topBar: some View {
+        HStack(spacing: 10) {
+            circleButton("xmark", Grammar.pt(String(localized: "Close scanner", comment: "VoiceOver: close the Scan camera"))) { selectedTab = 0 }
+            Spacer()
+            if camera.state == .ready && camera.hasTorch {
+                circleButton(camera.torch ? "bolt.fill" : "bolt.slash.fill", camera.torch ? Grammar.pt(String(localized: "Turn flash off", comment: "VoiceOver: scan torch toggle when on")) : Grammar.pt(String(localized: "Turn flash on", comment: "VoiceOver: scan torch toggle when off")), tint: camera.torch ? Jungle.terracotta : Jungle.forest) { camera.setTorch(!camera.torch) }
+            } else {
+                circleButton("tray.full.fill", Grammar.pt(String(localized: "My products", comment: "Scan: soils and foods you own and your shopping list; max 20 chars"))) { result = .products }
+            }
+        }
+        .padding(.top, 8)
+    }
+
+    private func circleButton(_ symbol: String, _ label: String, tint: Color = Jungle.forest, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol).font(.system(size: 17, weight: .semibold)).foregroundStyle(tint)
+                .frame(width: 44, height: 44).warmGlass(Circle())
+                .contentTransition(.symbolEffect(.replace))
+        }
+        .accessibilityLabel(label)
+    }
+
+    private var reticle: some View {
+        GeometryReader { g in
+            let w = min(g.size.width * mode.frame.width, 420)
+            let h = min(w * mode.frame.aspect, g.size.height)
+            ZStack {
+                RoundedRectangle(cornerRadius: 36, style: .continuous)
+                    .strokeBorder(Jungle.cream.opacity(0.95), style: StrokeStyle(lineWidth: 3, dash: [14, 10]))
+                Viewfinder()
+                    .stroke(Jungle.leaf, style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
+                ForEach(0..<4, id: \.self) { i in
+                    Image(systemName: "leaf.fill").font(.system(size: 18, weight: .bold)).foregroundStyle(Jungle.leaf)
+                        .rotationEffect(.degrees(Double(i) * 90 - 45))
+                        .position(x: i % 3 == 0 ? 10 : w - 10, y: i < 2 ? 10 : h - 10)
+                }
+            }
+            .shadow(color: .black.opacity(0.18), radius: 8)
+            .frame(width: w, height: h)
+            .scaleEffect(breathe ? 1.025 : 1)
+            .position(x: g.size.width / 2, y: g.size.height / 2)
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+
+    @ViewBuilder private var modeExtras: some View {
+        switch mode {
+        case .label:
+            VStack(spacing: 8) {
+                if camera.state == .ready && !camera.lines.isEmpty {
+                    Label(Grammar.pt(String(localized: "Reading: \(camera.lines.count) lines", comment: "Scan label mode: how many text lines the live camera has read")), systemImage: "text.viewfinder")
+                        .font(.caption.weight(.semibold)).foregroundStyle(Jungle.onForest)
+                        .padding(.horizontal, 12).padding(.vertical, 6).background(Jungle.forest, in: Capsule())
+                        .contentTransition(.numericText())
+                }
+                Button { result = .typing } label: {
+                    Text(Grammar.pt(String(localized: "Type it instead", comment: "Scan label mode: small link to type the label by hand; max 24 chars")))
+                        .font(.footnote.weight(.semibold)).underline().foregroundStyle(Jungle.accentText)
+                        .padding(.vertical, 6).padding(.horizontal, 12).warmGlass(Capsule())
+                }
+            }
+        case .doctor:
+            if plants.isEmpty {
+                Button { addingPlant = true } label: {
+                    Label(Grammar.pt(String(localized: "Add a plant first, then I can check it", comment: "Scan doctor mode with no plants; max 40 chars")), systemImage: "plus.circle.fill")
+                        .font(.footnote.weight(.semibold)).foregroundStyle(Jungle.accentText)
+                        .padding(.horizontal, 14).padding(.vertical, 9).warmGlass(Capsule())
+                }
+            } else {
+                Menu {
+                    Picker(Grammar.pt(String(localized: "Which plant?", comment: "Scan doctor mode: pick the plant being checked")), selection: Binding(get: { doctorPlant?.id }, set: { doctorPlantID = $0 })) {
+                        ForEach(plants) { Text($0.name).tag(Optional($0.id)) }
+                    }
+                } label: {
+                    HStack(spacing: 8) {
+                        PlantAvatar(data: doctorPlant?.photo, size: 26)
+                        Text(Grammar.pt(String(localized: "Checking \(doctorPlant?.name ?? "")", comment: "Scan doctor mode chip; arg plant name; max 28 chars"))).font(.footnote.weight(.semibold)).lineLimit(1)
+                        Image(systemName: "chevron.down").font(.caption2.weight(.bold))
+                    }
+                    .foregroundStyle(Jungle.text)
+                    .padding(.leading, 5).padding(.trailing, 12).padding(.vertical, 5).warmGlass(Capsule())
+                }
+                .accessibilityHint(Grammar.pt(String(localized: "Choose which plant to check", comment: "VoiceOver hint on Scan doctor plant chip")))
+            }
+        default: EmptyView()
+        }
+    }
+
+    private var chips: some View {
+        HStack(spacing: 4) {
+            ForEach(Mode.allCases) { m in
+                Button { modeRaw = m.rawValue; UISelectionFeedbackGenerator().selectionChanged() } label: {
+                    VStack(spacing: 3) {
+                        Icon3DView(m.icon, size: 28)
+                        Text(m.title).font(.caption.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.75)
+                            .foregroundStyle(m == mode ? Jungle.onForest : Jungle.text)
+                    }
+                    .padding(.vertical, 7)
+                    .frame(maxWidth: .infinity)
+                    .background { if m == mode { RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Jungle.forest) } }
+                    .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(m.title)
+                .accessibilityAddTraits(m == mode ? .isSelected : [])
+            }
+        }
+        .padding(5)
+        .warmGlass(RoundedRectangle(cornerRadius: 23, style: .continuous))
+    }
+
+    /// Erty peeks in from the corner with a hint, thinks while a photo is read, and cheers at the answer.
+    private var ertyPeek: some View {
+        HStack(alignment: .bottom, spacing: 4) {
+            ErtyView(mood: ertyMood, size: 76).id(ertyMood)
+                .offset(x: -6)
+            Text(working ? Grammar.pt(String(localized: "Hmm, let me think…", comment: "Erty speech bubble in Scan while a photo is analysed; max 32 chars")) : cheer ? Grammar.pt(String(localized: "Got it!", comment: "Erty speech bubble in Scan when a result is ready; max 20 chars")) : mode.hint)
+                .font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+                .padding(.horizontal, 14).padding(.vertical, 10)
+                .background(Jungle.surface, in: BubbleShape(fromMe: false))
+                .shadow(color: .black.opacity(0.12), radius: 8, y: 3)
+                .padding(.bottom, 30)
+                .id(mode.rawValue + "\(working)\(cheer)")
+                .transition(reduceMotion ? .opacity : .scale(scale: 0.85, anchor: .bottomLeading).combined(with: .opacity))
+            Spacer(minLength: 0)
+        }
+        .animation(reduceMotion ? nil : .spring(duration: 0.35), value: mode)
+        .animation(reduceMotion ? nil : .spring(duration: 0.35), value: working)
+        .animation(reduceMotion ? nil : .spring(duration: 0.35), value: cheer)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var bottomBar: some View {
+        HStack {
+            PhotosPicker(selection: $pick, matching: .images) {
+                Image(systemName: "photo.on.rectangle").font(.system(size: 20, weight: .semibold)).foregroundStyle(Jungle.forest)
+                    .frame(width: 52, height: 52).warmGlass(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            }
+            .accessibilityLabel(Grammar.pt(String(localized: "Choose from Photos", comment: "VoiceOver: Scan photo library button")))
+            Spacer()
+            Button { Task { await shoot() } } label: {
+                ZStack {
+                    Circle().fill(Jungle.cream).frame(width: 82, height: 82).shadow(color: .black.opacity(0.18), radius: 10, y: 4)
+                    Circle().strokeBorder(Jungle.leaf, lineWidth: 4).frame(width: 82, height: 82)
+                    Circle().fill(Jungle.forest).frame(width: 64, height: 64)
+                    Image(systemName: "leaf.fill").font(.system(size: 26, weight: .bold)).foregroundStyle(Jungle.onForest)
+                        .rotationEffect(.degrees(-20))
+                }
+            }
+            .buttonStyle(ShutterStyle())
+            .disabled(!canShoot || camera.state != .ready)
+            .opacity(canShoot && camera.state == .ready ? 1 : 0.4)
+            .accessibilityLabel(mode.shutterLabel)
+            Spacer()
+            if camera.state == .ready && camera.hasTorch {
+                Button { result = .products } label: {
+                    Image(systemName: "tray.full.fill").font(.system(size: 20, weight: .semibold)).foregroundStyle(Jungle.forest)
+                        .frame(width: 52, height: 52).warmGlass(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                }
+                .accessibilityLabel(Grammar.pt(String(localized: "My products", comment: "Scan: soils and foods you own and your shopping list; max 20 chars")))
+            } else {
+                Color.clear.frame(width: 52, height: 52)
+            }
+        }
+    }
+
+    // MARK: Logic
+
+    private func shoot() async {
+        working = true
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        guard let data = await camera.capture() else {
+            working = false
+            show(Grammar.pt(String(localized: "Couldn't take the photo. Try again.", comment: "Scan: camera capture failed")))
+            return
+        }
+        await route(data, liveText: mode == .label ? camera.lines.joined(separator: "\n") : "")
+    }
+
+    /// Sends a photo to the right brain call for the current mode; the answer opens as a sheet.
+    private func route(_ data: Data, liveText: String) async {
+        defer {
+            working = false
+            if result != nil {
+                cheer = true
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                Task { try? await Task.sleep(for: .seconds(2.5)); cheer = false }
+            }
+        }
+        switch mode {
+        case .identify:
+            guard Store.shared.canAddPlant(current: plants.count) else { paywall = .morePlants; return }
+            result = .identify(data)
+        case .doctor:
+            guard let p = doctorPlant else { addingPlant = true; return }
+            result = .doctor(p, data)
+        case .shelf:
+            result = .shelf(data)
+        case .label:
+            let ocr = await Task.detached(priority: .userInitiated) { () -> String in
+                guard let img = UIImage(data: data) else { return "" }
+                return await OCR.recognize(img)
+            }.value
+            let text = [liveText, ocr].filter { !$0.isEmpty }.joined(separator: "\n")
+            guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || camera.barcode != nil else {
+                show(Grammar.pt(String(localized: "I couldn't read any words. Get closer, or type it instead.", comment: "Scan label mode: no text found")))
+                return
+            }
+            result = .product(ProductAnalyzer.analyze(text: text, barcode: camera.barcode))
+            camera.resetText()
+        }
+    }
+
+    private func show(_ t: String) {
+        toast = t
+        UIAccessibility.post(notification: .announcement, argument: t)
+        Task { try? await Task.sleep(for: .seconds(2.8)); if toast == t { toast = nil } }
+    }
+
+    @ViewBuilder private func sheet(_ r: Result) -> some View {
+        Group {
+            switch r {
+            case .identify(let d): AddPlantFlow(initialPhoto: d)
+            case .doctor(let p, let d): HealthCheckView(plant: p, initialPhoto: d)
+            case .shelf(let d): ShelfImportView(initialPhoto: d) { result = nil }
+            case .typing: TypeLabelSheet { text in
+                let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !t.isEmpty { result = .product(ProductAnalyzer.analyze(text: t)) }
+            }
+            case .products: ProductShelfSheet(plants: plants)
+            case .product(let p):
+                ProductResultView(product: p, plants: plants, onLocked: { f in result = nil; DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { paywall = f } }) { save(p, list: $0) }
+                    .presentationDetents([.medium, .large]).presentationDragIndicator(.visible)
+            }
+        }
+    }
+
+    private func save(_ p: AnalyzedProduct, list: Bool) {
+        let o = OwnedProduct(name: p.name, category: p.category.rawValue)
+        o.barcode = p.barcode
+        o.npkN = p.npk?.n; o.npkP = p.npk?.p; o.npkK = p.npk?.k
+        o.ingredients = p.ingredients
+        o.onShoppingList = list
+        ctx.insert(o)
+        try? ctx.save()
+        result = nil
+        show(list ? Grammar.pt(String(localized: "Added to your shopping list", comment: "Scan toast after saving a product to the list")) : Grammar.pt(String(localized: "Saved to your products", comment: "Scan toast after saving an owned product")))
+    }
+}
+
+private struct ShutterStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.scaleEffect(configuration.isPressed ? 0.9 : 1).animation(.snappy(duration: 0.15), value: configuration.isPressed)
+    }
+}
+
+/// Live camera state for Scan: permission, torch, and the text the label mode has read so far.
+@MainActor @Observable final class ScanCamera {
+    enum State { case checking, ready, denied, unavailable }
+    var state: State = .checking
+    var torch = false
+    var labelMode = false
+    private(set) var lines: [String] = []
+    private(set) var barcode: String?
+    @ObservationIgnored private var seen = Set<String>()
+    @ObservationIgnored weak var scanner: DataScannerViewController?
+
+    var hasTorch: Bool { AVCaptureDevice.default(for: .video)?.hasTorch ?? false }
+
+    func prepare() async {
+        guard state == .checking || state == .denied else { return }
+        guard DataScannerViewController.isSupported else { state = .unavailable; return }
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized: break
+        case .notDetermined:
+            guard await AVCaptureDevice.requestAccess(for: .video) else { state = .denied; return }
+        default: state = .denied; return
+        }
+        state = DataScannerViewController.isAvailable ? .ready : .unavailable
+    }
+
+    func setTorch(_ on: Bool) {
+        guard let d = AVCaptureDevice.default(for: .video), d.hasTorch, (try? d.lockForConfiguration()) != nil else { torch = false; return }
+        d.torchMode = on ? .on : .off
+        d.unlockForConfiguration()
+        torch = on
+    }
+
+    func capture() async -> Data? {
+        guard let s = scanner, let img = try? await s.capturePhoto() else { return nil }
+        return img.jpegData(compressionQuality: 0.9)
+    }
+
+    func resetText() { lines = []; barcode = nil; seen = [] }
+
+    func add(_ items: [RecognizedItem]) {
+        guard labelMode else { return }
+        for item in items {
+            switch item {
+            case .text(let t) where seen.insert(t.transcript).inserted: lines.append(t.transcript)
+            case .barcode(let b): if let v = b.payloadStringValue, seen.insert(v).inserted { barcode = v }
+            default: break
+            }
+        }
+    }
+}
+
+/// VisionKit's live scanner as a plain camera layer: text and barcodes are read while it runs.
+private struct ScanCameraView: UIViewControllerRepresentable {
+    let camera: ScanCamera
+    var running: Bool
+
+    func makeUIViewController(context: Context) -> DataScannerViewController {
+        let vc = DataScannerViewController(recognizedDataTypes: [.text(), .barcode()], qualityLevel: .accurate, recognizesMultipleItems: true,
+                                           isHighFrameRateTrackingEnabled: false, isPinchToZoomEnabled: true, isGuidanceEnabled: false, isHighlightingEnabled: false)
+        vc.delegate = context.coordinator
+        camera.scanner = vc
+        return vc
+    }
+
+    func updateUIViewController(_ vc: DataScannerViewController, context: Context) {
+        if running, !vc.isScanning { try? vc.startScanning() }
+        else if !running, vc.isScanning { vc.stopScanning() }
+    }
+
+    static func dismantleUIViewController(_ vc: DataScannerViewController, coordinator: Coordinator) { vc.stopScanning() }
+
+    func makeCoordinator() -> Coordinator { Coordinator(camera: camera) }
+
+    @MainActor final class Coordinator: NSObject, DataScannerViewControllerDelegate {
+        let camera: ScanCamera
+        init(camera: ScanCamera) { self.camera = camera }
+        func dataScanner(_ s: DataScannerViewController, didAdd items: [RecognizedItem], allItems: [RecognizedItem]) { camera.add(items) }
+    }
+}
+
+/// Soils, foods and treatments you own, plus the shopping list.
+private struct ProductShelfSheet: View {
+    @Environment(\.modelContext) private var ctx
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \OwnedProduct.addedAt, order: .reverse) private var owned: [OwnedProduct]
+    let plants: [Plant]
     private var shelf: [OwnedProduct] { owned.filter { !$0.onShoppingList } }
     private var shopping: [OwnedProduct] { owned.filter(\.onShoppingList) }
 
@@ -27,136 +528,23 @@ struct ScanView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    TabHeader(title: Grammar.pt(String(localized: "Scan", comment: "Scan tab title")), subtitle: Grammar.pt(String(localized: "Labels, new plants and sick leaves", comment: "Scan tab subtitle"))) { EmptyView() }
-                    WithPageSpread { spread in
-                    TwoPage(spacing: 24) {
-                    hero
-                    modes
-                    } trailing: {
+                    if owned.isEmpty {
+                        JungleEmptyState(mood: .soilbag, title: Grammar.pt(String(localized: "No products yet", comment: "Scan products sheet empty title; max 30 chars")),
+                                         message: Grammar.pt(String(localized: "Scan the soils and foods you have, and I'll remember which plant loves which.", comment: "Scan products sheet empty line")))
+                    }
                     if !shopping.isEmpty { shoppingList }
-                    if shelf.count + shopping.count >= 2 { NativeAdCard(slot: "scan") }
-                    shelfSection
-                    // Room to spare (Duo, iPad): what each plant wants, so a label can be judged at a glance.
-                    if spread.isWide && !plants.isEmpty { JungleDietCard(plants: plants) }
-                    }
-                    }
+                    if !shelf.isEmpty { shelfSection }
+                    if !plants.isEmpty { JungleDietCard(plants: plants) }
                 }
-                .padding(.horizontal, 16).padding(.bottom, 32)
+                .padding(16)
             }
-            .measuresPageSpread()
             .jungleBackdrop()
-            .toolbar(.hidden, for: .navigationBar)
-            .task { if DemoSeeder.wantsScan, product == nil { try? await Task.sleep(for: .seconds(1)); product = ProductAnalyzer.analyze(text: DemoSeeder.sampleLabel) } }
-            .sheet(item: $paywall) { PaywallView(reason: $0) }
-            .sheet(isPresented: $addingPlant) { AddPlantFlow() }
-            .sheet(item: $checking) { p in NavigationStack { HealthCheckView(plant: p) } }
-            .sheet(isPresented: $typing) { TypeLabelSheet { analyze($0) } }
-            .sheet(item: Binding(get: { product.map(IdentifiedProduct.init) }, set: { if $0 == nil { product = nil } })) { wrap in
-                ProductResultView(product: wrap.product, plants: plants, onLocked: { p in product = nil; DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { paywall = p } }) { save(wrap.product, list: $0) }
-                    .presentationDetents([.large]).presentationDragIndicator(.visible)
-            }
-            .fullScreenCover(isPresented: $liveScanning) {
-                LiveLabelScanner { text, code in
-                    if let code { barcode = code }
-                    if let text { collectedText += "\n" + text }
-                } onDone: {
-                    liveScanning = false
-                    analyze(collectedText)
-                }
-                .ignoresSafeArea()
-            }
-            .onChange(of: pick) { _, item in
-                guard let item else { return }
-                reset(); working = true
-                Task {
-                    let data = try? await item.loadTransferable(type: Data.self)
-                    var text = ""
-                    if let data, let img = UIImage(data: data) { text = await OCR.recognize(img) }
-                    await MainActor.run { working = false; pick = nil; analyze(text) }
-                }
-            }
+            .navigationTitle(Grammar.pt(String(localized: "My products", comment: "Scan: soils and foods you own and your shopping list; max 20 chars")))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close", systemImage: "xmark") { dismiss() } } }
         }
+        .presentationDragIndicator(.visible)
     }
-
-    // MARK: Hero
-
-    private var hero: some View {
-        VStack(spacing: 18) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(LinearGradient(colors: [Jungle.fill, Jungle.sunFill], startPoint: .topLeading, endPoint: .bottomTrailing))
-                Viewfinder().stroke(Jungle.leaf.opacity(0.7), style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                    .padding(28)
-                VStack(spacing: 8) {
-                    if working {
-                        ErtyView(mood: .scan, size: 110)
-                        Text("Reading the label…").font(.subheadline.weight(.medium)).foregroundStyle(Jungle.text)
-                    } else {
-                        Icon3DView(.leafTag, size: 64)
-                        Text("Soil, food or treatment").font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                        Text("Point at the back label. I'll check it\nagainst every plant you have.")
-                            .font(.footnote).multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
-                    }
-                }
-            }
-            .frame(height: 210)
-            .accessibilityElement(children: .combine)
-
-            Button {
-                reset()
-                if DataScannerViewController.isSupported && DataScannerViewController.isAvailable { liveScanning = true } else { typing = true }
-            } label: {
-                Text("Scan a label").font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity).padding(.vertical, 6)
-            }
-            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
-
-            HStack(spacing: 10) {
-                PhotosPicker(selection: $pick, matching: .images) {
-                    Label("From photos", systemImage: "photo.on.rectangle").secondaryPill()
-                }
-                Button { typing = true } label: { Label("Type it", systemImage: "keyboard").secondaryPill() }
-            }
-            .buttonStyle(.plain).fontDesign(.rounded)
-        }
-        .padding(16)
-        .background(Jungle.surface, in: RoundedRectangle(cornerRadius: 24 + 16, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 24 + 16, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
-    }
-
-    // MARK: Modes
-
-    private var modes: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Also scan").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
-            HStack(spacing: 10) {
-                Button { Store.shared.canAddPlant(current: plants.count) ? (addingPlant = true) : (paywall = .morePlants) } label: {
-                    modeTile(Grammar.pt(String(localized: "A new plant", comment: "Scan mode tile title")), Grammar.pt(String(localized: "Identify it and get its care plan", comment: "Scan mode tile subtitle")), .pottedPlant, Jungle.mint)
-                }
-                Menu {
-                    ForEach(plants) { p in Button(p.name) { checking = p } }
-                } label: {
-                    modeTile(Grammar.pt(String(localized: "A sick leaf", comment: "Scan mode tile title")), Grammar.pt(String(localized: "Spots, yellowing or pests", comment: "Scan mode tile subtitle")), .wilted, Jungle.warmFill)
-                }
-                .disabled(plants.isEmpty)
-            }
-            .buttonStyle(.plain)
-        }
-    }
-
-    private func modeTile(_ t: String, _ sub: String, _ s: Icon3D, _ bg: Color) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Icon3DView(s, size: 32)
-                .frame(width: 44, height: 44).background(Jungle.surface, in: Circle())
-            VStack(alignment: .leading, spacing: 2) {
-                Text(t).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
-                Text(sub).font(.caption).foregroundStyle(Jungle.subtle).multilineTextAlignment(.leading).lineLimit(2, reservesSpace: true)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(14)
-        .background(bg, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-    }
-
-    // MARK: Shopping + shelf
 
     private var shoppingList: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -193,48 +581,18 @@ struct ScanView: View {
     private var shelfSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("On my shelf").font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
-            if shelf.isEmpty {
-                HStack(spacing: 14) {
-                    Icon3DView(.box, size: 40)
-                    Text("Scan the soils and foods you have, and I'll remember which plant loves which.")
-                        .font(.subheadline).foregroundStyle(Jungle.subtle)
-                }
-                .padding(16).frame(maxWidth: .infinity, alignment: .leading).jungleCard()
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(shelf) { o in ShelfCard(product: o)
-                            .contextMenu {
-                                Button("Add to shopping list", systemImage: "cart") { o.onShoppingList = true; try? ctx.save() }
-                                Button("Remove", systemImage: "trash", role: .destructive) { ctx.delete(o); try? ctx.save() }
-                            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(shelf) { o in ShelfCard(product: o)
+                        .contextMenu {
+                            Button("Add to shopping list", systemImage: "cart") { o.onShoppingList = true; try? ctx.save() }
+                            Button("Remove", systemImage: "trash", role: .destructive) { ctx.delete(o); try? ctx.save() }
                         }
                     }
-                    .padding(.vertical, 2)
                 }
-                .pageRail()
+                .padding(.vertical, 2)
             }
         }
-    }
-
-    // MARK: Logic
-
-    private func reset() { collectedText = ""; barcode = nil; product = nil }
-
-    private func analyze(_ text: String) {
-        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || barcode != nil else { return }
-        product = ProductAnalyzer.analyze(text: text, barcode: barcode)
-    }
-
-    private func save(_ p: AnalyzedProduct, list: Bool) {
-        let o = OwnedProduct(name: p.name, category: p.category.rawValue)
-        o.barcode = p.barcode
-        o.npkN = p.npk?.n; o.npkP = p.npk?.p; o.npkK = p.npk?.k
-        o.ingredients = p.ingredients
-        o.onShoppingList = list
-        ctx.insert(o)
-        try? ctx.save()
-        product = nil
     }
 }
 
@@ -472,38 +830,6 @@ enum OCR {
     }
 }
 
-/// Live VisionKit scanner: collects text and barcodes until Done.
-struct LiveLabelScanner: UIViewControllerRepresentable {
-    var onItem: (String?, String?) -> Void
-    var onDone: () -> Void
-
-    func makeUIViewController(context: Context) -> UINavigationController {
-        let vc = DataScannerViewController(recognizedDataTypes: [.text(), .barcode()], qualityLevel: .accurate,
-                                           recognizesMultipleItems: true, isHighFrameRateTrackingEnabled: false, isHighlightingEnabled: true)
-        vc.delegate = context.coordinator
-        vc.navigationItem.title = Grammar.pt(String(localized: "Point at the label", comment: "Live label scanner title"))
-        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in onDone() })
-        try? vc.startScanning()
-        return UINavigationController(rootViewController: vc)
-    }
-    func updateUIViewController(_ vc: UINavigationController, context: Context) {}
-    func makeCoordinator() -> Coordinator { Coordinator(onItem: onItem) }
-
-    final class Coordinator: NSObject, DataScannerViewControllerDelegate {
-        let onItem: (String?, String?) -> Void
-        var seen = Set<String>()
-        init(onItem: @escaping (String?, String?) -> Void) { self.onItem = onItem }
-        func dataScanner(_ s: DataScannerViewController, didAdd items: [RecognizedItem], allItems: [RecognizedItem]) {
-            for item in items {
-                switch item {
-                case .text(let t) where !seen.contains(t.transcript): seen.insert(t.transcript); onItem(t.transcript, nil)
-                case .barcode(let b): if let v = b.payloadStringValue, !seen.contains(v) { seen.insert(v); onItem(nil, v) }
-                default: break
-                }
-            }
-        }
-    }
-}
 
 /// Soil and food each plant wants, for a page with room beside the scanner.
 private struct JungleDietCard: View {
@@ -536,13 +862,12 @@ private struct JungleDietCard: View {
     }
 }
 
+
 private extension View {
-    /// Secondary action on a card: readable in light and dark.
-    func secondaryPill() -> some View {
-        self.font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
-            .frame(maxWidth: .infinity).padding(.vertical, 11)
-            .background(Jungle.mint, in: Capsule())
-            .overlay(Capsule().strokeBorder(Jungle.sage.opacity(0.6), lineWidth: 1))
-            .contentShape(Capsule())
+    /// Frosted warm chrome over the camera: cream glass with a soft leaf rim.
+    func warmGlass<S: InsettableShape>(_ shape: S) -> some View {
+        self.background(.ultraThinMaterial, in: shape)
+            .background(Jungle.cream.opacity(0.55), in: shape)
+            .overlay(shape.strokeBorder(Jungle.sage.opacity(0.45), lineWidth: 1))
     }
 }
