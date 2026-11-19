@@ -24,4 +24,5 @@ ssh "$HOST" "set -e
   systemctl enable -q mtj-api && systemctl restart mtj-api
   for i in 1 2 3 4 5; do curl -fsS --unix-socket /run/mtj/api.sock http://mtj-api/health && break; sleep 1; done
   echo
+  W=/home/simpleapps/public_html; install -d -o simpleapps -g simpleapps -m 755 \$W/api.mytinyjungle.com/.well-known && install -o simpleapps -g simpleapps -m 644 \$W/mytinyjungle.com/.well-known/assetlinks.json \$W/api.mytinyjungle.com/.well-known/  # Android app links for /p/<token>
   rm -f /tmp/mtj-api /tmp/mtj-*.service /tmp/mtj-*.timer /tmp/mtj-backup.sh /tmp/mtj-wal-ship.sh /tmp/mtj-postgres-setup.sh /tmp/mtj-psql /tmp/mtj-restore-check.sh /tmp/mtj-alert.sh /tmp/mtj-watchdog.sh /tmp/mtj-ai-setup.sh /tmp/mtj-id-setup.sh /tmp/provision.sh"
