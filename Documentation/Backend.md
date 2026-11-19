@@ -16,7 +16,7 @@ One My Tiny Jungle account across iPhone, iPad, Android and web: same plants, sa
 
 - Direct hits on the origin fail during the TLS handshake; plain HTTP returns 403.
 - Source: `Server/` (`cmd/mtj-api`, `internal/api`, `internal/jwt`, `migrations`). Contract: `Server/openapi.yaml`.
-- Deploy: `Server/deploy/deploy.sh` (tests, static linux build, ship, provision, migrate, restart, health check). End-to-end: `Server/deploy/integration.sh` (20 checks, run as root on the VPS, cleans up after itself).
+- Deploy: `Server/deploy/deploy.sh` (tests, static linux build, ship, provision, migrate, restart, health check). End-to-end: `Server/deploy/integration.sh` (53 checks, run as root on the VPS, cleans up after itself).
 
 ## Security
 | Layer | What |
@@ -51,7 +51,7 @@ MTJ shares nothing with other apps on the VPS: own system users (`mtj-api` for t
 2. Put back `/opt/mtj/secrets` (api.env, owner.env, keys/, backup.key, pg-superuser) from `~/.config/mydigitalmagnets/mytinyjungle/` and the Cloudflare origin certificate.
 3. `Server/deploy/deploy.sh`: creates users, Postgres, units and timers, runs migrations.
 4. Restore data: `gpg -d --passphrase-file backup.key base-….tar.gpg | tar -x` into `/var/lib/mtj-db/postgres`, copy `wal/` decrypted into the archive, set `restore_command` and `recovery_target_time`, touch `recovery.signal`, start `mtj-postgres`. Or logical: `gpg -d … db-….dump.gpg | mtj-psql pg_restore -d mytinyjungle`. Photos: decrypt and untar `media-….tar.gpg` into `/var/lib/mtj/media`.
-5. `Server/deploy/integration.sh` (30 checks), then point Cloudflare DNS at the new host.
+5. `Server/deploy/integration.sh` (53 checks), then point Cloudflare DNS at the new host.
 Keep copies of the latest `/var/backups/mtj` on the Mac with `rsync -a mdm-ovh:/var/backups/mtj/ ~/Backups/mtj/` when the owner wants a second place.
 
 ## App Attest

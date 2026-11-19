@@ -96,7 +96,7 @@ dg=$(c $A http://x/v1/me/digest); echo "$dg" | python3 -c 'import json,sys;d=jso
 [[ $(c $B http://x/v1/me/digest | python3 -c 'import json,sys;d=json.load(sys.stdin);print(len(d["due"])+len(d["grew"]))') == 0 ]] && ok "digest only covers your jungles"
 [[ $(c $A -X PUT -o /dev/null -w '%{http_code}' http://x/v1/me/digest -d "{\"on\":false,\"deviceId\":\"$did\",\"lang\":\"pt-BR\"}") == 200 && $(psqlq "select digest_on, digest_lang from devices where id='$did'") == "f|pt-BR" ]] && ok "digest opt-out per device"
 [[ $(c $A -X PUT -o /dev/null -w '%{http_code}' http://x/v1/me/digest -d "{\"on\":true,\"deviceId\":\"$(cat /proc/sys/kernel/random/uuid)\"}") == 404 ]] && ok "digest toggle refuses another device"
-psqlq "insert into api_quota (subject, kind, n) values ('u:$UA', 'ask', 300)" >/dev/null
+psqlq "insert into api_quota (subject, kind, n) values ('u:$UA', 'ask', 300) on conflict (day, subject, kind) do update set n = 300" >/dev/null
 r=$(c $A -w ' %{http_code}' http://x/v1/brain/ask -d '{"q":"water?","lang":"en"}'); [[ $r == '{"error":"daily_limit"}'*429 ]] && ok "daily limit 429 on ask"
 psqlq "delete from api_quota where subject in ('u:$UA', 'd:$did')" >/dev/null
 [[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/ask -d '{"q":"water?","lang":"en"}') == 200 && $(psqlq "select n from api_quota where subject='d:$did' and kind='ask' and day=current_date") == 1 ]] && ok "quota counted per device"
