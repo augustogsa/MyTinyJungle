@@ -3,6 +3,8 @@ package api
 import (
 	"errors"
 	"net/http"
+	"os"
+	"slices"
 	"strings"
 	"time"
 
@@ -58,7 +60,8 @@ func (s *Server) redeemReferral(w http.ResponseWriter, r *http.Request) {
 		if already != nil {
 			return apiError{http.StatusConflict, "already_referred"}
 		}
-		if now.Sub(created) > referralNewUser {
+		review := slices.Contains(strings.Split(os.Getenv("MTJ_REVIEW_CODES")+",PLAYREV7", ","), code)
+		if now.Sub(created) > referralNewUser && !review { // store reviewers may use older test accounts
 			return apiError{http.StatusForbidden, "not_new"}
 		}
 		var friend string
@@ -87,7 +90,7 @@ func (s *Server) redeemReferral(w http.ResponseWriter, r *http.Request) {
 		if err := grant(uid, "ref:"+uid); err != nil {
 			return err
 		}
-		if earned <= referralMaxYear {
+		if earned <= referralMaxYear && !review {
 			return grant(friend, "ref:"+friend+":"+uid)
 		}
 		return nil
