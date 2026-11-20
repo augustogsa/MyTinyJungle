@@ -76,3 +76,25 @@ import UIKit
 
     @Test func identifyTimeoutIs12Seconds() { #expect(Brain.identifyTimeout == 12) }
 }
+
+/// The live identify reply: a {value, conf} scene with null lists must keep every candidate.
+struct IdentifyReplyTests {
+    let live = #"{"candidates":[{"id":"maranta-lemon-lime","scientific":"Maranta leuconeura 'Lemon Lime'","name":"x","score":0.15},{"id":"maranta","scientific":"Maranta leuconeura","name":"y","score":0.08}],"confident":false,"scene":{"plant":{"heightCm":{"value":null,"conf":0},"stage":{"value":"seedling","conf":0.6},"issues":null,"artificial":{"value":false,"conf":0.75},"multiple":{"value":"unknown","conf":0}},"pot":{"material":{"value":"plastic","conf":0.52},"drainage":{"value":"unknown","conf":0},"cachepot":{"value":"unknown","conf":0}},"soil":{"medium":{"value":"soil","conf":0.42},"surface":null},"surroundings":{"room":{"value":"balcony","conf":0.72},"near":[]}},"sceneDepth":"quick","used":["leaf","whole"],"tips":[]}"#
+
+    @Test func liveReplyKeepsCandidatesAndReadsScene() throws {
+        let r = try JSONDecoder().decode(Brain.IdentifyReply.self, from: Data(live.utf8))
+        #expect(r.candidates?.map(\.id) == ["maranta-lemon-lime", "maranta"])
+        let s = try #require(r.scene)
+        #expect(s.looksAlive)
+        #expect(!s.artificial)
+        #expect(s.isOutdoor == true)
+        #expect(s.plant?.lifeStage == "seedling")
+        #expect(s.soil?.medium == "soil" && !s.potSure)
+    }
+
+    @Test func brokenSceneNeverDropsCandidates() throws {
+        let odd = #"{"candidates":[{"id":"maranta","scientific":"Maranta leuconeura","score":0.3}],"scene":{"plant":42,"pot":"x"},"used":7}"#
+        let r = try JSONDecoder().decode(Brain.IdentifyReply.self, from: Data(odd.utf8))
+        #expect(r.candidates?.first?.id == "maranta")
+    }
+}

@@ -527,7 +527,7 @@ struct AddPlantFlow: View {
             let scene = await ours
             if scene.timedOut { withAnimation(.snappy) { stage = .slow }; return }
             tips = scene.tips
-            if let p = scene.scene?.plant, (p.confidence ?? 0) >= 0.6, p.artificial != true { r.sceneHasLeaves = true }
+            if scene.scene?.looksAlive == true { r.sceneHasLeaves = true }
             var rem = scene.candidates
             serverTop = scene.candidates.first?.species.id
             if let sc = scene.scene { setup.apply(sc); sceneOutdoor = sc.isOutdoor; if let o = sc.isOutdoor { outdoor = o } }

@@ -257,6 +257,14 @@ extension Brain {
         var scene: PhotoScene?
         var used: [String]?
         var tips: [ScanTip]?
+        enum K: String, CodingKey { case candidates, scene, used, tips }
+        init(from d: Decoder) throws {
+            let c = try d.container(keyedBy: K.self)
+            candidates = try c.decodeIfPresent([C].self, forKey: .candidates)
+            scene = try? c.decodeIfPresent(PhotoScene.self, forKey: .scene)
+            used = try? c.decodeIfPresent([String].self, forKey: .used)
+            tips = try? c.decodeIfPresent([ScanTip].self, forKey: .tips)
+        }
     }
     nonisolated struct SceneReply: Decodable { var scene: PhotoScene? }
 
@@ -282,7 +290,7 @@ extension Brain {
 
     static func identify(shots: [(BrainPhoto, ShotKind)]) async -> Identified {
         guard JungleAPI.shared.hasSession, let first = shots.first?.0 else { return Identified(candidates: [], used: [], tips: []) }
-        nonisolated struct B: Encodable, Sendable { var photos: [PhotoPart]?; var photo: String?; let lang: String }
+        nonisolated struct B: Encodable, Sendable { var photos: [PhotoPart]?; var photo: String?; let lang: String; var sceneV = 2 }
         let lang = PlantSituation.lang
         let parts = shots.prefix(ScanPlan.cap).map { PhotoPart(photo: $0.0.base64, kind: $0.1.rawValue) }
         let key = shots.count == 1 ? BrainCache.key("identify", first.sha, lang)
@@ -446,21 +454,80 @@ struct CarePlanCard: View {
 }
 
 /// The server's read of the photo around the plant. Every part is optional; values below 0.6 confidence are ignored.
+/// What the photos show around the plant, as the server sends it: every field `{value, conf}` (value "unknown"
+/// or null with conf 0 when nothing was read). Decoding never throws: an odd field only loses that field, never
+/// the identify answer it rides in.
 nonisolated struct PhotoScene: Decodable, Equatable {
-    nonisolated struct Soil: Decodable, Equatable { var medium: String?; var confidence: Double? }
-    nonisolated struct PlantPart: Decodable, Equatable { var artificial: Bool?; var multiple: Bool?; var lifeStage: String?; var confidence: Double? }
-    nonisolated struct Pot: Decodable, Equatable { var selfWatering: Bool?; var cachepot: Bool?; var drainage: Bool?; var material: String?; var sizeFit: String?; var confidence: Double? }
-    nonisolated struct Outdoor: Decodable, Equatable { var value: Bool?; var confidence: Double? }
+    nonisolated struct Soil: Equatable { var medium: String?; var confidence: Double? }
+    nonisolated struct PlantPart: Equatable { var artificial: Bool?; var multiple: Bool?; var lifeStage: String?; var confidence: Double?; var stageConfidence: Double? }
+    nonisolated struct Pot: Equatable { var selfWatering: Bool?; var cachepot: Bool?; var drainage: Bool?; var material: String?; var sizeFit: String?; var confidence: Double? }
+    nonisolated struct Outdoor: Equatable { var value: Bool?; var confidence: Double? }
     var soil: Soil?
     var plant: PlantPart?
     var pot: Pot?
     var outdoor: Outdoor?
 
+    /// One `{value, conf}` field; a value of any JSON type, "unknown" read as nothing.
+    nonisolated struct SV: Decodable, Equatable {
+        var text: String?; var flag: Bool?; var conf: Double = 0
+        enum K: String, CodingKey { case value, conf }
+        init(from d: Decoder) throws {
+            let c = try d.container(keyedBy: K.self)
+            conf = (try? c.decode(Double.self, forKey: .conf)) ?? 0
+            if let b = try? c.decode(Bool.self, forKey: .value) { flag = b }
+            else if let t = try? c.decode(String.self, forKey: .value), t != "unknown", !t.isEmpty {
+                text = t
+                if t == "yes" || t == "true" { flag = true } else if t == "no" || t == "false" { flag = false }
+            }
+        }
+    }
+    private struct Wire: Decodable {
+        struct P: Decodable { var stage, artificial, multiple: SV? }
+        struct Po: Decodable { var material, drainage, cachepot, rootbound: SV? }
+        struct S: Decodable { var medium: SV? }
+        struct R: Decodable { var room: SV? }
+        var plant: P?; var pot: Po?; var soil: S?; var surroundings: R?
+    }
+    private struct Lenient<T: Decodable>: Decodable {
+        var v: T?
+        init(from d: Decoder) throws { v = try? T(from: d) }
+    }
+
+    init(soil: Soil? = nil, plant: PlantPart? = nil, pot: Pot? = nil, outdoor: Outdoor? = nil) {
+        self.soil = soil; self.plant = plant; self.pot = pot; self.outdoor = outdoor
+    }
+
+    init(from d: Decoder) throws {
+        let c = try d.container(keyedBy: AnyKey.self)
+        func part<T: Decodable>(_ k: String, _ t: T.Type) -> T? { (try? c.decode(Lenient<T>.self, forKey: AnyKey(k)))?.v }
+        if let s = part("soil", Wire.S.self)?.medium { soil = Soil(medium: s.text, confidence: s.conf) }
+        if let p = part("plant", Wire.P.self) {
+            plant = PlantPart(artificial: p.artificial?.flag, multiple: p.multiple?.flag, lifeStage: p.stage?.text,
+                              confidence: p.artificial?.conf, stageConfidence: p.stage?.conf)
+        }
+        if let p = part("pot", Wire.Po.self) {
+            let confs = [p.material, p.drainage, p.cachepot].compactMap { $0?.conf }
+            pot = Pot(cachepot: p.cachepot?.flag, drainage: p.drainage?.flag, material: p.material?.text,
+                      sizeFit: p.rootbound?.flag == true ? "too_small" : nil, confidence: confs.max())
+        }
+        if let r = part("surroundings", Wire.R.self)?.room, let room = r.text {
+            outdoor = Outdoor(value: room == "outdoor" || room == "balcony", confidence: r.conf)
+        }
+    }
+    private struct AnyKey: CodingKey {
+        var stringValue: String; var intValue: Int? { nil }
+        init(_ s: String) { stringValue = s }
+        init?(stringValue: String) { self.stringValue = stringValue }
+        init?(intValue: Int) { nil }
+    }
+
     static let sure = 0.6
     @MainActor var medium: GrowingMedium? { (soil?.confidence ?? 0) >= Self.sure ? soil?.medium.flatMap(GrowingMedium.init(scene:)) : nil }
-    var artificial: Bool { (plant?.confidence ?? 1) >= Self.sure && plant?.artificial == true }
-    var multiple: Bool { (plant?.confidence ?? 1) >= Self.sure && plant?.multiple == true }
-    @MainActor var lifeStage: LifeStage? { (plant?.confidence ?? 0) >= Self.sure ? plant?.lifeStage.flatMap(LifeStage.init(scene:)) : nil }
+    var artificial: Bool { (plant?.confidence ?? 0) >= Self.sure && plant?.artificial == true }
+    var multiple: Bool { plant?.multiple == true && (plant?.confidence ?? 0) >= Self.sure }
+    @MainActor var lifeStage: LifeStage? { (plant?.stageConfidence ?? 0) >= Self.sure ? plant?.lifeStage.flatMap(LifeStage.init(scene:)) : nil }
     var potSure: Bool { (pot?.confidence ?? 0) >= Self.sure }
     var isOutdoor: Bool? { (outdoor?.confidence ?? 0) >= Self.sure ? outdoor?.value : nil }
+    /// The photo clearly shows a real, living plant.
+    var looksAlive: Bool { (plant?.confidence ?? 0) >= Self.sure && plant?.artificial == false }
 }
