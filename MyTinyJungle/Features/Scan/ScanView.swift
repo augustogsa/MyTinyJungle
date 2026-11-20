@@ -131,6 +131,10 @@ struct ScanView: View {
         .animation(.easeInOut(duration: 0.2), value: working)
         .animation(.snappy, value: toast)
         .task { await camera.prepare() }
+        .task { await camera.watchLight() }
+        .onChange(of: camera.lowLight) { _, on in
+            if on { show(Grammar.pt(String(localized: "Low light, so I turned the flash on", comment: "Scan: torch switched on automatically in the dark; max 40 chars"))) }
+        }
         .onAppear { visible = true; if !reduceMotion { withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) { breathe = true } } }
         .onDisappear { visible = false; camera.setTorch(false) }
         .onChange(of: mode, initial: true) { _, m in
@@ -221,7 +225,7 @@ struct ScanView: View {
                 circleButton("questionmark", Grammar.pt(String(localized: "How to scan", comment: "How to scan card title; max 24 chars"))) { howTo = true }
             }
             if camera.state == .ready && camera.hasTorch {
-                circleButton(camera.torch ? "bolt.fill" : "bolt.slash.fill", camera.torch ? Grammar.pt(String(localized: "Turn flash off", comment: "VoiceOver: scan torch toggle when on")) : Grammar.pt(String(localized: "Turn flash on", comment: "VoiceOver: scan torch toggle when off")), tint: camera.torch ? Jungle.terracotta : Jungle.forest) { camera.setTorch(!camera.torch) }
+                circleButton(camera.torch ? "bolt.fill" : "bolt.slash.fill", camera.torch ? Grammar.pt(String(localized: "Turn flash off", comment: "VoiceOver: scan torch toggle when on")) : Grammar.pt(String(localized: "Turn flash on", comment: "VoiceOver: scan torch toggle when off")), tint: camera.torch ? Jungle.terracotta : Jungle.forest) { camera.userSetTorch = true; camera.lowLight = false; camera.setTorch(!camera.torch) }
             } else {
                 circleButton("tray.full.fill", Grammar.pt(String(localized: "My products", comment: "Scan: soils and foods you own and your shopping list; max 20 chars"))) { result = .products }
             }
@@ -495,6 +499,10 @@ private struct ShutterStyle: ButtonStyle {
     enum State { case checking, ready, denied, unavailable }
     var state: State = .checking
     var torch = false
+    /// The camera sees too little light; the torch turned itself on.
+    var lowLight = false
+    /// The owner flipped the torch by hand: auto-light leaves it alone from then on.
+    @ObservationIgnored var userSetTorch = false
     var labelMode = false
     private(set) var lines: [String] = []
     private(set) var barcode: String?
@@ -522,10 +530,37 @@ private struct ShutterStyle: ButtonStyle {
         torch = on
     }
 
-    /// The whole photo, uncropped.
+    /// Dark when the sensor is pushing high ISO or still underexposed at its limit.
+    var isDark: Bool {
+        guard let d = AVCaptureDevice.default(for: .video) else { return false }
+        let maxISO = max(d.activeFormat.maxISO, 1)
+        return d.iso / maxISO > 0.5 || d.exposureTargetOffset < -1.5
+    }
+    private var isBright: Bool {
+        guard let d = AVCaptureDevice.default(for: .video) else { return false }
+        return d.iso / max(d.activeFormat.maxISO, 1) < 0.2 && d.exposureTargetOffset > -0.5
+    }
+
+    /// While the camera runs: low light turns the torch on, plenty of light turns an auto torch back off.
+    func watchLight() async {
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .milliseconds(700))
+            guard state == .ready, hasTorch, !userSetTorch else { continue }
+            if !torch && isDark { setTorch(true); lowLight = true }
+            else if torch && lowLight && !isDarkWithTorch { setTorch(false); lowLight = false }
+        }
+    }
+    /// With the torch on the sensor reads bright, so only switch back off once ambient light is clearly fine.
+    private var isDarkWithTorch: Bool { !isBright }
+
+    /// The whole photo, uncropped. In the dark the torch fires for the shot even if it was off.
     func capture() async -> Data? {
-        guard let s = scanner, let img = try? await s.capturePhoto() else { return nil }
-        return img.jpegData(compressionQuality: 0.9)
+        guard let s = scanner else { return nil }
+        var flashed = false
+        if hasTorch, !torch, isDark { setTorch(true); flashed = true; try? await Task.sleep(for: .milliseconds(450)) }
+        let img = try? await s.capturePhoto()
+        if flashed { setTorch(false) }
+        return img?.jpegData(compressionQuality: 0.9)
     }
 
     func resetText() { lines = []; barcode = nil; seen = [] }

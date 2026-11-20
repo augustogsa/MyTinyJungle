@@ -102593,6 +102593,42 @@
           }
         }
       }
+    },
+    "Low light, so I turned the flash on" : {
+      "comment" : "Scan: torch switched on automatically in the dark; max 40 chars",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenig Licht, Blitz ist an"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay poca luz, prendí el flash"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peu de lumière, j'ai allumé le flash"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暗いのでライトをつけたよ"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tá escurinho, liguei o flash"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
