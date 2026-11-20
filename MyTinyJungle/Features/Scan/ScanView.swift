@@ -75,9 +75,6 @@ struct ScanView: View {
     /// A kind a result tip asked for: the sheet closes and the camera comes back on it.
     @State private var pendingKind: ShotKind?
     @State private var howTo = false
-    /// Where the reticle and the live preview sit on screen (global), for cropping the capture to the reticle.
-    @State private var reticleRect: CGRect = .zero
-    @State private var previewRect: CGRect = .zero
     @AppStorage("scanHowToSeen") private var howToSeen = false
     @State private var working = false
     @State private var toast: String?
@@ -98,8 +95,6 @@ struct ScanView: View {
             cameraLayer
             VStack(spacing: 0) {
                 topBar
-                Spacer(minLength: 12)
-                if camera.state == .ready { reticle }
                 Spacer(minLength: 12)
                 ertyPeek
                 modeExtras
@@ -181,8 +176,6 @@ struct ScanView: View {
         case .checking: ProgressView().tint(Jungle.leaf)
         case .ready:
             ScanCameraView(camera: camera, running: visible && result == nil && paywall == nil && phase == .active)
-                .overlay { scrim }
-                .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { previewRect = $0 }
                 .ignoresSafeArea()
                 .accessibilityLabel(Grammar.pt(String(localized: "Camera preview", comment: "VoiceOver: live camera in Scan")))
         case .denied where showTray, .unavailable where showTray: Color.clear
@@ -243,41 +236,6 @@ struct ScanView: View {
                 .contentTransition(.symbolEffect(.replace))
         }
         .accessibilityLabel(label)
-    }
-
-    /// Warm dim outside the reticle, so what's kept is obvious.
-    private var scrim: some View {
-        Canvas { c, size in
-            guard reticleRect.width > 0 else { return }
-            let r = reticleRect.offsetBy(dx: -previewRect.minX, dy: -previewRect.minY)
-            var p = Path(CGRect(origin: .zero, size: size))
-            p.addPath(Path(roundedRect: r, cornerRadius: 32, style: .continuous))
-            c.fill(p, with: .color(Color(red: 0.16, green: 0.11, blue: 0.06).opacity(0.38)), style: FillStyle(eoFill: true))
-        }
-        .allowsHitTesting(false)
-        .accessibilityHidden(true)
-    }
-
-    private var reticle: some View {
-        GeometryReader { g in
-            let w = min(g.size.width * mode.frame.width, 420)
-            let h = min(w * mode.frame.aspect, g.size.height)
-            // Soft, warm frame: exactly what the photo keeps (the capture is cropped to it).
-            ZStack {
-                RoundedRectangle(cornerRadius: 32, style: .continuous)
-                    .strokeBorder(Jungle.cream.opacity(0.85), lineWidth: 2)
-                    .shadow(color: Jungle.sun.opacity(0.45), radius: 10)
-                Viewfinder()
-                    .stroke(Jungle.cream, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                    .shadow(color: .black.opacity(0.12), radius: 4)
-            }
-            .frame(width: w, height: h)
-            .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { reticleRect = $0 }
-            .scaleEffect(breathe ? 1.015 : 1)
-            .position(x: g.size.width / 2, y: g.size.height / 2)
-        }
-        .allowsHitTesting(false)
-        .accessibilityHidden(true)
     }
 
     @ViewBuilder private var modeExtras: some View {
@@ -415,7 +373,7 @@ struct ScanView: View {
     private func shoot() async {
         working = true
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        guard let data = await camera.capture(crop: camera.state == .ready ? (previewRect, reticleRect) : nil) else {
+        guard let data = await camera.capture() else {
             working = false
             show(Grammar.pt(String(localized: "Couldn't take the photo. Try again.", comment: "Scan: camera capture failed")))
             return
@@ -564,10 +522,9 @@ private struct ShutterStyle: ButtonStyle {
         torch = on
     }
 
-    /// The photo, cropped to the reticle when its on-screen frame is known.
-    func capture(crop: (preview: CGRect, reticle: CGRect)? = nil) async -> Data? {
+    /// The whole photo, uncropped.
+    func capture() async -> Data? {
         guard let s = scanner, let img = try? await s.capturePhoto() else { return nil }
-        if let crop, let d = ScanCrop.crop(img, preview: crop.preview, reticle: crop.reticle) { return d }
         return img.jpegData(compressionQuality: 0.9)
     }
 

@@ -58,24 +58,8 @@ import UIKit
     }
 }
 
-/// Crop to reticle, first-look leaves, no fixed fallback guesses, identify timeout.
+/// First-look leaves, no fixed fallback guesses, identify timeout.
 @MainActor struct ScanFixTests {
-    @Test func cropMapsReticleThroughAspectFill() throws {
-        let r = try #require(ScanCrop.rect(image: CGSize(width: 3000, height: 4000), preview: CGRect(x: 0, y: 0, width: 390, height: 844), reticle: CGRect(x: 50, y: 200, width: 290, height: 362)))
-        let s = 844.0 / 4000.0, ox = (390 - 3000 * s) / 2
-        #expect(abs(r.minX - (50 - ox) / s) < 2)
-        #expect(abs(r.minY - 200 / s) < 2)
-        #expect(abs(r.width - 290 / s) < 2)
-        #expect(ScanCrop.rect(image: .zero, preview: .zero, reticle: .zero) == nil)
-    }
-
-    @Test func cropOutputIsTheReticleSize() throws {
-        let img = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 400), format: { let f = UIGraphicsImageRendererFormat(); f.scale = 1; return f }()).image { c in UIColor.green.setFill(); c.fill(CGRect(x: 0, y: 0, width: 300, height: 400)) }
-        let d = try #require(ScanCrop.crop(img, preview: CGRect(x: 0, y: 0, width: 300, height: 400), reticle: CGRect(x: 50, y: 100, width: 200, height: 160)))
-        let out = try #require(UIImage(data: d))
-        #expect(out.size.width * out.scale == 200 && out.size.height * out.scale == 160)
-    }
-
     @Test func wholePlantLeavesAreJudged() {
         var r = PhotoRead(); r.greenShare = 0.04
         #expect(r.health == .unknown)

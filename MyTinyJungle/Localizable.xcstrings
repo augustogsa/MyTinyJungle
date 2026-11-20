@@ -1432,40 +1432,6 @@
         }
       }
     },
-    "Fill the frame" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Füll den Rahmen"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Llena el recuadro"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remplis le cadre"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "画面いっぱいに"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enche o quadro"
-          }
-        }
-      }
-    },
     "Flip a leaf, I'll check for bugs" : {
       "localizations" : {
         "de" : {
@@ -1530,40 +1496,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Flor"
-          }
-        }
-      }
-    },
-    "Get close so the leaf fills the box. Sharp beats far away." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geh nah ran, bis das Blatt den Rahmen füllt. Scharf schlägt weit weg."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acércate hasta que la hoja llene el recuadro. Mejor nítida que lejana."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Approche-toi pour que la feuille remplisse le cadre. Net vaut mieux que loin."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "葉っぱが枠いっぱいになるまで近づいて。遠くよりピントが大事。"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chega perto até a folha encher o quadro. Nítido é melhor que de longe."
           }
         }
       }
@@ -102590,6 +102522,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "わかった！"
+          }
+        }
+      }
+    },
+    "Get close" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geh nah ran"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acércate"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approche-toi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "近づいて撮ろう"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chega pertinho"
+          }
+        }
+      }
+    },
+    "For a leaf, get close so it's sharp. For the whole plant, step back until it all fits." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für ein Blatt geh nah ran, bis es scharf ist. Für die ganze Pflanze geh zurück, bis alles drauf ist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para una hoja, acércate hasta que salga nítida. Para la planta entera, aléjate hasta que quepa toda."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour une feuille, approche-toi pour qu'elle soit nette. Pour toute la plante, recule jusqu'à tout voir."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "葉っぱは近づいてくっきり。株全体は全部入るまで下がってね。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pra folha, chega perto até ficar nítida. Pra planta inteira, dá uns passos pra trás até caber tudo."
           }
         }
       }

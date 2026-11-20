@@ -341,8 +341,8 @@ struct HowToScanSheet: View {
         [
             Step(icon: .sunny, title: Grammar.pt(String(localized: "Good light, one plant", comment: "How to scan step 1 title; max 28 chars")),
                  text: Grammar.pt(String(localized: "Daylight by a window is best. Keep just one plant in the shot.", comment: "How to scan step 1 text"))),
-            Step(icon: .leaf, title: Grammar.pt(String(localized: "Fill the frame", comment: "How to scan step 2 title; max 28 chars")),
-                 text: Grammar.pt(String(localized: "Get close so the leaf fills the box. Sharp beats far away.", comment: "How to scan step 2 text"))),
+            Step(icon: .leaf, title: Grammar.pt(String(localized: "Get close", comment: "How to scan step 2 title; max 28 chars")),
+                 text: Grammar.pt(String(localized: "For a leaf, get close so it's sharp. For the whole plant, step back until it all fits.", comment: "How to scan step 2 text"))),
             Step(icon: .pottedPlant, title: Grammar.pt(String(localized: "Mix your angles", comment: "How to scan step 3 title; max 28 chars")),
                  text: ""),
             Step(icon: .award, title: Grammar.pt(String(localized: "More photos, surer answers", comment: "How to scan step 4 title; max 28 chars")),
@@ -442,27 +442,5 @@ enum ScanRoute {
         let d = UserDefaults.standard
         d.set("identify", forKey: "scanMode")
         d.set(3, forKey: "selectedTab")
-    }
-}
-
-/// Crops a camera photo to the reticle. The preview shows the photo aspect-filled into `preview`, so the reticle's
-/// screen rect maps back to image points with the same scale and centring.
-nonisolated enum ScanCrop {
-    static func rect(image: CGSize, preview: CGRect, reticle: CGRect) -> CGRect? {
-        guard image.width > 0, image.height > 0, preview.width > 0, preview.height > 0, reticle.width > 0, reticle.height > 0 else { return nil }
-        let s = max(preview.width / image.width, preview.height / image.height)
-        let ox = preview.minX + (preview.width - image.width * s) / 2
-        let oy = preview.minY + (preview.height - image.height * s) / 2
-        let r = CGRect(x: (reticle.minX - ox) / s, y: (reticle.minY - oy) / s, width: reticle.width / s, height: reticle.height / s)
-        let c = r.intersection(CGRect(origin: .zero, size: image))
-        return c.isNull || c.width < 16 || c.height < 16 ? nil : c.integral
-    }
-
-    static func crop(_ img: UIImage, preview: CGRect, reticle: CGRect) -> Data? {
-        guard let r = rect(image: img.size, preview: preview, reticle: reticle) else { return nil }
-        let f = UIGraphicsImageRendererFormat(); f.scale = img.scale; f.opaque = true
-        // Drawing honours the photo's orientation, so the crop comes out upright.
-        let out = UIGraphicsImageRenderer(size: r.size, format: f).image { _ in img.draw(at: CGPoint(x: -r.minX, y: -r.minY)) }
-        return out.jpegData(compressionQuality: 0.9)
     }
 }
