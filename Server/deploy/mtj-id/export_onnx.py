@@ -36,7 +36,7 @@ with torch.no_grad():
                       dynamic_axes={"pixels": {0: "n"}, "emb": {0: "n"}}, opset_version=17, dynamo=False)
     torch.onnx.export(T(), torch.zeros(1, 77, dtype=torch.long), out / "text.onnx", input_names=["tokens"], output_names=["emb"],
                       dynamic_axes={"tokens": {0: "n"}, "emb": {0: "n"}}, opset_version=17, dynamo=False)
-quantize_dynamic(str(out / "visual.onnx"), str(out / "visual.int8.onnx"), weight_type=QuantType.QInt8)
+quantize_dynamic(str(out / "visual.onnx"), str(out / "visual.int8.onnx"), weight_type=QuantType.QInt8, op_types_to_quantize=["MatMul", "Gemm"])  # ConvInteger has no CPU kernel in older onnxruntime
 import json
 n = [t for t in pre.transforms if type(t).__name__ == "Normalize"][0]
 (out / "preprocess.json").write_text(json.dumps({"size": 224, "mean": list(n.mean), "std": list(n.std), "model": os.environ.get("MODEL", "hf-hub:imageomics/bioclip-2")}))
