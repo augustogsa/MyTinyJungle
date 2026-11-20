@@ -4,5 +4,6 @@ DerivedData/
 xcuserdata/
 .DS_Store
 .claude/worktrees/
+.claude/dd-shots/
 node_modules/
 *.p8
