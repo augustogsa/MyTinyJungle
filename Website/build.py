@@ -72,18 +72,18 @@ T = {
     ("How do I cancel my plan?", "Open iPhone Settings → your name → Subscriptions → My Tiny Jungle → Cancel Subscription. You keep your plan until the end of the period you paid for."),
     ("Can I get a refund?", 'Purchases are handled by Apple. Request a refund at <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.'),
     ("I subscribed but the app still shows the free plan.", "Open Me → Restore Purchases while signed in with the same Apple ID you used to subscribe."),
-    ("Are my photos uploaded?", "Only when you ask for it. Photos of your plants sync through our servers (encrypted) if you sign in. When you ask the app to name a plant or check a problem, the photo is analysed on our own servers and not kept. See the Privacy Policy."),
+    ("Are my photos uploaded?", "Only when you ask for it. Photos of your plants sync through our servers if you sign in. When you ask the app to name a plant or check a problem, the photo is analysed on our own servers and not kept. See the Privacy Policy."),
     ("Why do I see ads?", "Ads keep the free version free. Greenhouse and Jungle remove them. You can change ad personalisation in Me → Privacy &amp; ads choices."),
     ("What happens to my plants if I reach 5 on the free plan?", "Nothing is deleted. You can keep caring for your 5 plants, or upgrade to add more."),
     ("How do I delete my data?", "In the app, open Settings and tap Delete account and data. Your account closes at once and is fully erased from our servers after 30 days, with every plant, photo and care history in jungles you own. Deleting the app removes what is on the device. For ad data, see the Privacy Policy."),
   ],
   # privacy
   "pri_title": "Privacy Policy", "pri_desc": "How My Tiny Jungle handles data: your account and synced jungle, photo analysis on our own servers (photos not kept), weather by rough area, anonymous counts, retention, and Google AdMob ads in the free version.",
-  "pri_box": "Short version: if you sign in, your jungle syncs through our own servers so it is the same on every device, with photos encrypted at rest. When you ask the app to name a plant, read a scene or check a problem, the photo is analysed on our servers and not kept. We never sell data. The free version shows ads from Google AdMob, with your consent where the law requires it. Greenhouse and Jungle have no ads.",
+  "pri_box": "Short version: if you sign in, your jungle syncs through our own servers so it is the same on every device. When you ask the app to name a plant, read a scene or check a problem, the photo is analysed on our servers and not kept. We never sell data. The free version shows ads from Google AdMob, with your consent where the law requires it. Greenhouse and Jungle have no ads.",
   "pri": [
     ("Who is responsible", f"My Tiny Jungle is published by Simple Apps Company (“we”), the data controller for the app. Contact: <a href=\"mailto:{EMAIL}\">{EMAIL}</a>."),
-    ("What stays on your device", "Without an account, plants, photos, care logs, reminders and chat stay on your device (and in your own encrypted iCloud backup, if it is on). Care reminders, the care engine and most answers run on the device."),
-    ("Your account and sync", "Signing in is optional. If you sign in with Apple or Google, our server keeps your account: name, email (or Apple’s private relay address), the sign-in identifier, your devices (model, app version, notification token) and your subscription status. Your plants, care history, tasks, chat and photos then sync through our own servers so they match on iPhone, iPad, Android and the web. Photos are encrypted at rest (AES-256), access is limited to you and the people you share a jungle with, and our logs never record IP addresses, user ids or content. You can download all of it in Settings → Account → Download my data."),
+    ("What stays on your device", "Without an account, plants, photos, care logs, reminders and chat stay on your device (and in your own iCloud backup, if it is on). Care reminders, the care engine and most answers run on the device."),
+    ("Your account and sync", "Signing in is optional. If you sign in with Apple or Google, our server keeps your account: name, email (or Apple’s private relay address), the sign-in identifier, your devices (model, app version, notification token) and your subscription status. Your plants, care history, tasks, chat and photos then sync through our own servers so they match on iPhone, iPad, Android and the web. Access to photos is limited to you and the people you share a jungle with, and our logs never record IP addresses, user ids or content. You can download all of it in Settings → Account → Download my data."),
     ("Weather and your area", "To tune care to your climate, the app asks for your location only while in use, or lets you type a city. It rounds the coordinates to about 10 km and sends them to the free weather service Open-Meteo (open-meteo.com), directly or through our server, to fetch the forecast. If you turn on frost and heatwave alerts, our server keeps only that rounded area and your language on your device record to send the alert, until you turn alerts off. Exact location is never sent or stored."),
     ("Photo analysis (naming plants, scenes, plant doctor)", "When you ask the app to name a plant, read a photo of your room or plants, or check a problem, that photo is sent to our own servers and analysed by our own models. It is used only to answer, held in memory for the request and never written to disk or kept. If our models can’t answer, the photo may be passed to Google Gemini or Anthropic Claude to get a better answer; they process it under their API terms and we don’t keep it either. Text answers (never photos) may be saved so the same question can be answered again without a photo. Analysis is limited per day to prevent abuse."),
     ("Feedback and corrections", "When you rate an answer or correct a plant name, we keep that rating or correction with the answer it is about, to improve future answers. Your photo is not part of it. We also count, per day, care words the app couldn’t answer, without any user or device link."),
@@ -167,17 +167,17 @@ T = {
     ("Como faço pra cancelar meu plano?", "É rapidinho: Ajustes do iPhone → seu nome → Assinaturas → My Tiny Jungle → Cancelar assinatura. Seu plano continua valendo até o fim do período que você já pagou."),
     ("Dá pra pedir reembolso?", 'Quem cuida das compras é a Apple. Pede o reembolso em <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.'),
     ("Assinei, mas o app continua no plano de graça.", "Vai em Você → Restaurar compras, com o mesmo ID Apple da assinatura."),
-    ("Minhas fotos vão pra algum lugar?", "Só quando você pede. Se você entrar com uma conta, as fotos das plantas sincronizam pelos nossos servidores (criptografadas). Quando você pede pro app reconhecer uma planta ou ver um problema, a foto é analisada nos nossos próprios servidores e não fica guardada. Veja a Política de Privacidade."),
+    ("Minhas fotos vão pra algum lugar?", "Só quando você pede. Se você entrar com uma conta, as fotos das plantas sincronizam pelos nossos servidores. Quando você pede pro app reconhecer uma planta ou ver um problema, a foto é analisada nos nossos próprios servidores e não fica guardada. Veja a Política de Privacidade."),
     ("Por que aparecem anúncios?", "São eles que bancam a versão de graça. Estufa e Selva tiram todos. Dá pra mudar a personalização em Você → Privacidade e anúncios."),
     ("E quando eu chegar a 5 plantas no plano de graça?", "Nada é apagado. Você segue cuidando das 5 ou assina pra colocar mais."),
     ("Como eu apago meus dados?", "No app, abra Ajustes e toque em Apagar conta e dados. Sua conta é encerrada na hora e apagada de vez dos nossos servidores depois de 30 dias, com todas as plantas, fotos e históricos de cuidados das selvas que são suas. Apagar o app remove o que está no aparelho. Sobre dados de anúncios, veja a Política de Privacidade."),
   ],
   "pri_title": "Política de Privacidade", "pri_desc": "Como o My Tiny Jungle trata seus dados: conta e selva sincronizada, análise de fotos nos nossos servidores (sem guardar a foto), clima pela região aproximada, contagens anônimas, prazos de guarda e anúncios do Google AdMob na versão grátis.",
-  "pri_box": "Resumindo: se você entrar com uma conta, sua selva sincroniza pelos nossos próprios servidores pra ficar igual em todos os aparelhos, com as fotos criptografadas. Quando você pede pro app reconhecer uma planta, analisar uma cena ou ver um problema, a foto é analisada nos nossos servidores e não fica guardada. A gente nunca vende dados. A versão grátis mostra anúncios do Google AdMob, com seu consentimento quando a lei exige. Estufa e Selva não têm anúncios.",
+  "pri_box": "Resumindo: se você entrar com uma conta, sua selva sincroniza pelos nossos próprios servidores pra ficar igual em todos os aparelhos. Quando você pede pro app reconhecer uma planta, analisar uma cena ou ver um problema, a foto é analisada nos nossos servidores e não fica guardada. A gente nunca vende dados. A versão grátis mostra anúncios do Google AdMob, com seu consentimento quando a lei exige. Estufa e Selva não têm anúncios.",
   "pri": [
     ("Quem é o responsável", f"O My Tiny Jungle é publicado pela Simple Apps Company (“nós”), controladora dos dados tratados pelo app. Contato: <a href=\"mailto:{EMAIL}\">{EMAIL}</a>."),
-    ("O que fica no seu aparelho", "Sem conta, plantas, fotos, registros de cuidados, lembretes e conversas ficam no seu aparelho (e no seu backup criptografado do iCloud, se estiver ligado). Lembretes, o motor de cuidados e a maior parte das respostas rodam no próprio aparelho."),
-    ("Sua conta e a sincronização", "Entrar com uma conta é opcional. Se você entrar com Apple ou Google, nosso servidor guarda sua conta: nome, e-mail (ou o endereço privado da Apple), o identificador do login, seus aparelhos (modelo, versão do app, token de notificação) e o status da assinatura. Aí suas plantas, histórico de cuidados, tarefas, conversas e fotos sincronizam pelos nossos próprios servidores pra ficarem iguais no iPhone, iPad, Android e na web. As fotos ficam criptografadas (AES-256), só você e quem divide a selva com você têm acesso, e nossos registros nunca guardam IP, identificador de usuário ou conteúdo. Dá pra baixar tudo em Ajustes → Conta → Baixar meus dados."),
+    ("O que fica no seu aparelho", "Sem conta, plantas, fotos, registros de cuidados, lembretes e conversas ficam no seu aparelho (e no seu backup do iCloud, se estiver ligado). Lembretes, o motor de cuidados e a maior parte das respostas rodam no próprio aparelho."),
+    ("Sua conta e a sincronização", "Entrar com uma conta é opcional. Se você entrar com Apple ou Google, nosso servidor guarda sua conta: nome, e-mail (ou o endereço privado da Apple), o identificador do login, seus aparelhos (modelo, versão do app, token de notificação) e o status da assinatura. Aí suas plantas, histórico de cuidados, tarefas, conversas e fotos sincronizam pelos nossos próprios servidores pra ficarem iguais no iPhone, iPad, Android e na web. Só você e quem divide a selva com você têm acesso às fotos, e nossos registros nunca guardam IP, identificador de usuário ou conteúdo. Dá pra baixar tudo em Ajustes → Conta → Baixar meus dados."),
     ("Clima e sua região", "Pra ajustar os cuidados ao seu clima, o app pede sua localização só durante o uso, ou deixa você digitar uma cidade. As coordenadas são arredondadas pra cerca de 10 km e enviadas ao serviço gratuito de clima Open-Meteo (open-meteo.com), direto ou pelo nosso servidor, pra buscar a previsão. Se você ligar os alertas de geada e onda de calor, nosso servidor guarda só essa região arredondada e o seu idioma no registro do aparelho pra mandar o alerta, até você desligar. A localização exata nunca é enviada nem guardada."),
     ("Análise de fotos (reconhecer plantas, cenas, doutor de plantas)", "Quando você pede pro app reconhecer uma planta, analisar uma foto do seu cantinho ou das plantas, ou ver um problema, a foto vai pros nossos servidores e é analisada pelos nossos próprios modelos. Ela só serve pra responder, fica na memória durante o pedido e nunca é gravada nem guardada. Se nossos modelos não souberem responder, a foto pode ir pro Google Gemini ou pro Anthropic Claude pra buscar uma resposta melhor; eles tratam a foto conforme os termos da API deles e a gente também não guarda. Respostas em texto (nunca fotos) podem ficar salvas pra mesma dúvida ser respondida de novo sem foto. Tem um limite diário de análises pra evitar abuso."),
     ("Avaliações e correções", "Quando você avalia uma resposta ou corrige o nome de uma planta, a gente guarda essa avaliação ou correção junto da resposta, pra melhorar as próximas. Sua foto não vai junto. Também contamos, por dia, as palavras de cuidado que o app não soube responder, sem ligação com usuário ou aparelho."),
@@ -275,10 +275,10 @@ def home(L):
     return render_home(L, T[L], page, phone, ICON["apple"])
 
 
-def doc(L, path, title, desc, inner, meta=True, seo_title=None):
+def doc(L, path, title, desc, inner, meta=True, seo_title=None, h1=None, cls=""):
     t = T[L]
     m = f'<p class="meta">{t["updated"]}: {UPDATED[L]}</p>' if meta else ""
-    body = f'<section class="doc"><div class="wrap"><div class="paper"><h1>{title}</h1>{m}{inner}</div></div></section>'
+    body = f'<section class="doc{cls}"><div class="wrap"><div class="paper">{h1 or f"<h1>{title}</h1>"}{m}{inner}</div></div></section>'
     return page(L, path, f"{seo_title or title} · My Tiny Jungle", desc, body)
 
 
@@ -292,25 +292,53 @@ def _feat_rows(L):
     return [(ic, FEATURES[ic][0], title, short, FEATURES[ic][1][L]) for ic, title, short in H[L]["all"]]
 
 
+def shot(L, ic, alt, sizes, eager=False):
+    """A store screenshot as a responsive WebP inside the phone frame."""
+    from site_pages import SHOTS, SHOT_W
+    n = SHOTS[ic][0]
+    src = lambda w: f"/assets/shots/{L}/{n}-{w}.webp"
+    load = ' fetchpriority="high"' if eager else ' loading="lazy" decoding="async"'
+    fl = "" if eager else ' loading="lazy"'
+    return (f'<div class="phone shot"><div class="phone-screen"><img src="{src(SHOT_W[1])}" srcset="{", ".join(f"{src(w)} {w}w" for w in SHOT_W)}" sizes="{sizes}" '
+            f'alt="{alt}" width="1320" height="2868"{load}></div><img class="phone-frame" src="/assets/device/iphone-frame.webp" alt="" width="588" height="1200"{fl}></div>')
+
+
+def headline(text):
+    return text.replace("\n", "<br>")
+
+
 def feature_pages(L):
-    from site_pages import UI, PLUS
+    from site_pages import UI, PLUS, SHOTS
     t, u, p = T[L], UI[L], T[L]["prefix"]
     rows = _feat_rows(L)
     out = {}
     for k, (ic, slug, title, short, (intro, how, qs)) in enumerate(rows):
         badge = f'<span class="fbadge">{u["plus_badge"]}</span>' if ic in PLUS else ""
         nxt = rows[(k + 1) % len(rows)]
-        inner = (f'<div class="fhero"><img class="i3d" src="/icons/{ic}.png" alt="" width="88" height="88">{badge}</div>'
-                 f'<p class="flead">{intro}</p><h2>{u["how"]}</h2><ul class="fhow">' + "".join(f"<li>{x}</li>" for x in how) + "</ul>"
+        h1 = None
+        if ic in SHOTS:
+            hl = SHOTS[ic][1][L]
+            h1 = (f'<div class="fstory"><div class="ftext"><p class="feyebrow"><img class="i3d" src="/icons/{ic}.png" alt="" width="40" height="40">{title}{badge}</p>'
+                  f'<h1>{headline(hl)}</h1><p class="flead">{intro}</p></div>{shot(L, ic, title, "(max-width: 700px) 62vw, 280px", True)}</div>')
+            hero = ""
+        else:
+            hero = f'<div class="fhero"><img class="i3d" src="/icons/{ic}.png" alt="" width="88" height="88">{badge}</div><p class="flead">{intro}</p>'
+        inner = (hero + f'<h2>{u["how"]}</h2><ul class="fhow">' + "".join(f"<li>{x}</li>" for x in how) + "</ul>"
                  f'<h2>{u["q"]}</h2><div class="faq">' + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in qs) + "</div>"
                  f'<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a><a href="{p}/features/{nxt[1]}">{nxt[2]} →</a></div>' + seo.faq_ld(qs))
         out[f"features/{slug}"] = doc(L, f"/features/{slug}", title, seo.meta_desc(intro, *(x if x.endswith(".") else x + "." for x in how)), inner, meta=False,
-                                         seo_title=seo.FEATURE_TITLE[L].get(slug))
-    grid = '<div class="fgrid">' + "".join(
+                                         seo_title=seo.FEATURE_TITLE[L].get(slug), h1=h1, cls=" fpage" if h1 else "")
+    story = f'<h2>{u["story_h"]}</h2><div class="slist">' + "".join(
+        f'<a class="srow" href="{p}/features/{slug}">{shot(L, ic, title, "(max-width: 700px) 38vw, 200px")}'
+        f'<span class="stxt"><span class="feyebrow"><img class="i3d" src="/icons/{ic}.png" alt="" width="32" height="32">{title}'
+        + (f'<span class="fbadge">{u["plus_badge"]}</span>' if ic in PLUS else "") +
+        f'</span><span class="sh">{headline(SHOTS[ic][1][L])}</span><span class="fs">{short}</span><span class="smore">{u["see"]} →</span></span></a>'
+        for ic, slug, title, short, _ in rows if ic in SHOTS) + f'</div><h2>{u["more_h"]}</h2>'
+    grid = story + '<div class="fgrid">' + "".join(
         f'<a class="fcard" href="{p}/features/{slug}"><img class="i3d" src="/icons/{ic}.png" alt="" width="56" height="56">'
         f'<span class="ft">{title}' + (f' <span class="fbadge">{u["plus_badge"]}</span>' if ic in PLUS else "") + f'</span><span class="fs">{short}</span></a>'
-        for ic, slug, title, short, _ in rows) + "</div>"
-    out["features"] = doc(L, "/features", u["features"], u["feat_desc"], f'<p class="flead">{u["feat_desc"]}</p>{grid}<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a></div>', meta=False)
+        for ic, slug, title, short, _ in rows if ic not in SHOTS) + "</div>"
+    out["features"] = doc(L, "/features", u["features"], u["feat_desc"], f'<p class="flead">{u["feat_desc"]}</p>{grid}<div class="fnav"><a href="{p}/good-to-know">{u["all_q"]}</a></div>', meta=False, cls=" fpage")
     return out
 
 

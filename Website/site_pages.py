@@ -177,3 +177,83 @@ UI = {
   "feat_desc": "Tudo o que o My Tiny Jungle faz pelas suas plantas. Toca num recurso pra ver como funciona.", "plus_badge": "Planos pagos"},
 }
 PLUS = {"firstAid", "fertilizer", "travel", "seedling", "sun"}
+
+# Story features (App Store order, intelligence first). Each has a screenshot from the store set.
+FEATURES.update({
+ "sunflower": ("plants-text-you", {
+  "en": ("You don't have to remember a thing. Your plants keep an eye on the soil, the weather and the calendar, and send you a message when something needs you: a frost tonight, a dry pot, a growing-season snack.",
+         ["A message from the plant itself, in its own voice", "Frost, heat and rain warnings in time to act", "Thirst, feeding and repotting, only when it's due", "At most one gentle nudge a day, with quiet hours"],
+         [("Will my phone buzz all day?", "No. Plants bundle what they need into at most one message a day, and nothing during your quiet hours."),
+          ("How do they know?", "From the species, the pot, the room, your soil checks and the local forecast. Every message comes from that real state, never at random."),
+          ("Do I need to set anything up?", "No. Add a plant and it starts looking after itself. You can mute any type of message per plant.")]),
+  "pt": ("Você não precisa lembrar de nada. Suas plantas ficam de olho na terra, no clima e no calendário, e te mandam mensagem quando precisam de você: geada hoje à noite, vaso seco, um adubinho na época de crescer.",
+         ["A mensagem vem da própria planta, do jeito dela", "Aviso de geada, calorão e chuva a tempo de agir", "Rega, adubo e troca de vaso só quando chega a hora", "No máximo um toque por dia, com horário de silêncio"],
+         [("Meu celular vai apitar o dia todo?", "Não. As plantas juntam tudo numa mensagem por dia, no máximo, e ficam quietinhas no seu horário de silêncio."),
+          ("Como elas sabem?", "Pela espécie, pelo vaso, pelo cômodo, pelos seus testes da terra e pela previsão do tempo daí. Cada mensagem vem disso, nunca é aleatória."),
+          ("Preciso configurar alguma coisa?", "Não. Adicionou a planta, ela já começa a se cuidar. Dá pra silenciar qualquer tipo de mensagem, planta por planta.")])}),
+ "sprout": ("identify", {
+  "en": ("New plants, no idea what they are? Take one photo of the whole shelf and My Tiny Jungle names every plant in it, then adds the ones you pick with their care plans ready.",
+         ["One photo, every plant on the shelf", "Common and botanical names", "Pick which ones to add with a switch", "Each new plant arrives with its own care plan and voice"],
+         [("Does it work with one plant too?", "Yes. Get close for a single leaf or step back for the whole plant or shelf."),
+          ("Is my photo kept?", "No. The photo is sent once to name the plants and isn't stored."),
+          ("What if it gets one wrong?", "Switch it off before adding, or change the species later on the plant's page.")]),
+  "pt": ("Planta nova e nem ideia de qual é? Tira uma foto da estante inteira e o My Tiny Jungle descobre cada planta, e adiciona as que você escolher com os cuidados prontinhos.",
+         ["Uma foto, todas as plantas da estante", "Nome popular e nome científico", "Escolhe quais adicionar num toque", "Cada planta chega com os próprios cuidados e personalidade"],
+         [("Funciona com uma planta só?", "Funciona. Chega pertinho pra uma folha ou dá uns passos pra trás pra pegar a planta inteira ou a estante."),
+          ("A foto fica guardada?", "Não. A foto vai uma vez só pra descobrir as plantas e não fica guardada."),
+          ("E se errar alguma?", "É só desmarcar antes de adicionar, ou trocar a espécie depois na página da planta.")])}),
+ "careHands": ("shared-care", {
+  "en": ("Share your jungle with the people you live with. Everyone sees the same plants, turns go to whoever did least, and nobody waters the cactus twice.",
+         ["Invite your household with a link", "Fair turns, so care doesn't fall on one person", "Hand off a plant when you're busy, with one tap", "Add a plant sitter for a trip, with an end date"],
+         [("Does everyone need the app?", "Yes, each person signs in with Apple or Google and joins with your invite link."),
+          ("How are turns decided?", "Turns go to whoever didn't do it last, keeping things fair across the month."),
+          ("Is sharing free?", "Yes. Sharing care comes with every plan, free included.")]),
+  "pt": ("Divide a selva com quem mora com você. Todo mundo vê as mesmas plantas, a vez vai pra quem cuidou menos e ninguém rega o cacto duas vezes.",
+         ["Chama o pessoal de casa com um link", "Rodízio justo, pra ninguém ficar com tudo", "Tá corrido? Passa a planta pra alguém num toque", "Chama alguém pra cuidar enquanto você viaja, com data pra acabar"],
+         [("Todo mundo precisa do app?", "Precisa. Cada pessoa entra com Apple ou Google e participa pelo seu link de convite."),
+          ("Como fica o rodízio?", "A vez vai pra quem não cuidou da última vez, pra ficar justo no mês todo."),
+          ("Dividir é de graça?", "É. Dividir os cuidados vem em todos os planos, inclusive no grátis.")])}),
+ "calendar": ("weekly-digest", {
+  "en": ("One look and you know your week: what's coming up, who to keep an eye on, who grew, and what the weather will do to your pots.",
+         ["Coming up: every task for the next days", "Keep an eye on: plants that need attention soon", "Look who grew: new leaves and milestones", "Weather ahead and what it means for watering"],
+         [("When does it arrive?", "Any time you open Your week, and as a short summary at the start of the week."),
+          ("Does it include shared plants?", "Yes. In a shared jungle it shows everyone's turns too.")]),
+  "pt": ("Numa olhada você já sabe como vai ser a semana: o que vem por aí, quem precisa de atenção, quem cresceu e o que o tempo vai fazer com os vasos.",
+         ["O que vem por aí: todas as tarefas dos próximos dias", "De olho: plantas que vão precisar de você logo", "Olha quem cresceu: folhas novas e conquistas", "Previsão do tempo e o que ela muda na rega"],
+         [("Quando aparece?", "Sempre que você abre Sua semana, e num resuminho no começo da semana."),
+          ("Mostra as plantas compartilhadas?", "Mostra. Numa selva compartilhada aparece a vez de cada um também.")])}),
+ "pottedPlant": ("plant-chat", {
+  "en": ("Every plant has its own chat, with its history, its mood and its personality. Ask Monty how he's doing and he answers from his real soil, light and care.",
+         ["A one-to-one chat with every plant", "Its watering, light and room right at the top", "Personalities: dramatic, calm, chatty, curious", "Send a photo and it tells you what it sees"],
+         [("Is it just for fun?", "It's fun, and it's useful: every answer comes from that plant's real state and care history."),
+          ("Can I ask anything?", "Anything about the plant: water, light, leaves, pests, repotting. It says when it isn't sure.")]),
+  "pt": ("Cada planta tem a sua conversa, com histórico, humor e personalidade. Pergunta pra Costelinha como ela tá e ela responde pela terra, pela luz e pelos cuidados de verdade.",
+         ["Uma conversa só sua com cada planta", "Rega, luz e cômodo logo no topo", "Personalidades: dramática, tranquila, tagarela, curiosa", "Manda uma foto e ela conta o que tá vendo"],
+         [("É só brincadeira?", "É divertido e é útil: cada resposta vem de como a planta tá de verdade e do histórico dela."),
+          ("Posso perguntar qualquer coisa?", "Qualquer coisa sobre a planta: água, luz, folhas, pragas, troca de vaso. Quando não tem certeza, ela fala.")])}),
+})
+
+# The shared jungle chat and the season page now lead with what the screenshots show.
+FEATURES["chat"][1]["en"] = ("Tell the jungle what you did, in your own words. Write “watered Monty and Pesto” and the care is logged for every plant you named, and each one answers back.",) + FEATURES["chat"][1]["en"][1:]
+FEATURES["chat"][1]["pt"] = ("Conta pra selva o que você fez, do seu jeito. Escreve “reguei a Costelinha e o Pesto” e o cuidado fica anotado pra cada planta que você citou, e cada uma responde.",) + FEATURES["chat"][1]["pt"][1:]
+FEATURES["sun"][1]["en"] = ("My Tiny Jungle knows your weather, each room's light and the season where you live, and adjusts every plant's care on its own: less water in winter, no feeding while they rest, frost warnings for the balcony.",
+  ["Local forecast: rain, frost and heatwaves", "Each room's light, matched to every plant", "Feeding pauses in the rest season", "Northern and southern hemispheres"], FEATURES["sun"][1]["en"][2])
+FEATURES["sun"][1]["pt"] = ("O My Tiny Jungle sabe o clima daí, a luz de cada cômodo e a estação onde você mora, e ajusta os cuidados de cada planta sozinho: menos água no inverno, nada de adubo no descanso, aviso de geada pra varanda.",
+  ["Previsão do tempo daí: chuva, geada e calorão", "A luz de cada cômodo, combinada com cada planta", "Adubo pausa na época de descanso", "Hemisfério norte e sul"], FEATURES["sun"][1]["pt"][2])
+
+# feature key -> (screenshot, outcome headline). Two-sentence headlines break between sentences.
+SHOTS = {
+ "sunflower": ("01-notes", {"en": "No more dead plants.\nThey'll text you first.", "pt": "Chega de planta morta.\nElas te mandam mensagem antes."}),
+ "chat": ("02-jungle", {"en": "Just say what you did.\nEveryone gets the memo.", "pt": "Só conta o que fez.\nTodo mundo fica sabendo."}),
+ "sun": ("03-season", {"en": "Frost or heatwave?\nYour plants are on it.", "pt": "Geada ou calorão?\nSuas plantas já sabem."}),
+ "firstAid": ("04-doctor", {"en": "Yellow leaves?\nWe'll tell you why.", "pt": "Folha amarelando?\nA gente te fala o porquê."}),
+ "sprout": ("05-identify", {"en": "Snap your shelf.\nWe'll name every plant.", "pt": "Tira foto da estante.\nA gente descobre cada planta."}),
+ "fertilizer": ("06-scan", {"en": "New fertilizer?\nSee who'll love it.", "pt": "Comprou adubo?\nVeja quem vai curtir."}),
+ "travel": ("07-away", {"en": "Off on a trip?\nYour plants are sorted.", "pt": "Vai viajar?\nSuas plantas ficam de boa."}),
+ "careHands": ("08-household", {"en": "Share the jungle.\nNo more double watering.", "pt": "Divide a selva.\nChega de regar duas vezes."}),
+ "calendar": ("09-digest", {"en": "Your whole week, sorted in one look.", "pt": "Sua semana toda, numa olhada só."}),
+ "pottedPlant": ("10-chat", {"en": "And yep, they talk back.", "pt": "E sim, elas respondem."}),
+}
+SHOT_W = (400, 640, 960)
+UI["en"].update({"story_h": "What your plants do for you", "more_h": "More help, plant by plant", "see": "See how it works"})
+UI["pt"].update({"story_h": "O que suas plantas fazem por você", "more_h": "Mais ajuda, planta por planta", "see": "Ver como funciona"})

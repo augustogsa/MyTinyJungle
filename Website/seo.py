@@ -383,11 +383,13 @@ FEATURE_TITLE = {
  "en": {"chat": "Plant care log by chat", "soil-check": "Soil moisture check for houseplants", "smart-reminders": "Smart plant watering reminders",
         "health-check": "Plant disease identifier by photo", "pests": "Houseplant pest identification and treatment", "repotting": "When to repot a plant",
         "travel-mode": "Plant care while on vacation", "cuttings": "Plant propagation from cuttings", "seasons": "Seasonal houseplant care guide",
-        "label-scanner": "Fertilizer and potting mix label scanner", "spaces": "Plant care by room and light", "pets-and-kids": "Plants toxic to cats, dogs and kids"},
+        "label-scanner": "Fertilizer and potting mix label scanner", "spaces": "Plant care by room and light", "pets-and-kids": "Plants toxic to cats, dogs and kids",
+        "plants-text-you": "Plant care alerts from your plants", "identify": "Identify plants from one photo of your shelf", "shared-care": "Share plant care with your household", "weekly-digest": "Weekly plant care plan at a glance", "plant-chat": "Talk to your plants with AI"},
  "pt": {"chat": "Diário de cuidados das plantas por chat", "soil-check": "Como saber se a planta precisa de água", "smart-reminders": "Lembrete de regar plantas inteligente",
         "health-check": "Identificar doença de planta por foto", "pests": "Pragas em plantas: identificar e tratar", "repotting": "Quando trocar a planta de vaso",
         "travel-mode": "Como cuidar das plantas viajando", "cuttings": "Como fazer muda de planta", "seasons": "Cuidados com plantas em cada estação",
-        "label-scanner": "Leitor de rótulo de adubo e substrato", "spaces": "Plantas por cômodo e luz", "pets-and-kids": "Plantas tóxicas para gatos, cachorros e crianças"},
+        "label-scanner": "Leitor de rótulo de adubo e substrato", "spaces": "Plantas por cômodo e luz", "pets-and-kids": "Plantas tóxicas para gatos, cachorros e crianças",
+        "plants-text-you": "Plantas que avisam quando precisam de cuidado", "identify": "Identificar plantas por foto da estante", "shared-care": "Dividir o cuidado das plantas com quem mora junto", "weekly-digest": "Cuidados das plantas da semana numa olhada", "plant-chat": "Conversar com suas plantas com IA"},
 }
 
 
