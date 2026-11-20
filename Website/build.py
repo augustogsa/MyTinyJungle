@@ -14,7 +14,7 @@ ROOT = Path(__file__).parent
 SRC, DIST = ROOT / "src", ROOT / "dist"
 SITE = "https://mytinyjungle.com"
 BRAND_NAME = (Path(__file__).parent / "src" / "brand-name.html").read_text()
-CSS_V = hashlib.sha1(b"".join((Path(__file__).parent / "src" / f).read_bytes() for f in ("style.css", "site.js"))).hexdigest()[:10]
+CSS_V = hashlib.sha1(b"".join((Path(__file__).parent / "src" / f).read_bytes() for f in ("style.css", "site.js", "sa.js"))).hexdigest()[:10]
 UPDATED = {"en": "19 November 2026", "pt": "19 de novembro de 2026"}
 EMAIL = "support@simpleappscompany.com"
 
@@ -92,6 +92,7 @@ T = {
     ("Households", "A household is a shared jungle with roles (owner or carer), plants assigned to people and a watering rotation. Members see each other’s display name and how many waterings each logged in the last 30 days, worked out from the care history. Anyone can leave at any time; leaving also ends access to the household’s plants."),
     ("Plant passport", "If you share a plant’s passport, anyone with the link or QR code can see a public care card: the species, how often you water, soil, pot and the care notes you choose to add. It never shows the plant’s name, photos, your name or where you live. The link is random and unguessable, and stops working the moment you stop sharing. We count how often it was opened or imported, nothing about who."),
     ("Supplies", "If you track supplies (soil, fertiliser, pots), our server keeps the names, amounts and low-stock marks you enter to remind you when something runs low. Shopping suggestions come from the species’ needs; there are no shop links or tracking in them."),
+    ("This website", "mytinyjungle.com uses Google Analytics to count visits and clicks (pages seen, buttons tapped, how far you scroll, how fast pages load). Advertising features are off and nothing you type is collected. Google sets first-party analytics cookies for this; your browser’s privacy settings or an ad blocker turn it off."),
     ("Deleting your account", "In Settings, tap Delete account and data. Your account is closed at once and fully erased from our servers after a 30-day grace period (in case of a mistake), with every plant, photo and history in jungles you own. Subscriptions are cancelled in your Apple or Google account."),
     ("Ads in the free version (Google AdMob)", "<ul><li>The free version shows ads served by Google AdMob. Google acts as an independent controller for the data it processes to serve ads; Simple Apps Company is the controller for the app itself.</li><li>To show and measure ads, the Google Mobile Ads SDK may collect: your device advertising identifier (IDFA), only if you allow tracking when iOS asks; approximate location derived from your IP address; ad interactions (views and taps); and diagnostic and performance data about the ad SDK.</li><li>This is used for advertising, ad measurement, fraud prevention and keeping ads working. It is never linked to your plants, photos or scans.</li></ul>"),
     ("Your consent and choices", "<ul><li>In the EEA, UK and Switzerland we ask for your consent using Google's User Messaging Platform (UMP) before any personalised ads are shown. If you don't consent, you may see non-personalised ads, which use only contextual and limited data.</li><li>Elsewhere, ads are non-personalised unless you allow tracking in the iOS prompt.</li><li>You can change your mind at any time in the app under Me → Privacy &amp; ads choices, and in iPhone Settings → Privacy &amp; Security → Tracking.</li><li>Subscribing to Greenhouse or Jungle removes all ads: no ads are shown and the app makes no ad SDK requests.</li></ul>"),
@@ -186,6 +187,7 @@ T = {
     ("Casa compartilhada", "Uma casa é uma selva compartilhada com papéis (dono ou cuidador), plantas atribuídas a cada pessoa e um rodízio de rega. Quem participa vê o nome de exibição dos outros e quantas regas cada um registrou nos últimos 30 dias, calculado pelo histórico de cuidados. Dá pra sair quando quiser, e aí o acesso às plantas da casa acaba."),
     ("Passaporte da planta", "Se você compartilhar o passaporte de uma planta, qualquer pessoa com o link ou o QR code vê um cartão público de cuidados: a espécie, de quanto em quanto tempo você rega, substrato, vaso e as anotações que você quiser colocar. Nunca aparece o nome da planta, fotos, seu nome ou onde você mora. O link é aleatório, impossível de adivinhar, e para de funcionar na hora em que você para de compartilhar. A gente só conta quantas vezes foi aberto ou importado, nada sobre quem."),
     ("Insumos", "Se você anotar seus insumos (substrato, adubo, vasos), nosso servidor guarda os nomes, as quantidades e o aviso de estoque baixo que você colocar, pra te lembrar quando algo estiver acabando. As sugestões de compra vêm do que a espécie precisa; não têm link de loja nem rastreamento."),
+    ("Este site", "O mytinyjungle.com usa o Google Analytics pra contar visitas e cliques (páginas vistas, botões tocados, até onde você rola, a velocidade das páginas). Os recursos de publicidade ficam desligados e nada do que você digita é coletado. O Google usa cookies próprios de análise pra isso; as configurações de privacidade do navegador ou um bloqueador de anúncios desligam."),
     ("LGPD", "Para quem está no Brasil, tratamos dados conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018). Anúncios personalizados dependem do seu consentimento, que pode ser revogado a qualquer momento. Você pode pedir confirmação, acesso, correção, anonimização, portabilidade ou eliminação dos dados e reclamar à ANPD. Fale conosco pelo e-mail acima."),
     ("Apagar sua conta", "Em Ajustes, toque em Apagar conta e dados. Sua conta é encerrada na hora e apagada de vez depois de 30 dias (caso tenha sido sem querer), junto com todas as plantas, fotos e históricos das selvas que são suas. Assinaturas são canceladas na sua conta Apple ou Google."),
     ("Anúncios na versão grátis (Google AdMob)", "<ul><li>A versão grátis mostra anúncios veiculados pelo Google AdMob. O Google atua como controlador independente dos dados que trata para veicular anúncios; a Simple Apps Company é a controladora do app.</li><li>Para exibir e medir anúncios, o SDK Google Mobile Ads pode coletar: o identificador de publicidade do aparelho (IDFA), somente se você permitir o rastreamento quando o iOS perguntar; localização aproximada a partir do endereço IP; interações com anúncios (visualizações e toques); e dados de diagnóstico e desempenho do SDK.</li><li>Esses dados são usados para publicidade, medição, prevenção de fraudes e funcionamento dos anúncios. Eles nunca são associados às suas plantas, fotos ou leituras.</li></ul>"),
@@ -252,6 +254,7 @@ def page(L, path, title, desc, body):
 <link rel="preload" href="/fonts/Intern.woff2" as="font" type="font/woff2" crossorigin>
 <script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script><script>(function(){{try{{if(/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent))return;var s=localStorage.getItem("lang"),p=location.pathname,pt=p==="/pt"||p.indexOf("/pt/")===0;var want=s||((navigator.languages&&navigator.languages[0])||navigator.language||"en").toLowerCase().indexOf("pt")===0?"pt":"en";if(s)want=s;if(want==="pt"&&!pt)location.replace("/pt"+(p==="/"?"/":p)+location.search+location.hash);else if(want==="en"&&pt)location.replace((p.replace(/^\/pt/,"")||"/")+location.search+location.hash)}}catch(e){{}}}})()</script>
 <link rel="stylesheet" href="/style.css?v={CSS_V}">
+<script src="/sa.js?v={CSS_V}" data-ga="G-WDGGTR1DTJ" data-site="mytinyjungle.com" defer></script>
 </head><body>
 <header class="nav"><div class="wrap navbar">
 <a class="brand" href="{p}/"><span class="bname" aria-label="My Tiny Jungle">{BRAND_NAME}</span></a>
@@ -364,6 +367,7 @@ def build():
         shutil.copytree(SRC / d, DIST / d)
     shutil.copy(SRC / "style.css", DIST / "style.css")
     shutil.copy(SRC / "site.js", DIST / "site.js")
+    shutil.copy(SRC / "sa.js", DIST / "sa.js")
     shutil.copy(SRC / "favicon.ico", DIST / "favicon.ico")
     urls = []
     for L, t in T.items():
@@ -428,7 +432,7 @@ def build():
 def harden():
     """Ship minified, mangled code and compact markup: nothing readable to lift."""
     import re, subprocess
-    for f in ("site.js", "style.css"):
+    for f in ("site.js", "sa.js", "style.css"):
         subprocess.run(["npx", "-y", "esbuild@0.24.0", str(SRC / f), "--minify", "--legal-comments=none",
                         f"--outfile={DIST / f}", "--log-level=error"], check=True)
     for h in DIST.rglob("*.html"):
