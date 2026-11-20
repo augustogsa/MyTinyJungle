@@ -74,7 +74,8 @@ func fuseSpecies(ctx context.Context, ss []shot) []bioCand {
 		if len(r.Candidates) == 0 {
 			continue
 		}
-		w := shotKinds[ss[i].Kind]
+		// A photo that is sure of itself counts more than a blurry or far one that spreads its vote.
+		w := shotKinds[ss[i].Kind] * (0.2 + r.Candidates[0].Score)
 		total += w
 		for j, c := range r.Candidates {
 			sum[c.ID] += w * c.Score
