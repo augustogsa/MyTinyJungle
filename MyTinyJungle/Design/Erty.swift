@@ -97,6 +97,7 @@ private struct ErtyLoop: UIViewRepresentable {
             if player == nil { build() }
             guard let player else { return }
             player.play()
+            revealWhenReady()
             let w = DispatchWorkItem { [weak self] in self?.player?.pause() }
             rest = w
             DispatchQueue.main.asyncAfter(deadline: .now() + 9, execute: w)
@@ -113,10 +114,27 @@ private struct ErtyLoop: UIViewRepresentable {
             if !observing { l.addObserver(self, forKeyPath: "readyForDisplay", options: .new, context: nil); observing = true }
         }
 
+        /// Hides the still as soon as the video has a frame on screen. KVO on readyForDisplay alone misses the change
+        /// when it flips before the observer is attached or while the view is off-window, so this also polls briefly.
+        private var revealTask: Task<Void, Never>?
+        private func revealWhenReady() {
+            revealTask?.cancel()
+            revealTask = Task { @MainActor [weak self] in
+                for _ in 0..<60 {
+                    guard let self, !Task.isCancelled, self.player != nil else { return }
+                    if (self.layer as? AVPlayerLayer)?.isReadyForDisplay == true, (self.player?.currentTime().seconds ?? 0) > 0 {
+                        self.still.isHidden = true; return
+                    }
+                    try? await Task.sleep(for: .milliseconds(50))
+                }
+            }
+        }
+
         /// Drops the player and its decoder; the still frame covers the gap.
         private func release() {
             rest?.cancel()
             guard player != nil else { return }
+            revealTask?.cancel()
             player?.pause(); looper?.disableLooping()
             (layer as? AVPlayerLayer)?.player = nil
             player = nil; looper = nil
