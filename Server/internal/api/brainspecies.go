@@ -224,7 +224,7 @@ func (s *Server) adminBrain(w http.ResponseWriter, r *http.Request) {
 	}
 	var learned, pending int64
 	s.db.Admin.QueryRow(ctx, `select count(*) filter (where learned_at is not null), count(*) filter (where learned_at is null and photo_ref is not null and kind = 'species') from brain_feedback`).Scan(&learned, &pending)
-	writeJSON(w, http.StatusOK, map[string]any{"library": lib, "gaps": gaps, "feedback": fbs, "learnedPhotos": learned, "pendingPhotos": pending})
+	writeJSON(w, http.StatusOK, map[string]any{"library": lib, "gaps": gaps, "feedback": fbs, "learnedPhotos": learned, "pendingPhotos": pending, "plantnet": PlantNetUsage()})
 }
 
 // Confidence thresholds for identify (see clear() in brainIdentify).
@@ -252,6 +252,7 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	}
 	// Hard deadlines: the whole identify answers within 6 s whatever happens; our own model gets 3 s, a paid or
 	// free external model only what is left (never the vision model: that only warms in the background).
+	start := time.Now()
 	ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 6*time.Second)
 	defer cancel()
 	theBrain.species()
@@ -280,23 +281,10 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		}
 		out = append(out, cand{sp.ID, sp.Scientific, name, math.Round(score*100) / 100})
 	}
-	// 1. Our own species model (BioCLIP over our list), with the stronger outside model started alongside it.
+	// 1. Our own species model (BioCLIP over our list).
 	source := "internal"
 	main := pick(ss, "whole", "leaf", "flower", "stem", "other")
 	in.Photo = ss[main].Photo
-	type strongRes struct {
-		c   []extCand
-		src string
-	}
-	var strong chan strongRes
-	if strongAvailable() {
-		strong = make(chan strongRes, 1)
-		sctx, scancel := context.WithTimeout(ctx, strongBudget)
-		go func() { defer scancel(); c, src := s.strongID(sctx, in.Photo); strong <- strongRes{c, src} }()
-	}
-	// Cheap first: BioCLIP + the photo's own stats answer in well under a second. The vision model only warms
-	// the whole scene in the background when the species is unsure or the quick scene can't tell the medium,
-	// pot or a fake plant; the care-plan or diagnosis that follows then gets it from the cache.
 	mctx, mcancel := context.WithTimeout(ctx, 3*time.Second)
 	if len(ss) > 1 {
 		mctx = context.WithValue(mctx, oneViewKey{}, true)
@@ -318,30 +306,47 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	clear := func() bool {
 		return len(out) > 0 && (out[0].Score >= confTop || (out[0].Score >= confLead && (len(out) == 1 || out[0].Score >= confRatio*out[1].Score)))
 	}
-	// 3. Unsure: the stronger outside model, when one is configured, wins when it is sure (it had the same head start).
-	if strong != nil && !clear() {
-		r := <-strong
-		var ext []cand
-		for _, c := range r.c {
-			if sp, _ := matchExt(c); sp != nil {
-				ext = append(ext, cand{ID: sp.ID, Score: c.Confidence})
+	// 3. Unsure: a second opinion (Pl@ntNet with every photo of the scan, ~0.3 s; Gemini or Claude when its
+	// daily budget is spent), fused with ours per catalog species: 0.65 theirs + 0.35 ours. An outside name we don't
+	// carry maps to its genus (or family) entry at 70% weight, and is logged as a gap.
+	if len(out) == 0 || !clear() {
+		if strongAvailable() {
+			budget := strongBudget - time.Since(start)
+			if !plantNetAllowed() {
+				budget = 5500*time.Millisecond - time.Since(start) // slower models: whatever is left of the 6 s
 			}
-		}
-		if len(ext) > 0 && (ext[0].Score >= 0.5 || len(out) == 0 || ext[0].ID == out[0].ID) {
-			agree := len(out) > 0 && ext[0].ID == out[0].ID
-			prev := out
-			out = []cand{}
-			for _, c := range ext {
-				add(c.ID, c.Score)
+			sctx, scancel := context.WithTimeout(ctx, max(budget, 300*time.Millisecond))
+			ext, src := s.strongID(sctx, ss, in.Photo)
+			scancel()
+			if len(ext) > 0 {
+				fused := map[string]float64{}
+				for _, c := range out {
+					fused[c.ID] += 0.35 * c.Score
+				}
+				for _, c := range ext {
+					sp, exact := matchExt(c)
+					if sp == nil {
+						s.gap(ctx, "identify", "missing "+c.Scientific)
+						continue
+					}
+					w := 0.65
+					if !exact {
+						w *= 0.7
+						s.gap(ctx, "identify", "missing "+c.Scientific)
+					}
+					fused[sp.ID] += w * c.Confidence
+				}
+				ids := make([]string, 0, len(fused))
+				for id := range fused {
+					ids = append(ids, id)
+				}
+				sort.Slice(ids, func(i, j int) bool { return fused[ids[i]] > fused[ids[j]] })
+				out = []cand{}
+				for _, id := range ids {
+					add(id, fused[id])
+				}
+				source = src
 			}
-			for _, c := range prev {
-				add(c.ID, c.Score*0.5)
-			}
-			if agree {
-				out[0].Score = math.Max(out[0].Score, prev[0].Score) + 0.3
-				out[0].Score = math.Min(1, math.Round(out[0].Score*100)/100)
-			}
-			source = r.src
 		}
 	}
 	if len(out) > 3 {

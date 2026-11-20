@@ -576,6 +576,14 @@ func askGemini(ctx context.Context, photo, note string) (diagnosis, bool) {
 	return d, ok
 }
 
+// geminiModel: MTJ_GEMINI_MODEL, else gemini-3.6-flash (the fastest correct model measured from the VPS).
+func geminiModel() string {
+	if m := os.Getenv("MTJ_GEMINI_MODEL"); m != "" {
+		return m
+	}
+	return "gemini-3.6-flash"
+}
+
 // geminiText sends a photo and prompt to Gemini's free tier; false when no key or no answer.
 func geminiText(ctx context.Context, photo, prompt string) (string, bool) {
 	key := os.Getenv("MTJ_GEMINI_KEY")
@@ -587,11 +595,12 @@ func geminiText(ctx context.Context, photo, prompt string) (string, bool) {
 			map[string]any{"inline_data": map[string]string{"mime_type": "image/jpeg", "data": photo}},
 			map[string]string{"text": prompt},
 		}}},
-		"generationConfig": map[string]any{"responseMimeType": "application/json"},
+		// Minimal thinking: measured fastest for photo questions (gemini-2.5-flash is retired for new keys).
+		"generationConfig": map[string]any{"responseMimeType": "application/json", "thinkingConfig": map[string]any{"thinkingLevel": "minimal"}},
 	})
 	cctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	req, _ := http.NewRequestWithContext(cctx, "POST", "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", bytes.NewReader(body))
+	req, _ := http.NewRequestWithContext(cctx, "POST", "https://generativelanguage.googleapis.com/v1beta/models/"+geminiModel()+":generateContent", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("x-goog-api-key", key)
 	res, err := http.DefaultClient.Do(req)
