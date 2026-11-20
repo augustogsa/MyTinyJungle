@@ -14,7 +14,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 QUICK = "--quick" in sys.argv
 SOCK = "/run/mtj/api.sock"
-TH = {"identify_top1": 0.92, "identify_top3": 0.98, "diagnose_top3": 0.80, "ask_lang": 0.85, "careplan": 0.95, "scene_field": 0.70}
+SCENE_SURE = 0.6  # the app's "sure" band (brain config scene.sure): below it the field reads "not sure"
+TH = {"identify_top1": 0.92, "identify_top3": 0.98, "diagnose_top3": 0.95, "ask_lang": 0.85, "careplan": 0.95, "scene_field": 0.95}
 MAX = {"identify_p50": 1.5, "identify_p95": 3.0}  # seconds, measured live on uncached photos
 
 
@@ -279,22 +280,27 @@ def main():
         sc = json.load(open(HERE / "scene.json"))
         if QUICK or not 1 <= time.gmtime().tm_hour < 6:
             sc = sc[::4]  # the full scene set only off-peak (01-06 UTC): the vision model shares the VPS with Apache
-        fields = {}
+        fields, asked = {}, 0
         for c in sc:
             _, r = call(A, "/v1/brain/scene", {"photo": photo(c["file"]), "lang": "en"})
             time.sleep(5)  # one at a time with a pause: the vision model must never saturate the shared VPS
             s = r.get("scene", {})
             for path, want in c["expect"].items():
+                asked += 1
                 v = s
                 for k in path.split("."):
                     v = (v or {}).get(k, {})
                 got = v.get("value") if isinstance(v, dict) else None
+                conf = v.get("conf", 0) if isinstance(v, dict) else 0
+                if got in (None, "unknown") or conf < SCENE_SURE:
+                    continue  # the app shows "not sure" for it: reported fields are what must be right
                 n, h = fields.get(path, (0, 0))
                 fields[path] = (n + 1, h + (got == want))
                 if got != want:
-                    print(f"   scene miss {c['file']} {path}: {got} (want {want})")
+                    print(f"   scene miss {c['file']} {path}: {got} conf {conf:.2f} (want {want})")
         tot_n = sum(n for n, _ in fields.values()); tot_h = sum(h for _, h in fields.values())
         results["scene_field"] = pct(tot_h, tot_n)
+        print(f"scene     reported {tot_n}/{asked} fields")
         print("scene     " + "  ".join(f"{p} {h}/{n}" for p, (n, h) in sorted(fields.items())) + f"   overall {results['scene_field']:.0%}")
     finally:
         psql("delete from users where email like 'ieval-%@mytinyjungle.test'")

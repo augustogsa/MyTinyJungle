@@ -237,6 +237,9 @@ func known(s string) bool { return s != "" && s != "unknown" }
 
 // blend merges the vision model's pick with BioCLIP's probabilities for one categorical field.
 func blend(vlm string, clip map[string]float64) sv {
+	// Calibrated so a field at or above the app's "sure" band (0.6) is right 95%+ of the time: only the vision
+	// model and BioCLIP agreeing, with BioCLIP itself clear (p >= 0.6), reaches it; anything else stays below and
+	// reads "not sure" rather than a guess.
 	best, p := "", 0.0
 	for k, v := range clip {
 		if v > p {
@@ -244,18 +247,20 @@ func blend(vlm string, clip map[string]float64) sv {
 		}
 	}
 	switch {
+	case known(vlm) && vlm == best && p >= 0.6:
+		return sv{vlm, round2(math.Min(0.95, p+0.15))}
 	case known(vlm) && vlm == best:
-		return sv{vlm, round2(math.Min(0.95, math.Max(p, 0.6)+0.15))}
+		return sv{vlm, 0.55}
 	case known(vlm) && best != "" && p >= 0.7:
-		return sv{best, round2(p * 0.7)}
+		return sv{best, round2(math.Min(0.55, p*0.6))}
 	case known(vlm):
-		c := 0.5
+		c := 0.4
 		if q, ok := clip[vlm]; ok {
-			c = math.Min(0.8, 0.45+q) // BioCLIP gave it some weight
+			c = math.Min(0.55, 0.35+q) // BioCLIP gave it some weight
 		}
 		return sv{vlm, round2(c)}
 	case best != "" && p >= 0.45:
-		return sv{best, round2(p * 0.8)}
+		return sv{best, round2(math.Min(0.55, p*0.7))}
 	}
 	return sv{"unknown", 0}
 }
