@@ -52,7 +52,8 @@ struct AppIconPickerView: View {
 
     private var focusedIcon: JungleAppIcon { JungleAppIcon.all.first { $0.id == focused } ?? inUse }
 
-    var body: some View {
+    var body: some View { tracked.screen("app_icon") }
+    @ViewBuilder private var tracked: some View {
         VStack(spacing: 0) {
             ZStack {
                 Text("App icon").font(.title3.weight(.semibold)).fontDesign(.serif).foregroundStyle(Jungle.text)

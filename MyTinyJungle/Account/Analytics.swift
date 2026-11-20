@@ -1,13 +1,39 @@
 import Foundation
 import UIKit
+import SwiftUI
+import StoreKit
+import FirebaseCore
+import FirebaseAnalytics
 
-/// Privacy-first analytics: counts of named events per day, sent as {name: count} with platform and app
-/// version only. No user, device or session identifier ever leaves the phone.
+/// App analytics. Each event goes two ways: a daily {name: count} tally to our own server (no identifiers),
+/// and Google Analytics for Firebase (anonymous app-instance ID; no ad ID, no ad personalisation, no names,
+/// emails or photos). Screens are reported with `.screen("name")`.
 nonisolated enum Analytics {
+    /// Called once at launch, before any event.
+    static func start() {
+        guard FirebaseApp.app() == nil, Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil else { return }
+        FirebaseApp.configure()
+        FirebaseAnalytics.Analytics.setConsent([.analyticsStorage: .granted, .adStorage: .denied, .adUserData: .denied, .adPersonalization: .denied])
+        FirebaseAnalytics.Analytics.setAnalyticsCollectionEnabled(true)
+        FirebaseAnalytics.Analytics.setUserProperty(Locale.current.language.languageCode?.identifier, forName: "app_language")
+    }
+
+    /// Google Analytics only, with parameters (screen views, purchases, choices).
+    static func log(_ name: String, _ params: [String: Any] = [:]) {
+        guard FirebaseApp.app() != nil else { return }
+        FirebaseAnalytics.Analytics.logEvent(name, parameters: params.isEmpty ? nil : params)
+    }
+
+    /// StoreKit 2 purchases and renewals (Firebase only sees StoreKit 1 on its own).
+    static func purchase(_ t: StoreKit.Transaction) { guard FirebaseApp.app() != nil else { return }; FirebaseAnalytics.Analytics.logTransaction(t) }
+
+    static func screen(_ name: String) { log(AnalyticsEventScreenView, [AnalyticsParameterScreenName: name, AnalyticsParameterScreenClass: name]) }
+
     private static let key = "analytics.pending"
     private static let lock = NSLock()
 
-    static func track(_ name: String) {
+    static func track(_ name: String, _ params: [String: Any] = [:]) {
+        log(name, params)
         lock.withLock {
             var c = UserDefaults.standard.dictionary(forKey: key) as? [String: Int] ?? [:]
             c[name, default: 0] += 1
@@ -37,4 +63,9 @@ nonisolated enum Analytics {
             return
         }
     }
+}
+
+extension View {
+    /// Reports this view as a screen to Google Analytics each time it appears.
+    func screen(_ name: String) -> some View { onAppear { Analytics.screen(name) } }
 }

@@ -19,7 +19,8 @@ struct RepotCheckView: View {
 
     enum Verdict { case recommended, mayBenefit, monitor, notNow, notNeeded }
 
-    var body: some View {
+    var body: some View { tracked.screen("repot_check") }
+    @ViewBuilder private var tracked: some View {
         NavigationStack {
             Form {
                 Section("What do you notice?") {

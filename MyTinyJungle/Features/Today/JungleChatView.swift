@@ -16,7 +16,8 @@ struct JungleChatView: View {
         return ThreadItem.merge(messages, events)
     }
 
-    var body: some View {
+    var body: some View { tracked.screen("jungle_chat") }
+    @ViewBuilder private var tracked: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {

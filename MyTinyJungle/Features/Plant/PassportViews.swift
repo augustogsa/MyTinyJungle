@@ -108,6 +108,7 @@ struct PassportSheet: View {
     }
 
     private func share() async {
+        Analytics.log("passport_share")
         guard JungleAPI.shared.hasSession else { error = Grammar.pt(String(localized: "Sign in to share a passport.", comment: "Passport when signed out")); return }
         busy = true; defer { busy = false }
         await JungleSync.shared.sync()

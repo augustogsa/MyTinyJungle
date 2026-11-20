@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61BD5772BD08C902EF0A599A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A8D9038F462CDD039FAD5FE4 /* FirebaseAnalytics */; };
 		A10000000000000000000063 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000061 /* GoogleMobileAds */; };
 		A10000000000000000000064 /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000062 /* GoogleUserMessagingPlatform */; };
 		A10000000000000000000067 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000066 /* GoogleSignIn */; };
@@ -64,21 +65,29 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A10000000000000000000012 /* MyTinyJungle */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = MyTinyJungle;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000022 /* MyTinyJungleTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = MyTinyJungleTests;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000072 /* NotificationContent */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = NotificationContent;
 			sourceTree = "<group>";
 		};
 		A100000000000000000000A2 /* JungleWidgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = JungleWidgets;
 			sourceTree = "<group>";
 		};
@@ -93,6 +102,7 @@
 				A10000000000000000000064 /* GoogleUserMessagingPlatform in Frameworks */,
 				A10000000000000000000067 /* GoogleSignIn in Frameworks */,
 				A10000000000000000000069 /* GoogleSignInSwift in Frameworks */,
+				61BD5772BD08C902EF0A599A /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +179,7 @@
 				A10000000000000000000062 /* GoogleUserMessagingPlatform */,
 				A10000000000000000000066 /* GoogleSignIn */,
 				A10000000000000000000068 /* GoogleSignInSwift */,
+				A8D9038F462CDD039FAD5FE4 /* FirebaseAnalytics */,
 			);
 			productName = MyTinyJungle;
 			productReference = A10000000000000000000011 /* MyTinyJungle.app */;
@@ -278,6 +289,7 @@
 				A10000000000000000000059 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				A10000000000000000000060 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
 				A10000000000000000000065 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				E853B5B66375F491A817681E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A10000000000000000000003 /* Products */;
@@ -721,6 +733,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		E853B5B66375F491A817681E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -743,6 +763,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A10000000000000000000065 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		A8D9038F462CDD039FAD5FE4 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E853B5B66375F491A817681E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

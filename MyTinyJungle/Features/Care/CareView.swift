@@ -150,6 +150,7 @@ struct CareView: View {
     }
 
     private func complete(_ item: AgendaItem) {
+        Analytics.log("care_done", ["kind": "\(item.kind)", "from": "agenda"])
         withAnimation(.snappy) {
             item.task?.done = true
             if let p = item.plant, item.kind != .note {

@@ -98,7 +98,8 @@ struct DigestView: View {
     @State private var failed: String?
     @State private var loading = true
 
-    var body: some View {
+    var body: some View { tracked.screen("digest") }
+    @ViewBuilder private var tracked: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 if loading && digest == nil {

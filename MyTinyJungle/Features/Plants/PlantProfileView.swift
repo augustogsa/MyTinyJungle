@@ -10,7 +10,8 @@ struct PlantProfileView: View {
     @State private var species: Species?
     @State private var confirmArchive = false
 
-    var body: some View {
+    var body: some View { tracked.screen("plant_profile") }
+    @ViewBuilder private var tracked: some View {
         DuoCompanion(mood: .love, title: "Plant profile", detail: "The little details that make it yours.") { duoContent }
     }
 

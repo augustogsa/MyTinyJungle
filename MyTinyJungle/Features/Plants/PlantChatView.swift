@@ -11,7 +11,8 @@ struct PlantChatView: View {
     private var messages: [ChatMessage] { (plant.messages ?? []).sorted { $0.date < $1.date } }
     private var items: [ThreadItem] { ThreadItem.merge(messages, plant.events ?? []) }
 
-    var body: some View {
+    var body: some View { tracked.screen("plant_chat") }
+    @ViewBuilder private var tracked: some View {
         if plant.isDeleted || plant.modelContext == nil || plant.isArchived { PlantGoneView() } else { page }
     }
 

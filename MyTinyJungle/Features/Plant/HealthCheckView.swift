@@ -27,7 +27,8 @@ struct HealthCheckView: View {
         self.plant = plant; self.demo = demo; self.initialPhoto = initialPhoto; self.initialShots = initialShots; self.onMorePhoto = onMorePhoto
     }
 
-    var body: some View {
+    var body: some View { tracked.screen("health_check") }
+    @ViewBuilder private var tracked: some View {
         DuoCompanion(mood: .scan, title: "Health check", detail: "Snap a photo and learn what it needs.") { duoContent }
     }
 

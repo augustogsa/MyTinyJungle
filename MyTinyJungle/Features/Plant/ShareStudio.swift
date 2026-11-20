@@ -19,7 +19,8 @@ struct ShareStudio: View {
         }
     }
 
-    var body: some View {
+    var body: some View { tracked.screen("share_studio") }
+    @ViewBuilder private var tracked: some View {
         NavigationStack {
             VStack(spacing: 20) {
                 ShareStory(plant: plant, style: style)

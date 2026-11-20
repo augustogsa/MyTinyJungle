@@ -86,7 +86,8 @@ struct RoomLightForm: View {
 }
 
 struct ClimateSettingsView: View {
-    var body: some View {
+    var body: some View { tracked.screen("climate_settings") }
+    @ViewBuilder private var tracked: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 ClimateForm()

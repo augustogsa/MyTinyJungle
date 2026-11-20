@@ -163,6 +163,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         CareReminders.registerCategories()
         Task { await Household.registerCategory() }
         application.registerForRemoteNotifications()
+        Analytics.start()
         Analytics.track("app_open")
         // Nothing below is needed for the first frame: start it once the app is on screen.
         Task(priority: .utility) {

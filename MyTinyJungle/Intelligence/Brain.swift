@@ -351,6 +351,7 @@ extension Brain {
     static var identifyTimeout: Double { BrainTuning.identifyTimeout }
 
     static func identify(shots: [(BrainPhoto, ShotKind)]) async -> Identified {
+        Analytics.log("plant_identify", ["photos": shots.count])
         guard JungleAPI.shared.hasSession, BrainTuning.flag("serverIdentify"), let first = shots.first?.0 else { return Identified(candidates: [], used: [], tips: []) }
         nonisolated struct B: Encodable, Sendable { var photos: [PhotoPart]?; var photo: String?; let lang: String; var sceneV = 2 }
         let lang = PlantSituation.lang

@@ -8,7 +8,8 @@ struct SpacesView: View {
     @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
     @State private var adding = false
 
-    var body: some View {
+    var body: some View { tracked.screen("spaces") }
+    @ViewBuilder private var tracked: some View {
         DuoCompanion(mood: .plant, title: "Spaces", detail: "Room by room, the right light for each plant.") { duoContent }
     }
 

@@ -26,6 +26,7 @@ final class Store {
         updates = Task { [weak self] in
             for await result in Transaction.updates {
                 if case .verified(let t) = result {
+                    Analytics.purchase(t)
                     await self?.report(result.jwsRepresentation, id: t.id)
                     await t.finish()
                 }

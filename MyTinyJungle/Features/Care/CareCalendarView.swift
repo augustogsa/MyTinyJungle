@@ -25,7 +25,8 @@ struct CareCalendarView: View {
         Dictionary(grouping: Agenda.items(plants: plants, tasks: tasks, days: 62)) { cal.startOfDay(for: $0.date) }
     }
 
-    var body: some View {
+    var body: some View { tracked.screen("care_calendar") }
+    @ViewBuilder private var tracked: some View {
         let done = doneByDay, planned = plannedByDay
         VStack(alignment: .leading, spacing: 16) {
             if showsGrid {

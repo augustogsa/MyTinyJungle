@@ -55,7 +55,8 @@ struct SuppliesView: View {
     @State private var error: String?
     @State private var loaded = false
 
-    var body: some View {
+    var body: some View { tracked.screen("supplies") }
+    @ViewBuilder private var tracked: some View {
         List {
             if let error { Text(error).foregroundStyle(Jungle.subtle) }
             if loaded && items.isEmpty && error == nil {

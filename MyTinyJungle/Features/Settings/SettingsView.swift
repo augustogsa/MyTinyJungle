@@ -28,7 +28,8 @@ struct SettingsView: View {
         URL(string: "https://mytinyjungle.com/\(Grammar.isPortuguese ? "pt/" : "")\(path)")!
     }
 
-    var body: some View {
+    var body: some View { tracked.screen("settings") }
+    @ViewBuilder private var tracked: some View {
         DuoCompanion(mood: .notes, title: "Settings", detail: "Make the jungle yours.") { duoContent }
     }
 

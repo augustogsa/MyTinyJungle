@@ -182,11 +182,11 @@ struct RootView: View {
     }
     private var tabView: some View {
         TabView(selection: $tab) {
-            Tab(value: 0) { TodayView() } label: { tabLabel("Today", "today", 0) }
-            Tab(value: 1) { PlantsView() } label: { tabLabel("Plants", "plants", 1) }
-            Tab(value: 2) { CareView() } label: { tabLabel("Care", "care", 2) }
-            Tab(value: 3) { ScanView() } label: { tabLabel("Scan", "scan", 3) }
-            Tab(value: 4) { MeView() } label: { tabLabel("Me", "me", 4) }
+            Tab(value: 0) { TodayView().screen("today") } label: { tabLabel("Today", "today", 0) }
+            Tab(value: 1) { PlantsView().screen("plants") } label: { tabLabel("Plants", "plants", 1) }
+            Tab(value: 2) { CareView().screen("care") } label: { tabLabel("Care", "care", 2) }
+            Tab(value: 3) { ScanView().screen("scan") } label: { tabLabel("Scan", "scan", 3) }
+            Tab(value: 4) { MeView().screen("me") } label: { tabLabel("Me", "me", 4) }
         }
         // Plant names in any message open that plant (Today pushes inside its own stack).
         .plantLinks()

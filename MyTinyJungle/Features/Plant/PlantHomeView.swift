@@ -35,7 +35,8 @@ struct PlantHomeView: View {
 
     enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate, share, passport; var id: String { rawValue } }
 
-    var body: some View {
+    var body: some View { tracked.screen("plant_home") }
+    @ViewBuilder private var tracked: some View {
         if leaving || plant.isDeleted || plant.modelContext == nil { PlantGoneView() } else { page }
     }
 
@@ -696,6 +697,7 @@ struct PlantCarePlanView: View {
 
     private func complete(_ t: CareTask) {
         t.done = true
+        Analytics.log("care_done", ["kind": "\(t.kind)", "from": "plant"])
         if t.kind != .note && t.kind != .health { JungleBrain.quick(t.kind, plants: [plant], in: ctx, announce: true) }
         try? ctx.save()
     }

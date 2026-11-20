@@ -18,7 +18,8 @@ struct PaywallView: View {
     private var ordered: [Product] { products.sorted { ($0.subscription?.subscriptionPeriod.unit == .year ? 0 : 1) < ($1.subscription?.subscriptionPeriod.unit == .year ? 0 : 1) } }
     private var current: Product? { ordered.first { $0.id == selected } ?? ordered.first }
 
-    var body: some View {
+    var body: some View { tracked.screen("paywall") }
+    @ViewBuilder private var tracked: some View {
         DuoCompanion(mood: .award, title: "Grow without limits", detail: "Every plant, every tool, all in one place.") { duoContent }
     }
 

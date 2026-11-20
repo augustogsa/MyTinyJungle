@@ -26,7 +26,8 @@ struct SetupChatView: View {
     private var settings: JungleSettings { JungleSettings.shared }
     private var firstName: String { settings.ownerName.split(separator: " ").first.map(String.init) ?? "" }
 
-    var body: some View {
+    var body: some View { tracked.screen("onboarding") }
+    @ViewBuilder private var tracked: some View {
         NavigationStack {
             SideBySide {
                 header(erty: 150).padding(.horizontal, 32)

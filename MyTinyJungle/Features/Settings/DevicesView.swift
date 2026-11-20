@@ -5,7 +5,8 @@ struct DevicesView: View {
     @State private var devices: [JungleAPI.Device] = []
     @State private var failed = false
 
-    var body: some View {
+    var body: some View { tracked.screen("devices") }
+    @ViewBuilder private var tracked: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 JungleGroup(title: Grammar.pt(String(localized: "Signed in", comment: "Devices screen group title")),
