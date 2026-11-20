@@ -261,7 +261,7 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		Name       string  `json:"name"`
 		Score      float64 `json:"score"`
 	}
-	var out []cand
+	out := []cand{} // never null in the reply
 	add := func(id string, score float64) {
 		speciesDB.RLock()
 		sp := speciesDB.byID[id]
@@ -327,7 +327,7 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		if len(ext) > 0 && (ext[0].Score >= 0.5 || len(out) == 0 || ext[0].ID == out[0].ID) {
 			agree := len(out) > 0 && ext[0].ID == out[0].ID
 			prev := out
-			out = nil
+			out = []cand{}
 			for _, c := range ext {
 				add(c.ID, c.Score)
 			}

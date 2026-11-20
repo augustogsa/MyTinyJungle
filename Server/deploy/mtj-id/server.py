@@ -21,6 +21,7 @@ clip = Clip(MODEL, threads=int(os.environ.get("THREADS", "4")))
 lock = threading.Lock()
 state = {"key": None, "refs_key": None, "ids": [], "emb": None, "prior": None, "outdoor": None, "ref_ids": None, "ref_emb": None}
 CULTIVAR = -0.3
+SURE = 0.6  # a group score this high on the framed photo is right 98% of the time on the eval: no second view
 P = {"alpha": 0.5, "k": 20, "temp": 20.0, "text_temp": 60.0}  # replaced by /refs/params.json (refs.py tune)
 
 SCENE = {
@@ -249,9 +250,16 @@ class H(BaseHTTPRequestHandler):
                 with lock:
                     return self.reply(200, {"results": [answer(e) for e in es]})
             if self.path != "/learn":
-                es = embed([body["photo"]])[0]
+                # The photo as framed first; the closer crop only when that is unsure (keeps the sure half fast).
+                vs = views(Image.open(io.BytesIO(decode(body["photo"]))))
+                es = clip.images(vs[:1])
                 with lock:
-                    return self.reply(200, answer(es))
+                    a = answer(es)
+                if a["candidates"][0]["score"] < SURE:
+                    es = np.concatenate([es, clip.images(vs[1:])])
+                    with lock:
+                        a = answer(es)
+                return self.reply(200, a)
             e = clip.image_bytes([decode(body["photo"])])[0]
             with lock:
                 if self.path == "/learn":
