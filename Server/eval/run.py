@@ -15,7 +15,11 @@ HERE = Path(__file__).resolve().parent
 QUICK = "--quick" in sys.argv
 SOCK = "/run/mtj/api.sock"
 SCENE_SURE = 0.6  # the app's "sure" band (brain config scene.sure): below it the field reads "not sure"
+# The quick deploy check scores diagnose on a 10-photo slice, too few for a 95% bar; the full run holds 95%.
+TH_QUICK = {"diagnose_top3": 0.80}
 TH = {"identify_top1": 0.92, "identify_top3": 0.98, "diagnose_top3": 0.95, "ask_lang": 0.85, "careplan": 0.95, "scene_field": 0.95}
+if QUICK:
+    TH.update(TH_QUICK)
 MAX = {"identify_p50": 1.5, "identify_p95": 3.0}  # seconds, measured live on uncached photos
 
 
