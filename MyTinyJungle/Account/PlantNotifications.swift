@@ -231,6 +231,8 @@ enum PlantNote {
             (.chat, [named("Pearl")], nil, Grammar.pt(String(localized: "Hey, it's me. I haven't seen you in a few days. How does my soil feel?", comment: "Demo chat notification body, plant missing its owner"))),
         ]
         let center = UNUserNotificationCenter.current()
+        _ = try? await center.requestAuthorization(options: [.alert, .sound, .badge])
+        center.removeAllDeliveredNotifications(); center.removeAllPendingNotificationRequests()
         for (i, n) in notes.enumerated() where only == nil || only == "\(i)" {
             var c = await make(n.0, plants: n.1, title: n.2, body: n.3)
             // Capturing a single passive note: let it show as a banner so it can be previewed.

@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { call } from './asc.mjs';
 const apply = process.argv.includes('--apply');
 const ROOT = new URL('../../Assets/AppStore/screenshots/', import.meta.url).pathname;
-const kinds = { iphone69: 'APP_IPHONE_67', duo: 'APP_IPHONE_DUO' };
+const kinds = { iphone69: 'APP_IPHONE_67', iphone63: 'APP_IPHONE_61', duo: 'APP_IPHONE_DUO' };
 const dirFor = { 'en-US': 'en-US', 'pt-BR': 'pt-BR', 'pt-PT': 'pt-PT' };
 const app = (await call('GET', '/apps?filter[bundleId]=com.simpleappscompany.mytinyjungle')).data[0];
 const version = (await call('GET', `/apps/${app.id}/appStoreVersions?limit=5`)).data.find(v => v.attributes.appStoreState === 'PREPARE_FOR_SUBMISSION');

@@ -1,64 +1,64 @@
 {
- "order": {
-  "iphone69": [
-   "01-notes",
-   "02-jungle",
-   "03-season",
-   "04-doctor",
-   "05-identify",
-   "08-household",
-   "09-digest",
-   "10-chat",
-   "11-widgets",
-   "14-plus"
+  "order": {
+    "iphone69": [
+      "01-notes",
+      "02-jungle",
+      "03-season",
+      "04-doctor",
+      "05-identify",
+      "08-household",
+      "09-digest",
+      "10-chat",
+      "12-passport",
+      "14-plus"
+    ],
+    "duo": [
+      "01-notes+00-today",
+      "02-jungle",
+      "03-season+07-away",
+      "04-doctor",
+      "05-identify+06-scan",
+      "08-household",
+      "09-digest",
+      "10-chat",
+      "12-passport",
+      "14-plus"
+    ]
+  },
+  "en-US": [
+    "No more dead plants.\nThey'll text you first.",
+    "Just say what you did.\nEveryone gets the memo.",
+    "Frost, heat or a trip?\nYour plants are covered.",
+    "Yellow leaves?\nWe'll tell you why.",
+    "Snap a plant or a label.\nWe'll figure it out.",
+    "Share the jungle.\nNo more double watering.",
+    "Your whole week,\nsorted in one look.",
+    "And yep,\nthey talk back.",
+    "Giving a plant away?\nIts care card goes too.",
+    "Erty's got your back.\nPlus unlocks it all."
   ],
-  "duo": [
-   "01-notes",
-   "02-jungle",
-   "03-season+07-away",
-   "04-doctor",
-   "05-identify+06-scan",
-   "08-household",
-   "09-digest",
-   "10-chat",
-   "11-widgets",
-   "14-plus"
+  "pt-BR": [
+    "Chega de planta morta.\nElas te mandam mensagem antes.",
+    "Só conta o que fez.\nTodo mundo fica sabendo.",
+    "Geada, calorão ou viagem?\nSuas plantas ficam de boa.",
+    "Folha amarelando?\nA gente te fala o porquê.",
+    "Fotografa a planta ou o rótulo.\nA gente descobre o resto.",
+    "Divide a selva.\nChega de regar duas vezes.",
+    "Sua semana toda,\nnuma olhada só.",
+    "E sim,\nelas respondem.",
+    "Vai dar uma planta?\nO cuidado vai junto.",
+    "O Raminho te dá uma força.\nO Plus libera tudo."
+  ],
+  "pt-PT": [
+    "Chega de plantas mortas.\nElas mandam-te mensagem antes.",
+    "Só contas o que fizeste.\nFicam todas a saber.",
+    "Geada, calor ou viagem?\nAs tuas plantas ficam bem.",
+    "Folhas amarelas?\nNós dizemos-te porquê.",
+    "Fotografa a planta ou o rótulo.\nNós tratamos do resto.",
+    "Partilha a selva.\nAcabou regar a dobrar.",
+    "A tua semana toda,\nnum só olhar.",
+    "E sim,\nelas respondem.",
+    "Vais oferecer uma planta?\nOs cuidados vão com ela.",
+    "O Raminho dá-te uma ajuda.\nO Plus desbloqueia tudo."
   ]
- },
- "en-US": [
-  "No more dead plants.\nThey'll text you first.",
-  "Just say what you did.\nEveryone gets the memo.",
-  "Frost, heat or a trip?\nYour plants are covered.",
-  "Yellow leaves?\nWe'll tell you why.",
-  "Snap a plant or a label.\nWe'll figure it out.",
-  "Share the jungle.\nNo more double watering.",
-  "Your whole week,\nsorted in one look.",
-  "And yep,\nthey talk back.",
-  "Your jungle,\nright on your Home Screen.",
-  "Erty's got your back.\nPlus unlocks it all."
- ],
- "pt-BR": [
-  "Chega de planta morta.\nElas te mandam mensagem antes.",
-  "Só conta o que fez.\nTodo mundo fica sabendo.",
-  "Geada, calorão ou viagem?\nSuas plantas ficam de boa.",
-  "Folha amarelando?\nA gente te fala o porquê.",
-  "Fotografa a planta ou o rótulo.\nA gente descobre o resto.",
-  "Divide a selva.\nChega de regar duas vezes.",
-  "Sua semana toda,\nnuma olhada só.",
-  "E sim,\nelas respondem.",
-  "Sua selva\nna tela de início.",
-  "O Raminho te dá uma força.\nO Plus libera tudo."
- ],
- "pt-PT": [
-  "Chega de plantas mortas.\nElas mandam-te mensagem antes.",
-  "Só contas o que fizeste.\nFicam todas a saber.",
-  "Geada, calor ou viagem?\nAs tuas plantas ficam bem.",
-  "Folhas amarelas?\nNós dizemos-te porquê.",
-  "Fotografa a planta ou o rótulo.\nNós tratamos do resto.",
-  "Partilha a selva.\nAcabou regar a dobrar.",
-  "A tua semana toda,\nnum só olhar.",
-  "E sim,\nelas respondem.",
-  "A tua selva\nno ecrã principal.",
-  "O Raminho dá-te uma ajuda.\nO Plus desbloqueia tudo."
- ]
 }
