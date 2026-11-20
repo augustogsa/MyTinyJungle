@@ -1,0 +1,20 @@
+{
+ "name": "My Tiny Jungle",
+ "subtitle": "Plant care that texts you",
+ "promotionalText": "Your plants text you when they're thirsty, cold or just happy. Tell them what you did in one message, snap a sick leaf, share the watering at home. Free for 5 plants.",
+ "keywords": "watering,reminder,houseplant,care,garden,succulent,monstera,orchid,identify,doctor,water,leaf,pot",
+ "description": "Forget \"water every 7 days\". My Tiny Jungle works out what each of your plants actually needs, from your weather, your rooms, the pot and how fast the soil really dries. Then your plants just text you.\n\nTELL THEM WHAT YOU DID\nType it like you'd text a friend: \"watered Monty and Pesto\". Done, it's logged for both. And yes, they answer, each in their own voice. Lily's a bit dramatic, Rosetta the succulent just wants to be left alone, Monty the monstera is calm about everything.\n\nTHEY TEXT YOU FIRST\nThirsty, cold, ready for food, outgrowing the pot: your plants send you a gentle note before it's a problem. Frost tonight? Heatwave tomorrow? You'll know the day before, so the balcony crew gets covered. One note a day at most, with quiet hours.\n\nNOT A TIMER\nEvery plant's plan is worked out again every day. Rain skips the balcony. Heating dries pots faster in winter. Terracotta drinks faster than plastic. Seasons follow your hemisphere, so July is right in Lisbon and in São Paulo. Your soil checks teach it how fast each pot really dries.\n\nYELLOW LEAVES? LET'S FIGURE IT OUT\nSnap the leaf that's worrying you. You'll see what's probably going on, why it happened and a few easy steps to fix it today. Pests, droop, brown tips, root rot: explained in plain words.\n\nSNAP THE WHOLE SHELF\nBack from the garden centre? One photo names every plant on the shelf and each one arrives with its care ready. Holding a bag of fertiliser in the shop? Scan the label and see which of your plants will love it.\n\nYOUR WHOLE WEEK IN ONE LOOK\nWhat's coming up, who needs a little love, who just popped a new leaf, and what the weather's about to do to your pots. There are widgets too.\n\nSHARE THE JUNGLE\nLive with a partner, family or housemates? Everyone looks after the same plants, turns go to whoever did least, and nobody waters twice. Going away? It tells you who'll be fine and who needs a hand.\n\nPLANT PASSPORT\nGiving a plant away or leaving it with a friend? Send its care card with a link or QR code. Anyone can open it.\n\n628 SPECIES AND COUNTING\nMonstera, pothos, snake plant, peace lily, ZZ, orchids, herbs and veg, with light, soil, pest, repotting and cuttings guides, plus clear warnings for plants that aren't safe for cats, dogs or little ones.\n\nERTY HAS YOUR BACK\nErty, the little leaf on the icon, says hi when you start, asks a few easy questions about your home and sets everything up for you.\n\nFREE TO START\nFive plants are free forever, with chat, reminders and weather warnings, supported by small ads. Greenhouse (monthly) and Jungle (yearly) unlock unlimited plants, the plant doctor and the label scanner, and remove all ads. Subscriptions renew automatically until you cancel in your Apple account settings.\n\nYour jungle is yours. No account needed. Sign in only if you want your jungle on all your devices or shared with your people.\n\nTerms: https://mytinyjungle.com/terms\nPrivacy: https://mytinyjungle.com/privacy",
+ "subscription": {
+  "groupName": "My Tiny Jungle Plus",
+  "products": {
+   "com.simpleappscompany.mytinyjungle.plus.monthly": {
+    "name": "Greenhouse",
+    "description": "Unlimited plants, no ads, plant doctor"
+   },
+   "com.simpleappscompany.mytinyjungle.plus.yearly": {
+    "name": "Jungle",
+    "description": "Everything in Greenhouse, half the price"
+   }
+  }
+ }
+}

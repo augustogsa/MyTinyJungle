@@ -1,0 +1,20 @@
+{
+ "name": "My Tiny Jungle",
+ "subtitle": "Plantas que te mandam mensagem",
+ "promotionalText": "As tuas plantas avisam-te quando têm sede, frio ou estão só contentes. Conta numa mensagem o que fizeste, fotografa a folha doente e divide a rega em casa. Grátis até 5.",
+ "keywords": "regar,rega,lembrete,jardinagem,suculenta,orquídea,costela-de-adão,potos,feto,vaso,folha,horta,vasos",
+ "description": "Esquece o \"regar de sete em sete dias\". O My Tiny Jungle percebe do que cada planta precisa mesmo, a partir do tempo que faz aí, de cada divisão, do vaso e de quanto a terra demora a secar. Depois, são as tuas plantas que te mandam mensagem.\n\nCONTA O QUE FIZESTE\nEscreve como se mandasses mensagem a um amigo: \"reguei a Costela e o Pesto\". Pronto, fica registado para as duas. E sim, elas respondem, cada uma à sua maneira. O lírio-da-paz é dramático, a suculenta só quer sossego e a costela-de-adão leva tudo com calma.\n\nELAS AVISAM-TE PRIMEIRO\nCom sede, com frio, a pedir adubo, apertadas no vaso: as tuas plantas mandam-te um recado antes de haver problema. Geada esta noite? Calor amanhã? Ficas a saber na véspera e as plantas da varanda ficam protegidas. No máximo um aviso por dia, com horas de silêncio.\n\nNADA DE CONTAGENS DECRESCENTES\nO plano de cada planta é refeito todos os dias. Choveu? A varanda não leva rega. O aquecimento seca os vasos mais depressa no inverno. O barro bebe mais do que o plástico. As estações seguem o teu hemisfério. Sempre que verificas a terra, a app aprende o ritmo daquele vaso.\n\nFOLHAS AMARELAS? VAMOS PERCEBER\nTira uma fotografia à folha que te preocupa. Vês o que deve ser, porque aconteceu e uns passos simples para resolver hoje. Pragas, folhas murchas, pontas queimadas, raízes podres: tudo explicado sem complicações.\n\nUMA FOTO À PRATELEIRA TODA\nVoltaste do viveiro com o saco cheio? Uma fotografia reconhece cada planta da prateleira e todas chegam com os cuidados prontos. Estás na loja com um saco de adubo na mão? Lê o rótulo e vê de quais das tuas plantas vai gostar.\n\nA TUA SEMANA NUM SÓ OLHAR\nO que vem aí, quem precisa de um mimo, quem lançou uma folha nova e o que o tempo vai fazer aos teus vasos. Também há widgets.\n\nPARTILHA A SELVA\nVives com a cara-metade, a família ou amigos? Toda a gente cuida das mesmas plantas, a vez fica para quem fez menos e ninguém rega a dobrar. Vais de férias? A app diz-te quem fica bem e quem precisa de ajuda.\n\nPASSAPORTE DA PLANTA\nVais oferecer uma planta ou deixá-la com alguém? Envia o cartão de cuidados por link ou código QR. Qualquer pessoa o abre.\n\n628 ESPÉCIES\nCostela-de-adão, potos, espada-de-são-jorge, lírio-da-paz, zamioculca, orquídeas, aromáticas e hortícolas, com dicas de luz, terra, pragas, mudança de vaso e estacas, e avisos claros para plantas que fazem mal a gatos, cães e crianças.\n\nO RAMINHO DÁ-TE UMA AJUDA\nO Raminho, a folhinha do ícone, cumprimenta-te logo no início, faz umas perguntas simples sobre a tua casa e deixa tudo pronto.\n\nGRÁTIS PARA COMEÇAR\nCinco plantas grátis para sempre, com conversa, lembretes e avisos do tempo, com alguns anúncios. A Estufa (mensal) e a Selva (anual) desbloqueiam plantas ilimitadas, o médico das plantas e o leitor de rótulos, e tiram todos os anúncios. A subscrição renova automaticamente até a cancelares nas definições da tua conta Apple.\n\nA tua selva é tua. Não precisas de conta. Só entras se quiseres a tua selva em todos os teus dispositivos ou partilhada com quem vive contigo.\n\nTermos: https://mytinyjungle.com/terms\nPrivacidade: https://mytinyjungle.com/privacy",
+ "subscription": {
+  "groupName": "My Tiny Jungle Plus",
+  "products": {
+   "com.simpleappscompany.mytinyjungle.plus.monthly": {
+    "name": "Estufa",
+    "description": "Plantas ilimitadas, sem anúncios e mais"
+   },
+   "com.simpleappscompany.mytinyjungle.plus.yearly": {
+    "name": "Selva",
+    "description": "Tudo da Estufa a metade do preço"
+   }
+  }
+ }
+}

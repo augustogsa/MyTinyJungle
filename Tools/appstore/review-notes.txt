@@ -1,0 +1,24 @@
+Thank you for reviewing My Tiny Jungle, a plant care app where each plant gets its own voice and texts you when it needs care.
+
+NO ACCOUNT NEEDED
+Everything works without signing in. Sign in with Apple or Google is optional (Settings > Account) and is only used to sync your jungle across your own devices and share it with people you invite. Settings > Account > "Delete account and data" deletes the account and erases every plant, photo and care history on every device and on our server.
+
+WHAT TO TRY (about 3 minutes)
+1. First launch: Erty, the leaf mascot, asks a few questions about your home (city, rooms, light) and sets everything up.
+2. Add a plant with the + button (photo or name). It starts chatting with you.
+3. In the jungle chat, type "watered all of them" or "watered Monty". The care is logged and the plants reply.
+4. Today tab: your week, upcoming care and weather warnings. Care tab: season guide and Going Away planner.
+5. Plant Doctor: open a plant > Health check, take a photo of any leaf.
+6. Identify: Scan tab > photograph a plant (or a whole shelf). Label scan: point the camera at any fertiliser or potting mix label.
+7. Shared jungle: Household > Invite people (needs sign-in on both devices). Plant passport: open a plant > Share.
+
+AI FEATURES AND DATA
+Plant Doctor and Identify send the photo the user takes, once, to our own server. Our own vision and plant models answer first. Only when they are not confident, the photo is sent to Pl@ntNet (plant identification) or Google Gemini / Anthropic Claude (leaf diagnosis) for a second opinion. Photos are not stored by us and are not used to train models; only the text answer is kept, with no personal data. The chat replies come from the app's own plant library and care engine.
+
+PERMISSIONS (all optional, asked only when needed)
+Camera: plant photos, Identify, label scan. Photos: pick a plant photo. Notifications: care reminders, at most one a day, with quiet hours. Location while using: local weather, frost and heat warnings (a city can be typed instead). Tracking (ATT): ad relevance only; asked after Google's consent form in the EU/UK.
+
+PURCHASES
+The free plan (Sprout) allows 5 plants and shows Google AdMob native ads between content. Two auto-renewing subscriptions in one group: Greenhouse (monthly) and Jungle (yearly). Both unlock unlimited plants, Plant Doctor and the label scanner, and remove all ads. The paywall shows price, period and auto-renewal terms with links to Terms and Privacy. "Restore purchases" is on the paywall and in Settings. Sandbox purchases work with any sandbox Apple Account.
+
+Languages: English, Portuguese (Brazil and Portugal), Spanish, French, German and Japanese. iPhone only.
