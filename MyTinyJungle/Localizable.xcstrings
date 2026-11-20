@@ -35,6 +35,42 @@
         }
       }
     },
+    "%@ looks a bit droopy today 😟" : {
+      "comment" : "Demo chat message from the user; arg plant nickname",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ lässt heute etwas die Blätter hängen 😟"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ está un poco decaída hoy 😟"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a l'air un peu molle aujourd'hui 😟"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@、今日ちょっとしおれてる 😟"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A %@ tá meio murchinha hoje 😟"
+          }
+        }
+      }
+    },
     "Archive" : {
       "localizations" : {
         "de" : {
@@ -409,6 +445,42 @@
         }
       }
     },
+    "Guilty. I'm thirsty! One slow, deep drink and I'll perk up by tonight." : {
+      "comment" : "Demo chat reply from a dramatic peace lily",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erwischt. Ich hab Durst! Ein langsamer, tiefer Schluck und heute Abend steh ich wieder."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Culpable. ¡Tengo sed! Un riego lento y profundo y esta noche estaré como nueva."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coupable. J'ai soif ! Un arrosage lent et profond et ce soir je me redresse."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バレた。のど乾いてるの！ゆっくりたっぷりお水をくれたら、今夜には元気になるよ。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Culpada. Tô com sede! Uma regada lenta e caprichada e de noite já tô novinha."
+          }
+        }
+      }
+    },
     "I couldn't tell who this is" : {
       "localizations" : {
         "de" : {
@@ -711,6 +783,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não é? Procura"
+          }
+        }
+      }
+    },
+    "On it 💧" : {
+      "comment" : "Demo chat message from the user; short",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bin dran 💧"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voy 💧"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J'y vais 💧"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今あげるね 💧"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já tô indo 💧"
           }
         }
       }

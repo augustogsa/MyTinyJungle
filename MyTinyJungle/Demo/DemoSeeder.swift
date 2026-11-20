@@ -62,13 +62,16 @@ enum DemoSeeder {
             if s.days > 200 { ev(.repot, s.days - 60, Grammar.pt(String(localized: "Moved to a 2 cm bigger pot", comment: "Demo care log note"))) }
             ev(.rotate, 11)
         }
-        let monty = Grammar.pt(String(localized: "Monty", comment: "Demo plant nickname; pt-BR: a cute Brazilian nickname")), pesto = Grammar.pt(String(localized: "Pesto", comment: "Demo plant nickname; pt-BR: a cute Brazilian nickname")), pearl = Grammar.pt(String(localized: "Pearl", comment: "Demo plant nickname; pt-BR: a cute Brazilian nickname"))
+        let monty = Grammar.pt(String(localized: "Monty", comment: "Demo plant nickname; pt-BR: a cute Brazilian nickname")), pesto = Grammar.pt(String(localized: "Pesto", comment: "Demo plant nickname; pt-BR: a cute Brazilian nickname")), pearl = Grammar.pt(String(localized: "Pearl", comment: "Demo plant nickname; pt-BR: a cute Brazilian nickname")), lily = Grammar.pt(String(localized: "Lily", comment: "Demo plant nickname; pt-BR: a cute Brazilian nickname"))
         let talk: [(String, Bool, String?)] = [
             (Grammar.pt(String(localized: "Watered \(monty) and \(pesto)", comment: "Demo chat message from the user; two plant nicknames")), true, nil),
             (Grammar.pt(String(localized: "Thank you! I'll let my top soil dry before the next drink.", comment: "Demo chat reply from a chatty plant")), false, monty),
             (Grammar.pt(String(localized: "Ahh, fresh water. Pick my top leaves soon so I stay bushy!", comment: "Demo chat reply from a basil plant")), false, pesto),
             (Grammar.pt(String(localized: "Should I feed \(pearl)?", comment: "Demo chat question from the user; plant nickname")), true, nil),
             (Grammar.pt(String(localized: "Not yet. It's autumn and I'm resting. Orchid feed again in spring.", comment: "Demo chat reply from an orchid; pt-BR may avoid naming the season")), false, pearl),
+            (Grammar.pt(String(localized: "\(lily) looks a bit droopy today 😟", comment: "Demo chat message from the user; arg plant nickname")), true, nil),
+            (Grammar.pt(String(localized: "Guilty. I'm thirsty! One slow, deep drink and I'll perk up by tonight.", comment: "Demo chat reply from a dramatic peace lily")), false, lily),
+            (Grammar.pt(String(localized: "On it 💧", comment: "Demo chat message from the user; short")), true, nil),
         ]
         for (i, t) in talk.enumerated() {
             let m = ChatMessage(text: t.0, fromUser: t.1); m.date = Date().addingTimeInterval(Double(i - talk.count) * 600)
