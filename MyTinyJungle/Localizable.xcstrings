@@ -476,7 +476,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Culpada. Tô com sede! Uma regada lenta e caprichada e de noite já tô novinha."
+            "value" : "Culpada! Tô morrendo de sede. Me dá uma regada caprichada que de noite eu tô nova."
           }
         }
       }
@@ -818,7 +818,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Já tô indo 💧"
+            "value" : "Já vou 💧"
           }
         }
       }
@@ -14973,7 +14973,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aah, água fresquinha! Colha minhas folhas de cima logo pra eu ficar cheinho!"
+            "value" : "Aaah, água fresquinha! Corta minhas pontinhas logo pra eu ficar bem cheio!"
           }
         }
       }
@@ -54909,7 +54909,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ainda não. Tô descansando agora. Adubo de orquídea só quando eu voltar a crescer."
+            "value" : "Ainda não, tô de descanso. Adubo só quando eu voltar a crescer."
           }
         }
       }
@@ -67949,7 +67949,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Devo adubar a %@?"
+            "value" : "Será que adubo a %@?"
           }
         }
       }
@@ -75564,7 +75564,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obrigada! Vou deixar a terrinha de cima secar antes da próxima rega."
+            "value" : "Valeu! Vou esperar a terra de cima secar antes da próxima."
           }
         }
       }
