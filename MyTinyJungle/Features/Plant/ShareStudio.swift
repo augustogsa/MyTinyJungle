@@ -43,7 +43,7 @@ struct ShareStudio: View {
                             .font(.system(.headline, design: .rounded))
                             .frame(maxWidth: .infinity).frame(height: 52)
                     }
-                    .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
+                    .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).junglePrimary()
                     .padding(.horizontal, 24)
                 }
             }

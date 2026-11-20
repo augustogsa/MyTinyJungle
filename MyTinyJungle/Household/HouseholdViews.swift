@@ -125,7 +125,7 @@ struct RequestRow: View {
                             Button { withAnimation { house.acceptCover(request.id) } } label: {
                                 Text("I've got it", comment: "Accept cover request button").foregroundStyle(.white).frame(maxWidth: .infinity)
                             }
-                            .buttonStyle(.borderedProminent).tint(Jungle.forest)
+                            .buttonStyle(.borderedProminent).junglePrimary()
                         }
                         .controlSize(.regular).buttonBorderShape(.capsule).fontDesign(.rounded)
                     }
@@ -386,7 +386,7 @@ struct HouseSetupView: View {
                     HStack { if working { ProgressView().tint(.white) }; Text("Start and invite", comment: "Setup primary button") }
                         .font(.headline).frame(maxWidth: .infinity, minHeight: 50)
                 }
-                .buttonStyle(.glassProminent).tint(Jungle.forest).disabled(working)
+                .buttonStyle(.glassProminent).junglePrimary().disabled(working)
                 Label { Text("Uses iCloud sharing. Only people you invite can join.", comment: "Setup privacy note") } icon: { Image(systemName: "lock.fill") }
                     .font(.footnote).foregroundStyle(Jungle.subtle)
             }
@@ -451,7 +451,7 @@ struct InviteView: View {
                             ShareLink(item: url, subject: Text(house.state?.name ?? ""), message: Text(message)) {
                                 Label { Text("Share invite link", comment: "Invite primary button") } icon: { Image(systemName: "square.and.arrow.up") }
                                     .font(.headline).frame(maxWidth: .infinity, minHeight: 50)
-                            }.buttonStyle(.glassProminent).tint(Jungle.forest)
+                            }.buttonStyle(.glassProminent).junglePrimary()
                             HStack(spacing: 10) {
                                 Button { if MFMailComposeViewController.canSendMail() { mail = true } else { openMailto(url) } } label: {
                                     Label { Text("Email", comment: "Invite by email button") } icon: { Image(systemName: "envelope") }.frame(maxWidth: .infinity, minHeight: 44)

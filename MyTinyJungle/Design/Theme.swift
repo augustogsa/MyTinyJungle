@@ -28,11 +28,17 @@ enum Jungle {
     static let surfaceRaised = Color.token("SurfaceRaised")
     static let fill = Color.token("Fill")
     static let fillSubtle = Color.token("FillSubtle")
+    static let fillStrong = Color.token("FillStrong")
+    /// Accent-tinted fill for selected states and secondary buttons (never brown or terracotta).
+    static let accentFill = Color.token("AccentFill")
+    static let chipSelected = Color.token("ChipSelected")
+    static let onChipSelected = Color.token("OnChipSelected")
     static let separator = Color.token("Separator")
     // Labels
     static let text = Color.token("Label")
     static let subtle = Color.token("SecondaryLabel")
     static let tertiary = Color.token("TertiaryLabel")
+    static let quaternary = Color.token("QuaternaryLabel")
     static let accentText = Color.token("AccentText")
     static let warmText = Color.token("WarmText")
     // Brand and controls
@@ -67,16 +73,33 @@ enum Jungle {
 }
 
 struct CardBackground: ViewModifier {
+    @Environment(\.colorScheme) private var scheme
     func body(content: Content) -> some View {
         content
             .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.separator, lineWidth: 0.5))
-            .shadow(color: Color(red: 0.24, green: 0.3, blue: 0.2).opacity(0.06), radius: 10, y: 4)
+            // Dark mode separates by lightness (base #000, card #1C1C1E), not shadow.
+            .shadow(color: Color(red: 0.24, green: 0.3, blue: 0.2).opacity(scheme == .dark ? 0 : 0.06), radius: 10, y: 4)
+    }
+}
+
+/// Filter / choice chip. Unselected: neutral fill. Selected: brand forest in light, accent tint + accent label in dark.
+struct JungleChip: ViewModifier {
+    let selected: Bool
+    func body(content: Content) -> some View {
+        content
+            .foregroundStyle(selected ? Jungle.onChipSelected : Jungle.text)
+            .background(selected ? Jungle.chipSelected : Jungle.surface, in: Capsule())
+            .overlay(Capsule().strokeBorder(selected ? Color.clear : Jungle.separator, lineWidth: 0.5))
+            .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 
 extension View {
     func jungleCard() -> some View { modifier(CardBackground()) }
+    func jungleChip(selected: Bool) -> some View { modifier(JungleChip(selected: selected)) }
+    /// Primary action: accent fill with on-accent ink (white on forest in light, dark ink on bright green in dark).
+    func junglePrimary() -> some View { tint(Jungle.forest).foregroundStyle(Jungle.onForest) }
 }
 
 /// Real photo of the plant or a calm leaf placeholder.

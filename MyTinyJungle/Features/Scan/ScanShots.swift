@@ -165,7 +165,7 @@ struct ScanTrayView: View {
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity).padding(.vertical, 4)
                     .contentTransition(.numericText())
             }
-            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
+            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).junglePrimary()
         }
         .padding(10)
         .warmGlass(RoundedRectangle(cornerRadius: 24, style: .continuous))
@@ -392,7 +392,7 @@ struct HowToScanSheet: View {
                                             : Grammar.pt(String(localized: "Let's scan!", comment: "How to scan: last step button; max 16 chars")))
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity).padding(.vertical, 4)
             }
-            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
+            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).junglePrimary()
             .padding(.horizontal, 20).padding(.top, 14).padding(.bottom, 20)
         }
         .background(Color.clear.jungleBackdrop())

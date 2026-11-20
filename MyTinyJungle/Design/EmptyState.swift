@@ -23,7 +23,7 @@ struct JungleEmptyState<Preview: View>: View {
                 Button(action: action) {
                     Label(actionTitle, systemImage: actionSymbol).font(.system(.headline, design: .rounded)).frame(maxWidth: 280).padding(.vertical, 4)
                 }
-                .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
+                .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).junglePrimary()
                 .padding(.top, 4)
             }
             preview

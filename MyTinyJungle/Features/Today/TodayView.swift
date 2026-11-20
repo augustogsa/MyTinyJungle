@@ -396,17 +396,17 @@ struct RequestCard: View {
                 Button(s == .slightlyMoist ? Grammar.pt(String(localized: "Moist", comment: "Soil feel button; max 10 chars")) : s.label) { onAction(.soil(s)) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
             }
         case .water:
-            Button("Watered", systemImage: "drop.fill") { onAction(.care(.water)) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button("Watered", systemImage: "drop.fill") { onAction(.care(.water)) }.buttonStyle(.borderedProminent).junglePrimary().fontDesign(.rounded).buttonBorderShape(.capsule)
         case .feed:
-            Button("Fed", systemImage: "checkmark") { onAction(.care(.feed)) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button("Fed", systemImage: "checkmark") { onAction(.care(.feed)) }.buttonStyle(.borderedProminent).junglePrimary().fontDesign(.rounded).buttonBorderShape(.capsule)
             Button("Ask why") { onAction(.open) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
         case .safety:
             Button("Got it") { onAction(.ack) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
         case .refreshWater, .topUp, .soak, .mist, .quarantine, .treatFollowUp:
             let d = CareAsk.done(request.kind, plant: plant)
-            Button(d.label, systemImage: "checkmark") { onAction(d.action) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button(d.label, systemImage: "checkmark") { onAction(d.action) }.buttonStyle(.borderedProminent).junglePrimary().fontDesign(.rounded).buttonBorderShape(.capsule)
         case .askDone:
-            Button(Grammar.pt(String(localized: "Yes", comment: "Answer to 'Did you water X?': yes, already done; max 10 chars"))) { onAction(.yes) }.buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule)
+            Button(Grammar.pt(String(localized: "Yes", comment: "Answer to 'Did you water X?': yes, already done; max 10 chars"))) { onAction(.yes) }.buttonStyle(.borderedProminent).junglePrimary().fontDesign(.rounded).buttonBorderShape(.capsule)
             Button(Grammar.pt(String(localized: "Not yet", comment: "Answer to 'Did you water X?'; max 10 chars"))) { onAction(.notYet) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
             Button(Grammar.pt(String(localized: "Skip", comment: "Answer to 'Did you water X?': skip this round; max 10 chars"))) { onAction(.skip) }.buttonStyle(.bordered).fontDesign(.rounded).buttonBorderShape(.capsule)
         default:
@@ -571,7 +571,7 @@ struct WateringListView: View {
                     Button { withAnimation { JungleBrain.quick(.water, plants: today, in: ctx, announce: true) } } label: {
                         Text("Water all \(today.count) due today").font(.headline).frame(maxWidth: .infinity).frame(height: 48)
                     }
-                    .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
+                    .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).junglePrimary()
                 }
                 if days.isEmpty {
                     JungleGroup { JungleRow(icon: .shieldCheck, title: Grammar.pt(String(localized: "No one's thirsty for the next two weeks", comment: "Watering list empty state"))) }

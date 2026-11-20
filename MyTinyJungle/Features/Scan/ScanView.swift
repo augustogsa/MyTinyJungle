@@ -207,7 +207,7 @@ struct ScanView: View {
                 Label(Grammar.pt(String(localized: "Choose a photo", comment: "Scan: button to pick a photo instead of the camera; max 22 chars")), systemImage: "photo.on.rectangle")
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: 260).padding(.vertical, 4)
             }
-            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).tint(Jungle.forest)
+            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).controlSize(.large).junglePrimary()
             if settings, let url = URL(string: UIApplication.openSettingsURLString) {
                 Button(Grammar.pt(String(localized: "Open Settings", comment: "Button: open iOS Settings to allow the camera; max 20 chars"))) { UIApplication.shared.open(url) }
                     .font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.accentText)
@@ -330,11 +330,11 @@ struct ScanView: View {
                     VStack(spacing: 3) {
                         Icon3DView(m.icon, size: 28)
                         Text(m.title).font(.caption.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.75)
-                            .foregroundStyle(m == mode ? Jungle.onForest : Jungle.text)
+                            .foregroundStyle(m == mode ? Jungle.onChipSelected : Jungle.text)
                     }
                     .padding(.vertical, 7)
                     .frame(maxWidth: .infinity)
-                    .background { if m == mode { RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Jungle.forest) } }
+                    .background { if m == mode { RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Jungle.chipSelected) } }
                     .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                 }
                 .buttonStyle(.plain)
@@ -798,7 +798,7 @@ private struct ProductResultView: View {
                     Button { isPlus ? onSave(true) : onLocked(.inventory) } label: { Label("Shopping list", systemImage: "cart").frame(maxWidth: .infinity) }
                         .buttonStyle(.bordered).fontDesign(.rounded).tint(Jungle.leaf)
                     Button { isPlus ? onSave(false) : onLocked(.inventory) } label: { Label("I own this", systemImage: "tray.and.arrow.down.fill").frame(maxWidth: .infinity) }
-                        .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest)
+                        .buttonStyle(.borderedProminent).fontDesign(.rounded).junglePrimary()
                 }
                 .buttonBorderShape(.capsule).controlSize(.large)
                 .padding(.horizontal, 16).padding(.vertical, 10)
@@ -967,6 +967,6 @@ extension View {
     func warmGlass<S: InsettableShape>(_ shape: S) -> some View {
         self.background(.ultraThinMaterial, in: shape)
             .background(Jungle.cream.opacity(0.55), in: shape)
-            .overlay(shape.strokeBorder(Jungle.sage.opacity(0.45), lineWidth: 1))
+            .overlay(shape.strokeBorder(Jungle.separator, lineWidth: 1))
     }
 }

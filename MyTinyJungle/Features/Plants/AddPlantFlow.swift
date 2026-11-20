@@ -109,7 +109,7 @@ struct AddPlantFlow: View {
                     Button { showCamera = true } label: {
                         Label("Take a photo", systemImage: "camera.fill").frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).controlSize(.large)
+                    .buttonStyle(.borderedProminent).junglePrimary().fontDesign(.rounded).controlSize(.large)
                 }
                 PhotosPicker(selection: $pick, matching: .images) {
                     Label("Choose from Photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
@@ -160,7 +160,7 @@ struct AddPlantFlow: View {
                 Button { start(shots: shots) } label: {
                     Label(Grammar.pt(String(localized: "Try again", comment: "Button: retry; max 18 chars")), systemImage: "arrow.clockwise").font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity).padding(.vertical, 4)
                 }
-                .buttonStyle(.borderedProminent).tint(Jungle.forest)
+                .buttonStyle(.borderedProminent).junglePrimary()
                 Button { withAnimation(.snappy) { stage = .meet }; choosingSpecies = true } label: {
                     Label(Grammar.pt(String(localized: "Search species", comment: "Add plant result button; max 20 chars")), systemImage: "magnifyingglass").frame(maxWidth: .infinity).padding(.vertical, 4)
                 }
@@ -197,7 +197,7 @@ struct AddPlantFlow: View {
                 Text(species == nil && name.isEmpty ? Grammar.pt(String(localized: "Pick the species first", comment: "Save button disabled hint")) : name.isEmpty ? Grammar.pt(String(localized: "Welcome home", comment: "Save button; max 24 chars")) : Grammar.pt(String(localized: "Welcome \(name)", comment: "Save button; arg plant name; max 24 chars")))
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: .infinity).padding(.vertical, 4)
             }
-            .buttonStyle(.borderedProminent).tint(Jungle.forest).buttonBorderShape(.capsule).controlSize(.large)
+            .buttonStyle(.borderedProminent).junglePrimary().buttonBorderShape(.capsule).controlSize(.large)
             .disabled(name.isEmpty && species == nil)
             .padding(.horizontal, 16).padding(.vertical, 10)
             .background(.bar)
@@ -347,8 +347,7 @@ struct AddPlantFlow: View {
                             .buttonStyle(.plain)
                             .font(.subheadline.weight(.medium)).fontDesign(.rounded)
                             .padding(.horizontal, 14).padding(.vertical, 7)
-                            .foregroundStyle(name == idea ? Jungle.onForest : Jungle.text)
-                            .background(name == idea ? Jungle.forest : Jungle.fillSubtle, in: Capsule())
+                            .jungleChip(selected: name == idea)
                             .accessibilityAddTraits(name == idea ? .isSelected : [])
                     }
                 }

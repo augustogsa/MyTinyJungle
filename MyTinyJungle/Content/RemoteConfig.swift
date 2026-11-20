@@ -36,7 +36,7 @@ private struct UpdateGate: ViewModifier {
                 Spacer()
                 Button { openURL(URL(string: "https://apps.apple.com/app/id6836292367")!) } label: {
                     Text("Update now", comment: "Forced update button").font(.headline).frame(maxWidth: .infinity, minHeight: 50)
-                }.buttonStyle(.glassProminent).tint(Jungle.forest)
+                }.buttonStyle(.glassProminent).junglePrimary()
             }
             .padding(24)
             .jungleBackdrop()

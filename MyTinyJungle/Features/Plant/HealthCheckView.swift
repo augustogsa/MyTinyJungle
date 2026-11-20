@@ -81,7 +81,7 @@ struct HealthCheckView: View {
         if photo == nil {
             HStack(spacing: 10) {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    Button { camera = true } label: { Label("Photo", systemImage: "camera.fill").frame(maxWidth: .infinity) }.buttonStyle(.borderedProminent).tint(Jungle.forest)
+                    Button { camera = true } label: { Label("Photo", systemImage: "camera.fill").frame(maxWidth: .infinity) }.buttonStyle(.borderedProminent).junglePrimary()
                 }
                 PhotosPicker(selection: $pick, matching: .images) { Label("Library", systemImage: "photo").frame(maxWidth: .infinity) }.buttonStyle(.bordered)
                 if plant.photo != nil {
@@ -268,7 +268,7 @@ struct PestPlanView: View {
                 try? ctx.save()
                 onStart()
             } label: { Label("Start treatment plan", systemImage: "cross.case.fill").frame(maxWidth: .infinity) }
-                .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
+                .buttonStyle(.borderedProminent).junglePrimary().fontDesign(.rounded).buttonBorderShape(.capsule).controlSize(.large)
         }
         .padding(14).jungleCard()
     }
@@ -297,9 +297,7 @@ struct FlowChips: View {
                     .buttonStyle(.plain)
                     .font(.subheadline)
                     .padding(.horizontal, 12).padding(.vertical, 7)
-                    .foregroundStyle(selected == item ? Jungle.warmText : Jungle.text)
-                    .background(selected == item ? Jungle.warmFill : Jungle.surface, in: Capsule())
-                    .overlay(Capsule().stroke(Jungle.border))
+                    .jungleChip(selected: selected == item)
             }
         }
     }

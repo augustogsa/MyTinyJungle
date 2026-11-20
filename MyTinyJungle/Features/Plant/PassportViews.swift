@@ -136,7 +136,7 @@ struct PassportImportSheet: ViewModifier {
                         }
                         .font(.subheadline).foregroundStyle(Jungle.text).frame(maxWidth: .infinity, alignment: .leading).padding(14).jungleCard()
                         Button { Task { await add() } } label: { Label(Grammar.pt(String(localized: "Add to my jungle", comment: "Button: import passport plant")), systemImage: "plus").frame(maxWidth: .infinity) }
-                            .buttonStyle(.borderedProminent).tint(Jungle.forest).controlSize(.large).buttonBorderShape(.capsule).disabled(busy)
+                            .buttonStyle(.borderedProminent).junglePrimary().controlSize(.large).buttonBorderShape(.capsule).disabled(busy)
                     } else if let error {
                         Text(error).multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
                     } else { ProgressView() }

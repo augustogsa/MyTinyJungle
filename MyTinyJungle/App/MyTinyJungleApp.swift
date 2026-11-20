@@ -39,7 +39,7 @@ struct MyTinyJungleApp: App {
             let d = base.fontDescriptor.withDesign(.rounded) ?? base.fontDescriptor
             return UIFontMetrics(forTextStyle: style).scaledFont(for: UIFont(descriptor: d, size: 0))
         }
-        let ink = UIColor { $0.userInterfaceStyle == .dark ? UIColor(hex: 0xE4EBE2) : UIColor(hex: 0x3E4E3D) }
+        let ink = UIColor(named: "Label") ?? .label
         let a = UINavigationBarAppearance()
         a.configureWithTransparentBackground()
         a.largeTitleTextAttributes = [.font: rounded(.largeTitle, .bold), .foregroundColor: ink]

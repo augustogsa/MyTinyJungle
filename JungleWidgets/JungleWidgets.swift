@@ -19,11 +19,11 @@ struct JungleProvider: TimelineProvider {
 }
 
 enum WTheme {
-    static let ink = Color(light: 0x3E4E3D, dark: 0xE4EBE2)
-    static let subtle = Color(light: 0x5C6B5B, dark: 0xB4C0B2)
-    static let accent = Color(light: 0x3F7A4A, dark: 0x8FCB97)
-    static let warm = Color(light: 0xA9502F, dark: 0xF0A27E)
-    static let bg = Color(light: 0xF6F3EA, dark: 0x1C231C)
+    static let ink = Color(light: 0x3E4E3D, dark: 0xFFFFFF)
+    static let subtle = Color(light: 0x5C6B5B, dark: 0x9E9EA4)
+    static let accent = Color(light: 0x3F7A4A, dark: 0x6FD58C)
+    static let warm = Color(light: 0xA9502F, dark: 0xFFB496)
+    static let bg = Color(light: 0xF6F3EA, dark: 0x1C1C1E)
 }
 
 extension Color {

@@ -7,7 +7,9 @@ struct JungleBackdrop: View {
     var intensity: Double = 1
 
     var body: some View {
-        GeometryReader { g in
+        // Dark: plain near-black base with only a faint leaf glow (HIG: no colour washes behind content).
+        let intensity = scheme == .dark ? self.intensity * 0.18 : self.intensity
+        return GeometryReader { g in
             ZStack {
                 Jungle.cream
                 Circle().fill(Jungle.sage.opacity((scheme == .dark ? 0.35 : 0.55) * intensity))

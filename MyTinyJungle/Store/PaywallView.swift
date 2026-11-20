@@ -164,7 +164,7 @@ struct PaywallView: View {
                 Group { if buying { ProgressView().tint(.white) } else { Text(current.map { $0.subscription?.subscriptionPeriod.unit == .year ? Grammar.pt(String(localized: "Start Jungle · \($0.displayPrice)/year", comment: "Paywall buy button for the yearly plan named Jungle; arg is price")) : Grammar.pt(String(localized: "Start Greenhouse · \($0.displayPrice)/month", comment: "Paywall buy button for the monthly plan named Greenhouse; arg is price")) } ?? Grammar.pt(String(localized: "Choose a plan", comment: "Paywall buy button"))).font(.headline) } }
                     .frame(maxWidth: .infinity).frame(height: 50)
             }
-            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).tint(Jungle.forest)
+            .buttonStyle(.borderedProminent).buttonBorderShape(.capsule).junglePrimary()
             .disabled(current == nil || buying)
             HStack(spacing: 16) {
                 Button("Restore") { Task { await Store.shared.restore(); if Store.shared.isPlus { dismiss() } } }

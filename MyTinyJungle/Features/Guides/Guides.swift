@@ -284,10 +284,10 @@ struct GuidePlayerView: View {
                         .buttonStyle(.bordered).fontDesign(.rounded).tint(Jungle.tint).disabled(index < 0)
                     if index == guide.steps.count - 1 {
                         Button { finish() } label: { Text(logged ? Grammar.pt(String(localized: "Logged", comment: "Care guide finished and logged")) : finishLabel).frame(maxWidth: .infinity) }
-                            .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest).disabled(logged)
+                            .buttonStyle(.borderedProminent).fontDesign(.rounded).junglePrimary().disabled(logged)
                     } else {
                         Button { go(index + 1) } label: { Text(index < 0 ? Grammar.pt(String(localized: "Start", comment: "Start a care guide")) : Grammar.pt(String(localized: "Next", comment: "Next care guide step"))).frame(maxWidth: .infinity) }
-                            .buttonStyle(.borderedProminent).fontDesign(.rounded).tint(Jungle.forest)
+                            .buttonStyle(.borderedProminent).fontDesign(.rounded).junglePrimary()
                     }
                 }
                 .controlSize(.large).buttonBorderShape(.capsule)

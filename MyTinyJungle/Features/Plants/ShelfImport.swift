@@ -65,7 +65,7 @@ struct ShelfImportView: View {
                                 .multilineTextAlignment(.center).foregroundStyle(Jungle.subtle)
                             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                                 Button { showCamera = true } label: { Label("Take a photo", systemImage: "camera.fill").frame(maxWidth: .infinity) }
-                                    .buttonStyle(.borderedProminent).tint(Jungle.forest).controlSize(.large)
+                                    .buttonStyle(.borderedProminent).junglePrimary().controlSize(.large)
                             }
                             PhotosPicker(selection: $pick, matching: .images) { Label("Choose from Photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
                                 .buttonStyle(.bordered).controlSize(.large)

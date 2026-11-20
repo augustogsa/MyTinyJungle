@@ -172,7 +172,7 @@ struct PlantHomeView: View {
             if hasPhoto { LinearGradient(colors: [.clear, .black.opacity(0.6)], startPoint: .center, endPoint: .bottom) }
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Jungle.onForest : Jungle.text)
+                    Text(plant.name).font(.system(.largeTitle, design: .rounded, weight: .bold)).foregroundStyle(hasPhoto ? Color.white : Jungle.text)
                     Text(plant.species?.scientific ?? Grammar.pt(String(localized: "Unknown species", comment: "Shown when species not set; max 20 chars"))).font(.subheadline).italic().foregroundStyle(hasPhoto ? Color.white.opacity(0.9) : Jungle.subtle)
                     HStack(spacing: 6) { StatusBadge(status: CareEngine.status(for: plant)); ToxicBadge(plant: plant) }.padding(.top, 8)
                 }
@@ -433,17 +433,15 @@ struct PlantStoryView: View {
             PhotosPicker(selection: $pick, matching: .images) {
                 Label(photos.isEmpty ? Grammar.pt(String(localized: "Add the first photo", comment: "Button; max 24 chars")) : Grammar.pt(String(localized: "Add this month's photo", comment: "Button; max 26 chars")), systemImage: "camera.fill").frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).tint(Jungle.forest).controlSize(.large)
+            .buttonStyle(.borderedProminent).fontDesign(.rounded).buttonBorderShape(.capsule).junglePrimary().controlSize(.large)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(Filter.allCases, id: \.self) { f in
                         Button { withAnimation(.snappy) { filter = f } } label: {
                             Text(f.label).font(.subheadline.weight(.medium))
-                                .foregroundStyle(filter == f ? Jungle.onForest : Jungle.text)
-                                .padding(.horizontal, 14).padding(.vertical, 7)
-                                .background(filter == f ? Jungle.forest : Jungle.surface, in: Capsule())
-                                .overlay(Capsule().strokeBorder(filter == f ? .clear : Jungle.border, lineWidth: 1))
+                                                                .padding(.horizontal, 14).padding(.vertical, 7)
+                                .jungleChip(selected: filter == f)
                         }
                         .buttonStyle(.plain)
                     }
@@ -809,8 +807,7 @@ struct WaterSheet: View {
                         Button(s.label) { feel = feel == s ? nil : s }
                             .buttonStyle(.plain).font(.subheadline.weight(.medium))
                             .padding(.horizontal, 14).padding(.vertical, 8)
-                            .foregroundStyle(feel == s ? Jungle.onForest : Jungle.text)
-                            .background(feel == s ? Jungle.forest : Jungle.fill, in: Capsule())
+                            .jungleChip(selected: feel == s)
                             .accessibilityAddTraits(feel == s ? .isSelected : [])
                     }
                 }
@@ -857,7 +854,7 @@ struct WaterSheet: View {
                         logReading()
                         JungleBrain.quick(.water, plants: [plant], in: ctx, announce: true); dismiss()
                     } label: { Label("Mark as watered", systemImage: "checkmark").frame(maxWidth: .infinity) }
-                        .buttonStyle(.borderedProminent).tint(Jungle.forest).fontDesign(.rounded).controlSize(.large)
+                        .buttonStyle(.borderedProminent).junglePrimary().fontDesign(.rounded).controlSize(.large)
                     if reading != nil {
                         Button { logReading(); try? ctx.save(); dismiss() } label: { Text(Grammar.pt(String(localized: "Just log the reading", comment: "Water sheet button: save moisture reading without watering"))).frame(maxWidth: .infinity) }
                             .buttonStyle(.bordered).fontDesign(.rounded).controlSize(.large)
