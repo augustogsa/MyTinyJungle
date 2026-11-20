@@ -32,7 +32,7 @@ def I(name, size=40, lazy=True):
 
 
 # Scene per chapter: (plant photo, app screen). Index 0 is the hero.
-SCENES = [("monstera", "01-notes"), ("pothos", "02-jungle"), ("snake", "09-digest"), ("peacelily", "03-season"),
+SCENES = [("monstera", "02-jungle"), ("pothos", "10-chat"), ("snake", "09-digest"), ("peacelily", "03-season"),
           ("orchid", "04-doctor"), ("basil", "05-identify"), ("zz", "08-household"), ("echeveria", "14-plus")]
 
 H = {
