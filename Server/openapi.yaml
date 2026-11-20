@@ -297,10 +297,10 @@ paths:
         content: { application/json: { schema: { allOf: [ { $ref: "#/components/schemas/Extras" }, { type: object, required: [q], properties: { q: { type: string }, lang: { type: string }, species: { type: string }, lat: { type: number }, lon: { type: number }, situation: { $ref: "#/components/schemas/Situation" } } } ] } } }
       responses:
         "200":
-          description: "Answers, best first. kind is symptom|pest|disease|deficiency|species|topic|glossary|soil|situation|weather; id is the knowledge id. With Accept: text/event-stream the same answers stream as Server-Sent Events, the first within milliseconds: event answer = one whole answer {id,kind,title,text,steps}, event weather = one weather note {id,kind,title,text} when local weather lands (up to 3 s), event done = the whole reply {answers:[...]} (same shape as the JSON answer)."
+          description: "Answers, best first. kind is symptom|pest|disease|deficiency|species|topic|glossary|soil|situation|weather; id is the knowledge id. With Accept: text/event-stream the same answers stream as Server-Sent Events, the first within milliseconds: event answer = one whole answer {id,kind,title,text,steps}, event weather = one weather note {id,kind,title,text} when local weather lands (up to 3 s), event done = the whole reply {answers:[...]} (same shape as the JSON answer). Any answer may carry generic card parts from the brain config (ask.extras[id]): icon, chips (follow-up questions), actions [{label, link}], link. Clients render any kind."
           content:
             text/event-stream: { schema: { type: string } }
-            application/json: { schema: { type: object, properties: { answers: { type: array, items: { type: object, properties: { id: { type: string }, kind: { type: string }, title: { type: string }, text: { type: string }, steps: { type: array, items: { type: string } } } } } } } }
+            application/json: { schema: { type: object, properties: { answers: { type: array, items: { type: object, properties: { id: { type: string }, kind: { type: string }, title: { type: string }, text: { type: string }, steps: { type: array, items: { type: string } }, icon: { type: string }, chips: { type: array, items: { type: string } }, actions: { type: array, items: { type: object, properties: { label: { type: string }, link: { type: string } } } }, link: { type: string } } } } } } }
         "400": { $ref: "#/components/responses/Error" }
   /v1/brain/identify:
     post:
@@ -373,6 +373,29 @@ paths:
         required: true
         content: { application/json: { schema: { type: object, required: [kind], properties: { kind: { type: string, enum: [species, scene_field, answer_helpful, diagnose_helpful] }, predicted: { type: string }, corrected: { type: string }, photoRef: { type: string }, lang: { type: string } } } } }
       responses: { "200": { $ref: "#/components/responses/Ok" }, "400": { $ref: "#/components/responses/Error" }, "404": { $ref: "#/components/responses/Error" }, "429": { $ref: "#/components/responses/Error" } }
+  /v1/brain/config:
+    get:
+      operationId: brainConfig
+      summary: Brain tunables (no auth). Thresholds, timeouts, scan plan, copy overrides, flags, cards, experiment variants
+      description: "Defaults deep-merged with the admin overlay (base, lang[prefix], lang[tag], experiment variant). Send X-MTJ-Device (install id) for a stable variant. ETag + If-None-Match -> 304. Unknown keys must be ignored by clients; missing keys mean the client's bundled default. Copy fields (bands[].word, scan.hints, scan.howTo, cards) only appear when the overlay sets them."
+      security: []
+      parameters: [{ name: lang, in: query, schema: { type: string } }, { name: X-MTJ-Device, in: header, schema: { type: string } }]
+      responses:
+        "200": { description: config, content: { application/json: { schema: { type: object, properties: { v: { type: integer }, scene: { type: object }, identify: { type: object }, diagnose: { type: object }, ask: { type: object }, scan: { type: object }, flags: { type: object, additionalProperties: { type: boolean } }, cards: { type: array, items: { type: object, properties: { id: { type: string }, surface: { type: string }, icon: { type: string }, title: { type: string }, body: { type: string }, chips: { type: array, items: { type: string } }, actions: { type: array, items: { type: object, properties: { label: { type: string }, link: { type: string } } } }, link: { type: string } } } }, experiments: { type: object, additionalProperties: { type: string } } } } } } }
+        "304": { description: Not modified }
+  /v1/admin/brain/config:
+    get: { operationId: adminBrainConfigGet, summary: "Overlay as stored, plus defaults (Cloudflare Access)", responses: { "200": { description: OK }, "403": { $ref: "#/components/responses/Error" } } }
+    put:
+      operationId: adminBrainConfigPut
+      summary: "Replace the overlay {base?, lang?, experiments?} (Cloudflare Access). Live within 30 s"
+      requestBody: { required: true, content: { application/json: { schema: { type: object } } } }
+      responses: { "200": { $ref: "#/components/responses/Ok" }, "400": { $ref: "#/components/responses/Error" }, "403": { $ref: "#/components/responses/Error" } }
+  /v1/admin/brain/misses:
+    get:
+      operationId: adminBrainMisses
+      summary: "Misses by kind/species/slice/variant, variant miss rates, species corrections and helpful votes (Cloudflare Access)"
+      parameters: [{ name: days, in: query, schema: { type: integer, maximum: 180 } }]
+      responses: { "200": { description: OK }, "403": { $ref: "#/components/responses/Error" } }
   /v1/me/weather-watch:
     put:
       operationId: weatherWatch

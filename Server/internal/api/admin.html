@@ -13,10 +13,11 @@ table{width:100%;border-collapse:collapse}td,th{padding:8px 10px;border-bottom:1
 th{color:var(--mut);font-weight:500}tr[data-id]{cursor:pointer}tr[data-id]:hover{background:var(--bg)}
 input{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%;max-width:360px}
 pre{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12px}
+textarea{font:12px ui-monospace,monospace;width:100%;min-height:260px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg)}button{font:inherit;padding:8px 14px;border-radius:8px;border:0;background:var(--acc);color:var(--bg);cursor:pointer}
 nav{display:flex;gap:16px;margin-bottom:16px}nav a{color:var(--acc);text-decoration:none}
 </style></head><body><main>
 <h1>My Tiny Jungle</h1>
-<nav><a href="#">Overview</a><a href="#metrics">North star</a><a href="#store">Store events</a></nav>
+<nav><a href="#">Overview</a><a href="#metrics">North star</a><a href="#store">Store events</a><a href="#brain">Brain</a></nav>
 <div id="view"></div></main>
 <script>
 const $=s=>document.querySelector(s);
@@ -50,6 +51,17 @@ async function metrics(){const m=await api('/metrics');
   ${distRow('Survival',m.survival.perUser)}${distRow('Adherence',m.adherence.perUser)}</tbody></table></div>
   <h2>Counts</h2><div class="grid"><div class="k"><b>${m.survival.plants}</b><span>Plants 30d+</span></div><div class="k"><b>${m.survival.passed}</b><span>Passed away</span></div>
   <div class="k"><b>${m.identify.confirmed}</b><span>IDs confirmed</span></div><div class="k"><b>${m.identify.corrected}</b><span>IDs corrected</span></div><div class="k"><b>${m.identify.rejected}</b><span>IDs rejected</span></div></div>`}
-function route(){const h=location.hash.slice(1);(h.startsWith('user/')?user(h.slice(5)):h==='store'?store():h==='metrics'?metrics():overview()).catch(e=>$('#view').textContent='Error '+e.message)}
+const tbl=(h,rows)=>`<div class="wrap"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+async function brain(){const [m,c]=await Promise.all([api('/brain/misses?days=30'),api('/brain/config')]);
+  $('#view').innerHTML=`<h2>Variants (30 days)</h2>${tbl(['Kind','Variant','Answers','Miss rate'],m.variants.map(x=>[x.kind,x.variant||'control',x.n,pct(x.missRate)]))}
+  <h2>Misses by species and slice</h2>${tbl(['Kind','Species','Slice','Variant','Answers','Misses','Avg conf','Avg ms'],m.misses.map(x=>[x.kind,x.species,x.slice,x.variant,x.n,x.misses,Math.round(x.avgConf*100)/100,Math.round(x.avgMs)]))}
+  <h2>Species corrections</h2>${tbl(['Predicted','Owner picked','Count'],m.corrections.map(x=>[x.predicted,x.corrected||'(none)',x.n]))}
+  <h2>Did this help?</h2>${tbl(['Kind','Answer id','Yes','No'],m.helpful.map(x=>[x.kind,x.id,x.yes,x.no]))}
+  <h2>Config overlay (live in 30 s, no build). Keys: base, lang, experiments</h2><textarea id="cfg">${esc(JSON.stringify(c.overlay,null,2))}</textarea>
+  <p><button id="save">Save</button> <span id="msg"></span></p><h2>Defaults</h2><pre>${esc(JSON.stringify(c.defaults,null,2))}</pre>`;
+  $('#save').onclick=async()=>{let b;try{b=JSON.parse($('#cfg').value)}catch(e){$('#msg').textContent='Invalid JSON';return}
+    const r=await fetch('/v1/admin/brain/config',{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+    $('#msg').textContent=r.ok?'Saved':'Error '+r.status}}
+function route(){const h=location.hash.slice(1);(h.startsWith('user/')?user(h.slice(5)):h==='store'?store():h==='metrics'?metrics():h==='brain'?brain():overview()).catch(e=>$('#view').textContent='Error '+e.message)}
 addEventListener('hashchange',route);route();
 </script></body></html>

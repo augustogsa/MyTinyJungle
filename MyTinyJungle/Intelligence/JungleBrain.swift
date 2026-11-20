@@ -77,7 +77,7 @@ enum JungleBrain {
         if result.isQuestion {
             let targets = result.questionPlantIDs.compactMap { byID[$0] }
             let asked: Plant? = context ?? (targets.count == 1 ? targets[0] : nil)
-            if JungleAPI.shared.hasSession {
+            if JungleAPI.shared.hasSession && BrainTuning.askServer {
                 // The server brain answers first; the on-device answerer is the fallback.
                 try? ctx.save()
                 Task { @MainActor in

@@ -18,7 +18,7 @@ func TestBrainConfigMerge(t *testing.T) {
 	if id["timeoutS"].(float64) != 9 || id["maxCandidates"].(int) != 3 {
 		t.Fatalf("identify %v", id)
 	}
-	if cfg["flags"].(map[string]any)["serverIdentify"] != false || cfg["flags"].(map[string]any)["onDeviceVision"] != true {
+	if cfg["flags"].(map[string]any)["serverIdentify"] != false || cfg["flags"].(map[string]any)["serverDiagnose"] != true {
 		t.Fatal("flags")
 	}
 	if len(id["bands"].([]any)) != 1 || cfg["scan"].(map[string]any)["cap"].(float64) != 6 {

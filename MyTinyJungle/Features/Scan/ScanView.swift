@@ -95,6 +95,7 @@ struct ScanView: View {
             cameraLayer
             VStack(spacing: 0) {
                 topBar
+                if tray.isEmpty && !working { ServerCards(surface: "scan").padding(.top, 10) }
                 Spacer(minLength: 12)
                 ertyPeek
                 modeExtras

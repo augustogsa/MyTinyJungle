@@ -22,9 +22,10 @@ nonisolated enum ShotKind: String, CaseIterable, Codable, Identifiable, Sendable
         }
     }
 
-    /// Erty's nudge for the next shot of this kind.
+    /// Erty's nudge for the next shot of this kind: the server's words when it has them, else ours.
     @MainActor var hint: String {
-        switch self {
+        if let h = BrainTuning.hint(rawValue) { return h }
+        return switch self {
         case .leaf: Grammar.pt(String(localized: "Get close to one leaf", comment: "Erty bubble in Scan asking for a leaf close-up; playful; max 32 chars"))
         case .whole: Grammar.pt(String(localized: "Now the whole plant!", comment: "Erty bubble in Scan asking for the whole plant; playful; max 32 chars"))
         case .stem: Grammar.pt(String(localized: "Now the stem, up close", comment: "Erty bubble in Scan asking for the stem; playful; max 32 chars"))
@@ -49,16 +50,35 @@ nonisolated enum ShotKind: String, CaseIterable, Codable, Identifiable, Sendable
 nonisolated enum ScanPurpose: Sendable {
     case identify, doctor
 
-    /// The order shots are suggested in; also the order of "Add more" chips.
-    var order: [ShotKind] {
+    var wire: String { self == .identify ? "identify" : "doctor" }
+
+    /// The order shots are suggested in; also the order of "Add more" chips. Server-tuned (scan.plans), else ours.
+    var order: [ShotKind] { order(in: BrainTuning.current) }
+
+    func order(in cfg: BrainConfig) -> [ShotKind] {
+        if let o = cfg.scan?.plans?[wire]?.order, !o.isEmpty {
+            var seen = Set<ShotKind>()
+            return o.map(ShotKind.init(wire:)).filter { seen.insert($0).inserted }
+        }
+        return defaultOrder
+    }
+
+    var defaultOrder: [ShotKind] {
         switch self {
         case .identify: [.leaf, .whole, .flower, .stem, .underside, .pot, .soil, .roots, .other]
         case .doctor: [.leaf, .whole, .underside, .soil, .pot, .stem, .roots, .flower, .other]
         }
     }
 
-    /// How much each distinct kind adds to the answer.
-    func weight(_ k: ShotKind) -> Double {
+    /// How much each distinct kind adds to the answer. Server-tuned (scan.plans), else ours.
+    func weight(_ k: ShotKind) -> Double { weight(k, in: BrainTuning.current) }
+
+    func weight(_ k: ShotKind, in cfg: BrainConfig) -> Double {
+        if let p = cfg.scan?.plans?[wire], p.weights != nil || p.other != nil { return p.weights?[k.rawValue] ?? p.other ?? 0.03 }
+        return defaultWeight(k)
+    }
+
+    func defaultWeight(_ k: ShotKind) -> Double {
         switch self {
         case .identify:
             switch k { case .leaf: 0.35; case .whole: 0.3; case .flower: 0.2; case .stem: 0.1; case .underside: 0.05; default: 0.03 }
@@ -68,7 +88,7 @@ nonisolated enum ScanPurpose: Sendable {
     }
 
     /// Kinds worth a chip: the ones that move the answer.
-    var useful: [ShotKind] { order.filter { weight($0) >= 0.1 } }
+    var useful: [ShotKind] { order.filter { weight($0) >= BrainTuning.usefulMin } }
 }
 
 /// One photo in the scan tray. `data` is the camera or library original; the upload is made from it with BrainPhoto.
@@ -81,7 +101,7 @@ struct ScanShot: Identifiable, Equatable, Sendable {
 
 /// Pure tray rules, kept apart from the view so they're testable.
 nonisolated enum ScanPlan {
-    static let cap = 8
+    static var cap: Int { BrainTuning.scanCap }
 
     /// Next kind to ask for: the one the owner asked for, else the first in the purpose's order not yet taken.
     static func suggest(_ purpose: ScanPurpose, taken: [ShotKind], wanted: ShotKind? = nil) -> ShotKind {
@@ -101,7 +121,7 @@ nonisolated enum ScanPlan {
         guard !taken.isEmpty else { return 0 }
         let distinct = Set(taken)
         let base = distinct.reduce(0) { $0 + purpose.weight($1) }
-        return min(1, max(0.2, base + Double(taken.count - distinct.count) * 0.04))
+        return min(1, max(BrainTuning.sureFloor, base + Double(taken.count - distinct.count) * BrainTuning.repeatBonus))
     }
 }
 
@@ -338,7 +358,9 @@ struct HowToScanSheet: View {
 
     private struct Step { let icon: Icon3D; let title: String; let text: String }
     private var steps: [Step] {
-        [
+        let server = BrainTuning.howTo
+        if !server.isEmpty { return server.map { Step(icon: $0.icon.flatMap(Icon3D.init(rawValue:)) ?? .leaf, title: $0.title, text: $0.text ?? "") } }
+        return [
             Step(icon: .sunny, title: Grammar.pt(String(localized: "Good light, one plant", comment: "How to scan step 1 title; max 28 chars")),
                  text: Grammar.pt(String(localized: "Daylight by a window is best. Keep just one plant in the shot.", comment: "How to scan step 1 text"))),
             Step(icon: .leaf, title: Grammar.pt(String(localized: "Get close", comment: "How to scan step 2 title; max 28 chars")),
@@ -404,15 +426,15 @@ struct HowToScanSheet: View {
         ScrollView {
             VStack(spacing: 14) {
                 ZStack(alignment: .bottomTrailing) {
-                    Icon3DView(s.icon, size: index == 2 ? 72 : 110)
+                    Icon3DView(s.icon, size: s.text.isEmpty ? 72 : 110)
                     if index == 0 || index == steps.count - 1 {
                         ErtyView(mood: index == 0 ? .wave : .happy, size: 70).offset(x: 46, y: 10)
                     }
                 }
-                .frame(height: index == 2 ? 84 : 140)
+                .frame(height: s.text.isEmpty ? 84 : 140)
                 .accessibilityHidden(true)
                 Text(s.title).font(.system(.title2, design: .rounded, weight: .bold)).foregroundStyle(Jungle.text).multilineTextAlignment(.center)
-                if index == 2 {
+                if s.text.isEmpty {
                     VStack(spacing: 8) {
                         ForEach(angles, id: \.0) { k, why in
                             HStack(spacing: 12) {

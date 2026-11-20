@@ -87,6 +87,7 @@ private struct MainScene: View {
                     // Network, Google sign-in restore and StoreKit wait until the first screen has drawn.
                     try? await Task.sleep(for: .milliseconds(800))
                     Task(priority: .utility) { await ContentStore.shared.refresh() }
+                    Task(priority: .utility) { await BrainTuning.refresh() }
                     #if DEBUG
                     Task { await HouseholdSelfTest.run() }
                     #endif
@@ -150,7 +151,7 @@ struct RootView: View {
             }
             .onChange(of: phase) { _, p in
                 if p == .background { Task { await CareReminders.reschedule(ctx) }; Task { await JungleSync.shared.sync() } }
-                if p == .active { Task { await JungleSync.shared.sync() }; Task { await ContentStore.shared.refresh() } }
+                if p == .active { Task { await JungleSync.shared.sync() }; Task { await ContentStore.shared.refresh() }; Task(priority: .utility) { await BrainTuning.refresh() } }
                 if p == .active { Task { await Household.shared.sync(ctx); if UserDefaults.standard.bool(forKey: "house.openHub") { UserDefaults.standard.set(false, forKey: "house.openHub"); openHouse = true } }; Task { await Climate.shared.refreshClimate(); await Climate.shared.refreshForecast(); ProactiveVoice.speak(ctx); await CareReminders.reschedule(ctx) } }
             }
             // Reschedule on every change to the care log.

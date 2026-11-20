@@ -73,11 +73,24 @@ enum PlantSituation {
 }
 
 /// Server "brain": answers from its own knowledge, free for signed-in users.
+/// One server answer, drawn as a generic card: any kind renders, so a new kind of answer needs no build.
 nonisolated struct BrainAnswer: Codable, Equatable, Hashable {
+    var id: String?
     var kind: String
     var title: String
     var text: String
     var steps: [String]?
+    var icon: String?
+    /// Follow-up questions; a tap asks them.
+    var chips: [String]?
+    /// Buttons with a deep link (mytinyjungle://… or https).
+    var actions: [BrainConfig.Action]?
+    /// Whole-card deep link.
+    var link: String?
+
+    init(id: String? = nil, kind: String, title: String, text: String, steps: [String]? = nil, icon: String? = nil, chips: [String]? = nil, actions: [BrainConfig.Action]? = nil, link: String? = nil) {
+        self.id = id; self.kind = kind; self.title = title; self.text = text; self.steps = steps; self.icon = icon; self.chips = chips; self.actions = actions; self.link = link
+    }
 }
 
 /// Local weather the server used for its answer. Accepts a plain sentence or {summary|text, tMin, tMax, rain}.
@@ -172,10 +185,23 @@ enum Brain {
         let _: Empty? = try? await JungleAPI.shared.send("POST", "/v1/diagnose/feedback", body: B(ref: ref, helped: helped))
     }
 
-    /// Reply in a chat with answer cards.
+    /// "Did this help?" on an ask answer (brain_feedback answer_helpful).
+    static func answerFeedback(id: String, helped: Bool) async {
+        nonisolated struct B: Encodable { let kind, predicted, corrected, lang: String }
+        nonisolated struct Empty: Decodable {}
+        let _: Empty? = try? await JungleAPI.shared.send("POST", "/v1/brain/feedback", body: B(kind: "answer_helpful", predicted: id, corrected: helped ? "yes" : "no", lang: PlantSituation.lang))
+    }
+
+    /// Follow-up chips from the answers, in order, without repeats (at most 4).
+    nonisolated static func chips(_ answers: [BrainAnswer]) -> [String] {
+        var seen = Set<String>()
+        return Array(answers.flatMap { $0.chips ?? [] }.filter { !$0.isEmpty && seen.insert($0).inserted }.prefix(4))
+    }
+
+    /// Reply in a chat with answer cards; the answers' follow-up chips become the reply suggestions.
     static func replyCards(_ answers: [BrainAnswer], plant: Plant?, in ctx: ModelContext, alsoJungle: Bool) {
         func make(_ p: Plant?) -> ChatMessage {
-            let m = ChatMessage(text: "", fromUser: false, plant: p)
+            let m = ChatMessage(text: "", fromUser: false, plant: p, suggestions: chips(answers))
             m.cardRaw = (try? String(data: JSONEncoder().encode(BrainCard(brain: answers)), encoding: .utf8)) ?? ""
             return m
         }
@@ -186,15 +212,28 @@ enum Brain {
 
 struct BrainAnswerCards: View {
     let answers: [BrainAnswer]
+    @Environment(\.openURL) private var openURL
+    @State private var voted: [String: Bool] = [:]
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ForEach(answers, id: \.self) { a in
                 VStack(alignment: .leading, spacing: 6) {
-                    if !a.title.isEmpty { Text(a.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text) }
+                    if !a.title.isEmpty {
+                        HStack(spacing: 6) {
+                            if let icon = a.icon, UIImage(systemName: icon) != nil { Image(systemName: icon).foregroundStyle(Jungle.leaf).accessibilityHidden(true) }
+                            Text(a.title).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                        }
+                    }
                     Text(a.text).font(.subheadline).foregroundStyle(Jungle.text).fixedSize(horizontal: false, vertical: true)
                     ForEach(Array((a.steps ?? []).enumerated()), id: \.offset) { i, s in
                         Label { Text(s).font(.subheadline).fixedSize(horizontal: false, vertical: true) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.accentText) }
                     }
+                    if let actions = a.actions, !actions.isEmpty { CardButtons(chips: [], actions: actions) }
+                    if let link = a.link, let u = URL(string: link) {
+                        Button { openURL(u) } label: { Label(Grammar.pt(String(localized: "Open", comment: "Ad call-to-action fallback button")), systemImage: "arrow.up.right") }
+                            .font(.subheadline.weight(.semibold)).tint(Jungle.tint)
+                    }
+                    if BrainTuning.askFeedback, let id = a.id, !id.isEmpty, a.kind != "weather", a.kind != "situation" { helpRow(id) }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(12)
@@ -203,6 +242,29 @@ struct BrainAnswerCards: View {
             }
         }
         .textSelection(.enabled)
+    }
+
+    @ViewBuilder private func helpRow(_ id: String) -> some View {
+        if let yes = voted[id] {
+            Text(yes ? Grammar.pt(String(localized: "Glad it helped!", comment: "AI doctor: thanks after 'Yes' feedback"))
+                     : Grammar.pt(String(localized: "Thanks, that helps us improve.", comment: "AI doctor: thanks after 'No' feedback")))
+                .font(.caption).foregroundStyle(Jungle.subtle)
+        } else {
+            HStack(spacing: 8) {
+                Text(Grammar.pt(String(localized: "Did this help?", comment: "AI doctor: feedback question; max 20 chars"))).font(.caption.weight(.semibold)).foregroundStyle(Jungle.subtle)
+                Spacer(minLength: 0)
+                ForEach([true, false], id: \.self) { yes in
+                    Button {
+                        voted[id] = yes
+                        Task { await Brain.answerFeedback(id: id, helped: yes) }
+                    } label: {
+                        Text(yes ? Grammar.pt(String(localized: "Yes", comment: "AI doctor feedback button; short")) : Grammar.pt(String(localized: "No", comment: "AI doctor feedback button; short")))
+                            .font(.caption.weight(.semibold))
+                    }
+                    .buttonStyle(.bordered).buttonBorderShape(.capsule).controlSize(.mini).tint(Jungle.tint)
+                }
+            }
+        }
     }
 }
 
@@ -286,10 +348,10 @@ extension Brain {
     /// Candidates plus what the photos show around the plant (medium, pot, stage, faux, several plants), which kinds
     /// the server used and tips for photos that would firm it up. The scene comes inside the identify reply; only a
     /// reply without it gets a separate /v1/brain/scene call. Cached by every photo's sha256 and kind.
-    static let identifyTimeout: Double = 12
+    static var identifyTimeout: Double { BrainTuning.identifyTimeout }
 
     static func identify(shots: [(BrainPhoto, ShotKind)]) async -> Identified {
-        guard JungleAPI.shared.hasSession, let first = shots.first?.0 else { return Identified(candidates: [], used: [], tips: []) }
+        guard JungleAPI.shared.hasSession, BrainTuning.flag("serverIdentify"), let first = shots.first?.0 else { return Identified(candidates: [], used: [], tips: []) }
         nonisolated struct B: Encodable, Sendable { var photos: [PhotoPart]?; var photo: String?; let lang: String; var sceneV = 2 }
         let lang = PlantSituation.lang
         let parts = shots.prefix(ScanPlan.cap).map { PhotoPart(photo: $0.0.base64, kind: $0.1.rawValue) }
@@ -324,7 +386,7 @@ extension Brain {
         let lang = PlantSituation.lang
         let key = BrainCache.key("scene", photo.sha, lang)
         if let hit: SceneReply = BrainCache.get(key) { return hit.scene }
-        let got: PhotoScene?? = await withTimeout(15) {
+        let got: PhotoScene?? = await withTimeout(BrainTuning.sceneTimeout) {
             guard let d = try? await JungleAPI.shared.sendData("POST", "/v1/brain/scene", body: B(photo: photo.base64, lang: lang)),
                   let r = try? JungleAPI.decoder.decode(SceneReply.self, from: d) else { return nil }
             if r.scene != nil { BrainCache.put(key, d) }
@@ -381,7 +443,7 @@ enum CarePlans {
     static func load(_ plant: Plant) async -> BrainCarePlan? {
         let k = key(plant), old = cached(plant)
         if let old, old.key == k, Date().timeIntervalSince(old.at) < 7 * 86_400 { return old.plan }
-        guard JungleAPI.shared.hasSession, let species = plant.speciesID ?? plant.species?.scientific else { return old?.plan }
+        guard JungleAPI.shared.hasSession, BrainTuning.flag("serverCarePlan"), let species = plant.speciesID ?? plant.species?.scientific else { return old?.plan }
         nonisolated struct B: Encodable { let species, lang: String; let situation: [String: [String]]?; let lat, lon: Double? }
         let sit = PlantSituation.build(plant), at = PlantSituation.coords
         let body = B(species: species, lang: PlantSituation.lang, situation: sit.isEmpty ? nil : sit, lat: at?.lat, lon: at?.lon)
@@ -521,7 +583,7 @@ nonisolated struct PhotoScene: Decodable, Equatable {
         init?(intValue: Int) { nil }
     }
 
-    static let sure = 0.6
+    static var sure: Double { BrainTuning.sceneSure }
     @MainActor var medium: GrowingMedium? { (soil?.confidence ?? 0) >= Self.sure ? soil?.medium.flatMap(GrowingMedium.init(scene:)) : nil }
     var artificial: Bool { (plant?.confidence ?? 0) >= Self.sure && plant?.artificial == true }
     var multiple: Bool { plant?.multiple == true && (plant?.confidence ?? 0) >= Self.sure }

@@ -28,6 +28,7 @@ struct TodayView: View {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 22) {
                         header
+                        ServerCards(surface: "today") { q in JungleBrain.handle(q, plant: nil, plants: plants, in: ctx); path.append(TodayRoute.chat) }
                         if plants.isEmpty { EmptyJungle { ScanRoute.addPlant() } }
                         else {
                             TwoPage {

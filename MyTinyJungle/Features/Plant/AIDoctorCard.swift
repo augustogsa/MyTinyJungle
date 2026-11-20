@@ -33,7 +33,7 @@ struct AIDoctorCard: View {
                     Label { Text(s).font(.subheadline) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.accentText) }
                 }
                 if let ref = a.ref, !ref.isEmpty { feedback(ref) }
-                if let onMorePhoto, let tips = a.tips, !tips.isEmpty { ScanTipsCard(tips: Array(tips.prefix(3)), onPick: onMorePhoto).padding(.top, 4) }
+                if let onMorePhoto, let tips = a.tips, !tips.isEmpty { ScanTipsCard(tips: Array(tips.prefix(BrainTuning.doctorTips)), onPick: onMorePhoto).padding(.top, 4) }
             } else if working {
                 ErtyLoading(text: Grammar.pt(String(localized: "Asking the plant doctor…", comment: "AI doctor loading text")))
             } else {

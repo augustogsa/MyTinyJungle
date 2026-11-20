@@ -49,7 +49,7 @@ func brainConfigDefaults() map[string]any {
 			},
 		},
 		"diagnose": map[string]any{"maxTips": 3},
-		"ask":      map[string]any{"server": true, "localFallback": true, "feedback": true},
+		"ask":      map[string]any{"server": true, "feedback": true},
 		"scan": map[string]any{
 			"cap": 8, "usefulMin": 0.1, "repeatBonus": 0.04, "floor": 0.2,
 			"plans": map[string]any{
@@ -65,7 +65,7 @@ func brainConfigDefaults() map[string]any {
 				},
 			},
 		},
-		"flags": map[string]any{"serverIdentify": true, "serverDiagnose": true, "serverCarePlan": true, "onDeviceVision": true},
+		"flags": map[string]any{"serverIdentify": true, "serverDiagnose": true, "serverCarePlan": true},
 		"cards": []any{},
 	}
 }

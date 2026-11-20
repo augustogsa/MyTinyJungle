@@ -164,7 +164,23 @@ actor JungleAPI {
         if let contentType { req.setValue(contentType, forHTTPHeaderField: "Content-Type") }
         if let accept { req.setValue(accept, forHTTPHeaderField: "Accept") }
         if auth { req.setValue("Bearer \(try await accessToken())", forHTTPHeaderField: "Authorization") }
+        // Install id (no account data): the server picks brain experiment variants by it.
+        req.setValue(Self.deviceHeader, forHTTPHeaderField: "X-MTJ-Device")
         return req
+    }
+
+    nonisolated static let deviceHeader = deviceID
+
+    /// GET with If-None-Match. Returns the status (200 or 304), body and ETag.
+    func getConditional(_ path: String, query: [URLQueryItem] = [], etag: String?, auth: Bool = false) async throws -> (Int, Data, String?) {
+        var req = try await request("GET", path, query: query, body: nil, contentType: nil, auth: auth)
+        if let etag { req.setValue(etag, forHTTPHeaderField: "If-None-Match") }
+        req.cachePolicy = .reloadIgnoringLocalCacheData
+        let data: Data, res: URLResponse
+        do { (data, res) = try await session.data(for: req) } catch { throw APIError.offline }
+        let http = res as? HTTPURLResponse, code = http?.statusCode ?? 0
+        guard code == 200 || code == 304 else { throw APIError.http(code, "http_\(code)") }
+        return (code, data, http?.value(forHTTPHeaderField: "ETag"))
     }
 
     private func rawData(_ method: String, _ path: String, query: [URLQueryItem], body: Data?, contentType: String?, auth: Bool, retried: Bool = false, busyRetried: Bool = false) async throws -> Data {

@@ -182,7 +182,7 @@ struct AddPlantFlow: View {
                     speciesCard.padding(.horizontal, 12).offset(y: -36).padding(.bottom, -36)
                 }
                 if shots.count > 1 { ScanShotStrip(shots: shots).padding(.horizontal, 4) }
-                if let onMorePhoto, !tips.isEmpty { ScanTipsCard(tips: Array(tips.prefix(3)), onPick: onMorePhoto) }
+                if let onMorePhoto, !tips.isEmpty { ScanTipsCard(tips: Array(tips.prefix(BrainTuning.identifyTips)), onPick: onMorePhoto) }
                 step(2, Grammar.pt(String(localized: "Name it", comment: "Add plant result: step title; max 24 chars"))) { nameCard }
                 step(3, Grammar.pt(String(localized: "How it lives", comment: "Plant settings section title; max 24 chars"))) { livesCard }
                 if let read, photo != nil { healthCard(read) }
@@ -229,11 +229,10 @@ struct AddPlantFlow: View {
         .accessibilityLabel(Grammar.pt(String(localized: "Your photo", comment: "VoiceOver: the scanned plant photo on the result screen")))
     }
 
-    /// Plain words for how sure the match is.
+    /// Plain words for how sure the match is: bands and words from the brain config.
     private func sureWords(_ c: Double) -> (String, Color) {
-        c >= 0.8 ? (Grammar.pt(String(localized: "Very likely", comment: "Species match confidence in plain words; max 16 chars")), Jungle.leaf)
-            : c >= 0.5 ? (Grammar.pt(String(localized: "Likely", comment: "Species match confidence in plain words; max 16 chars")), Jungle.leaf)
-            : (Grammar.pt(String(localized: "Could be", comment: "Species match confidence in plain words: low; max 16 chars")), Jungle.sun)
+        let b = BrainTuning.band(c)
+        return (b.words, b.color)
     }
 
     private var speciesCard: some View {
@@ -521,7 +520,7 @@ struct AddPlantFlow: View {
             let bp = parts.first { $0.1 == lead.kind }?.0 ?? parts[0].0
             guard let img = bp.image ?? UIImage(data: data) else { return }
             async let local = PlantVision.read(img, wholePlant: lead.kind == .whole || all.count == 1)
-            async let remote = Brain.withTimeout(12) { await PlantIdentifier.remote(bp.jpeg) }
+            async let remote = Brain.withTimeout(BrainTuning.remoteTimeout) { await PlantIdentifier.remote(bp.jpeg) }
             async let ours = Brain.identify(shots: parts)
             var r = await local
             let scene = await ours
@@ -532,14 +531,16 @@ struct AddPlantFlow: View {
             serverTop = scene.candidates.first?.species.id
             if let sc = scene.scene { setup.apply(sc); sceneOutdoor = sc.isOutdoor; if let o = sc.isOutdoor { outdoor = o } }
             for cand in await remote ?? [] where !rem.contains(where: { $0.species == cand.species }) { rem.append(cand) }
-            let minimum = Task { try? await Task.sleep(for: .seconds(1.6)) }
+            let minimum = Task { try? await Task.sleep(for: .seconds(BrainTuning.minReveal)) }
             _ = await minimum.value
             read = r
             // Photo-based top 3 only: the server first, then on-device matches by name. No fixed fallback list.
             var c = rem
-            for cand in PlantIdentifier.candidates(from: r) where !c.contains(where: { $0.species == cand.species }) { c.append(cand) }
+            if BrainTuning.onDeviceCandidates {
+                for cand in PlantIdentifier.candidates(from: r) where !c.contains(where: { $0.species == cand.species }) { c.append(cand) }
+            }
             unsure = c.isEmpty
-            candidates = Array(c.prefix(3))
+            candidates = Array(c.prefix(BrainTuning.maxCandidates))
             withAnimation(.snappy) {
                 stage = .meet
                 species = candidates.first?.species
