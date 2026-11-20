@@ -141,7 +141,7 @@ def main():
         # Identify (species only: the scene is checked on its own below).
         cases = json.load(open(HERE / "identify.json"))
         t1 = t3 = 0
-        misses, lat, sl = [], [], {}
+        misses, lat, sl, conf = [], [], {}, [0, 0]
         for c in cases:
             t0 = time.time()
             st, r = call(A, "/v1/brain/identify", {"photo": photo(c["file"], fresh=True), "lang": "en", "scene": False})
@@ -150,12 +150,18 @@ def main():
             same = [hit_species(base, g, c["expect"]) for g in got]
             t1 += bool(same[:1] and same[0])
             t3 += any(same[:3])
+            if r.get("confident"):
+                conf[0] += 1; conf[1] += bool(same[:1] and same[0])
             k = sl.setdefault(slice_of(c), [0, 0, 0])
             k[0] += 1; k[1] += bool(same[:1] and same[0]); k[2] += any(same[:3])
             if not (same[:1] and same[0]):
                 misses.append(f"{c['file']} -> {got[:3]}")
         results["identify_top1"], results["identify_top3"] = pct(t1, len(cases)), pct(t3, len(cases))
         print(f"identify  top-1 {t1}/{len(cases)} = {results['identify_top1']:.0%}   top-3 {t3}/{len(cases)} = {results['identify_top3']:.0%}")
+        results["identify_confident_precision"] = pct(conf[1], conf[0])
+        print(f"identify  confident {conf[0]}/{len(cases)}, right {results['identify_confident_precision']:.0%}")
+        if conf[0] and results["identify_confident_precision"] < 0.95:
+            fails.append("confident identify right < 95%")
         for name, (n, a, b) in sorted(sl.items()):
             print(f"   slice {name:11s} n={n:3d}  top-1 {a / n:.0%}  top-3 {b / n:.0%}")
             results[f"identify_{name}_top1"] = a / n

@@ -205,8 +205,32 @@ func parseExt(raw string) []extCand {
 
 // matchExt maps an outside name onto our catalog: exact = the binomial (or an alias) is ours; otherwise the genus
 // entry ("Lithops spp.", "Goeppertia"), the family entry ("Cactaceae"), or the first species of that genus.
+// plantNetSynonyms: accepted names Pl@ntNet uses where our catalog keeps the trade name.
+var plantNetSynonyms = map[string]string{
+	"dracaena reflexa var. angustifolia": "dracaena-marginata", "dracaena marginata": "dracaena-marginata",
+	"sansevieria trifasciata": "sansevieria", "schlumbergera x buckleyi": "schlumbergera", "schlumbergera truncata": "schlumbergera",
+	"epipremnum pinnatum 'aureum'": "epipremnum-aureum", "calathea ornata": "calathea-ornata", "calathea zebrina": "calathea-zebrina",
+	"calathea orbifolia": "goeppertia-orbifolia", "aloe barbadensis": "aloe-vera", "heptapleurum arboricola": "schefflera-arboricola",
+	"curio rowleyanus": "senecio-rowleyanus", "chamaedorea elegans": "chamaedorea",
+}
+
+// plantNetLumps: names Pl@ntNet uses for several of our entries (Dracaena marginata is now D. reflexa var.
+// angustifolia, and Pl@ntNet answers plain D. reflexa for both); our own model picks between them.
+var plantNetLumps = map[string][]string{
+	"dracaena reflexa": {"dracaena-marginata", "dracaena-reflexa"},
+}
+
 func matchExt(c extCand) (sp *species, exact bool) {
 	theBrain.species()
+	full := strings.ToLower(strings.Join(strings.Fields(strings.ReplaceAll(c.Scientific, "×", "x")), " "))
+	if id, ok := plantNetSynonyms[full]; ok {
+		speciesDB.RLock()
+		x := speciesDB.byID[id]
+		speciesDB.RUnlock()
+		if x != nil {
+			return x, true
+		}
+	}
 	bin := strings.ToLower(strings.Join(strings.Fields(strings.ReplaceAll(c.Scientific, "×", ""))[:min(2, len(strings.Fields(c.Scientific)))], " "))
 	genus := strings.ToLower(c.Genus)
 	if genus == "" {

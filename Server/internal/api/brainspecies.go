@@ -324,6 +324,16 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 					fused[c.ID] += 0.35 * c.Score
 				}
 				for _, c := range ext {
+					if ids, ok := plantNetLumps[strings.ToLower(c.Scientific)]; ok {
+						best := ids[0]
+						for _, id := range ids[1:] {
+							if fused[id] > fused[best] {
+								best = id
+							}
+						}
+						fused[best] += 0.65 * c.Confidence
+						continue
+					}
 					sp, exact := matchExt(c)
 					if sp == nil {
 						s.gap(ctx, "identify", "missing "+c.Scientific)
