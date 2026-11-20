@@ -255,7 +255,7 @@ class H(BaseHTTPRequestHandler):
                 es = clip.images(vs[:1])
                 with lock:
                     a = answer(es)
-                if a["candidates"][0]["score"] < SURE:
+                if a["candidates"][0]["score"] < SURE and int(body.get("views", 2)) > 1:
                     es = np.concatenate([es, clip.images(vs[1:])])
                     with lock:
                         a = answer(es)

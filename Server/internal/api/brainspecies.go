@@ -298,6 +298,9 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	// the whole scene in the background when the species is unsure or the quick scene can't tell the medium,
 	// pot or a fake plant; the care-plan or diagnosis that follows then gets it from the cache.
 	mctx, mcancel := context.WithTimeout(ctx, 3*time.Second)
+	if len(ss) > 1 {
+		mctx = context.WithValue(mctx, oneViewKey{}, true)
+	}
 	sc := fuseScene(mctx, ss)
 	ids := fuseSpecies(mctx, ss)
 	mcancel()

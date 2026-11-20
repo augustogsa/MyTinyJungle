@@ -210,9 +210,17 @@ type idResult struct {
 	Scene      map[string]map[string]float64
 }
 
+// oneViewKey on a context: BioCLIP looks at the photo as framed only (multi-photo scans, where the other photos
+// give the closer looks and the CPU budget is shared).
+type oneViewKey struct{}
+
 func askIDRaw(ctx context.Context, jpegB64 string) idResult {
 	var out idResult
-	body, _ := json.Marshal(map[string]string{"photo": jpegB64})
+	in := map[string]any{"photo": jpegB64}
+	if ctx.Value(oneViewKey{}) != nil {
+		in["views"] = 1
+	}
+	body, _ := json.Marshal(in)
 	cctx, cancel := context.WithTimeout(ctx, 25*time.Second)
 	defer cancel()
 	req, _ := http.NewRequestWithContext(cctx, "POST", "http://127.0.0.1:8092/", bytes.NewReader(body))
