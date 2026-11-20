@@ -93,6 +93,7 @@ struct DigestLinkSheet: ViewModifier {
 }
 
 struct DigestView: View {
+    var preset: Digest? = nil
     @State private var digest: Digest?
     @State private var failed: String?
     @State private var loading = true
@@ -146,6 +147,7 @@ struct DigestView: View {
     private func reload() async {
         loading = true
         defer { loading = false }
+        if let preset { digest = preset; failed = nil; return }
         guard JungleAPI.shared.hasSession else { failed = Grammar.pt(String(localized: "Sign in to get your weekly digest.", comment: "Weekly digest when signed out")); return }
         do { digest = try await DigestAPI.load(); failed = nil }
         catch { failed = ServerNotice.message(for: error) ?? Grammar.pt(String(localized: "Couldn't load your week. Pull to try again.", comment: "Weekly digest load error")) }

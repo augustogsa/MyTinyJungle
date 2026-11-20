@@ -34,6 +34,7 @@ enum DemoSeeder {
 
     @MainActor static func seedIfAsked(_ ctx: ModelContext) {
         guard let dir = photoDir else { return }
+        UserDefaults.standard.removeObject(forKey: "openPlantChat")
         try? ctx.delete(model: ChatMessage.self); try? ctx.delete(model: CareEvent.self); try? ctx.delete(model: CareTask.self); try? ctx.delete(model: Plant.self)
         let cal = Calendar.current
         func ago(_ d: Int, _ h: Int = 10) -> Date { cal.date(byAdding: .day, value: -d, to: cal.date(bySettingHour: h, minute: 0, second: 0, of: Date())!)! }

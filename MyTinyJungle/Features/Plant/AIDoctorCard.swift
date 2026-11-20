@@ -9,6 +9,7 @@ struct AIDoctorCard: View {
     var shots: [ScanShot] = []
     /// Reopens the Scan camera on a kind the answer asked for.
     var onMorePhoto: ((ShotKind) -> Void)?
+    var preset: AIDiagnosis? = nil
     @State private var answer: AIDiagnosis?
     @State private var working = false
     @State private var failed: String?
@@ -52,6 +53,7 @@ struct AIDoctorCard: View {
             }
         }
         .sheet(isPresented: $paywall) { PaywallView() }
+        .onAppear { if answer == nil, let preset { answer = preset } }
     }
 
     @ViewBuilder private func feedback(_ ref: String) -> some View {

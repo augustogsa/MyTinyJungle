@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 // Uploads App Store screenshots from Assets/AppStore/screenshots to the editable version, replacing what's there.
 //   node Tools/appstore/shots.mjs [--apply]
-// iphone69 → APP_IPHONE_67 (6.9"), duo → APP_IPHONE_DUO. pt-PT uses the pt-BR shots.
+// iphone69 → APP_IPHONE_67 (6.9"), duo → APP_IPHONE_DUO. Framed shots come from Tools/appstore/frame.py.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { call } from './asc.mjs';
 const apply = process.argv.includes('--apply');
 const ROOT = new URL('../../Assets/AppStore/screenshots/', import.meta.url).pathname;
 const kinds = { iphone69: 'APP_IPHONE_67', duo: 'APP_IPHONE_DUO' };
-const dirFor = { 'en-US': 'en-US', 'pt-BR': 'pt-BR', 'pt-PT': 'pt-BR', 'es-MX': 'es-MX', 'fr-FR': 'fr-FR', 'de-DE': 'de-DE', 'ja': 'ja' };
+const dirFor = { 'en-US': 'en-US', 'pt-BR': 'pt-BR', 'pt-PT': 'pt-PT' };
 const app = (await call('GET', '/apps?filter[bundleId]=com.simpleappscompany.mytinyjungle')).data[0];
 const version = (await call('GET', `/apps/${app.id}/appStoreVersions?limit=5`)).data.find(v => v.attributes.appStoreState === 'PREPARE_FOR_SUBMISSION');
 for (const loc of (await call('GET', `/appStoreVersions/${version.id}/appStoreVersionLocalizations`)).data) {
@@ -32,6 +32,14 @@ for (const loc of (await call('GET', `/appStoreVersions/${version.id}/appStoreVe
       await call('PATCH', `/appScreenshots/${shot.id}`, { data: { type: 'appScreenshots', id: shot.id, attributes: { uploaded: true, sourceFileChecksum: createHash('md5').update(bytes).digest('hex') } } });
       console.log('  ok', f);
     }
+  }
+}
+// Verify: every set COMPLETE with the right count.
+await new Promise(r => setTimeout(r, apply ? 20000 : 0));
+for (const loc of (await call('GET', `/appStoreVersions/${version.id}/appStoreVersionLocalizations`)).data) {
+  for (const s of (await call('GET', `/appStoreVersionLocalizations/${loc.id}/appScreenshotSets`)).data) {
+    const sh = (await call('GET', `/appScreenshotSets/${s.id}/appScreenshots`)).data;
+    console.log('check', loc.attributes.locale, s.attributes.screenshotDisplayType, sh.length, [...new Set(sh.map(x => x.attributes.assetDeliveryState?.state))].join(','), sh.map(x => x.attributes.fileName).join(' '));
   }
 }
 console.log('done');

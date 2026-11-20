@@ -160,6 +160,7 @@ struct RootView: View {
                 Task { await Household.shared.onLocalChange(ctx) }
             }
             .sheet(isPresented: $openHouse) { NavigationStack { SharedJungleView() } }
+            .modifier(DemoShotSheet())
             .task {
                 if Household.demo { try? await Task.sleep(for: .seconds(1.5)); Household.shared.seedDemo(ctx) }
                 await Household.shared.sync(ctx)

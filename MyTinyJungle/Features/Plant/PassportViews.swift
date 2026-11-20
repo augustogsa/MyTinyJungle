@@ -54,6 +54,8 @@ enum PassportAPI {
 /// Share sheet for a plant's passport.
 struct PassportSheet: View {
     let plant: Plant
+    var preset: PassportAPI.Shared? = nil
+    var presetNotes = ""
     @Environment(\.dismiss) private var dismiss
     @State private var notes = ""
     @State private var shared: PassportAPI.Shared?
@@ -91,6 +93,7 @@ struct PassportSheet: View {
                 if let error { Section { Text(error).foregroundStyle(Jungle.warmText) } }
             }
             .scrollContentBackground(.hidden).jungleBackdrop()
+            .onAppear { if shared == nil, let preset { shared = preset; notes = presetNotes } }
             .navigationTitle(Grammar.pt(String(localized: "Plant passport", comment: "Screen title; max 20 chars")))
             .navigationBarTitleDisplayMode(.inline)
             .tint(Jungle.forest)

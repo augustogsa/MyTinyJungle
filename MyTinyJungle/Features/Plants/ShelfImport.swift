@@ -36,6 +36,7 @@ extension Brain {
 struct ShelfImportView: View {
     var initialPhoto: Data? = nil
     var onDone: () -> Void
+    var preset: [Row] = []
     @Environment(\.modelContext) private var ctx
     @Environment(\.dismiss) private var dismiss
     @State private var pick: PhotosPickerItem?
@@ -114,6 +115,7 @@ struct ShelfImportView: View {
                     }
                 }
             }
+            .onAppear { if rows.isEmpty, !preset.isEmpty { rows = preset } }
             .onChange(of: pick) { _, p in Task { if let d = try? await p?.loadTransferable(type: Data.self) { await run(d) } } }
             .task { if let initialPhoto, rows.isEmpty, !working { await run(initialPhoto) } }
             .fullScreenCover(isPresented: $showCamera) { CameraPicker { d in showCamera = false; if let d { Task { await run(d) } } }.ignoresSafeArea() }

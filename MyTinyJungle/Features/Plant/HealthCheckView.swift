@@ -8,6 +8,8 @@ struct HealthCheckView: View {
     @Environment(\.dismiss) private var dismiss
     @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
     let plant: Plant
+    /// Store screenshots: a finished AI doctor answer for the plant's own photo.
+    var demo: AIDiagnosis? = nil
 
     @State private var photo: Data?
     @State private var read: PhotoRead?
@@ -21,8 +23,8 @@ struct HealthCheckView: View {
     private let initialShots: [ScanShot]
     private let onMorePhoto: ((ShotKind) -> Void)?
     @State private var shots: [ScanShot] = []
-    init(plant: Plant, initialPhoto: Data? = nil, initialShots: [ScanShot] = [], onMorePhoto: ((ShotKind) -> Void)? = nil) {
-        self.plant = plant; self.initialPhoto = initialPhoto; self.initialShots = initialShots; self.onMorePhoto = onMorePhoto
+    init(plant: Plant, initialPhoto: Data? = nil, initialShots: [ScanShot] = [], onMorePhoto: ((ShotKind) -> Void)? = nil, demo: AIDiagnosis? = nil) {
+        self.plant = plant; self.demo = demo; self.initialPhoto = initialPhoto; self.initialShots = initialShots; self.onMorePhoto = onMorePhoto
     }
 
     var body: some View {
@@ -35,9 +37,11 @@ struct HealthCheckView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     viewfinder
                     if working { ErtyLoading(text: Grammar.pt(String(localized: "Looking closely…"))) }
+                    if let demo, let photo { AIDoctorCard(photo: photo, plant: plant, preset: demo).padding(16).jungleCard() } else {
                     if let read { result(read) }
                     if read != nil, let photo, BrainTuning.flag("serverDiagnose") { AIDoctorCard(photo: photo, plant: plant, shots: shots, onMorePhoto: onMorePhoto) }
                     pestSection
+                    }
                     if let pest { PestPlanView(pest: pest, plant: plant, neighbours: neighbours) { dismiss() } }
                 }
                 .padding(16)
@@ -55,6 +59,7 @@ struct HealthCheckView: View {
                 if let lead = initialShots.first(where: { $0.kind == .leaf }) ?? initialShots.first { shots = initialShots; analyze(lead.data, keepShots: true) }
                 else if let initialPhoto { analyze(initialPhoto) }
             }
+            .onAppear { if demo != nil, photo == nil, let d = plant.photo { photo = ImageShrinker.jpeg(d) } }
             .onChange(of: pick) { _, item in
                 guard let item else { return }
                 Task { if let d = try? await item.loadTransferable(type: Data.self) { analyze(d) }; pick = nil }
