@@ -328,5 +328,155 @@
   "file": "identify/calathea-zebrina-2.jpg",
   "expect": "calathea-zebrina",
   "source": "File:Calathea zebrina 10zz.jpg"
+ },
+ {
+  "file": "identify/distance-ficus-lyrata-1.jpg",
+  "expect": "ficus-lyrata",
+  "source": "File:Fiddle leaf fig 1.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-ficus-lyrata-2.jpg",
+  "expect": "ficus-lyrata",
+  "source": "File:Fiddle leaf fig 2.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-ficus-lyrata-3.jpg",
+  "expect": "ficus-lyrata",
+  "source": "File:Fiddle Leaf Fig in pot.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-ficus-elastica-1.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Gummibaum (Ficus elastica Robusta).jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-ficus-elastica-2.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Ficus elastica 10zz.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-ficus-elastica-3.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Ficus elastica - Ботаничка градина Скопје (1).jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-ficus-elastica-4.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Fikus guli.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-monstera-deliciosa-1.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "File:Modern faux plant in white pot on a kitchen countertop, enhancing decor.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-monstera-deliciosa-2.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "File:Plantae in Office.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-epipremnum-aureum-1.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "File:Money Plant LKM.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-epipremnum-aureum-2.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "File:Agora AVM'de şeytan sarmaşığı 2.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-epipremnum-aureum-3.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "File:Agora AVM'de şeytan sarmaşığı.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-sansevieria-1.jpg",
+  "expect": "sansevieria",
+  "source": "File:Bed + Snake Plant (Unsplash).jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-sansevieria-2.jpg",
+  "expect": "sansevieria",
+  "source": "File:Sansevieria (51334793198).jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-sansevieria-3.jpg",
+  "expect": "sansevieria",
+  "source": "File:Sansevieria in pot.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-sansevieria-4.jpg",
+  "expect": "sansevieria",
+  "source": "File:Starr 071225-0748 Sansevieria trifasciata.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-zamioculcas-1.jpg",
+  "expect": "zamioculcas",
+  "source": "File:Zamioculcas zamiifolia Chameleon 1.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-zamioculcas-2.jpg",
+  "expect": "zamioculcas",
+  "source": "File:Studio apartment in Finland.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-zamioculcas-3.jpg",
+  "expect": "zamioculcas",
+  "source": "File:Zanzibar gem.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-zamioculcas-4.jpg",
+  "expect": "zamioculcas",
+  "source": "File:Warsaw sunrise (Unsplash).jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-spathiphyllum-1.jpg",
+  "expect": "spathiphyllum",
+  "source": "File:Maseta.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-spathiphyllum-2.jpg",
+  "expect": "spathiphyllum",
+  "source": "File:Peace Lily bloom.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-spathiphyllum-3.jpg",
+  "expect": "spathiphyllum",
+  "source": "File:Ev Bitkisi.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-spathiphyllum-4.jpg",
+  "expect": "spathiphyllum",
+  "source": "File:Flower petal.jpg",
+  "set": "distance"
+ },
+ {
+  "file": "identify/distance-strelitzia-1.jpg",
+  "expect": "strelitzia",
+  "source": "File:CJB-Jardin d'hiver-Strelitzia reginae-Mandela's Gold.jpg",
+  "set": "distance"
  }
 ]

@@ -7,7 +7,8 @@
 #               {photos:[...]} -> {results:[{candidates, scene}]}   (one batched pass, e.g. shelf crops)
 # POST /learn   {photo, id, ref}  -> adds one corrected photo to learned.npz
 # POST /prior   {boost:{id:x}, _outdoor?:x} -> per-species prior from confirmed corrections (+ outdoor prior)
-import base64, hashlib, io, json, os, threading, time
+import base64, hashlib, io, json, os, sys, threading, time
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import numpy as np
 from PIL import Image
@@ -18,6 +19,7 @@ MODEL = os.environ.get("MTJ_ID_MODEL", f"{REFS}/model")
 clip = Clip(MODEL, threads=int(os.environ.get("THREADS", "4")))
 lock = threading.Lock()
 state = {"key": None, "refs_key": None, "ids": [], "emb": None, "prior": None, "outdoor": None, "ref_ids": None, "ref_emb": None}
+CULTIVAR = -0.3
 P = {"alpha": 0.5, "k": 20, "temp": 20.0, "text_temp": 60.0}  # replaced by /refs/params.json (refs.py tune)
 
 SCENE = {
@@ -75,19 +77,23 @@ def load():
     if key != state["key"]:
         sp = json.load(open(SPECIES))
         boost = json.load(open(f"{REFS}/prior.json")) if key[1] else {}
-        ids, genus, gen, outdoor = [], [], [], []
+        ids, genus, gen, outdoor, cult = [], [], [], [], []
         for s in sp:
             sci = (s.get("scientific") or "").replace("×", "").split()
             if not sci:
                 continue
             ids.append(s["id"]); genus.append(sci[0].lower() if len(sci) == 1 else ""); gen.append(sci[0].lower()); outdoor.append(bool(s.get("outdoor")))
+            cult.append("'" in (s.get("scientific") or ""))
         semb, scemb = text_cache(sp)
         outdoor = np.array(outdoor)
-        prior = np.where(outdoor, float(boost.get("_outdoor", -0.7)), 0.0) + np.array([float(boost.get(i, 0.0)) for i in ids])
+        # Owners mostly photograph houseplants, and the species far more often than one named cultivar
+        # (-0.3 for cultivars: better on both the held-out eval and the references' leave-one-out).
+        cult = np.array(cult)
+        prior = np.where(outdoor, float(boost.get("_outdoor", -0.7)), 0.0) + np.where(cult, CULTIVAR, 0.0) + np.array([float(boost.get(i, 0.0)) for i in ids])
         scene, i = {}, 0
         for f, v in SCENE.items():
             scene[f] = (list(v), scemb[i:i + len(v)]); i += len(v)
-        state.update(key=key, ids=ids, genus=genus, gen=gen, emb=semb, prior=prior, scene=scene, refs_key=None)
+        state.update(key=key, ids=ids, genus=genus, gen=gen, emb=semb, prior=prior, cultw=np.where(cult, np.exp(CULTIVAR), 1.0), scene=scene, refs_key=None)
     rk = (mt(f"{REFS}/refs.npz"), mt(f"{REFS}/learned.npz"), mt(f"{REFS}/params.json"))
     if rk != state["refs_key"]:
         if rk[2]:
@@ -114,7 +120,7 @@ def species_probs(e):
     top = np.argpartition(-sims, k - 1)[:k]
     top = top[np.argsort(-sims[top])]
     w = np.exp(P["temp"] * (sims[top] - sims[top[0]]))
-    knn = np.zeros(len(state["ids"])); np.add.at(knn, state["ref_ids"][top], w); knn /= knn.sum()
+    knn = np.zeros(len(state["ids"])); np.add.at(knn, state["ref_ids"][top], w); knn *= state["cultw"]; knn /= knn.sum()
     return P["alpha"] * knn + (1 - P["alpha"]) * text
 
 

@@ -297,7 +297,11 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// 2. Not confident: a free external model, then Claude, named against our list.
-	if len(out) == 0 || out[0].Score < 0.35 {
+	// Scores are spread over 600+ species, so a clear lead over the runner-up counts as much as the raw score.
+	clear := func() bool {
+		return len(out) > 0 && (out[0].Score >= 0.5 || (out[0].Score >= 0.2 && (len(out) == 1 || out[0].Score >= 3*out[1].Score)))
+	}
+	if len(out) == 0 || (out[0].Score < 0.35 && !clear()) {
 		prompt := "Identify this plant. Answer only with JSON: {\"candidates\":[{\"scientific\":\"...\",\"common\":\"...\",\"confidence\":0.0}]} with up to three guesses, most likely first."
 		var raw string
 		if t, ok := geminiText(ctx, in.Photo, prompt); ok {
@@ -340,7 +344,7 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	if len(out) == 0 {
 		s.gap(ctx, "identify", "unknown plant")
 	}
-	confident := len(out) > 0 && out[0].Score >= 0.5
+	confident := clear()
 	depth := "quick"
 	if full {
 		depth = "full"
@@ -348,6 +352,9 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	top := 0.0
 	if len(out) > 0 {
 		top = out[0].Score
+	}
+	if confident {
+		top = max(top, 0.75)
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "confident": confident, "source": source, "scene": sc, "sceneDepth": depth,
 		"used": kindsOf(ss), "tips": photoTips(in.Lang, top, kindsOf(ss), "leaf", "whole", "flower", "stem")})

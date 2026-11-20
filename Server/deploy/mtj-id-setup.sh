@@ -42,6 +42,7 @@ if [[ "$(cat $Q 2>/dev/null)" != "$new" ]]; then
   echo "$new" > $Q; chown mtj:mtj $Q
   u systemctl --user daemon-reload
   u systemctl --user restart mtj-id
-  u podman image prune -af >/dev/null 2>&1 || true  # old images (the torch ones were 3+ GB)
 fi
+# Old mtj-id images only (the torch ones were 3+ GB); never the current tag.
+for old in $(u podman images --format '{{.Repository}}:{{.Tag}}' | grep '^localhost/mtj-id:' | grep -vx "$tag"); do u podman rmi -f "$old" >/dev/null 2>&1 || true; done
 echo "id ok"

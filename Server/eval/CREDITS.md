@@ -135,3 +135,28 @@ All photos from Wikimedia Commons, resized to at most 480 px. Licence as stated 
 | scene/fake-6.jpg | File:Artificial plant.JPG | Pogrebnoj-Alexandroff | CC BY 3.0 |
 | scene/fake-9.jpg | File:Beruru, Bengaluru (2026) 06.jpg | Gpkp | CC BY-SA 4.0 |
 | scene/fake-13.jpg | File:Bush.jpg | deavmi | CC BY-SA 4.0 |
+| identify/distance-ficus-lyrata-1.jpg | File:Fiddle leaf fig 1.jpg | Mokkie | CC BY-SA 3.0 |
+| identify/distance-ficus-lyrata-2.jpg | File:Fiddle leaf fig 2.jpg | Mokkie | CC BY-SA 3.0 |
+| identify/distance-ficus-lyrata-3.jpg | File:Fiddle Leaf Fig in pot.jpg | No machine-readable author provided. Morrisjm assumed (based on copyright claims). | CC BY-SA 3.0 |
+| identify/distance-ficus-elastica-1.jpg | File:Gummibaum (Ficus elastica Robusta).jpg | Maja Dumat | CC BY 2.0 |
+| identify/distance-ficus-elastica-2.jpg | File:Ficus elastica 10zz.jpg | Photo by David J. Stang | CC BY-SA 4.0 |
+| identify/distance-ficus-elastica-3.jpg | File:Ficus elastica - Ботаничка градина Скопје (1).jpg | Dandarmkd | CC BY-SA 4.0 |
+| identify/distance-ficus-elastica-4.jpg | File:Fikus guli.jpg | J.Doniyorovich | CC0 |
+| identify/distance-monstera-deliciosa-1.jpg | File:Modern faux plant in white pot on a kitchen countertop, enhancing decor.jpg | Bhullargraphic | CC BY-SA 4.0 |
+| identify/distance-monstera-deliciosa-2.jpg | File:Plantae in Office.jpg | Ruslan V Albitsky aka Pauk | CC BY-SA 3.0 |
+| identify/distance-epipremnum-aureum-1.jpg | File:Money Plant LKM.jpg | Lakshmikanta Manna | CC BY-SA 4.0 |
+| identify/distance-epipremnum-aureum-2.jpg | File:Agora AVM'de şeytan sarmaşığı 2.jpg | Satirdan kahraman | CC BY-SA 4.0 |
+| identify/distance-epipremnum-aureum-3.jpg | File:Agora AVM'de şeytan sarmaşığı.jpg | Satirdan kahraman | CC BY-SA 4.0 |
+| identify/distance-sansevieria-1.jpg | File:Bed + Snake Plant (Unsplash).jpg | Mark Solarski marksolarski | CC0 |
+| identify/distance-sansevieria-2.jpg | File:Sansevieria (51334793198).jpg | Tom Knight | CC BY-SA 2.0 |
+| identify/distance-sansevieria-3.jpg | File:Sansevieria in pot.jpg | Mokkie | Public domain |
+| identify/distance-sansevieria-4.jpg | File:Starr 071225-0748 Sansevieria trifasciata.jpg | Forest &amp; Kim Starr | CC BY 3.0 |
+| identify/distance-zamioculcas-1.jpg | File:Zamioculcas zamiifolia Chameleon 1.jpg | Dbwolfe | CC BY-SA 4.0 |
+| identify/distance-zamioculcas-2.jpg | File:Studio apartment in Finland.jpg | Aaaatu | CC BY-SA 4.0 |
+| identify/distance-zamioculcas-3.jpg | File:Zanzibar gem.jpg | KKharmony | CC BY-SA 4.0 |
+| identify/distance-zamioculcas-4.jpg | File:Warsaw sunrise (Unsplash).jpg | Sylwia Pietruszka pietruszka | CC0 |
+| identify/distance-spathiphyllum-1.jpg | File:Maseta.jpg | CesarAlbertoHerrera | CC0 |
+| identify/distance-spathiphyllum-2.jpg | File:Peace Lily bloom.jpg | Laksh9 | CC BY 4.0 |
+| identify/distance-spathiphyllum-3.jpg | File:Ev Bitkisi.jpg | Unknown authorUnknown author | CC BY 4.0 |
+| identify/distance-spathiphyllum-4.jpg | File:Flower petal.jpg | Janak Bhatta | CC BY-SA 4.0 |
+| identify/distance-strelitzia-1.jpg | File:CJB-Jardin d'hiver-Strelitzia reginae-Mandela's Gold.jpg | MHM55 | CC BY-SA 4.0 |

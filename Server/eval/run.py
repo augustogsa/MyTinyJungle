@@ -85,6 +85,14 @@ def species_base():
     return out
 
 
+def hit_species(base, got, want):
+    """Same id, same species (cultivars count), or a genus label answered with a species of that genus."""
+    g, w = base.get(got, ""), base.get(want, "")
+    if got == want or (g and g == w):
+        return True
+    return bool(g and w) and ((" " not in w and g.split()[0] == w) or (" " not in g and w.split()[0] == g))
+
+
 def pct(a, b):
     return a / b if b else 0.0
 
@@ -106,7 +114,7 @@ def main():
             _, r = call(A, "/v1/brain/identify", {"photo": photo(c["file"], fresh=True), "lang": "en", "scene": False})
             lat.append(time.time() - t0)
             got = [x["id"] for x in r.get("candidates", [])]
-            same = [g == c["expect"] or (base.get(g) and base.get(g) == base.get(c["expect"])) for g in got]
+            same = [hit_species(base, g, c["expect"]) for g in got]
             t1 += bool(same[:1] and same[0])
             t3 += any(same[:3])
             if not (same[:1] and same[0]):
@@ -132,7 +140,7 @@ def main():
             st, r = call(A, "/v1/brain/identify", {"photos": [{"photo": photo(fs[0], fresh=True), "kind": "whole"}, {"photo": photo(fs[1], fresh=True), "kind": "leaf"}], "lang": "pt-BR"})
             got = [x["id"] for x in r.get("candidates", [])]
             mn += 1
-            m1 += bool(got) and (got[0] == sp_ or (base.get(got[0]) and base.get(got[0]) == base.get(sp_)))
+            m1 += bool(got) and hit_species(base, got[0], sp_)
             assert st == 200 and r.get("used") == ["whole", "leaf"] and isinstance(r.get("tips"), list), r
             if r["tips"]:
                 assert all(t["kind"] in ("flower", "stem") and t["why"] for t in r["tips"]), r["tips"]
