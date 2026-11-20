@@ -103,7 +103,7 @@ func sceneSchema() map[string]any {
 	}
 	n := func(maxV int) map[string]any { return map[string]any{"type": "integer", "minimum": 0, "maximum": maxV} }
 	list := func(k string, maxN int) map[string]any {
-		return map[string]any{"type": "array", "maxItems": maxN, "items": map[string]any{"type": "string", "enum": sceneEnums[k]}}
+		return map[string]any{"type": "array", "maxItems": maxN, "uniqueItems": true, "items": map[string]any{"type": "string", "enum": sceneEnums[k]}}
 	}
 	props := map[string]any{
 		"leaf_problems": map[string]any{"type": "string", "maxLength": 160},
@@ -115,10 +115,37 @@ func sceneSchema() map[string]any {
 		"pot": e("material"), "drainage_hole": e("yesno"), "pot_cm": n(120), "roots_out": e("yesno"), "cachepot": e("yesno"),
 		"medium": e("medium"), "moisture": e("moisture"), "surface": list("surface", 4),
 		"light": e("source"), "direct_sun": e("yesno"), "window": e("windowDistance"), "facing": e("facing"), "brightness": e("intensity"),
-		"room": e("room"), "near": list("near", 4), "air": e("humidity"),
+		"room": e("room"), "near": list("near", 3), "air": e("humidity"),
 	}
-	order := []string{"leaf_problems", "issues", "fake_plant", "several_plants", "height_cm", "leaf_count", "stage", "pot", "drainage_hole", "pot_cm", "roots_out", "cachepot", "medium", "moisture", "surface", "light", "direct_sun", "window", "facing", "brightness", "room", "near", "air"}
-	return map[string]any{"type": "object", "properties": props, "required": order}
+	order := []string{"fake_plant", "medium", "pot", "drainage_hole", "cachepot", "moisture", "room", "light", "direct_sun", "window", "brightness", "facing", "several_plants", "stage", "height_cm", "leaf_count", "pot_cm", "roots_out", "leaf_problems", "issues", "surface", "near", "air"}
+	return map[string]any{"type": "object", "properties": ordered{order, props}, "required": order}
+}
+
+// ordered marshals properties in the given order: llama.cpp's grammar writes keys in schema order, so the
+// fields that change care most come first and a long answer can never crowd them out.
+type ordered struct {
+	keys []string
+	m    map[string]any
+}
+
+func (o ordered) MarshalJSON() ([]byte, error) {
+	var b bytes.Buffer
+	b.WriteByte('{')
+	for i, k := range o.keys {
+		if i > 0 {
+			b.WriteByte(',')
+		}
+		kb, _ := json.Marshal(k)
+		vb, err := json.Marshal(o.m[k])
+		if err != nil {
+			return nil, err
+		}
+		b.Write(kb)
+		b.WriteByte(':')
+		b.Write(vb)
+	}
+	b.WriteByte('}')
+	return b.Bytes(), nil
 }
 
 const scenePrompt = `Look at this plant photo and fill the JSON. leaf_problems: one short sentence on visible problems (yellow, brown tips, spots, crispy, mushy, holes, webbing, insects, white fuzz, wilting) or "healthy". issues: up to 3 visible problems and where. Numbers are estimates, 0 when you cannot tell. Use "unknown" whenever the photo does not show it; never guess the window direction unless the sun's position makes it obvious. drainage_hole only if the pot's base is visible. fake_plant: yes only for plastic or silk plants. cachepot: a decorative outer pot holding an inner pot. medium: "water" when the plant or cutting stands in water (glass, jar, vase, roots in water, no soil), "leca" for round clay balls, "pon" for small mineral granules, "sphagnum" for moss, "mounted" on bark or a board, "terrarium" inside a closed glass case, "ground" planted in a garden bed, "chunky" for bark-rich aroid mix, "cactus" for gritty mix, else "soil". near: only things visible in the photo.`
@@ -152,7 +179,7 @@ type vlmScene struct {
 func askVLMScene(ctx context.Context, jpegB64 string) (vlmScene, bool) {
 	var v vlmScene
 	body, _ := json.Marshal(map[string]any{
-		"max_tokens": 260, "temperature": 0,
+		"max_tokens": 420, "temperature": 0,
 		"response_format": map[string]any{"type": "json_schema", "json_schema": map[string]any{"schema": sceneSchema()}},
 		"messages": []any{map[string]any{"role": "user", "content": []any{
 			map[string]any{"type": "image_url", "image_url": map[string]string{"url": "data:image/jpeg;base64," + jpegB64}},
