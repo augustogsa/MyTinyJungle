@@ -27,6 +27,7 @@ Description=MyTinyJungle plant ID (BioCLIP)
 Image=$tag
 ContainerName=mtj-id
 PublishPort=127.0.0.1:8092:8080
+Environment=THREADS=8
 Volume=$M/hf:/models/hf:Z
 Volume=$M/species:/species:ro,Z
 Volume=$M/refs:/refs:Z

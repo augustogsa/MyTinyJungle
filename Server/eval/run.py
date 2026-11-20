@@ -25,10 +25,22 @@ class UConn(http.client.HTTPConnection):
         self.sock.connect(SOCK)
 
 
+EMAIL, FRESH = {}, {}
+
+
 def call(tok, path, body=None, method="POST", retry=True):
+    tok = FRESH.get(tok, tok)
     st, r = _call(tok, path, body, method)
+    if st == 401 and tok in EMAIL:  # access tokens are short-lived; the full eval outlasts them
+        new = token(EMAIL[tok])
+        for k, v in list(FRESH.items()):
+            if v == tok:
+                FRESH[k] = new
+        FRESH[tok] = new
+        tok = new
+        st, r = _call(tok, path, body, method)
     if st == 429 and retry:  # daily quota: the eval users are throwaway, reset theirs and go on
-        psql("delete from api_quota where subject in (select 'u:' || id::text from users where email like 'ieval-%@mytinyjungle.test')")
+        psql("delete from api_quota where subject in (select 'u:' || id::text from users where email like 'ieval-%@mytinyjungle.test' union all select 'd:00000000-0000-4000-8000-' || right(id::text, 12) from users where email like 'ieval-%@mytinyjungle.test')")
         st, r = _call(tok, path, body, method)
     return st, r
 
@@ -59,7 +71,9 @@ def api_env():
 
 
 def token(email):
-    return subprocess.run(env=api_env(), args=["runuser", "-u", "mtj-api", "-g", "nobody", "-G", "mtj-api", "--", "/opt/mtj/bin/mtj-api", "test-token", email], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, check=True).stdout.strip()
+    t = subprocess.run(env=api_env(), args=["runuser", "-u", "mtj-api", "-g", "nobody", "-G", "mtj-api", "--", "/opt/mtj/bin/mtj-api", "test-token", email], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, check=True).stdout.strip()
+    EMAIL[t] = email
+    return t
 
 
 def photo(f, fresh=False):
@@ -70,7 +84,7 @@ def photo(f, fresh=False):
     return base64.b64encode(b).decode()
 
 
-def q(xs, p):
+def quant(xs, p):
     s = sorted(xs)
     return s[min(len(s) - 1, int(len(s) * p))] if s else 0
 
@@ -111,9 +125,9 @@ def main():
         misses, lat = [], []
         for c in cases:
             t0 = time.time()
-            _, r = call(A, "/v1/brain/identify", {"photo": photo(c["file"], fresh=True), "lang": "en", "scene": False})
+            st, r = call(A, "/v1/brain/identify", {"photo": photo(c["file"], fresh=True), "lang": "en", "scene": False})
             lat.append(time.time() - t0)
-            got = [x["id"] for x in r.get("candidates", [])]
+            got = [x["id"] for x in r.get("candidates") or []] if st == 200 else ["http %d %s" % (st, r.get("error", ""))]
             same = [hit_species(base, g, c["expect"]) for g in got]
             t1 += bool(same[:1] and same[0])
             t3 += any(same[:3])
@@ -123,7 +137,7 @@ def main():
         print(f"identify  top-1 {t1}/{len(cases)} = {results['identify_top1']:.0%}   top-3 {t3}/{len(cases)} = {results['identify_top3']:.0%}")
         for m in misses:
             print("   miss", m)
-        results["identify_p50"], results["identify_p95"] = q(lat, 0.5), q(lat, 0.95)
+        results["identify_p50"], results["identify_p95"] = quant(lat, 0.5), quant(lat, 0.95)
         t0 = time.time(); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en"}); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en"})
         print(f"identify  latency p50 {results['identify_p50'] * 1000:.0f} ms  p95 {results['identify_p95'] * 1000:.0f} ms (uncached)   cached {(time.time() - t0) * 500:.0f} ms")
         st, r = call(A, "/v1/brain/identify", {"photo": photo(cases[1]["file"], fresh=True), "lang": "en"})

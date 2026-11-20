@@ -303,11 +303,22 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	}
 	if len(out) == 0 || (out[0].Score < 0.35 && !clear()) {
 		prompt := "Identify this plant. Answer only with JSON: {\"candidates\":[{\"scientific\":\"...\",\"common\":\"...\",\"confidence\":0.0}]} with up to three guesses, most likely first."
+		// Hard budget: the app shows our own top 3 rather than wait; the answer is cached per photo either way.
 		var raw string
-		if t, ok := geminiText(ctx, in.Photo, prompt); ok {
-			raw, source = t, "free"
-		} else if t, ok := s.claudeText(ctx, in.Photo, prompt); ok {
-			raw, source = t, "claude"
+		ek := answerKey("idext", fmt.Sprintf("%x", photoKey(in.Photo)))
+		if v, ok := answers.get(ek); ok {
+			raw, source = v.([2]string)[0], v.([2]string)[1]
+		} else {
+			ectx, ecancel := context.WithTimeout(ctx, 1200*time.Millisecond)
+			if t, ok := geminiText(ectx, in.Photo, prompt); ok {
+				raw, source = t, "free"
+			} else if t, ok := s.claudeText(ectx, in.Photo, prompt); ok {
+				raw, source = t, "claude"
+			}
+			ecancel()
+			if raw != "" {
+				answers.put(ek, [2]string{raw, source})
+			}
 		}
 		if i, j := strings.Index(raw, "{"), strings.LastIndex(raw, "}"); i >= 0 && j > i {
 			var g struct {
