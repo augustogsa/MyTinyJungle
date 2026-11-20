@@ -32,39 +32,37 @@ def I(name, size=40, lazy=True):
 
 
 # Scene per chapter: (plant photo, app screen). Index 0 is the hero.
-SCENES = [("monstera", "today1"), ("echeveria", "today-ring"), ("pothos", "plant"), ("basil", "jungle-chat"),
-          ("peacelily", "care-week"), ("orchid", "scan-result"), ("snake", "share-home"), ("zz", "me")]
+SCENES = [("monstera", "01-notes"), ("pothos", "02-jungle"), ("snake", "09-digest"), ("peacelily", "03-season"),
+          ("orchid", "04-doctor"), ("basil", "05-identify"), ("zz", "08-household"), ("echeveria", "14-plus")]
 
 H = {
  "en": {
   "h1": "Plant care that knows your home.",
-  "lead": "Other apps water on a timer. My Tiny Jungle works out each plant's care from your weather, your heating, the light in each room, its pot and how its soil really dries. Then your plants tell you, in their own words.",
+  "lead": "Forget “water every 7 days”. My Tiny Jungle looks at your weather, your rooms, the pot and how fast the soil really dries, and works out what each plant needs. Then your plants just text you.",
   "cta": "Join the beta on TestFlight",
-  "note": "Free for up to 5 plants. Your photos stay on your phone.",
+  "note": "Free for up to 5 plants. No card, no catch.",
   "stage_alt": "My Tiny Jungle on iPhone",
   "chapters": [
-   {"id": "today", "h": "Today, a calm morning check", "p": "Open the app and see who needs you, who is thriving and what is coming up. Most days it simply says everyone is happy.",
-    "list": [("wateringCan", "Care cards for each plant that needs you, done in one tap"), ("healthShield", "A health ring: thriving, okay or asking for you"),
-             ("drop", "Next sips: who will be thirsty next"), ("autumnLeaf", "What this season means inside your home"), ("sprout", "A one-minute lesson to grow your green thumb")],
-    "thumbs": [("today-ring", "Jungle health"), ("conversations", "What they say")]},
-   {"id": "plants", "h": "Every plant has a page", "p": "Your whole jungle in one grid, each with a name, a photo and a little status. Open one and its life is there.",
-    "big": ["Water", "Feed", "Repot", "Check"], "big_note": "The four things plants need most, always at the top of their page, with the next two weeks of care below.",
-    "thumbs": [("plants", "My plants"), ("timeline", "Your life together"), ("profile", "Personality, room and pot")]},
-   {"id": "talk", "h": "Talk to them. They answer.", "p": "Type it like a text to a friend: “watered Monty and Pesto”. The app takes note and your plants reply in their own voices. Try it here.",
-    "chat": True, "thumbs": [("jungle-chat", "The whole jungle"), ("plant-chat", "One to one")]},
-   {"id": "care", "h": "A plan for your home and season", "p": "Your week, your month and the year ahead, planned around how your plants really live. Feel the soil, tell the app, and it learns how fast each plant dries in your home.",
-    "thumbs": [("care-week", "This week"), ("care-calendar", "The month"), ("care-season", "Seasons"), ("travel", "Going away"), ("howto", "How-to guides")],
-    "list": [("travel", "Going away: who is fine, who needs a deep drink, who needs a sitter"), ("seedling", "Cuttings followed from the water glass to a new plant"),
-             ("pot", "Step-by-step guides: watering, pruning, repotting, pests")]},
-   {"id": "scan", "h": "Scan a label in the shop", "p": "Standing in the garden centre? Point at a fertiliser, soil or treatment and see which of your plants it suits, and how and when to use it. Or scan a new plant, or a sick leaf.",
-    "list": [("fertilizer", "A verdict from each of your plants on that bottle"), ("pottedPlant", "Meet a new plant and get its care plan straight away"), ("firstAid", "Show a sick leaf and get kind, clear next steps")],
-    "thumbs": [("scan", "Scan anything"), ("scan-result", "Verdicts"), ("health", "Health check")]},
-   {"id": "share", "h": "Share your jungle", "p": "Living with a partner, family or housemates? Invite them and care for the same plants together. Turns are shared fairly, everyone sees what was done, and nobody waters twice.",
-    "list": [("gift", "Invite in one tap: by link, email or message"), ("calendarHeart", "Fair turns: whoever didn't water last time goes next"), ("careHands", "Cover for each other: busy or away? Someone says I've got it")],
-    "thumbs": [("share-home", "Our jungle"), ("share-turns", "Who looks after what"), ("share-invite", "Invite someone")]},
-   {"id": "me", "h": "Your jungle, growing with you", "p": "Plants, happy plants, care moments and years together. Rooms and spaces, cuttings and milestones, from your first plant to an all-happy jungle.",
-    "list": [("livingRoom", "Living room, kitchen, balcony: who lives where"), ("award", "Milestones that make care feel like a joy")],
-    "thumbs": [("me", "Me")]},
+   {"id": "talk", "h": "Tell them what you did. They'll answer.", "p": "Just type it like you'd text a friend: “watered Monty and Pesto”. That's it, it's logged. And yes, they reply, each in their own little voice. Go on, try it:",
+    "chat": True, "thumbs": [("02-jungle", "The whole jungle"), ("10-chat", "Just you and Monty")]},
+   {"id": "week", "h": "Your whole week, in one look", "p": "What's coming up, who needs a bit of love, who just popped a new leaf, and what the weather's about to do to your pots. There's a widget too, so you don't even have to open the app.",
+    "list": [("calendar", "Coming up: every watering and feed for the next few days"), ("growth", "Look who grew: a new leaf gets a little party"), ("sun", "Weather ahead: a hot, dry week means checking pots sooner")],
+    "thumbs": [("09-digest", "Your week"), ("11-widgets", "Widgets")]},
+   {"id": "care", "h": "It knows what season it is. At your place.", "p": "Autumn in Lisbon isn't autumn in São Paulo. Care follows your season, your hemisphere and your rooms, so they drink less while they rest and eat when they grow. Off on a trip? It tells you who'll be fine and who needs a sitter.",
+    "list": [("autumnLeaf", "Seasons: what this month means for your plants"), ("travel", "Going away: who'll be fine and who needs a hand"), ("pot", "How-to guides: watering, pruning, cuttings, repotting")],
+    "thumbs": [("03-season", "Seasons"), ("07-away", "Going away"), ("13-guides", "How-to guides")]},
+   {"id": "doctor", "h": "Yellow leaves? Let's figure it out.", "p": "Snap the leaf that's worrying you. You'll see what's probably going on, why it happened, and a few easy steps to fix it. Like asking your friend who's great with plants.",
+    "list": [("firstAid", "What's wrong, in plain words"), ("drop", "Why it happened, from that plant's real care"), ("healthShield", "Short steps you can do today")],
+    "thumbs": [("04-doctor", "Health check")]},
+   {"id": "shop", "h": "New plants? Snap the whole shelf.", "p": "Back from the garden centre with a full bag? One photo and every plant on the shelf gets its name and care plan. Holding a bag of fertiliser in the shop? Scan it and see which of your plants will love it.",
+    "list": [("sprout", "One photo names every plant"), ("fertilizer", "Scan a label, get a verdict for each plant"), ("pottedPlant", "New plants arrive with their care ready")],
+    "thumbs": [("05-identify", "Shelf photo"), ("06-scan", "Label scan")]},
+   {"id": "share", "h": "Share the jungle. Nobody waters twice.", "p": "Live with a partner, family or housemates? Everyone looks after the same plants, turns go to whoever did least, and when you're busy someone just says “I've got it”. Proud of a plant? Share its passport with a link or QR code.",
+    "list": [("careHands", "Fair turns, all month long"), ("calendarHeart", "Busy or away? Someone takes over"), ("gift", "Plant passport: a care card anyone can open")],
+    "thumbs": [("08-household", "Our jungle"), ("12-passport", "Plant passport")]},
+   {"id": "grow", "h": "Free to start. Room to grow.", "p": "Five plants are free, forever. When your windowsill turns into a jungle, Greenhouse and Jungle unlock unlimited plants, the plant doctor, the label scanner, and no ads.",
+    "list": [("pottedPlant", "Unlimited plants"), ("firstAid", "Plant doctor and label scanner"), ("celebrate", "No ads, ever")],
+    "thumbs": [("14-plus", "Plans")]},
   ],
   "pills": [("soilTest", "No more guessing when to water"), ("chat", "Plants with real personalities"), ("calendarHeart", "Gentle reminders, never nagging"), ("healthShield", "Early help when one struggles"), ("homeLeaf", "Grown for real homes")],
   "cards": {"today": [("wateringCan", "Care in one tap", "Water, feed, mist or check the soil straight from Today."), ("calendar", "Coming up, at a glance", "Know what's next before anyone droops."), ("celebrate", "Little wins, celebrated", "Streaks and milestones make care feel like a joy.")],
@@ -121,11 +119,11 @@ H = {
   "smart": [("628", "species", "Known by name, each with its own care rhythm"), ("27", "pests", "Spotted early, with a calm plan for each"), ("45", "symptoms", "Yellow leaves, brown tips, droop: read and explained"),
             ("Daily", "", "Every plant's plan is worked out again each day, never a fixed countdown"), ("Your pots", "", "Soil checks teach it how fast each pot really dries"), ("Weather", "", "Rain skips the balcony, frost and heatwaves warn you the day before"),
             ("Seasons", "", "Rest and growth follow your hemisphere, so July is right in Lisbon and São Paulo"), ("Rooms", "", "Light, heating and air-con of each room change the advice"), ("Turns", "", "Shared homes get fair turns, cover when you travel and no double watering"),
-            ("Voices", "", "Every nudge comes with its real reason, in the plant's own personality"), ("Pets & kids", "", "Clear warnings for plants that aren't safe to nibble"), ("Private", "", "Photos, readings and notes stay on your iPhone")],
+            ("Voices", "", "Every nudge comes with its real reason, in the plant's own personality"), ("Pets & kids", "", "Clear warnings for plants that aren't safe to nibble"), ("Private", "", "Your jungle is yours. We never sell your data")],
   "faq": [("Can I share my plants with someone?", "Yes. Invite your partner, family or housemates and you all look after the same jungle, with fair turns and no double watering."), ("Do I need to know anything about plants?", "Not at all. Add a plant with a photo or its name and the app fills in the rest, in plain, friendly words."), ("Who is Erty?", "Erty is the little leaf on the app icon and your plants' best friend. Erty greets you when you start, asks a few easy questions about your home and sets everything up for you."),
           ("Is it really free?", "Yes. Up to 5 plants with chat, care requests and reminders, forever, supported by ads. Greenhouse and Jungle are optional and remove the ads."),
           ("Does it speak Portuguese?", "Yes. The app and your plants speak English and Portuguese."),
-          ("Where do my plant photos go?", "Nowhere. Photos, scans and notes stay on your phone, and you do not need an account."),
+          ("Where do my plant photos go?", "They stay on your phone. When you ask the app to name a plant or check a leaf, that photo is sent once and not kept. Sign in, and your jungle syncs to your account so it's the same on every phone."),
           ("Where does the advice come from?", "From a carefully reviewed plant library. When the app is not sure, it says so."),
           ("I missed a week. Now what?", "Your plants are simply happy you are back, and tell you what to do first."),
           ("Will it nag me?", "No. One gentle note a day at most, with quiet hours, and you can snooze anything."),
@@ -134,33 +132,31 @@ H = {
  },
  "pt": {
   "h1": "Suas plantas bem cuidadas, do jeitinho da sua casa.",
-  "lead": "Esquece aquele lembrete genérico de sete em sete dias. O My Tiny Jungle olha o clima da sua cidade, a luz de cada cômodo, o vaso e a terra pra te avisar do que cada planta precisa, na hora certa.",
+  "lead": "Esquece aquele lembrete de sete em sete dias. O My Tiny Jungle olha o clima daí, cada cômodo, o vaso e quanto a terra leva pra secar de verdade, e descobre o que cada planta precisa. Aí suas plantas mesmo te mandam mensagem.",
   "cta": "Quero testar de graça",
-  "note": "De graça pra até 5 plantas. Suas fotos ficam só no seu celular.",
+  "note": "De graça pra até 5 plantas. Sem cartão, sem pegadinha.",
   "stage_alt": "Tela do My Tiny Jungle no iPhone",
   "chapters": [
-   {"id": "today", "h": "Tudo o que importa hoje, numa tela só", "p": "Quem tá com sede, quem tá de boa e o que vem por aí. Nada de listona de tarefas: só o que faz diferença no seu dia.",
-    "list": [("wateringCan", "Um cartão por planta, resolvido num toque"), ("healthShield", "A saúde de cada planta num anel: ótima, bem ou pedindo socorro"),
-             ("drop", "Próximas regas, na ordem de quem vai precisar primeiro"), ("autumnLeaf", "O que a estação do ano muda dentro de casa"), ("sprout", "Uma dica rapidinha por dia pra você pegar o jeito")],
-    "thumbs": [("today-ring", "Saúde da selva"), ("conversations", "Recados das plantas")]},
-   {"id": "plants", "h": "Cada planta com a sua página", "p": "Todas as suas plantas num lugar só, com foto, nome e como elas tão. Toca numa e vê a história inteirinha dela.",
-    "big": ["Regar", "Adubar", "Vaso", "Saúde"], "big_note": "O que você mais usa fica sempre lá em cima. Logo embaixo, os cuidados das próximas duas semanas.",
-    "thumbs": [("plants", "Suas plantas"), ("timeline", "Histórico"), ("profile", "Perfil, cômodo e vaso")]},
-   {"id": "talk", "h": "Bate-papo com as suas plantas", "p": "Conta o que você fez como se mandasse mensagem: “reguei a Costelinha e o Pesto”. O app anota tudo e cada planta responde do jeitinho dela. Testa aí:",
-    "chat": True, "thumbs": [("jungle-chat", "Conversa com todas"), ("plant-chat", "Conversa com uma")]},
-   {"id": "care", "h": "Uma agenda que aprende com a sua casa", "p": "Semana, mês e estações planejados com base no que rola de verdade. Põe o dedo na terra, conta pro app, e ele aprende quanto tempo cada vaso leva pra secar.",
-    "thumbs": [("care-week", "Semana"), ("care-calendar", "Mês"), ("care-season", "Estações"), ("travel", "Viagem"), ("howto", "Guias")],
-    "list": [("travel", "Modo viagem: quem aguenta firme, quem precisa de uma rega caprichada antes e quem precisa de alguém dando uma olhada"), ("seedling", "Mudas acompanhadas da água até o vaso"),
-             ("pot", "Guias fáceis de rega, poda, troca de vaso e pragas")]},
-   {"id": "scan", "h": "Na dúvida na loja? Escaneia o rótulo", "p": "Aponta a câmera pro adubo, substrato ou remédio e descobre na hora pra quais plantas ele serve, quanto usar e quando. Funciona também com planta nova e folha esquisita.",
-    "list": [("fertilizer", "Resposta clara para cada planta: serve ou não serve"), ("pottedPlant", "Planta nova já entra com o plano de cuidados pronto"), ("firstAid", "Folha esquisita? Tira uma foto e vê o que fazer")],
-    "thumbs": [("scan", "Escanear"), ("scan-result", "Resultado"), ("health", "Saúde")]},
-   {"id": "share", "h": "Cuida junto com quem mora com você", "p": "Chama a família, o mozão ou quem divide a casa. Todo mundo vê as mesmas plantas, a vez de cada um é dividida de um jeito justo e ninguém rega a mesma planta duas vezes.",
-    "list": [("gift", "Convite por link, e-mail ou mensagem"), ("calendarHeart", "Rodízio justo: quem não regou da última vez é o próximo"), ("careHands", "Vai viajar? Alguém segura as pontas pra você")],
-    "thumbs": [("share-home", "Casa compartilhada"), ("share-turns", "Quem cuida de quem"), ("share-invite", "Convidar")]},
-   {"id": "me", "h": "Veja o quanto você evoluiu", "p": "Quantas plantas, quantas tão felizes, quantos cuidados e quanto tempo juntos. Das primeiras mudinhas a uma casa cheia de verde.",
-    "list": [("livingRoom", "Plantas organizadas por cômodo"), ("award", "Conquistas que fazem o cuidado virar hábito")],
-    "thumbs": [("me", "Seu perfil")]},
+   {"id": "talk", "h": "Conta o que você fez. Elas respondem.", "p": "Escreve como se mandasse mensagem pra uma amiga: “reguei a Costelinha e o Pesto”. Pronto, tá anotado. E sim, cada uma responde do jeitinho dela. Testa aí:",
+    "chat": True, "thumbs": [("02-jungle", "A selva toda"), ("10-chat", "Papo com uma planta")]},
+   {"id": "week", "h": "Sua semana toda numa olhada", "p": "O que vem por aí, quem tá precisando de um carinho, quem soltou folha nova e o que o tempo vai aprontar com os vasos. E tem widget, pra você nem precisar abrir o app.",
+    "list": [("calendar", "Vem aí: todas as regas e adubos dos próximos dias"), ("growth", "Olha quem cresceu: folha nova vira festa"), ("sun", "Previsão: semana quente e seca, vaso conferido mais cedo")],
+    "thumbs": [("09-digest", "Sua semana"), ("11-widgets", "Widgets")]},
+   {"id": "care", "h": "Ele sabe que estação é. Aí na sua casa.", "p": "Outono em Lisboa não é outono em São Paulo. Os cuidados seguem a sua estação, o seu hemisfério e cada cômodo: menos água quando elas descansam, adubo quando crescem. Vai viajar? Ele te fala quem aguenta firme e quem precisa de alguém de olho.",
+    "list": [("autumnLeaf", "Estações: o que o mês muda pras suas plantas"), ("travel", "Viagem: quem fica de boa e quem precisa de ajuda"), ("pot", "Guias: rega, poda, muda e troca de vaso")],
+    "thumbs": [("03-season", "Estações"), ("07-away", "Viagem"), ("13-guides", "Guias")]},
+   {"id": "doctor", "h": "Folha amarelando? Bora descobrir.", "p": "Tira uma foto da folha que tá te preocupando. Você fica sabendo o que provavelmente tá rolando, por quê, e uns passos simples pra resolver. Tipo perguntar praquela amiga que manja de planta.",
+    "list": [("firstAid", "O problema, explicado sem complicação"), ("drop", "O porquê, pelos cuidados reais da planta"), ("healthShield", "Passos curtinhos pra fazer hoje mesmo")],
+    "thumbs": [("04-doctor", "Saúde")]},
+   {"id": "shop", "h": "Planta nova? Tira foto da estante toda.", "p": "Chegou da floricultura com a sacola cheia? Uma foto e cada planta da estante ganha nome e cuidados. Tá na loja com um saco de adubo na mão? Escaneia e vê quais plantas vão curtir.",
+    "list": [("sprout", "Uma foto descobre todas as plantas"), ("fertilizer", "Escaneia o rótulo e vê o que serve pra cada uma"), ("pottedPlant", "Planta nova já chega com os cuidados prontos")],
+    "thumbs": [("05-identify", "Estante"), ("06-scan", "Rótulo")]},
+   {"id": "share", "h": "Divide a selva. Ninguém rega duas vezes.", "p": "Mora com o mozão, a família ou com amigos? Todo mundo cuida das mesmas plantas, a vez vai pra quem cuidou menos e, se você tá na correria, alguém fala “deixa comigo”. Morrendo de orgulho de uma planta? Compartilha o passaporte dela por link ou QR code.",
+    "list": [("careHands", "Rodízio justo o mês todo"), ("calendarHeart", "Tá corrido ou viajando? Alguém assume"), ("gift", "Passaporte da planta: um cartão de cuidados que qualquer um abre")],
+    "thumbs": [("08-household", "Nossa selva"), ("12-passport", "Passaporte")]},
+   {"id": "grow", "h": "Começa de graça. Cresce quando quiser.", "p": "Cinco plantas são de graça pra sempre. Quando a janela virar uma selva, o Estufa e o Selva liberam plantas ilimitadas, o doutor de plantas, o leitor de rótulos e nada de anúncio.",
+    "list": [("pottedPlant", "Plantas ilimitadas"), ("firstAid", "Doutor de plantas e leitor de rótulos"), ("celebrate", "Zero anúncio")],
+    "thumbs": [("14-plus", "Planos")]},
   ],
   "pills": [("soilTest", "Rega na hora certa, sem adivinhação"), ("chat", "Plantas com personalidade"), ("calendarHeart", "Lembretes na medida"), ("healthShield", "Ajuda logo no primeiro sinal"), ("homeLeaf", "Feito para a sua casa")],
   "cards": {"today": [("wateringCan", "Cuidado em um toque", "Rega, aduba ou confere a terra direto da tela inicial."), ("calendar", "O que vem pela frente", "Fica sabendo antes de qualquer planta sofrer."), ("celebrate", "Conquistas", "Sequências e marcos que deixam o cuidado mais leve.")],
@@ -217,11 +213,11 @@ H = {
   "smart": [("628", "espécies", "Reconhecidas pelo nome, cada uma com seu ritmo de cuidado"), ("27", "pragas", "Descobertas cedo, com um plano pra cada uma"), ("45", "sintomas", "Folha amarela, ponta marrom, planta murcha: tudo explicado"),
             ("Todo dia", "", "O plano de cada planta é recalculado diariamente, nunca uma contagem fixa"), ("Seus vasos", "", "O teste da terra ensina quanto tempo cada vaso leva pra secar"), ("Clima", "", "Choveu? A varanda não precisa de rega. Geada e calorão, o app avisa um dia antes"),
             ("Estações", "", "Descanso e crescimento seguem o seu hemisfério: julho é inverno em São Paulo"), ("Cômodos", "", "Luz, aquecedor e ar-condicionado de cada cômodo mudam a recomendação"), ("Rodízio", "", "Casa compartilhada com vez justa, cobertura nas viagens e sem rega em dobro"),
-            ("Personalidade", "", "Cada aviso vem com o motivo real, na voz da própria planta"), ("Pets e crianças", "", "Avisos claros sobre plantas tóxicas"), ("Privado", "", "Fotos, leituras e anotações ficam no seu iPhone")],
+            ("Personalidade", "", "Cada aviso vem com o motivo real, na voz da própria planta"), ("Pets e crianças", "", "Avisos claros sobre plantas tóxicas"), ("Privado", "", "Sua selva é sua. A gente nunca vende seus dados")],
   "faq": [("Posso dividir os cuidados com outras pessoas?", "Dá, sim. Chama quem mora com você e todos cuidam das mesmas plantas, com rodízio justo e sem rega em dobro."), ("Preciso entender de plantas?", "Não. Adicione uma planta por foto ou pelo nome e o app monta o plano de cuidados, com explicações simples."), ("Quem é o Raminho?", "É o mascote do app e o melhor amigo das suas plantas. Ele te recebe logo de cara, faz umas perguntinhas sobre a sua casa e deixa tudo prontinho."),
           ("É grátis mesmo?", "É, sim. Até 5 plantas com bate-papo, lembretes e teste da terra, sem prazo pra acabar, com anúncios. Estufa e Selva são opcionais e tiram os anúncios."),
           ("O app está em português?", "Está. O app e as plantas falam português e inglês."),
-          ("Onde ficam minhas fotos?", "Só no seu celular. Fotos, leituras e anotações não vão pra servidor nenhum."),
+          ("Onde ficam minhas fotos?", "No seu celular. Quando você pede pro app descobrir uma planta ou olhar uma folha, a foto vai uma vez só e não fica guardada. Se entrar com uma conta, sua selva sincroniza e fica igual em todo celular."),
           ("De onde vêm as recomendações?", "De uma biblioteca de plantas revisada com muito cuidado. Quando o app não tem certeza, ele fala."),
           ("Fiquei um tempo sem cuidar. E agora?", "Sem culpa. O app mostra por onde começar e as plantas comemoram a sua volta."),
           ("Vou receber muitas notificações?", "Não. No máximo um lembrete por dia, com horário de silêncio, e dá pra adiar qualquer aviso."),
@@ -248,17 +244,18 @@ FEAT_SLUG = {k: v[0] for k, v in _F.items()}
 
 def render_home(L, t, page, phone, apple_icon):
     h = H[L]
-    A = "app-pt" if L == "pt" else "app"
+    A = "shots/" + ("pt" if L == "pt" else "en")
+    S = lambda n: f"{A}/{n}-960.webp"
     cta = badges(L)
 
     def screen(name, alt, cls="screen"):
-        return f'<img class="{cls}" src="/assets/{A}/{name}.jpg" alt="{alt}" width="1100" height="2392" loading="lazy">'
+        return f'<img class="{cls}" src="/assets/{S(name)}" alt="{alt}" width="1100" height="2392" loading="lazy">'
 
     def ilist(items):
         return '<ul class="ilist">' + "".join(f"<li>{I(i)}<span>{x}</span></li>" for i, x in items) + "</ul>"
 
     def thumbs(items):
-        cards = "".join(f'<figure class="slide">{phone(A + "/" + n + ".jpg", c)}<figcaption>{c}</figcaption></figure>' for n, c in items)
+        cards = "".join(f'<figure class="slide">{phone(S(n), c)}<figcaption>{c}</figcaption></figure>' for n, c in items)
         nav = (f'<div class="snav"><button type="button" class="sbtn prev" aria-label="{h["prev"]}">&larr;</button>'
                f'<button type="button" class="sbtn next" aria-label="{h["next"]}">&rarr;</button></div>')
         return f'<div class="slider"><div class="track" tabindex="0">{cards}</div>{nav}</div>'
@@ -270,10 +267,10 @@ def render_home(L, t, page, phone, apple_icon):
         dots = ""
         if reel:
             dots = '<div class="reel" role="group">' + "".join(
-                f'<button type="button" class="rdot{" on" if j == 0 else ""}" data-i="{j}" data-src="/assets/{A}/{n}.jpg">{cap}</button>'
+                f'<button type="button" class="rdot{" on" if j == 0 else ""}" data-i="{j}" data-src="/assets/{S(n)}">{cap}</button>'
                 for j, (n, cap) in enumerate(reel)) + "</div>"
         first = reel[0][0] if reel else sc
-        ph_html = phone(A + "/" + first + ".jpg", h["stage_alt"], "stage-phone").replace(' loading="lazy"', "") if sc else ""
+        ph_html = phone(S(first), h["stage_alt"], "stage-phone").replace(' loading="lazy"', "") if sc else ""
         return (f'<div class="layer{" on" if k == 0 else ""}" data-scene="{k}"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400"{LAZY[k == 0]}>'
                 f'{ph_html}{dots}</div>')
 
@@ -284,7 +281,7 @@ def render_home(L, t, page, phone, apple_icon):
         ph, sc = SCENES[k]
         inner = f'<h2>{c["h"]}</h2><p class="lead2">{c["p"]}</p>'
         if sc:
-            inner += f'<div class="m-scene"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400" loading="lazy">{phone(A + "/" + sc + ".jpg", c["h"], "stage-phone")}</div>'
+            inner += f'<div class="m-scene"><img class="photo" src="/assets/plants/{ph}.jpg" alt="" width="1100" height="1400" loading="lazy">{phone(S(sc), c["h"], "stage-phone")}</div>'
         if c.get("big") and c["id"] not in h["cards"]:
             inner += '<ul class="four">' + "".join(f"<li>{w}</li>" for w in c["big"]) + f'</ul><p class="four-note">{c["big_note"]}</p>'
         if c.get("chat"):
@@ -326,7 +323,7 @@ def render_home(L, t, page, phone, apple_icon):
 <div class="split">
 <div class="read">
 <section class="hero" data-scene="0">{E("wave", 112, "hi")}<h1>{h['h1']}</h1><p class="lead">{h['lead']}</p>{cta}<p class="note">{h['note']}</p>
-<div class="m-scene"><img class="photo" src="/assets/plants/monstera.jpg" alt="" width="1100" height="1400" fetchpriority="high">{phone(A + "/today1.jpg", h["stage_alt"], "stage-phone")}</div></section>
+<div class="m-scene"><img class="photo" src="/assets/plants/monstera.jpg" alt="" width="1100" height="1400" fetchpriority="high">{phone(S(SCENES[0][1]), h["stage_alt"], "stage-phone")}</div></section>
 {chapters}
 </div>
 <div class="stage">{layers}</div>
@@ -334,7 +331,7 @@ def render_home(L, t, page, phone, apple_icon):
 <section class="know" id="smart-care"><div class="wrap">
 <div class="ktop"><div class="khead">{E("scan", 120)}<h2>{h['know_h']}</h2><p>{h['know_p']}</p>
 <div class="vs2"><p class="vh2 them">{h["know_vs"][0][0]}</p><p class="vh2 us">{h["know_vs"][1][0]}</p>{"".join(f'<div class="vn them" style="--d:{k*500}"><span class="vic">⏰</span><div><b>{h["vs_bell"]}</b><span>{a}</span></div></div><div class="vn us" style="transition-delay:{k*500+300}ms"><img src="/assets/plants/{ph}.jpg" alt="" width="36" height="36" loading="lazy"><div><b>My Tiny Jungle</b><span>{b}</span></div></div>' for k, (a, b, ph) in enumerate(zip(h["know_vs"][0][1], h["know_vs"][1][1], ("monstera", "peacelily", "echeveria", "pothos"))))}</div></div>
-{phone(A + "/care-season.jpg", h["in_h"], "kphone")}</div>
+{phone(S("03-season"), h["in_h"], "kphone")}</div>
 <div class="two"><div class="ttext"><h3>{h['two_h']}</h3><p>{h['two_p']}</p></div>
 {cmp_chart(h)}
 <p class="timer">{sentences(h['two_timer'])}</p></div>

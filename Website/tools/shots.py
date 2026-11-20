@@ -11,8 +11,9 @@ raw = Path(sys.argv[1]) if len(sys.argv) > 1 else W.parent / "Assets/AppStore/sc
 for L, loc in (("en", "en-US"), ("pt", "pt-BR")):
     out = W / "src/assets/shots" / L
     out.mkdir(parents=True, exist_ok=True)
-    for name, _ in SHOTS.values():
-        im = Image.open(raw / loc / "iphone69" / f"{name}.png").convert("RGB")
+    for f in sorted((raw / loc / "iphone69").glob("*.png")):
+        name = f.stem
+        im = Image.open(f).convert("RGB")
         for w in SHOT_W:
             im.resize((w, round(im.height * w / im.width)), Image.LANCZOS).save(out / f"{name}-{w}.webp", "WEBP", quality=80, method=6)
 print("shots ok")

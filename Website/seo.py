@@ -179,7 +179,7 @@ def _app(L):
         "applicationSubCategory": "Plant care", "url": SITE + ("/pt/" if L == "pt" else "/"),
         "downloadUrl": TESTFLIGHT, "installUrl": TESTFLIGHT, "sameAs": [APP_STORE],
         "image": f"{SITE}/assets/icon-512.png", "inLanguage": ["en", "pt-BR"],
-        "screenshot": [f"{SITE}/assets/{'app-pt' if L == 'pt' else 'app'}/{s}.jpg" for s in ("today1", "plant-chat", "care-week", "scan-result")],
+        "screenshot": [f"{SITE}/assets/shots/{'pt' if L == 'pt' else 'en'}/{s}-960.webp" for s in ("01-notes", "02-jungle", "04-doctor", "09-digest")],
         "publisher": {"@id": f"{SITE}/#org"}, "author": {"@id": f"{SITE}/#org"},
         "offers": [
             {"@type": "Offer", "name": "Sprout", "price": "0", "priceCurrency": "EUR", "category": "free"},
