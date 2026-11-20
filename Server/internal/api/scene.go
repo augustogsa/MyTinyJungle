@@ -289,6 +289,8 @@ func blendBool(vlm string, p float64) sv {
 		return sv{true, round2(p * 0.8)}
 	case vlm == "no":
 		return sv{false, 0.5}
+	case p < 0.25: // BioCLIP alone sees a living plant clearly
+		return sv{false, round2(math.Min(0.8, (1-p)*0.75))}
 	}
 	return sv{"unknown", 0}
 }
