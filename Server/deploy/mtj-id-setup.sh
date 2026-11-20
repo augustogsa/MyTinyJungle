@@ -30,7 +30,7 @@ PublishPort=127.0.0.1:8092:8080
 Volume=$M/hf:/models/hf:Z
 Volume=$M/species:/species:ro,Z
 Volume=$M/refs:/refs:Z
-PodmanArgs=--cgroups=disabled --runtime=crun --memory=1280m
+PodmanArgs=--cgroups=disabled --runtime=crun --memory=1600m
 [Service]
 Restart=always
 TimeoutStartSec=1800

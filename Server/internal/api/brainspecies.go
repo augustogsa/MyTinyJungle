@@ -246,7 +246,9 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	if theBrain.dir == "" {
 		theBrain.dir = s.cfg.ContentDir
 	}
-	ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 85*time.Second)
+	// Hard deadlines: the whole identify answers within 6 s whatever happens; our own model gets 3 s, a paid or
+	// free external model only what is left (never the vision model: that only warms in the background).
+	ctx, cancel := context.WithTimeout(context.WithoutCancel(r.Context()), 6*time.Second)
 	defer cancel()
 	theBrain.species()
 	type cand struct {
@@ -281,8 +283,10 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	// Cheap first: BioCLIP + the photo's own stats answer in well under a second. The vision model only warms
 	// the whole scene in the background when the species is unsure or the quick scene can't tell the medium,
 	// pot or a fake plant; the care-plan or diagnosis that follows then gets it from the cache.
-	sc := fuseScene(ctx, ss)
-	ids := fuseSpecies(ctx, ss)
+	mctx, mcancel := context.WithTimeout(ctx, 3*time.Second)
+	sc := fuseScene(mctx, ss)
+	ids := fuseSpecies(mctx, ss)
+	mcancel()
 	_, full := cachedFull(in.Photo)
 	if !full && (in.Scene == nil || *in.Scene) && (len(ids) == 0 || ids[0].Score < 0.5 || sc.needsFull()) {
 		warmScene(in.Photo)
