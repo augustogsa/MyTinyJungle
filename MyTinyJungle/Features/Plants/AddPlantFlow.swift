@@ -307,7 +307,7 @@ struct AddPlantFlow: View {
         }
         .padding(16)
         .background(Jungle.surface, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
+        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Jungle.cardEdge, lineWidth: 0.5))
         .shadow(color: .black.opacity(0.08), radius: 14, y: 6)
     }
 

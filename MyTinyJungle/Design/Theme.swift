@@ -67,6 +67,8 @@ enum Jungle {
     static var mist: Color { fillSubtle }
     static var mint: Color { fill }
     static var border: Color { separator }
+    /// Card outline: a hairline in light, none in dark (cards separate by lightness there).
+    static let cardEdge = Color(uiColor: UIColor { t in t.userInterfaceStyle == .dark ? .clear : (UIColor(named: "Separator") ?? .separator) })
 
     static let radius: CGFloat = 20
     static let innerRadius: CGFloat = 12
@@ -77,7 +79,7 @@ struct CardBackground: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.separator, lineWidth: 0.5))
+            .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.cardEdge, lineWidth: 0.5))
             // Dark mode separates by lightness (base #000, card #1C1C1E), not shadow.
             .shadow(color: Color(red: 0.24, green: 0.3, blue: 0.2).opacity(scheme == .dark ? 0 : 0.06), radius: 10, y: 4)
     }

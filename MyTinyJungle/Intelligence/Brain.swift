@@ -199,7 +199,7 @@ struct BrainAnswerCards: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(12)
                 .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
+                .overlay(RoundedRectangle(cornerRadius: Jungle.innerRadius, style: .continuous).strokeBorder(Jungle.cardEdge, lineWidth: 0.5))
             }
         }
         .textSelection(.enabled)

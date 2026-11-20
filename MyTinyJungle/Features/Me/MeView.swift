@@ -125,7 +125,7 @@ struct MeView: View {
             }
             .padding(16)
             .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius + 4, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: Jungle.radius + 4, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
+            .overlay(RoundedRectangle(cornerRadius: Jungle.radius + 4, style: .continuous).strokeBorder(Jungle.cardEdge, lineWidth: 0.5))
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
@@ -151,7 +151,7 @@ struct MeView: View {
         }
         .padding(12)
         .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
+        .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.cardEdge, lineWidth: 0.5))
     }
 
     // MARK: milestones

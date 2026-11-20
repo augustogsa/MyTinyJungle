@@ -82,7 +82,7 @@ struct SetupChatView: View {
             Text(line.text).font(.body).foregroundStyle(Jungle.text)
                 .padding(.horizontal, 14).padding(.vertical, 10)
                 .background(line.fromUser ? Jungle.userBubble : Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-                .overlay { if !line.fromUser { RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5) } }
+                .overlay { if !line.fromUser { RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.cardEdge, lineWidth: 0.5) } }
             if !line.fromUser { Spacer(minLength: 48) }
         }
         .accessibilityElement(children: .combine)
@@ -460,7 +460,7 @@ private struct TypingBubble: View {
             }
             .padding(.horizontal, 14).padding(.vertical, 14)
             .background(Jungle.surface, in: RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.border, lineWidth: 0.5))
+            .overlay(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous).strokeBorder(Jungle.cardEdge, lineWidth: 0.5))
         }
         .onAppear { on = true }
         .accessibilityLabel(Grammar.pt(String(localized: "Typing", comment: "Accessibility label for the mascot typing indicator")))
