@@ -285,3 +285,7 @@ Resized to at most 480 px. Licence as stated per observation.
 | identify/inat-tradescantia-zebrina-1.jpg | https://www.inaturalist.org/observations/114588492 | greg3ph | CC BY 4.0 |
 | identify/inat-tradescantia-zebrina-2.jpg | https://www.inaturalist.org/observations/57169514 | jillybobilly | CC0 |
 | identify/inat-tradescantia-zebrina-3.jpg | https://www.inaturalist.org/observations/150923714 | tgodsey24 | CC0 |
+
+## Derived dark and flash photos
+
+identify/dark-*.jpg and identify/flash-*.jpg are made by eval/tools/lowlight.py from the eval photo of the same name (same author and licence as listed above), darkened or torch-lit.

@@ -160,6 +160,16 @@ st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/perf); [[ $st == 403 ]
 [[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/feedback -d '{"kind":"species","predicted":"aloe-vera","corrected":"haworthia","lang":"en"}') == 200 ]] && [[ $(c $A -o /dev/null -w '%{http_code}' http://x/v1/brain/feedback -d '{"kind":"nope"}') == 400 ]] && ok "brain feedback"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/stats); [[ $st == 403 ]] && ok "admin API refuses without Access"
 st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/limits); [[ $st == 403 ]] && ok "admin limits refuses without Access"
+bc=$(curl -sS --unix-socket $S -H 'X-MTJ-Device: itest-dev' "http://x/v1/brain/config?lang=pt-BR"); echo "$bc" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["v"]==1 and d["scene"]["sure"]>0 and d["identify"]["timeoutS"]>0 and d["scan"]["plans"]["identify"]["order"] and "flags" in d and "experiments" in d,d' && ok "brain config (public)"
+hd=$(curl -sS --unix-socket $S -D - -o /dev/null "http://x/v1/brain/config?lang=en"); et=$(grep -i '^etag:' <<<"$hd" | cut -d' ' -f2 | tr -d '\r'); [[ -n $et && $(curl -sS --unix-socket $S -o /dev/null -w '%{http_code}' -H "If-None-Match: $et" "http://x/v1/brain/config?lang=en") == 304 ]] && ok "brain config ETag 304"
+old=$(psqlq "select body from brain_config where id = 1")
+psqlq "update brain_config set body = '{\"base\":{\"identify\":{\"timeoutS\":11}},\"lang\":{\"pt\":{\"scan\":{\"cap\":7}}},\"experiments\":[{\"name\":\"itest\",\"variants\":[{\"name\":\"only\",\"set\":{\"scene\":{\"sure\":0.65}}}]}]}' where id = 1" >/dev/null; sleep 31
+curl -sS --unix-socket $S -H 'X-MTJ-Device: itest-dev' "http://x/v1/brain/config?lang=pt-BR" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert d["identify"]["timeoutS"]==11 and d["scan"]["cap"]==7 and d["scene"]["sure"]==0.65 and d["experiments"]=={"itest":"only"},d' && ok "brain config overlay, language and experiment apply without a deploy"
+psqlq "update brain_config set body = \$mtj\$$old\$mtj\$ where id = 1" >/dev/null
+[[ $(psqlq "select count(*) from brain_outcomes where day = current_date and kind = 'identify' and species = 'monstera-deliciosa'") -ge 1 ]] && ok "identify outcome logged"
+[[ $(psqlq "select count(*) from brain_outcomes where day = current_date and kind = 'ask'") -ge 1 && $(psqlq "select count(*) from brain_outcomes where day = current_date and kind = 'pick' and slice = 'philodendron-hederaceum'") -ge 1 ]] && ok "ask and species-pick outcomes logged"
+[[ $(psqlq "select count(*) from brain_outcomes where variant like '%itest%'") -ge 0 ]] && psqlq "delete from brain_outcomes where variant like '%itest=%'" >/dev/null
+st=$(c x -o /dev/null -w '%{http_code}' http://x/v1/admin/brain/misses); st2=$(c x -o /dev/null -w '%{http_code}' -X PUT http://x/v1/admin/brain/config -d '{}'); [[ $st == 403 && $st2 == 403 ]] && ok "admin brain misses/config refuse without Access"
 st=$(c $A -o /dev/null -w '%{http_code}' -X DELETE http://x/v1/me); [[ $st == 200 ]] && ok "account deletion"
 if [[ -f /tmp/eval/run.py ]]; then python3 /tmp/eval/run.py --quick || die "brain eval below thresholds"; ok "brain eval (quick) passes thresholds"; fi
 echo "passed $pass checks"

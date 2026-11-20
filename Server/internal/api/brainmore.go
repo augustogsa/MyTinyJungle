@@ -76,18 +76,37 @@ func (s *Server) brainAsk(w http.ResponseWriter, r *http.Request) {
 		answers.put(key, out)
 		return out
 	}
+	// Follow-up chips, buttons and links per answer id come from the brain config (ask.extras), so they change
+	// without a build or a deploy.
+	cfg, _ := buildBrainConfig(s.brainOverlay(r.Context()), in.Lang, "")
+	plain := knowledge
+	knowledge = func(sit situation) []askAnswer { return withExtras(plain(sit), cfg) }
 	weatherNotes := func(wf *weatherFacts, sit situation) []askAnswer {
 		var out []askAnswer
 		for i, n := range wf.notes(lang, isOutdoor(sit), theBrain.findSpecies(in.Species)) {
 			if i == 2 {
 				break
 			}
-			out = append(out, askAnswer{"weather", "weather", theBrain.tr(lang, "Weather near you"), n, nil})
+			out = append(out, askAnswer{ID: "weather", Kind: "weather", Title: theBrain.tr(lang, "Weather near you"), Text: n})
 		}
 		return out
 	}
+	start := time.Now()
+	logAsk := func(out []askAnswer) {
+		o := outcomeRow{kind: "ask", species: spID, lang: lang, outcome: "answered", ms: int(time.Since(start).Milliseconds())}
+		for _, a := range out {
+			if a.Kind != "situation" && a.Kind != "weather" {
+				o.slice = "top=" + a.ID + ";kind=" + a.Kind
+				break
+			}
+		}
+		if onlySituation(out) {
+			o.outcome = "gap"
+		}
+		s.logOutcome(r, o)
+	}
 	if stream {
-		s.askStream(w, r, in.Q, sit, knowledge, weatherNotes, wch)
+		s.askStream(w, r, in.Q, sit, knowledge, weatherNotes, wch, logAsk)
 		return
 	}
 	wf := <-wch
@@ -96,7 +115,36 @@ func (s *Server) brainAsk(w http.ResponseWriter, r *http.Request) {
 	if onlySituation(out) {
 		s.gap(r.Context(), "ask", in.Q)
 	}
+	logAsk(out)
 	writeJSON(w, http.StatusOK, map[string]any{"answers": out})
+}
+
+// withExtras copies the answers and adds ask.extras[id] = {chips, actions, link, icon} from the config.
+func withExtras(in []askAnswer, cfg map[string]any) []askAnswer {
+	ask, _ := cfg["ask"].(map[string]any)
+	ex, _ := ask["extras"].(map[string]any)
+	if len(ex) == 0 {
+		return in
+	}
+	out := make([]askAnswer, len(in))
+	copy(out, in)
+	for i, a := range out {
+		e, ok := ex[a.ID].(map[string]any)
+		if !ok {
+			continue
+		}
+		raw, _ := json.Marshal(e)
+		var x struct {
+			Icon    string       `json:"icon"`
+			Chips   []string     `json:"chips"`
+			Actions []cardAction `json:"actions"`
+			Link    string       `json:"link"`
+		}
+		if json.Unmarshal(raw, &x) == nil {
+			out[i].Icon, out[i].Chips, out[i].Actions, out[i].Link = x.Icon, x.Chips, x.Actions, x.Link
+		}
+	}
+	return out
 }
 
 // onlySituation: nothing in the knowledge base answered the question itself (a gap), whatever the order.
@@ -113,7 +161,7 @@ func onlySituation(out []askAnswer) bool {
 // (one note each, when local weather lands), then "done" with the whole reply {answers:[...]}. When the weather arrives within
 // 80 ms it shapes the answers exactly as the JSON reply would.
 func (s *Server) askStream(w http.ResponseWriter, r *http.Request, q string, sit situation,
-	knowledge func(situation) []askAnswer, weatherNotes func(*weatherFacts, situation) []askAnswer, wch chan *weatherFacts) {
+	knowledge func(situation) []askAnswer, weatherNotes func(*weatherFacts, situation) []askAnswer, wch chan *weatherFacts, logAsk func([]askAnswer)) {
 	fl, ok := w.(http.Flusher)
 	if !ok {
 		s.fail(w, r, bad("streaming_unsupported"))
@@ -158,6 +206,7 @@ func (s *Server) askStream(w http.ResponseWriter, r *http.Request, q string, sit
 	if onlySituation(out) {
 		s.gap(r.Context(), "ask", q)
 	}
+	logAsk(out)
 	send("done", map[string]any{"answers": out}) // the whole reply, same shape as the JSON answer
 }
 
@@ -292,6 +341,16 @@ type askAnswer struct {
 	Title string   `json:"title"`
 	Text  string   `json:"text"`
 	Steps []string `json:"steps,omitempty"`
+	// Generic card parts: the apps render any of these, so a new kind of answer needs no build.
+	Icon    string       `json:"icon,omitempty"`    // SF Symbol / Material name hint; apps fall back to their own
+	Chips   []string     `json:"chips,omitempty"`   // follow-up questions; a tap asks them
+	Actions []cardAction `json:"actions,omitempty"` // buttons with a deep link
+	Link    string       `json:"link,omitempty"`    // whole-card deep link
+}
+
+type cardAction struct {
+	Label string `json:"label"`
+	Link  string `json:"link"`
 }
 
 // ask answers a care question from our own knowledge, in the asker's language.
@@ -311,7 +370,7 @@ func (b *brain) ask(q, lang, speciesQ string, sit situation) []askAnswer {
 		}
 		seen[m.e.ID] = true
 		d := b.answerFrom(m, lang)
-		out = append(out, askAnswer{m.e.ID, m.e.Kind, d.Problem, d.Why, d.Steps})
+		out = append(out, askAnswer{ID: m.e.ID, Kind: m.e.Kind, Title: d.Problem, Text: d.Why, Steps: d.Steps})
 	}
 	hydro := false
 	for _, m := range sit["medium"] {
@@ -322,7 +381,7 @@ func (b *brain) ask(q, lang, speciesQ string, sit situation) []askAnswer {
 		if i == 2 {
 			break
 		}
-		situ = append(situ, askAnswer{sc.ID, "situation", b.tr(lang, sc.Name), b.tr(lang, sc.Advice), nil})
+		situ = append(situ, askAnswer{ID: sc.ID, Kind: "situation", Title: b.tr(lang, sc.Name), Text: b.tr(lang, sc.Advice)})
 	}
 	if hydro { // not in soil: its medium's rhythm leads, and soil-watering advice would mislead
 		out = append(situ, out...)
@@ -332,7 +391,7 @@ func (b *brain) ask(q, lang, speciesQ string, sit situation) []askAnswer {
 		if hydro && (strings.HasPrefix(d.id, "watering-") || strings.HasPrefix(d.id, "water-") || d.id == "finger-test" || d.id == "underwatering-signs" || d.id == "revive-dry") {
 			continue
 		}
-		out = append(out, askAnswer{d.id, d.kind, d.title, d.text, nil})
+		out = append(out, askAnswer{ID: d.id, Kind: d.kind, Title: d.title, Text: d.text})
 	}
 	out = append(out, situ...)
 	return out

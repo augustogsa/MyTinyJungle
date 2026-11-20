@@ -34,6 +34,7 @@ func (s *Server) identifyFeedback(w http.ResponseWriter, r *http.Request) {
 	}
 	_, _ = s.db.Auth.Exec(r.Context(), `insert into identify_feedback (outcome, n) values ($1, 1)
 		on conflict (day, outcome) do update set n = identify_feedback.n + 1`, outcome)
+	s.logOutcome(r, outcomeRow{kind: "pick", species: in.Suggested, slice: in.Chosen, outcome: outcome})
 	writeJSON(w, http.StatusOK, map[string]any{"ok": true, "outcome": outcome})
 }
 
