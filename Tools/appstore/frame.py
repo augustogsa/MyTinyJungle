@@ -69,43 +69,50 @@ def portrait(screen, head, i=0):
     c = background(W, H, i)
     size = SIZE['p']; text(c, head.split('\n'), W / 2, 170, size, W - 120)
     end = 170 + int(size * 1.18) * 2
-    if len(screen) == 1:
-        dev = device(screen[0], 1160)
-        shadow(c, dev, (W - dev.width) // 2, end + 80)
-    else:  # two phones: back one left and lower, front one right
-        a = device(screen[0], 800).rotate(5, resample=Image.BICUBIC, expand=True)
-        b = device(screen[1], 800).rotate(-5, resample=Image.BICUBIC, expand=True)
-        shadow(c, a, -40, end + 50)
-        shadow(c, b, W - b.width + 40, end + 760)
+    dev = device(screen[0], 1160)
+    shadow(c, dev, (W - dev.width) // 2, end + 80)
     return c
 
-def landscape(screen, head, i=0):
-    W, H = screen[0].size
+# iPhone Duo frames built from Apple's Simulator chrome (DeviceKit phone15 + the Duo display masks).
+DUO = {k: (Image.open(f'{DEV}/duo-{k}-frame.png').convert('RGBA'), Image.open(f'{DEV}/duo-{k}-mask.png')) for k in ('open', 'closed')}
+
+def duo(screen, kind, height):
+    fr, mk = DUO[kind]; k = height / fr.height
+    size = (int(fr.width * k), int(fr.height * k))
+    fr, mk = fr.resize(size, Image.LANCZOS), mk.resize(size, Image.LANCZOS)
+    x0, y0, x1, y1 = mk.getbbox()
+    out = Image.new('RGBA', size, (0, 0, 0, 0))
+    out.paste(screen.convert('RGB').resize((x1 - x0, y1 - y0), Image.LANCZOS), (x0, y0))
+    out.putalpha(mk); out.alpha_composite(fr)
+    return out
+
+def landscape(screen, head, i=0, closed=None):
+    W, H = 2853, 2007
     c = background(W, H, i)
     size = SIZE['l']; text(c, [head.replace('\n', ' ')], W / 2, 120, size, W - 240)
     end = 120 + int(size * 1.18)
-    k = .72 if len(screen) == 1 else .47
-    devs = []
-    for s in screen:
-        sc = s.convert('RGB').resize((int(W * k), int(H * k)), Image.LANCZOS)
-        dev = Image.new('RGBA', sc.size, (0, 0, 0, 0)); m = Image.new('L', sc.size, 0)
-        ImageDraw.Draw(m).rounded_rectangle([0, 0, sc.width - 1, sc.height - 1], radius=50, fill=255); dev.paste(sc, (0, 0), m)
-        devs.append(dev)
-    gap = 60; total = sum(d.width for d in devs) + gap * (len(devs) - 1); x = (W - total) // 2
-    for d in devs: shadow(c, d, x, end + 80 + (0 if len(devs) == 1 else 120)); x += d.width + gap
+    if closed is None:  # one open Duo
+        dev = duo(screen[0], 'open', H - end - 140)
+        shadow(c, dev, (W - dev.width) // 2, end + 70)
+    else:  # two closed Duos, side by side, outer screens
+        devs = [duo(s, 'closed', H - end - 140) for s in closed]
+        gap = 140; x = (W - sum(d.width for d in devs) - gap) // 2
+        for d in devs: shadow(c, d, x, end + 70); x += d.width + gap
     return c
 
 for loc, src in SRC.items():
     SIZE['p'] = fit([h.split('\n') for h in HEAD[loc]], 120, 1200)
     SIZE['l'] = fit([[h.replace('\n', ' ')] for h in HEAD[loc]], 110, 2613)
     for kind in ('iphone69', 'duo'):
-        raws = [[f'{ROOT}/raw/{src}/{kind}/{n}.png' for n in slot.split('+')] for slot in HEAD['order']]
+        raws = [[f'{ROOT}/raw/{src}/{kind}/{n}.png' for n in slot.split('+')] for slot in HEAD['order'][kind]]
         if not all(os.path.exists(r) for g in raws for r in g): print('missing', loc, kind); continue
         out = f'{ROOT}/{loc}/{kind}'; os.makedirs(out, exist_ok=True)
         for f in glob.glob(out + '/*.png'): os.remove(f)
         for i, r in enumerate(raws):
             ims = [Image.open(x) for x in r]
-            img = (portrait if kind == 'iphone69' else landscape)(ims, HEAD[loc][i], i)
+            if kind == 'iphone69': img = portrait(ims, HEAD[loc][i], i)
+            elif len(r) == 1: img = landscape(ims, HEAD[loc][i], i)
+            else: img = landscape(ims, HEAD[loc][i], i, closed=[Image.open(x.replace('/duo/', '/duoclosed/')) for x in r])
             name = '-'.join(os.path.basename(x)[3:-4] for x in r)
             img.convert('RGB').save(f'{out}/{i + 1:02d}-{name}.png', optimize=True)
         print(loc, kind, len(raws))

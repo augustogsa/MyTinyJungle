@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Raw App Store screens, one per hero feature, demo jungle, light mode, 9:41 status bar.
 # Usage: Tools/appstore/capture.sh <kind> <simulator-udid> <path/to/MyTinyJungle.app>
-#   kind: iphone69 (iPhone 18 Pro Max) or duo (iPhone Duo, open flat; set the posture first)
+#   kind: iphone69 (iPhone 18 Pro Max), duo (iPhone Duo open flat) or duoclosed (Duo closed, outer screen); set the posture first
 # Writes Assets/AppStore/screenshots/raw/<lang>/<kind>/NN-feature.png; Tools/appstore/frame.py turns them into store shots.
 set -uo pipefail
 cd "$(dirname "$0")/../.."
 kind=$1; D=$2; APP=$3
 BID=com.simpleappscompany.mytinyjungle
-[ "$kind" = duo ] && DISP=--display=3 || DISP=
+case $kind in duo) DISP=--display=3;; duoclosed) DISP=--display=1;; *) DISP=;; esac
 OUT=Assets/AppStore/screenshots/raw
 PHOTOS="$PWD/Tools/demo-photos"
 xcrun simctl boot "$D" 2>/dev/null; xcrun simctl bootstatus "$D" >/dev/null

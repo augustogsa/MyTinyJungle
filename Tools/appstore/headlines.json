@@ -1,16 +1,30 @@
 {
- "order": [
-  "01-notes",
-  "02-jungle",
-  "03-season+07-away",
-  "04-doctor",
-  "05-identify+06-scan",
-  "08-household",
-  "09-digest",
-  "10-chat",
-  "11-widgets+12-passport",
-  "13-guides+14-plus"
- ],
+ "order": {
+  "iphone69": [
+   "01-notes",
+   "02-jungle",
+   "03-season",
+   "04-doctor",
+   "05-identify",
+   "08-household",
+   "09-digest",
+   "10-chat",
+   "11-widgets",
+   "14-plus"
+  ],
+  "duo": [
+   "01-notes",
+   "02-jungle",
+   "03-season+07-away",
+   "04-doctor",
+   "05-identify+06-scan",
+   "08-household",
+   "09-digest",
+   "10-chat",
+   "11-widgets",
+   "14-plus"
+  ]
+ },
  "en-US": [
   "No more dead plants.\nThey'll text you first.",
   "Just say what you did.\nEveryone gets the memo.",
@@ -20,7 +34,7 @@
   "Share the jungle.\nNo more double watering.",
   "Your whole week,\nsorted in one look.",
   "And yep,\nthey talk back.",
-  "Right on your Home Screen.\nAnd easy to share.",
+  "Your jungle,\nright on your Home Screen.",
   "Erty's got your back.\nPlus unlocks it all."
  ],
  "pt-BR": [
@@ -32,7 +46,7 @@
   "Divide a selva.\nChega de regar duas vezes.",
   "Sua semana toda,\nnuma olhada só.",
   "E sim,\nelas respondem.",
-  "Direto na tela de início.\nE fácil de compartilhar.",
+  "Sua selva\nna tela de início.",
   "O Raminho te dá uma força.\nO Plus libera tudo."
  ],
  "pt-PT": [
@@ -44,7 +58,7 @@
   "Partilha a selva.\nAcabou regar a dobrar.",
   "A tua semana toda,\nnum só olhar.",
   "E sim,\nelas respondem.",
-  "Logo no ecrã principal.\nE fácil de partilhar.",
+  "A tua selva\nno ecrã principal.",
   "O Raminho dá-te uma ajuda.\nO Plus desbloqueia tudo."
  ]
 }
