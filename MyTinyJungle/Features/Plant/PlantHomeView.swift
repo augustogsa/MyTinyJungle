@@ -5,6 +5,9 @@ import PhotosUI
 /// The plant's own page: hero photo, mood, quick actions, Overview / Story / Care / About.
 struct PlantHomeView: View {
     @Environment(\.modelContext) private var ctx
+    @Environment(\.dismiss) private var dismiss
+    @State private var confirmDelete = false
+    @State private var leaving = false
     @Query(filter: #Predicate<Plant> { !$0.isArchived }) private var plants: [Plant]
     @Query private var spaces: [Space]
     @Bindable var plant: Plant
@@ -33,6 +36,17 @@ struct PlantHomeView: View {
     enum Sheet: String, Identifiable { case water, health, repot, place, edit, propagate, share, passport; var id: String { rawValue } }
 
     var body: some View {
+        if leaving || plant.isDeleted || plant.modelContext == nil { PlantGoneView() } else { page }
+    }
+
+    /// Pop first, then change the model, so no screen is left holding a removed plant.
+    private func leave(_ change: @escaping () -> Void) {
+        leaving = true
+        dismiss()
+        Task { try? await Task.sleep(for: .milliseconds(450)); change(); try? ctx.save() }
+    }
+
+    private var page: some View {
         Group {
             if let spine = fold?.bookSpine(in: width) {
                 // Book pose: the photo is the leading page, the details the trailing one.
@@ -74,9 +88,29 @@ struct PlantHomeView: View {
                     Button("Propagate", systemImage: "scissors") { sheet = .propagate }
                     Button(Grammar.pt(String(localized: "Plant passport", comment: "Screen title; max 20 chars")), systemImage: "qrcode") { sheet = .passport }
                     PhotosPicker(selection: $pick, matching: .images) { Label("New photo", systemImage: "camera") }
+                    Divider()
+                    Button(Grammar.pt(String(localized: "Archive", comment: "Plant menu: hide a plant, reversible; max 16 chars")), systemImage: "archivebox") {
+                        let p = plant
+                        leave { p.isArchived = true; p.archivedReason = "archived" }
+                        ErtyCheer.shared.show(.wave, Grammar.pt(String(localized: "\(p.name) is in Archived. Restore it any time from Plants.", comment: "Toast after archiving a plant; arg plant name")))
+                    }
+                    Button(Grammar.pt(String(localized: "Delete", comment: "Plant menu: delete a plant for good; max 16 chars")), systemImage: "trash", role: .destructive) { confirmDelete = true }
                 } label: { Image(systemName: "ellipsis") }
                 .accessibilityLabel(Grammar.pt(String(localized: "More for \(plant.name)", comment: "VoiceOver: menu button for a plant")))
             }
+        }
+        .onChange(of: plant.isArchived) { _, a in if a { leaving = true; dismiss() } }
+        .confirmationDialog(Grammar.pt(String(localized: "Delete \(plant.name)?", comment: "Delete plant confirmation title; arg plant name")), isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button(Grammar.pt(String(localized: "Delete for good", comment: "Delete plant confirmation button; max 20 chars")), role: .destructive) {
+                let p = plant, c = ctx
+                leave { c.delete(p) }
+            }
+            Button(Grammar.pt(String(localized: "Archive instead", comment: "Delete plant dialog: reversible alternative; max 20 chars"))) {
+                let p = plant
+                leave { p.isArchived = true; p.archivedReason = "archived" }
+            }
+        } message: {
+            Text(Grammar.pt(String(localized: "Its photos, timeline and chat go too. This can't be undone.", comment: "Delete plant confirmation message")))
         }
         .sheet(item: $sheet) { s in
             switch s {
@@ -894,5 +928,13 @@ enum PlantFormat {
         case "roots-ok": Grammar.pt(String(localized: "roots checked", comment: "Timeline note; lowercase"))
         default: n
         }
+    }
+}
+
+/// Shown for a plant that was archived, deleted or synced away: steps back instead of a blank page.
+struct PlantGoneView: View {
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        Color.clear.jungleBackdrop().task { dismiss() }
     }
 }

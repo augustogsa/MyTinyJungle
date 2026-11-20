@@ -5,7 +5,6 @@ import PhotosUI
 /// My Collection: filter, search and a health summary over photo tiles.
 struct PlantsView: View {
     @Query(filter: #Predicate<Plant> { !$0.isArchived }, sort: \Plant.createdAt) private var plants: [Plant]
-    @State private var adding = false
     @AppStorage(DeepLink.plantKey) private var openPlant = ""
     @AppStorage(DeepLink.addKey) private var openAdd = false
     @State private var paywall = false
@@ -118,9 +117,8 @@ struct PlantsView: View {
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: UUID.self) { id in
-                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
+                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) } else { PlantGoneView() }
             }
-            .sheet(isPresented: $adding) { AddPlantFlow() }
             .onChange(of: openPlant, initial: true) { _, id in
                 if let u = UUID(uuidString: id), plants.contains(where: { $0.id == u }) { path = [u] }
                 if !id.isEmpty { openPlant = "" }
@@ -144,7 +142,7 @@ struct PlantsView: View {
             ? Grammar.pt(String(localized: "\(plants.count) plants · everyone's happy", comment: "Header subtitle; plural plants"))
             : Grammar.pt(String(localized: "\(plants.count) plants · \(needCount) need you", comment: "Header subtitle; two plurals: plants count, count needing care"))
     }
-    private func addTapped() { if Store.shared.canAddPlant(current: plants.count) { adding = true } else { paywall = true } }
+    private func addTapped() { if Store.shared.canAddPlant(current: plants.count) { ScanRoute.addPlant() } else { paywall = true } }
 
     /// Plain-language summary of the jungle: one sentence anyone understands, plus the next thing to do.
     private var summary: some View {

@@ -1,6 +1,6 @@
 # Localization
 
-My Tiny Jungle ships in English (source), Brazilian Portuguese (pt-BR), Latin American Spanish (es), French (fr), German (de) and Japanese (ja). Erty is Raminho (pt-BR), Ramito (es), Brindille (fr) and Zweigi (de).
+My Tiny Jungle ships in English (source), Brazilian Portuguese (pt-BR), Latin American Spanish (es), French (fr), German (de) and Japanese (ja). Erty is Raminho (pt-BR, pt-PT), Brotito (es), Poussi (fr), Knospi (de) and めぶき (ja); only English keeps Erty.
 
 Bulk translations land as `Tools/l10n/staging/<lang>.json` and merge with `python3 Tools/l10n/merge_staging.py es fr de ja` (new keys go in `staging/new-strings.json`). App Store listings are ready in `Tools/appstore/<locale>.json` and go live only when the owner says so.
 

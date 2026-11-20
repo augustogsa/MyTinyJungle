@@ -255,35 +255,59 @@ extension Brain {
         nonisolated struct C: Decodable { let id: String; let scientific: String; let score: Double }
         var candidates: [C]?
         var scene: PhotoScene?
+        var used: [String]?
+        var tips: [ScanTip]?
     }
     nonisolated struct SceneReply: Decodable { var scene: PhotoScene? }
 
-    /// Candidates plus what the photo shows around the plant (medium, pot, stage, faux, several plants).
-    /// The scene comes inside the identify reply; only a reply without it gets a separate /v1/brain/scene call.
-    /// Both answers are cached by the photo's sha256.
+    /// One photo of a multi-photo upload: `{photo, kind}`.
+    nonisolated struct PhotoPart: Encodable, Sendable { let photo, kind: String }
+    nonisolated struct Identified { var candidates: [PlantIdentifier.Candidate]; var scene: PhotoScene?; var used: [ShotKind]; var tips: [ScanTip]; var timedOut = false }
+
     static func identifyScene(_ photo: BrainPhoto) async -> (candidates: [PlantIdentifier.Candidate], scene: PhotoScene?) {
-        guard JungleAPI.shared.hasSession else { return ([], nil) }
-        nonisolated struct B: Encodable { let photo, lang: String }
+        let r = await identify(shots: [(photo, .leaf)])
+        return (r.candidates, r.scene)
+    }
+
+    /// POSTs `photos: [{photo, kind}]` (1…8); a server that answers 400 to that gets the first photo alone as `photo`.
+    nonisolated static func sendPhotos<E: Encodable & Sendable>(_ path: String, many: E, single: E) async throws -> Data {
+        do { return try await JungleAPI.shared.sendData("POST", path, body: many) }
+        catch JungleAPI.APIError.http(400, _) { return try await JungleAPI.shared.sendData("POST", path, body: single) }
+    }
+
+    /// Candidates plus what the photos show around the plant (medium, pot, stage, faux, several plants), which kinds
+    /// the server used and tips for photos that would firm it up. The scene comes inside the identify reply; only a
+    /// reply without it gets a separate /v1/brain/scene call. Cached by every photo's sha256 and kind.
+    static let identifyTimeout: Double = 12
+
+    static func identify(shots: [(BrainPhoto, ShotKind)]) async -> Identified {
+        guard JungleAPI.shared.hasSession, let first = shots.first?.0 else { return Identified(candidates: [], used: [], tips: []) }
+        nonisolated struct B: Encodable, Sendable { var photos: [PhotoPart]?; var photo: String?; let lang: String }
         let lang = PlantSituation.lang
-        let key = BrainCache.key("identify", photo.sha, lang)
+        let parts = shots.prefix(ScanPlan.cap).map { PhotoPart(photo: $0.0.base64, kind: $0.1.rawValue) }
+        let key = shots.count == 1 ? BrainCache.key("identify", first.sha, lang)
+            : BrainCache.key("identify-many", shots.map { "\($0.0.sha):\($0.1.rawValue)" }.joined(separator: ","), lang)
         var r: IdentifyReply? = BrainCache.get(key)
         if r == nil {
-            r = await withTimeout(20) {
+            // 12 s, then the caller shows "Taking longer than usual" with a retry instead of guessing.
+            let got: IdentifyReply?? = await withTimeout(identifyTimeout) {
                 do {
-                    let d = try await JungleAPI.shared.sendData("POST", "/v1/brain/identify", body: B(photo: photo.base64, lang: lang))
+                    let d = try await sendPhotos("/v1/brain/identify", many: B(photos: Array(parts), lang: lang), single: B(photo: first.base64, lang: lang))
                     let r = try JungleAPI.decoder.decode(IdentifyReply.self, from: d)
                     if !(r.candidates ?? []).isEmpty { BrainCache.put(key, d) }
-                    return r
-                } catch { await MainActor.run { ServerNotice.show(error) }; return nil }
+                    return .some(r)
+                } catch { await MainActor.run { ServerNotice.show(error) }; return .some(nil) }
             }
+            guard let got else { return Identified(candidates: [], used: [], tips: [], timedOut: true) }
+            r = got
         }
-        if let got = r, got.scene == nil, !(got.candidates ?? []).isEmpty { r?.scene = await scene(photo) }
+        if let got = r, got.scene == nil, !(got.candidates ?? []).isEmpty { r?.scene = await scene(first) }
         let lib = SpeciesLibrary.shared
         let cands = (r?.candidates ?? []).compactMap { c in
             let sp = lib.species(id: c.id) ?? lib.all.first { $0.scientific.folded == c.scientific.folded }
             return sp.map { PlantIdentifier.Candidate(species: $0, confidence: c.score, source: "My Tiny Jungle") }
         }
-        return (cands, r?.scene)
+        return Identified(candidates: cands, scene: r?.scene, used: (r?.used ?? []).map(ShotKind.init(wire:)), tips: r?.tips ?? [])
     }
 
     /// Fallback for a reply without `scene`.

@@ -12,6 +12,10 @@ struct PlantChatView: View {
     private var items: [ThreadItem] { ThreadItem.merge(messages, plant.events ?? []) }
 
     var body: some View {
+        if plant.isDeleted || plant.modelContext == nil || plant.isArchived { PlantGoneView() } else { page }
+    }
+
+    private var page: some View {
         SideBySide {
             VStack(spacing: 18) {
                 PlantAvatar(data: plant.photo, size: 168)

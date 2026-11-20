@@ -11,7 +11,6 @@ struct TodayView: View {
     @State private var showSettings = false
     @State private var path = NavigationPath()
     @State private var paywall = false
-    @State private var addingPlant = false
     @AppStorage("selectedTab") private var selectedTab = 0
     @State private var guide: CareGuide?
 
@@ -29,7 +28,7 @@ struct TodayView: View {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 22) {
                         header
-                        if plants.isEmpty { EmptyJungle { addingPlant = true } }
+                        if plants.isEmpty { EmptyJungle { ScanRoute.addPlant() } }
                         else {
                             TwoPage {
                             HouseholdTodayCard(plants: plants)
@@ -85,12 +84,11 @@ struct TodayView: View {
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: TodayRoute.self, destination: route)
             .navigationDestination(for: UUID.self) { id in
-                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
+                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) } else { PlantGoneView() }
             }
             .plantLinks { path.append($0) }
             .sheet(isPresented: $showSettings) { SettingsView() }
             .sheet(isPresented: $paywall) { PaywallView(reason: .morePlants) }
-            .sheet(isPresented: $addingPlant) { AddPlantFlow() }
             .fullScreenCover(item: $guide) { GuidePlayerView(guide: $0, plant: guidePlant) }
             .confirmationDialog(chipTitle, isPresented: Binding(get: { chipKind != nil }, set: { if !$0 { chipKind = nil } }), titleVisibility: .visible) {
                 if let kind = chipKind {
@@ -119,7 +117,7 @@ struct TodayView: View {
                 ForEach(plants) { p in
                     Button { path.append(p.id) } label: { PlantShelfCard(plant: p) }.buttonStyle(.plain)
                 }
-                Button { addingPlant = true } label: {
+                Button { ScanRoute.addPlant() } label: {
                     VStack(spacing: 8) {
                         Image(systemName: "plus").font(.system(.title2, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.accentText)
                             .frame(width: 52, height: 52).background(Jungle.mint, in: Circle())

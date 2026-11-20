@@ -142,8 +142,10 @@ struct RootView: View {
             }
             // A tap on a plant's note opens its chat.
             .sheet(isPresented: Binding(get: { !openChat.isEmpty }, set: { if !$0 { openChat = "" } })) {
-                if let p = (try? ctx.fetch(FetchDescriptor<Plant>()))?.first(where: { $0.id.uuidString == openChat }) {
+                if let p = (try? ctx.fetch(FetchDescriptor<Plant>()))?.first(where: { $0.id.uuidString == openChat && !$0.isArchived }) {
                     NavigationStack { PlantChatView(plant: p) }
+                } else {
+                    PlantGoneView().onAppear { openChat = "" }
                 }
             }
             .onChange(of: phase) { _, p in

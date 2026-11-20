@@ -18,7 +18,6 @@ struct CareView: View {
     }
     @State private var range: Range = .week
     @State private var adding = false
-    @State private var addingPlant = false
     /// Day picked in the week strip; nil shows every day.
     @State private var selectedDay: Date?
     @State private var weekOffset = 0
@@ -33,7 +32,7 @@ struct CareView: View {
                     if plants.isEmpty {
                         JungleEmptyState(mood: .water, title: Grammar.pt(String(localized: "Nothing to care for yet", comment: "Care tab empty state title, no plants; max 30 chars")),
                                          message: Grammar.pt(String(localized: "Add a plant and I'll plan its water, food and mist.", comment: "Care tab empty state line, no plants")),
-                                         actionTitle: Grammar.pt(String(localized: "Add a plant", comment: "Primary button in empty states; max 20 chars")), actionSymbol: "camera.fill") { addingPlant = true } preview: { SampleWeekPreview() }
+                                         actionTitle: Grammar.pt(String(localized: "Add a plant", comment: "Primary button in empty states; max 20 chars")), actionSymbol: "camera.fill") { ScanRoute.addPlant() } preview: { SampleWeekPreview() }
                         HStack(spacing: 10) {
                             NavigationLink { GuidesView() } label: { shortcut(Grammar.pt(String(localized: "How-to", comment: "Care shortcut tile: guides; max 12 chars")), "book.fill") }
                             NavigationLink { PropagationListView() } label: { shortcut(Grammar.pt(String(localized: "Propagate", comment: "Care shortcut tile: propagation cuttings; max 12 chars")), "scissors") }
@@ -86,7 +85,6 @@ struct CareView: View {
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $adding) { AddTaskView(plants: plants) }
-            .sheet(isPresented: $addingPlant) { AddPlantFlow() }
             .animation(.snappy, value: range)
             .onChange(of: selectedDay) { _, d in if d != nil && range == .season { range = .week } }
         }

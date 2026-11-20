@@ -11,7 +11,6 @@ struct SetupChatView: View {
     @State private var typing = true
     @State private var picked: Set<String> = []
     @State private var lightQueue: [String] = []
-    @State private var addingPlant = false
     @State private var text = ""
     @FocusState private var focused: Bool
 
@@ -62,7 +61,6 @@ struct SetupChatView: View {
             .jungleBackdrop()
             .navigationTitle(Grammar.pt(String(localized: "Getting set up", comment: "Setup chat navigation title")))
             .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented: $addingPlant, onDismiss: { wrapUp(addedPlant: true) }) { AddPlantFlow() }
             .task { if lines.isEmpty { await open() } }
         }
     }
@@ -351,7 +349,7 @@ struct SetupChatView: View {
             if let l = Self.lights.first(where: { chip.id == "light.\($0.0.rawValue)" }) { ensureRoom(room).light = l.0; saveRooms() }
             await nextLight()
         case .plant:
-            if chip.id == "add" { addingPlant = true } else { wrapUp(addedPlant: false) }
+            if chip.id == "add" { ScanRoute.addPlant(); finish() } else { wrapUp(addedPlant: false) }
         case .finished: break
         }
     }

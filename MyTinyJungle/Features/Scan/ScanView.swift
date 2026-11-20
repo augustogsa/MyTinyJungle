@@ -44,10 +44,14 @@ struct ScanView: View {
         var frame: (width: CGFloat, aspect: CGFloat) {
             switch self { case .identify, .doctor: (0.74, 1.25); case .label: (0.84, 0.7); case .shelf: (0.9, 0.85) }
         }
+        /// Identify and Doctor take several photos; Label and Shelf answer from one.
+        var purpose: ScanPurpose? {
+            switch self { case .identify: .identify; case .doctor: .doctor; default: nil }
+        }
     }
 
     enum Result: Identifiable {
-        case identify(Data), doctor(Plant, Data), shelf(Data), product(AnalyzedProduct), typing, products
+        case identify([ScanShot]), doctor(Plant, [ScanShot]), shelf(Data), product(AnalyzedProduct), typing, products
         var id: String {
             switch self {
             case .identify: "identify"; case .doctor(let p, _): "doctor-\(p.id)"; case .shelf: "shelf"
@@ -65,9 +69,16 @@ struct ScanView: View {
     @State private var visible = false
     @State private var result: Result?
     @State private var paywall: PlusFeature?
-    @State private var addingPlant = false
     @State private var doctorPlantID: UUID?
-    @State private var pick: PhotosPickerItem?
+    @State private var picks: [PhotosPickerItem] = []
+    @State private var tray = ScanTray()
+    /// A kind a result tip asked for: the sheet closes and the camera comes back on it.
+    @State private var pendingKind: ShotKind?
+    @State private var howTo = false
+    /// Where the reticle and the live preview sit on screen (global), for cropping the capture to the reticle.
+    @State private var reticleRect: CGRect = .zero
+    @State private var previewRect: CGRect = .zero
+    @AppStorage("scanHowToSeen") private var howToSeen = false
     @State private var working = false
     @State private var toast: String?
     @State private var cheer = false
@@ -77,7 +88,9 @@ struct ScanView: View {
 
     private var mode: Mode { Mode(rawValue: modeRaw) ?? .identify }
     private var doctorPlant: Plant? { plants.first { $0.id == doctorPlantID } ?? plants.first }
-    private var canShoot: Bool { !working && !(mode == .doctor && plants.isEmpty) }
+    private var multi: Bool { mode.purpose != nil }
+    private var canShoot: Bool { !working && !(mode == .doctor && plants.isEmpty) && !(multi && tray.isFull) }
+    private var showTray: Bool { multi && !tray.isEmpty }
 
     var body: some View {
         ZStack {
@@ -90,7 +103,13 @@ struct ScanView: View {
                 Spacer(minLength: 12)
                 ertyPeek
                 modeExtras
-                chips.padding(.top, 14)
+                if showTray {
+                    ScanTrayView(tray: tray) { Task { await check() } }
+                        .padding(.top, 10)
+                        .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
+                } else {
+                    chips.padding(.top, 14)
+                }
                 bottomBar.padding(.top, 14).padding(.bottom, 10)
             }
             .padding(.horizontal, 16)
@@ -113,26 +132,46 @@ struct ScanView: View {
             }
         }
         .animation(.snappy, value: mode)
+        .animation(reduceMotion ? nil : .snappy, value: showTray)
         .animation(.easeInOut(duration: 0.2), value: working)
         .animation(.snappy, value: toast)
         .task { await camera.prepare() }
         .onAppear { visible = true; if !reduceMotion { withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) { breathe = true } } }
         .onDisappear { visible = false; camera.setTorch(false) }
-        .onChange(of: mode) { _, m in camera.labelMode = m == .label; camera.resetText() }
+        .onChange(of: mode, initial: true) { _, m in
+            camera.labelMode = m == .label; camera.resetText()
+            if let p = m.purpose { tray.purpose = p; if !howToSeen && !DemoSeeder.wantsScan { howToSeen = true; howTo = true } }
+        }
         .onChange(of: phase) { _, p in if p != .active { camera.setTorch(false) } }
-        .onChange(of: pick) { _, item in
-            guard let item else { return }
+        .onChange(of: picks) { _, items in
+            guard !items.isEmpty else { return }
             working = true
             Task {
-                let data = try? await item.loadTransferable(type: Data.self)
-                pick = nil
-                if let data { await route(data, liveText: "") } else { working = false }
+                var got: [Data] = []
+                for item in items { if let d = try? await item.loadTransferable(type: Data.self) { got.append(d) } }
+                picks = []
+                guard let first = got.first else { working = false; return }
+                if multi {
+                    for d in got { tray.add(d) }
+                    working = false
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                } else { await route(first, liveText: "") }
             }
         }
+        #if DEBUG
+        // QA: `-scanTrayDemo /path/to/folder` fills the tray from that folder's JPEGs (simulators have no camera).
+        .task {
+            guard let dir = UserDefaults.standard.string(forKey: "scanTrayDemo"), tray.isEmpty,
+                  let files = try? FileManager.default.contentsOfDirectory(atPath: dir) else { return }
+            for f in files.sorted() where f.hasSuffix(".jpg") { if let d = FileManager.default.contents(atPath: dir + "/" + f) { tray.add(d) } }
+        }
+        #endif
         .task { if DemoSeeder.wantsScan, result == nil { try? await Task.sleep(for: .seconds(1)); modeRaw = Mode.label.rawValue; result = .product(ProductAnalyzer.analyze(text: DemoSeeder.sampleLabel)) } }
-        .sheet(item: $result) { r in sheet(r) }
+        .sheet(item: $result, onDismiss: {
+            if let k = pendingKind { tray.wanted = k; pendingKind = nil; announce(k.hint) } else { tray.clear() }
+        }) { r in sheet(r) }
+        .sheet(isPresented: $howTo) { HowToScanSheet() }
         .sheet(item: $paywall) { PaywallView(reason: $0) }
-        .sheet(isPresented: $addingPlant) { AddPlantFlow() }
     }
 
     // MARK: Camera
@@ -141,9 +180,12 @@ struct ScanView: View {
         switch camera.state {
         case .checking: ProgressView().tint(Jungle.leaf)
         case .ready:
-            ScanCameraView(camera: camera, running: visible && result == nil && paywall == nil && !addingPlant && phase == .active)
+            ScanCameraView(camera: camera, running: visible && result == nil && paywall == nil && phase == .active)
+                .overlay { scrim }
+                .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { previewRect = $0 }
                 .ignoresSafeArea()
                 .accessibilityLabel(Grammar.pt(String(localized: "Camera preview", comment: "VoiceOver: live camera in Scan")))
+        case .denied where showTray, .unavailable where showTray: Color.clear
         case .denied:
             noCamera(title: Grammar.pt(String(localized: "Camera access is off", comment: "Scan: camera permission denied title; max 30 chars")),
                      message: Grammar.pt(String(localized: "Turn it on in Settings to scan live, or pick a photo.", comment: "Scan: camera permission denied line")), settings: true)
@@ -161,7 +203,7 @@ struct ScanView: View {
                 Text(message).font(.subheadline).foregroundStyle(Jungle.subtle)
             }
             .multilineTextAlignment(.center)
-            PhotosPicker(selection: $pick, matching: .images) {
+            PhotosPicker(selection: $picks, maxSelectionCount: multi ? max(1, tray.room) : 1, selectionBehavior: .ordered, matching: .images) {
                 Label(Grammar.pt(String(localized: "Choose a photo", comment: "Scan: button to pick a photo instead of the camera; max 22 chars")), systemImage: "photo.on.rectangle")
                     .font(.system(.headline, design: .rounded)).frame(maxWidth: 260).padding(.vertical, 4)
             }
@@ -182,6 +224,9 @@ struct ScanView: View {
         HStack(spacing: 10) {
             circleButton("xmark", Grammar.pt(String(localized: "Close scanner", comment: "VoiceOver: close the Scan camera"))) { selectedTab = 0 }
             Spacer()
+            if multi {
+                circleButton("questionmark", Grammar.pt(String(localized: "How to scan", comment: "How to scan card title; max 24 chars"))) { howTo = true }
+            }
             if camera.state == .ready && camera.hasTorch {
                 circleButton(camera.torch ? "bolt.fill" : "bolt.slash.fill", camera.torch ? Grammar.pt(String(localized: "Turn flash off", comment: "VoiceOver: scan torch toggle when on")) : Grammar.pt(String(localized: "Turn flash on", comment: "VoiceOver: scan torch toggle when off")), tint: camera.torch ? Jungle.terracotta : Jungle.forest) { camera.setTorch(!camera.torch) }
             } else {
@@ -200,24 +245,35 @@ struct ScanView: View {
         .accessibilityLabel(label)
     }
 
+    /// Warm dim outside the reticle, so what's kept is obvious.
+    private var scrim: some View {
+        Canvas { c, size in
+            guard reticleRect.width > 0 else { return }
+            let r = reticleRect.offsetBy(dx: -previewRect.minX, dy: -previewRect.minY)
+            var p = Path(CGRect(origin: .zero, size: size))
+            p.addPath(Path(roundedRect: r, cornerRadius: 32, style: .continuous))
+            c.fill(p, with: .color(Color(red: 0.16, green: 0.11, blue: 0.06).opacity(0.38)), style: FillStyle(eoFill: true))
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+
     private var reticle: some View {
         GeometryReader { g in
             let w = min(g.size.width * mode.frame.width, 420)
             let h = min(w * mode.frame.aspect, g.size.height)
+            // Soft, warm frame: exactly what the photo keeps (the capture is cropped to it).
             ZStack {
-                RoundedRectangle(cornerRadius: 36, style: .continuous)
-                    .strokeBorder(Jungle.cream.opacity(0.95), style: StrokeStyle(lineWidth: 3, dash: [14, 10]))
+                RoundedRectangle(cornerRadius: 32, style: .continuous)
+                    .strokeBorder(Jungle.cream.opacity(0.85), lineWidth: 2)
+                    .shadow(color: Jungle.sun.opacity(0.45), radius: 10)
                 Viewfinder()
-                    .stroke(Jungle.leaf, style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
-                ForEach(0..<4, id: \.self) { i in
-                    Image(systemName: "leaf.fill").font(.system(size: 18, weight: .bold)).foregroundStyle(Jungle.leaf)
-                        .rotationEffect(.degrees(Double(i) * 90 - 45))
-                        .position(x: i % 3 == 0 ? 10 : w - 10, y: i < 2 ? 10 : h - 10)
-                }
+                    .stroke(Jungle.cream, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                    .shadow(color: .black.opacity(0.12), radius: 4)
             }
-            .shadow(color: .black.opacity(0.18), radius: 8)
             .frame(width: w, height: h)
-            .scaleEffect(breathe ? 1.025 : 1)
+            .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { reticleRect = $0 }
+            .scaleEffect(breathe ? 1.015 : 1)
             .position(x: g.size.width / 2, y: g.size.height / 2)
         }
         .allowsHitTesting(false)
@@ -242,7 +298,7 @@ struct ScanView: View {
             }
         case .doctor:
             if plants.isEmpty {
-                Button { addingPlant = true } label: {
+                Button { modeRaw = Mode.identify.rawValue } label: {
                     Label(Grammar.pt(String(localized: "Add a plant first, then I can check it", comment: "Scan doctor mode with no plants; max 40 chars")), systemImage: "plus.circle.fill")
                         .font(.footnote.weight(.semibold)).foregroundStyle(Jungle.accentText)
                         .padding(.horizontal, 14).padding(.vertical, 9).warmGlass(Capsule())
@@ -295,28 +351,37 @@ struct ScanView: View {
         HStack(alignment: .bottom, spacing: 4) {
             ErtyView(mood: ertyMood, size: 76).id(ertyMood)
                 .offset(x: -6)
-            Text(working ? Grammar.pt(String(localized: "Hmm, let me think…", comment: "Erty speech bubble in Scan while a photo is analysed; max 32 chars")) : cheer ? Grammar.pt(String(localized: "Got it!", comment: "Erty speech bubble in Scan when a result is ready; max 20 chars")) : mode.hint)
+            Text(working ? Grammar.pt(String(localized: "Hmm, let me think…", comment: "Erty speech bubble in Scan while a photo is analysed; max 32 chars")) : cheer ? Grammar.pt(String(localized: "Got it!", comment: "Erty speech bubble in Scan when a result is ready; max 20 chars")) : bubble)
                 .font(.system(.subheadline, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
                 .padding(.horizontal, 14).padding(.vertical, 10)
                 .background(Jungle.surface, in: BubbleShape(fromMe: false))
                 .shadow(color: .black.opacity(0.12), radius: 8, y: 3)
                 .padding(.bottom, 30)
-                .id(mode.rawValue + "\(working)\(cheer)")
+                .id(mode.rawValue + "\(working)\(cheer)" + bubble)
                 .transition(reduceMotion ? .opacity : .scale(scale: 0.85, anchor: .bottomLeading).combined(with: .opacity))
             Spacer(minLength: 0)
         }
         .animation(reduceMotion ? nil : .spring(duration: 0.35), value: mode)
         .animation(reduceMotion ? nil : .spring(duration: 0.35), value: working)
         .animation(reduceMotion ? nil : .spring(duration: 0.35), value: cheer)
+        .animation(reduceMotion ? nil : .spring(duration: 0.35), value: bubble)
         .accessibilityElement(children: .combine)
+    }
+
+    /// Mode hint before the first shot; then Erty asks for the next useful angle.
+    private var bubble: String {
+        guard showTray else { return mode.hint }
+        if tray.isFull { return Grammar.pt(String(localized: "That's plenty! Tap Check", comment: "Erty bubble in Scan when 8 photos are in; max 32 chars")) }
+        return tray.next.hint
     }
 
     private var bottomBar: some View {
         HStack {
-            PhotosPicker(selection: $pick, matching: .images) {
+            PhotosPicker(selection: $picks, maxSelectionCount: multi ? max(1, tray.room) : 1, selectionBehavior: .ordered, matching: .images) {
                 Image(systemName: "photo.on.rectangle").font(.system(size: 20, weight: .semibold)).foregroundStyle(Jungle.forest)
                     .frame(width: 52, height: 52).warmGlass(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
+            .disabled(multi && tray.isFull)
             .accessibilityLabel(Grammar.pt(String(localized: "Choose from Photos", comment: "VoiceOver: Scan photo library button")))
             Spacer()
             Button { Task { await shoot() } } label: {
@@ -331,7 +396,7 @@ struct ScanView: View {
             .buttonStyle(ShutterStyle())
             .disabled(!canShoot || camera.state != .ready)
             .opacity(canShoot && camera.state == .ready ? 1 : 0.4)
-            .accessibilityLabel(mode.shutterLabel)
+            .accessibilityLabel(showTray ? Grammar.pt(String(localized: "Take a photo: \(tray.next.title)", comment: "VoiceOver: scan result tip opening the camera; arg kind")) : mode.shutterLabel)
             Spacer()
             if camera.state == .ready && camera.hasTorch {
                 Button { result = .products } label: {
@@ -350,13 +415,49 @@ struct ScanView: View {
     private func shoot() async {
         working = true
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        guard let data = await camera.capture() else {
+        guard let data = await camera.capture(crop: camera.state == .ready ? (previewRect, reticleRect) : nil) else {
             working = false
             show(Grammar.pt(String(localized: "Couldn't take the photo. Try again.", comment: "Scan: camera capture failed")))
             return
         }
+        if multi {
+            working = false
+            if let s = tray.add(data) {
+                announce(Grammar.pt(String(localized: "Added: \(s.kind.title). \(tray.isFull ? "" : tray.next.hint)", comment: "VoiceOver after a scan photo is added; args kind and Erty's next hint")))
+            }
+            return
+        }
         await route(data, liveText: mode == .label ? camera.lines.joined(separator: "\n") : "")
     }
+
+    /// Sends every tray photo to Identify or Doctor.
+    private func check() async {
+        guard !tray.isEmpty else { return }
+        let shots = tray.shots
+        celebrate {
+            switch mode {
+            case .identify:
+                guard Store.shared.canAddPlant(current: plants.count) else { paywall = .morePlants; return }
+                result = .identify(shots)
+            case .doctor:
+                guard let p = doctorPlant else { modeRaw = Mode.identify.rawValue; return }
+                result = .doctor(p, shots)
+            default: break
+            }
+        }
+    }
+
+    private func celebrate(_ open: () -> Void) {
+        open()
+        guard result != nil else { return }
+        cheer = true
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        Task { try? await Task.sleep(for: .seconds(2.5)); cheer = false }
+    }
+
+    private func announce(_ t: String) { UIAccessibility.post(notification: .announcement, argument: t) }
+
+    private func morePhoto(_ k: ShotKind) { pendingKind = k; result = nil }
 
     /// Sends a photo to the right brain call for the current mode; the answer opens as a sheet.
     private func route(_ data: Data, liveText: String) async {
@@ -369,12 +470,8 @@ struct ScanView: View {
             }
         }
         switch mode {
-        case .identify:
-            guard Store.shared.canAddPlant(current: plants.count) else { paywall = .morePlants; return }
-            result = .identify(data)
-        case .doctor:
-            guard let p = doctorPlant else { addingPlant = true; return }
-            result = .doctor(p, data)
+        case .identify, .doctor:
+            tray.add(data)
         case .shelf:
             result = .shelf(data)
         case .label:
@@ -401,8 +498,8 @@ struct ScanView: View {
     @ViewBuilder private func sheet(_ r: Result) -> some View {
         Group {
             switch r {
-            case .identify(let d): AddPlantFlow(initialPhoto: d)
-            case .doctor(let p, let d): HealthCheckView(plant: p, initialPhoto: d)
+            case .identify(let s): AddPlantFlow(initialShots: s, onMorePhoto: morePhoto)
+            case .doctor(let p, let s): HealthCheckView(plant: p, initialShots: s, onMorePhoto: morePhoto)
             case .shelf(let d): ShelfImportView(initialPhoto: d) { result = nil }
             case .typing: TypeLabelSheet { text in
                 let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -467,8 +564,10 @@ private struct ShutterStyle: ButtonStyle {
         torch = on
     }
 
-    func capture() async -> Data? {
+    /// The photo, cropped to the reticle when its on-screen frame is known.
+    func capture(crop: (preview: CGRect, reticle: CGRect)? = nil) async -> Data? {
         guard let s = scanner, let img = try? await s.capturePhoto() else { return nil }
+        if let crop, let d = ScanCrop.crop(img, preview: crop.preview, reticle: crop.reticle) { return d }
         return img.jpegData(compressionQuality: 0.9)
     }
 
@@ -863,7 +962,7 @@ private struct JungleDietCard: View {
 }
 
 
-private extension View {
+extension View {
     /// Frosted warm chrome over the camera: cream glass with a soft leaf rim.
     func warmGlass<S: InsettableShape>(_ shape: S) -> some View {
         self.background(.ultraThinMaterial, in: shape)

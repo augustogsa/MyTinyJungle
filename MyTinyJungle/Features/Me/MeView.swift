@@ -8,7 +8,6 @@ struct MeView: View {
     @Query private var props: [Propagation]
     @Query private var events: [CareEvent]
     @State private var settings = false
-    @State private var addingPlant = false
     @State private var paywall: PlusFeature?
     private var store = Store.shared
     private var name: String { JungleSettings.shared.ownerName.isEmpty ? Grammar.pt(String(localized: "Plant parent", comment: "Me tab header fallback when owner has no name; max 20 chars")) : JungleSettings.shared.ownerName }
@@ -32,7 +31,7 @@ struct MeView: View {
                     if plants.isEmpty {
                         JungleEmptyState(mood: .wave, title: Grammar.pt(String(localized: "Your jungle is waiting", comment: "Empty state title when the owner has no plants; max 30 chars")),
                                          message: Grammar.pt(String(localized: "Add your first plant and I'll keep track of how everyone's doing.", comment: "Me tab empty jungle card line")),
-                                         actionTitle: Grammar.pt(String(localized: "Add a plant", comment: "Primary button in empty states; max 20 chars")), actionSymbol: "camera.fill") { addingPlant = true }
+                                         actionTitle: Grammar.pt(String(localized: "Add a plant", comment: "Primary button in empty states; max 20 chars")), actionSymbol: "camera.fill") { ScanRoute.addPlant() }
                     } else {
                         header
                     }
@@ -76,10 +75,9 @@ struct MeView: View {
             .jungleBackdrop()
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: UUID.self) { id in
-                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) }
+                if let p = plants.first(where: { $0.id == id }) { PlantHomeView(plant: p) } else { PlantGoneView() }
             }
             .sheet(isPresented: $settings) { SettingsView() }
-            .sheet(isPresented: $addingPlant) { AddPlantFlow() }
             .navigationDestination(isPresented: Binding(get: { demoDest != nil }, set: { if !$0 { demoDest = nil } })) {
                 if demoDest == "guides" { GuidesView() } else { TravelPlanView() }
             }

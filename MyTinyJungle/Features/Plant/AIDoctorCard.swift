@@ -5,6 +5,10 @@ import SwiftUI
 struct AIDoctorCard: View {
     let photo: Data
     let plant: Plant
+    /// Every photo from a multi-photo scan; empty sends `photo` alone as a leaf.
+    var shots: [ScanShot] = []
+    /// Reopens the Scan camera on a kind the answer asked for.
+    var onMorePhoto: ((ShotKind) -> Void)?
     @State private var answer: AIDiagnosis?
     @State private var working = false
     @State private var failed: String?
@@ -29,6 +33,7 @@ struct AIDoctorCard: View {
                     Label { Text(s).font(.subheadline) } icon: { Text("\(i + 1)").font(.caption.weight(.bold)).foregroundStyle(Jungle.accentText) }
                 }
                 if let ref = a.ref, !ref.isEmpty { feedback(ref) }
+                if let onMorePhoto, let tips = a.tips, !tips.isEmpty { ScanTipsCard(tips: Array(tips.prefix(3)), onPick: onMorePhoto).padding(.top, 4) }
             } else if working {
                 ErtyLoading(text: Grammar.pt(String(localized: "Asking the plant doctor…", comment: "AI doctor loading text")))
             } else {
@@ -77,12 +82,13 @@ struct AIDoctorCard: View {
         guard Store.shared.isPlus else { paywall = true; return }
         guard JungleAPI.shared.hasSession else { failed = Grammar.pt(String(localized: "Sign in to use the AI plant doctor.", comment: "AI doctor: needs account")); return }
         working = true; failed = nil
-        let species = plant.species?.scientific ?? "", raw = photo
+        let species = plant.species?.scientific ?? ""
+        let shots = self.shots.isEmpty ? [ScanShot(data: photo, kind: .leaf)] : self.shots
         Task {
             defer { working = false }
             do {
-                let bp = await Task.detached(priority: .userInitiated) { BrainPhoto.make(raw) }.value
-                answer = try await AIDiagnosis.ask(photo: bp, species: species, note: plant.name, plant: plant)
+                let parts = await Task.detached(priority: .userInitiated) { shots.map { (BrainPhoto.make($0.data), $0.kind) } }.value
+                answer = try await AIDiagnosis.ask(shots: parts, species: species, note: plant.name, plant: plant)
                 Analytics.track("ai_doctor")
             } catch where ServerNotice.message(for: error) != nil {
                 failed = ServerNotice.message(for: error)
@@ -103,18 +109,29 @@ nonisolated struct AIDiagnosis: Decodable {
     var context: String?
     var ref: String?
     var weather: ServerWeather?
+    var used: [String]?
+    var tips: [ScanTip]?
 
-    /// Cached by photo sha256 plus everything else that shapes the answer (species, language, situation, area).
     @MainActor static func ask(photo: BrainPhoto, species: String, note: String, plant: Plant?) async throws -> AIDiagnosis {
-        nonisolated struct B: Encodable { let photo, species, note, lang: String; let situation: [String: [String]]?; let lat, lon: Double? }
+        try await ask(shots: [(photo, .leaf)], species: species, note: note, plant: plant)
+    }
+
+    /// Sends `photos: [{photo, kind}]` (falls back to the first as `photo` on a 400). Cached by every photo's sha256
+    /// and kind plus everything else that shapes the answer (species, language, situation, area).
+    @MainActor static func ask(shots: [(BrainPhoto, ShotKind)], species: String, note: String, plant: Plant?) async throws -> AIDiagnosis {
+        nonisolated struct B: Encodable, Sendable { var photos: [Brain.PhotoPart]?; var photo: String?; let species, note, lang: String; let situation: [String: [String]]?; let lat, lon: Double? }
+        guard let first = shots.first?.0 else { throw JungleAPI.APIError.http(400, "no_photo") }
         let sit = PlantSituation.build(plant)
         let at = PlantSituation.coords
         let sitKey = sit.sorted { $0.key < $1.key }.map { "\($0.key)=\($0.value.joined(separator: ","))" }.joined(separator: ";")
-        let key = BrainCache.key("diagnose", photo.sha, species, PlantSituation.lang, sitKey, "\(at?.lat ?? 0),\(at?.lon ?? 0)")
+        let photoKey = shots.count == 1 ? first.sha : shots.map { "\($0.0.sha):\($0.1.rawValue)" }.joined(separator: ",")
+        let key = BrainCache.key("diagnose", photoKey, species, PlantSituation.lang, sitKey, "\(at?.lat ?? 0),\(at?.lon ?? 0)")
         if let hit: AIDiagnosis = BrainCache.get(key) { return hit }
-        let body = B(photo: photo.base64, species: species, note: note, lang: PlantSituation.lang,
-                     situation: sit.isEmpty ? nil : sit, lat: at?.lat, lon: at?.lon)
-        let d = try await JungleAPI.shared.sendData("POST", "/v1/diagnose", body: body)
+        let parts = Array(shots.prefix(ScanPlan.cap).map { Brain.PhotoPart(photo: $0.0.base64, kind: $0.1.rawValue) })
+        let lang = PlantSituation.lang
+        let many = B(photos: parts, photo: nil, species: species, note: note, lang: lang, situation: sit.isEmpty ? nil : sit, lat: at?.lat, lon: at?.lon)
+        let single = B(photos: nil, photo: first.base64, species: species, note: note, lang: lang, situation: sit.isEmpty ? nil : sit, lat: at?.lat, lon: at?.lon)
+        let d = try await Brain.sendPhotos("/v1/diagnose", many: many, single: single)
         let r = try JungleAPI.decoder.decode(AIDiagnosis.self, from: d)
         BrainCache.put(key, d)
         return r

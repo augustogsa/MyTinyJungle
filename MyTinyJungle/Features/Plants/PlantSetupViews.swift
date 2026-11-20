@@ -43,7 +43,7 @@ struct PlantSetupDraft: Equatable {
     }
 }
 
-private func stageLabel(_ s: LifeStage?) -> String {
+func stageLabel(_ s: LifeStage?) -> String {
     s?.label ?? Grammar.pt(String(localized: "Doing its thing", comment: "Life stage option: normal, nothing special; max 16 chars"))
 }
 
@@ -120,6 +120,8 @@ struct MemorialSection: View {
 
     var body: some View {
         let gone = archived.filter { $0.archivedReason == "passed" }
+        let shelved = archived.filter { $0.archivedReason != "passed" }
+        if !shelved.isEmpty { ArchivedSection(plants: shelved) }
         if !gone.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
                 SectionTitle(Grammar.pt(String(localized: "In loving memory", comment: "Plants tab section: plants that died; gentle; max 24 chars")))
@@ -143,6 +145,66 @@ struct MemorialSection: View {
                 }
                 .padding(14).jungleCard()
             }
+        }
+    }
+}
+
+/// Archived plants (given away, paused, hidden): restore or delete for good.
+struct ArchivedSection: View {
+    @Environment(\.modelContext) private var ctx
+    let plants: [Plant]
+    @State private var open = false
+    @State private var deleting: Plant?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Button { withAnimation(.snappy) { open.toggle() } } label: {
+                HStack {
+                    Text(Grammar.pt(String(localized: "Archived", comment: "Plants tab section: archived plants; max 20 chars")))
+                        .font(.system(.title3, design: .rounded, weight: .semibold)).foregroundStyle(Jungle.text)
+                    Text("\(plants.count)").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.subtle)
+                    Spacer()
+                    Image(systemName: "chevron.down").font(.subheadline.weight(.semibold)).foregroundStyle(Jungle.subtle).rotationEffect(.degrees(open ? 0 : -90))
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityValue(open ? Grammar.pt(String(localized: "Expanded", comment: "VoiceOver: section state")) : Grammar.pt(String(localized: "Collapsed", comment: "VoiceOver: section state")))
+            if open {
+                VStack(spacing: 0) {
+                    ForEach(plants) { p in
+                        HStack(spacing: 12) {
+                            PlantAvatar(data: p.photo, size: 44).saturation(0.6)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(p.name).font(.system(.headline, design: .rounded)).foregroundStyle(Jungle.text)
+                                if let s = p.species { Text(s.commonName).font(.caption).foregroundStyle(Jungle.subtle) }
+                            }
+                            Spacer()
+                            Button(Grammar.pt(String(localized: "Restore", comment: "Archived plant: bring back to the jungle; max 12 chars"))) {
+                                withAnimation(.snappy) { p.isArchived = false; p.archivedReason = nil; try? ctx.save() }
+                            }
+                            .buttonStyle(.bordered).buttonBorderShape(.capsule).tint(Jungle.leaf).foregroundStyle(Jungle.accentText).font(.subheadline.weight(.semibold))
+                            Menu {
+                                Button(Grammar.pt(String(localized: "Delete", comment: "Plant menu: delete a plant for good; max 16 chars")), systemImage: "trash", role: .destructive) { deleting = p }
+                            } label: { Image(systemName: "ellipsis").foregroundStyle(Jungle.subtle).frame(width: 36, height: 44) }
+                            .accessibilityLabel(Grammar.pt(String(localized: "More for \(p.name)", comment: "VoiceOver: menu button for a plant")))
+                        }
+                        .padding(.vertical, 8)
+                        if p.id != plants.last?.id { Divider().padding(.leading, 56) }
+                    }
+                }
+                .padding(.horizontal, 14).padding(.vertical, 4).jungleCard()
+                .transition(.opacity)
+            }
+        }
+        .confirmationDialog(Grammar.pt(String(localized: "Delete \(deleting?.name ?? "")?", comment: "Delete plant confirmation title; arg plant name")), isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }), titleVisibility: .visible) {
+            Button(Grammar.pt(String(localized: "Delete for good", comment: "Delete plant confirmation button; max 20 chars")), role: .destructive) {
+                if let p = deleting { withAnimation(.snappy) { ctx.delete(p); try? ctx.save() } }
+                deleting = nil
+            }
+        } message: {
+            Text(Grammar.pt(String(localized: "Its photos, timeline and chat go too. This can't be undone.", comment: "Delete plant confirmation message")))
         }
     }
 }

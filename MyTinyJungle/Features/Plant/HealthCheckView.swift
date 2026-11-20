@@ -17,7 +17,13 @@ struct HealthCheckView: View {
     @State private var pest: Pest?
     /// A photo the Scan camera already took.
     private let initialPhoto: Data?
-    init(plant: Plant, initialPhoto: Data? = nil) { self.plant = plant; self.initialPhoto = initialPhoto }
+    /// Photos from a multi-photo scan: all go to the AI doctor, the leaf one feeds the on-device read.
+    private let initialShots: [ScanShot]
+    private let onMorePhoto: ((ShotKind) -> Void)?
+    @State private var shots: [ScanShot] = []
+    init(plant: Plant, initialPhoto: Data? = nil, initialShots: [ScanShot] = [], onMorePhoto: ((ShotKind) -> Void)? = nil) {
+        self.plant = plant; self.initialPhoto = initialPhoto; self.initialShots = initialShots; self.onMorePhoto = onMorePhoto
+    }
 
     var body: some View {
         DuoCompanion(mood: .scan, title: "Health check", detail: "Snap a photo and learn what it needs.") { duoContent }
@@ -30,7 +36,7 @@ struct HealthCheckView: View {
                     viewfinder
                     if working { ErtyLoading(text: Grammar.pt(String(localized: "Looking closely…"))) }
                     if let read { result(read) }
-                    if read != nil, let photo { AIDoctorCard(photo: photo, plant: plant) }
+                    if read != nil, let photo { AIDoctorCard(photo: photo, plant: plant, shots: shots, onMorePhoto: onMorePhoto) }
                     pestSection
                     if let pest { PestPlanView(pest: pest, plant: plant, neighbours: neighbours) { dismiss() } }
                 }
@@ -44,7 +50,11 @@ struct HealthCheckView: View {
                 if read != nil { ToolbarItem(placement: .confirmationAction) { Button("Save") { save() } } }
             }
             .fullScreenCover(isPresented: $camera) { CameraPicker { d in camera = false; if let d { analyze(d) } }.ignoresSafeArea() }
-            .task { if let initialPhoto, photo == nil { analyze(initialPhoto) } }
+            .task {
+                guard photo == nil else { return }
+                if let lead = initialShots.first(where: { $0.kind == .leaf }) ?? initialShots.first { shots = initialShots; analyze(lead.data, keepShots: true) }
+                else if let initialPhoto { analyze(initialPhoto) }
+            }
             .onChange(of: pick) { _, item in
                 guard let item else { return }
                 Task { if let d = try? await item.loadTransferable(type: Data.self) { analyze(d) }; pick = nil }
@@ -67,6 +77,7 @@ struct HealthCheckView: View {
             Viewfinder().stroke(.white, style: StrokeStyle(lineWidth: 4, lineCap: .round)).padding(28)
         }
         .clipShape(RoundedRectangle(cornerRadius: Jungle.radius, style: .continuous))
+        if shots.count > 1 { ScanShotStrip(shots: shots) }
         if photo == nil {
             HStack(spacing: 10) {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -155,7 +166,8 @@ struct HealthCheckView: View {
         return Diagnosis.findings(r, species: plant.species, plant: plant).map { Grammar.pt(String(localized: "\($0.title): \($0.detail)", comment: "Diagnosis finding: title, colon, detail")) }
     }
 
-    private func analyze(_ raw: Data) {
+    private func analyze(_ raw: Data, keepShots: Bool = false) {
+        if !keepShots { shots = [] }
         let data = ImageShrinker.jpeg(raw)
         photo = data
         working = true

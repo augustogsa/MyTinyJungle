@@ -75,9 +75,9 @@ private struct PlantLinksModifier: ViewModifier {
                 return .handled
             })
             .sheet(item: $sheet) { item in
-                if let plant = plants.first(where: { $0.id == item.id }) {
+                if let plant = plants.first(where: { $0.id == item.id && !$0.isArchived }) {
                     NavigationStack { PlantHomeView(plant: plant) }
-                }
+                } else { PlantGoneView() }
             }
     }
 }

@@ -11,11 +11,15 @@ struct PhotoRead {
     var brownShare: Double = 0
     var soilVisible = false
     var soilMoisture: SoilState?
+    /// A whole-plant shot: leaves are a smaller share of the frame, so the bar for judging is lower.
+    var wholePlant = false
+    /// The server scene saw a real plant: never claim there weren't enough leaves.
+    var sceneHasLeaves = false
 
     enum Health { case lush, good, someStress, stressed, unknown }
     var health: Health {
         let foliage = greenShare + yellowShare + brownShare
-        guard foliage > 0.08 else { return .unknown }
+        guard foliage > (wholePlant ? 0.025 : 0.06) else { return sceneHasLeaves || foliage > 0.01 && wholePlant ? .good : .unknown }
         let bad = (yellowShare + brownShare) / foliage
         // Variegation, pots and backgrounds fool colour counts, so only a strong, leaf-bound signal counts as stress.
         switch bad {
@@ -38,8 +42,9 @@ struct PhotoRead {
 }
 
 enum PlantVision {
-    static func read(_ image: UIImage) async -> PhotoRead {
+    static func read(_ image: UIImage, wholePlant: Bool = false) async -> PhotoRead {
         var r = PhotoRead()
+        r.wholePlant = wholePlant
         r.labels = await classify(image)
         colour(image, into: &r)
         return r
@@ -82,7 +87,8 @@ enum PlantVision {
             for x in 0..<side {
                 let i = (y * side + x) * 4
                 let (h, s, v) = hsv(Double(data[i]) / 255, Double(data[i + 1]) / 255, Double(data[i + 2]) / 255)
-                if s > 0.2, v > 0.18, (75...170).contains(h) { kind[y * side + x] = 1 }
+                // Dark glossy leaves (fiddle-leaf fig, ZZ) sit low in value and toward olive, so the green band is wide.
+                if s > 0.18, v > 0.1, (62...175).contains(h) { kind[y * side + x] = 1 }
                 // Bright, creamy yellow is variegation, not yellowing.
                 else if s > 0.45, v > 0.45, !(v > 0.75 && s < 0.7), (40..<75).contains(h) { kind[y * side + x] = 2 }
                 else if s > 0.35, (0.2...0.65).contains(v), (12..<40).contains(h) { kind[y * side + x] = 3 }
@@ -154,9 +160,8 @@ enum PlantIdentifier {
         ("lemon", ["citrus-limon"]), ("citrus", ["citrus-limon"]), ("olive", ["olea-europaea"]),
         ("azalea", ["rhododendron-azalea"]), ("rhododendron", ["rhododendron-azalea"]), ("hydrangea", ["hydrangea"]),
         ("begonia", ["begonia-maculata"]), ("anthurium", ["anthurium"]), ("bird_of_paradise", ["strelitzia"]),
-        ("spider_plant", ["chlorophytum"]), ("houseplant", ["monstera-deliciosa", "epipremnum-aureum", "spathiphyllum", "zamioculcas"]),
-        ("potted_plant", ["epipremnum-aureum", "zamioculcas", "spathiphyllum"]), ("foliage", ["calathea", "maranta", "aglaonema"]),
-        ("flower", ["spathiphyllum", "anthurium", "phalaenopsis", "begonia-maculata"]),
+        ("spider_plant", ["chlorophytum"]),
+        // No generic words ("houseplant", "foliage", "flower"): they used to put the same fixed guesses on every photo.
     ]
 
     /// Vision label words that point at a whole plant group in the knowledge base.
@@ -181,8 +186,9 @@ enum PlantIdentifier {
                     score[s.id, default: 0] += Double(conf) * 1.2
                 }
             }
+            // A group word only nudges species something more specific already named.
             for (word, group) in groupWords where l.contains(word) {
-                for s in lib where s.group == group { score[s.id, default: 0] += Double(conf) * 0.15 }
+                for s in lib where s.group == group && score[s.id] != nil { score[s.id, default: 0] += Double(conf) * 0.15 }
             }
         }
         // Local climate: species hardy here are more likely in garden and balcony photos.
