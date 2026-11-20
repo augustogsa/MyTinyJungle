@@ -39,13 +39,13 @@ FEATURES = {
           ("Posso desligar um tipo de lembrete?", "Dá, sim, por tipo e por planta, nos ajustes do app.")])}),
  "firstAid": ("health-check", {
   "en": ("Yellow leaves, brown tips, a sudden droop. Take a photo or describe it, and get kind, clear steps for what's wrong and what to do now.",
-         ["45 common symptoms explained in plain words", "Photo check right on your iPhone", "A short plan, not a lecture", "Follow-up reminders until the plant recovers"],
-         [("Is the photo uploaded?", "The health check runs on your phone. If you ask the AI plant doctor for a second opinion, the photo is sent once to analyse it and is never stored."),
+         ["45 common symptoms explained in plain words", "Photo check in seconds", "A short plan, not a lecture", "Follow-up reminders until the plant recovers"],
+         [("Is the photo uploaded?", "It's sent once to our own servers to be analysed, then thrown away. It's never stored."),
           ("Is it always right?", "It's careful, not magic. When it isn't sure, it says so and suggests what to look at next."),
           ("Is it free?", "Health checks come with Greenhouse and Jungle.")]),
   "pt": ("Folha amarela, ponta marrom, planta murchando do nada. Tira uma foto ou conta o que tá vendo e recebe o passo a passo do que tá errado e do que fazer agora.",
-         ["45 sintomas comuns explicados em palavras simples", "Diagnóstico por foto direto no iPhone", "Um plano curtinho, sem sermão", "Lembretes de acompanhamento até a planta se recuperar"],
-         [("A foto vai pra algum lugar?", "O check-up roda no seu celular. Se você pedir uma segunda opinião ao médico de plantas com IA, a foto vai uma vez só pra análise e não fica guardada."),
+         ["45 sintomas comuns explicados em palavras simples", "Diagnóstico por foto em segundos", "Um plano curtinho, sem sermão", "Lembretes de acompanhamento até a planta se recuperar"],
+         [("A foto vai pra algum lugar?", "Vai uma vez só pros nossos servidores pra ser analisada e depois é descartada. Não fica guardada."),
           ("Acerta sempre?", "É cuidadoso, mas não faz milagre. Quando não tem certeza, ele fala e diz no que ficar de olho."),
           ("É de graça?", "O diagnóstico de saúde vem com a Estufa e a Selva.")])}),
  "bug": ("pests", {
@@ -136,7 +136,8 @@ GENERAL = {
    ("What happens to my plants if I cancel?", "Nothing is deleted. You keep caring for 5 plants for free and can come back any time.")]),
   ("Privacy", [
    ("Where are my photos kept?", "On your phone. If you sign in, they sync to your account so they follow you to your other devices. Photos you send to identify a plant or ask the AI doctor are analysed once and not kept."),
-   ("Do I need an account?", "You sign in with Apple or Google so your jungle can be backed up and shared with your home."),
+   ("How does sync work across my devices?", "Sign in with the same Apple or Google account on each device. Your plants, care history, chat and photos are kept on our own servers and stay the same on iPhone, iPad and Android. Only you and the people you share a jungle with can see them. Download everything or delete your account any time in Settings."),
+   ("Do I need an account?", "No. Without one, everything stays on your phone. Sign in with Apple or Google when you want your jungle on more than one device or to share it with your home."),
    ("Do the ads track me?", "Only if you allow it when iOS asks. Greenhouse and Jungle remove ads completely.")]),
   ("Sharing a home", [
    ("Can I share my plants with someone?", "Yes. Invite the people you live with and you all care for the same plants, taking fair turns with no double watering."),
@@ -158,7 +159,8 @@ GENERAL = {
    ("Se eu cancelar, perco minhas plantas?", "Não perde nada. Tudo fica salvo, você segue cuidando de até 5 plantas de graça e pode voltar quando quiser.")]),
   ("Privacidade", [
    ("Onde ficam minhas fotos?", "No seu celular. Se você entrar na conta, elas sincronizam com a sua conta pra te acompanhar nos outros aparelhos. Fotos que você manda pra identificar uma planta ou pro médico com IA são analisadas uma vez e não ficam guardadas."),
-   ("Preciso criar uma conta?", "Você entra com Apple ou Google pra ter backup da sua selva e dividir com quem mora com você."),
+   ("Como funciona a sincronização entre aparelhos?", "Entra com a mesma conta Apple ou Google em cada aparelho. Suas plantas, histórico, conversas e fotos ficam guardados nos nossos servidores e aparecem iguaizinhos no iPhone, no iPad e no Android. Só você e quem divide a selva com você conseguem ver. Dá pra baixar tudo ou apagar a conta quando quiser, nos Ajustes."),
+   ("Preciso criar uma conta?", "Não. Sem conta, tudo fica no seu celular. Entra com Apple ou Google quando quiser sua selva em mais de um aparelho ou dividir com quem mora com você."),
    ("Os anúncios me rastreiam?", "Só se você permitir quando o iOS perguntar. Estufa e Selva removem todos os anúncios.")]),
   ("Casa compartilhada", [
    ("Dá pra dividir os cuidados com mais gente?", "Dá, sim. Chama quem mora com você e todos cuidam das mesmas plantas, com rodízio justo e sem rega em dobro."),
