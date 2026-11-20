@@ -271,11 +271,12 @@ def main():
 
         # Scene fields.
         sc = json.load(open(HERE / "scene.json"))
-        if QUICK:
-            sc = sc[::4]
+        if QUICK or not 1 <= time.gmtime().tm_hour < 6:
+            sc = sc[::4]  # the full scene set only off-peak (01-06 UTC): the vision model shares the VPS with Apache
         fields = {}
         for c in sc:
             _, r = call(A, "/v1/brain/scene", {"photo": photo(c["file"]), "lang": "en"})
+            time.sleep(5)  # one at a time with a pause: the vision model must never saturate the shared VPS
             s = r.get("scene", {})
             for path, want in c["expect"].items():
                 v = s

@@ -20,11 +20,11 @@ Image=$IMG
 ContainerName=mtj-ai
 PublishPort=127.0.0.1:8091:8080
 Volume=$M:/models:ro,Z
-Exec=-m /models/Qwen2.5-VL-3B-Instruct-Q4_K_M.gguf --mmproj /models/mmproj-Qwen2.5-VL-3B-Instruct-Q8_0.gguf -c 4096 -t 6 --host 0.0.0.0 --port 8080 -np 1
+Exec=-m /models/Qwen2.5-VL-3B-Instruct-Q4_K_M.gguf --mmproj /models/mmproj-Qwen2.5-VL-3B-Instruct-Q8_0.gguf -c 4096 -t 3 --host 0.0.0.0 --port 8080 -np 1
 PodmanArgs=--cgroups=disabled --runtime=crun --memory=3584m
 [Service]
-# Background scene warm-ups yield the CPU to plant ID (mtj-id), which a person is waiting on.
-Nice=15
+# 3 threads at nice 19: background scene warm-ups yield the CPU to plant ID and never starve Apache.
+Nice=19
 Restart=always
 TimeoutStartSec=900
 [Install]

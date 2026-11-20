@@ -27,12 +27,15 @@ Description=MyTinyJungle plant ID (BioCLIP)
 Image=$tag
 ContainerName=mtj-id
 PublishPort=127.0.0.1:8092:8080
-Environment=THREADS=8
+Environment=THREADS=3
 Volume=$M/hf:/models/hf:Z
 Volume=$M/species:/species:ro,Z
 Volume=$M/refs:/refs:Z
 PodmanArgs=--cgroups=disabled --runtime=crun --memory=1600m
 [Service]
+# CPU caps (containers run with cgroups disabled, so threads + nice cap them): mtj-id 3 threads, mtj-ai 3
+# threads at nice 19; together at most ~6 of 8 cores, always behind Apache, which serves other sites.
+Nice=10
 Restart=always
 TimeoutStartSec=1800
 [Install]
