@@ -138,9 +138,9 @@ def main():
         for m in misses:
             print("   miss", m)
         results["identify_p50"], results["identify_p95"] = quant(lat, 0.5), quant(lat, 0.95)
-        t0 = time.time(); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en"}); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en"})
+        t0 = time.time(); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en", "sceneV": 2}); call(A, "/v1/brain/identify", {"photo": photo(cases[0]["file"]), "lang": "en", "sceneV": 2})
         print(f"identify  latency p50 {results['identify_p50'] * 1000:.0f} ms  p95 {results['identify_p95'] * 1000:.0f} ms (uncached)   cached {(time.time() - t0) * 500:.0f} ms")
-        st, r = call(A, "/v1/brain/identify", {"photo": photo(cases[1]["file"], fresh=True), "lang": "en"})
+        st, r = call(A, "/v1/brain/identify", {"photo": photo(cases[1]["file"], fresh=True), "lang": "en", "sceneV": 2})
         assert st == 200 and r.get("scene", {}).get("soil") and r.get("sceneDepth") in ("quick", "full"), r
 
         # Multi-photo scans: both photos of a species as one scan (fused species vote, one charge).
@@ -151,7 +151,7 @@ def main():
         for sp_, fs in by.items():
             if len(fs) < 2:
                 continue
-            st, r = call(A, "/v1/brain/identify", {"photos": [{"photo": photo(fs[0], fresh=True), "kind": "whole"}, {"photo": photo(fs[1], fresh=True), "kind": "leaf"}], "lang": "pt-BR"})
+            st, r = call(A, "/v1/brain/identify", {"photos": [{"photo": photo(fs[0], fresh=True), "kind": "whole"}, {"photo": photo(fs[1], fresh=True), "kind": "leaf"}], "lang": "pt-BR", "sceneV": 2})
             got = [x["id"] for x in r.get("candidates", [])]
             mn += 1
             m1 += bool(got) and hit_species(base, got[0], sp_)

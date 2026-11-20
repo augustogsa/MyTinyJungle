@@ -150,7 +150,7 @@ cpw=$(c $A http://x/v1/brain/care-plan -d '{"species":"pothos","lang":"en","medi
 python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"lang":"en"}))' /tmp/idcheck/aloe-vera.jpg > /tmp/mtj-sc.json
 sc=$(c $A -m 120 http://x/v1/brain/scene -d @/tmp/mtj-sc.json); rm -f /tmp/mtj-sc.json
 echo "$sc" | python3 -c 'import json,sys;s=json.load(sys.stdin)["scene"];assert all(k in s for k in ("plant","pot","soil","light","surroundings")) and "conf" in s["soil"]["medium"],s' && ok "whole scene from photo (medium $(echo "$sc" | python3 -c 'import json,sys;print(json.load(sys.stdin)["scene"]["soil"]["medium"]["value"])'))"
-python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"lang":"en"}))' /tmp/idcheck/monstera-deliciosa.webp > /tmp/mtj-id.json
+python3 -c 'import base64,json,sys;print(json.dumps({"photo":base64.b64encode(open(sys.argv[1],"rb").read()).decode(),"lang":"en","sceneV":2}))' /tmp/idcheck/monstera-deliciosa.webp > /tmp/mtj-id.json
 t0=$(date +%s%N); idw=$(c $A -m 30 http://x/v1/brain/identify -d @/tmp/mtj-id.json); ms=$(( ($(date +%s%N)-t0)/1000000 ))
 echo "$idw" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert "monstera-deliciosa" in [c["id"] for c in d["candidates"]] and d["scene"]["soil"] and d["sceneDepth"] in ("quick","full"),d' && ok "identify a WebP photo with its scene in one call (${ms} ms)"
 t0=$(date +%s%N); c $A -m 30 http://x/v1/brain/identify -d @/tmp/mtj-id.json >/dev/null; ms=$(( ($(date +%s%N)-t0)/1000000 )); rm -f /tmp/mtj-id.json; (( ms < 400 )) && ok "same photo again from the cache (${ms} ms)"

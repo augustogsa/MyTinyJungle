@@ -233,6 +233,7 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		Photo, Lang string
 		Photos      []shot `json:"photos"` // multi-photo scan: 1-8 {photo, kind}
 		Scene       *bool  `json:"scene"`  // false: species only, with the quick BioCLIP-only scene (no vision model)
+		SceneV      int    `json:"sceneV"` // 2: the app reads the {value, conf} scene; older apps fail to decode it, so they get none
 	}
 	if decode(r, &in) != nil || len(in.Photo) > 1_800_000 {
 		s.fail(w, r, bad("invalid_request"))
@@ -367,8 +368,12 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	if confident {
 		top = max(top, 0.75)
 	}
-	writeJSON(w, http.StatusOK, map[string]any{"candidates": out, "confident": confident, "source": source, "scene": sc, "sceneDepth": depth,
-		"used": kindsOf(ss), "tips": photoTips(in.Lang, top, kindsOf(ss), "leaf", "whole", "flower", "stem")})
+	reply := map[string]any{"candidates": out, "confident": confident, "source": source, "sceneDepth": depth,
+		"used": kindsOf(ss), "tips": photoTips(in.Lang, top, kindsOf(ss), "leaf", "whole", "flower", "stem")}
+	if in.SceneV >= 2 {
+		reply["scene"] = sc
+	}
+	writeJSON(w, http.StatusOK, reply)
 }
 
 // POST /v1/brain/care-plan {species, situation, lat?, lon?}: watering rhythm, light, feeding, repotting and
