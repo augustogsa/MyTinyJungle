@@ -58,16 +58,15 @@ func kindsOf(ss []shot) []string {
 
 // fuseSpecies: BioCLIP per photo (in parallel, cached), then a weighted mean of each species' score.
 func fuseSpecies(ctx context.Context, ss []shot) []bioCand {
-	res := make([]idResult, len(ss))
-	var wg sync.WaitGroup
-	for i, s := range ss {
-		wg.Add(1)
-		go func() { defer wg.Done(); res[i] = askID(ctx, s.Photo) }()
-	}
-	wg.Wait()
 	if len(ss) == 1 {
-		return res[0].Candidates
+		return askID(ctx, ss[0].Photo).Candidates
 	}
+	// Several photos: one batched pass, one view each (the photos already give the closer looks).
+	jp := make([]string, len(ss))
+	for i, s := range ss {
+		jp[i] = s.Photo
+	}
+	res := askIDBatch(ctx, jp)
 	sum, total := map[string]float64{}, 0.0
 	first := map[string]int{}
 	for i, r := range res {
