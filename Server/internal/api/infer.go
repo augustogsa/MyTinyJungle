@@ -205,12 +205,22 @@ func warmScene(jpegB64 string) {
 	if busy {
 		return
 	}
+	// One background warm at a time: the CPU vision model serves one request at a time, and a queue of warms
+	// would starve the scene, care-plan and diagnosis calls a person is actually waiting on.
+	select {
+	case warmSlot <- struct{}{}:
+	default:
+		return
+	}
 	go func() {
+		defer func() { <-warmSlot }()
 		ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
 		defer cancel()
 		readScene(ctx, jpegB64)
 	}()
 }
+
+var warmSlot = make(chan struct{}, 1)
 
 // needsFull: the quick scene is unsure about what changes care most (medium, fake plant, pot).
 func (sc scene) needsFull() bool {
