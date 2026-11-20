@@ -10,6 +10,11 @@ if [[ $h != *'"db":true'* ]]; then
   [[ $h2 == *'"db":true'* ]] && $A "API restarted after a failed health check" "Before: ${h:-no answer}" || $A "API is DOWN" "Health: ${h2:-no answer}. Check mtj-api and mtj-postgres (sudo -u mtj podman ps)."
 fi
 code=$(curl -s -o /dev/null -m 10 -w '%{http_code}' https://api.mytinyjungle.com/health || echo 000)
+if [[ $code != 200 ]] && ! systemctl is-active -q httpd; then  # cPanel's restart can hang under load and leave Apache down
+  systemctl start httpd; sleep 5
+  code=$(curl -s -o /dev/null -m 10 -w '%{http_code}' https://api.mytinyjungle.com/health || echo 000)
+  $A "Apache was down, started it" "Public API now returns $code"
+fi
 [[ $code == 200 ]] || $A "public API returns $code" "https://api.mytinyjungle.com/health via Cloudflare"
 use=$(df --output=pcent / | tail -1 | tr -dc 0-9); (( use < 90 )) || $A "disk at ${use}%" "$(df -h / | tail -1)"
 last=$(ls -t /var/backups/mtj/db-*.gpg 2>/dev/null | head -1)
