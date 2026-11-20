@@ -160,3 +160,128 @@ All photos from Wikimedia Commons, resized to at most 480 px. Licence as stated 
 | identify/distance-spathiphyllum-3.jpg | File:Ev Bitkisi.jpg | Unknown authorUnknown author | CC BY 4.0 |
 | identify/distance-spathiphyllum-4.jpg | File:Flower petal.jpg | Janak Bhatta | CC BY-SA 4.0 |
 | identify/distance-strelitzia-1.jpg | File:CJB-Jardin d'hiver-Strelitzia reginae-Mandela's Gold.jpg | MHM55 | CC BY-SA 4.0 |
+
+## iNaturalist (real-world phone photos: distance, dim, clutter, outdoor, herbs, veg, succulents, flowers)
+
+Resized to at most 480 px. Licence as stated per observation.
+
+| File | iNaturalist observation | Author | Licence |
+|---|---|---|---|
+| identify/inat-ocimum-basilicum-1.jpg | https://www.inaturalist.org/observations/301364917 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-ocimum-basilicum-2.jpg | https://www.inaturalist.org/observations/46883589 | pasha66 | CC0 |
+| identify/inat-ocimum-basilicum-3.jpg | https://www.inaturalist.org/observations/392820576 | sadawolk | CC BY 4.0 |
+| identify/inat-ocimum-basilicum-4.jpg | https://www.inaturalist.org/observations/36089708 | karimhaddad | CC BY 4.0 |
+| identify/inat-mentha-1.jpg | https://www.inaturalist.org/observations/3890960 | anro | CC BY-SA 4.0 |
+| identify/inat-mentha-2.jpg | https://www.inaturalist.org/observations/954471 | jon_sullivan | CC BY 4.0 |
+| identify/inat-mentha-4.jpg | https://www.inaturalist.org/observations/93715337 | denis190 | CC BY 4.0 |
+| identify/inat-rosmarinus-1.jpg | https://www.inaturalist.org/observations/158903332 | bungaosam83_second | CC BY-SA 4.0 |
+| identify/inat-rosmarinus-2.jpg | https://www.inaturalist.org/observations/339099396 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-rosmarinus-3.jpg | https://www.inaturalist.org/observations/340288756 | ahabo | CC BY 4.0 |
+| identify/inat-rosmarinus-4.jpg | https://www.inaturalist.org/observations/131880082 | mami_t_t | CC BY 4.0 |
+| identify/inat-thymus-2.jpg | https://www.inaturalist.org/observations/113689477 | johnoridden | CC0 |
+| identify/inat-solanum-lycopersicum-1.jpg | https://www.inaturalist.org/observations/335852278 | sebastian_saiter_v | CC BY 4.0 |
+| identify/inat-solanum-lycopersicum-2.jpg | https://www.inaturalist.org/observations/328565960 | shiwen67077 | CC0 |
+| identify/inat-solanum-lycopersicum-3.jpg | https://www.inaturalist.org/observations/134083251 | ronyristow | CC BY 4.0 |
+| identify/inat-solanum-lycopersicum-4.jpg | https://www.inaturalist.org/observations/12794256 | anro | CC BY-SA 4.0 |
+| identify/inat-capsicum-1.jpg | https://www.inaturalist.org/observations/41755777 | alexmor | CC BY-SA 4.0 |
+| identify/inat-capsicum-2.jpg | https://www.inaturalist.org/observations/205834813 | ro_ko | CC BY 4.0 |
+| identify/inat-capsicum-3.jpg | https://www.inaturalist.org/observations/69002294 | leaf0605 | CC0 |
+| identify/inat-fragaria-1.jpg | https://www.inaturalist.org/observations/10380949 | zoology123 | CC BY 4.0 |
+| identify/inat-fragaria-2.jpg | https://www.inaturalist.org/observations/41677184 | linkie | CC BY 4.0 |
+| identify/inat-fragaria-3.jpg | https://www.inaturalist.org/observations/247918371 | nenp_bankwoodprimary | CC0 |
+| identify/inat-lactuca-2.jpg | https://www.inaturalist.org/observations/242666498 | andrew2285 | CC0 |
+| identify/inat-lactuca-3.jpg | https://www.inaturalist.org/observations/138343504 | diogoluiz | CC BY 4.0 |
+| identify/inat-lactuca-4.jpg | https://www.inaturalist.org/observations/59597290 | nickmaz | CC BY 4.0 |
+| identify/inat-rosa-1.jpg | https://www.inaturalist.org/observations/355841123 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-hibiscus-1.jpg | https://www.inaturalist.org/observations/316196251 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-hibiscus-2.jpg | https://www.inaturalist.org/observations/32438422 | nsalazar05 | CC BY-SA 4.0 |
+| identify/inat-hibiscus-3.jpg | https://www.inaturalist.org/observations/335034910 | lj355 | CC BY 4.0 |
+| identify/inat-hibiscus-4.jpg | https://www.inaturalist.org/observations/57834222 | helio-lourencini | CC BY 4.0 |
+| identify/inat-pelargonium-1.jpg | https://www.inaturalist.org/observations/24364972 | liam1294 | CC BY 4.0 |
+| identify/inat-pelargonium-2.jpg | https://www.inaturalist.org/observations/292408995 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-pelargonium-3.jpg | https://www.inaturalist.org/observations/104932502 | jzupan | CC0 |
+| identify/inat-pelargonium-4.jpg | https://www.inaturalist.org/observations/38167466 | johnsteel | CC BY 4.0 |
+| identify/inat-citrus-limon-3.jpg | https://www.inaturalist.org/observations/112525224 | se1 | CC BY 4.0 |
+| identify/inat-citrus-limon-4.jpg | https://www.inaturalist.org/observations/299548269 | daverichardson | CC BY 4.0 |
+| identify/inat-olea-europaea-1.jpg | https://www.inaturalist.org/observations/148436011 | tonyrebelo | CC BY-SA 4.0 |
+| identify/inat-olea-europaea-2.jpg | https://www.inaturalist.org/observations/328551792 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-olea-europaea-4.jpg | https://www.inaturalist.org/observations/62016212 | hazek | CC BY 4.0 |
+| identify/inat-kalanchoe-blossfeldiana-1.jpg | https://www.inaturalist.org/observations/65923806 | awsalas | CC BY 4.0 |
+| identify/inat-kalanchoe-blossfeldiana-2.jpg | https://www.inaturalist.org/observations/69855521 | gianni_del_bufalo | CC BY 4.0 |
+| identify/inat-kalanchoe-blossfeldiana-3.jpg | https://www.inaturalist.org/observations/18480539 | gianni_del_bufalo | CC BY 4.0 |
+| identify/inat-kalanchoe-blossfeldiana-4.jpg | https://www.inaturalist.org/observations/39400264 | gianni_del_bufalo | CC BY 4.0 |
+| identify/inat-schlumbergera-1.jpg | https://www.inaturalist.org/observations/367569689 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-schlumbergera-2.jpg | https://www.inaturalist.org/observations/4891565 | luisjromero | CC BY 4.0 |
+| identify/inat-schlumbergera-3.jpg | https://www.inaturalist.org/observations/11644463 | alessandradalia | CC BY-SA 4.0 |
+| identify/inat-schlumbergera-4.jpg | https://www.inaturalist.org/observations/192568669 | luck | CC BY 4.0 |
+| identify/inat-echeveria-2.jpg | https://www.inaturalist.org/observations/5603316 | meurkc | CC BY-SA 4.0 |
+| identify/inat-echeveria-3.jpg | https://www.inaturalist.org/observations/21311690 | guigus60 | CC BY 4.0 |
+| identify/inat-echeveria-4.jpg | https://www.inaturalist.org/observations/16062459 | said9 | CC BY 4.0 |
+| identify/inat-lithops-1.jpg | https://www.inaturalist.org/observations/397511660 | oleksandr_shynder | CC BY 4.0 |
+| identify/inat-lithops-2.jpg | https://www.inaturalist.org/observations/191819088 | anton30837 | CC BY-SA 4.0 |
+| identify/inat-lithops-3.jpg | https://www.inaturalist.org/observations/327468194 | argonauta | CC BY 4.0 |
+| identify/inat-lithops-4.jpg | https://www.inaturalist.org/observations/388576249 | oleksandr_shynder | CC BY 4.0 |
+| identify/inat-opuntia-1.jpg | https://www.inaturalist.org/observations/261041160 | mpoinat | CC BY-SA 4.0 |
+| identify/inat-opuntia-2.jpg | https://www.inaturalist.org/observations/184456941 | joeysantore | CC BY 4.0 |
+| identify/inat-opuntia-3.jpg | https://www.inaturalist.org/observations/48272205 | joeysantore | CC BY 4.0 |
+| identify/inat-sedum-morganianum-1.jpg | https://www.inaturalist.org/observations/305581844 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-sedum-morganianum-2.jpg | https://www.inaturalist.org/observations/135217582 | naturalist20885 | CC BY 4.0 |
+| identify/inat-sedum-morganianum-3.jpg | https://www.inaturalist.org/observations/142276547 | tim-johnson | CC BY 4.0 |
+| identify/inat-sedum-morganianum-4.jpg | https://www.inaturalist.org/observations/37068684 | migue_vega | CC BY 4.0 |
+| identify/inat-mammillaria-1.jpg | https://www.inaturalist.org/observations/120695694 | hyacinthus | CC BY 4.0 |
+| identify/inat-mammillaria-3.jpg | https://www.inaturalist.org/observations/113613062 | greg3ph | CC BY 4.0 |
+| identify/inat-begonia-maculata-3.jpg | https://www.inaturalist.org/observations/224464501 | rafaperazzolo | CC BY 4.0 |
+| identify/inat-begonia-maculata-4.jpg | https://www.inaturalist.org/observations/244208348 | robgur | CC BY 4.0 |
+| identify/inat-fittonia-1.jpg | https://www.inaturalist.org/observations/102151735 | joeltrejos | CC BY-SA 4.0 |
+| identify/inat-fittonia-2.jpg | https://www.inaturalist.org/observations/156181400 | paulmnich | CC0 |
+| identify/inat-goeppertia-orbifolia-1.jpg | https://www.inaturalist.org/observations/121701718 | greg3ph | CC BY 4.0 |
+| identify/inat-goeppertia-orbifolia-2.jpg | https://www.inaturalist.org/observations/107654173 | rusty_wingnut | CC BY 4.0 |
+| identify/inat-goeppertia-orbifolia-3.jpg | https://www.inaturalist.org/observations/205481954 | terhielina58 | CC0 |
+| identify/inat-goeppertia-orbifolia-4.jpg | https://www.inaturalist.org/observations/312653100 | prakasit_limthong | CC0 |
+| identify/inat-maranta-1.jpg | https://www.inaturalist.org/observations/332818476 | rusty_wingnut | CC BY 4.0 |
+| identify/inat-maranta-2.jpg | https://www.inaturalist.org/observations/7907708 | adrianh-m-orozco | CC BY 4.0 |
+| identify/inat-maranta-3.jpg | https://www.inaturalist.org/observations/37298971 | mhowdyshell | CC BY 4.0 |
+| identify/inat-monstera-deliciosa-1.jpg | https://www.inaturalist.org/observations/82291810 | robert_taylor | CC BY 4.0 |
+| identify/inat-monstera-deliciosa-2.jpg | https://www.inaturalist.org/observations/320657257 | reishisagnik | CC BY 4.0 |
+| identify/inat-epipremnum-aureum-1.jpg | https://www.inaturalist.org/observations/50351667 | bennypoo | CC BY 4.0 |
+| identify/inat-epipremnum-aureum-2.jpg | https://www.inaturalist.org/observations/164594076 | gurumukhi | CC BY 4.0 |
+| identify/inat-epipremnum-aureum-3.jpg | https://www.inaturalist.org/observations/210278867 | kyheco | CC BY 4.0 |
+| identify/inat-ficus-elastica-1.jpg | https://www.inaturalist.org/observations/363443176 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-ficus-elastica-2.jpg | https://www.inaturalist.org/observations/1173962 | lisa_bennett | CC BY 4.0 |
+| identify/inat-ficus-elastica-3.jpg | https://www.inaturalist.org/observations/309285636 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-zamioculcas-1.jpg | https://www.inaturalist.org/observations/14606003 | gianni_del_bufalo | CC BY 4.0 |
+| identify/inat-zamioculcas-2.jpg | https://www.inaturalist.org/observations/61978887 | andrewgottworth | CC BY 4.0 |
+| identify/inat-zamioculcas-3.jpg | https://www.inaturalist.org/observations/169131068 | jupal04 | CC BY-SA 4.0 |
+| identify/inat-spathiphyllum-1.jpg | https://www.inaturalist.org/observations/19351905 | jagdishsupekar | CC BY 4.0 |
+| identify/inat-spathiphyllum-2.jpg | https://www.inaturalist.org/observations/343812425 | nenp_ecoherschelgrammarschool | CC0 |
+| identify/inat-phalaenopsis-1.jpg | https://www.inaturalist.org/observations/22848148 | alan_lagos | CC BY-SA 4.0 |
+| identify/inat-phalaenopsis-3.jpg | https://www.inaturalist.org/observations/397622028 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-aloe-vera-1.jpg | https://www.inaturalist.org/observations/282091044 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-aloe-vera-2.jpg | https://www.inaturalist.org/observations/170230241 | zacpeterson | CC BY 4.0 |
+| identify/inat-aloe-vera-3.jpg | https://www.inaturalist.org/observations/36000937 | alfredo_f_fuentes | CC0 |
+| identify/inat-aloe-vera-4.jpg | https://www.inaturalist.org/observations/45079430 | eloyjimenez13 | CC BY-SA 4.0 |
+| identify/inat-crassula-ovata-1.jpg | https://www.inaturalist.org/observations/136936972 | hyacinthus | CC BY 4.0 |
+| identify/inat-crassula-ovata-2.jpg | https://www.inaturalist.org/observations/351256558 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-crassula-ovata-3.jpg | https://www.inaturalist.org/observations/327409631 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-crassula-ovata-4.jpg | https://www.inaturalist.org/observations/331472788 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-chlorophytum-1.jpg | https://www.inaturalist.org/observations/314665453 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-chlorophytum-2.jpg | https://www.inaturalist.org/observations/334098714 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-chlorophytum-3.jpg | https://www.inaturalist.org/observations/314666823 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-dracaena-marginata-1.jpg | https://www.inaturalist.org/observations/113310252 | greg3ph | CC BY 4.0 |
+| identify/inat-dracaena-marginata-2.jpg | https://www.inaturalist.org/observations/26569435 | jmmaes | CC BY-SA 4.0 |
+| identify/inat-dracaena-marginata-3.jpg | https://www.inaturalist.org/observations/108313510 | douglas_caro | CC BY 4.0 |
+| identify/inat-dracaena-marginata-4.jpg | https://www.inaturalist.org/observations/19464706 | ongzi | CC BY-SA 4.0 |
+| identify/inat-pilea-1.jpg | https://www.inaturalist.org/observations/252377598 | margaret_forrest | CC BY 4.0 |
+| identify/inat-hoya-carnosa-1.jpg | https://www.inaturalist.org/observations/48648382 | tentoedsloth | CC BY 4.0 |
+| identify/inat-hoya-carnosa-2.jpg | https://www.inaturalist.org/observations/65588684 | ceherzog | CC BY 4.0 |
+| identify/inat-hoya-carnosa-3.jpg | https://www.inaturalist.org/observations/156438074 | daniel2650 | CC BY 4.0 |
+| identify/inat-strelitzia-1.jpg | https://www.inaturalist.org/observations/33262343 | luispauperrimo | CC BY 4.0 |
+| identify/inat-strelitzia-2.jpg | https://www.inaturalist.org/observations/265720488 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-strelitzia-3.jpg | https://www.inaturalist.org/observations/359980646 | zebedeugalinha | CC BY 4.0 |
+| identify/inat-strelitzia-4.jpg | https://www.inaturalist.org/observations/51204040 | jeremygilmore | CC BY 4.0 |
+| identify/inat-adiantum-1.jpg | https://www.inaturalist.org/observations/190140447 | mickicolbeck | CC BY 4.0 |
+| identify/inat-adiantum-2.jpg | https://www.inaturalist.org/observations/26481260 | ongzi | CC BY-SA 4.0 |
+| identify/inat-adiantum-3.jpg | https://www.inaturalist.org/observations/243463672 | theresephillips | CC BY 4.0 |
+| identify/inat-tradescantia-zebrina-1.jpg | https://www.inaturalist.org/observations/114588492 | greg3ph | CC BY 4.0 |
+| identify/inat-tradescantia-zebrina-2.jpg | https://www.inaturalist.org/observations/57169514 | jillybobilly | CC0 |
+| identify/inat-tradescantia-zebrina-3.jpg | https://www.inaturalist.org/observations/150923714 | tgodsey24 | CC0 |

@@ -478,5 +478,835 @@
   "expect": "strelitzia",
   "source": "File:CJB-Jardin d'hiver-Strelitzia reginae-Mandela's Gold.jpg",
   "set": "distance"
+ },
+ {
+  "file": "identify/inat-ocimum-basilicum-1.jpg",
+  "expect": "ocimum-basilicum",
+  "source": "https://www.inaturalist.org/observations/301364917"
+ },
+ {
+  "file": "identify/inat-ocimum-basilicum-2.jpg",
+  "expect": "ocimum-basilicum",
+  "source": "https://www.inaturalist.org/observations/46883589"
+ },
+ {
+  "file": "identify/inat-ocimum-basilicum-3.jpg",
+  "expect": "ocimum-basilicum",
+  "source": "https://www.inaturalist.org/observations/392820576"
+ },
+ {
+  "file": "identify/inat-ocimum-basilicum-4.jpg",
+  "expect": "ocimum-basilicum",
+  "source": "https://www.inaturalist.org/observations/36089708"
+ },
+ {
+  "file": "identify/inat-mentha-1.jpg",
+  "expect": "mentha",
+  "source": "https://www.inaturalist.org/observations/3890960"
+ },
+ {
+  "file": "identify/inat-mentha-2.jpg",
+  "expect": "mentha",
+  "source": "https://www.inaturalist.org/observations/954471"
+ },
+ {
+  "file": "identify/inat-mentha-4.jpg",
+  "expect": "mentha",
+  "source": "https://www.inaturalist.org/observations/93715337"
+ },
+ {
+  "file": "identify/inat-rosmarinus-1.jpg",
+  "expect": "rosmarinus",
+  "source": "https://www.inaturalist.org/observations/158903332"
+ },
+ {
+  "file": "identify/inat-rosmarinus-2.jpg",
+  "expect": "rosmarinus",
+  "source": "https://www.inaturalist.org/observations/339099396"
+ },
+ {
+  "file": "identify/inat-rosmarinus-3.jpg",
+  "expect": "rosmarinus",
+  "source": "https://www.inaturalist.org/observations/340288756"
+ },
+ {
+  "file": "identify/inat-rosmarinus-4.jpg",
+  "expect": "rosmarinus",
+  "source": "https://www.inaturalist.org/observations/131880082"
+ },
+ {
+  "file": "identify/inat-thymus-2.jpg",
+  "expect": "thymus",
+  "source": "https://www.inaturalist.org/observations/113689477"
+ },
+ {
+  "file": "identify/inat-solanum-lycopersicum-1.jpg",
+  "expect": "solanum-lycopersicum",
+  "source": "https://www.inaturalist.org/observations/335852278"
+ },
+ {
+  "file": "identify/inat-solanum-lycopersicum-2.jpg",
+  "expect": "solanum-lycopersicum",
+  "source": "https://www.inaturalist.org/observations/328565960"
+ },
+ {
+  "file": "identify/inat-solanum-lycopersicum-3.jpg",
+  "expect": "solanum-lycopersicum",
+  "source": "https://www.inaturalist.org/observations/134083251"
+ },
+ {
+  "file": "identify/inat-solanum-lycopersicum-4.jpg",
+  "expect": "solanum-lycopersicum",
+  "source": "https://www.inaturalist.org/observations/12794256"
+ },
+ {
+  "file": "identify/inat-capsicum-1.jpg",
+  "expect": "capsicum",
+  "source": "https://www.inaturalist.org/observations/41755777"
+ },
+ {
+  "file": "identify/inat-capsicum-2.jpg",
+  "expect": "capsicum",
+  "source": "https://www.inaturalist.org/observations/205834813"
+ },
+ {
+  "file": "identify/inat-capsicum-3.jpg",
+  "expect": "capsicum",
+  "source": "https://www.inaturalist.org/observations/69002294"
+ },
+ {
+  "file": "identify/inat-fragaria-1.jpg",
+  "expect": "fragaria",
+  "source": "https://www.inaturalist.org/observations/10380949"
+ },
+ {
+  "file": "identify/inat-fragaria-2.jpg",
+  "expect": "fragaria",
+  "source": "https://www.inaturalist.org/observations/41677184"
+ },
+ {
+  "file": "identify/inat-fragaria-3.jpg",
+  "expect": "fragaria",
+  "source": "https://www.inaturalist.org/observations/247918371"
+ },
+ {
+  "file": "identify/inat-lactuca-2.jpg",
+  "expect": "lactuca",
+  "source": "https://www.inaturalist.org/observations/242666498"
+ },
+ {
+  "file": "identify/inat-lactuca-3.jpg",
+  "expect": "lactuca",
+  "source": "https://www.inaturalist.org/observations/138343504"
+ },
+ {
+  "file": "identify/inat-lactuca-4.jpg",
+  "expect": "lactuca",
+  "source": "https://www.inaturalist.org/observations/59597290"
+ },
+ {
+  "file": "identify/inat-rosa-1.jpg",
+  "expect": "rosa",
+  "source": "https://www.inaturalist.org/observations/355841123"
+ },
+ {
+  "file": "identify/inat-hibiscus-1.jpg",
+  "expect": "hibiscus",
+  "source": "https://www.inaturalist.org/observations/316196251"
+ },
+ {
+  "file": "identify/inat-hibiscus-2.jpg",
+  "expect": "hibiscus",
+  "source": "https://www.inaturalist.org/observations/32438422"
+ },
+ {
+  "file": "identify/inat-hibiscus-3.jpg",
+  "expect": "hibiscus",
+  "source": "https://www.inaturalist.org/observations/335034910"
+ },
+ {
+  "file": "identify/inat-hibiscus-4.jpg",
+  "expect": "hibiscus",
+  "source": "https://www.inaturalist.org/observations/57834222"
+ },
+ {
+  "file": "identify/inat-pelargonium-1.jpg",
+  "expect": "pelargonium",
+  "source": "https://www.inaturalist.org/observations/24364972"
+ },
+ {
+  "file": "identify/inat-pelargonium-2.jpg",
+  "expect": "pelargonium",
+  "source": "https://www.inaturalist.org/observations/292408995"
+ },
+ {
+  "file": "identify/inat-pelargonium-3.jpg",
+  "expect": "pelargonium",
+  "source": "https://www.inaturalist.org/observations/104932502"
+ },
+ {
+  "file": "identify/inat-pelargonium-4.jpg",
+  "expect": "pelargonium",
+  "source": "https://www.inaturalist.org/observations/38167466"
+ },
+ {
+  "file": "identify/inat-citrus-limon-3.jpg",
+  "expect": "citrus-limon",
+  "source": "https://www.inaturalist.org/observations/112525224"
+ },
+ {
+  "file": "identify/inat-citrus-limon-4.jpg",
+  "expect": "citrus-limon",
+  "source": "https://www.inaturalist.org/observations/299548269"
+ },
+ {
+  "file": "identify/inat-olea-europaea-1.jpg",
+  "expect": "olea-europaea",
+  "source": "https://www.inaturalist.org/observations/148436011"
+ },
+ {
+  "file": "identify/inat-olea-europaea-2.jpg",
+  "expect": "olea-europaea",
+  "source": "https://www.inaturalist.org/observations/328551792"
+ },
+ {
+  "file": "identify/inat-olea-europaea-4.jpg",
+  "expect": "olea-europaea",
+  "source": "https://www.inaturalist.org/observations/62016212"
+ },
+ {
+  "file": "identify/inat-kalanchoe-blossfeldiana-1.jpg",
+  "expect": "kalanchoe-blossfeldiana",
+  "source": "https://www.inaturalist.org/observations/65923806"
+ },
+ {
+  "file": "identify/inat-kalanchoe-blossfeldiana-2.jpg",
+  "expect": "kalanchoe-blossfeldiana",
+  "source": "https://www.inaturalist.org/observations/69855521"
+ },
+ {
+  "file": "identify/inat-kalanchoe-blossfeldiana-3.jpg",
+  "expect": "kalanchoe-blossfeldiana",
+  "source": "https://www.inaturalist.org/observations/18480539"
+ },
+ {
+  "file": "identify/inat-kalanchoe-blossfeldiana-4.jpg",
+  "expect": "kalanchoe-blossfeldiana",
+  "source": "https://www.inaturalist.org/observations/39400264"
+ },
+ {
+  "file": "identify/inat-schlumbergera-1.jpg",
+  "expect": "schlumbergera",
+  "source": "https://www.inaturalist.org/observations/367569689"
+ },
+ {
+  "file": "identify/inat-schlumbergera-2.jpg",
+  "expect": "schlumbergera",
+  "source": "https://www.inaturalist.org/observations/4891565"
+ },
+ {
+  "file": "identify/inat-schlumbergera-3.jpg",
+  "expect": "schlumbergera",
+  "source": "https://www.inaturalist.org/observations/11644463"
+ },
+ {
+  "file": "identify/inat-schlumbergera-4.jpg",
+  "expect": "schlumbergera",
+  "source": "https://www.inaturalist.org/observations/192568669"
+ },
+ {
+  "file": "identify/inat-echeveria-2.jpg",
+  "expect": "echeveria",
+  "source": "https://www.inaturalist.org/observations/5603316"
+ },
+ {
+  "file": "identify/inat-echeveria-3.jpg",
+  "expect": "echeveria",
+  "source": "https://www.inaturalist.org/observations/21311690"
+ },
+ {
+  "file": "identify/inat-echeveria-4.jpg",
+  "expect": "echeveria",
+  "source": "https://www.inaturalist.org/observations/16062459"
+ },
+ {
+  "file": "identify/inat-lithops-1.jpg",
+  "expect": "lithops",
+  "source": "https://www.inaturalist.org/observations/397511660"
+ },
+ {
+  "file": "identify/inat-lithops-2.jpg",
+  "expect": "lithops",
+  "source": "https://www.inaturalist.org/observations/191819088"
+ },
+ {
+  "file": "identify/inat-lithops-3.jpg",
+  "expect": "lithops",
+  "source": "https://www.inaturalist.org/observations/327468194"
+ },
+ {
+  "file": "identify/inat-lithops-4.jpg",
+  "expect": "lithops",
+  "source": "https://www.inaturalist.org/observations/388576249"
+ },
+ {
+  "file": "identify/inat-opuntia-1.jpg",
+  "expect": "opuntia",
+  "source": "https://www.inaturalist.org/observations/261041160"
+ },
+ {
+  "file": "identify/inat-opuntia-2.jpg",
+  "expect": "opuntia",
+  "source": "https://www.inaturalist.org/observations/184456941"
+ },
+ {
+  "file": "identify/inat-opuntia-3.jpg",
+  "expect": "opuntia",
+  "source": "https://www.inaturalist.org/observations/48272205"
+ },
+ {
+  "file": "identify/inat-sedum-morganianum-1.jpg",
+  "expect": "sedum-morganianum",
+  "source": "https://www.inaturalist.org/observations/305581844"
+ },
+ {
+  "file": "identify/inat-sedum-morganianum-2.jpg",
+  "expect": "sedum-morganianum",
+  "source": "https://www.inaturalist.org/observations/135217582"
+ },
+ {
+  "file": "identify/inat-sedum-morganianum-3.jpg",
+  "expect": "sedum-morganianum",
+  "source": "https://www.inaturalist.org/observations/142276547"
+ },
+ {
+  "file": "identify/inat-sedum-morganianum-4.jpg",
+  "expect": "sedum-morganianum",
+  "source": "https://www.inaturalist.org/observations/37068684"
+ },
+ {
+  "file": "identify/inat-mammillaria-1.jpg",
+  "expect": "mammillaria",
+  "source": "https://www.inaturalist.org/observations/120695694"
+ },
+ {
+  "file": "identify/inat-mammillaria-3.jpg",
+  "expect": "mammillaria",
+  "source": "https://www.inaturalist.org/observations/113613062"
+ },
+ {
+  "file": "identify/inat-begonia-maculata-3.jpg",
+  "expect": "begonia-maculata",
+  "source": "https://www.inaturalist.org/observations/224464501"
+ },
+ {
+  "file": "identify/inat-begonia-maculata-4.jpg",
+  "expect": "begonia-maculata",
+  "source": "https://www.inaturalist.org/observations/244208348"
+ },
+ {
+  "file": "identify/inat-fittonia-1.jpg",
+  "expect": "fittonia",
+  "source": "https://www.inaturalist.org/observations/102151735"
+ },
+ {
+  "file": "identify/inat-fittonia-2.jpg",
+  "expect": "fittonia",
+  "source": "https://www.inaturalist.org/observations/156181400"
+ },
+ {
+  "file": "identify/inat-goeppertia-orbifolia-1.jpg",
+  "expect": "goeppertia-orbifolia",
+  "source": "https://www.inaturalist.org/observations/121701718"
+ },
+ {
+  "file": "identify/inat-goeppertia-orbifolia-2.jpg",
+  "expect": "goeppertia-orbifolia",
+  "source": "https://www.inaturalist.org/observations/107654173"
+ },
+ {
+  "file": "identify/inat-goeppertia-orbifolia-3.jpg",
+  "expect": "goeppertia-orbifolia",
+  "source": "https://www.inaturalist.org/observations/205481954"
+ },
+ {
+  "file": "identify/inat-goeppertia-orbifolia-4.jpg",
+  "expect": "goeppertia-orbifolia",
+  "source": "https://www.inaturalist.org/observations/312653100"
+ },
+ {
+  "file": "identify/inat-maranta-1.jpg",
+  "expect": "maranta",
+  "source": "https://www.inaturalist.org/observations/332818476"
+ },
+ {
+  "file": "identify/inat-maranta-2.jpg",
+  "expect": "maranta",
+  "source": "https://www.inaturalist.org/observations/7907708"
+ },
+ {
+  "file": "identify/inat-maranta-3.jpg",
+  "expect": "maranta",
+  "source": "https://www.inaturalist.org/observations/37298971"
+ },
+ {
+  "file": "identify/inat-monstera-deliciosa-1.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "https://www.inaturalist.org/observations/82291810"
+ },
+ {
+  "file": "identify/inat-monstera-deliciosa-2.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "https://www.inaturalist.org/observations/320657257"
+ },
+ {
+  "file": "identify/inat-epipremnum-aureum-1.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "https://www.inaturalist.org/observations/50351667"
+ },
+ {
+  "file": "identify/inat-epipremnum-aureum-2.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "https://www.inaturalist.org/observations/164594076"
+ },
+ {
+  "file": "identify/inat-epipremnum-aureum-3.jpg",
+  "expect": "epipremnum-aureum",
+  "source": "https://www.inaturalist.org/observations/210278867"
+ },
+ {
+  "file": "identify/inat-ficus-elastica-1.jpg",
+  "expect": "ficus-elastica",
+  "source": "https://www.inaturalist.org/observations/363443176"
+ },
+ {
+  "file": "identify/inat-ficus-elastica-2.jpg",
+  "expect": "ficus-elastica",
+  "source": "https://www.inaturalist.org/observations/1173962"
+ },
+ {
+  "file": "identify/inat-ficus-elastica-3.jpg",
+  "expect": "ficus-elastica",
+  "source": "https://www.inaturalist.org/observations/309285636"
+ },
+ {
+  "file": "identify/inat-zamioculcas-1.jpg",
+  "expect": "zamioculcas",
+  "source": "https://www.inaturalist.org/observations/14606003"
+ },
+ {
+  "file": "identify/inat-zamioculcas-2.jpg",
+  "expect": "zamioculcas",
+  "source": "https://www.inaturalist.org/observations/61978887"
+ },
+ {
+  "file": "identify/inat-zamioculcas-3.jpg",
+  "expect": "zamioculcas",
+  "source": "https://www.inaturalist.org/observations/169131068"
+ },
+ {
+  "file": "identify/inat-spathiphyllum-1.jpg",
+  "expect": "spathiphyllum",
+  "source": "https://www.inaturalist.org/observations/19351905"
+ },
+ {
+  "file": "identify/inat-spathiphyllum-2.jpg",
+  "expect": "spathiphyllum",
+  "source": "https://www.inaturalist.org/observations/343812425"
+ },
+ {
+  "file": "identify/inat-phalaenopsis-1.jpg",
+  "expect": "phalaenopsis",
+  "source": "https://www.inaturalist.org/observations/22848148"
+ },
+ {
+  "file": "identify/inat-phalaenopsis-3.jpg",
+  "expect": "phalaenopsis",
+  "source": "https://www.inaturalist.org/observations/397622028"
+ },
+ {
+  "file": "identify/inat-aloe-vera-1.jpg",
+  "expect": "aloe-vera",
+  "source": "https://www.inaturalist.org/observations/282091044"
+ },
+ {
+  "file": "identify/inat-aloe-vera-2.jpg",
+  "expect": "aloe-vera",
+  "source": "https://www.inaturalist.org/observations/170230241"
+ },
+ {
+  "file": "identify/inat-aloe-vera-3.jpg",
+  "expect": "aloe-vera",
+  "source": "https://www.inaturalist.org/observations/36000937"
+ },
+ {
+  "file": "identify/inat-aloe-vera-4.jpg",
+  "expect": "aloe-vera",
+  "source": "https://www.inaturalist.org/observations/45079430"
+ },
+ {
+  "file": "identify/inat-crassula-ovata-1.jpg",
+  "expect": "crassula-ovata",
+  "source": "https://www.inaturalist.org/observations/136936972"
+ },
+ {
+  "file": "identify/inat-crassula-ovata-2.jpg",
+  "expect": "crassula-ovata",
+  "source": "https://www.inaturalist.org/observations/351256558"
+ },
+ {
+  "file": "identify/inat-crassula-ovata-3.jpg",
+  "expect": "crassula-ovata",
+  "source": "https://www.inaturalist.org/observations/327409631"
+ },
+ {
+  "file": "identify/inat-crassula-ovata-4.jpg",
+  "expect": "crassula-ovata",
+  "source": "https://www.inaturalist.org/observations/331472788"
+ },
+ {
+  "file": "identify/inat-chlorophytum-1.jpg",
+  "expect": "chlorophytum",
+  "source": "https://www.inaturalist.org/observations/314665453"
+ },
+ {
+  "file": "identify/inat-chlorophytum-2.jpg",
+  "expect": "chlorophytum",
+  "source": "https://www.inaturalist.org/observations/334098714"
+ },
+ {
+  "file": "identify/inat-chlorophytum-3.jpg",
+  "expect": "chlorophytum",
+  "source": "https://www.inaturalist.org/observations/314666823"
+ },
+ {
+  "file": "identify/inat-dracaena-marginata-1.jpg",
+  "expect": "dracaena-marginata",
+  "source": "https://www.inaturalist.org/observations/113310252"
+ },
+ {
+  "file": "identify/inat-dracaena-marginata-2.jpg",
+  "expect": "dracaena-marginata",
+  "source": "https://www.inaturalist.org/observations/26569435"
+ },
+ {
+  "file": "identify/inat-dracaena-marginata-3.jpg",
+  "expect": "dracaena-marginata",
+  "source": "https://www.inaturalist.org/observations/108313510"
+ },
+ {
+  "file": "identify/inat-dracaena-marginata-4.jpg",
+  "expect": "dracaena-marginata",
+  "source": "https://www.inaturalist.org/observations/19464706"
+ },
+ {
+  "file": "identify/inat-pilea-1.jpg",
+  "expect": "pilea",
+  "source": "https://www.inaturalist.org/observations/252377598"
+ },
+ {
+  "file": "identify/inat-hoya-carnosa-1.jpg",
+  "expect": "hoya-carnosa",
+  "source": "https://www.inaturalist.org/observations/48648382"
+ },
+ {
+  "file": "identify/inat-hoya-carnosa-2.jpg",
+  "expect": "hoya-carnosa",
+  "source": "https://www.inaturalist.org/observations/65588684"
+ },
+ {
+  "file": "identify/inat-hoya-carnosa-3.jpg",
+  "expect": "hoya-carnosa",
+  "source": "https://www.inaturalist.org/observations/156438074"
+ },
+ {
+  "file": "identify/inat-strelitzia-1.jpg",
+  "expect": "strelitzia",
+  "source": "https://www.inaturalist.org/observations/33262343"
+ },
+ {
+  "file": "identify/inat-strelitzia-2.jpg",
+  "expect": "strelitzia",
+  "source": "https://www.inaturalist.org/observations/265720488"
+ },
+ {
+  "file": "identify/inat-strelitzia-3.jpg",
+  "expect": "strelitzia",
+  "source": "https://www.inaturalist.org/observations/359980646"
+ },
+ {
+  "file": "identify/inat-strelitzia-4.jpg",
+  "expect": "strelitzia",
+  "source": "https://www.inaturalist.org/observations/51204040"
+ },
+ {
+  "file": "identify/inat-adiantum-1.jpg",
+  "expect": "adiantum",
+  "source": "https://www.inaturalist.org/observations/190140447"
+ },
+ {
+  "file": "identify/inat-adiantum-2.jpg",
+  "expect": "adiantum",
+  "source": "https://www.inaturalist.org/observations/26481260"
+ },
+ {
+  "file": "identify/inat-adiantum-3.jpg",
+  "expect": "adiantum",
+  "source": "https://www.inaturalist.org/observations/243463672"
+ },
+ {
+  "file": "identify/inat-tradescantia-zebrina-1.jpg",
+  "expect": "tradescantia-zebrina",
+  "source": "https://www.inaturalist.org/observations/114588492"
+ },
+ {
+  "file": "identify/inat-tradescantia-zebrina-2.jpg",
+  "expect": "tradescantia-zebrina",
+  "source": "https://www.inaturalist.org/observations/57169514"
+ },
+ {
+  "file": "identify/inat-tradescantia-zebrina-3.jpg",
+  "expect": "tradescantia-zebrina",
+  "source": "https://www.inaturalist.org/observations/150923714"
+ },
+ {
+  "file": "identify/dark-distance-zamioculcas-1.jpg",
+  "expect": "zamioculcas",
+  "source": "File:Zamioculcas zamiifolia Chameleon 1.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-hoya-carnosa-1.jpg",
+  "expect": "hoya-carnosa",
+  "source": "File:Hoya carnosa leaves in Tropical Dream Center, Okinawa.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-rosmarinus-4.jpg",
+  "expect": "rosmarinus",
+  "source": "https://www.inaturalist.org/observations/131880082",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-monstera-deliciosa-2.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "https://www.inaturalist.org/observations/320657257",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-ficus-lyrata-1.jpg",
+  "expect": "ficus-lyrata",
+  "source": "File:Ficus lyrata 98162192.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-anthurium-1.jpg",
+  "expect": "anthurium",
+  "source": "File:Anthurium andraeanum hatem moushir.JPG",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-schlumbergera-4.jpg",
+  "expect": "schlumbergera",
+  "source": "https://www.inaturalist.org/observations/192568669",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-aloe-vera-1.jpg",
+  "expect": "aloe-vera",
+  "source": "File:Aloe vera 101.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-ocimum-basilicum-3.jpg",
+  "expect": "ocimum-basilicum",
+  "source": "https://www.inaturalist.org/observations/392820576",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-sedum-morganianum-2.jpg",
+  "expect": "sedum-morganianum",
+  "source": "https://www.inaturalist.org/observations/135217582",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-ficus-elastica-1.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Ficus elastica 2.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-olea-europaea-4.jpg",
+  "expect": "olea-europaea",
+  "source": "https://www.inaturalist.org/observations/62016212",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-syngonium-1.jpg",
+  "expect": "syngonium",
+  "source": "File:Syngonium podophyllum ( Arrowhead plant).jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-maranta-2.jpg",
+  "expect": "maranta",
+  "source": "File:Maranta leuconeura 11zz.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-monstera-adansonii-1.jpg",
+  "expect": "monstera-adansonii",
+  "source": "File:Monstera adansonii 126732868.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-fragaria-2.jpg",
+  "expect": "fragaria",
+  "source": "https://www.inaturalist.org/observations/41677184",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-capsicum-1.jpg",
+  "expect": "capsicum",
+  "source": "https://www.inaturalist.org/observations/41755777",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-spathiphyllum-2.jpg",
+  "expect": "spathiphyllum",
+  "source": "File:Spathiphyllum kochi.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-alocasia-amazonica-2.jpg",
+  "expect": "alocasia-amazonica",
+  "source": "File:Alocasia amazonica Elephant's-Ear Plant ალოკასია.JPG",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-monstera-adansonii-2.jpg",
+  "expect": "monstera-adansonii",
+  "source": "File:Monstera adansonii 127416487.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-lithops-1.jpg",
+  "expect": "lithops",
+  "source": "https://www.inaturalist.org/observations/397511660",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-capsicum-2.jpg",
+  "expect": "capsicum",
+  "source": "https://www.inaturalist.org/observations/205834813",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-ficus-elastica-2.jpg",
+  "expect": "ficus-elastica",
+  "source": "File:Ficus elastica 3.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-lithops-4.jpg",
+  "expect": "lithops",
+  "source": "https://www.inaturalist.org/observations/388576249",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-dracaena-fragrans-2.jpg",
+  "expect": "dracaena-fragrans",
+  "source": "File:Dracaena fragrans Limelight 0zz.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-phalaenopsis-2.jpg",
+  "expect": "phalaenopsis",
+  "source": "File:Phalaenopsis Hybride FR 2013.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-goeppertia-orbifolia-4.jpg",
+  "expect": "goeppertia-orbifolia",
+  "source": "https://www.inaturalist.org/observations/312653100",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-goeppertia-orbifolia-3.jpg",
+  "expect": "goeppertia-orbifolia",
+  "source": "https://www.inaturalist.org/observations/205481954",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-strelitzia-1.jpg",
+  "expect": "strelitzia",
+  "source": "https://www.inaturalist.org/observations/33262343",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-crassula-ovata-3.jpg",
+  "expect": "crassula-ovata",
+  "source": "https://www.inaturalist.org/observations/327409631",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-opuntia-3.jpg",
+  "expect": "opuntia",
+  "source": "https://www.inaturalist.org/observations/48272205",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-aloe-vera-1.jpg",
+  "expect": "aloe-vera",
+  "source": "https://www.inaturalist.org/observations/282091044",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-tradescantia-zebrina-1.jpg",
+  "expect": "tradescantia-zebrina",
+  "source": "https://www.inaturalist.org/observations/114588492",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-adiantum-2.jpg",
+  "expect": "adiantum",
+  "source": "https://www.inaturalist.org/observations/26481260",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-phalaenopsis-1.jpg",
+  "expect": "phalaenopsis",
+  "source": "File:Phalaenopsis white cultivar 2.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-calathea-ornata-2.jpg",
+  "expect": "calathea-ornata",
+  "source": "File:Calathea ornata cc3.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-inat-lithops-2.jpg",
+  "expect": "lithops",
+  "source": "https://www.inaturalist.org/observations/191819088",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-pilea-1.jpg",
+  "expect": "pilea",
+  "source": "File:Pilea peperomioides Chinese money plant.jpg",
+  "slice": "flash"
+ },
+ {
+  "file": "identify/dark-distance-monstera-deliciosa-2.jpg",
+  "expect": "monstera-deliciosa",
+  "source": "File:Plantae in Office.jpg",
+  "slice": "dark"
+ },
+ {
+  "file": "identify/flash-inat-dracaena-marginata-2.jpg",
+  "expect": "dracaena-marginata",
+  "source": "https://www.inaturalist.org/observations/26569435",
+  "slice": "flash"
  }
 ]

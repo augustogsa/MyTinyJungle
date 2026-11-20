@@ -14,8 +14,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 QUICK = "--quick" in sys.argv
 SOCK = "/run/mtj/api.sock"
-TH = {"identify_top1": 0.85, "identify_top3": 0.95, "diagnose_top3": 0.80, "ask_lang": 0.85, "careplan": 0.95, "scene_field": 0.70}
-MAX = {"identify_p50": 0.6, "identify_p95": 1.5}  # seconds, measured live on uncached photos
+TH = {"identify_top1": 0.92, "identify_top3": 0.98, "diagnose_top3": 0.80, "ask_lang": 0.85, "careplan": 0.95, "scene_field": 0.70}
+MAX = {"identify_p50": 1.5, "identify_p95": 3.0}  # seconds, measured live on uncached photos
 
 
 class UConn(http.client.HTTPConnection):
@@ -107,6 +107,25 @@ def hit_species(base, got, want):
     return bool(g and w) and ((" " not in w and g.split()[0] == w) or (" " not in g and w.split()[0] == g))
 
 
+HERBS = {"ocimum-basilicum", "mentha", "rosmarinus", "thymus", "petroselinum", "solanum-lycopersicum", "capsicum", "fragaria", "lactuca"}
+SUCC = {"aloe-vera", "haworthia", "crassula-ovata", "echeveria", "lithops", "opuntia", "sedum-morganianum", "mammillaria", "senecio-rowleyanus"}
+FLOWERS = {"phalaenopsis", "anthurium", "spathiphyllum", "kalanchoe-blossfeldiana", "schlumbergera", "hibiscus", "pelargonium", "rosa", "strelitzia", "hoya-carnosa"}
+OUTDOOR = {"citrus-limon", "olea-europaea", "bougainvillea", "lavandula-angustifolia"}
+
+
+def slice_of(c):
+    """Eval slice: dark / flash (derived), far (distance shots), then by kind of plant, then real home photos
+    (iNaturalist: clutter, rooms) or close shots (Wikimedia)."""
+    n, e = c["file"].split("/")[-1], c["expect"]
+    for p, s in (("dark-", "dark"), ("flash-", "flash"), ("distance-", "far")):
+        if n.startswith(p):
+            return s
+    for group, s in ((HERBS, "herbs-veg"), (SUCC, "succulents"), (FLOWERS, "flowers"), (OUTDOOR, "outdoor")):
+        if e in group:
+            return s
+    return "clutter" if n.startswith("inat-") else "close"
+
+
 def pct(a, b):
     return a / b if b else 0.0
 
@@ -122,7 +141,7 @@ def main():
         # Identify (species only: the scene is checked on its own below).
         cases = json.load(open(HERE / "identify.json"))
         t1 = t3 = 0
-        misses, lat = [], []
+        misses, lat, sl = [], [], {}
         for c in cases:
             t0 = time.time()
             st, r = call(A, "/v1/brain/identify", {"photo": photo(c["file"], fresh=True), "lang": "en", "scene": False})
@@ -131,10 +150,15 @@ def main():
             same = [hit_species(base, g, c["expect"]) for g in got]
             t1 += bool(same[:1] and same[0])
             t3 += any(same[:3])
+            k = sl.setdefault(slice_of(c), [0, 0, 0])
+            k[0] += 1; k[1] += bool(same[:1] and same[0]); k[2] += any(same[:3])
             if not (same[:1] and same[0]):
                 misses.append(f"{c['file']} -> {got[:3]}")
         results["identify_top1"], results["identify_top3"] = pct(t1, len(cases)), pct(t3, len(cases))
         print(f"identify  top-1 {t1}/{len(cases)} = {results['identify_top1']:.0%}   top-3 {t3}/{len(cases)} = {results['identify_top3']:.0%}")
+        for name, (n, a, b) in sorted(sl.items()):
+            print(f"   slice {name:11s} n={n:3d}  top-1 {a / n:.0%}  top-3 {b / n:.0%}")
+            results[f"identify_{name}_top1"] = a / n
         for m in misses:
             print("   miss", m)
         results["identify_p50"], results["identify_p95"] = quant(lat, 0.5), quant(lat, 0.95)

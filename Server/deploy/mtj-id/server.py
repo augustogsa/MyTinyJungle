@@ -3,15 +3,16 @@
 #             index (/refs/refs.npz from refs.py, /refs/learned.npz from confirmed corrections);
 #   scene   = zero-shot probabilities for categorical scene fields (pot, medium, room, light, stage, fake plant).
 # Text embeddings are computed once per species list and kept on disk (/refs/text-cache.npz), so restarts are warm.
-# POST /        {photo} -> {candidates:[{id,score}], scene:{field:{value:prob}}}
-#               {photos:[...]} -> {results:[{candidates, scene}]}   (one batched pass, e.g. shelf crops)
+# POST /        {photo} -> {candidates:[{id,score}], scene:{field:{value:prob}}}   (photo + 70% centre crop, fused;
+#               a species and its cultivars rank as one group scored by their sum)
+#               {photos:[...], views?:1|2} -> {results:[{candidates, scene}]}   (one batched pass, e.g. shelf crops)
 # POST /learn   {photo, id, ref}  -> adds one corrected photo to learned.npz
 # POST /prior   {boost:{id:x}, _outdoor?:x} -> per-species prior from confirmed corrections (+ outdoor prior)
 import base64, hashlib, io, json, os, sys, threading, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps
 from clipnx import Clip, species_texts
 
 REFS, SPECIES = os.environ.get("MTJ_ID_REFS", "/refs"), os.environ.get("MTJ_ID_SPECIES", "/species/species.json")
@@ -77,13 +78,15 @@ def load():
     if key != state["key"]:
         sp = json.load(open(SPECIES))
         boost = json.load(open(f"{REFS}/prior.json")) if key[1] else {}
-        ids, genus, gen, outdoor, cult = [], [], [], [], []
+        ids, genus, gen, outdoor, cult, base = [], [], [], [], [], []
         for s in sp:
             sci = (s.get("scientific") or "").replace("×", "").split()
             if not sci:
                 continue
             ids.append(s["id"]); genus.append(sci[0].lower() if len(sci) == 1 else ""); gen.append(sci[0].lower()); outdoor.append(bool(s.get("outdoor")))
             cult.append("'" in (s.get("scientific") or ""))
+            w = (s.get("scientific") or "").replace("×", "").replace("'", " '").split()
+            base.append(" ".join(x for x in w[:2] if not x.startswith("'")).lower())
         semb, scemb = text_cache(sp)
         outdoor = np.array(outdoor)
         # Owners mostly photograph houseplants, and the species far more often than one named cultivar
@@ -93,13 +96,25 @@ def load():
         scene, i = {}, 0
         for f, v in SCENE.items():
             scene[f] = (list(v), scemb[i:i + len(v)]); i += len(v)
+        # Cultivar roll-up: every entry of one binomial ("Maranta leuconeura", "Maranta leuconeura 'Lemon Lime'")
+        # shares a group; the group's summed score ranks, and the plain species stands for it unless one cultivar
+        # holds most of the group's score.
+        keys, gidx = {}, []
+        for b in base:
+            gidx.append(keys.setdefault(b, len(keys)))
+        gidx = np.array(gidx)
+        rep = {}
+        for i, k in enumerate(gidx):
+            if not cult[i] and k not in rep:
+                rep[k] = i
+        state.update(gidx=gidx, ngroups=len(keys), rep=rep)
         state.update(key=key, ids=ids, genus=genus, gen=gen, emb=semb, prior=prior, cultw=np.where(cult, np.exp(CULTIVAR), 1.0), scene=scene, refs_key=None)
-    rk = (mt(f"{REFS}/refs.npz"), mt(f"{REFS}/learned.npz"), mt(f"{REFS}/params.json"))
+    rk = (mt(f"{REFS}/refs.npz"), mt(f"{REFS}/inat.npz"), mt(f"{REFS}/learned.npz"), mt(f"{REFS}/params.json"))
     if rk != state["refs_key"]:
-        if rk[2]:
+        if rk[3]:
             P.update(json.load(open(f"{REFS}/params.json")))
         rid, remb = [], []
-        for f in ("refs.npz", "learned.npz"):
+        for f in ("refs.npz", "inat.npz", "learned.npz"):
             if os.path.exists(f"{REFS}/{f}"):
                 z = np.load(f"{REFS}/{f}")
                 if z["emb"].shape[1] == state["emb"].shape[1]:  # an index built with another model is ignored
@@ -124,16 +139,55 @@ def species_probs(e):
     return P["alpha"] * knn + (1 - P["alpha"]) * text
 
 
-def ranked(p, n=5):
-    """Top n; a genus-only entry ("Hoya") yields the lead to a species of that genus scoring at least 40% of it,
-    since the species carries the more exact care."""
-    top = list(np.argsort(-p)[: n + 3])
-    g = state["genus"][top[0]]
+def ranked(p, n=5, frac=0.6):
+    """Top n groups (a species with its cultivars), each scored by the group's sum and named by the plain species
+    unless one cultivar holds frac of it. A genus-only entry ("Hoya") yields the lead to a species of that genus
+    scoring at least 40% of it, since the species carries the more exact care. -> [(index, score)]"""
+    G = np.bincount(state["gidx"], p, state["ngroups"])
+    order = np.argsort(-G)[: n + 3]
+    best = {}
+    for i in np.argsort(-p)[:200]:
+        best.setdefault(state["gidx"][i], i)
+    top = []
+    for k in order:
+        b = best.get(k)
+        if b is None:
+            b = int(np.flatnonzero(state["gidx"] == k)[np.argmax(p[state["gidx"] == k])])
+        r = state["rep"].get(k)
+        top.append((r if r is not None and p[b] < frac * G[k] else int(b), float(G[k])))
+    g = state["genus"][top[0][0]]
     if g:
-        for j, i in enumerate(top[1:], 1):
-            if state["gen"][i] == g and not state["genus"][i] and p[i] >= 0.4 * p[top[0]]:
+        for j, (i, sc) in enumerate(top[1:], 1):
+            if state["gen"][i] == g and not state["genus"][i] and sc >= 0.4 * top[0][1]:
                 top.insert(0, top.pop(j)); break
     return top[:n]
+
+
+def lift(im):
+    """Dark or torch-lit photos: denoise, stretch the levels and lift the shadows (gamma to a mid-grey mean) so
+    the leaves read as they would in daylight. Normal photos pass through untouched."""
+    a = np.asarray(im.convert("L"), np.float32) / 255
+    m = float(a.mean())
+    dark = m < 0.28
+    flash = float((a < 0.08).mean()) > 0.45 and float(np.percentile(a, 99)) > 0.9  # black background, hot subject
+    if not (dark or flash):
+        return im
+    im = im.filter(ImageFilter.MedianFilter(3))
+    im = ImageOps.autocontrast(im, cutoff=(0.5, 1.0 if flash else 0.5))
+    m = max(1e-3, float(np.asarray(im.convert("L"), np.float32).mean()) / 255)
+    if m < 0.42:
+        gamma = float(np.clip(np.log(0.45) / np.log(m), 0.35, 1.0))
+        lut = [round(255 * (i / 255) ** gamma) for i in range(256)]
+        im = im.point(lut * 3)
+    return im
+
+
+def views(im):
+    """The photo as framed, plus a 70% centre crop: the app has no frame any more, so a small plant in a room
+    shot or a leaf in a busy photo gets a closer look (best pair on the eval; more crops cost more than they win)."""
+    im = lift(ImageOps.exif_transpose(im).convert("RGB"))
+    w, h = im.size; c = int(min(w, h) * 0.7)
+    return [im, im.crop(((w - c) // 2, (h - c) // 2, (w - c) // 2 + c, (h - c) // 2 + c))]
 
 
 def scene_probs(e):
@@ -144,9 +198,20 @@ def scene_probs(e):
     return out
 
 
-def answer(e):
-    p = species_probs(e)
-    return {"candidates": [{"id": state["ids"][i], "score": round(float(p[i]), 4)} for i in ranked(p)], "scene": scene_probs(e)}
+def answer(es):
+    """es: the views of one photo; species probabilities are averaged over them, the scene comes from the first."""
+    p = np.mean([species_probs(e) for e in es], axis=0)
+    return {"candidates": [{"id": state["ids"][i], "score": round(sc, 4)} for i, sc in ranked(p)], "scene": scene_probs(es[0])}
+
+
+def embed(photos, n=2):
+    """All views (n per photo) of all photos in one batched pass -> per photo, its view embeddings."""
+    ims = [views(Image.open(io.BytesIO(decode(b))))[:n] for b in photos]
+    es = clip.images([v for vs in ims for v in vs])
+    out, i = [], 0
+    for vs in ims:
+        out.append(es[i:i + len(vs)]); i += len(vs)
+    return out
 
 
 def decode(b64):
@@ -180,10 +245,13 @@ class H(BaseHTTPRequestHandler):
                     json.dump(boost, open(tmp, "w")); os.replace(tmp, f"{REFS}/prior.json"); load()
                     return self.reply(200, {"ok": True})
             if "photos" in body:
-                photos = body["photos"][:16]
-                es = clip.image_bytes([decode(p) for p in photos])
+                es = embed(body["photos"][:16], int(body.get("views", 1)))  # shelf crops: already close-ups
                 with lock:
                     return self.reply(200, {"results": [answer(e) for e in es]})
+            if self.path != "/learn":
+                es = embed([body["photo"]])[0]
+                with lock:
+                    return self.reply(200, answer(es))
             e = clip.image_bytes([decode(body["photo"])])[0]
             with lock:
                 if self.path == "/learn":
@@ -200,7 +268,7 @@ class H(BaseHTTPRequestHandler):
                     np.savez(f + ".tmp.npz", ids=np.array(ids + [body["id"]]), emb=np.concatenate([emb, e[None].astype(np.float16)]), refs=np.array(refs + [body.get("ref", "")]))
                     os.replace(f + ".tmp.npz", f); load()
                     return self.reply(200, {"ok": True})
-                return self.reply(200, answer(e))
+                return self.reply(404, {"error": "not_found"})
         except Exception as ex:
             self.reply(400, {"error": str(ex)[:200]})
 

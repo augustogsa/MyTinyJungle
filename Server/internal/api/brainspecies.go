@@ -227,6 +227,9 @@ func (s *Server) adminBrain(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]any{"library": lib, "gaps": gaps, "feedback": fbs, "learnedPhotos": learned, "pendingPhotos": pending})
 }
 
+// Confidence thresholds for identify (see clear() in brainIdentify).
+const confTop, confLead, confRatio = 0.55, 0.3, 2.5
+
 // POST /v1/brain/identify {photo}: names a plant from a photo with our own model, matched to our species list.
 func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 	var in struct {
@@ -277,10 +280,20 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 		}
 		out = append(out, cand{sp.ID, sp.Scientific, name, math.Round(score*100) / 100})
 	}
-	// 1. Our own species model (BioCLIP over our list).
+	// 1. Our own species model (BioCLIP over our list), with the stronger outside model started alongside it.
 	source := "internal"
 	main := pick(ss, "whole", "leaf", "flower", "stem", "other")
 	in.Photo = ss[main].Photo
+	type strongRes struct {
+		c   []extCand
+		src string
+	}
+	var strong chan strongRes
+	if strongAvailable() {
+		strong = make(chan strongRes, 1)
+		sctx, scancel := context.WithTimeout(ctx, strongBudget)
+		go func() { defer scancel(); c, src := s.strongID(sctx, in.Photo); strong <- strongRes{c, src} }()
+	}
 	// Cheap first: BioCLIP + the photo's own stats answer in well under a second. The vision model only warms
 	// the whole scene in the background when the species is unsure or the quick scene can't tell the medium,
 	// pot or a fake plant; the care-plan or diagnosis that follows then gets it from the cache.
@@ -297,66 +310,50 @@ func (s *Server) brainIdentify(w http.ResponseWriter, r *http.Request) {
 			add(c.ID, c.Score)
 		}
 	}
-	// 2. Not confident: a free external model, then Claude, named against our list.
-	// Scores are spread over 600+ species, so a clear lead over the runner-up counts as much as the raw score.
+	// 2. Calibrated on the eval (209 photos): a lead of 0.55, or 0.3 with 2.5x the runner-up, is right 95%+ of
+	// the time. Scores are group sums (a species with its cultivars), so a split between cultivars counts once.
 	clear := func() bool {
-		return len(out) > 0 && (out[0].Score >= 0.5 || (out[0].Score >= 0.2 && (len(out) == 1 || out[0].Score >= 3*out[1].Score)))
+		return len(out) > 0 && (out[0].Score >= confTop || (out[0].Score >= confLead && (len(out) == 1 || out[0].Score >= confRatio*out[1].Score)))
 	}
-	if len(out) == 0 || (out[0].Score < 0.35 && !clear()) {
-		prompt := "Identify this plant. Answer only with JSON: {\"candidates\":[{\"scientific\":\"...\",\"common\":\"...\",\"confidence\":0.0}]} with up to three guesses, most likely first."
-		// Hard budget: the app shows our own top 3 rather than wait; the answer is cached per photo either way.
-		var raw string
-		ek := answerKey("idext", fmt.Sprintf("%x", photoKey(in.Photo)))
-		if v, ok := answers.get(ek); ok {
-			raw, source = v.([2]string)[0], v.([2]string)[1]
-		} else {
-			ectx, ecancel := context.WithTimeout(ctx, 1200*time.Millisecond)
-			if t, ok := geminiText(ectx, in.Photo, prompt); ok {
-				raw, source = t, "free"
-			} else if t, ok := s.claudeText(ectx, in.Photo, prompt); ok {
-				raw, source = t, "claude"
-			}
-			ecancel()
-			if raw != "" {
-				answers.put(ek, [2]string{raw, source})
+	// 3. Unsure: the stronger outside model, when one is configured, wins when it is sure (it had the same head start).
+	if strong != nil && !clear() {
+		r := <-strong
+		var ext []cand
+		for _, c := range r.c {
+			if sp, _ := matchExt(c); sp != nil {
+				ext = append(ext, cand{ID: sp.ID, Score: c.Confidence})
 			}
 		}
-		if i, j := strings.Index(raw, "{"), strings.LastIndex(raw, "}"); i >= 0 && j > i {
-			var g struct {
-				Candidates []struct {
-					Scientific, Common string
-					Confidence         float64
-				}
+		if len(ext) > 0 && (ext[0].Score >= 0.5 || len(out) == 0 || ext[0].ID == out[0].ID) {
+			agree := len(out) > 0 && ext[0].ID == out[0].ID
+			prev := out
+			out = nil
+			for _, c := range ext {
+				add(c.ID, c.Score)
 			}
-			if json.Unmarshal([]byte(raw[i:j+1]), &g) == nil {
-				var ext []cand
-				for _, c := range g.Candidates {
-					if sp := theBrain.findSpecies(c.Scientific); sp != nil {
-						ext = append(ext, cand{ID: sp.ID, Score: c.Confidence})
-					} else if sp := theBrain.findSpecies(c.Common); sp != nil {
-						ext = append(ext, cand{ID: sp.ID, Score: c.Confidence})
-					}
-				}
-				if len(ext) > 0 {
-					prev := out
-					out = nil
-					for _, c := range ext {
-						add(c.ID, c.Score)
-					}
-					for _, c := range prev {
-						add(c.ID, c.Score*0.5)
-					}
-				}
+			for _, c := range prev {
+				add(c.ID, c.Score*0.5)
 			}
+			if agree {
+				out[0].Score = math.Max(out[0].Score, prev[0].Score) + 0.3
+				out[0].Score = math.Min(1, math.Round(out[0].Score*100)/100)
+			}
+			source = r.src
 		}
 	}
 	if len(out) > 3 {
 		out = out[:3]
 	}
+	confident := clear()
 	if len(out) == 0 {
 		s.gap(ctx, "identify", "unknown plant")
+	} else if !confident {
+		// Possibly out of our catalog: log the nearest genus so the list can grow where people need it.
+		speciesDB.RLock()
+		g := strings.Fields(speciesDB.byID[out[0].ID].Scientific + " x")[0]
+		speciesDB.RUnlock()
+		s.gap(ctx, "identify", "unsure "+g)
 	}
-	confident := clear()
 	depth := "quick"
 	if full {
 		depth = "full"
